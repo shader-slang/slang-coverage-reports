@@ -1,77 +1,247 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Slang Coverage Reports</title>
+    <title>Slang Code Coverage Reports</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
-            line-height: 1.6;
-            color: #333;
         }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
         .card {
-            border: 1px solid #ddd;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        .coverage-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #f39c12;
+            color: white;
+            font-size: 3.5em;
+            font-weight: bold;
+            margin: 30px auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .metric {
+            background: #f8f9fa;
             padding: 25px;
-            margin: 25px 0;
-            border-radius: 8px;
-            background: #f9f9f9;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
         }
-        .card h2 {
-            margin-top: 0;
-            color: #34495e;
-        }
-        a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        a:hover {
-            text-decoration: underline;
-            color: #2980b9;
-        }
-        .arrow {
-            font-size: 1.2em;
-        }
-        footer {
-            margin-top: 60px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-            text-align: center;
-            color: #7f8c8d;
+        .metric-label {
+            color: #6c757d;
             font-size: 0.9em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .metric-detail {
+            color: #6c757d;
+            font-size: 0.95em;
+        }
+        .info-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .info-value {
+            color: #6c757d;
+        }
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            min-width: 200px;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            .coverage-badge {
+                width: 150px;
+                height: 150px;
+                font-size: 2.5em;
+            }
+            .metrics {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>🎯 Slang Code Coverage Reports</h1>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Slang Code Coverage</h1>
+            <p>Nightly Coverage Reports for shader-slang/slang</p>
+        </div>
+        <div class="card">
+            <h2 style="color: #2c3e50; margin-bottom: 20px; text-align: center;">Coverage by Platform</h2>
 
-    <p>Automated code coverage tracking for the <a href="https://github.com/shader-slang/slang" target="_blank">Slang shader compiler</a>.</p>
+            <style>
+                .cov-good { color: #27ae60; font-weight: 600; }
+                .cov-medium { color: #f39c12; font-weight: 600; }
+                .cov-low { color: #e74c3c; font-weight: 600; }
+            </style>
 
-    <div class="card">
-        <h2>🔗 Latest Coverage</h2>
-        <p><a href="reports/latest/index.html">View Latest Coverage Report <span class="arrow">→</span></a></p>
-        <p><small>Updated nightly from master branch</small></p>
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <thead>
+                    <tr style="background: #34495e; color: white;">
+                        <th style="padding: 15px; text-align: left;">Platform</th>
+                        <th style="padding: 15px; text-align: center;">Lines</th>
+                        <th style="padding: 15px; text-align: center;">Regions</th>
+                        <th style="padding: 15px; text-align: center;">Functions</th>
+                        <th style="padding: 15px; text-align: center;">Branches</th>
+                        <th style="padding: 15px; text-align: center;">Report</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 15px;"><strong>🐧 Linux (x86_64)</strong></td>
+                        <td style="padding: 15px; text-align: center;"><span class="cov-medium">73.00%</span><br><small>311193/84010</small></td>
+                        <td style="padding: 15px; text-align: center;"><span class="cov-low">49.47%</span><br><small>172523/87176</small></td>
+                        <td style="padding: 15px; text-align: center;"><span class="cov-medium">73.25%</span><br><small>19577/5236</small></td>
+                        <td style="padding: 15px; text-align: center;"><span class="cov-medium">64.79%</span><br><small>93062/32763</small></td>
+                        <td style="padding: 15px; text-align: center;"><a href="reports/latest/linux/index.html" style="color: #667eea;">View</a></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 15px;"><strong>🍎 macOS (aarch64)</strong></td>
+                        <td style="padding: 15px; text-align: center;"><span class="cov-medium">74.05%</span><br><small>311196/80761</small></td>
+                        <td style="padding: 15px; text-align: center;"><span class="cov-low">50.25%</span><br><small>173580/86361</small></td>
+                        <td style="padding: 15px; text-align: center;"><span class="cov-medium">73.62%</span><br><small>19580/5165</small></td>
+                        <td style="padding: 15px; text-align: center;"><span class="cov-medium">65.93%</span><br><small>93076/31707</small></td>
+                        <td style="padding: 15px; text-align: center;"><a href="reports/latest/macos/index.html" style="color: #667eea;">View</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-section">
+                <div class="info-row">
+                    <span class="info-label">Report Date:</span>
+                    <span class="info-value">2025-11-03
+2025-11-03
+2025-11-03</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Commit:</span>
+                    <span class="info-value">
+                        <a href="https://github.com/shader-slang/slang/commit/b3547d993
+b3547d993
+b3547d993"
+                           style="color: #667eea; text-decoration: none;">b3547d993
+b3547d993
+b3547d993</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <a href="reports/history/index.html" class="btn btn-secondary">📚 Historical Reports</a>
+            </div>
+        </div>
+        <div style="text-align: center; color: white; opacity: 0.8; margin-top: 30px;">
+            <p>
+                Download data: <a href="reports/coverage-data.csv" download style="color: white; text-decoration: underline;">CSV</a> |
+                <a href="reports/coverage-data.json" download style="color: white; text-decoration: underline;">JSON</a>
+            </p>
+            <p style="margin-top: 10px;">Generated by <a href="https://github.com/shader-slang/slang"
+               style="color: white; text-decoration: underline;">shader-slang/slang</a> nightly coverage workflow</p>
+        </div>
     </div>
-
-    <div class="card">
-        <h2>📊 Historical Reports</h2>
-        <p><a href="reports/history/index.html">Browse Historical Coverage <span class="arrow">→</span></a></p>
-        <p><small>Track coverage trends over time by date and commit</small></p>
-    </div>
-
-    <footer>
-        <p>Generated by <a href="https://github.com/shader-slang/slang" target="_blank">Slang</a> project using LLVM Coverage</p>
-        <p><small>Updated nightly at 2 AM UTC · <a href="https://github.com/shader-slang/slang-coverage-reports" target="_blank">Repository</a></small></p>
-    </footer>
 </body>
 </html>
