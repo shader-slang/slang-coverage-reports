@@ -2,6 +2,14 @@
 
 # Extract Linux CPU coverage data from git history
 # Output: CSV with Date and decimal coverage percentages (no %)
+#
+# Options:
+#   --percent   Append % sign to coverage values in output
+
+percent_suffix=""
+if [ "$1" = "--percent" ]; then
+    percent_suffix="%"
+fi
 
 echo "date,line_coverage,region_coverage,function_coverage,branch_coverage"
 
@@ -43,7 +51,7 @@ git log --all --oneline --grep="multi-platform coverage" --format="%H" | while r
                 branch_cov=$(echo "$json" | grep -o '"branch_coverage": "[^"]*"' | cut -d'"' -f4 | tr -d '%')
 
                 if [ -n "$line_cov" ] && [ -n "$region_cov" ] && [ -n "$function_cov" ] && [ -n "$branch_cov" ]; then
-                    echo "$date,$line_cov,$region_cov,$function_cov,$branch_cov"
+                    echo "$date,$line_cov$percent_suffix,$region_cov$percent_suffix,$function_cov$percent_suffix,$branch_cov$percent_suffix"
                 fi
             fi
         fi
