@@ -3,7 +3,7 @@
 import subprocess
 import json
 import re
-from datetime import datetime
+from pathlib import Path
 
 def get_coverage_commits():
     """Get all commits with coverage reports."""
@@ -75,11 +75,35 @@ def get_linux_coverage(commit_hash, date=None, slang_commit=None):
     except (subprocess.CalledProcessError, json.JSONDecodeError):
         return None
 
+def load_current_linux_coverage():
+    """Load Linux coverage data from the checked-out report data export."""
+    data_file = Path('reports/coverage-data.json')
+    if not data_file.exists():
+        return {}
+
+    try:
+        records = json.loads(data_file.read_text())
+    except json.JSONDecodeError:
+        return {}
+
+    daily_data = {}
+    for record in records:
+        if record.get('platform') != 'linux':
+            continue
+        if 'slangc_line_coverage' not in record:
+            continue
+
+        date = record.get('date')
+        if date:
+            daily_data[date] = record
+
+    return daily_data
+
 def main():
-    print("Extracting Linux slangc compiler pipeline coverage data from git history...")
+    print("Extracting Linux slangc compiler pipeline coverage data...")
 
     # Collect all daily coverage data
-    daily_data = {}
+    daily_data = load_current_linux_coverage()
 
     commits = get_coverage_commits()
     for commit_line in commits:
@@ -99,7 +123,8 @@ def main():
 
         coverage = get_linux_coverage(commit_hash, date, slang_commit)
         if coverage and date not in daily_data:
-            # Only include entries that have slangc data
+            # Use git history to backfill older entries that have been culled
+            # from the checked-out reports/history directory.
             if 'slangc_line_coverage' in coverage:
                 daily_data[date] = coverage
 
