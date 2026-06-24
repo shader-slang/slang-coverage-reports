@@ -2,10 +2,10 @@
 set -euo pipefail
 
 # Cleanup script to maintain only recent coverage reports
-# Keeps: Last 7 days of reports + monthly snapshots
+# Keeps: Last 3 days of reports + monthly snapshots
 
 HISTORY_DIR="reports/history"
-DAYS_TO_KEEP=7
+DAYS_TO_KEEP=3
 
 if [ ! -d "$HISTORY_DIR" ]; then
     echo "History directory not found: $HISTORY_DIR"
