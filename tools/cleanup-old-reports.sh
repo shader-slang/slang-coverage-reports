@@ -2,10 +2,16 @@
 set -euo pipefail
 
 # Cleanup script to maintain only recent coverage reports
-# Keeps: Last 3 days of reports + monthly snapshots
+# Keeps: Last 1 day of reports + monthly snapshots
+#
+# Each daily snapshot holds full per-file HTML coverage for three platforms
+# plus the merged/new-renderer views (~1.7GB uncompressed). Keeping more than
+# one day pushes the deployed site over GitHub Pages' 1GB published-site cap
+# (see shader-slang/slang-coverage-reports Pages deploy failures starting
+# 2026-08-17), so retention is intentionally tight.
 
 HISTORY_DIR="reports/history"
-DAYS_TO_KEEP=3
+DAYS_TO_KEEP=1
 
 if [ ! -d "$HISTORY_DIR" ]; then
     echo "History directory not found: $HISTORY_DIR"
