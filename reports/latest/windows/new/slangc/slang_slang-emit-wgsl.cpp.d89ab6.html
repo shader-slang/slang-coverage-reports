@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-12 05:03:10 UTC</td>
+      <td class="headerValue">2026-10-13 05:23:40 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">80.9&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:80.9%;background-color:hsl(91, 70%, 50%)"></div></div>
-      <span class="metricCounts">549 / 679</span>
+      <span class="metricCounts">552 / 682</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -1907,282 +1907,299 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1634"><span class="lineNum">    1634</span>              : </span>
 <span id="L1635"><span class="lineNum">    1635</span>              :             return true;</span>
 <span id="L1636"><span class="lineNum">    1636</span>              :         }</span>
-<span id="L1637"><span class="lineNum">    1637</span>              :     case kIROp_BitXor:</span>
-<span id="L1638"><span class="lineNum">    1638</span>              :     case kIROp_BitOr:</span>
-<span id="L1639"><span class="lineNum">    1639</span>              :     case kIROp_BitAnd:</span>
-<span id="L1640"><span class="lineNum">    1640</span>              :         {</span>
-<span id="L1641"><span class="lineNum">    1641</span>              :             // Emit bitwise operators with paranthesis to avoid precedence issues</span>
-<span id="L1642"><span class="lineNum">    1642</span> <span class="tlaGNC">           1 :             const auto emitOp = getEmitOpForOp(inst-&gt;getOp());</span></span>
-<span id="L1643"><span class="lineNum">    1643</span> <span class="tlaGNC">           1 :             const auto info = getInfo(emitOp);</span></span>
-<span id="L1644"><span class="lineNum">    1644</span>              : </span>
-<span id="L1645"><span class="lineNum">    1645</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;(&quot;);</span></span>
-<span id="L1646"><span class="lineNum">    1646</span>              : </span>
-<span id="L1647"><span class="lineNum">    1647</span> <span class="tlaGNC">           1 :             const bool needClose = maybeEmitParens(outerPrec, info);</span></span>
-<span id="L1648"><span class="lineNum">    1648</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(0), leftSide(outerPrec, info));</span></span>
-<span id="L1649"><span class="lineNum">    1649</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot; &quot;);</span></span>
-<span id="L1650"><span class="lineNum">    1650</span>              : </span>
-<span id="L1651"><span class="lineNum">    1651</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(info.op);</span></span>
-<span id="L1652"><span class="lineNum">    1652</span>              : </span>
-<span id="L1653"><span class="lineNum">    1653</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot; (&quot;);</span></span>
-<span id="L1654"><span class="lineNum">    1654</span>              :             emitOperand(inst-&gt;getOperand(1), rightSide(outerPrec, info));</span>
-<span id="L1655"><span class="lineNum">    1655</span>              :             m_writer-&gt;emit(&quot;)&quot;);</span>
-<span id="L1656"><span class="lineNum">    1656</span>              : </span>
-<span id="L1657"><span class="lineNum">    1657</span>              :             maybeCloseParens(needClose);</span>
-<span id="L1658"><span class="lineNum">    1658</span>              : </span>
-<span id="L1659"><span class="lineNum">    1659</span>              :             m_writer-&gt;emit(&quot;)&quot;);</span>
-<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">           1 :             return true;</span></span>
-<span id="L1661"><span class="lineNum">    1661</span>              :         }</span>
-<span id="L1662"><span class="lineNum">    1662</span>              :         break;</span>
+<span id="L1637"><span class="lineNum">    1637</span>              :     case kIROp_Less:</span>
+<span id="L1638"><span class="lineNum">    1638</span>              :     case kIROp_Greater:</span>
+<span id="L1639"><span class="lineNum">    1639</span>              :     case kIROp_Leq:</span>
+<span id="L1640"><span class="lineNum">    1640</span>              :     case kIROp_Geq:</span>
+<span id="L1641"><span class="lineNum">    1641</span>              :         {</span>
+<span id="L1642"><span class="lineNum">    1642</span>              :             // WGSL template-list discovery reads `ident &lt;` as opening a template list that a later</span>
+<span id="L1643"><span class="lineNum">    1643</span>              :             // `&gt;` or `&gt;=` at the same parenthesis depth closes, even across a `,`, so in</span>
+<span id="L1644"><span class="lineNum">    1644</span>              :             // `f(a &lt; b, a &gt; b)` the text `a&lt;b, a&gt;` is a templated identifier and parsing fails.</span>
+<span id="L1645"><span class="lineNum">    1645</span>              :             // A `)` discards any candidate opened inside it, so we always parenthesize relational</span>
+<span id="L1646"><span class="lineNum">    1646</span>              :             // comparisons; inside those parentheses the operands need only `General` precedence.</span>
+<span id="L1647"><span class="lineNum">    1647</span>              :             // `&lt;=` cannot open a template list, but we treat all four operators alike so the rule</span>
+<span id="L1648"><span class="lineNum">    1648</span>              :             // stays simple. https://www.w3.org/TR/WGSL/#template-lists-sec</span>
+<span id="L1649"><span class="lineNum">    1649</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;(&quot;);</span></span>
+<span id="L1650"><span class="lineNum">    1650</span> <span class="tlaGNC">           1 :             defaultEmitInstExpr(inst, getInfo(EmitOp::General));</span></span>
+<span id="L1651"><span class="lineNum">    1651</span>              :             m_writer-&gt;emit(&quot;)&quot;);</span>
+<span id="L1652"><span class="lineNum">    1652</span> <span class="tlaGNC">           1 :             return true;</span></span>
+<span id="L1653"><span class="lineNum">    1653</span>              :         }</span>
+<span id="L1654"><span class="lineNum">    1654</span>              :     case kIROp_BitXor:</span>
+<span id="L1655"><span class="lineNum">    1655</span>              :     case kIROp_BitOr:</span>
+<span id="L1656"><span class="lineNum">    1656</span>              :     case kIROp_BitAnd:</span>
+<span id="L1657"><span class="lineNum">    1657</span>              :         {</span>
+<span id="L1658"><span class="lineNum">    1658</span>              :             // Emit bitwise operators with paranthesis to avoid precedence issues</span>
+<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">           1 :             const auto emitOp = getEmitOpForOp(inst-&gt;getOp());</span></span>
+<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">           1 :             const auto info = getInfo(emitOp);</span></span>
+<span id="L1661"><span class="lineNum">    1661</span>              : </span>
+<span id="L1662"><span class="lineNum">    1662</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;(&quot;);</span></span>
 <span id="L1663"><span class="lineNum">    1663</span>              : </span>
-<span id="L1664"><span class="lineNum">    1664</span>              :     case kIROp_ByteAddressBufferLoad:</span>
-<span id="L1665"><span class="lineNum">    1665</span>              :         {</span>
-<span id="L1666"><span class="lineNum">    1666</span>              :             // Indices in Slang code count bytes, but in WASM they count u32&#x27;s since</span>
-<span id="L1667"><span class="lineNum">    1667</span>              :             // byte address buffers translate to array&lt;u32&gt; in WASM, so divide by 4.</span>
-<span id="L1668"><span class="lineNum">    1668</span> <span class="tlaUNC">           0 :             emitOperand(inst-&gt;getOperand(0), getInfo(EmitOp::General));</span></span>
-<span id="L1669"><span class="lineNum">    1669</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;[(&quot;);</span></span>
-<span id="L1670"><span class="lineNum">    1670</span> <span class="tlaUNC">           0 :             emitOperand(inst-&gt;getOperand(1), getInfo(EmitOp::General));</span></span>
-<span id="L1671"><span class="lineNum">    1671</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;)/4]&quot;);</span></span>
-<span id="L1672"><span class="lineNum">    1672</span> <span class="tlaUNC">           0 :             return true;</span></span>
-<span id="L1673"><span class="lineNum">    1673</span>              :         }</span>
-<span id="L1674"><span class="lineNum">    1674</span>              :         break;</span>
+<span id="L1664"><span class="lineNum">    1664</span> <span class="tlaGNC">           1 :             const bool needClose = maybeEmitParens(outerPrec, info);</span></span>
+<span id="L1665"><span class="lineNum">    1665</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(0), leftSide(outerPrec, info));</span></span>
+<span id="L1666"><span class="lineNum">    1666</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot; &quot;);</span></span>
+<span id="L1667"><span class="lineNum">    1667</span>              : </span>
+<span id="L1668"><span class="lineNum">    1668</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(info.op);</span></span>
+<span id="L1669"><span class="lineNum">    1669</span>              : </span>
+<span id="L1670"><span class="lineNum">    1670</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot; (&quot;);</span></span>
+<span id="L1671"><span class="lineNum">    1671</span>              :             emitOperand(inst-&gt;getOperand(1), rightSide(outerPrec, info));</span>
+<span id="L1672"><span class="lineNum">    1672</span>              :             m_writer-&gt;emit(&quot;)&quot;);</span>
+<span id="L1673"><span class="lineNum">    1673</span>              : </span>
+<span id="L1674"><span class="lineNum">    1674</span>              :             maybeCloseParens(needClose);</span>
 <span id="L1675"><span class="lineNum">    1675</span>              : </span>
-<span id="L1676"><span class="lineNum">    1676</span>              :     case kIROp_ByteAddressBufferStore:</span>
-<span id="L1677"><span class="lineNum">    1677</span>              :         {</span>
-<span id="L1678"><span class="lineNum">    1678</span>              :             // Indices in Slang code count bytes, but in WASM they count u32&#x27;s since</span>
-<span id="L1679"><span class="lineNum">    1679</span>              :             // byte address buffers translate to array&lt;u32&gt; in WASM, so divide by 4.</span>
-<span id="L1680"><span class="lineNum">    1680</span> <span class="tlaGNC">           1 :             auto base = inst-&gt;getOperand(0);</span></span>
-<span id="L1681"><span class="lineNum">    1681</span> <span class="tlaGNC">           1 :             emitOperand(base, EmitOpInfo());</span></span>
-<span id="L1682"><span class="lineNum">    1682</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;[(&quot;);</span></span>
-<span id="L1683"><span class="lineNum">    1683</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(1), getInfo(EmitOp::General));</span></span>
-<span id="L1684"><span class="lineNum">    1684</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;)/4] = &quot;);</span></span>
-<span id="L1685"><span class="lineNum">    1685</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(inst-&gt;getOperandCount() - 1), getInfo(EmitOp::General));</span></span>
-<span id="L1686"><span class="lineNum">    1686</span> <span class="tlaGNC">           1 :             return true;</span></span>
-<span id="L1687"><span class="lineNum">    1687</span>              :         }</span>
-<span id="L1688"><span class="lineNum">    1688</span>              :         break;</span>
-<span id="L1689"><span class="lineNum">    1689</span>              : </span>
-<span id="L1690"><span class="lineNum">    1690</span>              :     case kIROp_GetStringHash:</span>
-<span id="L1691"><span class="lineNum">    1691</span>              :         {</span>
-<span id="L1692"><span class="lineNum">    1692</span> <span class="tlaUNC">           0 :             auto getStringHashInst = as&lt;IRGetStringHash&gt;(inst);</span></span>
-<span id="L1693"><span class="lineNum">    1693</span>              :             // Checked, unlike `getStringLit()`, so a non-literal operand reaches the</span>
-<span id="L1694"><span class="lineNum">    1694</span>              :             // unhandled-inst path below instead of being read as string data.</span>
-<span id="L1695"><span class="lineNum">    1695</span> <span class="tlaUNC">           0 :             auto stringLit = as&lt;IRStringLit&gt;(getStringHashInst-&gt;getOperand(0));</span></span>
-<span id="L1696"><span class="lineNum">    1696</span>              : </span>
-<span id="L1697"><span class="lineNum">    1697</span> <span class="tlaUNC">           0 :             if (stringLit)</span></span>
-<span id="L1698"><span class="lineNum">    1698</span>              :             {</span>
-<span id="L1699"><span class="lineNum">    1699</span> <span class="tlaUNC">           0 :                 auto slice = stringLit-&gt;getStringSlice();</span></span>
-<span id="L1700"><span class="lineNum">    1700</span> <span class="tlaUNC">           0 :                 emitType(inst-&gt;getDataType());</span></span>
-<span id="L1701"><span class="lineNum">    1701</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;(&quot;);</span></span>
-<span id="L1702"><span class="lineNum">    1702</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit((int)getStableHashCode32(slice.begin(), slice.getLength()).hash);</span></span>
-<span id="L1703"><span class="lineNum">    1703</span>              :                 m_writer-&gt;emit(&quot;)&quot;);</span>
-<span id="L1704"><span class="lineNum">    1704</span> <span class="tlaUNC">           0 :             }</span></span>
-<span id="L1705"><span class="lineNum">    1705</span>              :             else</span>
-<span id="L1706"><span class="lineNum">    1706</span>              :             {</span>
-<span id="L1707"><span class="lineNum">    1707</span>              :                 // Couldn&#x27;t handle</span>
-<span id="L1708"><span class="lineNum">    1708</span> <span class="tlaUNC">           0 :                 diagnoseUnhandledInst(inst);</span></span>
-<span id="L1709"><span class="lineNum">    1709</span>              :             }</span>
-<span id="L1710"><span class="lineNum">    1710</span> <span class="tlaUNC">           0 :             return true;</span></span>
-<span id="L1711"><span class="lineNum">    1711</span>              :         }</span>
-<span id="L1712"><span class="lineNum">    1712</span>              : </span>
-<span id="L1713"><span class="lineNum">    1713</span>              :     case kIROp_Mul:</span>
-<span id="L1714"><span class="lineNum">    1714</span>              :         {</span>
-<span id="L1715"><span class="lineNum">    1715</span> <span class="tlaGNC">           1 :             if (!as&lt;IRMatrixType&gt;(inst-&gt;getOperand(0)-&gt;getDataType()) ||</span></span>
-<span id="L1716"><span class="lineNum">    1716</span>              :                 !as&lt;IRMatrixType&gt;(inst-&gt;getOperand(1)-&gt;getDataType()))</span>
-<span id="L1717"><span class="lineNum">    1717</span>              :             {</span>
-<span id="L1718"><span class="lineNum">    1718</span>              :                 return false;</span>
-<span id="L1719"><span class="lineNum">    1719</span>              :             }</span>
-<span id="L1720"><span class="lineNum">    1720</span>              :             // Mul(m1, m2) should be translated to component-wise multiplication in WGSL.</span>
-<span id="L1721"><span class="lineNum">    1721</span> <span class="tlaUNC">           0 :             auto matrixType = as&lt;IRMatrixType&gt;(inst-&gt;getDataType());</span></span>
-<span id="L1722"><span class="lineNum">    1722</span> <span class="tlaUNC">           0 :             auto rowCount = getIntVal(matrixType-&gt;getRowCount());</span></span>
-<span id="L1723"><span class="lineNum">    1723</span> <span class="tlaUNC">           0 :             emitType(inst-&gt;getDataType());</span></span>
-<span id="L1724"><span class="lineNum">    1724</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;(&quot;);</span></span>
-<span id="L1725"><span class="lineNum">    1725</span> <span class="tlaUNC">           0 :             for (IRIntegerValue i = 0; i &lt; rowCount; i++)</span></span>
-<span id="L1726"><span class="lineNum">    1726</span>              :             {</span>
-<span id="L1727"><span class="lineNum">    1727</span> <span class="tlaUNC">           0 :                 if (i != 0)</span></span>
-<span id="L1728"><span class="lineNum">    1728</span>              :                 {</span>
-<span id="L1729"><span class="lineNum">    1729</span> <span class="tlaUNC">           0 :                     m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1730"><span class="lineNum">    1730</span>              :                 }</span>
-<span id="L1731"><span class="lineNum">    1731</span> <span class="tlaUNC">           0 :                 emitOperand(inst-&gt;getOperand(0), getInfo(EmitOp::Postfix));</span></span>
-<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;[&quot;);</span></span>
-<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(i);</span></span>
-<span id="L1734"><span class="lineNum">    1734</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;] * &quot;);</span></span>
-<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaUNC">           0 :                 emitOperand(inst-&gt;getOperand(1), getInfo(EmitOp::Postfix));</span></span>
-<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;[&quot;);</span></span>
-<span id="L1737"><span class="lineNum">    1737</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(i);</span></span>
-<span id="L1738"><span class="lineNum">    1738</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;]&quot;);</span></span>
-<span id="L1739"><span class="lineNum">    1739</span>              :             }</span>
-<span id="L1740"><span class="lineNum">    1740</span>              :             m_writer-&gt;emit(&quot;)&quot;);</span>
-<span id="L1741"><span class="lineNum">    1741</span>              : </span>
-<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaUNC">           0 :             return true;</span></span>
-<span id="L1743"><span class="lineNum">    1743</span>              :         }</span>
-<span id="L1744"><span class="lineNum">    1744</span>              : </span>
-<span id="L1745"><span class="lineNum">    1745</span>              :     case kIROp_Select:</span>
-<span id="L1746"><span class="lineNum">    1746</span>              :         {</span>
-<span id="L1747"><span class="lineNum">    1747</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;select(&quot;);</span></span>
-<span id="L1748"><span class="lineNum">    1748</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(2), getInfo(EmitOp::General));</span></span>
-<span id="L1749"><span class="lineNum">    1749</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1750"><span class="lineNum">    1750</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(1), getInfo(EmitOp::General));</span></span>
-<span id="L1751"><span class="lineNum">    1751</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1752"><span class="lineNum">    1752</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(0), getInfo(EmitOp::General));</span></span>
-<span id="L1753"><span class="lineNum">    1753</span>              :             m_writer-&gt;emit(&quot;)&quot;);</span>
-<span id="L1754"><span class="lineNum">    1754</span> <span class="tlaGNC">           1 :             return true;</span></span>
-<span id="L1755"><span class="lineNum">    1755</span>              :         }</span>
-<span id="L1756"><span class="lineNum">    1756</span>              :     case kIROp_Neg:</span>
-<span id="L1757"><span class="lineNum">    1757</span>              :         {</span>
-<span id="L1758"><span class="lineNum">    1758</span> <span class="tlaGNC">           1 :             auto opType = inst-&gt;getOperand(0)-&gt;getDataType();</span></span>
-<span id="L1759"><span class="lineNum">    1759</span> <span class="tlaGNC">           1 :             if (as&lt;IRMatrixType&gt;(opType) || as&lt;IRVectorType&gt;(opType))</span></span>
-<span id="L1760"><span class="lineNum">    1760</span>              :             {</span>
-<span id="L1761"><span class="lineNum">    1761</span>              :                 // Lower every vector/matrix negation uniformly to &quot;(type(0) - op0)&quot;. (WGSL has a</span>
-<span id="L1762"><span class="lineNum">    1762</span>              :                 // native unary &#x27;-&#x27; only for signed float/int vectors; matrices and unsigned</span>
-<span id="L1763"><span class="lineNum">    1763</span>              :                 // vectors have none, and the subtraction matches &#x27;-x&#x27; for the signed cases too.)</span>
-<span id="L1764"><span class="lineNum">    1764</span>              :                 // The explicit parentheses wrap the whole subtraction, so its outer context is</span>
-<span id="L1765"><span class="lineNum">    1765</span>              :                 // effectively lowest-precedence: pass EmitOp::General (not the incoming outerPrec)</span>
-<span id="L1766"><span class="lineNum">    1766</span>              :                 // and emit op0 as the subtraction&#x27;s right-hand side. This wraps an operand that</span>
-<span id="L1767"><span class="lineNum">    1767</span>              :                 // binds no tighter than &#x27;-&#x27; -- the additive &quot;a + b&quot; (its left-associative RHS, at</span>
-<span id="L1768"><span class="lineNum">    1768</span>              :                 // equal precedence) -- but not a multiplicative &quot;a * b&quot; or an atomic.</span>
-<span id="L1769"><span class="lineNum">    1769</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot;(&quot;);</span></span>
-<span id="L1770"><span class="lineNum">    1770</span> <span class="tlaGNC">           1 :                 emitType(inst-&gt;getDataType());</span></span>
-<span id="L1771"><span class="lineNum">    1771</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot;(0) - &quot;);</span></span>
-<span id="L1772"><span class="lineNum">    1772</span> <span class="tlaGNC">           1 :                 emitOperand(</span></span>
-<span id="L1773"><span class="lineNum">    1773</span>              :                     inst-&gt;getOperand(0),</span>
-<span id="L1774"><span class="lineNum">    1774</span>              :                     rightSide(getInfo(EmitOp::General), getInfo(EmitOp::Sub)));</span>
-<span id="L1775"><span class="lineNum">    1775</span>              :                 m_writer-&gt;emit(&quot;)&quot;);</span>
-<span id="L1776"><span class="lineNum">    1776</span> <span class="tlaGNC">           1 :                 return true;</span></span>
-<span id="L1777"><span class="lineNum">    1777</span>              :             }</span>
-<span id="L1778"><span class="lineNum">    1778</span>              :             break;</span>
-<span id="L1779"><span class="lineNum">    1779</span>              :         }</span>
-<span id="L1780"><span class="lineNum">    1780</span>              :     }</span>
-<span id="L1781"><span class="lineNum">    1781</span>              : </span>
-<span id="L1782"><span class="lineNum">    1782</span>              :     return false;</span>
-<span id="L1783"><span class="lineNum">    1783</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1784"><span class="lineNum">    1784</span>              : </span>
-<span id="L1785"><span class="lineNum">    1785</span>              : void WGSLSourceEmitter::emitVectorTypeNameImpl(IRType* elementType, IRIntegerValue elementCount)</span>
-<span id="L1786"><span class="lineNum">    1786</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1787"><span class="lineNum">    1787</span>              : </span>
-<span id="L1788"><span class="lineNum">    1788</span> <span class="tlaGNC">           1 :     if (elementCount &gt; 1)</span></span>
-<span id="L1789"><span class="lineNum">    1789</span>              :     {</span>
-<span id="L1790"><span class="lineNum">    1790</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;vec&quot;);</span></span>
-<span id="L1791"><span class="lineNum">    1791</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(elementCount);</span></span>
-<span id="L1792"><span class="lineNum">    1792</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;&lt;&quot;);</span></span>
-<span id="L1793"><span class="lineNum">    1793</span> <span class="tlaGNC">           1 :         emitSimpleType(elementType);</span></span>
-<span id="L1794"><span class="lineNum">    1794</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;&gt;&quot;);</span></span>
-<span id="L1795"><span class="lineNum">    1795</span>              :     }</span>
-<span id="L1796"><span class="lineNum">    1796</span>              :     else</span>
-<span id="L1797"><span class="lineNum">    1797</span>              :     {</span>
-<span id="L1798"><span class="lineNum">    1798</span> <span class="tlaUNC">           0 :         emitSimpleType(elementType);</span></span>
-<span id="L1799"><span class="lineNum">    1799</span>              :     }</span>
+<span id="L1676"><span class="lineNum">    1676</span>              :             m_writer-&gt;emit(&quot;)&quot;);</span>
+<span id="L1677"><span class="lineNum">    1677</span> <span class="tlaGNC">           1 :             return true;</span></span>
+<span id="L1678"><span class="lineNum">    1678</span>              :         }</span>
+<span id="L1679"><span class="lineNum">    1679</span>              :         break;</span>
+<span id="L1680"><span class="lineNum">    1680</span>              : </span>
+<span id="L1681"><span class="lineNum">    1681</span>              :     case kIROp_ByteAddressBufferLoad:</span>
+<span id="L1682"><span class="lineNum">    1682</span>              :         {</span>
+<span id="L1683"><span class="lineNum">    1683</span>              :             // Indices in Slang code count bytes, but in WASM they count u32&#x27;s since</span>
+<span id="L1684"><span class="lineNum">    1684</span>              :             // byte address buffers translate to array&lt;u32&gt; in WASM, so divide by 4.</span>
+<span id="L1685"><span class="lineNum">    1685</span> <span class="tlaUNC">           0 :             emitOperand(inst-&gt;getOperand(0), getInfo(EmitOp::General));</span></span>
+<span id="L1686"><span class="lineNum">    1686</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;[(&quot;);</span></span>
+<span id="L1687"><span class="lineNum">    1687</span> <span class="tlaUNC">           0 :             emitOperand(inst-&gt;getOperand(1), getInfo(EmitOp::General));</span></span>
+<span id="L1688"><span class="lineNum">    1688</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;)/4]&quot;);</span></span>
+<span id="L1689"><span class="lineNum">    1689</span> <span class="tlaUNC">           0 :             return true;</span></span>
+<span id="L1690"><span class="lineNum">    1690</span>              :         }</span>
+<span id="L1691"><span class="lineNum">    1691</span>              :         break;</span>
+<span id="L1692"><span class="lineNum">    1692</span>              : </span>
+<span id="L1693"><span class="lineNum">    1693</span>              :     case kIROp_ByteAddressBufferStore:</span>
+<span id="L1694"><span class="lineNum">    1694</span>              :         {</span>
+<span id="L1695"><span class="lineNum">    1695</span>              :             // Indices in Slang code count bytes, but in WASM they count u32&#x27;s since</span>
+<span id="L1696"><span class="lineNum">    1696</span>              :             // byte address buffers translate to array&lt;u32&gt; in WASM, so divide by 4.</span>
+<span id="L1697"><span class="lineNum">    1697</span> <span class="tlaGNC">           1 :             auto base = inst-&gt;getOperand(0);</span></span>
+<span id="L1698"><span class="lineNum">    1698</span> <span class="tlaGNC">           1 :             emitOperand(base, EmitOpInfo());</span></span>
+<span id="L1699"><span class="lineNum">    1699</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;[(&quot;);</span></span>
+<span id="L1700"><span class="lineNum">    1700</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(1), getInfo(EmitOp::General));</span></span>
+<span id="L1701"><span class="lineNum">    1701</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;)/4] = &quot;);</span></span>
+<span id="L1702"><span class="lineNum">    1702</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(inst-&gt;getOperandCount() - 1), getInfo(EmitOp::General));</span></span>
+<span id="L1703"><span class="lineNum">    1703</span> <span class="tlaGNC">           1 :             return true;</span></span>
+<span id="L1704"><span class="lineNum">    1704</span>              :         }</span>
+<span id="L1705"><span class="lineNum">    1705</span>              :         break;</span>
+<span id="L1706"><span class="lineNum">    1706</span>              : </span>
+<span id="L1707"><span class="lineNum">    1707</span>              :     case kIROp_GetStringHash:</span>
+<span id="L1708"><span class="lineNum">    1708</span>              :         {</span>
+<span id="L1709"><span class="lineNum">    1709</span> <span class="tlaUNC">           0 :             auto getStringHashInst = as&lt;IRGetStringHash&gt;(inst);</span></span>
+<span id="L1710"><span class="lineNum">    1710</span>              :             // Checked, unlike `getStringLit()`, so a non-literal operand reaches the</span>
+<span id="L1711"><span class="lineNum">    1711</span>              :             // unhandled-inst path below instead of being read as string data.</span>
+<span id="L1712"><span class="lineNum">    1712</span> <span class="tlaUNC">           0 :             auto stringLit = as&lt;IRStringLit&gt;(getStringHashInst-&gt;getOperand(0));</span></span>
+<span id="L1713"><span class="lineNum">    1713</span>              : </span>
+<span id="L1714"><span class="lineNum">    1714</span> <span class="tlaUNC">           0 :             if (stringLit)</span></span>
+<span id="L1715"><span class="lineNum">    1715</span>              :             {</span>
+<span id="L1716"><span class="lineNum">    1716</span> <span class="tlaUNC">           0 :                 auto slice = stringLit-&gt;getStringSlice();</span></span>
+<span id="L1717"><span class="lineNum">    1717</span> <span class="tlaUNC">           0 :                 emitType(inst-&gt;getDataType());</span></span>
+<span id="L1718"><span class="lineNum">    1718</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;(&quot;);</span></span>
+<span id="L1719"><span class="lineNum">    1719</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit((int)getStableHashCode32(slice.begin(), slice.getLength()).hash);</span></span>
+<span id="L1720"><span class="lineNum">    1720</span>              :                 m_writer-&gt;emit(&quot;)&quot;);</span>
+<span id="L1721"><span class="lineNum">    1721</span> <span class="tlaUNC">           0 :             }</span></span>
+<span id="L1722"><span class="lineNum">    1722</span>              :             else</span>
+<span id="L1723"><span class="lineNum">    1723</span>              :             {</span>
+<span id="L1724"><span class="lineNum">    1724</span>              :                 // Couldn&#x27;t handle</span>
+<span id="L1725"><span class="lineNum">    1725</span> <span class="tlaUNC">           0 :                 diagnoseUnhandledInst(inst);</span></span>
+<span id="L1726"><span class="lineNum">    1726</span>              :             }</span>
+<span id="L1727"><span class="lineNum">    1727</span> <span class="tlaUNC">           0 :             return true;</span></span>
+<span id="L1728"><span class="lineNum">    1728</span>              :         }</span>
+<span id="L1729"><span class="lineNum">    1729</span>              : </span>
+<span id="L1730"><span class="lineNum">    1730</span>              :     case kIROp_Mul:</span>
+<span id="L1731"><span class="lineNum">    1731</span>              :         {</span>
+<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">           1 :             if (!as&lt;IRMatrixType&gt;(inst-&gt;getOperand(0)-&gt;getDataType()) ||</span></span>
+<span id="L1733"><span class="lineNum">    1733</span>              :                 !as&lt;IRMatrixType&gt;(inst-&gt;getOperand(1)-&gt;getDataType()))</span>
+<span id="L1734"><span class="lineNum">    1734</span>              :             {</span>
+<span id="L1735"><span class="lineNum">    1735</span>              :                 return false;</span>
+<span id="L1736"><span class="lineNum">    1736</span>              :             }</span>
+<span id="L1737"><span class="lineNum">    1737</span>              :             // Mul(m1, m2) should be translated to component-wise multiplication in WGSL.</span>
+<span id="L1738"><span class="lineNum">    1738</span> <span class="tlaUNC">           0 :             auto matrixType = as&lt;IRMatrixType&gt;(inst-&gt;getDataType());</span></span>
+<span id="L1739"><span class="lineNum">    1739</span> <span class="tlaUNC">           0 :             auto rowCount = getIntVal(matrixType-&gt;getRowCount());</span></span>
+<span id="L1740"><span class="lineNum">    1740</span> <span class="tlaUNC">           0 :             emitType(inst-&gt;getDataType());</span></span>
+<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;(&quot;);</span></span>
+<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaUNC">           0 :             for (IRIntegerValue i = 0; i &lt; rowCount; i++)</span></span>
+<span id="L1743"><span class="lineNum">    1743</span>              :             {</span>
+<span id="L1744"><span class="lineNum">    1744</span> <span class="tlaUNC">           0 :                 if (i != 0)</span></span>
+<span id="L1745"><span class="lineNum">    1745</span>              :                 {</span>
+<span id="L1746"><span class="lineNum">    1746</span> <span class="tlaUNC">           0 :                     m_writer-&gt;emit(&quot;, &quot;);</span></span>
+<span id="L1747"><span class="lineNum">    1747</span>              :                 }</span>
+<span id="L1748"><span class="lineNum">    1748</span> <span class="tlaUNC">           0 :                 emitOperand(inst-&gt;getOperand(0), getInfo(EmitOp::Postfix));</span></span>
+<span id="L1749"><span class="lineNum">    1749</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;[&quot;);</span></span>
+<span id="L1750"><span class="lineNum">    1750</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(i);</span></span>
+<span id="L1751"><span class="lineNum">    1751</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;] * &quot;);</span></span>
+<span id="L1752"><span class="lineNum">    1752</span> <span class="tlaUNC">           0 :                 emitOperand(inst-&gt;getOperand(1), getInfo(EmitOp::Postfix));</span></span>
+<span id="L1753"><span class="lineNum">    1753</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;[&quot;);</span></span>
+<span id="L1754"><span class="lineNum">    1754</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(i);</span></span>
+<span id="L1755"><span class="lineNum">    1755</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;]&quot;);</span></span>
+<span id="L1756"><span class="lineNum">    1756</span>              :             }</span>
+<span id="L1757"><span class="lineNum">    1757</span>              :             m_writer-&gt;emit(&quot;)&quot;);</span>
+<span id="L1758"><span class="lineNum">    1758</span>              : </span>
+<span id="L1759"><span class="lineNum">    1759</span> <span class="tlaUNC">           0 :             return true;</span></span>
+<span id="L1760"><span class="lineNum">    1760</span>              :         }</span>
+<span id="L1761"><span class="lineNum">    1761</span>              : </span>
+<span id="L1762"><span class="lineNum">    1762</span>              :     case kIROp_Select:</span>
+<span id="L1763"><span class="lineNum">    1763</span>              :         {</span>
+<span id="L1764"><span class="lineNum">    1764</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;select(&quot;);</span></span>
+<span id="L1765"><span class="lineNum">    1765</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(2), getInfo(EmitOp::General));</span></span>
+<span id="L1766"><span class="lineNum">    1766</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
+<span id="L1767"><span class="lineNum">    1767</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(1), getInfo(EmitOp::General));</span></span>
+<span id="L1768"><span class="lineNum">    1768</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
+<span id="L1769"><span class="lineNum">    1769</span> <span class="tlaGNC">           1 :             emitOperand(inst-&gt;getOperand(0), getInfo(EmitOp::General));</span></span>
+<span id="L1770"><span class="lineNum">    1770</span>              :             m_writer-&gt;emit(&quot;)&quot;);</span>
+<span id="L1771"><span class="lineNum">    1771</span> <span class="tlaGNC">           1 :             return true;</span></span>
+<span id="L1772"><span class="lineNum">    1772</span>              :         }</span>
+<span id="L1773"><span class="lineNum">    1773</span>              :     case kIROp_Neg:</span>
+<span id="L1774"><span class="lineNum">    1774</span>              :         {</span>
+<span id="L1775"><span class="lineNum">    1775</span> <span class="tlaGNC">           1 :             auto opType = inst-&gt;getOperand(0)-&gt;getDataType();</span></span>
+<span id="L1776"><span class="lineNum">    1776</span> <span class="tlaGNC">           1 :             if (as&lt;IRMatrixType&gt;(opType) || as&lt;IRVectorType&gt;(opType))</span></span>
+<span id="L1777"><span class="lineNum">    1777</span>              :             {</span>
+<span id="L1778"><span class="lineNum">    1778</span>              :                 // Lower every vector/matrix negation uniformly to &quot;(type(0) - op0)&quot;. (WGSL has a</span>
+<span id="L1779"><span class="lineNum">    1779</span>              :                 // native unary &#x27;-&#x27; only for signed float/int vectors; matrices and unsigned</span>
+<span id="L1780"><span class="lineNum">    1780</span>              :                 // vectors have none, and the subtraction matches &#x27;-x&#x27; for the signed cases too.)</span>
+<span id="L1781"><span class="lineNum">    1781</span>              :                 // The explicit parentheses wrap the whole subtraction, so its outer context is</span>
+<span id="L1782"><span class="lineNum">    1782</span>              :                 // effectively lowest-precedence: pass EmitOp::General (not the incoming outerPrec)</span>
+<span id="L1783"><span class="lineNum">    1783</span>              :                 // and emit op0 as the subtraction&#x27;s right-hand side. This wraps an operand that</span>
+<span id="L1784"><span class="lineNum">    1784</span>              :                 // binds no tighter than &#x27;-&#x27; -- the additive &quot;a + b&quot; (its left-associative RHS, at</span>
+<span id="L1785"><span class="lineNum">    1785</span>              :                 // equal precedence) -- but not a multiplicative &quot;a * b&quot; or an atomic.</span>
+<span id="L1786"><span class="lineNum">    1786</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot;(&quot;);</span></span>
+<span id="L1787"><span class="lineNum">    1787</span> <span class="tlaGNC">           1 :                 emitType(inst-&gt;getDataType());</span></span>
+<span id="L1788"><span class="lineNum">    1788</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot;(0) - &quot;);</span></span>
+<span id="L1789"><span class="lineNum">    1789</span> <span class="tlaGNC">           1 :                 emitOperand(</span></span>
+<span id="L1790"><span class="lineNum">    1790</span>              :                     inst-&gt;getOperand(0),</span>
+<span id="L1791"><span class="lineNum">    1791</span>              :                     rightSide(getInfo(EmitOp::General), getInfo(EmitOp::Sub)));</span>
+<span id="L1792"><span class="lineNum">    1792</span>              :                 m_writer-&gt;emit(&quot;)&quot;);</span>
+<span id="L1793"><span class="lineNum">    1793</span> <span class="tlaGNC">           1 :                 return true;</span></span>
+<span id="L1794"><span class="lineNum">    1794</span>              :             }</span>
+<span id="L1795"><span class="lineNum">    1795</span>              :             break;</span>
+<span id="L1796"><span class="lineNum">    1796</span>              :         }</span>
+<span id="L1797"><span class="lineNum">    1797</span>              :     }</span>
+<span id="L1798"><span class="lineNum">    1798</span>              : </span>
+<span id="L1799"><span class="lineNum">    1799</span>              :     return false;</span>
 <span id="L1800"><span class="lineNum">    1800</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1801"><span class="lineNum">    1801</span>              : </span>
-<span id="L1802"><span class="lineNum">    1802</span>              : void WGSLSourceEmitter::emitFrontMatterImpl(TargetRequest* /* targetReq */)</span>
+<span id="L1802"><span class="lineNum">    1802</span>              : void WGSLSourceEmitter::emitVectorTypeNameImpl(IRType* elementType, IRIntegerValue elementCount)</span>
 <span id="L1803"><span class="lineNum">    1803</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1804"><span class="lineNum">    1804</span> <span class="tlaGNC">           1 :     if (m_f16ExtensionEnabled)</span></span>
-<span id="L1805"><span class="lineNum">    1805</span>              :     {</span>
-<span id="L1806"><span class="lineNum">    1806</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;enable f16;\n&quot;);</span></span>
-<span id="L1807"><span class="lineNum">    1807</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;\n&quot;);</span></span>
-<span id="L1808"><span class="lineNum">    1808</span>              :     }</span>
-<span id="L1809"><span class="lineNum">    1809</span>              : </span>
-<span id="L1810"><span class="lineNum">    1810</span> <span class="tlaGNC">           1 :     StringBuilder builder;</span></span>
-<span id="L1811"><span class="lineNum">    1811</span> <span class="tlaGNC">           1 :     m_extensionTracker-&gt;appendExtensionRequireLinesForWGSL(builder);</span></span>
-<span id="L1812"><span class="lineNum">    1812</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(builder.getUnownedSlice());</span></span>
-<span id="L1813"><span class="lineNum">    1813</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1814"><span class="lineNum">    1814</span>              : </span>
-<span id="L1815"><span class="lineNum">    1815</span>              : void WGSLSourceEmitter::emitIntrinsicCallExprImpl(</span>
-<span id="L1816"><span class="lineNum">    1816</span>              :     IRCall* inst,</span>
-<span id="L1817"><span class="lineNum">    1817</span>              :     UnownedStringSlice intrinsicDefinition,</span>
-<span id="L1818"><span class="lineNum">    1818</span>              :     IRInst* intrinsicInst,</span>
-<span id="L1819"><span class="lineNum">    1819</span>              :     EmitOpInfo const&amp; inOuterPrec)</span>
+<span id="L1804"><span class="lineNum">    1804</span>              : </span>
+<span id="L1805"><span class="lineNum">    1805</span> <span class="tlaGNC">           1 :     if (elementCount &gt; 1)</span></span>
+<span id="L1806"><span class="lineNum">    1806</span>              :     {</span>
+<span id="L1807"><span class="lineNum">    1807</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;vec&quot;);</span></span>
+<span id="L1808"><span class="lineNum">    1808</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(elementCount);</span></span>
+<span id="L1809"><span class="lineNum">    1809</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;&lt;&quot;);</span></span>
+<span id="L1810"><span class="lineNum">    1810</span> <span class="tlaGNC">           1 :         emitSimpleType(elementType);</span></span>
+<span id="L1811"><span class="lineNum">    1811</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;&gt;&quot;);</span></span>
+<span id="L1812"><span class="lineNum">    1812</span>              :     }</span>
+<span id="L1813"><span class="lineNum">    1813</span>              :     else</span>
+<span id="L1814"><span class="lineNum">    1814</span>              :     {</span>
+<span id="L1815"><span class="lineNum">    1815</span> <span class="tlaUNC">           0 :         emitSimpleType(elementType);</span></span>
+<span id="L1816"><span class="lineNum">    1816</span>              :     }</span>
+<span id="L1817"><span class="lineNum">    1817</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1818"><span class="lineNum">    1818</span>              : </span>
+<span id="L1819"><span class="lineNum">    1819</span>              : void WGSLSourceEmitter::emitFrontMatterImpl(TargetRequest* /* targetReq */)</span>
 <span id="L1820"><span class="lineNum">    1820</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1821"><span class="lineNum">    1821</span>              :     // The f16 constructor is generated for f32tof16</span>
-<span id="L1822"><span class="lineNum">    1822</span> <span class="tlaGNC">           1 :     if (intrinsicDefinition.startsWith(&quot;f16&quot;))</span></span>
-<span id="L1823"><span class="lineNum">    1823</span>              :     {</span>
-<span id="L1824"><span class="lineNum">    1824</span> <span class="tlaUNC">           0 :         m_f16ExtensionEnabled = true;</span></span>
+<span id="L1821"><span class="lineNum">    1821</span> <span class="tlaGNC">           1 :     if (m_f16ExtensionEnabled)</span></span>
+<span id="L1822"><span class="lineNum">    1822</span>              :     {</span>
+<span id="L1823"><span class="lineNum">    1823</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;enable f16;\n&quot;);</span></span>
+<span id="L1824"><span class="lineNum">    1824</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;\n&quot;);</span></span>
 <span id="L1825"><span class="lineNum">    1825</span>              :     }</span>
 <span id="L1826"><span class="lineNum">    1826</span>              : </span>
-<span id="L1827"><span class="lineNum">    1827</span> <span class="tlaGNC">           1 :     CLikeSourceEmitter::emitIntrinsicCallExprImpl(</span></span>
-<span id="L1828"><span class="lineNum">    1828</span>              :         inst,</span>
-<span id="L1829"><span class="lineNum">    1829</span>              :         intrinsicDefinition,</span>
-<span id="L1830"><span class="lineNum">    1830</span>              :         intrinsicInst,</span>
-<span id="L1831"><span class="lineNum">    1831</span>              :         inOuterPrec);</span>
-<span id="L1832"><span class="lineNum">    1832</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1833"><span class="lineNum">    1833</span>              : </span>
-<span id="L1834"><span class="lineNum">    1834</span>              : void WGSLSourceEmitter::emitInterpolationModifiersImpl(</span>
-<span id="L1835"><span class="lineNum">    1835</span>              :     IRInst* varInst,</span>
-<span id="L1836"><span class="lineNum">    1836</span>              :     IRType* /* valueType */,</span>
-<span id="L1837"><span class="lineNum">    1837</span>              :     IRVarLayout* /* layout */)</span>
-<span id="L1838"><span class="lineNum">    1838</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1839"><span class="lineNum">    1839</span>              :     char const* interpolationType = nullptr;</span>
-<span id="L1840"><span class="lineNum">    1840</span>              :     char const* interpolationSampling = nullptr;</span>
-<span id="L1841"><span class="lineNum">    1841</span> <span class="tlaGNC">           1 :     for (auto dd : varInst-&gt;getDecorations())</span></span>
-<span id="L1842"><span class="lineNum">    1842</span>              :     {</span>
-<span id="L1843"><span class="lineNum">    1843</span> <span class="tlaGNC">           1 :         if (dd-&gt;getOp() != kIROp_InterpolationModeDecoration)</span></span>
-<span id="L1844"><span class="lineNum">    1844</span>              :             continue;</span>
-<span id="L1845"><span class="lineNum">    1845</span>              :         auto decoration = (IRInterpolationModeDecoration*)dd;</span>
-<span id="L1846"><span class="lineNum">    1846</span> <span class="tlaUNC">           0 :         IRInterpolationMode mode = decoration-&gt;getMode();</span></span>
-<span id="L1847"><span class="lineNum">    1847</span> <span class="tlaUNC">           0 :         switch (mode)</span></span>
-<span id="L1848"><span class="lineNum">    1848</span>              :         {</span>
-<span id="L1849"><span class="lineNum">    1849</span>              :         case IRInterpolationMode::NoInterpolation:</span>
-<span id="L1850"><span class="lineNum">    1850</span> <span class="tlaUNC">           0 :             interpolationType = &quot;flat&quot;;</span></span>
-<span id="L1851"><span class="lineNum">    1851</span> <span class="tlaUNC">           0 :             break;</span></span>
-<span id="L1852"><span class="lineNum">    1852</span>              :         case IRInterpolationMode::NoPerspective:</span>
-<span id="L1853"><span class="lineNum">    1853</span>              :         case IRInterpolationMode::Linear:</span>
-<span id="L1854"><span class="lineNum">    1854</span> <span class="tlaUNC">           0 :             interpolationType = &quot;linear&quot;;</span></span>
-<span id="L1855"><span class="lineNum">    1855</span>              :             break;</span>
-<span id="L1856"><span class="lineNum">    1856</span>              :         case IRInterpolationMode::Sample:</span>
-<span id="L1857"><span class="lineNum">    1857</span> <span class="tlaUNC">           0 :             interpolationSampling = &quot;sample&quot;;</span></span>
-<span id="L1858"><span class="lineNum">    1858</span> <span class="tlaUNC">           0 :             break;</span></span>
-<span id="L1859"><span class="lineNum">    1859</span>              :         case IRInterpolationMode::Centroid:</span>
-<span id="L1860"><span class="lineNum">    1860</span> <span class="tlaUNC">           0 :             interpolationSampling = &quot;centroid&quot;;</span></span>
-<span id="L1861"><span class="lineNum">    1861</span>              :             break;</span>
-<span id="L1862"><span class="lineNum">    1862</span>              :         }</span>
-<span id="L1863"><span class="lineNum">    1863</span>              :     }</span>
-<span id="L1864"><span class="lineNum">    1864</span>              : </span>
-<span id="L1865"><span class="lineNum">    1865</span> <span class="tlaGNC">           1 :     if (interpolationType)</span></span>
-<span id="L1866"><span class="lineNum">    1866</span>              :     {</span>
-<span id="L1867"><span class="lineNum">    1867</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;@interpolate(&quot;);</span></span>
-<span id="L1868"><span class="lineNum">    1868</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(interpolationType);</span></span>
-<span id="L1869"><span class="lineNum">    1869</span> <span class="tlaUNC">           0 :         if (interpolationSampling)</span></span>
-<span id="L1870"><span class="lineNum">    1870</span>              :         {</span>
-<span id="L1871"><span class="lineNum">    1871</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1872"><span class="lineNum">    1872</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(interpolationSampling);</span></span>
-<span id="L1873"><span class="lineNum">    1873</span>              :         }</span>
-<span id="L1874"><span class="lineNum">    1874</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;) &quot;);</span></span>
-<span id="L1875"><span class="lineNum">    1875</span>              :     }</span>
-<span id="L1876"><span class="lineNum">    1876</span>              : </span>
-<span id="L1877"><span class="lineNum">    1877</span>              :     // TODO: Check the following:</span>
-<span id="L1878"><span class="lineNum">    1878</span>              :     // &quot;User-defined vertex outputs and fragment inputs of scalar or vector</span>
-<span id="L1879"><span class="lineNum">    1879</span>              :     //  integer type must always be specified with interpolation type flat.&quot;</span>
-<span id="L1880"><span class="lineNum">    1880</span>              :     // https://www.w3.org/TR/WGSL/#interpolation</span>
-<span id="L1881"><span class="lineNum">    1881</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1882"><span class="lineNum">    1882</span>              : </span>
-<span id="L1883"><span class="lineNum">    1883</span>              : void WGSLSourceEmitter::_requireExtension(const UnownedStringSlice&amp; name)</span>
-<span id="L1884"><span class="lineNum">    1884</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1885"><span class="lineNum">    1885</span> <span class="tlaGNC">           1 :     m_extensionTracker-&gt;requireExtension(name);</span></span>
-<span id="L1886"><span class="lineNum">    1886</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1887"><span class="lineNum">    1887</span>              : </span>
-<span id="L1888"><span class="lineNum">    1888</span>              : void WGSLSourceEmitter::handleRequiredCapabilitiesImpl(IRInst* inst)</span>
-<span id="L1889"><span class="lineNum">    1889</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1890"><span class="lineNum">    1890</span> <span class="tlaGNC">           1 :     for (auto decoration : inst-&gt;getDecorations())</span></span>
-<span id="L1891"><span class="lineNum">    1891</span>              :     {</span>
-<span id="L1892"><span class="lineNum">    1892</span> <span class="tlaGNC">           1 :         if (const auto extensionDecoration = as&lt;IRRequireWGSLExtensionDecoration&gt;(decoration))</span></span>
-<span id="L1893"><span class="lineNum">    1893</span>              :         {</span>
-<span id="L1894"><span class="lineNum">    1894</span> <span class="tlaGNC">           1 :             _requireExtension(extensionDecoration-&gt;getExtensionName());</span></span>
-<span id="L1895"><span class="lineNum">    1895</span>              : </span>
-<span id="L1896"><span class="lineNum">    1896</span>              :             // TODO: Make this cleaner and only enable this extension if f16 is actually used on the</span>
-<span id="L1897"><span class="lineNum">    1897</span>              :             // subgroup intrinsic. Check float type in meta file.</span>
-<span id="L1898"><span class="lineNum">    1898</span> <span class="tlaGNC">           1 :             if (m_f16ExtensionEnabled &amp;&amp; extensionDecoration-&gt;getExtensionName() == &quot;subgroups&quot;)</span></span>
-<span id="L1899"><span class="lineNum">    1899</span>              :             {</span>
-<span id="L1900"><span class="lineNum">    1900</span> <span class="tlaGNC">           1 :                 String extName = &quot;subgroups_f16&quot;;</span></span>
-<span id="L1901"><span class="lineNum">    1901</span> <span class="tlaGNC">           1 :                 _requireExtension(extName.getUnownedSlice());</span></span>
-<span id="L1902"><span class="lineNum">    1902</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L1903"><span class="lineNum">    1903</span>              :         }</span>
-<span id="L1904"><span class="lineNum">    1904</span>              :     }</span>
-<span id="L1905"><span class="lineNum">    1905</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1906"><span class="lineNum">    1906</span>              : </span>
-<span id="L1907"><span class="lineNum">    1907</span>              : void WGSLSourceEmitter::emitRequireExtension(IRRequireTargetExtension* inst)</span>
-<span id="L1908"><span class="lineNum">    1908</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1909"><span class="lineNum">    1909</span> <span class="tlaGNC">           1 :     _requireExtension(inst-&gt;getExtensionName());</span></span>
-<span id="L1910"><span class="lineNum">    1910</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1911"><span class="lineNum">    1911</span>              : </span>
-<span id="L1912"><span class="lineNum">    1912</span>              : } // namespace Slang</span>
+<span id="L1827"><span class="lineNum">    1827</span> <span class="tlaGNC">           1 :     StringBuilder builder;</span></span>
+<span id="L1828"><span class="lineNum">    1828</span> <span class="tlaGNC">           1 :     m_extensionTracker-&gt;appendExtensionRequireLinesForWGSL(builder);</span></span>
+<span id="L1829"><span class="lineNum">    1829</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(builder.getUnownedSlice());</span></span>
+<span id="L1830"><span class="lineNum">    1830</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1831"><span class="lineNum">    1831</span>              : </span>
+<span id="L1832"><span class="lineNum">    1832</span>              : void WGSLSourceEmitter::emitIntrinsicCallExprImpl(</span>
+<span id="L1833"><span class="lineNum">    1833</span>              :     IRCall* inst,</span>
+<span id="L1834"><span class="lineNum">    1834</span>              :     UnownedStringSlice intrinsicDefinition,</span>
+<span id="L1835"><span class="lineNum">    1835</span>              :     IRInst* intrinsicInst,</span>
+<span id="L1836"><span class="lineNum">    1836</span>              :     EmitOpInfo const&amp; inOuterPrec)</span>
+<span id="L1837"><span class="lineNum">    1837</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1838"><span class="lineNum">    1838</span>              :     // The f16 constructor is generated for f32tof16</span>
+<span id="L1839"><span class="lineNum">    1839</span> <span class="tlaGNC">           1 :     if (intrinsicDefinition.startsWith(&quot;f16&quot;))</span></span>
+<span id="L1840"><span class="lineNum">    1840</span>              :     {</span>
+<span id="L1841"><span class="lineNum">    1841</span> <span class="tlaUNC">           0 :         m_f16ExtensionEnabled = true;</span></span>
+<span id="L1842"><span class="lineNum">    1842</span>              :     }</span>
+<span id="L1843"><span class="lineNum">    1843</span>              : </span>
+<span id="L1844"><span class="lineNum">    1844</span> <span class="tlaGNC">           1 :     CLikeSourceEmitter::emitIntrinsicCallExprImpl(</span></span>
+<span id="L1845"><span class="lineNum">    1845</span>              :         inst,</span>
+<span id="L1846"><span class="lineNum">    1846</span>              :         intrinsicDefinition,</span>
+<span id="L1847"><span class="lineNum">    1847</span>              :         intrinsicInst,</span>
+<span id="L1848"><span class="lineNum">    1848</span>              :         inOuterPrec);</span>
+<span id="L1849"><span class="lineNum">    1849</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1850"><span class="lineNum">    1850</span>              : </span>
+<span id="L1851"><span class="lineNum">    1851</span>              : void WGSLSourceEmitter::emitInterpolationModifiersImpl(</span>
+<span id="L1852"><span class="lineNum">    1852</span>              :     IRInst* varInst,</span>
+<span id="L1853"><span class="lineNum">    1853</span>              :     IRType* /* valueType */,</span>
+<span id="L1854"><span class="lineNum">    1854</span>              :     IRVarLayout* /* layout */)</span>
+<span id="L1855"><span class="lineNum">    1855</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1856"><span class="lineNum">    1856</span>              :     char const* interpolationType = nullptr;</span>
+<span id="L1857"><span class="lineNum">    1857</span>              :     char const* interpolationSampling = nullptr;</span>
+<span id="L1858"><span class="lineNum">    1858</span> <span class="tlaGNC">           1 :     for (auto dd : varInst-&gt;getDecorations())</span></span>
+<span id="L1859"><span class="lineNum">    1859</span>              :     {</span>
+<span id="L1860"><span class="lineNum">    1860</span> <span class="tlaGNC">           1 :         if (dd-&gt;getOp() != kIROp_InterpolationModeDecoration)</span></span>
+<span id="L1861"><span class="lineNum">    1861</span>              :             continue;</span>
+<span id="L1862"><span class="lineNum">    1862</span>              :         auto decoration = (IRInterpolationModeDecoration*)dd;</span>
+<span id="L1863"><span class="lineNum">    1863</span> <span class="tlaUNC">           0 :         IRInterpolationMode mode = decoration-&gt;getMode();</span></span>
+<span id="L1864"><span class="lineNum">    1864</span> <span class="tlaUNC">           0 :         switch (mode)</span></span>
+<span id="L1865"><span class="lineNum">    1865</span>              :         {</span>
+<span id="L1866"><span class="lineNum">    1866</span>              :         case IRInterpolationMode::NoInterpolation:</span>
+<span id="L1867"><span class="lineNum">    1867</span> <span class="tlaUNC">           0 :             interpolationType = &quot;flat&quot;;</span></span>
+<span id="L1868"><span class="lineNum">    1868</span> <span class="tlaUNC">           0 :             break;</span></span>
+<span id="L1869"><span class="lineNum">    1869</span>              :         case IRInterpolationMode::NoPerspective:</span>
+<span id="L1870"><span class="lineNum">    1870</span>              :         case IRInterpolationMode::Linear:</span>
+<span id="L1871"><span class="lineNum">    1871</span> <span class="tlaUNC">           0 :             interpolationType = &quot;linear&quot;;</span></span>
+<span id="L1872"><span class="lineNum">    1872</span>              :             break;</span>
+<span id="L1873"><span class="lineNum">    1873</span>              :         case IRInterpolationMode::Sample:</span>
+<span id="L1874"><span class="lineNum">    1874</span> <span class="tlaUNC">           0 :             interpolationSampling = &quot;sample&quot;;</span></span>
+<span id="L1875"><span class="lineNum">    1875</span> <span class="tlaUNC">           0 :             break;</span></span>
+<span id="L1876"><span class="lineNum">    1876</span>              :         case IRInterpolationMode::Centroid:</span>
+<span id="L1877"><span class="lineNum">    1877</span> <span class="tlaUNC">           0 :             interpolationSampling = &quot;centroid&quot;;</span></span>
+<span id="L1878"><span class="lineNum">    1878</span>              :             break;</span>
+<span id="L1879"><span class="lineNum">    1879</span>              :         }</span>
+<span id="L1880"><span class="lineNum">    1880</span>              :     }</span>
+<span id="L1881"><span class="lineNum">    1881</span>              : </span>
+<span id="L1882"><span class="lineNum">    1882</span> <span class="tlaGNC">           1 :     if (interpolationType)</span></span>
+<span id="L1883"><span class="lineNum">    1883</span>              :     {</span>
+<span id="L1884"><span class="lineNum">    1884</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;@interpolate(&quot;);</span></span>
+<span id="L1885"><span class="lineNum">    1885</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(interpolationType);</span></span>
+<span id="L1886"><span class="lineNum">    1886</span> <span class="tlaUNC">           0 :         if (interpolationSampling)</span></span>
+<span id="L1887"><span class="lineNum">    1887</span>              :         {</span>
+<span id="L1888"><span class="lineNum">    1888</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
+<span id="L1889"><span class="lineNum">    1889</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(interpolationSampling);</span></span>
+<span id="L1890"><span class="lineNum">    1890</span>              :         }</span>
+<span id="L1891"><span class="lineNum">    1891</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;) &quot;);</span></span>
+<span id="L1892"><span class="lineNum">    1892</span>              :     }</span>
+<span id="L1893"><span class="lineNum">    1893</span>              : </span>
+<span id="L1894"><span class="lineNum">    1894</span>              :     // TODO: Check the following:</span>
+<span id="L1895"><span class="lineNum">    1895</span>              :     // &quot;User-defined vertex outputs and fragment inputs of scalar or vector</span>
+<span id="L1896"><span class="lineNum">    1896</span>              :     //  integer type must always be specified with interpolation type flat.&quot;</span>
+<span id="L1897"><span class="lineNum">    1897</span>              :     // https://www.w3.org/TR/WGSL/#interpolation</span>
+<span id="L1898"><span class="lineNum">    1898</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1899"><span class="lineNum">    1899</span>              : </span>
+<span id="L1900"><span class="lineNum">    1900</span>              : void WGSLSourceEmitter::_requireExtension(const UnownedStringSlice&amp; name)</span>
+<span id="L1901"><span class="lineNum">    1901</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1902"><span class="lineNum">    1902</span> <span class="tlaGNC">           1 :     m_extensionTracker-&gt;requireExtension(name);</span></span>
+<span id="L1903"><span class="lineNum">    1903</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1904"><span class="lineNum">    1904</span>              : </span>
+<span id="L1905"><span class="lineNum">    1905</span>              : void WGSLSourceEmitter::handleRequiredCapabilitiesImpl(IRInst* inst)</span>
+<span id="L1906"><span class="lineNum">    1906</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1907"><span class="lineNum">    1907</span> <span class="tlaGNC">           1 :     for (auto decoration : inst-&gt;getDecorations())</span></span>
+<span id="L1908"><span class="lineNum">    1908</span>              :     {</span>
+<span id="L1909"><span class="lineNum">    1909</span> <span class="tlaGNC">           1 :         if (const auto extensionDecoration = as&lt;IRRequireWGSLExtensionDecoration&gt;(decoration))</span></span>
+<span id="L1910"><span class="lineNum">    1910</span>              :         {</span>
+<span id="L1911"><span class="lineNum">    1911</span> <span class="tlaGNC">           1 :             _requireExtension(extensionDecoration-&gt;getExtensionName());</span></span>
+<span id="L1912"><span class="lineNum">    1912</span>              : </span>
+<span id="L1913"><span class="lineNum">    1913</span>              :             // TODO: Make this cleaner and only enable this extension if f16 is actually used on the</span>
+<span id="L1914"><span class="lineNum">    1914</span>              :             // subgroup intrinsic. Check float type in meta file.</span>
+<span id="L1915"><span class="lineNum">    1915</span> <span class="tlaGNC">           1 :             if (m_f16ExtensionEnabled &amp;&amp; extensionDecoration-&gt;getExtensionName() == &quot;subgroups&quot;)</span></span>
+<span id="L1916"><span class="lineNum">    1916</span>              :             {</span>
+<span id="L1917"><span class="lineNum">    1917</span> <span class="tlaGNC">           1 :                 String extName = &quot;subgroups_f16&quot;;</span></span>
+<span id="L1918"><span class="lineNum">    1918</span> <span class="tlaGNC">           1 :                 _requireExtension(extName.getUnownedSlice());</span></span>
+<span id="L1919"><span class="lineNum">    1919</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L1920"><span class="lineNum">    1920</span>              :         }</span>
+<span id="L1921"><span class="lineNum">    1921</span>              :     }</span>
+<span id="L1922"><span class="lineNum">    1922</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1923"><span class="lineNum">    1923</span>              : </span>
+<span id="L1924"><span class="lineNum">    1924</span>              : void WGSLSourceEmitter::emitRequireExtension(IRRequireTargetExtension* inst)</span>
+<span id="L1925"><span class="lineNum">    1925</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1926"><span class="lineNum">    1926</span> <span class="tlaGNC">           1 :     _requireExtension(inst-&gt;getExtensionName());</span></span>
+<span id="L1927"><span class="lineNum">    1927</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1928"><span class="lineNum">    1928</span>              : </span>
+<span id="L1929"><span class="lineNum">    1929</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

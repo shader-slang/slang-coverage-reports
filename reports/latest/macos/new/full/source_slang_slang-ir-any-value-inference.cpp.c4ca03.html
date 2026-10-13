@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-12 05:03:00 UTC</td>
+      <td class="headerValue">2026-10-13 05:23:30 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -306,16 +306,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L15"><span class="lineNum">      15</span>                         :     HashSet&lt;IRInterfaceType*&gt;&amp; targetSet,</span>
 <span id="L16"><span class="lineNum">      16</span>                         :     List&lt;IRInterfaceType*&gt;&amp; result,</span>
 <span id="L17"><span class="lineNum">      17</span>                         :     HashSet&lt;IRType*&gt;&amp; visited)</span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">       32270            : {</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">       32402            : {</span></span>
 <span id="L19"><span class="lineNum">      19</span>                         :     // Guard against cyclic type graphs so the walk terminates: a generic</span>
 <span id="L20"><span class="lineNum">      20</span>                         :     // specialized with its own enclosing struct is an unresolved IRSpecialize</span>
 <span id="L21"><span class="lineNum">      21</span>                         :     // here (pre-specialization). Mirrors _sortTopologically / strongConnect below.</span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">       32270 <span class="branchAll" title="br0: 1444; br1: 30826">(2/2)</span>      :     if (!visited.add(type))</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">        1444            :         return;</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">       32402 <span class="branchAll" title="br0: 1452; br1: 30950">(2/2)</span>      :     if (!visited.add(type))</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">        1452            :         return;</span></span>
 <span id="L24"><span class="lineNum">      24</span>                         : </span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">       30826            :     switch (type-&gt;getOp())</span></span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">       30826            :     {</span></span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         156 <span class="branchAll" title="br0: 156; br1: 30670">(2/2)</span>      :     case kIROp_InterfaceType:</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">       30950            :     switch (type-&gt;getOp())</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">       30950            :     {</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         156 <span class="branchAll" title="br0: 156; br1: 30794">(2/2)</span>      :     case kIROp_InterfaceType:</span></span>
 <span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         156            :         {</span></span>
 <span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">         156            :             auto interfaceType = cast&lt;IRInterfaceType&gt;(type);</span></span>
 <span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">         156 <span class="branchPart" title="br0: 156; br1: 0">(1/2)</span>      :             if (targetSet.contains(interfaceType))</span></span>
@@ -325,54 +325,54 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">         156            :             }</span></span>
 <span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">         156            :         }</span></span>
 <span id="L36"><span class="lineNum">      36</span> <span class="tlaUNC">           0            :         break;</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">        8808 <span class="branchAll" title="br0: 8808; br1: 22018">(2/2)</span>      :     case kIROp_StructType:</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        8808            :         {</span></span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">        8808            :             auto structType = cast&lt;IRStructType&gt;(type);</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        8808 <span class="branchAll" title="br0: 8815; br1: 8808">(2/2)</span>      :             for (auto field : structType-&gt;getFields())</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        8815            :             {</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">        8815            :                 _findDependenciesOfTypeInSet(field-&gt;getFieldType(), targetSet, result, visited);</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">        8815            :             }</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">        8808            :         }</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">        8808            :         break;</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         141 <span class="branchAll" title="br0: 141; br1: 30685">(2/2)</span>      :     case kIROp_PtrType:</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         182 <span class="branchAll" title="br0: 41; br1: 30785">(2/2)</span>      :     case kIROp_IntPtrType:</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         219 <span class="branchAll" title="br0: 37; br1: 30789">(2/2)</span>      :     case kIROp_UIntPtrType:</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_RawPointerType:</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_NativePtrType:</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_ComPtrType:</span></span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_PseudoPtrType:</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_RTTIPointerType:</span></span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_OutParamType:</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_BorrowInOutParamType:</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_RefParamType:</span></span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_BorrowInParamType:</span></span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_NativeStringType:</span></span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30826">(1/2)</span>      :     case kIROp_FuncType:</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">        8860 <span class="branchAll" title="br0: 8860; br1: 22090">(2/2)</span>      :     case kIROp_StructType:</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        8860            :         {</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">        8860            :             auto structType = cast&lt;IRStructType&gt;(type);</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        8860 <span class="branchAll" title="br0: 8871; br1: 8860">(2/2)</span>      :             for (auto field : structType-&gt;getFields())</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        8871            :             {</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">        8871            :                 _findDependenciesOfTypeInSet(field-&gt;getFieldType(), targetSet, result, visited);</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">        8871            :             }</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">        8860            :         }</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">        8860            :         break;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         141 <span class="branchAll" title="br0: 141; br1: 30809">(2/2)</span>      :     case kIROp_PtrType:</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         182 <span class="branchAll" title="br0: 41; br1: 30909">(2/2)</span>      :     case kIROp_IntPtrType:</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         219 <span class="branchAll" title="br0: 37; br1: 30913">(2/2)</span>      :     case kIROp_UIntPtrType:</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_RawPointerType:</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_NativePtrType:</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_ComPtrType:</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_PseudoPtrType:</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_RTTIPointerType:</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_OutParamType:</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_BorrowInOutParamType:</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_RefParamType:</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_BorrowInParamType:</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_NativeStringType:</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">         219 <span class="branchPart" title="br0: 0; br1: 30950">(1/2)</span>      :     case kIROp_FuncType:</span></span>
 <span id="L60"><span class="lineNum">      60</span>                         :         // Pointer-like and fixed-size types don&#x27;t embed their pointee/operand,</span>
 <span id="L61"><span class="lineNum">      61</span>                         :         // so they break dependency cycles. Do not recurse into operand types.</span>
 <span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         219            :         break;</span></span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       21643 <span class="branchAll" title="br0: 21643; br1: 9183">(2/2)</span>      :     default:</span></span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       21643            :         {</span></span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       26002 <span class="branchAll" title="br0: 4359; br1: 21643">(2/2)</span>      :             for (UInt i = 0; i &lt; type-&gt;getOperandCount(); i++)</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        4359            :             {</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">        4359 <span class="branchAll" title="br0: 1842; br1: 2517">(2/2)</span>      :                 if (auto operandType = as&lt;IRType&gt;(type-&gt;getOperand(i)))</span></span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        1842            :                     _findDependenciesOfTypeInSet(operandType, targetSet, result, visited);</span></span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        4359            :             }</span></span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       21643            :         }</span></span>
-<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       21643            :         break;</span></span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       30826            :     }</span></span>
-<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       30826            : }</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       21715 <span class="branchAll" title="br0: 21715; br1: 9235">(2/2)</span>      :     default:</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       21715            :         {</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       26134 <span class="branchAll" title="br0: 4419; br1: 21715">(2/2)</span>      :             for (UInt i = 0; i &lt; type-&gt;getOperandCount(); i++)</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        4419            :             {</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">        4419 <span class="branchAll" title="br0: 1882; br1: 2537">(2/2)</span>      :                 if (auto operandType = as&lt;IRType&gt;(type-&gt;getOperand(i)))</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        1882            :                     _findDependenciesOfTypeInSet(operandType, targetSet, result, visited);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        4419            :             }</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       21715            :         }</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       21715            :         break;</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       30950            :     }</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       30950            : }</span></span>
 <span id="L74"><span class="lineNum">      74</span>                         : </span>
 <span id="L75"><span class="lineNum">      75</span>                         : List&lt;IRInterfaceType*&gt; findDependenciesOfTypeInSet(</span>
 <span id="L76"><span class="lineNum">      76</span>                         :     IRType* type,</span>
 <span id="L77"><span class="lineNum">      77</span>                         :     HashSet&lt;IRInterfaceType*&gt; targetSet)</span>
-<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       21613            : {</span></span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       21613            :     List&lt;IRInterfaceType*&gt; result;</span></span>
-<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">       21613            :     HashSet&lt;IRType*&gt; visited;</span></span>
-<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       21613            :     _findDependenciesOfTypeInSet(type, targetSet, result, visited);</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       21649            : {</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       21649            :     List&lt;IRInterfaceType*&gt; result;</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">       21649            :     HashSet&lt;IRType*&gt; visited;</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       21649            :     _findDependenciesOfTypeInSet(type, targetSet, result, visited);</span></span>
 <span id="L82"><span class="lineNum">      82</span>                         : </span>
-<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       21613            :     return result;</span></span>
-<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       21613            : }</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       21649            :     return result;</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       21649            : }</span></span>
 <span id="L85"><span class="lineNum">      85</span>                         : </span>
 <span id="L86"><span class="lineNum">      86</span>                         : void _sortTopologically(</span>
 <span id="L87"><span class="lineNum">      87</span>                         :     IRInterfaceType* interfaceType,</span>
@@ -428,23 +428,23 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L137"><span class="lineNum">     137</span>                         :     HashSet&lt;IRInterfaceType*&gt; interfacesInDependencyCycle;</span>
 <span id="L138"><span class="lineNum">     138</span>                         : </span>
 <span id="L139"><span class="lineNum">     139</span>                         :     void build(IRModule* module)</span>
-<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       32766            :     {</span></span>
-<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       32766            :         collectInterfaceTypes(module);</span></span>
-<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       32766 <span class="branchAll" title="br0: 26698; br1: 6068">(2/2)</span>      :         if (interfaceTypes.getCount() == 0)</span></span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">       26698            :             return;</span></span>
-<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">        6068            :         collectImplementations(module);</span></span>
-<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">        6068            :         buildDependencyGraph();</span></span>
-<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        6068            :         computeStronglyConnectedComponents();</span></span>
-<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        6068            :     }</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       32800            :     {</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       32800            :         collectInterfaceTypes(module);</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       32800 <span class="branchAll" title="br0: 26728; br1: 6072">(2/2)</span>      :         if (interfaceTypes.getCount() == 0)</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">       26728            :             return;</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">        6072            :         collectImplementations(module);</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">        6072            :         buildDependencyGraph();</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        6072            :         computeStronglyConnectedComponents();</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        6072            :     }</span></span>
 <span id="L148"><span class="lineNum">     148</span>                         : </span>
 <span id="L149"><span class="lineNum">     149</span>                         :     bool implCreatesCircularConformance(IRInterfaceType* interfaceType, IRInst* impl) const</span>
-<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">       16863            :     {</span></span>
-<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       16863            :         auto deps = implDeps.tryGetValue(impl);</span></span>
-<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">       16863 <span class="branchPart" title="br0: 0; br1: 16863">(1/2)</span>      :         if (!deps)</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">       16899            :     {</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       16899            :         auto deps = implDeps.tryGetValue(impl);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">       16899 <span class="branchPart" title="br0: 0; br1: 16899">(1/2)</span>      :         if (!deps)</span></span>
 <span id="L153"><span class="lineNum">     153</span> <span class="tlaUNC">           0            :             return false;</span></span>
 <span id="L154"><span class="lineNum">     154</span>                         : </span>
-<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       16863            :         auto interfaceComponent = interfaceToComponent.getValue(interfaceType);</span></span>
-<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       16863 <span class="branchAll" title="br0: 141; br1: 16751">(2/2)</span>      :         for (auto dep : *deps)</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       16899            :         auto interfaceComponent = interfaceToComponent.getValue(interfaceType);</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       16899 <span class="branchAll" title="br0: 141; br1: 16787">(2/2)</span>      :         for (auto dep : *deps)</span></span>
 <span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">         141            :         {</span></span>
 <span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">         141 <span class="branchAll" title="br0: 40; br1: 101">(2/2)</span>      :             if (dep == interfaceType)</span></span>
 <span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">          40            :                 return true;</span></span>
@@ -456,81 +456,81 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">          72            :             }</span></span>
 <span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">         101            :         }</span></span>
 <span id="L167"><span class="lineNum">     167</span>                         : </span>
-<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       16751            :         return false;</span></span>
-<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       16863            :     }</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       16787            :         return false;</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       16899            :     }</span></span>
 <span id="L170"><span class="lineNum">     170</span>                         : </span>
 <span id="L171"><span class="lineNum">     171</span>                         : private:</span>
 <span id="L172"><span class="lineNum">     172</span>                         :     void collectInterfaceTypes(IRModule* module)</span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       32766            :     {</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       32800            :     {</span></span>
 <span id="L174"><span class="lineNum">     174</span>                         :         // First pass: find which interfaces have at least one witness table.</span>
-<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       32766            :         HashSet&lt;IRInst*&gt; implementedInterfaces;</span></span>
-<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       32766 <span class="branchAll" title="br0: 7835477; br1: 32766">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">     7835477            :         {</span></span>
-<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">     7835477 <span class="branchAll" title="br0: 94311; br1: 7741166">(2/2)</span>      :             if (inst-&gt;getOp() == kIROp_WitnessTable)</span></span>
-<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       94311            :             {</span></span>
-<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       94311            :                 auto iface = cast&lt;IRWitnessTableType&gt;(inst-&gt;getDataType())-&gt;getConformanceType();</span></span>
-<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       94311            :                 implementedInterfaces.add(iface);</span></span>
-<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       94311            :             }</span></span>
-<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">     7835477            :         }</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       32800            :         HashSet&lt;IRInst*&gt; implementedInterfaces;</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       32800 <span class="branchAll" title="br0: 7844415; br1: 32800">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">     7844415            :         {</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">     7844415 <span class="branchAll" title="br0: 94443; br1: 7749972">(2/2)</span>      :             if (inst-&gt;getOp() == kIROp_WitnessTable)</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       94443            :             {</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       94443            :                 auto iface = cast&lt;IRWitnessTableType&gt;(inst-&gt;getDataType())-&gt;getConformanceType();</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       94443            :                 implementedInterfaces.add(iface);</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       94443            :             }</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">     7844415            :         }</span></span>
 <span id="L184"><span class="lineNum">     184</span>                         : </span>
 <span id="L185"><span class="lineNum">     185</span>                         :         // Second pass: collect qualifying interface types.</span>
-<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">       32766 <span class="branchAll" title="br0: 7835477; br1: 32766">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">     7835477            :         {</span></span>
-<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">     7835477            :             auto interfaceType = as&lt;IRInterfaceType&gt;(inst);</span></span>
-<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">     7835477 <span class="branchAll" title="br0: 7748829; br1: 86648">(2/2)</span>      :             if (!interfaceType)</span></span>
-<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">     7748829            :                 continue;</span></span>
-<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">       86648 <span class="branchAll" title="br0: 80; br1: 86568">(2/2)</span>      :             if (isComInterfaceType((IRType*)interfaceType))</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">       32800 <span class="branchAll" title="br0: 7844409; br1: 32800">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">     7844409            :         {</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">     7844409            :             auto interfaceType = as&lt;IRInterfaceType&gt;(inst);</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">     7844409 <span class="branchAll" title="br0: 7757731; br1: 86678">(2/2)</span>      :             if (!interfaceType)</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">     7757731            :                 continue;</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">       86678 <span class="branchAll" title="br0: 80; br1: 86598">(2/2)</span>      :             if (isComInterfaceType((IRType*)interfaceType))</span></span>
 <span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">          80            :                 continue;</span></span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">       86568 <span class="branchAll" title="br0: 59852; br1: 26716">(2/2)</span>      :             if (interfaceType-&gt;findDecoration&lt;IRBuiltinDecoration&gt;())</span></span>
-<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">       59852            :                 continue;</span></span>
-<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">       26716 <span class="branchAll" title="br0: 13096; br1: 13620">(2/2)</span>      :             if (!implementedInterfaces.contains(interfaceType))</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">       86598 <span class="branchAll" title="br0: 59871; br1: 26727">(2/2)</span>      :             if (interfaceType-&gt;findDecoration&lt;IRBuiltinDecoration&gt;())</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">       59871            :                 continue;</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">       26727 <span class="branchAll" title="br0: 13096; br1: 13631">(2/2)</span>      :             if (!implementedInterfaces.contains(interfaceType))</span></span>
 <span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">       13096            :                 continue;</span></span>
-<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">       13620            :             interfaceTypes.add(interfaceType);</span></span>
-<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">       13620            :         }</span></span>
-<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       32766            :     }</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">       13631            :             interfaceTypes.add(interfaceType);</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">       13631            :         }</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       32800            :     }</span></span>
 <span id="L200"><span class="lineNum">     200</span>                         : </span>
 <span id="L201"><span class="lineNum">     201</span>                         :     void collectImplementations(IRModule* module)</span>
-<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">        6068            :     {</span></span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        6068 <span class="branchAll" title="br0: 13561; br1: 6068">(2/2)</span>      :         for (auto interfaceType : interfaceTypes)</span></span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">       13561            :         {</span></span>
-<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">       13561            :             List&lt;IRInst*&gt; impls;</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">        6072            :     {</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        6072 <span class="branchAll" title="br0: 13573; br1: 6072">(2/2)</span>      :         for (auto interfaceType : interfaceTypes)</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">       13573            :         {</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">       13573            :             List&lt;IRInst*&gt; impls;</span></span>
 <span id="L206"><span class="lineNum">     206</span>                         : </span>
-<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      127096 <span class="branchAll" title="br0: 113535; br1: 13561">(2/2)</span>      :             for (auto use = interfaceType-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">      113535            :             {</span></span>
-<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">      113535            :                 auto wtt = as&lt;IRWitnessTableType&gt;(use-&gt;getUser());</span></span>
-<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">      113535 <span class="branchPart" title="br0: 99974; br1: 13561; br2: 0; br3: 13561; br4: 0; br5: 13561">(4/6)</span>      :                 if (!wtt || wtt-&gt;getConformanceType() != interfaceType || !wtt-&gt;hasUses())</span></span>
-<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">       99974            :                     continue;</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      127396 <span class="branchAll" title="br0: 113823; br1: 13573">(2/2)</span>      :             for (auto use = interfaceType-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">      113823            :             {</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">      113823            :                 auto wtt = as&lt;IRWitnessTableType&gt;(use-&gt;getUser());</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">      113823 <span class="branchPart" title="br0: 100250; br1: 13573; br2: 0; br3: 13573; br4: 0; br5: 13573">(4/6)</span>      :                 if (!wtt || wtt-&gt;getConformanceType() != interfaceType || !wtt-&gt;hasUses())</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">      100250            :                     continue;</span></span>
 <span id="L212"><span class="lineNum">     212</span>                         : </span>
-<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">      266654 <span class="branchAll" title="br0: 253093; br1: 13561">(2/2)</span>      :                 for (auto wtUse = wtt-&gt;firstUse; wtUse; wtUse = wtUse-&gt;nextUse)</span></span>
-<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      253093            :                 {</span></span>
-<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">      253093            :                     auto wt = as&lt;IRWitnessTable&gt;(wtUse-&gt;getUser());</span></span>
-<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">      253093 <span class="branchPart" title="br0: 228474; br1: 24619; br2: 0; br3: 24619">(3/4)</span>      :                     if (!wt || wt-&gt;getDataType() != wtt)</span></span>
-<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      228474            :                         continue;</span></span>
-<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       24619            :                     auto impl = wt-&gt;getConcreteType();</span></span>
-<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">       24619 <span class="branchAll" title="br0: 3006; br1: 21613">(2/2)</span>      :                     if (impl-&gt;getParent() != module-&gt;getModuleInst())</span></span>
-<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">        3006            :                         continue;</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">      267146 <span class="branchAll" title="br0: 253573; br1: 13573">(2/2)</span>      :                 for (auto wtUse = wtt-&gt;firstUse; wtUse; wtUse = wtUse-&gt;nextUse)</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      253573            :                 {</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">      253573            :                     auto wt = as&lt;IRWitnessTable&gt;(wtUse-&gt;getUser());</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">      253573 <span class="branchPart" title="br0: 228906; br1: 24667; br2: 0; br3: 24667">(3/4)</span>      :                     if (!wt || wt-&gt;getDataType() != wtt)</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      228906            :                         continue;</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       24667            :                     auto impl = wt-&gt;getConcreteType();</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">       24667 <span class="branchAll" title="br0: 3018; br1: 21649">(2/2)</span>      :                     if (impl-&gt;getParent() != module-&gt;getModuleInst())</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">        3018            :                         continue;</span></span>
 <span id="L221"><span class="lineNum">     221</span>                         : </span>
-<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">       21613            :                     impls.add(impl);</span></span>
-<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">       21613            :                 }</span></span>
-<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">       13561            :             }</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">       21649            :                     impls.add(impl);</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">       21649            :                 }</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">       13573            :             }</span></span>
 <span id="L225"><span class="lineNum">     225</span>                         : </span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       13561            :             implMap.add(interfaceType, impls);</span></span>
-<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">       13561            :         }</span></span>
-<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">        6068            :     }</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       13573            :             implMap.add(interfaceType, impls);</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">       13573            :         }</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">        6072            :     }</span></span>
 <span id="L229"><span class="lineNum">     229</span>                         : </span>
 <span id="L230"><span class="lineNum">     230</span>                         :     void buildDependencyGraph()</span>
-<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">        6068            :     {</span></span>
-<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">        6068 <span class="branchAll" title="br0: 13561; br1: 6068">(2/2)</span>      :         for (auto interfaceType : interfaceTypes)</span></span>
-<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       13561            :         {</span></span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       13561            :             HashSet&lt;IRInterfaceType*&gt; deps;</span></span>
-<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       13561            :             List&lt;IRInst*&gt; selfRefList;</span></span>
-<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       13561            :             List&lt;IRInst*&gt; nonSelfRefList;</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">        6072            :     {</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">        6072 <span class="branchAll" title="br0: 13573; br1: 6072">(2/2)</span>      :         for (auto interfaceType : interfaceTypes)</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       13573            :         {</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       13573            :             HashSet&lt;IRInterfaceType*&gt; deps;</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       13573            :             List&lt;IRInst*&gt; selfRefList;</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       13573            :             List&lt;IRInst*&gt; nonSelfRefList;</span></span>
 <span id="L237"><span class="lineNum">     237</span>                         : </span>
-<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       13561 <span class="branchAll" title="br0: 21613; br1: 13561">(2/2)</span>      :             for (auto impl : implMap[interfaceType])</span></span>
-<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">       21613            :             {</span></span>
-<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">       21613            :                 auto depsForImpl = findDependenciesOfTypeInSet((IRType*)impl, interfaceTypes);</span></span>
-<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">       21613            :                 bool hasSelfReference = false;</span></span>
-<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">       21613 <span class="branchAll" title="br0: 156; br1: 21613">(2/2)</span>      :                 for (auto dep : depsForImpl)</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       13573 <span class="branchAll" title="br0: 21649; br1: 13573">(2/2)</span>      :             for (auto impl : implMap[interfaceType])</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">       21649            :             {</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">       21649            :                 auto depsForImpl = findDependenciesOfTypeInSet((IRType*)impl, interfaceTypes);</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">       21649            :                 bool hasSelfReference = false;</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">       21649 <span class="branchAll" title="br0: 156; br1: 21649">(2/2)</span>      :                 for (auto dep : depsForImpl)</span></span>
 <span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">         156            :                 {</span></span>
 <span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">         156 <span class="branchAll" title="br0: 40; br1: 116">(2/2)</span>      :                     if (dep == interfaceType)</span></span>
 <span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">          40            :                         hasSelfReference = true;</span></span>
@@ -538,37 +538,37 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">         116            :                         deps.add(dep);</span></span>
 <span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">         156            :                 }</span></span>
 <span id="L249"><span class="lineNum">     249</span>                         : </span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">       21613 <span class="branchAll" title="br0: 40; br1: 21573">(2/2)</span>      :                 if (hasSelfReference)</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">       21649 <span class="branchAll" title="br0: 40; br1: 21609">(2/2)</span>      :                 if (hasSelfReference)</span></span>
 <span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">          40            :                     selfRefList.add(impl);</span></span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       21573            :                 else</span></span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       21573            :                     nonSelfRefList.add(impl);</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       21609            :                 else</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       21609            :                     nonSelfRefList.add(impl);</span></span>
 <span id="L254"><span class="lineNum">     254</span>                         : </span>
-<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">       21613 <span class="branchAll" title="br0: 14062; br1: 7551">(2/2)</span>      :                 if (!implDeps.containsKey(impl))</span></span>
-<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">       14062            :                     implDeps.add(impl, depsForImpl);</span></span>
-<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       21613            :             }</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">       21649 <span class="branchAll" title="br0: 14090; br1: 7559">(2/2)</span>      :                 if (!implDeps.containsKey(impl))</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">       14090            :                     implDeps.add(impl, depsForImpl);</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       21649            :             }</span></span>
 <span id="L258"><span class="lineNum">     258</span>                         : </span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       13561            :             dependencyMap.add(interfaceType, deps);</span></span>
-<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       13561            :             selfReferentialImpls.add(interfaceType, selfRefList);</span></span>
-<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       13561            :             nonSelfReferentialImpls.add(interfaceType, nonSelfRefList);</span></span>
-<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       13561            :         }</span></span>
-<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">        6068            :     }</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       13573            :             dependencyMap.add(interfaceType, deps);</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       13573            :             selfReferentialImpls.add(interfaceType, selfRefList);</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       13573            :             nonSelfReferentialImpls.add(interfaceType, nonSelfRefList);</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       13573            :         }</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">        6072            :     }</span></span>
 <span id="L264"><span class="lineNum">     264</span>                         : </span>
 <span id="L265"><span class="lineNum">     265</span>                         :     void computeStronglyConnectedComponents()</span>
-<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">        6068            :     {</span></span>
-<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">        6068            :         Dictionary&lt;IRInterfaceType*, Index&gt; indexMap;</span></span>
-<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">        6068            :         Dictionary&lt;IRInterfaceType*, Index&gt; lowLinkMap;</span></span>
-<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        6068            :         HashSet&lt;IRInterfaceType*&gt; onStack;</span></span>
-<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">        6068            :         List&lt;IRInterfaceType*&gt; stack;</span></span>
-<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">        6068            :         Index nextIndex = 0;</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">        6072            :     {</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">        6072            :         Dictionary&lt;IRInterfaceType*, Index&gt; indexMap;</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">        6072            :         Dictionary&lt;IRInterfaceType*, Index&gt; lowLinkMap;</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        6072            :         HashSet&lt;IRInterfaceType*&gt; onStack;</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">        6072            :         List&lt;IRInterfaceType*&gt; stack;</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">        6072            :         Index nextIndex = 0;</span></span>
 <span id="L272"><span class="lineNum">     272</span>                         : </span>
-<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">        6068 <span class="branchAll" title="br0: 13561; br1: 6068">(2/2)</span>      :         for (auto interfaceType : interfaceTypes)</span></span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">       13561            :         {</span></span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">       13561 <span class="branchAll" title="br0: 13492; br1: 69">(2/2)</span>      :             if (!indexMap.containsKey(interfaceType))</span></span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">       13492            :             {</span></span>
-<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       13492            :                 strongConnect(interfaceType, nextIndex, indexMap, lowLinkMap, onStack, stack);</span></span>
-<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">       13492            :             }</span></span>
-<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">       13561            :         }</span></span>
-<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">        6068            :     }</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">        6072 <span class="branchAll" title="br0: 13573; br1: 6072">(2/2)</span>      :         for (auto interfaceType : interfaceTypes)</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">       13573            :         {</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">       13573 <span class="branchAll" title="br0: 13504; br1: 69">(2/2)</span>      :             if (!indexMap.containsKey(interfaceType))</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">       13504            :             {</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       13504            :                 strongConnect(interfaceType, nextIndex, indexMap, lowLinkMap, onStack, stack);</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">       13504            :             }</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">       13573            :         }</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">        6072            :     }</span></span>
 <span id="L281"><span class="lineNum">     281</span>                         : </span>
 <span id="L282"><span class="lineNum">     282</span>                         :     void strongConnect(</span>
 <span id="L283"><span class="lineNum">     283</span>                         :         IRInterfaceType* interfaceType,</span>
@@ -577,15 +577,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L286"><span class="lineNum">     286</span>                         :         Dictionary&lt;IRInterfaceType*, Index&gt;&amp; lowLinkMap,</span>
 <span id="L287"><span class="lineNum">     287</span>                         :         HashSet&lt;IRInterfaceType*&gt;&amp; onStack,</span>
 <span id="L288"><span class="lineNum">     288</span>                         :         List&lt;IRInterfaceType*&gt;&amp; stack)</span>
-<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">       13561            :     {</span></span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">       13561            :         indexMap.add(interfaceType, nextIndex);</span></span>
-<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">       13561            :         lowLinkMap.add(interfaceType, nextIndex);</span></span>
-<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">       13561            :         nextIndex++;</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">       13573            :     {</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">       13573            :         indexMap.add(interfaceType, nextIndex);</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">       13573            :         lowLinkMap.add(interfaceType, nextIndex);</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">       13573            :         nextIndex++;</span></span>
 <span id="L293"><span class="lineNum">     293</span>                         : </span>
-<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">       13561            :         stack.add(interfaceType);</span></span>
-<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">       13561            :         onStack.add(interfaceType);</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">       13573            :         stack.add(interfaceType);</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">       13573            :         onStack.add(interfaceType);</span></span>
 <span id="L296"><span class="lineNum">     296</span>                         : </span>
-<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">       13561 <span class="branchAll" title="br0: 104; br1: 13561">(2/2)</span>      :         for (auto dependency : dependencyMap[interfaceType])</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">       13573 <span class="branchAll" title="br0: 104; br1: 13573">(2/2)</span>      :         for (auto dependency : dependencyMap[interfaceType])</span></span>
 <span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">         104            :         {</span></span>
 <span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">         104 <span class="branchAll" title="br0: 69; br1: 35">(2/2)</span>      :             if (!indexMap.containsKey(dependency))</span></span>
 <span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">          69            :             {</span></span>
@@ -600,51 +600,51 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">          32            :             }</span></span>
 <span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">         104            :         }</span></span>
 <span id="L311"><span class="lineNum">     311</span>                         : </span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       13561 <span class="branchAll" title="br0: 40; br1: 13521">(2/2)</span>      :         if (lowLinkMap[interfaceType] != indexMap[interfaceType])</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       13573 <span class="branchAll" title="br0: 40; br1: 13533">(2/2)</span>      :         if (lowLinkMap[interfaceType] != indexMap[interfaceType])</span></span>
 <span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">          40            :             return;</span></span>
 <span id="L314"><span class="lineNum">     314</span>                         : </span>
-<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">       13521            :         Index componentIndex = interfaceToComponent.getCount();</span></span>
-<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">       13521            :         List&lt;IRInterfaceType*&gt; componentMembers;</span></span>
-<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">       13561 <span class="branchPart" title="br0: 13561; br1: 0">(1/2)</span>      :         while (true)</span></span>
-<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">       13561            :         {</span></span>
-<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">       13561            :             auto member = stack.getLast();</span></span>
-<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">       13561            :             stack.removeLast();</span></span>
-<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">       13561            :             onStack.remove(member);</span></span>
-<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">       13561            :             componentMembers.add(member);</span></span>
-<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">       13561            :             interfaceToComponent.add(member, componentIndex);</span></span>
-<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">       13561 <span class="branchAll" title="br0: 13521; br1: 40">(2/2)</span>      :             if (member == interfaceType)</span></span>
-<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">       13521            :                 break;</span></span>
-<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">       13561            :         }</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">       13533            :         Index componentIndex = interfaceToComponent.getCount();</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">       13533            :         List&lt;IRInterfaceType*&gt; componentMembers;</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">       13573 <span class="branchPart" title="br0: 13573; br1: 0">(1/2)</span>      :         while (true)</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">       13573            :         {</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">       13573            :             auto member = stack.getLast();</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">       13573            :             stack.removeLast();</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">       13573            :             onStack.remove(member);</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">       13573            :             componentMembers.add(member);</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">       13573            :             interfaceToComponent.add(member, componentIndex);</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">       13573 <span class="branchAll" title="br0: 13533; br1: 40">(2/2)</span>      :             if (member == interfaceType)</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">       13533            :                 break;</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">       13573            :         }</span></span>
 <span id="L327"><span class="lineNum">     327</span>                         : </span>
-<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">       13521 <span class="branchAll" title="br0: 32; br1: 13489">(2/2)</span>      :         if (componentMembers.getCount() &gt; 1)</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">       13533 <span class="branchAll" title="br0: 32; br1: 13501">(2/2)</span>      :         if (componentMembers.getCount() &gt; 1)</span></span>
 <span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">          32            :         {</span></span>
 <span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">          32 <span class="branchAll" title="br0: 72; br1: 32">(2/2)</span>      :             for (auto member : componentMembers)</span></span>
 <span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">          72            :                 interfacesInDependencyCycle.add(member);</span></span>
 <span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">          32            :         }</span></span>
-<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">       13521            :     }</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">       13533            :     }</span></span>
 <span id="L334"><span class="lineNum">     334</span>                         : };</span>
 <span id="L335"><span class="lineNum">     335</span>                         : </span>
 <span id="L336"><span class="lineNum">     336</span>                         : // Detect and diagnose circular interface conformances before specialization.</span>
 <span id="L337"><span class="lineNum">     337</span>                         : // This must run before specializeModule because circular conformance IR causes</span>
 <span id="L338"><span class="lineNum">     338</span>                         : // crashes in the IR translate pass during specialization.</span>
 <span id="L339"><span class="lineNum">     339</span>                         : void diagnoseCircularConformances(IRModule* module, DiagnosticSink* sink)</span>
-<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">       16523            : {</span></span>
-<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">       16523            :     InterfaceDependencyAnalysis analysis;</span></span>
-<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">       16523            :     analysis.build(module);</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">       16540            : {</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">       16540            :     InterfaceDependencyAnalysis analysis;</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">       16540            :     analysis.build(module);</span></span>
 <span id="L343"><span class="lineNum">     343</span>                         : </span>
-<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">       16523 <span class="branchAll" title="br0: 11980; br1: 4543">(2/2)</span>      :     if (analysis.interfaceTypes.getCount() == 0)</span></span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">       11980            :         return;</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">       16540 <span class="branchAll" title="br0: 11993; br1: 4547">(2/2)</span>      :     if (analysis.interfaceTypes.getCount() == 0)</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">       11993            :         return;</span></span>
 <span id="L346"><span class="lineNum">     346</span>                         : </span>
 <span id="L347"><span class="lineNum">     347</span>                         :     // For each (interface, impl), check if the impl creates a cycle back to</span>
 <span id="L348"><span class="lineNum">     348</span>                         :     // its own interface. Self-referential is the trivial case where the impl</span>
 <span id="L349"><span class="lineNum">     349</span>                         :     // directly contains its own interface type.</span>
-<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">        4543 <span class="branchAll" title="br0: 10330; br1: 4543">(2/2)</span>      :     for (auto interfaceType : analysis.interfaceTypes)</span></span>
-<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">       10330            :     {</span></span>
-<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">       10330            :         Index circularCount = 0;</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">        4547 <span class="branchAll" title="br0: 10342; br1: 4547">(2/2)</span>      :     for (auto interfaceType : analysis.interfaceTypes)</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">       10342            :     {</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">       10342            :         Index circularCount = 0;</span></span>
 <span id="L353"><span class="lineNum">     353</span>                         : </span>
-<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">       10330 <span class="branchAll" title="br0: 16863; br1: 10330">(2/2)</span>      :         for (auto impl : analysis.implMap[interfaceType])</span></span>
-<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">       16863            :         {</span></span>
-<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">       16863 <span class="branchAll" title="br0: 112; br1: 16751">(2/2)</span>      :             if (analysis.implCreatesCircularConformance(interfaceType, impl))</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">       10342 <span class="branchAll" title="br0: 16899; br1: 10342">(2/2)</span>      :         for (auto impl : analysis.implMap[interfaceType])</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">       16899            :         {</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">       16899 <span class="branchAll" title="br0: 112; br1: 16787">(2/2)</span>      :             if (analysis.implCreatesCircularConformance(interfaceType, impl))</span></span>
 <span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">         112            :             {</span></span>
 <span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">         112            :                 sink-&gt;diagnose(Diagnostics::CircularConformance{</span></span>
 <span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">         112            :                     .type = impl,</span></span>
@@ -653,16 +653,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">         112            :                 });</span></span>
 <span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">         112            :                 circularCount++;</span></span>
 <span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">         112            :             }</span></span>
-<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">       16863            :         }</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">       16899            :         }</span></span>
 <span id="L366"><span class="lineNum">     366</span>                         : </span>
-<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">       10330 <span class="branchAll" title="br0: 112; br1: 10218; br2: 90; br3: 22">(4/4)</span>      :         if (circularCount &gt; 0 &amp;&amp; circularCount == analysis.implMap[interfaceType].getCount())</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">       10342 <span class="branchAll" title="br0: 112; br1: 10230; br2: 90; br3: 22">(4/4)</span>      :         if (circularCount &gt; 0 &amp;&amp; circularCount == analysis.implMap[interfaceType].getCount())</span></span>
 <span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">          90            :         {</span></span>
 <span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">          90            :             sink-&gt;diagnose(Diagnostics::CyclicInterfaceDependency{</span></span>
 <span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">          90            :                 .interfaceType = interfaceType,</span></span>
 <span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">          90            :             });</span></span>
 <span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">          90            :         }</span></span>
-<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">       10330            :     }</span></span>
-<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">        4543            : }</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">       10342            :     }</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">        4547            : }</span></span>
 <span id="L375"><span class="lineNum">     375</span>                         : </span>
 <span id="L376"><span class="lineNum">     376</span>                         : // inferAnyValueSizeWhereNecessary only runs when diagnoseCircularConformances</span>
 <span id="L377"><span class="lineNum">     377</span>                         : // has not reported errors, so circular conformances never reach this point.</span>
@@ -674,12 +674,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L383"><span class="lineNum">     383</span>                         :     IRModule* module,</span>
 <span id="L384"><span class="lineNum">     384</span>                         :     TargetProgram* targetProgram,</span>
 <span id="L385"><span class="lineNum">     385</span>                         :     DiagnosticSink* sink)</span>
-<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">       16243            : {</span></span>
-<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">       16243            :     InterfaceDependencyAnalysis analysis;</span></span>
-<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">       16243            :     analysis.build(module);</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">       16260            : {</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">       16260            :     InterfaceDependencyAnalysis analysis;</span></span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">       16260            :     analysis.build(module);</span></span>
 <span id="L389"><span class="lineNum">     389</span>                         : </span>
-<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">       16243 <span class="branchAll" title="br0: 14718; br1: 1525">(2/2)</span>      :     if (analysis.interfaceTypes.getCount() == 0)</span></span>
-<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">       14718            :         return;</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">       16260 <span class="branchAll" title="br0: 14735; br1: 1525">(2/2)</span>      :     if (analysis.interfaceTypes.getCount() == 0)</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">       14735            :         return;</span></span>
 <span id="L392"><span class="lineNum">     392</span>                         : </span>
 <span id="L393"><span class="lineNum">     393</span>                         :     // Verify the invariant: diagnoseCircularConformances must have already</span>
 <span id="L394"><span class="lineNum">     394</span>                         :     // removed both non-trivial interface SCCs and direct self-only cycles.</span>

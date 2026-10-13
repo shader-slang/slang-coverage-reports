@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-12 05:03:10 UTC</td>
+      <td class="headerValue">2026-10-13 05:23:40 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">88.9&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:88.9%;background-color:hsl(103, 70%, 50%)"></div></div>
-      <span class="metricCounts">377 / 424</span>
+      <span class="metricValue">89.0&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:89.0%;background-color:hsl(103, 70%, 50%)"></div></div>
+      <span class="metricCounts">380 / 427</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -934,431 +934,438 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L661"><span class="lineNum">     661</span>              :     // actual content length. For UTF-8 without BOM this is a no-op; for BOM or non-UTF-8 files,</span>
 <span id="L662"><span class="lineNum">     662</span>              :     // the decoded size may differ from the raw file size.</span>
 <span id="L663"><span class="lineNum">     663</span>              :     m_contentSize = decodedContentSize;</span>
-<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L665"><span class="lineNum">     665</span>              : </span>
-<span id="L666"><span class="lineNum">     666</span>              : void SourceFile::setContents(const String&amp; content)</span>
-<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">           1 :     ComPtr&lt;ISlangBlob&gt; contentBlob = StringUtil::createStringBlob(content);</span></span>
-<span id="L669"><span class="lineNum">     669</span> <span class="tlaGNC">           1 :     setContents(contentBlob);</span></span>
-<span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L671"><span class="lineNum">     671</span>              : </span>
-<span id="L672"><span class="lineNum">     672</span>              : SourceFile::SourceFile(SourceManager* sourceManager, const PathInfo&amp; pathInfo, size_t contentSize)</span>
-<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">           1 :     : m_sourceManager(sourceManager), m_pathInfo(pathInfo), m_contentSize(contentSize)</span></span>
+<span id="L664"><span class="lineNum">     664</span>              : </span>
+<span id="L665"><span class="lineNum">     665</span>              :     // The digest and the line break offsets are lazy caches derived from the content, so they are</span>
+<span id="L666"><span class="lineNum">     666</span>              :     // reset here and recomputed on the next query. Without the reset, a digest queried before any</span>
+<span id="L667"><span class="lineNum">     667</span>              :     // content was set would outlive the call that supplies the content.</span>
+<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">           1 :     std::lock_guard&lt;std::mutex&gt; lock(m_cacheMutex);</span></span>
+<span id="L669"><span class="lineNum">     669</span> <span class="tlaGNC">           1 :     m_digest = SHA1::Digest();</span></span>
+<span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">           1 :     m_lineBreakOffsets.clear();</span></span>
+<span id="L671"><span class="lineNum">     671</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L672"><span class="lineNum">     672</span>              : </span>
+<span id="L673"><span class="lineNum">     673</span>              : void SourceFile::setContents(const String&amp; content)</span>
 <span id="L674"><span class="lineNum">     674</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L676"><span class="lineNum">     676</span>              : </span>
-<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 : SourceFile::~SourceFile() {}</span></span>
+<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">           1 :     ComPtr&lt;ISlangBlob&gt; contentBlob = StringUtil::createStringBlob(content);</span></span>
+<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">           1 :     setContents(contentBlob);</span></span>
+<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L678"><span class="lineNum">     678</span>              : </span>
-<span id="L679"><span class="lineNum">     679</span>              : SHA1::Digest SourceFile::getDigest()</span>
-<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L681"><span class="lineNum">     681</span>              :     // The digest is another lazy SourceFile cache that may be queried concurrently.</span>
-<span id="L682"><span class="lineNum">     682</span> <span class="tlaGNC">           1 :     std::lock_guard&lt;std::mutex&gt; lock(m_cacheMutex);</span></span>
+<span id="L679"><span class="lineNum">     679</span>              : SourceFile::SourceFile(SourceManager* sourceManager, const PathInfo&amp; pathInfo, size_t contentSize)</span>
+<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">           1 :     : m_sourceManager(sourceManager), m_pathInfo(pathInfo), m_contentSize(contentSize)</span></span>
+<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L682"><span class="lineNum">     682</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L683"><span class="lineNum">     683</span>              : </span>
-<span id="L684"><span class="lineNum">     684</span> <span class="tlaGNC">           1 :     if (m_digest == SHA1::Digest())</span></span>
-<span id="L685"><span class="lineNum">     685</span>              :     {</span>
-<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">           1 :         DigestBuilder&lt;SHA1&gt; builder;</span></span>
-<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">           1 :         builder.append(getContent());</span></span>
-<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">           1 :         m_digest = builder.finalize();</span></span>
-<span id="L689"><span class="lineNum">     689</span>              :     }</span>
-<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">           1 :     return m_digest;</span></span>
-<span id="L691"><span class="lineNum">     691</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L692"><span class="lineNum">     692</span>              : </span>
-<span id="L693"><span class="lineNum">     693</span>              : String SourceFile::calcVerbosePath() const</span>
-<span id="L694"><span class="lineNum">     694</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L695"><span class="lineNum">     695</span> <span class="tlaUNC">           0 :     ISlangFileSystemExt* fileSystemExt = getSourceManager()-&gt;getFileSystemExt();</span></span>
-<span id="L696"><span class="lineNum">     696</span>              : </span>
-<span id="L697"><span class="lineNum">     697</span> <span class="tlaUNC">           0 :     if (fileSystemExt)</span></span>
-<span id="L698"><span class="lineNum">     698</span>              :     {</span>
-<span id="L699"><span class="lineNum">     699</span> <span class="tlaUNC">           0 :         String displayPath;</span></span>
-<span id="L700"><span class="lineNum">     700</span> <span class="tlaUNC">           0 :         ComPtr&lt;ISlangBlob&gt; displayPathBlob;</span></span>
-<span id="L701"><span class="lineNum">     701</span> <span class="tlaUNC">           0 :         if (SLANG_SUCCEEDED(fileSystemExt-&gt;getPath(</span></span>
-<span id="L702"><span class="lineNum">     702</span>              :                 PathKind::Display,</span>
-<span id="L703"><span class="lineNum">     703</span>              :                 m_pathInfo.foundPath.getBuffer(),</span>
-<span id="L704"><span class="lineNum">     704</span>              :                 displayPathBlob.writeRef())))</span>
-<span id="L705"><span class="lineNum">     705</span>              :         {</span>
-<span id="L706"><span class="lineNum">     706</span> <span class="tlaUNC">           0 :             displayPath = StringUtil::getString(displayPathBlob);</span></span>
-<span id="L707"><span class="lineNum">     707</span>              :         }</span>
-<span id="L708"><span class="lineNum">     708</span> <span class="tlaUNC">           0 :         if (displayPath.getLength() &gt; 0)</span></span>
-<span id="L709"><span class="lineNum">     709</span>              :         {</span>
-<span id="L710"><span class="lineNum">     710</span> <span class="tlaUNC">           0 :             return displayPath;</span></span>
-<span id="L711"><span class="lineNum">     711</span>              :         }</span>
-<span id="L712"><span class="lineNum">     712</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L713"><span class="lineNum">     713</span>              : </span>
-<span id="L714"><span class="lineNum">     714</span> <span class="tlaUNC">           0 :     return m_pathInfo.foundPath;</span></span>
-<span id="L715"><span class="lineNum">     715</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L716"><span class="lineNum">     716</span>              : </span>
-<span id="L717"><span class="lineNum">     717</span>              : /* !!!!!!!!!!!!!!!!!!!!!!!!! SourceManager !!!!!!!!!!!!!!!!!!!!!!!!!!!! */</span>
-<span id="L718"><span class="lineNum">     718</span>              : </span>
-<span id="L719"><span class="lineNum">     719</span>              : void SourceManager::initialize(SourceManager* p, ISlangFileSystemExt* fileSystemExt)</span>
-<span id="L720"><span class="lineNum">     720</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L721"><span class="lineNum">     721</span> <span class="tlaGNC">           1 :     m_fileSystemExt = fileSystemExt;</span></span>
-<span id="L722"><span class="lineNum">     722</span>              : </span>
-<span id="L723"><span class="lineNum">     723</span>              :     m_parent = p;</span>
-<span id="L724"><span class="lineNum">     724</span>              : </span>
-<span id="L725"><span class="lineNum">     725</span> <span class="tlaGNC">           1 :     _resetLoc();</span></span>
-<span id="L726"><span class="lineNum">     726</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L727"><span class="lineNum">     727</span>              : </span>
-<span id="L728"><span class="lineNum">     728</span>              : SourceManager::~SourceManager()</span>
-<span id="L729"><span class="lineNum">     729</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L730"><span class="lineNum">     730</span> <span class="tlaGNC">           1 :     _resetSource();</span></span>
-<span id="L731"><span class="lineNum">     731</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L732"><span class="lineNum">     732</span>              : </span>
-<span id="L733"><span class="lineNum">     733</span>              : void SourceManager::_resetLoc()</span>
-<span id="L734"><span class="lineNum">     734</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L735"><span class="lineNum">     735</span> <span class="tlaGNC">           1 :     if (m_parent)</span></span>
-<span id="L736"><span class="lineNum">     736</span>              :     {</span>
-<span id="L737"><span class="lineNum">     737</span>              :         // If we have a parent source manager, then we assume that all code at that level</span>
-<span id="L738"><span class="lineNum">     738</span>              :         // has already been loaded, and it is safe to start our own source locations</span>
-<span id="L739"><span class="lineNum">     739</span>              :         // right after those from the parent.</span>
-<span id="L740"><span class="lineNum">     740</span>              :         //</span>
-<span id="L741"><span class="lineNum">     741</span>              :         // TODO: more clever allocation in cases where that might not be reasonable</span>
-<span id="L742"><span class="lineNum">     742</span> <span class="tlaGNC">           1 :         m_startLoc = m_parent-&gt;m_nextLoc;</span></span>
-<span id="L743"><span class="lineNum">     743</span>              :     }</span>
-<span id="L744"><span class="lineNum">     744</span>              :     else</span>
-<span id="L745"><span class="lineNum">     745</span>              :     {</span>
-<span id="L746"><span class="lineNum">     746</span>              :         // Location zero is reserved for an invalid location,</span>
-<span id="L747"><span class="lineNum">     747</span>              :         // so we need to start reserving locations starting at 1.</span>
-<span id="L748"><span class="lineNum">     748</span> <span class="tlaGNC">           1 :         m_startLoc = SourceLoc::fromRaw(1);</span></span>
-<span id="L749"><span class="lineNum">     749</span>              :     }</span>
-<span id="L750"><span class="lineNum">     750</span>              : </span>
-<span id="L751"><span class="lineNum">     751</span> <span class="tlaGNC">           1 :     m_nextLoc = m_startLoc;</span></span>
-<span id="L752"><span class="lineNum">     752</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L753"><span class="lineNum">     753</span>              : </span>
-<span id="L754"><span class="lineNum">     754</span>              : void SourceManager::_resetSource()</span>
-<span id="L755"><span class="lineNum">     755</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L756"><span class="lineNum">     756</span> <span class="tlaGNC">           1 :     for (auto item : m_sourceViews)</span></span>
-<span id="L757"><span class="lineNum">     757</span>              :     {</span>
-<span id="L758"><span class="lineNum">     758</span> <span class="tlaGNC">           1 :         delete item;</span></span>
-<span id="L759"><span class="lineNum">     759</span>              :     }</span>
+<span id="L684"><span class="lineNum">     684</span> <span class="tlaGNC">           1 : SourceFile::~SourceFile() {}</span></span>
+<span id="L685"><span class="lineNum">     685</span>              : </span>
+<span id="L686"><span class="lineNum">     686</span>              : SHA1::Digest SourceFile::getDigest()</span>
+<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L688"><span class="lineNum">     688</span>              :     // The digest is another lazy SourceFile cache that may be queried concurrently.</span>
+<span id="L689"><span class="lineNum">     689</span> <span class="tlaGNC">           1 :     std::lock_guard&lt;std::mutex&gt; lock(m_cacheMutex);</span></span>
+<span id="L690"><span class="lineNum">     690</span>              : </span>
+<span id="L691"><span class="lineNum">     691</span> <span class="tlaGNC">           1 :     if (m_digest == SHA1::Digest())</span></span>
+<span id="L692"><span class="lineNum">     692</span>              :     {</span>
+<span id="L693"><span class="lineNum">     693</span> <span class="tlaGNC">           1 :         DigestBuilder&lt;SHA1&gt; builder;</span></span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">           1 :         builder.append(getContent());</span></span>
+<span id="L695"><span class="lineNum">     695</span> <span class="tlaGNC">           1 :         m_digest = builder.finalize();</span></span>
+<span id="L696"><span class="lineNum">     696</span>              :     }</span>
+<span id="L697"><span class="lineNum">     697</span> <span class="tlaGNC">           1 :     return m_digest;</span></span>
+<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L699"><span class="lineNum">     699</span>              : </span>
+<span id="L700"><span class="lineNum">     700</span>              : String SourceFile::calcVerbosePath() const</span>
+<span id="L701"><span class="lineNum">     701</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L702"><span class="lineNum">     702</span> <span class="tlaUNC">           0 :     ISlangFileSystemExt* fileSystemExt = getSourceManager()-&gt;getFileSystemExt();</span></span>
+<span id="L703"><span class="lineNum">     703</span>              : </span>
+<span id="L704"><span class="lineNum">     704</span> <span class="tlaUNC">           0 :     if (fileSystemExt)</span></span>
+<span id="L705"><span class="lineNum">     705</span>              :     {</span>
+<span id="L706"><span class="lineNum">     706</span> <span class="tlaUNC">           0 :         String displayPath;</span></span>
+<span id="L707"><span class="lineNum">     707</span> <span class="tlaUNC">           0 :         ComPtr&lt;ISlangBlob&gt; displayPathBlob;</span></span>
+<span id="L708"><span class="lineNum">     708</span> <span class="tlaUNC">           0 :         if (SLANG_SUCCEEDED(fileSystemExt-&gt;getPath(</span></span>
+<span id="L709"><span class="lineNum">     709</span>              :                 PathKind::Display,</span>
+<span id="L710"><span class="lineNum">     710</span>              :                 m_pathInfo.foundPath.getBuffer(),</span>
+<span id="L711"><span class="lineNum">     711</span>              :                 displayPathBlob.writeRef())))</span>
+<span id="L712"><span class="lineNum">     712</span>              :         {</span>
+<span id="L713"><span class="lineNum">     713</span> <span class="tlaUNC">           0 :             displayPath = StringUtil::getString(displayPathBlob);</span></span>
+<span id="L714"><span class="lineNum">     714</span>              :         }</span>
+<span id="L715"><span class="lineNum">     715</span> <span class="tlaUNC">           0 :         if (displayPath.getLength() &gt; 0)</span></span>
+<span id="L716"><span class="lineNum">     716</span>              :         {</span>
+<span id="L717"><span class="lineNum">     717</span> <span class="tlaUNC">           0 :             return displayPath;</span></span>
+<span id="L718"><span class="lineNum">     718</span>              :         }</span>
+<span id="L719"><span class="lineNum">     719</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L720"><span class="lineNum">     720</span>              : </span>
+<span id="L721"><span class="lineNum">     721</span> <span class="tlaUNC">           0 :     return m_pathInfo.foundPath;</span></span>
+<span id="L722"><span class="lineNum">     722</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L723"><span class="lineNum">     723</span>              : </span>
+<span id="L724"><span class="lineNum">     724</span>              : /* !!!!!!!!!!!!!!!!!!!!!!!!! SourceManager !!!!!!!!!!!!!!!!!!!!!!!!!!!! */</span>
+<span id="L725"><span class="lineNum">     725</span>              : </span>
+<span id="L726"><span class="lineNum">     726</span>              : void SourceManager::initialize(SourceManager* p, ISlangFileSystemExt* fileSystemExt)</span>
+<span id="L727"><span class="lineNum">     727</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L728"><span class="lineNum">     728</span> <span class="tlaGNC">           1 :     m_fileSystemExt = fileSystemExt;</span></span>
+<span id="L729"><span class="lineNum">     729</span>              : </span>
+<span id="L730"><span class="lineNum">     730</span>              :     m_parent = p;</span>
+<span id="L731"><span class="lineNum">     731</span>              : </span>
+<span id="L732"><span class="lineNum">     732</span> <span class="tlaGNC">           1 :     _resetLoc();</span></span>
+<span id="L733"><span class="lineNum">     733</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L734"><span class="lineNum">     734</span>              : </span>
+<span id="L735"><span class="lineNum">     735</span>              : SourceManager::~SourceManager()</span>
+<span id="L736"><span class="lineNum">     736</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">           1 :     _resetSource();</span></span>
+<span id="L738"><span class="lineNum">     738</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L739"><span class="lineNum">     739</span>              : </span>
+<span id="L740"><span class="lineNum">     740</span>              : void SourceManager::_resetLoc()</span>
+<span id="L741"><span class="lineNum">     741</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L742"><span class="lineNum">     742</span> <span class="tlaGNC">           1 :     if (m_parent)</span></span>
+<span id="L743"><span class="lineNum">     743</span>              :     {</span>
+<span id="L744"><span class="lineNum">     744</span>              :         // If we have a parent source manager, then we assume that all code at that level</span>
+<span id="L745"><span class="lineNum">     745</span>              :         // has already been loaded, and it is safe to start our own source locations</span>
+<span id="L746"><span class="lineNum">     746</span>              :         // right after those from the parent.</span>
+<span id="L747"><span class="lineNum">     747</span>              :         //</span>
+<span id="L748"><span class="lineNum">     748</span>              :         // TODO: more clever allocation in cases where that might not be reasonable</span>
+<span id="L749"><span class="lineNum">     749</span> <span class="tlaGNC">           1 :         m_startLoc = m_parent-&gt;m_nextLoc;</span></span>
+<span id="L750"><span class="lineNum">     750</span>              :     }</span>
+<span id="L751"><span class="lineNum">     751</span>              :     else</span>
+<span id="L752"><span class="lineNum">     752</span>              :     {</span>
+<span id="L753"><span class="lineNum">     753</span>              :         // Location zero is reserved for an invalid location,</span>
+<span id="L754"><span class="lineNum">     754</span>              :         // so we need to start reserving locations starting at 1.</span>
+<span id="L755"><span class="lineNum">     755</span> <span class="tlaGNC">           1 :         m_startLoc = SourceLoc::fromRaw(1);</span></span>
+<span id="L756"><span class="lineNum">     756</span>              :     }</span>
+<span id="L757"><span class="lineNum">     757</span>              : </span>
+<span id="L758"><span class="lineNum">     758</span> <span class="tlaGNC">           1 :     m_nextLoc = m_startLoc;</span></span>
+<span id="L759"><span class="lineNum">     759</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L760"><span class="lineNum">     760</span>              : </span>
-<span id="L761"><span class="lineNum">     761</span> <span class="tlaGNC">           1 :     for (auto item : m_sourceFiles)</span></span>
-<span id="L762"><span class="lineNum">     762</span>              :     {</span>
-<span id="L763"><span class="lineNum">     763</span> <span class="tlaGNC">           1 :         delete item;</span></span>
-<span id="L764"><span class="lineNum">     764</span>              :     }</span>
-<span id="L765"><span class="lineNum">     765</span>              : </span>
-<span id="L766"><span class="lineNum">     766</span> <span class="tlaGNC">           1 :     m_sourceViews.clear();</span></span>
-<span id="L767"><span class="lineNum">     767</span> <span class="tlaGNC">           1 :     m_sourceFiles.clear();</span></span>
-<span id="L768"><span class="lineNum">     768</span>              : </span>
-<span id="L769"><span class="lineNum">     769</span> <span class="tlaGNC">           1 :     m_sourceFileMap.clear();</span></span>
-<span id="L770"><span class="lineNum">     770</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L771"><span class="lineNum">     771</span>              : </span>
+<span id="L761"><span class="lineNum">     761</span>              : void SourceManager::_resetSource()</span>
+<span id="L762"><span class="lineNum">     762</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L763"><span class="lineNum">     763</span> <span class="tlaGNC">           1 :     for (auto item : m_sourceViews)</span></span>
+<span id="L764"><span class="lineNum">     764</span>              :     {</span>
+<span id="L765"><span class="lineNum">     765</span> <span class="tlaGNC">           1 :         delete item;</span></span>
+<span id="L766"><span class="lineNum">     766</span>              :     }</span>
+<span id="L767"><span class="lineNum">     767</span>              : </span>
+<span id="L768"><span class="lineNum">     768</span> <span class="tlaGNC">           1 :     for (auto item : m_sourceFiles)</span></span>
+<span id="L769"><span class="lineNum">     769</span>              :     {</span>
+<span id="L770"><span class="lineNum">     770</span> <span class="tlaGNC">           1 :         delete item;</span></span>
+<span id="L771"><span class="lineNum">     771</span>              :     }</span>
 <span id="L772"><span class="lineNum">     772</span>              : </span>
-<span id="L773"><span class="lineNum">     773</span>              : void SourceManager::reset()</span>
-<span id="L774"><span class="lineNum">     774</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L775"><span class="lineNum">     775</span> <span class="tlaGNC">           1 :     _resetSource();</span></span>
-<span id="L776"><span class="lineNum">     776</span> <span class="tlaGNC">           1 :     _resetLoc();</span></span>
+<span id="L773"><span class="lineNum">     773</span> <span class="tlaGNC">           1 :     m_sourceViews.clear();</span></span>
+<span id="L774"><span class="lineNum">     774</span> <span class="tlaGNC">           1 :     m_sourceFiles.clear();</span></span>
+<span id="L775"><span class="lineNum">     775</span>              : </span>
+<span id="L776"><span class="lineNum">     776</span> <span class="tlaGNC">           1 :     m_sourceFileMap.clear();</span></span>
 <span id="L777"><span class="lineNum">     777</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L778"><span class="lineNum">     778</span>              : </span>
-<span id="L779"><span class="lineNum">     779</span>              : UnownedStringSlice SourceManager::allocateStringSlice(const UnownedStringSlice&amp; slice)</span>
-<span id="L780"><span class="lineNum">     780</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L781"><span class="lineNum">     781</span> <span class="tlaGNC">           1 :     const UInt numChars = slice.getLength();</span></span>
-<span id="L782"><span class="lineNum">     782</span>              : </span>
-<span id="L783"><span class="lineNum">     783</span> <span class="tlaGNC">           1 :     char* dst = (char*)m_memoryArena.allocate(numChars);</span></span>
-<span id="L784"><span class="lineNum">     784</span> <span class="tlaGNC">           1 :     ::memcpy(dst, slice.begin(), numChars);</span></span>
+<span id="L779"><span class="lineNum">     779</span>              : </span>
+<span id="L780"><span class="lineNum">     780</span>              : void SourceManager::reset()</span>
+<span id="L781"><span class="lineNum">     781</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L782"><span class="lineNum">     782</span> <span class="tlaGNC">           1 :     _resetSource();</span></span>
+<span id="L783"><span class="lineNum">     783</span> <span class="tlaGNC">           1 :     _resetLoc();</span></span>
+<span id="L784"><span class="lineNum">     784</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L785"><span class="lineNum">     785</span>              : </span>
-<span id="L786"><span class="lineNum">     786</span> <span class="tlaGNC">           1 :     return UnownedStringSlice(dst, numChars);</span></span>
-<span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L788"><span class="lineNum">     788</span>              : </span>
-<span id="L789"><span class="lineNum">     789</span>              : SourceRange SourceManager::allocateSourceRange(UInt size)</span>
-<span id="L790"><span class="lineNum">     790</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L791"><span class="lineNum">     791</span>              :     // TODO: consider using atomics here</span>
+<span id="L786"><span class="lineNum">     786</span>              : UnownedStringSlice SourceManager::allocateStringSlice(const UnownedStringSlice&amp; slice)</span>
+<span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L788"><span class="lineNum">     788</span> <span class="tlaGNC">           1 :     const UInt numChars = slice.getLength();</span></span>
+<span id="L789"><span class="lineNum">     789</span>              : </span>
+<span id="L790"><span class="lineNum">     790</span> <span class="tlaGNC">           1 :     char* dst = (char*)m_memoryArena.allocate(numChars);</span></span>
+<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">           1 :     ::memcpy(dst, slice.begin(), numChars);</span></span>
 <span id="L792"><span class="lineNum">     792</span>              : </span>
-<span id="L793"><span class="lineNum">     793</span>              : </span>
-<span id="L794"><span class="lineNum">     794</span> <span class="tlaGNC">           1 :     SourceLoc beginLoc = m_nextLoc;</span></span>
-<span id="L795"><span class="lineNum">     795</span> <span class="tlaGNC">           1 :     SourceLoc endLoc = beginLoc + size;</span></span>
-<span id="L796"><span class="lineNum">     796</span>              : </span>
-<span id="L797"><span class="lineNum">     797</span>              :     // We need to be able to represent the location that is *at* the end of</span>
-<span id="L798"><span class="lineNum">     798</span>              :     // the input source, so the next available location for a new file</span>
-<span id="L799"><span class="lineNum">     799</span>              :     // must be placed one after the end of this one.</span>
+<span id="L793"><span class="lineNum">     793</span> <span class="tlaGNC">           1 :     return UnownedStringSlice(dst, numChars);</span></span>
+<span id="L794"><span class="lineNum">     794</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L795"><span class="lineNum">     795</span>              : </span>
+<span id="L796"><span class="lineNum">     796</span>              : SourceRange SourceManager::allocateSourceRange(UInt size)</span>
+<span id="L797"><span class="lineNum">     797</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L798"><span class="lineNum">     798</span>              :     // TODO: consider using atomics here</span>
+<span id="L799"><span class="lineNum">     799</span>              : </span>
 <span id="L800"><span class="lineNum">     800</span>              : </span>
-<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">           1 :     m_nextLoc = endLoc + 1;</span></span>
-<span id="L802"><span class="lineNum">     802</span>              : </span>
-<span id="L803"><span class="lineNum">     803</span> <span class="tlaGNC">           1 :     return SourceRange(beginLoc, endLoc);</span></span>
-<span id="L804"><span class="lineNum">     804</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L805"><span class="lineNum">     805</span>              : </span>
-<span id="L806"><span class="lineNum">     806</span>              : SourceFile* SourceManager::createSourceFileWithSize(const PathInfo&amp; pathInfo, size_t contentSize)</span>
-<span id="L807"><span class="lineNum">     807</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L808"><span class="lineNum">     808</span> <span class="tlaGNC">           1 :     SourceFile* sourceFile = new SourceFile(this, pathInfo, contentSize);</span></span>
-<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">           1 :     m_sourceFiles.add(sourceFile);</span></span>
-<span id="L810"><span class="lineNum">     810</span>              :     return sourceFile;</span>
+<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">           1 :     SourceLoc beginLoc = m_nextLoc;</span></span>
+<span id="L802"><span class="lineNum">     802</span> <span class="tlaGNC">           1 :     SourceLoc endLoc = beginLoc + size;</span></span>
+<span id="L803"><span class="lineNum">     803</span>              : </span>
+<span id="L804"><span class="lineNum">     804</span>              :     // We need to be able to represent the location that is *at* the end of</span>
+<span id="L805"><span class="lineNum">     805</span>              :     // the input source, so the next available location for a new file</span>
+<span id="L806"><span class="lineNum">     806</span>              :     // must be placed one after the end of this one.</span>
+<span id="L807"><span class="lineNum">     807</span>              : </span>
+<span id="L808"><span class="lineNum">     808</span> <span class="tlaGNC">           1 :     m_nextLoc = endLoc + 1;</span></span>
+<span id="L809"><span class="lineNum">     809</span>              : </span>
+<span id="L810"><span class="lineNum">     810</span> <span class="tlaGNC">           1 :     return SourceRange(beginLoc, endLoc);</span></span>
 <span id="L811"><span class="lineNum">     811</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L812"><span class="lineNum">     812</span>              : </span>
-<span id="L813"><span class="lineNum">     813</span>              : SourceFile* SourceManager::createSourceFileWithString(</span>
-<span id="L814"><span class="lineNum">     814</span>              :     const PathInfo&amp; pathInfo,</span>
-<span id="L815"><span class="lineNum">     815</span>              :     const String&amp; contents)</span>
-<span id="L816"><span class="lineNum">     816</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L817"><span class="lineNum">     817</span> <span class="tlaGNC">           1 :     SourceFile* sourceFile = new SourceFile(this, pathInfo, contents.getLength());</span></span>
-<span id="L818"><span class="lineNum">     818</span> <span class="tlaGNC">           1 :     m_sourceFiles.add(sourceFile);</span></span>
-<span id="L819"><span class="lineNum">     819</span> <span class="tlaGNC">           1 :     sourceFile-&gt;setContents(contents);</span></span>
-<span id="L820"><span class="lineNum">     820</span> <span class="tlaGNC">           1 :     return sourceFile;</span></span>
-<span id="L821"><span class="lineNum">     821</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L822"><span class="lineNum">     822</span>              : </span>
-<span id="L823"><span class="lineNum">     823</span>              : SourceFile* SourceManager::createSourceFileWithBlob(const PathInfo&amp; pathInfo, ISlangBlob* blob)</span>
-<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L825"><span class="lineNum">     825</span> <span class="tlaGNC">           1 :     SourceFile* sourceFile = new SourceFile(this, pathInfo, blob-&gt;getBufferSize());</span></span>
-<span id="L826"><span class="lineNum">     826</span> <span class="tlaGNC">           1 :     m_sourceFiles.add(sourceFile);</span></span>
-<span id="L827"><span class="lineNum">     827</span> <span class="tlaGNC">           1 :     sourceFile-&gt;setContents(blob);</span></span>
-<span id="L828"><span class="lineNum">     828</span> <span class="tlaGNC">           1 :     return sourceFile;</span></span>
-<span id="L829"><span class="lineNum">     829</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L830"><span class="lineNum">     830</span>              : </span>
-<span id="L831"><span class="lineNum">     831</span>              : SourceView* SourceManager::createSourceView(</span>
-<span id="L832"><span class="lineNum">     832</span>              :     SourceFile* sourceFile,</span>
-<span id="L833"><span class="lineNum">     833</span>              :     const PathInfo* pathInfo,</span>
-<span id="L834"><span class="lineNum">     834</span>              :     SourceLoc initiatingSourceLoc)</span>
-<span id="L835"><span class="lineNum">     835</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L836"><span class="lineNum">     836</span> <span class="tlaGNC">           1 :     SourceRange range = allocateSourceRange(sourceFile-&gt;getContentSize());</span></span>
+<span id="L813"><span class="lineNum">     813</span>              : SourceFile* SourceManager::createSourceFileWithSize(const PathInfo&amp; pathInfo, size_t contentSize)</span>
+<span id="L814"><span class="lineNum">     814</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L815"><span class="lineNum">     815</span> <span class="tlaGNC">           1 :     SourceFile* sourceFile = new SourceFile(this, pathInfo, contentSize);</span></span>
+<span id="L816"><span class="lineNum">     816</span> <span class="tlaGNC">           1 :     m_sourceFiles.add(sourceFile);</span></span>
+<span id="L817"><span class="lineNum">     817</span>              :     return sourceFile;</span>
+<span id="L818"><span class="lineNum">     818</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L819"><span class="lineNum">     819</span>              : </span>
+<span id="L820"><span class="lineNum">     820</span>              : SourceFile* SourceManager::createSourceFileWithString(</span>
+<span id="L821"><span class="lineNum">     821</span>              :     const PathInfo&amp; pathInfo,</span>
+<span id="L822"><span class="lineNum">     822</span>              :     const String&amp; contents)</span>
+<span id="L823"><span class="lineNum">     823</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">           1 :     SourceFile* sourceFile = new SourceFile(this, pathInfo, contents.getLength());</span></span>
+<span id="L825"><span class="lineNum">     825</span> <span class="tlaGNC">           1 :     m_sourceFiles.add(sourceFile);</span></span>
+<span id="L826"><span class="lineNum">     826</span> <span class="tlaGNC">           1 :     sourceFile-&gt;setContents(contents);</span></span>
+<span id="L827"><span class="lineNum">     827</span> <span class="tlaGNC">           1 :     return sourceFile;</span></span>
+<span id="L828"><span class="lineNum">     828</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L829"><span class="lineNum">     829</span>              : </span>
+<span id="L830"><span class="lineNum">     830</span>              : SourceFile* SourceManager::createSourceFileWithBlob(const PathInfo&amp; pathInfo, ISlangBlob* blob)</span>
+<span id="L831"><span class="lineNum">     831</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L832"><span class="lineNum">     832</span> <span class="tlaGNC">           1 :     SourceFile* sourceFile = new SourceFile(this, pathInfo, blob-&gt;getBufferSize());</span></span>
+<span id="L833"><span class="lineNum">     833</span> <span class="tlaGNC">           1 :     m_sourceFiles.add(sourceFile);</span></span>
+<span id="L834"><span class="lineNum">     834</span> <span class="tlaGNC">           1 :     sourceFile-&gt;setContents(blob);</span></span>
+<span id="L835"><span class="lineNum">     835</span> <span class="tlaGNC">           1 :     return sourceFile;</span></span>
+<span id="L836"><span class="lineNum">     836</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L837"><span class="lineNum">     837</span>              : </span>
-<span id="L838"><span class="lineNum">     838</span>              :     SourceView* sourceView = nullptr;</span>
-<span id="L839"><span class="lineNum">     839</span> <span class="tlaGNC">           1 :     if (pathInfo &amp;&amp; (pathInfo-&gt;foundPath.getLength() &amp;&amp;</span></span>
-<span id="L840"><span class="lineNum">     840</span>              :                      sourceFile-&gt;getPathInfo().foundPath != pathInfo-&gt;foundPath))</span>
-<span id="L841"><span class="lineNum">     841</span>              :     {</span>
-<span id="L842"><span class="lineNum">     842</span> <span class="tlaUNC">           0 :         sourceView = new SourceView(sourceFile, range, &amp;pathInfo-&gt;foundPath, initiatingSourceLoc);</span></span>
-<span id="L843"><span class="lineNum">     843</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L844"><span class="lineNum">     844</span>              :     else</span>
-<span id="L845"><span class="lineNum">     845</span>              :     {</span>
-<span id="L846"><span class="lineNum">     846</span> <span class="tlaGNC">           1 :         sourceView = new SourceView(sourceFile, range, nullptr, initiatingSourceLoc);</span></span>
-<span id="L847"><span class="lineNum">     847</span>              :     }</span>
-<span id="L848"><span class="lineNum">     848</span>              : </span>
-<span id="L849"><span class="lineNum">     849</span> <span class="tlaGNC">           1 :     m_sourceViews.add(sourceView);</span></span>
-<span id="L850"><span class="lineNum">     850</span>              : </span>
-<span id="L851"><span class="lineNum">     851</span> <span class="tlaGNC">           1 :     return sourceView;</span></span>
-<span id="L852"><span class="lineNum">     852</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L853"><span class="lineNum">     853</span>              : </span>
-<span id="L854"><span class="lineNum">     854</span>              : SourceView* SourceManager::findSourceView(SourceLoc loc) const</span>
-<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L856"><span class="lineNum">     856</span> <span class="tlaGNC">           1 :     Index hi = m_sourceViews.getCount();</span></span>
-<span id="L857"><span class="lineNum">     857</span>              :     // It must be in the range of this manager and have associated views for it to possibly be a hit</span>
-<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">           1 :     if (!getSourceRange().contains(loc) || hi == 0)</span></span>
-<span id="L859"><span class="lineNum">     859</span>              :     {</span>
-<span id="L860"><span class="lineNum">     860</span> <span class="tlaGNC">           1 :         return nullptr;</span></span>
-<span id="L861"><span class="lineNum">     861</span>              :     }</span>
-<span id="L862"><span class="lineNum">     862</span>              : </span>
-<span id="L863"><span class="lineNum">     863</span>              :     // If we don&#x27;t have very many, we may as well just linearly search</span>
-<span id="L864"><span class="lineNum">     864</span> <span class="tlaGNC">           1 :     if (hi &lt;= 8)</span></span>
-<span id="L865"><span class="lineNum">     865</span>              :     {</span>
-<span id="L866"><span class="lineNum">     866</span> <span class="tlaGNC">           1 :         for (int i = 0; i &lt; hi; ++i)</span></span>
-<span id="L867"><span class="lineNum">     867</span>              :         {</span>
-<span id="L868"><span class="lineNum">     868</span> <span class="tlaGNC">           1 :             SourceView* view = m_sourceViews[i];</span></span>
-<span id="L869"><span class="lineNum">     869</span> <span class="tlaGNC">           1 :             if (view-&gt;getRange().contains(loc))</span></span>
-<span id="L870"><span class="lineNum">     870</span>              :             {</span>
-<span id="L871"><span class="lineNum">     871</span> <span class="tlaGNC">           1 :                 return view;</span></span>
-<span id="L872"><span class="lineNum">     872</span>              :             }</span>
-<span id="L873"><span class="lineNum">     873</span>              :         }</span>
-<span id="L874"><span class="lineNum">     874</span>              :         return nullptr;</span>
-<span id="L875"><span class="lineNum">     875</span>              :     }</span>
-<span id="L876"><span class="lineNum">     876</span>              : </span>
-<span id="L877"><span class="lineNum">     877</span> <span class="tlaGNC">           1 :     const SourceLoc::RawValue rawLoc = loc.getRaw();</span></span>
-<span id="L878"><span class="lineNum">     878</span>              : </span>
-<span id="L879"><span class="lineNum">     879</span>              :     // Binary chop to see if we can find the associated SourceUnit</span>
-<span id="L880"><span class="lineNum">     880</span> <span class="tlaGNC">           1 :     Index lo = 0;</span></span>
-<span id="L881"><span class="lineNum">     881</span>              :     while (lo + 1 &lt; hi)</span>
-<span id="L882"><span class="lineNum">     882</span>              :     {</span>
-<span id="L883"><span class="lineNum">     883</span> <span class="tlaGNC">           1 :         Index mid = (hi + lo) &gt;&gt; 1;</span></span>
-<span id="L884"><span class="lineNum">     884</span>              : </span>
-<span id="L885"><span class="lineNum">     885</span> <span class="tlaGNC">           1 :         SourceView* midView = m_sourceViews[mid];</span></span>
-<span id="L886"><span class="lineNum">     886</span> <span class="tlaGNC">           1 :         if (midView-&gt;getRange().contains(loc))</span></span>
-<span id="L887"><span class="lineNum">     887</span>              :         {</span>
-<span id="L888"><span class="lineNum">     888</span> <span class="tlaGNC">           1 :             return midView;</span></span>
-<span id="L889"><span class="lineNum">     889</span>              :         }</span>
-<span id="L890"><span class="lineNum">     890</span>              : </span>
-<span id="L891"><span class="lineNum">     891</span> <span class="tlaGNC">           1 :         const SourceLoc::RawValue midValue = midView-&gt;getRange().begin.getRaw();</span></span>
-<span id="L892"><span class="lineNum">     892</span>              :         if (midValue &lt;= rawLoc)</span>
-<span id="L893"><span class="lineNum">     893</span>              :         {</span>
-<span id="L894"><span class="lineNum">     894</span>              :             // The location we seek is at or after this entry</span>
-<span id="L895"><span class="lineNum">     895</span>              :             lo = mid;</span>
+<span id="L838"><span class="lineNum">     838</span>              : SourceView* SourceManager::createSourceView(</span>
+<span id="L839"><span class="lineNum">     839</span>              :     SourceFile* sourceFile,</span>
+<span id="L840"><span class="lineNum">     840</span>              :     const PathInfo* pathInfo,</span>
+<span id="L841"><span class="lineNum">     841</span>              :     SourceLoc initiatingSourceLoc)</span>
+<span id="L842"><span class="lineNum">     842</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L843"><span class="lineNum">     843</span> <span class="tlaGNC">           1 :     SourceRange range = allocateSourceRange(sourceFile-&gt;getContentSize());</span></span>
+<span id="L844"><span class="lineNum">     844</span>              : </span>
+<span id="L845"><span class="lineNum">     845</span>              :     SourceView* sourceView = nullptr;</span>
+<span id="L846"><span class="lineNum">     846</span> <span class="tlaGNC">           1 :     if (pathInfo &amp;&amp; (pathInfo-&gt;foundPath.getLength() &amp;&amp;</span></span>
+<span id="L847"><span class="lineNum">     847</span>              :                      sourceFile-&gt;getPathInfo().foundPath != pathInfo-&gt;foundPath))</span>
+<span id="L848"><span class="lineNum">     848</span>              :     {</span>
+<span id="L849"><span class="lineNum">     849</span> <span class="tlaUNC">           0 :         sourceView = new SourceView(sourceFile, range, &amp;pathInfo-&gt;foundPath, initiatingSourceLoc);</span></span>
+<span id="L850"><span class="lineNum">     850</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L851"><span class="lineNum">     851</span>              :     else</span>
+<span id="L852"><span class="lineNum">     852</span>              :     {</span>
+<span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">           1 :         sourceView = new SourceView(sourceFile, range, nullptr, initiatingSourceLoc);</span></span>
+<span id="L854"><span class="lineNum">     854</span>              :     }</span>
+<span id="L855"><span class="lineNum">     855</span>              : </span>
+<span id="L856"><span class="lineNum">     856</span> <span class="tlaGNC">           1 :     m_sourceViews.add(sourceView);</span></span>
+<span id="L857"><span class="lineNum">     857</span>              : </span>
+<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">           1 :     return sourceView;</span></span>
+<span id="L859"><span class="lineNum">     859</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L860"><span class="lineNum">     860</span>              : </span>
+<span id="L861"><span class="lineNum">     861</span>              : SourceView* SourceManager::findSourceView(SourceLoc loc) const</span>
+<span id="L862"><span class="lineNum">     862</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">           1 :     Index hi = m_sourceViews.getCount();</span></span>
+<span id="L864"><span class="lineNum">     864</span>              :     // It must be in the range of this manager and have associated views for it to possibly be a hit</span>
+<span id="L865"><span class="lineNum">     865</span> <span class="tlaGNC">           1 :     if (!getSourceRange().contains(loc) || hi == 0)</span></span>
+<span id="L866"><span class="lineNum">     866</span>              :     {</span>
+<span id="L867"><span class="lineNum">     867</span> <span class="tlaGNC">           1 :         return nullptr;</span></span>
+<span id="L868"><span class="lineNum">     868</span>              :     }</span>
+<span id="L869"><span class="lineNum">     869</span>              : </span>
+<span id="L870"><span class="lineNum">     870</span>              :     // If we don&#x27;t have very many, we may as well just linearly search</span>
+<span id="L871"><span class="lineNum">     871</span> <span class="tlaGNC">           1 :     if (hi &lt;= 8)</span></span>
+<span id="L872"><span class="lineNum">     872</span>              :     {</span>
+<span id="L873"><span class="lineNum">     873</span> <span class="tlaGNC">           1 :         for (int i = 0; i &lt; hi; ++i)</span></span>
+<span id="L874"><span class="lineNum">     874</span>              :         {</span>
+<span id="L875"><span class="lineNum">     875</span> <span class="tlaGNC">           1 :             SourceView* view = m_sourceViews[i];</span></span>
+<span id="L876"><span class="lineNum">     876</span> <span class="tlaGNC">           1 :             if (view-&gt;getRange().contains(loc))</span></span>
+<span id="L877"><span class="lineNum">     877</span>              :             {</span>
+<span id="L878"><span class="lineNum">     878</span> <span class="tlaGNC">           1 :                 return view;</span></span>
+<span id="L879"><span class="lineNum">     879</span>              :             }</span>
+<span id="L880"><span class="lineNum">     880</span>              :         }</span>
+<span id="L881"><span class="lineNum">     881</span>              :         return nullptr;</span>
+<span id="L882"><span class="lineNum">     882</span>              :     }</span>
+<span id="L883"><span class="lineNum">     883</span>              : </span>
+<span id="L884"><span class="lineNum">     884</span> <span class="tlaGNC">           1 :     const SourceLoc::RawValue rawLoc = loc.getRaw();</span></span>
+<span id="L885"><span class="lineNum">     885</span>              : </span>
+<span id="L886"><span class="lineNum">     886</span>              :     // Binary chop to see if we can find the associated SourceUnit</span>
+<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">           1 :     Index lo = 0;</span></span>
+<span id="L888"><span class="lineNum">     888</span>              :     while (lo + 1 &lt; hi)</span>
+<span id="L889"><span class="lineNum">     889</span>              :     {</span>
+<span id="L890"><span class="lineNum">     890</span> <span class="tlaGNC">           1 :         Index mid = (hi + lo) &gt;&gt; 1;</span></span>
+<span id="L891"><span class="lineNum">     891</span>              : </span>
+<span id="L892"><span class="lineNum">     892</span> <span class="tlaGNC">           1 :         SourceView* midView = m_sourceViews[mid];</span></span>
+<span id="L893"><span class="lineNum">     893</span> <span class="tlaGNC">           1 :         if (midView-&gt;getRange().contains(loc))</span></span>
+<span id="L894"><span class="lineNum">     894</span>              :         {</span>
+<span id="L895"><span class="lineNum">     895</span> <span class="tlaGNC">           1 :             return midView;</span></span>
 <span id="L896"><span class="lineNum">     896</span>              :         }</span>
-<span id="L897"><span class="lineNum">     897</span>              :         else</span>
-<span id="L898"><span class="lineNum">     898</span>              :         {</span>
-<span id="L899"><span class="lineNum">     899</span>              :             // The location we seek is before this entry</span>
-<span id="L900"><span class="lineNum">     900</span>              :             hi = mid;</span>
-<span id="L901"><span class="lineNum">     901</span>              :         }</span>
-<span id="L902"><span class="lineNum">     902</span>              :     }</span>
-<span id="L903"><span class="lineNum">     903</span>              : </span>
-<span id="L904"><span class="lineNum">     904</span>              :     // Check if low is actually a hit</span>
-<span id="L905"><span class="lineNum">     905</span> <span class="tlaGNC">           1 :     SourceView* view = m_sourceViews[lo];</span></span>
-<span id="L906"><span class="lineNum">     906</span> <span class="tlaGNC">           1 :     return (view-&gt;getRange().contains(loc)) ? view : nullptr;</span></span>
-<span id="L907"><span class="lineNum">     907</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L908"><span class="lineNum">     908</span>              : </span>
-<span id="L909"><span class="lineNum">     909</span>              : SourceView* SourceManager::findSourceViewRecursively(SourceLoc loc) const</span>
-<span id="L910"><span class="lineNum">     910</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L911"><span class="lineNum">     911</span>              :     // Start with this manager</span>
-<span id="L912"><span class="lineNum">     912</span>              :     const SourceManager* manager = this;</span>
-<span id="L913"><span class="lineNum">     913</span>              :     do</span>
-<span id="L914"><span class="lineNum">     914</span>              :     {</span>
-<span id="L915"><span class="lineNum">     915</span> <span class="tlaGNC">           1 :         SourceView* sourceView = manager-&gt;findSourceView(loc);</span></span>
-<span id="L916"><span class="lineNum">     916</span>              :         // If we found a hit we are done</span>
-<span id="L917"><span class="lineNum">     917</span> <span class="tlaGNC">           1 :         if (sourceView)</span></span>
-<span id="L918"><span class="lineNum">     918</span>              :         {</span>
-<span id="L919"><span class="lineNum">     919</span>              :             return sourceView;</span>
-<span id="L920"><span class="lineNum">     920</span>              :         }</span>
-<span id="L921"><span class="lineNum">     921</span>              :         // Try the parent</span>
-<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">           1 :         manager = manager-&gt;m_parent;</span></span>
-<span id="L923"><span class="lineNum">     923</span> <span class="tlaGNC">           1 :     } while (manager);</span></span>
-<span id="L924"><span class="lineNum">     924</span>              :     // Didn&#x27;t find it</span>
-<span id="L925"><span class="lineNum">     925</span>              :     return nullptr;</span>
-<span id="L926"><span class="lineNum">     926</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L927"><span class="lineNum">     927</span>              : </span>
-<span id="L928"><span class="lineNum">     928</span>              : SourceFile* SourceManager::findSourceFileByPathRecursively(const String&amp; name) const</span>
-<span id="L929"><span class="lineNum">     929</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L930"><span class="lineNum">     930</span>              :     // Start with this manager</span>
-<span id="L931"><span class="lineNum">     931</span>              :     const SourceManager* manager = this;</span>
-<span id="L932"><span class="lineNum">     932</span>              :     do</span>
-<span id="L933"><span class="lineNum">     933</span>              :     {</span>
-<span id="L934"><span class="lineNum">     934</span> <span class="tlaGNC">           1 :         SourceFile* sourceFile = manager-&gt;findSourceFileByPath(name);</span></span>
-<span id="L935"><span class="lineNum">     935</span>              :         // If we found a hit we are done</span>
-<span id="L936"><span class="lineNum">     936</span> <span class="tlaGNC">           1 :         if (sourceFile)</span></span>
-<span id="L937"><span class="lineNum">     937</span>              :         {</span>
-<span id="L938"><span class="lineNum">     938</span>              :             return sourceFile;</span>
-<span id="L939"><span class="lineNum">     939</span>              :         }</span>
-<span id="L940"><span class="lineNum">     940</span>              :         // Try the parent</span>
-<span id="L941"><span class="lineNum">     941</span> <span class="tlaGNC">           1 :         manager = manager-&gt;m_parent;</span></span>
-<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">           1 :     } while (manager);</span></span>
-<span id="L943"><span class="lineNum">     943</span>              :     // Didn&#x27;t find it</span>
-<span id="L944"><span class="lineNum">     944</span>              :     return nullptr;</span>
-<span id="L945"><span class="lineNum">     945</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L946"><span class="lineNum">     946</span>              : </span>
-<span id="L947"><span class="lineNum">     947</span>              : SourceFile* SourceManager::findSourceFileByPath(const String&amp; name) const</span>
-<span id="L948"><span class="lineNum">     948</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L949"><span class="lineNum">     949</span> <span class="tlaGNC">           1 :     for (auto sourceFile : m_sourceFiles)</span></span>
-<span id="L950"><span class="lineNum">     950</span>              :     {</span>
-<span id="L951"><span class="lineNum">     951</span> <span class="tlaGNC">           1 :         if (sourceFile-&gt;getPathInfo().foundPath == name)</span></span>
-<span id="L952"><span class="lineNum">     952</span>              :         {</span>
-<span id="L953"><span class="lineNum">     953</span> <span class="tlaGNC">           1 :             return sourceFile;</span></span>
-<span id="L954"><span class="lineNum">     954</span>              :         }</span>
-<span id="L955"><span class="lineNum">     955</span>              :     }</span>
-<span id="L956"><span class="lineNum">     956</span> <span class="tlaGNC">           1 :     return nullptr;</span></span>
-<span id="L957"><span class="lineNum">     957</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L958"><span class="lineNum">     958</span>              : </span>
-<span id="L959"><span class="lineNum">     959</span>              : SourceFile* SourceManager::findSourceFile(const String&amp; uniqueIdentity) const</span>
-<span id="L960"><span class="lineNum">     960</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L961"><span class="lineNum">     961</span> <span class="tlaGNC">           1 :     SourceFile* const* filePtr = m_sourceFileMap.tryGetValue(uniqueIdentity);</span></span>
-<span id="L962"><span class="lineNum">     962</span> <span class="tlaGNC">           1 :     return (filePtr) ? *filePtr : nullptr;</span></span>
-<span id="L963"><span class="lineNum">     963</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L964"><span class="lineNum">     964</span>              : </span>
-<span id="L965"><span class="lineNum">     965</span>              : SourceFile* SourceManager::findSourceFileRecursively(const String&amp; uniqueIdentity) const</span>
-<span id="L966"><span class="lineNum">     966</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L967"><span class="lineNum">     967</span>              :     const SourceManager* manager = this;</span>
-<span id="L968"><span class="lineNum">     968</span>              :     do</span>
-<span id="L969"><span class="lineNum">     969</span>              :     {</span>
-<span id="L970"><span class="lineNum">     970</span> <span class="tlaGNC">           1 :         SourceFile* sourceFile = manager-&gt;findSourceFile(uniqueIdentity);</span></span>
-<span id="L971"><span class="lineNum">     971</span> <span class="tlaGNC">           1 :         if (sourceFile)</span></span>
-<span id="L972"><span class="lineNum">     972</span>              :         {</span>
-<span id="L973"><span class="lineNum">     973</span>              :             return sourceFile;</span>
-<span id="L974"><span class="lineNum">     974</span>              :         }</span>
-<span id="L975"><span class="lineNum">     975</span> <span class="tlaGNC">           1 :         manager = manager-&gt;m_parent;</span></span>
-<span id="L976"><span class="lineNum">     976</span> <span class="tlaGNC">           1 :     } while (manager);</span></span>
-<span id="L977"><span class="lineNum">     977</span>              :     return nullptr;</span>
-<span id="L978"><span class="lineNum">     978</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L979"><span class="lineNum">     979</span>              : </span>
-<span id="L980"><span class="lineNum">     980</span>              : SourceFile* SourceManager::findSourceFileByContentRecursively(const char* text)</span>
-<span id="L981"><span class="lineNum">     981</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L982"><span class="lineNum">     982</span>              :     const SourceManager* manager = this;</span>
-<span id="L983"><span class="lineNum">     983</span>              :     do</span>
-<span id="L984"><span class="lineNum">     984</span>              :     {</span>
-<span id="L985"><span class="lineNum">     985</span> <span class="tlaGNC">           1 :         SourceFile* sourceFile = manager-&gt;findSourceFileByContent(text);</span></span>
-<span id="L986"><span class="lineNum">     986</span> <span class="tlaGNC">           1 :         if (sourceFile)</span></span>
-<span id="L987"><span class="lineNum">     987</span>              :         {</span>
-<span id="L988"><span class="lineNum">     988</span>              :             return sourceFile;</span>
-<span id="L989"><span class="lineNum">     989</span>              :         }</span>
-<span id="L990"><span class="lineNum">     990</span> <span class="tlaUNC">           0 :         manager = manager-&gt;m_parent;</span></span>
-<span id="L991"><span class="lineNum">     991</span> <span class="tlaUNC">           0 :     } while (manager);</span></span>
-<span id="L992"><span class="lineNum">     992</span>              :     return nullptr;</span>
-<span id="L993"><span class="lineNum">     993</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L994"><span class="lineNum">     994</span>              : </span>
-<span id="L995"><span class="lineNum">     995</span>              : SourceFile* SourceManager::findSourceFileByContent(const char* text) const</span>
-<span id="L996"><span class="lineNum">     996</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L997"><span class="lineNum">     997</span> <span class="tlaGNC">           1 :     for (SourceFile* sourceFile : getSourceFiles())</span></span>
-<span id="L998"><span class="lineNum">     998</span>              :     {</span>
-<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">           1 :         auto content = sourceFile-&gt;getContent();</span></span>
-<span id="L1000"><span class="lineNum">    1000</span>              : </span>
-<span id="L1001"><span class="lineNum">    1001</span> <span class="tlaGNC">           1 :         if (text &gt;= content.begin() &amp;&amp; text &lt;= content.end())</span></span>
-<span id="L1002"><span class="lineNum">    1002</span>              :         {</span>
-<span id="L1003"><span class="lineNum">    1003</span> <span class="tlaGNC">           1 :             return sourceFile;</span></span>
-<span id="L1004"><span class="lineNum">    1004</span>              :         }</span>
-<span id="L1005"><span class="lineNum">    1005</span>              :     }</span>
-<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaUNC">           0 :     return nullptr;</span></span>
-<span id="L1007"><span class="lineNum">    1007</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1008"><span class="lineNum">    1008</span>              : </span>
-<span id="L1009"><span class="lineNum">    1009</span>              : void SourceManager::addSourceFile(const String&amp; uniqueIdentity, SourceFile* sourceFile)</span>
-<span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1011"><span class="lineNum">    1011</span>              :     SLANG_ASSERT(!findSourceFileRecursively(uniqueIdentity));</span>
-<span id="L1012"><span class="lineNum">    1012</span> <span class="tlaGNC">           1 :     m_sourceFileMap.add(uniqueIdentity, sourceFile);</span></span>
-<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1014"><span class="lineNum">    1014</span>              : </span>
-<span id="L1015"><span class="lineNum">    1015</span>              : void SourceManager::addSourceFileIfNotExist(const String&amp; uniqueIdentity, SourceFile* sourceFile)</span>
-<span id="L1016"><span class="lineNum">    1016</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1017"><span class="lineNum">    1017</span> <span class="tlaGNC">           1 :     if (findSourceFileRecursively(uniqueIdentity))</span></span>
-<span id="L1018"><span class="lineNum">    1018</span>              :         return;</span>
-<span id="L1019"><span class="lineNum">    1019</span> <span class="tlaGNC">           1 :     m_sourceFileMap.addIfNotExists(uniqueIdentity, sourceFile);</span></span>
+<span id="L897"><span class="lineNum">     897</span>              : </span>
+<span id="L898"><span class="lineNum">     898</span> <span class="tlaGNC">           1 :         const SourceLoc::RawValue midValue = midView-&gt;getRange().begin.getRaw();</span></span>
+<span id="L899"><span class="lineNum">     899</span>              :         if (midValue &lt;= rawLoc)</span>
+<span id="L900"><span class="lineNum">     900</span>              :         {</span>
+<span id="L901"><span class="lineNum">     901</span>              :             // The location we seek is at or after this entry</span>
+<span id="L902"><span class="lineNum">     902</span>              :             lo = mid;</span>
+<span id="L903"><span class="lineNum">     903</span>              :         }</span>
+<span id="L904"><span class="lineNum">     904</span>              :         else</span>
+<span id="L905"><span class="lineNum">     905</span>              :         {</span>
+<span id="L906"><span class="lineNum">     906</span>              :             // The location we seek is before this entry</span>
+<span id="L907"><span class="lineNum">     907</span>              :             hi = mid;</span>
+<span id="L908"><span class="lineNum">     908</span>              :         }</span>
+<span id="L909"><span class="lineNum">     909</span>              :     }</span>
+<span id="L910"><span class="lineNum">     910</span>              : </span>
+<span id="L911"><span class="lineNum">     911</span>              :     // Check if low is actually a hit</span>
+<span id="L912"><span class="lineNum">     912</span> <span class="tlaGNC">           1 :     SourceView* view = m_sourceViews[lo];</span></span>
+<span id="L913"><span class="lineNum">     913</span> <span class="tlaGNC">           1 :     return (view-&gt;getRange().contains(loc)) ? view : nullptr;</span></span>
+<span id="L914"><span class="lineNum">     914</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L915"><span class="lineNum">     915</span>              : </span>
+<span id="L916"><span class="lineNum">     916</span>              : SourceView* SourceManager::findSourceViewRecursively(SourceLoc loc) const</span>
+<span id="L917"><span class="lineNum">     917</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L918"><span class="lineNum">     918</span>              :     // Start with this manager</span>
+<span id="L919"><span class="lineNum">     919</span>              :     const SourceManager* manager = this;</span>
+<span id="L920"><span class="lineNum">     920</span>              :     do</span>
+<span id="L921"><span class="lineNum">     921</span>              :     {</span>
+<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">           1 :         SourceView* sourceView = manager-&gt;findSourceView(loc);</span></span>
+<span id="L923"><span class="lineNum">     923</span>              :         // If we found a hit we are done</span>
+<span id="L924"><span class="lineNum">     924</span> <span class="tlaGNC">           1 :         if (sourceView)</span></span>
+<span id="L925"><span class="lineNum">     925</span>              :         {</span>
+<span id="L926"><span class="lineNum">     926</span>              :             return sourceView;</span>
+<span id="L927"><span class="lineNum">     927</span>              :         }</span>
+<span id="L928"><span class="lineNum">     928</span>              :         // Try the parent</span>
+<span id="L929"><span class="lineNum">     929</span> <span class="tlaGNC">           1 :         manager = manager-&gt;m_parent;</span></span>
+<span id="L930"><span class="lineNum">     930</span> <span class="tlaGNC">           1 :     } while (manager);</span></span>
+<span id="L931"><span class="lineNum">     931</span>              :     // Didn&#x27;t find it</span>
+<span id="L932"><span class="lineNum">     932</span>              :     return nullptr;</span>
+<span id="L933"><span class="lineNum">     933</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L934"><span class="lineNum">     934</span>              : </span>
+<span id="L935"><span class="lineNum">     935</span>              : SourceFile* SourceManager::findSourceFileByPathRecursively(const String&amp; name) const</span>
+<span id="L936"><span class="lineNum">     936</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L937"><span class="lineNum">     937</span>              :     // Start with this manager</span>
+<span id="L938"><span class="lineNum">     938</span>              :     const SourceManager* manager = this;</span>
+<span id="L939"><span class="lineNum">     939</span>              :     do</span>
+<span id="L940"><span class="lineNum">     940</span>              :     {</span>
+<span id="L941"><span class="lineNum">     941</span> <span class="tlaGNC">           1 :         SourceFile* sourceFile = manager-&gt;findSourceFileByPath(name);</span></span>
+<span id="L942"><span class="lineNum">     942</span>              :         // If we found a hit we are done</span>
+<span id="L943"><span class="lineNum">     943</span> <span class="tlaGNC">           1 :         if (sourceFile)</span></span>
+<span id="L944"><span class="lineNum">     944</span>              :         {</span>
+<span id="L945"><span class="lineNum">     945</span>              :             return sourceFile;</span>
+<span id="L946"><span class="lineNum">     946</span>              :         }</span>
+<span id="L947"><span class="lineNum">     947</span>              :         // Try the parent</span>
+<span id="L948"><span class="lineNum">     948</span> <span class="tlaGNC">           1 :         manager = manager-&gt;m_parent;</span></span>
+<span id="L949"><span class="lineNum">     949</span> <span class="tlaGNC">           1 :     } while (manager);</span></span>
+<span id="L950"><span class="lineNum">     950</span>              :     // Didn&#x27;t find it</span>
+<span id="L951"><span class="lineNum">     951</span>              :     return nullptr;</span>
+<span id="L952"><span class="lineNum">     952</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L953"><span class="lineNum">     953</span>              : </span>
+<span id="L954"><span class="lineNum">     954</span>              : SourceFile* SourceManager::findSourceFileByPath(const String&amp; name) const</span>
+<span id="L955"><span class="lineNum">     955</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L956"><span class="lineNum">     956</span> <span class="tlaGNC">           1 :     for (auto sourceFile : m_sourceFiles)</span></span>
+<span id="L957"><span class="lineNum">     957</span>              :     {</span>
+<span id="L958"><span class="lineNum">     958</span> <span class="tlaGNC">           1 :         if (sourceFile-&gt;getPathInfo().foundPath == name)</span></span>
+<span id="L959"><span class="lineNum">     959</span>              :         {</span>
+<span id="L960"><span class="lineNum">     960</span> <span class="tlaGNC">           1 :             return sourceFile;</span></span>
+<span id="L961"><span class="lineNum">     961</span>              :         }</span>
+<span id="L962"><span class="lineNum">     962</span>              :     }</span>
+<span id="L963"><span class="lineNum">     963</span> <span class="tlaGNC">           1 :     return nullptr;</span></span>
+<span id="L964"><span class="lineNum">     964</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L965"><span class="lineNum">     965</span>              : </span>
+<span id="L966"><span class="lineNum">     966</span>              : SourceFile* SourceManager::findSourceFile(const String&amp; uniqueIdentity) const</span>
+<span id="L967"><span class="lineNum">     967</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L968"><span class="lineNum">     968</span> <span class="tlaGNC">           1 :     SourceFile* const* filePtr = m_sourceFileMap.tryGetValue(uniqueIdentity);</span></span>
+<span id="L969"><span class="lineNum">     969</span> <span class="tlaGNC">           1 :     return (filePtr) ? *filePtr : nullptr;</span></span>
+<span id="L970"><span class="lineNum">     970</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L971"><span class="lineNum">     971</span>              : </span>
+<span id="L972"><span class="lineNum">     972</span>              : SourceFile* SourceManager::findSourceFileRecursively(const String&amp; uniqueIdentity) const</span>
+<span id="L973"><span class="lineNum">     973</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L974"><span class="lineNum">     974</span>              :     const SourceManager* manager = this;</span>
+<span id="L975"><span class="lineNum">     975</span>              :     do</span>
+<span id="L976"><span class="lineNum">     976</span>              :     {</span>
+<span id="L977"><span class="lineNum">     977</span> <span class="tlaGNC">           1 :         SourceFile* sourceFile = manager-&gt;findSourceFile(uniqueIdentity);</span></span>
+<span id="L978"><span class="lineNum">     978</span> <span class="tlaGNC">           1 :         if (sourceFile)</span></span>
+<span id="L979"><span class="lineNum">     979</span>              :         {</span>
+<span id="L980"><span class="lineNum">     980</span>              :             return sourceFile;</span>
+<span id="L981"><span class="lineNum">     981</span>              :         }</span>
+<span id="L982"><span class="lineNum">     982</span> <span class="tlaGNC">           1 :         manager = manager-&gt;m_parent;</span></span>
+<span id="L983"><span class="lineNum">     983</span> <span class="tlaGNC">           1 :     } while (manager);</span></span>
+<span id="L984"><span class="lineNum">     984</span>              :     return nullptr;</span>
+<span id="L985"><span class="lineNum">     985</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L986"><span class="lineNum">     986</span>              : </span>
+<span id="L987"><span class="lineNum">     987</span>              : SourceFile* SourceManager::findSourceFileByContentRecursively(const char* text)</span>
+<span id="L988"><span class="lineNum">     988</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L989"><span class="lineNum">     989</span>              :     const SourceManager* manager = this;</span>
+<span id="L990"><span class="lineNum">     990</span>              :     do</span>
+<span id="L991"><span class="lineNum">     991</span>              :     {</span>
+<span id="L992"><span class="lineNum">     992</span> <span class="tlaGNC">           1 :         SourceFile* sourceFile = manager-&gt;findSourceFileByContent(text);</span></span>
+<span id="L993"><span class="lineNum">     993</span> <span class="tlaGNC">           1 :         if (sourceFile)</span></span>
+<span id="L994"><span class="lineNum">     994</span>              :         {</span>
+<span id="L995"><span class="lineNum">     995</span>              :             return sourceFile;</span>
+<span id="L996"><span class="lineNum">     996</span>              :         }</span>
+<span id="L997"><span class="lineNum">     997</span> <span class="tlaUNC">           0 :         manager = manager-&gt;m_parent;</span></span>
+<span id="L998"><span class="lineNum">     998</span> <span class="tlaUNC">           0 :     } while (manager);</span></span>
+<span id="L999"><span class="lineNum">     999</span>              :     return nullptr;</span>
+<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1001"><span class="lineNum">    1001</span>              : </span>
+<span id="L1002"><span class="lineNum">    1002</span>              : SourceFile* SourceManager::findSourceFileByContent(const char* text) const</span>
+<span id="L1003"><span class="lineNum">    1003</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1004"><span class="lineNum">    1004</span> <span class="tlaGNC">           1 :     for (SourceFile* sourceFile : getSourceFiles())</span></span>
+<span id="L1005"><span class="lineNum">    1005</span>              :     {</span>
+<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaGNC">           1 :         auto content = sourceFile-&gt;getContent();</span></span>
+<span id="L1007"><span class="lineNum">    1007</span>              : </span>
+<span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">           1 :         if (text &gt;= content.begin() &amp;&amp; text &lt;= content.end())</span></span>
+<span id="L1009"><span class="lineNum">    1009</span>              :         {</span>
+<span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">           1 :             return sourceFile;</span></span>
+<span id="L1011"><span class="lineNum">    1011</span>              :         }</span>
+<span id="L1012"><span class="lineNum">    1012</span>              :     }</span>
+<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaUNC">           0 :     return nullptr;</span></span>
+<span id="L1014"><span class="lineNum">    1014</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1015"><span class="lineNum">    1015</span>              : </span>
+<span id="L1016"><span class="lineNum">    1016</span>              : void SourceManager::addSourceFile(const String&amp; uniqueIdentity, SourceFile* sourceFile)</span>
+<span id="L1017"><span class="lineNum">    1017</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1018"><span class="lineNum">    1018</span>              :     SLANG_ASSERT(!findSourceFileRecursively(uniqueIdentity));</span>
+<span id="L1019"><span class="lineNum">    1019</span> <span class="tlaGNC">           1 :     m_sourceFileMap.add(uniqueIdentity, sourceFile);</span></span>
 <span id="L1020"><span class="lineNum">    1020</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1021"><span class="lineNum">    1021</span>              : </span>
-<span id="L1022"><span class="lineNum">    1022</span>              : HumaneSourceLoc SourceManager::getHumaneLoc(SourceLoc loc, SourceLocType type)</span>
+<span id="L1022"><span class="lineNum">    1022</span>              : void SourceManager::addSourceFileIfNotExist(const String&amp; uniqueIdentity, SourceFile* sourceFile)</span>
 <span id="L1023"><span class="lineNum">    1023</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1024"><span class="lineNum">    1024</span> <span class="tlaGNC">           1 :     SourceView* sourceView = findSourceViewRecursively(loc);</span></span>
-<span id="L1025"><span class="lineNum">    1025</span> <span class="tlaGNC">           1 :     if (sourceView)</span></span>
-<span id="L1026"><span class="lineNum">    1026</span>              :     {</span>
-<span id="L1027"><span class="lineNum">    1027</span> <span class="tlaGNC">           1 :         return sourceView-&gt;getHumaneLoc(loc, type);</span></span>
-<span id="L1028"><span class="lineNum">    1028</span>              :     }</span>
-<span id="L1029"><span class="lineNum">    1029</span>              :     else</span>
-<span id="L1030"><span class="lineNum">    1030</span>              :     {</span>
-<span id="L1031"><span class="lineNum">    1031</span> <span class="tlaGNC">           1 :         return HumaneSourceLoc();</span></span>
-<span id="L1032"><span class="lineNum">    1032</span>              :     }</span>
-<span id="L1033"><span class="lineNum">    1033</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1034"><span class="lineNum">    1034</span>              : </span>
-<span id="L1035"><span class="lineNum">    1035</span>              : PathInfo SourceManager::getPathInfo(SourceLoc loc, SourceLocType type)</span>
-<span id="L1036"><span class="lineNum">    1036</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1037"><span class="lineNum">    1037</span> <span class="tlaGNC">           1 :     SourceView* sourceView = findSourceViewRecursively(loc);</span></span>
-<span id="L1038"><span class="lineNum">    1038</span> <span class="tlaGNC">           1 :     if (sourceView)</span></span>
-<span id="L1039"><span class="lineNum">    1039</span>              :     {</span>
-<span id="L1040"><span class="lineNum">    1040</span> <span class="tlaGNC">           1 :         return sourceView-&gt;getPathInfo(loc, type);</span></span>
-<span id="L1041"><span class="lineNum">    1041</span>              :     }</span>
-<span id="L1042"><span class="lineNum">    1042</span>              :     else</span>
-<span id="L1043"><span class="lineNum">    1043</span>              :     {</span>
-<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">           1 :         return PathInfo::makeUnknown();</span></span>
-<span id="L1045"><span class="lineNum">    1045</span>              :     }</span>
-<span id="L1046"><span class="lineNum">    1046</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1047"><span class="lineNum">    1047</span>              : </span>
-<span id="L1048"><span class="lineNum">    1048</span>              : SourceLoc::RawValue SourceView::getAbsoluteLocation(SourceLoc location) const</span>
-<span id="L1049"><span class="lineNum">    1049</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1050"><span class="lineNum">    1050</span> <span class="tlaGNC">           1 :     AbsoluteSegment segment;</span></span>
-<span id="L1051"><span class="lineNum">    1051</span> <span class="tlaGNC">           1 :     if (m_absSegments.getCount())</span></span>
-<span id="L1052"><span class="lineNum">    1052</span>              :     {</span>
-<span id="L1053"><span class="lineNum">    1053</span> <span class="tlaGNC">           1 :         if (m_absSegments.getFirst().begin &gt; location)</span></span>
-<span id="L1054"><span class="lineNum">    1054</span>              :         {</span>
-<span id="L1055"><span class="lineNum">    1055</span> <span class="tlaUNC">           0 :             segment.begin = m_range.begin;</span></span>
-<span id="L1056"><span class="lineNum">    1056</span> <span class="tlaUNC">           0 :             segment.absoluteBegin = m_absoluteLocationBase;</span></span>
-<span id="L1057"><span class="lineNum">    1057</span> <span class="tlaUNC">           0 :         }</span></span>
-<span id="L1058"><span class="lineNum">    1058</span>              :         else</span>
-<span id="L1059"><span class="lineNum">    1059</span>              :         {</span>
-<span id="L1060"><span class="lineNum">    1060</span> <span class="tlaGNC">           1 :             auto it = std::upper_bound(</span></span>
-<span id="L1061"><span class="lineNum">    1061</span>              :                           m_absSegments.begin(),</span>
-<span id="L1062"><span class="lineNum">    1062</span>              :                           m_absSegments.end(),</span>
-<span id="L1063"><span class="lineNum">    1063</span>              :                           location,</span>
-<span id="L1064"><span class="lineNum">    1064</span>              :                           [](SourceLoc const&amp; loc, AbsoluteSegment const&amp; seg)</span>
-<span id="L1065"><span class="lineNum">    1065</span> <span class="tlaGNC">           1 :                           { return loc &lt; seg.begin; }) -</span></span>
-<span id="L1066"><span class="lineNum">    1066</span>              :                       1;</span>
-<span id="L1067"><span class="lineNum">    1067</span> <span class="tlaGNC">           1 :             segment = *it;</span></span>
-<span id="L1068"><span class="lineNum">    1068</span>              :         }</span>
-<span id="L1069"><span class="lineNum">    1069</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1070"><span class="lineNum">    1070</span>              :     else</span>
-<span id="L1071"><span class="lineNum">    1071</span>              :     {</span>
-<span id="L1072"><span class="lineNum">    1072</span> <span class="tlaGNC">           1 :         segment = getLastSegment();</span></span>
-<span id="L1073"><span class="lineNum">    1073</span>              :     }</span>
-<span id="L1074"><span class="lineNum">    1074</span> <span class="tlaGNC">           1 :     auto offset = SourceRange(segment.begin, location).getSize();</span></span>
-<span id="L1075"><span class="lineNum">    1075</span>              :     return segment.absoluteBegin + offset;</span>
-<span id="L1076"><span class="lineNum">    1076</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1077"><span class="lineNum">    1077</span>              : </span>
-<span id="L1078"><span class="lineNum">    1078</span>              : SourceLoc::RawValue SourceManager::getAbsoluteLocation(SourceLoc location) const</span>
-<span id="L1079"><span class="lineNum">    1079</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1080"><span class="lineNum">    1080</span>              :     SourceLoc::RawValue res = 0;</span>
-<span id="L1081"><span class="lineNum">    1081</span> <span class="tlaGNC">           1 :     if (const SourceView* view = findSourceView(location))</span></span>
-<span id="L1082"><span class="lineNum">    1082</span>              :     {</span>
-<span id="L1083"><span class="lineNum">    1083</span> <span class="tlaGNC">           1 :         res = view-&gt;getAbsoluteLocation(location);</span></span>
-<span id="L1084"><span class="lineNum">    1084</span>              :     }</span>
-<span id="L1085"><span class="lineNum">    1085</span>              :     return res;</span>
-<span id="L1086"><span class="lineNum">    1086</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1087"><span class="lineNum">    1087</span>              : </span>
-<span id="L1088"><span class="lineNum">    1088</span>              : } // namespace Slang</span>
+<span id="L1024"><span class="lineNum">    1024</span> <span class="tlaGNC">           1 :     if (findSourceFileRecursively(uniqueIdentity))</span></span>
+<span id="L1025"><span class="lineNum">    1025</span>              :         return;</span>
+<span id="L1026"><span class="lineNum">    1026</span> <span class="tlaGNC">           1 :     m_sourceFileMap.addIfNotExists(uniqueIdentity, sourceFile);</span></span>
+<span id="L1027"><span class="lineNum">    1027</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1028"><span class="lineNum">    1028</span>              : </span>
+<span id="L1029"><span class="lineNum">    1029</span>              : HumaneSourceLoc SourceManager::getHumaneLoc(SourceLoc loc, SourceLocType type)</span>
+<span id="L1030"><span class="lineNum">    1030</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1031"><span class="lineNum">    1031</span> <span class="tlaGNC">           1 :     SourceView* sourceView = findSourceViewRecursively(loc);</span></span>
+<span id="L1032"><span class="lineNum">    1032</span> <span class="tlaGNC">           1 :     if (sourceView)</span></span>
+<span id="L1033"><span class="lineNum">    1033</span>              :     {</span>
+<span id="L1034"><span class="lineNum">    1034</span> <span class="tlaGNC">           1 :         return sourceView-&gt;getHumaneLoc(loc, type);</span></span>
+<span id="L1035"><span class="lineNum">    1035</span>              :     }</span>
+<span id="L1036"><span class="lineNum">    1036</span>              :     else</span>
+<span id="L1037"><span class="lineNum">    1037</span>              :     {</span>
+<span id="L1038"><span class="lineNum">    1038</span> <span class="tlaGNC">           1 :         return HumaneSourceLoc();</span></span>
+<span id="L1039"><span class="lineNum">    1039</span>              :     }</span>
+<span id="L1040"><span class="lineNum">    1040</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1041"><span class="lineNum">    1041</span>              : </span>
+<span id="L1042"><span class="lineNum">    1042</span>              : PathInfo SourceManager::getPathInfo(SourceLoc loc, SourceLocType type)</span>
+<span id="L1043"><span class="lineNum">    1043</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">           1 :     SourceView* sourceView = findSourceViewRecursively(loc);</span></span>
+<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">           1 :     if (sourceView)</span></span>
+<span id="L1046"><span class="lineNum">    1046</span>              :     {</span>
+<span id="L1047"><span class="lineNum">    1047</span> <span class="tlaGNC">           1 :         return sourceView-&gt;getPathInfo(loc, type);</span></span>
+<span id="L1048"><span class="lineNum">    1048</span>              :     }</span>
+<span id="L1049"><span class="lineNum">    1049</span>              :     else</span>
+<span id="L1050"><span class="lineNum">    1050</span>              :     {</span>
+<span id="L1051"><span class="lineNum">    1051</span> <span class="tlaGNC">           1 :         return PathInfo::makeUnknown();</span></span>
+<span id="L1052"><span class="lineNum">    1052</span>              :     }</span>
+<span id="L1053"><span class="lineNum">    1053</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1054"><span class="lineNum">    1054</span>              : </span>
+<span id="L1055"><span class="lineNum">    1055</span>              : SourceLoc::RawValue SourceView::getAbsoluteLocation(SourceLoc location) const</span>
+<span id="L1056"><span class="lineNum">    1056</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1057"><span class="lineNum">    1057</span> <span class="tlaGNC">           1 :     AbsoluteSegment segment;</span></span>
+<span id="L1058"><span class="lineNum">    1058</span> <span class="tlaGNC">           1 :     if (m_absSegments.getCount())</span></span>
+<span id="L1059"><span class="lineNum">    1059</span>              :     {</span>
+<span id="L1060"><span class="lineNum">    1060</span> <span class="tlaGNC">           1 :         if (m_absSegments.getFirst().begin &gt; location)</span></span>
+<span id="L1061"><span class="lineNum">    1061</span>              :         {</span>
+<span id="L1062"><span class="lineNum">    1062</span> <span class="tlaUNC">           0 :             segment.begin = m_range.begin;</span></span>
+<span id="L1063"><span class="lineNum">    1063</span> <span class="tlaUNC">           0 :             segment.absoluteBegin = m_absoluteLocationBase;</span></span>
+<span id="L1064"><span class="lineNum">    1064</span> <span class="tlaUNC">           0 :         }</span></span>
+<span id="L1065"><span class="lineNum">    1065</span>              :         else</span>
+<span id="L1066"><span class="lineNum">    1066</span>              :         {</span>
+<span id="L1067"><span class="lineNum">    1067</span> <span class="tlaGNC">           1 :             auto it = std::upper_bound(</span></span>
+<span id="L1068"><span class="lineNum">    1068</span>              :                           m_absSegments.begin(),</span>
+<span id="L1069"><span class="lineNum">    1069</span>              :                           m_absSegments.end(),</span>
+<span id="L1070"><span class="lineNum">    1070</span>              :                           location,</span>
+<span id="L1071"><span class="lineNum">    1071</span>              :                           [](SourceLoc const&amp; loc, AbsoluteSegment const&amp; seg)</span>
+<span id="L1072"><span class="lineNum">    1072</span> <span class="tlaGNC">           1 :                           { return loc &lt; seg.begin; }) -</span></span>
+<span id="L1073"><span class="lineNum">    1073</span>              :                       1;</span>
+<span id="L1074"><span class="lineNum">    1074</span> <span class="tlaGNC">           1 :             segment = *it;</span></span>
+<span id="L1075"><span class="lineNum">    1075</span>              :         }</span>
+<span id="L1076"><span class="lineNum">    1076</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1077"><span class="lineNum">    1077</span>              :     else</span>
+<span id="L1078"><span class="lineNum">    1078</span>              :     {</span>
+<span id="L1079"><span class="lineNum">    1079</span> <span class="tlaGNC">           1 :         segment = getLastSegment();</span></span>
+<span id="L1080"><span class="lineNum">    1080</span>              :     }</span>
+<span id="L1081"><span class="lineNum">    1081</span> <span class="tlaGNC">           1 :     auto offset = SourceRange(segment.begin, location).getSize();</span></span>
+<span id="L1082"><span class="lineNum">    1082</span>              :     return segment.absoluteBegin + offset;</span>
+<span id="L1083"><span class="lineNum">    1083</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1084"><span class="lineNum">    1084</span>              : </span>
+<span id="L1085"><span class="lineNum">    1085</span>              : SourceLoc::RawValue SourceManager::getAbsoluteLocation(SourceLoc location) const</span>
+<span id="L1086"><span class="lineNum">    1086</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1087"><span class="lineNum">    1087</span>              :     SourceLoc::RawValue res = 0;</span>
+<span id="L1088"><span class="lineNum">    1088</span> <span class="tlaGNC">           1 :     if (const SourceView* view = findSourceView(location))</span></span>
+<span id="L1089"><span class="lineNum">    1089</span>              :     {</span>
+<span id="L1090"><span class="lineNum">    1090</span> <span class="tlaGNC">           1 :         res = view-&gt;getAbsoluteLocation(location);</span></span>
+<span id="L1091"><span class="lineNum">    1091</span>              :     }</span>
+<span id="L1092"><span class="lineNum">    1092</span>              :     return res;</span>
+<span id="L1093"><span class="lineNum">    1093</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1094"><span class="lineNum">    1094</span>              : </span>
+<span id="L1095"><span class="lineNum">    1095</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

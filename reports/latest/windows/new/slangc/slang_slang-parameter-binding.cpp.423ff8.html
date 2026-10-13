@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-12 05:03:10 UTC</td>
+      <td class="headerValue">2026-10-13 05:23:40 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">95.2&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:95.2%;background-color:hsl(113, 70%, 50%)"></div></div>
-      <span class="metricCounts">1,276 / 1,341</span>
+      <span class="metricCounts">1,279 / 1,344</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -2880,7 +2880,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2607"><span class="lineNum">    2607</span>              : </span>
 <span id="L2608"><span class="lineNum">    2608</span> <span class="tlaGNC">           1 :             RefPtr&lt;ArrayTypeLayout&gt; arrayTypeLayout = new ArrayTypeLayout();</span></span>
 <span id="L2609"><span class="lineNum">    2609</span> <span class="tlaGNC">           1 :             arrayTypeLayout-&gt;elementTypeLayout = elementTypeLayout;</span></span>
-<span id="L2610"><span class="lineNum">    2610</span> <span class="tlaGNC">           1 :             arrayTypeLayout-&gt;type = arrayType;</span></span>
+<span id="L2610"><span class="lineNum">    2610</span> <span class="tlaGNC">           1 :             arrayTypeLayout-&gt;type = meshOutputType;</span></span>
 <span id="L2611"><span class="lineNum">    2611</span>              : </span>
 <span id="L2612"><span class="lineNum">    2612</span>              :             // TODO: Ellie, this is probably not the right place to handle this</span>
 <span id="L2613"><span class="lineNum">    2613</span>              :             // On GLSL the indices type is built in and as such doesn&#x27;t consume</span>
@@ -2912,7 +2912,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2639"><span class="lineNum">    2639</span>              : </span>
 <span id="L2640"><span class="lineNum">    2640</span> <span class="tlaGNC">           1 :             RefPtr&lt;ArrayTypeLayout&gt; arrayTypeLayout = new ArrayTypeLayout();</span></span>
 <span id="L2641"><span class="lineNum">    2641</span> <span class="tlaGNC">           1 :             arrayTypeLayout-&gt;elementTypeLayout = elementTypeLayout;</span></span>
-<span id="L2642"><span class="lineNum">    2642</span> <span class="tlaGNC">           1 :             arrayTypeLayout-&gt;type = arrayType;</span></span>
+<span id="L2642"><span class="lineNum">    2642</span> <span class="tlaGNC">           1 :             arrayTypeLayout-&gt;type = patchType;</span></span>
 <span id="L2643"><span class="lineNum">    2643</span>              : </span>
 <span id="L2644"><span class="lineNum">    2644</span> <span class="tlaGNC">           1 :             for (auto rr : elementTypeLayout-&gt;resourceInfos)</span></span>
 <span id="L2645"><span class="lineNum">    2645</span>              :             {</span>
@@ -5122,27 +5122,33 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L4849"><span class="lineNum">    4849</span>              : </span>
 <span id="L4850"><span class="lineNum">    4850</span> <span class="tlaGNC">           1 :     if (!m_layout)</span></span>
 <span id="L4851"><span class="lineNum">    4851</span>              :     {</span>
-<span id="L4852"><span class="lineNum">    4852</span> <span class="tlaGNC">           1 :         m_layout = generateParameterBindings(this, sink);</span></span>
-<span id="L4853"><span class="lineNum">    4853</span> <span class="tlaGNC">           1 :         if (sink-&gt;getErrorCount() != 0)</span></span>
-<span id="L4854"><span class="lineNum">    4854</span>              :             return nullptr;</span>
-<span id="L4855"><span class="lineNum">    4855</span>              :     }</span>
-<span id="L4856"><span class="lineNum">    4856</span>              : </span>
-<span id="L4857"><span class="lineNum">    4857</span> <span class="tlaGNC">           1 :     if (m_layout &amp;&amp; !m_irModuleForLayout)</span></span>
-<span id="L4858"><span class="lineNum">    4858</span>              :     {</span>
-<span id="L4859"><span class="lineNum">    4859</span> <span class="tlaGNC">           1 :         m_irModuleForLayout = createIRModuleForLayout(sink);</span></span>
-<span id="L4860"><span class="lineNum">    4860</span>              :     }</span>
-<span id="L4861"><span class="lineNum">    4861</span> <span class="tlaGNC">           1 :     return m_layout;</span></span>
-<span id="L4862"><span class="lineNum">    4862</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4863"><span class="lineNum">    4863</span>              : </span>
-<span id="L4864"><span class="lineNum">    4864</span>              : void generateParameterBindings(</span>
-<span id="L4865"><span class="lineNum">    4865</span>              :     ComponentType* program,</span>
-<span id="L4866"><span class="lineNum">    4866</span>              :     TargetRequest* targetReq,</span>
-<span id="L4867"><span class="lineNum">    4867</span>              :     DiagnosticSink* sink)</span>
-<span id="L4868"><span class="lineNum">    4868</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L4869"><span class="lineNum">    4869</span> <span class="tlaUNC">           0 :     program-&gt;getTargetProgram(targetReq)-&gt;getOrCreateLayout(sink);</span></span>
-<span id="L4870"><span class="lineNum">    4870</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L4871"><span class="lineNum">    4871</span>              : </span>
-<span id="L4872"><span class="lineNum">    4872</span>              : } // namespace Slang</span>
+<span id="L4852"><span class="lineNum">    4852</span> <span class="tlaGNC">           1 :         auto errorCountBefore = sink-&gt;getErrorCount();</span></span>
+<span id="L4853"><span class="lineNum">    4853</span> <span class="tlaGNC">           1 :         m_layout = generateParameterBindings(this, sink);</span></span>
+<span id="L4854"><span class="lineNum">    4854</span> <span class="tlaGNC">           1 :         if (sink-&gt;getErrorCount() != errorCountBefore)</span></span>
+<span id="L4855"><span class="lineNum">    4855</span> <span class="tlaGNC">           1 :             m_layoutHasErrors = true;</span></span>
+<span id="L4856"><span class="lineNum">    4856</span>              :     }</span>
+<span id="L4857"><span class="lineNum">    4857</span>              : </span>
+<span id="L4858"><span class="lineNum">    4858</span>              :     // Layout generation reported errors on an earlier call (to a different sink, or this one).</span>
+<span id="L4859"><span class="lineNum">    4859</span>              :     // Don&#x27;t hand out the layout of an invalid program, or build IR for it.</span>
+<span id="L4860"><span class="lineNum">    4860</span> <span class="tlaGNC">           1 :     if (m_layoutHasErrors)</span></span>
+<span id="L4861"><span class="lineNum">    4861</span>              :         return nullptr;</span>
+<span id="L4862"><span class="lineNum">    4862</span>              : </span>
+<span id="L4863"><span class="lineNum">    4863</span> <span class="tlaGNC">           1 :     if (m_layout &amp;&amp; !m_irModuleForLayout)</span></span>
+<span id="L4864"><span class="lineNum">    4864</span>              :     {</span>
+<span id="L4865"><span class="lineNum">    4865</span> <span class="tlaGNC">           1 :         m_irModuleForLayout = createIRModuleForLayout(sink);</span></span>
+<span id="L4866"><span class="lineNum">    4866</span>              :     }</span>
+<span id="L4867"><span class="lineNum">    4867</span> <span class="tlaGNC">           1 :     return m_layout;</span></span>
+<span id="L4868"><span class="lineNum">    4868</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4869"><span class="lineNum">    4869</span>              : </span>
+<span id="L4870"><span class="lineNum">    4870</span>              : void generateParameterBindings(</span>
+<span id="L4871"><span class="lineNum">    4871</span>              :     ComponentType* program,</span>
+<span id="L4872"><span class="lineNum">    4872</span>              :     TargetRequest* targetReq,</span>
+<span id="L4873"><span class="lineNum">    4873</span>              :     DiagnosticSink* sink)</span>
+<span id="L4874"><span class="lineNum">    4874</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L4875"><span class="lineNum">    4875</span> <span class="tlaUNC">           0 :     program-&gt;getTargetProgram(targetReq)-&gt;getOrCreateLayout(sink);</span></span>
+<span id="L4876"><span class="lineNum">    4876</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L4877"><span class="lineNum">    4877</span>              : </span>
+<span id="L4878"><span class="lineNum">    4878</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
