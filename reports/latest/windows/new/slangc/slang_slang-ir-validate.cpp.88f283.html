@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-14 05:12:08 UTC</td>
+      <td class="headerValue">2026-10-15 03:53:36 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">89.2&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:89.2%;background-color:hsl(104, 70%, 50%)"></div></div>
-      <span class="metricCounts">305 / 342</span>
+      <span class="metricValue">89.3&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:89.3%;background-color:hsl(104, 70%, 50%)"></div></div>
+      <span class="metricCounts">308 / 345</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -1041,263 +1041,283 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L768"><span class="lineNum">     768</span>              : </span>
 <span id="L769"><span class="lineNum">     769</span>              : bool validateMutableGlobalVariableTypes(IRModule* module, DiagnosticSink* sink)</span>
 <span id="L770"><span class="lineNum">     770</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L771"><span class="lineNum">     771</span>              :     // When checking `extern struct Thing {}; uniform Thing input;`, semantic checking cannot</span>
-<span id="L772"><span class="lineNum">     772</span>              :     // know whether the linked definition of `Thing` contains a texture or an unsized array.</span>
-<span id="L773"><span class="lineNum">     773</span>              :     // AST-to-IR lowering emits mutable storage for both `static Thing temp = input;` and a</span>
-<span id="L774"><span class="lineNum">     774</span>              :     // compatibility shadow. After specialization, IR type queries can examine the linked fields.</span>
-<span id="L775"><span class="lineNum">     775</span> <span class="tlaGNC">           1 :     bool hasErrors = false;</span></span>
-<span id="L776"><span class="lineNum">     776</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L777"><span class="lineNum">     777</span>              :     {</span>
-<span id="L778"><span class="lineNum">     778</span>              :         // Only `IRGlobalVar` instructions represent mutable module-scope storage. Shader</span>
-<span id="L779"><span class="lineNum">     779</span>              :         // parameters and constants do not require that storage and are checked elsewhere.</span>
-<span id="L780"><span class="lineNum">     780</span> <span class="tlaGNC">           1 :         auto globalVar = as&lt;IRGlobalVar&gt;(globalInst);</span></span>
-<span id="L781"><span class="lineNum">     781</span> <span class="tlaGNC">           1 :         if (!globalVar)</span></span>
-<span id="L782"><span class="lineNum">     782</span>              :             continue;</span>
-<span id="L783"><span class="lineNum">     783</span>              : </span>
-<span id="L784"><span class="lineNum">     784</span>              :         // A `static` data member also lowers to `IRGlobalVar`. This function uses the decoration</span>
-<span id="L785"><span class="lineNum">     785</span>              :         // to select file- or namespace-scope `static` variables and synthesized shadows with</span>
-<span id="L786"><span class="lineNum">     786</span>              :         // the same storage semantics.</span>
-<span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">           1 :         if (!globalVar-&gt;findDecoration&lt;IRFileOrNamespaceScopeStaticVarDecoration&gt;())</span></span>
-<span id="L788"><span class="lineNum">     788</span>              :             continue;</span>
-<span id="L789"><span class="lineNum">     789</span>              : </span>
-<span id="L790"><span class="lineNum">     790</span>              :         // `isOpaqueType` examines fields and array elements recursively. The IR implementation</span>
-<span id="L791"><span class="lineNum">     791</span>              :         // of global variables does not currently support mutable storage for those opaque values.</span>
-<span id="L792"><span class="lineNum">     792</span> <span class="tlaGNC">           1 :         auto valueType = globalVar-&gt;getDataType()-&gt;getValueType();</span></span>
-<span id="L793"><span class="lineNum">     793</span>              :         IRType* opaqueType = nullptr;</span>
-<span id="L794"><span class="lineNum">     794</span> <span class="tlaGNC">           1 :         if (isOpaqueType(valueType, &amp;opaqueType))</span></span>
-<span id="L795"><span class="lineNum">     795</span>              :         {</span>
-<span id="L796"><span class="lineNum">     796</span>              :             // The diagnostic belongs at the variable declaration. Reporting it before resource</span>
-<span id="L797"><span class="lineNum">     797</span>              :             // legalization prevents an unsupported global initializer from being split as if it</span>
-<span id="L798"><span class="lineNum">     798</span>              :             // were a function returning its resource fields through generated `out` parameters.</span>
-<span id="L799"><span class="lineNum">     799</span> <span class="tlaGNC">           1 :             sink-&gt;diagnose(Diagnostics::OpaqueTypeInMutableGlobal{</span></span>
-<span id="L800"><span class="lineNum">     800</span>              :                 .type = opaqueType,</span>
-<span id="L801"><span class="lineNum">     801</span>              :                 .location = globalVar-&gt;sourceLoc});</span>
-<span id="L802"><span class="lineNum">     802</span>              :             hasErrors = true;</span>
-<span id="L803"><span class="lineNum">     803</span> <span class="tlaGNC">           1 :             continue;</span></span>
-<span id="L804"><span class="lineNum">     804</span>              :         }</span>
-<span id="L805"><span class="lineNum">     805</span>              : </span>
-<span id="L806"><span class="lineNum">     806</span>              :         // The linker can select a definition with a trailing unsized array. Such a type may be</span>
-<span id="L807"><span class="lineNum">     807</span>              :         // valid as a buffer element, but we cannot independently allocate a private variable</span>
-<span id="L808"><span class="lineNum">     808</span>              :         // of that type. This applies to ordinary `static` variables and shadows alike.</span>
-<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">           1 :         if (isUnsizedType(valueType))</span></span>
-<span id="L810"><span class="lineNum">     810</span>              :         {</span>
-<span id="L811"><span class="lineNum">     811</span> <span class="tlaGNC">           1 :             sink-&gt;diagnose(Diagnostics::UnsizedTypeInMutableGlobal{</span></span>
-<span id="L812"><span class="lineNum">     812</span>              :                 .type = valueType,</span>
-<span id="L813"><span class="lineNum">     813</span>              :                 .location = globalVar-&gt;sourceLoc});</span>
-<span id="L814"><span class="lineNum">     814</span>              :             hasErrors = true;</span>
+<span id="L771"><span class="lineNum">     771</span>              :     // Consider a module that declares `extern struct Thing {}` and uses `Thing` as the type of a</span>
+<span id="L772"><span class="lineNum">     772</span>              :     // file- or namespace-scope mutable `static` variable. Semantic checking cannot know whether a</span>
+<span id="L773"><span class="lineNum">     773</span>              :     // definition from another module contains a resource or an unsized array. Lowering marks that</span>
+<span id="L774"><span class="lineNum">     774</span>              :     // declaration category, so this validation can check its type once the definition is</span>
+<span id="L775"><span class="lineNum">     775</span>              :     // available.</span>
+<span id="L776"><span class="lineNum">     776</span> <span class="tlaGNC">           1 :     bool hasErrors = false;</span></span>
+<span id="L777"><span class="lineNum">     777</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L778"><span class="lineNum">     778</span>              :     {</span>
+<span id="L779"><span class="lineNum">     779</span>              :         // Only `IRGlobalVar` instructions represent mutable module-scope storage. Shader</span>
+<span id="L780"><span class="lineNum">     780</span>              :         // parameters and constants do not require that storage and are checked elsewhere.</span>
+<span id="L781"><span class="lineNum">     781</span> <span class="tlaGNC">           1 :         auto globalVar = as&lt;IRGlobalVar&gt;(globalInst);</span></span>
+<span id="L782"><span class="lineNum">     782</span> <span class="tlaGNC">           1 :         if (!globalVar)</span></span>
+<span id="L783"><span class="lineNum">     783</span>              :             continue;</span>
+<span id="L784"><span class="lineNum">     784</span>              : </span>
+<span id="L785"><span class="lineNum">     785</span>              :         // An `IRGlobalVar` may also represent a static data member. The decoration instead</span>
+<span id="L786"><span class="lineNum">     786</span>              :         // identifies a file- or namespace-scope mutable `static` variable, or a shadow synthesized</span>
+<span id="L787"><span class="lineNum">     787</span>              :         // for a uniform parameter under `-Gec`. The candidate predicate below separately checks</span>
+<span id="L788"><span class="lineNum">     788</span>              :         // that the global has no explicit storage rate before treating it as per-invocation state.</span>
+<span id="L789"><span class="lineNum">     789</span> <span class="tlaGNC">           1 :         if (!globalVar-&gt;findDecoration&lt;IRFileOrNamespaceScopeMutableVarDecoration&gt;())</span></span>
+<span id="L790"><span class="lineNum">     790</span>              :             continue;</span>
+<span id="L791"><span class="lineNum">     791</span>              : </span>
+<span id="L792"><span class="lineNum">     792</span>              :         // We record whether the marked global has the rate and stored type accepted as a resource-</span>
+<span id="L793"><span class="lineNum">     793</span>              :         // replacement candidate before diagnosing other opaque types. The legalization pass later</span>
+<span id="L794"><span class="lineNum">     794</span>              :         // validates the candidate&#x27;s uses and call graph before committing to replacement.</span>
+<span id="L795"><span class="lineNum">     795</span> <span class="tlaGNC">           1 :         bool isPerInvocationResourceReplacementCandidate =</span></span>
+<span id="L796"><span class="lineNum">     796</span>              :             isResourceGlobalCandidateForPerInvocationReplacement(globalVar);</span>
+<span id="L797"><span class="lineNum">     797</span>              : </span>
+<span id="L798"><span class="lineNum">     798</span>              :         // The shared accessor asserts the concrete pointer and pointee representation established</span>
+<span id="L799"><span class="lineNum">     799</span>              :         // by linking. We remove wrappers from the stored value before inspecting its storage</span>
+<span id="L800"><span class="lineNum">     800</span>              :         // requirements.</span>
+<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">           1 :         auto valueType = as&lt;IRType&gt;(unwrapAttributedType(getGlobalVarValueType(globalVar)));</span></span>
+<span id="L802"><span class="lineNum">     802</span> <span class="tlaGNC">           1 :         SLANG_RELEASE_ASSERT(valueType);</span></span>
+<span id="L803"><span class="lineNum">     803</span>              : </span>
+<span id="L804"><span class="lineNum">     804</span>              :         // The linker can select a definition with a trailing unsized array. Such a type may be</span>
+<span id="L805"><span class="lineNum">     805</span>              :         // valid as a buffer element, but we cannot independently allocate a mutable variable of</span>
+<span id="L806"><span class="lineNum">     806</span>              :         // that type. We check this before the resource exception below because an unbounded array</span>
+<span id="L807"><span class="lineNum">     807</span>              :         // of otherwise supported resources still cannot become function-local storage.</span>
+<span id="L808"><span class="lineNum">     808</span> <span class="tlaGNC">           1 :         if (isUnsizedType(valueType))</span></span>
+<span id="L809"><span class="lineNum">     809</span>              :         {</span>
+<span id="L810"><span class="lineNum">     810</span> <span class="tlaGNC">           1 :             sink-&gt;diagnose(Diagnostics::UnsizedTypeInMutableGlobalStorage{</span></span>
+<span id="L811"><span class="lineNum">     811</span>              :                 .type = valueType,</span>
+<span id="L812"><span class="lineNum">     812</span>              :                 .location = globalVar-&gt;sourceLoc});</span>
+<span id="L813"><span class="lineNum">     813</span>              :             hasErrors = true;</span>
+<span id="L814"><span class="lineNum">     814</span> <span class="tlaGNC">           1 :             continue;</span></span>
 <span id="L815"><span class="lineNum">     815</span>              :         }</span>
-<span id="L816"><span class="lineNum">     816</span>              :     }</span>
-<span id="L817"><span class="lineNum">     817</span> <span class="tlaGNC">           1 :     return !hasErrors;</span></span>
-<span id="L818"><span class="lineNum">     818</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L819"><span class="lineNum">     819</span>              : </span>
-<span id="L820"><span class="lineNum">     820</span>              : //</span>
-<span id="L821"><span class="lineNum">     821</span>              : // Structure buffer resource types</span>
-<span id="L822"><span class="lineNum">     822</span>              : //</span>
-<span id="L823"><span class="lineNum">     823</span>              : </span>
-<span id="L824"><span class="lineNum">     824</span>              : bool StructuredBufferValidationContext::containsOpaqueHandleTypeCached(IRType* type)</span>
-<span id="L825"><span class="lineNum">     825</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L826"><span class="lineNum">     826</span>              :     // Check cache first</span>
-<span id="L827"><span class="lineNum">     827</span> <span class="tlaGNC">           1 :     if (m_checkedTypes.contains(type))</span></span>
-<span id="L828"><span class="lineNum">     828</span>              :     {</span>
-<span id="L829"><span class="lineNum">     829</span> <span class="tlaGNC">           1 :         return m_typesWithOpaqueHandles.contains(type);</span></span>
-<span id="L830"><span class="lineNum">     830</span>              :     }</span>
-<span id="L831"><span class="lineNum">     831</span>              : </span>
-<span id="L832"><span class="lineNum">     832</span>              :     // Not in cache, need to check</span>
-<span id="L833"><span class="lineNum">     833</span> <span class="tlaGNC">           1 :     HashSet&lt;IRType*&gt; visitedInCurrentCheck;</span></span>
-<span id="L834"><span class="lineNum">     834</span> <span class="tlaGNC">           1 :     bool result = containsOpaqueHandleTypeInternal(type, visitedInCurrentCheck);</span></span>
-<span id="L835"><span class="lineNum">     835</span>              : </span>
-<span id="L836"><span class="lineNum">     836</span>              :     // Cache the result</span>
-<span id="L837"><span class="lineNum">     837</span> <span class="tlaGNC">           1 :     m_checkedTypes.add(type);</span></span>
-<span id="L838"><span class="lineNum">     838</span> <span class="tlaGNC">           1 :     if (result)</span></span>
-<span id="L839"><span class="lineNum">     839</span>              :     {</span>
-<span id="L840"><span class="lineNum">     840</span> <span class="tlaGNC">           1 :         m_typesWithOpaqueHandles.add(type);</span></span>
-<span id="L841"><span class="lineNum">     841</span>              :     }</span>
-<span id="L842"><span class="lineNum">     842</span>              : </span>
-<span id="L843"><span class="lineNum">     843</span> <span class="tlaGNC">           1 :     return result;</span></span>
-<span id="L844"><span class="lineNum">     844</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L845"><span class="lineNum">     845</span>              : </span>
-<span id="L846"><span class="lineNum">     846</span>              : bool StructuredBufferValidationContext::containsOpaqueHandleTypeInternal(</span>
-<span id="L847"><span class="lineNum">     847</span>              :     IRType* type,</span>
-<span id="L848"><span class="lineNum">     848</span>              :     HashSet&lt;IRType*&gt;&amp; visitedInCurrentCheck)</span>
-<span id="L849"><span class="lineNum">     849</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L850"><span class="lineNum">     850</span>              :     // Prevent infinite recursion in current check</span>
-<span id="L851"><span class="lineNum">     851</span> <span class="tlaGNC">           1 :     if (!visitedInCurrentCheck.add(type))</span></span>
-<span id="L852"><span class="lineNum">     852</span>              :         return false;</span>
-<span id="L853"><span class="lineNum">     853</span>              : </span>
-<span id="L854"><span class="lineNum">     854</span>              :     // Check if the type itself is an opaque handle</span>
-<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">           1 :     if (isResourceType(type))</span></span>
-<span id="L856"><span class="lineNum">     856</span>              :         return true;</span>
-<span id="L857"><span class="lineNum">     857</span>              : </span>
-<span id="L858"><span class="lineNum">     858</span>              :     // Check struct types</span>
-<span id="L859"><span class="lineNum">     859</span> <span class="tlaGNC">           1 :     if (auto structType = as&lt;IRStructType&gt;(type))</span></span>
-<span id="L860"><span class="lineNum">     860</span>              :     {</span>
-<span id="L861"><span class="lineNum">     861</span> <span class="tlaGNC">           1 :         for (auto field : structType-&gt;getFields())</span></span>
-<span id="L862"><span class="lineNum">     862</span>              :         {</span>
-<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">           1 :             if (containsOpaqueHandleTypeInternal(field-&gt;getFieldType(), visitedInCurrentCheck))</span></span>
-<span id="L864"><span class="lineNum">     864</span>              :                 return true;</span>
-<span id="L865"><span class="lineNum">     865</span>              :         }</span>
-<span id="L866"><span class="lineNum">     866</span>              :     }</span>
-<span id="L867"><span class="lineNum">     867</span> <span class="tlaGNC">           1 :     else if (auto arrayType = as&lt;IRArrayTypeBase&gt;(type))</span></span>
-<span id="L868"><span class="lineNum">     868</span>              :     {</span>
-<span id="L869"><span class="lineNum">     869</span> <span class="tlaGNC">           1 :         return containsOpaqueHandleTypeInternal(arrayType-&gt;getElementType(), visitedInCurrentCheck);</span></span>
-<span id="L870"><span class="lineNum">     870</span>              :     }</span>
-<span id="L871"><span class="lineNum">     871</span> <span class="tlaGNC">           1 :     else if (auto ptrType = as&lt;IRPtrTypeBase&gt;(type))</span></span>
-<span id="L872"><span class="lineNum">     872</span>              :     {</span>
-<span id="L873"><span class="lineNum">     873</span> <span class="tlaGNC">           1 :         return containsOpaqueHandleTypeInternal(ptrType-&gt;getValueType(), visitedInCurrentCheck);</span></span>
-<span id="L874"><span class="lineNum">     874</span>              :     }</span>
-<span id="L875"><span class="lineNum">     875</span>              : </span>
-<span id="L876"><span class="lineNum">     876</span> <span class="tlaGNC">           1 :     return false;</span></span>
-<span id="L877"><span class="lineNum">     877</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L878"><span class="lineNum">     878</span>              : </span>
-<span id="L879"><span class="lineNum">     879</span>              : void StructuredBufferValidationContext::validateStructuredBufferVariable(</span>
-<span id="L880"><span class="lineNum">     880</span>              :     IRType* type,</span>
-<span id="L881"><span class="lineNum">     881</span>              :     SourceLoc loc)</span>
-<span id="L882"><span class="lineNum">     882</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L883"><span class="lineNum">     883</span> <span class="tlaGNC">           1 :     while (type)</span></span>
-<span id="L884"><span class="lineNum">     884</span>              :     {</span>
-<span id="L885"><span class="lineNum">     885</span> <span class="tlaGNC">           1 :         if (auto structuredBufferType = as&lt;IRHLSLStructuredBufferTypeBase&gt;(type))</span></span>
-<span id="L886"><span class="lineNum">     886</span>              :         {</span>
-<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">           1 :             auto elementType = structuredBufferType-&gt;getElementType();</span></span>
-<span id="L888"><span class="lineNum">     888</span> <span class="tlaGNC">           1 :             if (containsOpaqueHandleTypeCached(elementType))</span></span>
-<span id="L889"><span class="lineNum">     889</span>              :             {</span>
-<span id="L890"><span class="lineNum">     890</span> <span class="tlaGNC">           1 :                 m_sink-&gt;diagnose(Diagnostics::CannotUseResourceTypeInStructuredBuffer{</span></span>
-<span id="L891"><span class="lineNum">     891</span>              :                     .type = elementType,</span>
-<span id="L892"><span class="lineNum">     892</span>              :                     .location = loc});</span>
-<span id="L893"><span class="lineNum">     893</span> <span class="tlaGNC">           1 :                 m_hasErrors = true;</span></span>
-<span id="L894"><span class="lineNum">     894</span>              :             }</span>
-<span id="L895"><span class="lineNum">     895</span>              :             return;</span>
-<span id="L896"><span class="lineNum">     896</span>              :         }</span>
-<span id="L897"><span class="lineNum">     897</span> <span class="tlaGNC">           1 :         else if (auto arrayType = as&lt;IRArrayTypeBase&gt;(type))</span></span>
-<span id="L898"><span class="lineNum">     898</span> <span class="tlaGNC">           1 :             type = arrayType-&gt;getElementType();</span></span>
-<span id="L899"><span class="lineNum">     899</span> <span class="tlaGNC">           1 :         else if (auto ptrType = as&lt;IRPtrTypeBase&gt;(type))</span></span>
-<span id="L900"><span class="lineNum">     900</span> <span class="tlaGNC">           1 :             type = ptrType-&gt;getValueType();</span></span>
-<span id="L901"><span class="lineNum">     901</span> <span class="tlaGNC">           1 :         else if (auto groupType = as&lt;IRParameterGroupType&gt;(type))</span></span>
-<span id="L902"><span class="lineNum">     902</span> <span class="tlaGNC">           1 :             type = groupType-&gt;getElementType();</span></span>
-<span id="L903"><span class="lineNum">     903</span>              :         else</span>
-<span id="L904"><span class="lineNum">     904</span>              :             return;</span>
-<span id="L905"><span class="lineNum">     905</span>              :     }</span>
-<span id="L906"><span class="lineNum">     906</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L907"><span class="lineNum">     907</span>              : </span>
-<span id="L908"><span class="lineNum">     908</span>              : bool StructuredBufferValidationContext::validate(IRModule* module)</span>
-<span id="L909"><span class="lineNum">     909</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L910"><span class="lineNum">     910</span>              :     // Skip validation if bindless is enabled for this target</span>
-<span id="L911"><span class="lineNum">     911</span> <span class="tlaGNC">           1 :     if (m_targetRequest &amp;&amp; areResourceTypesBindlessOnTarget(m_targetRequest))</span></span>
-<span id="L912"><span class="lineNum">     912</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L913"><span class="lineNum">     913</span>              : </span>
-<span id="L914"><span class="lineNum">     914</span>              :     // `getGlobalInsts()` only yields direct children of the module. That is</span>
-<span id="L915"><span class="lineNum">     915</span>              :     // sufficient by the time this pass runs (after `specializeModule`),</span>
-<span id="L916"><span class="lineNum">     916</span>              :     // because concrete struct types have already been hoisted to module</span>
-<span id="L917"><span class="lineNum">     917</span>              :     // scope. Any unspecialized `IRStructType` parented under an `IRGeneric`</span>
-<span id="L918"><span class="lineNum">     918</span>              :     // is unreachable from here, which is fine since its</span>
-<span id="L919"><span class="lineNum">     919</span>              :     // `StructuredBuffer&lt;T&gt;` fields have no concrete `T` to validate yet.</span>
-<span id="L920"><span class="lineNum">     920</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L921"><span class="lineNum">     921</span>              :     {</span>
-<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">           1 :         if (auto globalParam = as&lt;IRGlobalParam&gt;(globalInst))</span></span>
-<span id="L923"><span class="lineNum">     923</span>              :         {</span>
-<span id="L924"><span class="lineNum">     924</span> <span class="tlaGNC">           1 :             validateStructuredBufferVariable(globalParam-&gt;getDataType(), globalParam-&gt;sourceLoc);</span></span>
-<span id="L925"><span class="lineNum">     925</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L926"><span class="lineNum">     926</span> <span class="tlaGNC">           1 :         else if (auto structType = as&lt;IRStructType&gt;(globalInst))</span></span>
-<span id="L927"><span class="lineNum">     927</span>              :         {</span>
-<span id="L928"><span class="lineNum">     928</span> <span class="tlaGNC">           1 :             for (auto field : structType-&gt;getFields())</span></span>
-<span id="L929"><span class="lineNum">     929</span>              :             {</span>
-<span id="L930"><span class="lineNum">     930</span> <span class="tlaGNC">           1 :                 validateStructuredBufferVariable(field-&gt;getFieldType(), field-&gt;sourceLoc);</span></span>
-<span id="L931"><span class="lineNum">     931</span>              :             }</span>
-<span id="L932"><span class="lineNum">     932</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L933"><span class="lineNum">     933</span> <span class="tlaGNC">           1 :         else if (auto func = as&lt;IRFunc&gt;(globalInst))</span></span>
-<span id="L934"><span class="lineNum">     934</span>              :         {</span>
-<span id="L935"><span class="lineNum">     935</span> <span class="tlaGNC">           1 :             for (auto param : func-&gt;getParams())</span></span>
-<span id="L936"><span class="lineNum">     936</span>              :             {</span>
-<span id="L937"><span class="lineNum">     937</span> <span class="tlaGNC">           1 :                 validateStructuredBufferVariable(param-&gt;getDataType(), param-&gt;sourceLoc);</span></span>
-<span id="L938"><span class="lineNum">     938</span>              :             }</span>
-<span id="L939"><span class="lineNum">     939</span>              :         }</span>
-<span id="L940"><span class="lineNum">     940</span>              :     }</span>
-<span id="L941"><span class="lineNum">     941</span>              : </span>
-<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">           1 :     return !m_hasErrors;</span></span>
-<span id="L943"><span class="lineNum">     943</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L944"><span class="lineNum">     944</span>              : </span>
-<span id="L945"><span class="lineNum">     945</span>              : bool validateStructuredBufferResourceTypes(</span>
-<span id="L946"><span class="lineNum">     946</span>              :     IRModule* module,</span>
-<span id="L947"><span class="lineNum">     947</span>              :     DiagnosticSink* sink,</span>
-<span id="L948"><span class="lineNum">     948</span>              :     TargetRequest* targetRequest)</span>
-<span id="L949"><span class="lineNum">     949</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L950"><span class="lineNum">     950</span> <span class="tlaGNC">           1 :     StructuredBufferValidationContext context(sink, targetRequest);</span></span>
-<span id="L951"><span class="lineNum">     951</span> <span class="tlaGNC">           1 :     return context.validate(module);</span></span>
-<span id="L952"><span class="lineNum">     952</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L953"><span class="lineNum">     953</span>              : </span>
-<span id="L954"><span class="lineNum">     954</span>              : void validateAtomicOperations(IRModule* module, bool skipFuncParamValidation, DiagnosticSink* sink)</span>
-<span id="L955"><span class="lineNum">     955</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L956"><span class="lineNum">     956</span> <span class="tlaGNC">           1 :     validateAtomicOperations(skipFuncParamValidation, sink, module-&gt;getModuleInst());</span></span>
-<span id="L957"><span class="lineNum">     957</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L958"><span class="lineNum">     958</span>              : </span>
-<span id="L959"><span class="lineNum">     959</span>              : static void collectAssumeAddressInsts(IRInst* inst, List&lt;IRInst*&gt;&amp; out)</span>
-<span id="L960"><span class="lineNum">     960</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L961"><span class="lineNum">     961</span> <span class="tlaGNC">           1 :     if (inst-&gt;getOp() == kIROp_AssumeAddress)</span></span>
-<span id="L962"><span class="lineNum">     962</span> <span class="tlaGNC">           1 :         out.add(inst);</span></span>
-<span id="L963"><span class="lineNum">     963</span> <span class="tlaGNC">           1 :     for (auto child : inst-&gt;getModifiableChildren())</span></span>
-<span id="L964"><span class="lineNum">     964</span> <span class="tlaGNC">           1 :         collectAssumeAddressInsts(child, out);</span></span>
-<span id="L965"><span class="lineNum">     965</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L966"><span class="lineNum">     966</span>              : </span>
-<span id="L967"><span class="lineNum">     967</span>              : void validateAndRemoveAssumeAddress(IRModule* module, bool validate, DiagnosticSink* sink)</span>
-<span id="L968"><span class="lineNum">     968</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L969"><span class="lineNum">     969</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; assumeAddrs;</span></span>
-<span id="L970"><span class="lineNum">     970</span> <span class="tlaGNC">           1 :     collectAssumeAddressInsts(module-&gt;getModuleInst(), assumeAddrs);</span></span>
-<span id="L971"><span class="lineNum">     971</span>              : </span>
-<span id="L972"><span class="lineNum">     972</span> <span class="tlaGNC">           1 :     if (validate)</span></span>
-<span id="L973"><span class="lineNum">     973</span>              :     {</span>
-<span id="L974"><span class="lineNum">     974</span> <span class="tlaGNC">           1 :         for (auto inst : assumeAddrs)</span></span>
-<span id="L975"><span class="lineNum">     975</span>              :         {</span>
-<span id="L976"><span class="lineNum">     976</span> <span class="tlaGNC">           1 :             auto addr = inst-&gt;getOperand(0);</span></span>
-<span id="L977"><span class="lineNum">     977</span> <span class="tlaGNC">           1 :             auto root = getRootAddr(addr);</span></span>
-<span id="L978"><span class="lineNum">     978</span>              :             bool shouldDiagnose = false;</span>
-<span id="L979"><span class="lineNum">     979</span> <span class="tlaGNC">           1 :             if (root-&gt;getOp() == kIROp_Var)</span></span>
-<span id="L980"><span class="lineNum">     980</span>              :             {</span>
-<span id="L981"><span class="lineNum">     981</span>              :                 // Don&#x27;t diagnose vars that hold resource/buffer handles. Those</span>
-<span id="L982"><span class="lineNum">     982</span>              :                 // always refer to device memory regardless of where the handle</span>
-<span id="L983"><span class="lineNum">     983</span>              :                 // itself is stored (e.g. a ConstantBuffer parameter copied to a</span>
-<span id="L984"><span class="lineNum">     984</span>              :                 // local var still points into device memory).</span>
-<span id="L985"><span class="lineNum">     985</span>              :                 IRType* valueType = nullptr;</span>
-<span id="L986"><span class="lineNum">     986</span> <span class="tlaGNC">           1 :                 if (auto ptrType = as&lt;IRPtrTypeBase&gt;(root-&gt;getDataType()))</span></span>
-<span id="L987"><span class="lineNum">     987</span> <span class="tlaGNC">           1 :                     valueType = ptrType-&gt;getValueType();</span></span>
-<span id="L988"><span class="lineNum">     988</span> <span class="tlaGNC">           1 :                 shouldDiagnose = !valueType || (!as&lt;IRPointerLikeType&gt;(valueType) &amp;&amp;</span></span>
-<span id="L989"><span class="lineNum">     989</span>              :                                                 !as&lt;IRHLSLStructuredBufferTypeBase&gt;(valueType) &amp;&amp;</span>
-<span id="L990"><span class="lineNum">     990</span>              :                                                 !as&lt;IRByteAddressBufferTypeBase&gt;(valueType));</span>
-<span id="L991"><span class="lineNum">     991</span>              :             }</span>
-<span id="L992"><span class="lineNum">     992</span> <span class="tlaGNC">           1 :             else if (auto param = as&lt;IRParam&gt;(root))</span></span>
-<span id="L993"><span class="lineNum">     993</span>              :             {</span>
-<span id="L994"><span class="lineNum">     994</span>              :                 // Also diagnose function parameters that are not of</span>
-<span id="L995"><span class="lineNum">     995</span>              :                 // pointer/pointer-like type. Those represent function-local</span>
-<span id="L996"><span class="lineNum">     996</span>              :                 // storage that cannot be addressed on GPU targets.</span>
-<span id="L997"><span class="lineNum">     997</span>              :                 // (By-value params go through a kIROp_Var copy above; this</span>
-<span id="L998"><span class="lineNum">     998</span>              :                 // catches inout/ref params where the IRParam itself is the root.)</span>
-<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">           1 :                 auto parentBlock = as&lt;IRBlock&gt;(param-&gt;getParent());</span></span>
-<span id="L1000"><span class="lineNum">    1000</span>              :                 IRGlobalValueWithCode* parentFunc = nullptr;</span>
-<span id="L1001"><span class="lineNum">    1001</span> <span class="tlaGNC">           1 :                 if (parentBlock)</span></span>
-<span id="L1002"><span class="lineNum">    1002</span> <span class="tlaGNC">           1 :                     parentFunc = as&lt;IRGlobalValueWithCode&gt;(parentBlock-&gt;getParent());</span></span>
-<span id="L1003"><span class="lineNum">    1003</span>              : </span>
-<span id="L1004"><span class="lineNum">    1004</span> <span class="tlaGNC">           1 :                 if (parentFunc &amp;&amp; parentBlock == parentFunc-&gt;getFirstBlock())</span></span>
-<span id="L1005"><span class="lineNum">    1005</span>              :                 {</span>
-<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaGNC">           1 :                     auto type = root-&gt;getDataType();</span></span>
-<span id="L1007"><span class="lineNum">    1007</span> <span class="tlaGNC">           1 :                     shouldDiagnose = !as&lt;IRPtrTypeBase&gt;(type) &amp;&amp; !as&lt;IRPointerLikeType&gt;(type) &amp;&amp;</span></span>
-<span id="L1008"><span class="lineNum">    1008</span>              :                                      !as&lt;IRHLSLStructuredBufferTypeBase&gt;(type) &amp;&amp;</span>
-<span id="L1009"><span class="lineNum">    1009</span>              :                                      !as&lt;IRByteAddressBufferTypeBase&gt;(type);</span>
-<span id="L1010"><span class="lineNum">    1010</span>              :                 }</span>
+<span id="L816"><span class="lineNum">     816</span>              : </span>
+<span id="L817"><span class="lineNum">     817</span>              :         // `isOpaqueType` examines fields and array elements recursively. A later pass can attempt</span>
+<span id="L818"><span class="lineNum">     818</span>              :         // to replace one resource value or a fixed-size homogeneous resource array selected by the</span>
+<span id="L819"><span class="lineNum">     819</span>              :         // shared predicate. Every other opaque value would require unsupported mutable global</span>
+<span id="L820"><span class="lineNum">     820</span>              :         // storage.</span>
+<span id="L821"><span class="lineNum">     821</span>              :         IRType* opaqueType = nullptr;</span>
+<span id="L822"><span class="lineNum">     822</span> <span class="tlaGNC">           1 :         if (isOpaqueType(valueType, &amp;opaqueType))</span></span>
+<span id="L823"><span class="lineNum">     823</span>              :         {</span>
+<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">           1 :             if (isPerInvocationResourceReplacementCandidate)</span></span>
+<span id="L825"><span class="lineNum">     825</span>              :                 continue;</span>
+<span id="L826"><span class="lineNum">     826</span>              : </span>
+<span id="L827"><span class="lineNum">     827</span>              :             // The diagnostic belongs at the variable declaration. Reporting it before resource</span>
+<span id="L828"><span class="lineNum">     828</span>              :             // legalization prevents an unsupported global initializer from being split as if it</span>
+<span id="L829"><span class="lineNum">     829</span>              :             // were a function returning its resource fields through generated `out` parameters.</span>
+<span id="L830"><span class="lineNum">     830</span> <span class="tlaGNC">           1 :             sink-&gt;diagnose(Diagnostics::OpaqueTypeNotSupportedForMutableGlobalStorage{</span></span>
+<span id="L831"><span class="lineNum">     831</span>              :                 .type = opaqueType,</span>
+<span id="L832"><span class="lineNum">     832</span>              :                 .location = globalVar-&gt;sourceLoc});</span>
+<span id="L833"><span class="lineNum">     833</span>              :             hasErrors = true;</span>
+<span id="L834"><span class="lineNum">     834</span>              :             continue;</span>
+<span id="L835"><span class="lineNum">     835</span>              :         }</span>
+<span id="L836"><span class="lineNum">     836</span>              :     }</span>
+<span id="L837"><span class="lineNum">     837</span> <span class="tlaGNC">           1 :     return !hasErrors;</span></span>
+<span id="L838"><span class="lineNum">     838</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L839"><span class="lineNum">     839</span>              : </span>
+<span id="L840"><span class="lineNum">     840</span>              : //</span>
+<span id="L841"><span class="lineNum">     841</span>              : // Structure buffer resource types</span>
+<span id="L842"><span class="lineNum">     842</span>              : //</span>
+<span id="L843"><span class="lineNum">     843</span>              : </span>
+<span id="L844"><span class="lineNum">     844</span>              : bool StructuredBufferValidationContext::containsOpaqueHandleTypeCached(IRType* type)</span>
+<span id="L845"><span class="lineNum">     845</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L846"><span class="lineNum">     846</span>              :     // Check cache first</span>
+<span id="L847"><span class="lineNum">     847</span> <span class="tlaGNC">           1 :     if (m_checkedTypes.contains(type))</span></span>
+<span id="L848"><span class="lineNum">     848</span>              :     {</span>
+<span id="L849"><span class="lineNum">     849</span> <span class="tlaGNC">           1 :         return m_typesWithOpaqueHandles.contains(type);</span></span>
+<span id="L850"><span class="lineNum">     850</span>              :     }</span>
+<span id="L851"><span class="lineNum">     851</span>              : </span>
+<span id="L852"><span class="lineNum">     852</span>              :     // Not in cache, need to check</span>
+<span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">           1 :     HashSet&lt;IRType*&gt; visitedInCurrentCheck;</span></span>
+<span id="L854"><span class="lineNum">     854</span> <span class="tlaGNC">           1 :     bool result = containsOpaqueHandleTypeInternal(type, visitedInCurrentCheck);</span></span>
+<span id="L855"><span class="lineNum">     855</span>              : </span>
+<span id="L856"><span class="lineNum">     856</span>              :     // Cache the result</span>
+<span id="L857"><span class="lineNum">     857</span> <span class="tlaGNC">           1 :     m_checkedTypes.add(type);</span></span>
+<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">           1 :     if (result)</span></span>
+<span id="L859"><span class="lineNum">     859</span>              :     {</span>
+<span id="L860"><span class="lineNum">     860</span> <span class="tlaGNC">           1 :         m_typesWithOpaqueHandles.add(type);</span></span>
+<span id="L861"><span class="lineNum">     861</span>              :     }</span>
+<span id="L862"><span class="lineNum">     862</span>              : </span>
+<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">           1 :     return result;</span></span>
+<span id="L864"><span class="lineNum">     864</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L865"><span class="lineNum">     865</span>              : </span>
+<span id="L866"><span class="lineNum">     866</span>              : bool StructuredBufferValidationContext::containsOpaqueHandleTypeInternal(</span>
+<span id="L867"><span class="lineNum">     867</span>              :     IRType* type,</span>
+<span id="L868"><span class="lineNum">     868</span>              :     HashSet&lt;IRType*&gt;&amp; visitedInCurrentCheck)</span>
+<span id="L869"><span class="lineNum">     869</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L870"><span class="lineNum">     870</span>              :     // Prevent infinite recursion in current check</span>
+<span id="L871"><span class="lineNum">     871</span> <span class="tlaGNC">           1 :     if (!visitedInCurrentCheck.add(type))</span></span>
+<span id="L872"><span class="lineNum">     872</span>              :         return false;</span>
+<span id="L873"><span class="lineNum">     873</span>              : </span>
+<span id="L874"><span class="lineNum">     874</span>              :     // Check if the type itself is an opaque handle</span>
+<span id="L875"><span class="lineNum">     875</span> <span class="tlaGNC">           1 :     if (isResourceType(type))</span></span>
+<span id="L876"><span class="lineNum">     876</span>              :         return true;</span>
+<span id="L877"><span class="lineNum">     877</span>              : </span>
+<span id="L878"><span class="lineNum">     878</span>              :     // Check struct types</span>
+<span id="L879"><span class="lineNum">     879</span> <span class="tlaGNC">           1 :     if (auto structType = as&lt;IRStructType&gt;(type))</span></span>
+<span id="L880"><span class="lineNum">     880</span>              :     {</span>
+<span id="L881"><span class="lineNum">     881</span> <span class="tlaGNC">           1 :         for (auto field : structType-&gt;getFields())</span></span>
+<span id="L882"><span class="lineNum">     882</span>              :         {</span>
+<span id="L883"><span class="lineNum">     883</span> <span class="tlaGNC">           1 :             if (containsOpaqueHandleTypeInternal(field-&gt;getFieldType(), visitedInCurrentCheck))</span></span>
+<span id="L884"><span class="lineNum">     884</span>              :                 return true;</span>
+<span id="L885"><span class="lineNum">     885</span>              :         }</span>
+<span id="L886"><span class="lineNum">     886</span>              :     }</span>
+<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">           1 :     else if (auto arrayType = as&lt;IRArrayTypeBase&gt;(type))</span></span>
+<span id="L888"><span class="lineNum">     888</span>              :     {</span>
+<span id="L889"><span class="lineNum">     889</span> <span class="tlaGNC">           1 :         return containsOpaqueHandleTypeInternal(arrayType-&gt;getElementType(), visitedInCurrentCheck);</span></span>
+<span id="L890"><span class="lineNum">     890</span>              :     }</span>
+<span id="L891"><span class="lineNum">     891</span> <span class="tlaGNC">           1 :     else if (auto ptrType = as&lt;IRPtrTypeBase&gt;(type))</span></span>
+<span id="L892"><span class="lineNum">     892</span>              :     {</span>
+<span id="L893"><span class="lineNum">     893</span> <span class="tlaGNC">           1 :         return containsOpaqueHandleTypeInternal(ptrType-&gt;getValueType(), visitedInCurrentCheck);</span></span>
+<span id="L894"><span class="lineNum">     894</span>              :     }</span>
+<span id="L895"><span class="lineNum">     895</span>              : </span>
+<span id="L896"><span class="lineNum">     896</span> <span class="tlaGNC">           1 :     return false;</span></span>
+<span id="L897"><span class="lineNum">     897</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L898"><span class="lineNum">     898</span>              : </span>
+<span id="L899"><span class="lineNum">     899</span>              : void StructuredBufferValidationContext::validateStructuredBufferVariable(</span>
+<span id="L900"><span class="lineNum">     900</span>              :     IRType* type,</span>
+<span id="L901"><span class="lineNum">     901</span>              :     SourceLoc loc)</span>
+<span id="L902"><span class="lineNum">     902</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L903"><span class="lineNum">     903</span> <span class="tlaGNC">           1 :     while (type)</span></span>
+<span id="L904"><span class="lineNum">     904</span>              :     {</span>
+<span id="L905"><span class="lineNum">     905</span> <span class="tlaGNC">           1 :         if (auto structuredBufferType = as&lt;IRHLSLStructuredBufferTypeBase&gt;(type))</span></span>
+<span id="L906"><span class="lineNum">     906</span>              :         {</span>
+<span id="L907"><span class="lineNum">     907</span> <span class="tlaGNC">           1 :             auto elementType = structuredBufferType-&gt;getElementType();</span></span>
+<span id="L908"><span class="lineNum">     908</span> <span class="tlaGNC">           1 :             if (containsOpaqueHandleTypeCached(elementType))</span></span>
+<span id="L909"><span class="lineNum">     909</span>              :             {</span>
+<span id="L910"><span class="lineNum">     910</span> <span class="tlaGNC">           1 :                 m_sink-&gt;diagnose(Diagnostics::CannotUseResourceTypeInStructuredBuffer{</span></span>
+<span id="L911"><span class="lineNum">     911</span>              :                     .type = elementType,</span>
+<span id="L912"><span class="lineNum">     912</span>              :                     .location = loc});</span>
+<span id="L913"><span class="lineNum">     913</span> <span class="tlaGNC">           1 :                 m_hasErrors = true;</span></span>
+<span id="L914"><span class="lineNum">     914</span>              :             }</span>
+<span id="L915"><span class="lineNum">     915</span>              :             return;</span>
+<span id="L916"><span class="lineNum">     916</span>              :         }</span>
+<span id="L917"><span class="lineNum">     917</span> <span class="tlaGNC">           1 :         else if (auto arrayType = as&lt;IRArrayTypeBase&gt;(type))</span></span>
+<span id="L918"><span class="lineNum">     918</span> <span class="tlaGNC">           1 :             type = arrayType-&gt;getElementType();</span></span>
+<span id="L919"><span class="lineNum">     919</span> <span class="tlaGNC">           1 :         else if (auto ptrType = as&lt;IRPtrTypeBase&gt;(type))</span></span>
+<span id="L920"><span class="lineNum">     920</span> <span class="tlaGNC">           1 :             type = ptrType-&gt;getValueType();</span></span>
+<span id="L921"><span class="lineNum">     921</span> <span class="tlaGNC">           1 :         else if (auto groupType = as&lt;IRParameterGroupType&gt;(type))</span></span>
+<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">           1 :             type = groupType-&gt;getElementType();</span></span>
+<span id="L923"><span class="lineNum">     923</span>              :         else</span>
+<span id="L924"><span class="lineNum">     924</span>              :             return;</span>
+<span id="L925"><span class="lineNum">     925</span>              :     }</span>
+<span id="L926"><span class="lineNum">     926</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L927"><span class="lineNum">     927</span>              : </span>
+<span id="L928"><span class="lineNum">     928</span>              : bool StructuredBufferValidationContext::validate(IRModule* module)</span>
+<span id="L929"><span class="lineNum">     929</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L930"><span class="lineNum">     930</span>              :     // Skip validation if bindless is enabled for this target</span>
+<span id="L931"><span class="lineNum">     931</span> <span class="tlaGNC">           1 :     if (m_targetRequest &amp;&amp; areResourceTypesBindlessOnTarget(m_targetRequest))</span></span>
+<span id="L932"><span class="lineNum">     932</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L933"><span class="lineNum">     933</span>              : </span>
+<span id="L934"><span class="lineNum">     934</span>              :     // `getGlobalInsts()` only yields direct children of the module. That is</span>
+<span id="L935"><span class="lineNum">     935</span>              :     // sufficient by the time this pass runs (after `specializeModule`),</span>
+<span id="L936"><span class="lineNum">     936</span>              :     // because concrete struct types have already been hoisted to module</span>
+<span id="L937"><span class="lineNum">     937</span>              :     // scope. Any unspecialized `IRStructType` parented under an `IRGeneric`</span>
+<span id="L938"><span class="lineNum">     938</span>              :     // is unreachable from here, which is fine since its</span>
+<span id="L939"><span class="lineNum">     939</span>              :     // `StructuredBuffer&lt;T&gt;` fields have no concrete `T` to validate yet.</span>
+<span id="L940"><span class="lineNum">     940</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L941"><span class="lineNum">     941</span>              :     {</span>
+<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">           1 :         if (auto globalParam = as&lt;IRGlobalParam&gt;(globalInst))</span></span>
+<span id="L943"><span class="lineNum">     943</span>              :         {</span>
+<span id="L944"><span class="lineNum">     944</span> <span class="tlaGNC">           1 :             validateStructuredBufferVariable(globalParam-&gt;getDataType(), globalParam-&gt;sourceLoc);</span></span>
+<span id="L945"><span class="lineNum">     945</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L946"><span class="lineNum">     946</span> <span class="tlaGNC">           1 :         else if (auto structType = as&lt;IRStructType&gt;(globalInst))</span></span>
+<span id="L947"><span class="lineNum">     947</span>              :         {</span>
+<span id="L948"><span class="lineNum">     948</span> <span class="tlaGNC">           1 :             for (auto field : structType-&gt;getFields())</span></span>
+<span id="L949"><span class="lineNum">     949</span>              :             {</span>
+<span id="L950"><span class="lineNum">     950</span> <span class="tlaGNC">           1 :                 validateStructuredBufferVariable(field-&gt;getFieldType(), field-&gt;sourceLoc);</span></span>
+<span id="L951"><span class="lineNum">     951</span>              :             }</span>
+<span id="L952"><span class="lineNum">     952</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L953"><span class="lineNum">     953</span> <span class="tlaGNC">           1 :         else if (auto func = as&lt;IRFunc&gt;(globalInst))</span></span>
+<span id="L954"><span class="lineNum">     954</span>              :         {</span>
+<span id="L955"><span class="lineNum">     955</span> <span class="tlaGNC">           1 :             for (auto param : func-&gt;getParams())</span></span>
+<span id="L956"><span class="lineNum">     956</span>              :             {</span>
+<span id="L957"><span class="lineNum">     957</span> <span class="tlaGNC">           1 :                 validateStructuredBufferVariable(param-&gt;getDataType(), param-&gt;sourceLoc);</span></span>
+<span id="L958"><span class="lineNum">     958</span>              :             }</span>
+<span id="L959"><span class="lineNum">     959</span>              :         }</span>
+<span id="L960"><span class="lineNum">     960</span>              :     }</span>
+<span id="L961"><span class="lineNum">     961</span>              : </span>
+<span id="L962"><span class="lineNum">     962</span> <span class="tlaGNC">           1 :     return !m_hasErrors;</span></span>
+<span id="L963"><span class="lineNum">     963</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L964"><span class="lineNum">     964</span>              : </span>
+<span id="L965"><span class="lineNum">     965</span>              : bool validateStructuredBufferResourceTypes(</span>
+<span id="L966"><span class="lineNum">     966</span>              :     IRModule* module,</span>
+<span id="L967"><span class="lineNum">     967</span>              :     DiagnosticSink* sink,</span>
+<span id="L968"><span class="lineNum">     968</span>              :     TargetRequest* targetRequest)</span>
+<span id="L969"><span class="lineNum">     969</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L970"><span class="lineNum">     970</span> <span class="tlaGNC">           1 :     StructuredBufferValidationContext context(sink, targetRequest);</span></span>
+<span id="L971"><span class="lineNum">     971</span> <span class="tlaGNC">           1 :     return context.validate(module);</span></span>
+<span id="L972"><span class="lineNum">     972</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L973"><span class="lineNum">     973</span>              : </span>
+<span id="L974"><span class="lineNum">     974</span>              : void validateAtomicOperations(IRModule* module, bool skipFuncParamValidation, DiagnosticSink* sink)</span>
+<span id="L975"><span class="lineNum">     975</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L976"><span class="lineNum">     976</span> <span class="tlaGNC">           1 :     validateAtomicOperations(skipFuncParamValidation, sink, module-&gt;getModuleInst());</span></span>
+<span id="L977"><span class="lineNum">     977</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L978"><span class="lineNum">     978</span>              : </span>
+<span id="L979"><span class="lineNum">     979</span>              : static void collectAssumeAddressInsts(IRInst* inst, List&lt;IRInst*&gt;&amp; out)</span>
+<span id="L980"><span class="lineNum">     980</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L981"><span class="lineNum">     981</span> <span class="tlaGNC">           1 :     if (inst-&gt;getOp() == kIROp_AssumeAddress)</span></span>
+<span id="L982"><span class="lineNum">     982</span> <span class="tlaGNC">           1 :         out.add(inst);</span></span>
+<span id="L983"><span class="lineNum">     983</span> <span class="tlaGNC">           1 :     for (auto child : inst-&gt;getModifiableChildren())</span></span>
+<span id="L984"><span class="lineNum">     984</span> <span class="tlaGNC">           1 :         collectAssumeAddressInsts(child, out);</span></span>
+<span id="L985"><span class="lineNum">     985</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L986"><span class="lineNum">     986</span>              : </span>
+<span id="L987"><span class="lineNum">     987</span>              : void validateAndRemoveAssumeAddress(IRModule* module, bool validate, DiagnosticSink* sink)</span>
+<span id="L988"><span class="lineNum">     988</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L989"><span class="lineNum">     989</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; assumeAddrs;</span></span>
+<span id="L990"><span class="lineNum">     990</span> <span class="tlaGNC">           1 :     collectAssumeAddressInsts(module-&gt;getModuleInst(), assumeAddrs);</span></span>
+<span id="L991"><span class="lineNum">     991</span>              : </span>
+<span id="L992"><span class="lineNum">     992</span> <span class="tlaGNC">           1 :     if (validate)</span></span>
+<span id="L993"><span class="lineNum">     993</span>              :     {</span>
+<span id="L994"><span class="lineNum">     994</span> <span class="tlaGNC">           1 :         for (auto inst : assumeAddrs)</span></span>
+<span id="L995"><span class="lineNum">     995</span>              :         {</span>
+<span id="L996"><span class="lineNum">     996</span> <span class="tlaGNC">           1 :             auto addr = inst-&gt;getOperand(0);</span></span>
+<span id="L997"><span class="lineNum">     997</span> <span class="tlaGNC">           1 :             auto root = getRootAddr(addr);</span></span>
+<span id="L998"><span class="lineNum">     998</span>              :             bool shouldDiagnose = false;</span>
+<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">           1 :             if (root-&gt;getOp() == kIROp_Var)</span></span>
+<span id="L1000"><span class="lineNum">    1000</span>              :             {</span>
+<span id="L1001"><span class="lineNum">    1001</span>              :                 // Don&#x27;t diagnose vars that hold resource/buffer handles. Those</span>
+<span id="L1002"><span class="lineNum">    1002</span>              :                 // always refer to device memory regardless of where the handle</span>
+<span id="L1003"><span class="lineNum">    1003</span>              :                 // itself is stored (e.g. a ConstantBuffer parameter copied to a</span>
+<span id="L1004"><span class="lineNum">    1004</span>              :                 // local var still points into device memory).</span>
+<span id="L1005"><span class="lineNum">    1005</span>              :                 IRType* valueType = nullptr;</span>
+<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaGNC">           1 :                 if (auto ptrType = as&lt;IRPtrTypeBase&gt;(root-&gt;getDataType()))</span></span>
+<span id="L1007"><span class="lineNum">    1007</span> <span class="tlaGNC">           1 :                     valueType = ptrType-&gt;getValueType();</span></span>
+<span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">           1 :                 shouldDiagnose = !valueType || (!as&lt;IRPointerLikeType&gt;(valueType) &amp;&amp;</span></span>
+<span id="L1009"><span class="lineNum">    1009</span>              :                                                 !as&lt;IRHLSLStructuredBufferTypeBase&gt;(valueType) &amp;&amp;</span>
+<span id="L1010"><span class="lineNum">    1010</span>              :                                                 !as&lt;IRByteAddressBufferTypeBase&gt;(valueType));</span>
 <span id="L1011"><span class="lineNum">    1011</span>              :             }</span>
-<span id="L1012"><span class="lineNum">    1012</span>              :             if (!shouldDiagnose)</span>
-<span id="L1013"><span class="lineNum">    1013</span>              :                 continue;</span>
-<span id="L1014"><span class="lineNum">    1014</span> <span class="tlaGNC">           1 :             sink-&gt;diagnose(Diagnostics::InvalidAddressOf{</span></span>
-<span id="L1015"><span class="lineNum">    1015</span>              :                 .location = inst-&gt;sourceLoc,</span>
-<span id="L1016"><span class="lineNum">    1016</span>              :             });</span>
-<span id="L1017"><span class="lineNum">    1017</span>              :         }</span>
-<span id="L1018"><span class="lineNum">    1018</span>              :     }</span>
-<span id="L1019"><span class="lineNum">    1019</span>              : </span>
-<span id="L1020"><span class="lineNum">    1020</span> <span class="tlaGNC">           1 :     for (auto inst : assumeAddrs)</span></span>
-<span id="L1021"><span class="lineNum">    1021</span>              :     {</span>
-<span id="L1022"><span class="lineNum">    1022</span> <span class="tlaGNC">           1 :         inst-&gt;replaceUsesWith(inst-&gt;getOperand(0));</span></span>
-<span id="L1023"><span class="lineNum">    1023</span> <span class="tlaGNC">           1 :         inst-&gt;removeAndDeallocate();</span></span>
-<span id="L1024"><span class="lineNum">    1024</span>              :     }</span>
-<span id="L1025"><span class="lineNum">    1025</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1026"><span class="lineNum">    1026</span>              : </span>
-<span id="L1027"><span class="lineNum">    1027</span>              : } // namespace Slang</span>
+<span id="L1012"><span class="lineNum">    1012</span> <span class="tlaGNC">           1 :             else if (auto param = as&lt;IRParam&gt;(root))</span></span>
+<span id="L1013"><span class="lineNum">    1013</span>              :             {</span>
+<span id="L1014"><span class="lineNum">    1014</span>              :                 // Also diagnose function parameters that are not of</span>
+<span id="L1015"><span class="lineNum">    1015</span>              :                 // pointer/pointer-like type. Those represent function-local</span>
+<span id="L1016"><span class="lineNum">    1016</span>              :                 // storage that cannot be addressed on GPU targets.</span>
+<span id="L1017"><span class="lineNum">    1017</span>              :                 // (By-value params go through a kIROp_Var copy above; this</span>
+<span id="L1018"><span class="lineNum">    1018</span>              :                 // catches inout/ref params where the IRParam itself is the root.)</span>
+<span id="L1019"><span class="lineNum">    1019</span> <span class="tlaGNC">           1 :                 auto parentBlock = as&lt;IRBlock&gt;(param-&gt;getParent());</span></span>
+<span id="L1020"><span class="lineNum">    1020</span>              :                 IRGlobalValueWithCode* parentFunc = nullptr;</span>
+<span id="L1021"><span class="lineNum">    1021</span> <span class="tlaGNC">           1 :                 if (parentBlock)</span></span>
+<span id="L1022"><span class="lineNum">    1022</span> <span class="tlaGNC">           1 :                     parentFunc = as&lt;IRGlobalValueWithCode&gt;(parentBlock-&gt;getParent());</span></span>
+<span id="L1023"><span class="lineNum">    1023</span>              : </span>
+<span id="L1024"><span class="lineNum">    1024</span> <span class="tlaGNC">           1 :                 if (parentFunc &amp;&amp; parentBlock == parentFunc-&gt;getFirstBlock())</span></span>
+<span id="L1025"><span class="lineNum">    1025</span>              :                 {</span>
+<span id="L1026"><span class="lineNum">    1026</span> <span class="tlaGNC">           1 :                     auto type = root-&gt;getDataType();</span></span>
+<span id="L1027"><span class="lineNum">    1027</span> <span class="tlaGNC">           1 :                     shouldDiagnose = !as&lt;IRPtrTypeBase&gt;(type) &amp;&amp; !as&lt;IRPointerLikeType&gt;(type) &amp;&amp;</span></span>
+<span id="L1028"><span class="lineNum">    1028</span>              :                                      !as&lt;IRHLSLStructuredBufferTypeBase&gt;(type) &amp;&amp;</span>
+<span id="L1029"><span class="lineNum">    1029</span>              :                                      !as&lt;IRByteAddressBufferTypeBase&gt;(type);</span>
+<span id="L1030"><span class="lineNum">    1030</span>              :                 }</span>
+<span id="L1031"><span class="lineNum">    1031</span>              :             }</span>
+<span id="L1032"><span class="lineNum">    1032</span>              :             if (!shouldDiagnose)</span>
+<span id="L1033"><span class="lineNum">    1033</span>              :                 continue;</span>
+<span id="L1034"><span class="lineNum">    1034</span> <span class="tlaGNC">           1 :             sink-&gt;diagnose(Diagnostics::InvalidAddressOf{</span></span>
+<span id="L1035"><span class="lineNum">    1035</span>              :                 .location = inst-&gt;sourceLoc,</span>
+<span id="L1036"><span class="lineNum">    1036</span>              :             });</span>
+<span id="L1037"><span class="lineNum">    1037</span>              :         }</span>
+<span id="L1038"><span class="lineNum">    1038</span>              :     }</span>
+<span id="L1039"><span class="lineNum">    1039</span>              : </span>
+<span id="L1040"><span class="lineNum">    1040</span> <span class="tlaGNC">           1 :     for (auto inst : assumeAddrs)</span></span>
+<span id="L1041"><span class="lineNum">    1041</span>              :     {</span>
+<span id="L1042"><span class="lineNum">    1042</span> <span class="tlaGNC">           1 :         inst-&gt;replaceUsesWith(inst-&gt;getOperand(0));</span></span>
+<span id="L1043"><span class="lineNum">    1043</span> <span class="tlaGNC">           1 :         inst-&gt;removeAndDeallocate();</span></span>
+<span id="L1044"><span class="lineNum">    1044</span>              :     }</span>
+<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1046"><span class="lineNum">    1046</span>              : </span>
+<span id="L1047"><span class="lineNum">    1047</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

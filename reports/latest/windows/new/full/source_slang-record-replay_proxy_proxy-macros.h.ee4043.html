@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-14 05:12:07 UTC</td>
+      <td class="headerValue">2026-10-15 03:53:36 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -295,17 +295,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L22"><span class="lineNum">      22</span>              :         ReplayContext::get().marker(label); \</span>
 <span id="L23"><span class="lineNum">      23</span>              :     } while (0)</span>
 <span id="L24"><span class="lineNum">      24</span>              : </span>
-<span id="L25"><span class="lineNum">      25</span>              : // Begins a recorded instance method call - locks context, records signature and &#x27;this&#x27;</span>
-<span id="L26"><span class="lineNum">      26</span>              : // Uses compiler-specific macro for full signature including type name</span>
+<span id="L25"><span class="lineNum">      25</span>              : // Begins a recorded instance method call. The process-wide mutex is taken only when</span>
+<span id="L26"><span class="lineNum">      26</span>              : // the record layer is active, so the idle default path does not serialize callers.</span>
 <span id="L27"><span class="lineNum">      27</span>              : #define RECORD_CALL()                  \</span>
 <span id="L28"><span class="lineNum">      28</span>              :     auto&amp; _ctx = ReplayContext::get(); \</span>
-<span id="L29"><span class="lineNum">      29</span>              :     auto _lock = _ctx.lock();          \</span>
+<span id="L29"><span class="lineNum">      29</span>              :     auto _lock = _ctx.lockIfActive();  \</span>
 <span id="L30"><span class="lineNum">      30</span>              :     _ctx.beginCall(SLANG_FUNC_SIG, this)</span>
 <span id="L31"><span class="lineNum">      31</span>              : </span>
 <span id="L32"><span class="lineNum">      32</span>              : // For static/free functions (no &#x27;this&#x27; pointer)</span>
 <span id="L33"><span class="lineNum">      33</span>              : #define RECORD_STATIC_CALL()           \</span>
 <span id="L34"><span class="lineNum">      34</span>              :     auto&amp; _ctx = ReplayContext::get(); \</span>
-<span id="L35"><span class="lineNum">      35</span>              :     auto _lock = _ctx.lock();          \</span>
+<span id="L35"><span class="lineNum">      35</span>              :     auto _lock = _ctx.lockIfActive();  \</span>
 <span id="L36"><span class="lineNum">      36</span>              :     _ctx.beginStaticCall(SLANG_FUNC_SIG)</span>
 <span id="L37"><span class="lineNum">      37</span>              : </span>
 <span id="L38"><span class="lineNum">      38</span>              : // Record an input parameter</span>

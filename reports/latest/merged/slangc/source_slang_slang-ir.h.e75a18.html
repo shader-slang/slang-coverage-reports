@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-14 05:11:41 UTC</td>
+      <td class="headerValue">2026-10-15 03:53:13 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -2534,402 +2534,404 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2249"><span class="lineNum">    2249</span>              :     // Adding `UniformParameterShadowVarDecl` shifts the sequential `ASTNodeType` values.</span>
 <span id="L2250"><span class="lineNum">    2250</span>              :     // A version-33 `LetDecl` would therefore be decoded as a shadow declaration.</span>
 <span id="L2251"><span class="lineNum">    2251</span>              :     // Version 34 is the earliest module version with the updated AST node numbering.</span>
-<span id="L2252"><span class="lineNum">    2252</span>              :     const static UInt k_minSupportedModuleVersion = 34;</span>
-<span id="L2253"><span class="lineNum">    2253</span>              :     const static UInt k_maxSupportedModuleVersion = 34;</span>
-<span id="L2254"><span class="lineNum">    2254</span>              :     static_assert(k_minSupportedModuleVersion &lt;= k_maxSupportedModuleVersion);</span>
-<span id="L2255"><span class="lineNum">    2255</span>              : </span>
-<span id="L2256"><span class="lineNum">    2256</span>              :     /// Returns whether `version` is in the inclusive range this compiler can load.</span>
-<span id="L2257"><span class="lineNum">    2257</span>              :     static bool isModuleVersionSupported(UInt64 version)</span>
-<span id="L2258"><span class="lineNum">    2258</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L2259"><span class="lineNum">    2259</span> <span class="tlaGNC">           1 :         return version &gt;= k_minSupportedModuleVersion &amp;&amp; version &lt;= k_maxSupportedModuleVersion;</span></span>
-<span id="L2260"><span class="lineNum">    2260</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L2261"><span class="lineNum">    2261</span>              : </span>
-<span id="L2262"><span class="lineNum">    2262</span>              : private:</span>
-<span id="L2263"><span class="lineNum">    2263</span>              :     friend struct IRSerialReadContext;</span>
-<span id="L2264"><span class="lineNum">    2264</span>              :     friend struct IRSerialWriteContext;</span>
-<span id="L2265"><span class="lineNum">    2265</span>              :     friend struct Fossilized_IRModule;</span>
-<span id="L2266"><span class="lineNum">    2266</span>              :     IRModule() = delete;</span>
-<span id="L2267"><span class="lineNum">    2267</span>              : </span>
-<span id="L2268"><span class="lineNum">    2268</span>              :     /// Ctor</span>
-<span id="L2269"><span class="lineNum">    2269</span>              :     IRModule(Session* session)</span>
-<span id="L2270"><span class="lineNum">    2270</span> <span class="tlaGNC">           1 :         : m_session(session), m_memoryArena(kMemoryArenaBlockSize), m_deduplicationContext(this)</span></span>
-<span id="L2271"><span class="lineNum">    2271</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L2272"><span class="lineNum">    2272</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L2273"><span class="lineNum">    2273</span>              : </span>
-<span id="L2274"><span class="lineNum">    2274</span>              :     // The compilation session in use.</span>
-<span id="L2275"><span class="lineNum">    2275</span>              :     Session* m_session = nullptr;</span>
-<span id="L2276"><span class="lineNum">    2276</span>              : </span>
-<span id="L2277"><span class="lineNum">    2277</span>              :     /// The root IR instruction for the module.</span>
-<span id="L2278"><span class="lineNum">    2278</span>              :     ///</span>
-<span id="L2279"><span class="lineNum">    2279</span>              :     /// All other IR instructions that make up the state/contents of the module are</span>
-<span id="L2280"><span class="lineNum">    2280</span>              :     /// descendents of this instruction. Thus if we follow the chain of parent</span>
-<span id="L2281"><span class="lineNum">    2281</span>              :     /// instructions from an arbitrary IR instruction we expect to find the</span>
-<span id="L2282"><span class="lineNum">    2282</span>              :     /// `IRModuleInst` for the module the instruction belongs to, if any.</span>
-<span id="L2283"><span class="lineNum">    2283</span>              :     ///</span>
-<span id="L2284"><span class="lineNum">    2284</span> <span class="tlaGNC">           1 :     FIDDLE() IRModuleInst* m_moduleInst = nullptr;</span></span>
-<span id="L2285"><span class="lineNum">    2285</span>              : </span>
-<span id="L2286"><span class="lineNum">    2286</span>              :     // The name of the module.</span>
-<span id="L2287"><span class="lineNum">    2287</span> <span class="tlaGNC">           1 :     FIDDLE() Name* m_name = nullptr;</span></span>
-<span id="L2288"><span class="lineNum">    2288</span>              : </span>
-<span id="L2289"><span class="lineNum">    2289</span>              :     // The version of the module as it was loaded</span>
-<span id="L2290"><span class="lineNum">    2290</span> <span class="tlaGNC">           1 :     FIDDLE() UInt64 m_version = k_maxSupportedModuleVersion;</span></span>
-<span id="L2291"><span class="lineNum">    2291</span>              : </span>
-<span id="L2292"><span class="lineNum">    2292</span>              :     /// The memory arena from which all IR instructions (and any associated state) in this module</span>
-<span id="L2293"><span class="lineNum">    2293</span>              :     /// are allocated.</span>
-<span id="L2294"><span class="lineNum">    2294</span>              :     MemoryArena m_memoryArena;</span>
-<span id="L2295"><span class="lineNum">    2295</span>              : </span>
-<span id="L2296"><span class="lineNum">    2296</span>              :     /// A pool to allow reuse of common types of containers to reduce memory allocations</span>
-<span id="L2297"><span class="lineNum">    2297</span>              :     /// and rehashing.</span>
-<span id="L2298"><span class="lineNum">    2298</span>              :     ContainerPool m_containerPool;</span>
-<span id="L2299"><span class="lineNum">    2299</span>              : </span>
-<span id="L2300"><span class="lineNum">    2300</span>              :     /// Shared contexts for constructing and deduplicating the IR.</span>
-<span id="L2301"><span class="lineNum">    2301</span>              :     mutable IRDeduplicationContext m_deduplicationContext;</span>
-<span id="L2302"><span class="lineNum">    2302</span>              : </span>
-<span id="L2303"><span class="lineNum">    2303</span>              :     /// Holds the obfuscated source map for this module if applicable</span>
-<span id="L2304"><span class="lineNum">    2304</span>              :     ComPtr&lt;IBoxValue&lt;SourceMap&gt;&gt; m_obfuscatedSourceMap;</span>
-<span id="L2305"><span class="lineNum">    2305</span>              : </span>
-<span id="L2306"><span class="lineNum">    2306</span>              :     Dictionary&lt;IRInst*, IRAnalysis&gt; m_mapInstToAnalysis;</span>
+<span id="L2252"><span class="lineNum">    2252</span>              :     // Version 35 adds `IRUninitializedGlobalCheckFoundPossibleWriteDecoration`. Its stable opcode</span>
+<span id="L2253"><span class="lineNum">    2253</span>              :     // is appended, so the reader can continue to load version-34 modules.</span>
+<span id="L2254"><span class="lineNum">    2254</span>              :     const static UInt k_minSupportedModuleVersion = 34;</span>
+<span id="L2255"><span class="lineNum">    2255</span>              :     const static UInt k_maxSupportedModuleVersion = 35;</span>
+<span id="L2256"><span class="lineNum">    2256</span>              :     static_assert(k_minSupportedModuleVersion &lt;= k_maxSupportedModuleVersion);</span>
+<span id="L2257"><span class="lineNum">    2257</span>              : </span>
+<span id="L2258"><span class="lineNum">    2258</span>              :     /// Returns whether `version` is in the inclusive range this compiler can load.</span>
+<span id="L2259"><span class="lineNum">    2259</span>              :     static bool isModuleVersionSupported(UInt64 version)</span>
+<span id="L2260"><span class="lineNum">    2260</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L2261"><span class="lineNum">    2261</span> <span class="tlaGNC">           1 :         return version &gt;= k_minSupportedModuleVersion &amp;&amp; version &lt;= k_maxSupportedModuleVersion;</span></span>
+<span id="L2262"><span class="lineNum">    2262</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L2263"><span class="lineNum">    2263</span>              : </span>
+<span id="L2264"><span class="lineNum">    2264</span>              : private:</span>
+<span id="L2265"><span class="lineNum">    2265</span>              :     friend struct IRSerialReadContext;</span>
+<span id="L2266"><span class="lineNum">    2266</span>              :     friend struct IRSerialWriteContext;</span>
+<span id="L2267"><span class="lineNum">    2267</span>              :     friend struct Fossilized_IRModule;</span>
+<span id="L2268"><span class="lineNum">    2268</span>              :     IRModule() = delete;</span>
+<span id="L2269"><span class="lineNum">    2269</span>              : </span>
+<span id="L2270"><span class="lineNum">    2270</span>              :     /// Ctor</span>
+<span id="L2271"><span class="lineNum">    2271</span>              :     IRModule(Session* session)</span>
+<span id="L2272"><span class="lineNum">    2272</span> <span class="tlaGNC">           1 :         : m_session(session), m_memoryArena(kMemoryArenaBlockSize), m_deduplicationContext(this)</span></span>
+<span id="L2273"><span class="lineNum">    2273</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L2274"><span class="lineNum">    2274</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L2275"><span class="lineNum">    2275</span>              : </span>
+<span id="L2276"><span class="lineNum">    2276</span>              :     // The compilation session in use.</span>
+<span id="L2277"><span class="lineNum">    2277</span>              :     Session* m_session = nullptr;</span>
+<span id="L2278"><span class="lineNum">    2278</span>              : </span>
+<span id="L2279"><span class="lineNum">    2279</span>              :     /// The root IR instruction for the module.</span>
+<span id="L2280"><span class="lineNum">    2280</span>              :     ///</span>
+<span id="L2281"><span class="lineNum">    2281</span>              :     /// All other IR instructions that make up the state/contents of the module are</span>
+<span id="L2282"><span class="lineNum">    2282</span>              :     /// descendents of this instruction. Thus if we follow the chain of parent</span>
+<span id="L2283"><span class="lineNum">    2283</span>              :     /// instructions from an arbitrary IR instruction we expect to find the</span>
+<span id="L2284"><span class="lineNum">    2284</span>              :     /// `IRModuleInst` for the module the instruction belongs to, if any.</span>
+<span id="L2285"><span class="lineNum">    2285</span>              :     ///</span>
+<span id="L2286"><span class="lineNum">    2286</span> <span class="tlaGNC">           1 :     FIDDLE() IRModuleInst* m_moduleInst = nullptr;</span></span>
+<span id="L2287"><span class="lineNum">    2287</span>              : </span>
+<span id="L2288"><span class="lineNum">    2288</span>              :     // The name of the module.</span>
+<span id="L2289"><span class="lineNum">    2289</span> <span class="tlaGNC">           1 :     FIDDLE() Name* m_name = nullptr;</span></span>
+<span id="L2290"><span class="lineNum">    2290</span>              : </span>
+<span id="L2291"><span class="lineNum">    2291</span>              :     // The version of the module as it was loaded</span>
+<span id="L2292"><span class="lineNum">    2292</span> <span class="tlaGNC">           1 :     FIDDLE() UInt64 m_version = k_maxSupportedModuleVersion;</span></span>
+<span id="L2293"><span class="lineNum">    2293</span>              : </span>
+<span id="L2294"><span class="lineNum">    2294</span>              :     /// The memory arena from which all IR instructions (and any associated state) in this module</span>
+<span id="L2295"><span class="lineNum">    2295</span>              :     /// are allocated.</span>
+<span id="L2296"><span class="lineNum">    2296</span>              :     MemoryArena m_memoryArena;</span>
+<span id="L2297"><span class="lineNum">    2297</span>              : </span>
+<span id="L2298"><span class="lineNum">    2298</span>              :     /// A pool to allow reuse of common types of containers to reduce memory allocations</span>
+<span id="L2299"><span class="lineNum">    2299</span>              :     /// and rehashing.</span>
+<span id="L2300"><span class="lineNum">    2300</span>              :     ContainerPool m_containerPool;</span>
+<span id="L2301"><span class="lineNum">    2301</span>              : </span>
+<span id="L2302"><span class="lineNum">    2302</span>              :     /// Shared contexts for constructing and deduplicating the IR.</span>
+<span id="L2303"><span class="lineNum">    2303</span>              :     mutable IRDeduplicationContext m_deduplicationContext;</span>
+<span id="L2304"><span class="lineNum">    2304</span>              : </span>
+<span id="L2305"><span class="lineNum">    2305</span>              :     /// Holds the obfuscated source map for this module if applicable</span>
+<span id="L2306"><span class="lineNum">    2306</span>              :     ComPtr&lt;IBoxValue&lt;SourceMap&gt;&gt; m_obfuscatedSourceMap;</span>
 <span id="L2307"><span class="lineNum">    2307</span>              : </span>
-<span id="L2308"><span class="lineNum">    2308</span>              :     Dictionary&lt;ImmutableHashedString, List&lt;IRInst*&gt;&gt; m_mapMangledNameToGlobalInst;</span>
+<span id="L2308"><span class="lineNum">    2308</span>              :     Dictionary&lt;IRInst*, IRAnalysis&gt; m_mapInstToAnalysis;</span>
 <span id="L2309"><span class="lineNum">    2309</span>              : </span>
-<span id="L2310"><span class="lineNum">    2310</span>              :     /// Hold a mapping for inst -&gt; uniqueID. This mapping is generated on</span>
-<span id="L2311"><span class="lineNum">    2311</span>              :     /// demand if passes need them, rather than eagerly storing them on</span>
-<span id="L2312"><span class="lineNum">    2312</span>              :     /// insts when unnecessary.</span>
-<span id="L2313"><span class="lineNum">    2313</span>              :     ///</span>
-<span id="L2314"><span class="lineNum">    2314</span>              :     Dictionary&lt;IRInst*, UInt&gt; m_mapInstToUniqueId;</span>
-<span id="L2315"><span class="lineNum">    2315</span>              : </span>
-<span id="L2316"><span class="lineNum">    2316</span>              :     // Translation cache.</span>
-<span id="L2317"><span class="lineNum">    2317</span> <span class="tlaGNC">           1 :     IRCompilerDictionary* m_translationDict = nullptr;</span></span>
-<span id="L2318"><span class="lineNum">    2318</span>              : </span>
-<span id="L2319"><span class="lineNum">    2319</span>              :     // (inst, association-kind) -&gt; associated-inst</span>
-<span id="L2320"><span class="lineNum">    2320</span>              :     Dictionary&lt;AnnotationCacheKey, IRAnnotation*&gt; m_annotationLookupCache;</span>
-<span id="L2321"><span class="lineNum">    2321</span>              : </span>
-<span id="L2322"><span class="lineNum">    2322</span>              :     // Acceleration cache for linker global handling.</span>
-<span id="L2323"><span class="lineNum">    2323</span>              :     // Assumes the module will not change after the cache is built; rebuild manually if it does.</span>
-<span id="L2324"><span class="lineNum">    2324</span>              :     RefPtr&lt;ModuleLinkingInfo&gt; m_linkingInfo;</span>
-<span id="L2325"><span class="lineNum">    2325</span>              :     std::mutex m_linkingInfoMutex;</span>
-<span id="L2326"><span class="lineNum">    2326</span>              : };</span>
-<span id="L2327"><span class="lineNum">    2327</span>              : </span>
-<span id="L2328"><span class="lineNum">    2328</span>              : </span>
-<span id="L2329"><span class="lineNum">    2329</span>              : struct InstWorkList</span>
-<span id="L2330"><span class="lineNum">    2330</span>              : {</span>
-<span id="L2331"><span class="lineNum">    2331</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt;* workList = nullptr;</span></span>
-<span id="L2332"><span class="lineNum">    2332</span>              :     ContainerPool* pool = nullptr;</span>
-<span id="L2333"><span class="lineNum">    2333</span>              : </span>
-<span id="L2334"><span class="lineNum">    2334</span>              :     InstWorkList() = default;</span>
-<span id="L2335"><span class="lineNum">    2335</span> <span class="tlaGNC">           1 :     InstWorkList(IRModule* module)</span></span>
-<span id="L2336"><span class="lineNum">    2336</span> <span class="tlaUNC">           0 :     {</span></span>
-<span id="L2337"><span class="lineNum">    2337</span> <span class="tlaGNC">           1 :         pool = &amp;module-&gt;getContainerPool();</span></span>
-<span id="L2338"><span class="lineNum">    2338</span> <span class="tlaGNC">           1 :         workList = module-&gt;getContainerPool().getList&lt;IRInst&gt;();</span></span>
-<span id="L2339"><span class="lineNum">    2339</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L2340"><span class="lineNum">    2340</span>              :     ~InstWorkList()</span>
-<span id="L2341"><span class="lineNum">    2341</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L2342"><span class="lineNum">    2342</span> <span class="tlaGNC">           1 :         if (pool)</span></span>
-<span id="L2343"><span class="lineNum">    2343</span> <span class="tlaGNC">           1 :             pool-&gt;free(workList);</span></span>
-<span id="L2344"><span class="lineNum">    2344</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L2345"><span class="lineNum">    2345</span>              :     InstWorkList(const InstWorkList&amp;) = delete;</span>
-<span id="L2346"><span class="lineNum">    2346</span>              :     InstWorkList(InstWorkList&amp;&amp; other)</span>
-<span id="L2347"><span class="lineNum">    2347</span> <span class="tlaUNC">           0 :     {</span></span>
-<span id="L2348"><span class="lineNum">    2348</span> <span class="tlaUNC">           0 :         workList = other.workList;</span></span>
-<span id="L2349"><span class="lineNum">    2349</span> <span class="tlaUNC">           0 :         pool = other.pool;</span></span>
-<span id="L2350"><span class="lineNum">    2350</span> <span class="tlaUNC">           0 :         other.workList = nullptr;</span></span>
-<span id="L2351"><span class="lineNum">    2351</span> <span class="tlaUNC">           0 :         other.pool = nullptr;</span></span>
-<span id="L2352"><span class="lineNum">    2352</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L2353"><span class="lineNum">    2353</span>              :     InstWorkList&amp; operator=(InstWorkList&amp;&amp; other)</span>
-<span id="L2354"><span class="lineNum">    2354</span> <span class="tlaUNC">           0 :     {</span></span>
-<span id="L2355"><span class="lineNum">    2355</span> <span class="tlaUNC">           0 :         workList = other.workList;</span></span>
-<span id="L2356"><span class="lineNum">    2356</span> <span class="tlaUNC">           0 :         pool = other.pool;</span></span>
-<span id="L2357"><span class="lineNum">    2357</span> <span class="tlaUNC">           0 :         other.workList = nullptr;</span></span>
-<span id="L2358"><span class="lineNum">    2358</span> <span class="tlaUNC">           0 :         other.pool = nullptr;</span></span>
-<span id="L2359"><span class="lineNum">    2359</span> <span class="tlaUNC">           0 :         return *this;</span></span>
-<span id="L2360"><span class="lineNum">    2360</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L2361"><span class="lineNum">    2361</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt;&amp; getList() { return *workList; }</span></span>
-<span id="L2362"><span class="lineNum">    2362</span> <span class="tlaGNC">           1 :     IRInst* operator[](Index i) { return (*workList)[i]; }</span></span>
-<span id="L2363"><span class="lineNum">    2363</span> <span class="tlaGNC">           1 :     Index getCount() { return workList-&gt;getCount(); }</span></span>
-<span id="L2364"><span class="lineNum">    2364</span> <span class="tlaUNC">           0 :     IRInst** begin() { return workList-&gt;begin(); }</span></span>
-<span id="L2365"><span class="lineNum">    2365</span> <span class="tlaUNC">           0 :     IRInst** end() { return workList-&gt;end(); }</span></span>
-<span id="L2366"><span class="lineNum">    2366</span> <span class="tlaGNC">           1 :     IRInst* getLast() { return workList-&gt;getLast(); }</span></span>
-<span id="L2367"><span class="lineNum">    2367</span> <span class="tlaGNC">           1 :     void removeLast() { workList-&gt;removeLast(); }</span></span>
-<span id="L2368"><span class="lineNum">    2368</span> <span class="tlaUNC">           0 :     void remove(IRInst* val) { workList-&gt;remove(val); }</span></span>
-<span id="L2369"><span class="lineNum">    2369</span> <span class="tlaGNC">           1 :     void fastRemoveAt(Index index) { workList-&gt;fastRemoveAt(index); }</span></span>
-<span id="L2370"><span class="lineNum">    2370</span> <span class="tlaGNC">           1 :     void add(IRInst* inst) { workList-&gt;add(inst); }</span></span>
-<span id="L2371"><span class="lineNum">    2371</span> <span class="tlaGNC">           1 :     void clear() { workList-&gt;clear(); }</span></span>
-<span id="L2372"><span class="lineNum">    2372</span> <span class="tlaGNC">           1 :     void setCount(Index count) { workList-&gt;setCount(count); }</span></span>
-<span id="L2373"><span class="lineNum">    2373</span>              : };</span>
-<span id="L2374"><span class="lineNum">    2374</span>              : </span>
-<span id="L2375"><span class="lineNum">    2375</span>              : struct InstHashSet</span>
-<span id="L2376"><span class="lineNum">    2376</span>              : {</span>
-<span id="L2377"><span class="lineNum">    2377</span> <span class="tlaGNC">           1 :     HashSet&lt;IRInst*&gt;* set = nullptr;</span></span>
-<span id="L2378"><span class="lineNum">    2378</span> <span class="tlaGNC">           1 :     ContainerPool* pool = nullptr;</span></span>
-<span id="L2379"><span class="lineNum">    2379</span>              : </span>
-<span id="L2380"><span class="lineNum">    2380</span> <span class="tlaGNC">           1 :     InstHashSet() = default;</span></span>
-<span id="L2381"><span class="lineNum">    2381</span> <span class="tlaGNC">           1 :     InstHashSet(IRModule* module)</span></span>
-<span id="L2382"><span class="lineNum">    2382</span> <span class="tlaUNC">           0 :     {</span></span>
-<span id="L2383"><span class="lineNum">    2383</span> <span class="tlaGNC">           1 :         pool = &amp;module-&gt;getContainerPool();</span></span>
-<span id="L2384"><span class="lineNum">    2384</span> <span class="tlaGNC">           1 :         set = module-&gt;getContainerPool().getHashSet&lt;IRInst&gt;();</span></span>
-<span id="L2385"><span class="lineNum">    2385</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L2386"><span class="lineNum">    2386</span>              :     ~InstHashSet()</span>
-<span id="L2387"><span class="lineNum">    2387</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L2388"><span class="lineNum">    2388</span> <span class="tlaGNC">           1 :         if (pool)</span></span>
-<span id="L2389"><span class="lineNum">    2389</span> <span class="tlaGNC">           1 :             pool-&gt;free(set);</span></span>
-<span id="L2390"><span class="lineNum">    2390</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L2391"><span class="lineNum">    2391</span>              :     InstHashSet(const InstHashSet&amp;) = delete;</span>
-<span id="L2392"><span class="lineNum">    2392</span>              :     InstHashSet(InstHashSet&amp;&amp; other)</span>
-<span id="L2393"><span class="lineNum">    2393</span> <span class="tlaUNC">           0 :     {</span></span>
-<span id="L2394"><span class="lineNum">    2394</span> <span class="tlaUNC">           0 :         set = other.set;</span></span>
-<span id="L2395"><span class="lineNum">    2395</span> <span class="tlaUNC">           0 :         pool = other.pool;</span></span>
-<span id="L2396"><span class="lineNum">    2396</span> <span class="tlaUNC">           0 :         other.set = nullptr;</span></span>
-<span id="L2397"><span class="lineNum">    2397</span> <span class="tlaUNC">           0 :         other.pool = nullptr;</span></span>
-<span id="L2398"><span class="lineNum">    2398</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L2399"><span class="lineNum">    2399</span>              :     InstHashSet&amp; operator=(InstHashSet&amp;&amp; other)</span>
-<span id="L2400"><span class="lineNum">    2400</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L2401"><span class="lineNum">    2401</span> <span class="tlaGNC">           1 :         set = other.set;</span></span>
-<span id="L2402"><span class="lineNum">    2402</span> <span class="tlaGNC">           1 :         pool = other.pool;</span></span>
-<span id="L2403"><span class="lineNum">    2403</span> <span class="tlaGNC">           1 :         other.set = nullptr;</span></span>
-<span id="L2404"><span class="lineNum">    2404</span> <span class="tlaGNC">           1 :         other.pool = nullptr;</span></span>
-<span id="L2405"><span class="lineNum">    2405</span> <span class="tlaGNC">           1 :         return *this;</span></span>
-<span id="L2406"><span class="lineNum">    2406</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L2407"><span class="lineNum">    2407</span> <span class="tlaGNC">           1 :     HashSet&lt;IRInst*&gt;&amp; getHashSet() { return *set; }</span></span>
-<span id="L2408"><span class="lineNum">    2408</span> <span class="tlaGNC">           1 :     Index getCount() { return set-&gt;getCount(); }</span></span>
-<span id="L2409"><span class="lineNum">    2409</span> <span class="tlaGNC">           1 :     bool add(IRInst* inst) { return set-&gt;add(inst); }</span></span>
-<span id="L2410"><span class="lineNum">    2410</span> <span class="tlaGNC">           1 :     bool contains(IRInst* inst) { return set-&gt;contains(inst); }</span></span>
-<span id="L2411"><span class="lineNum">    2411</span> <span class="tlaGNC">           1 :     void remove(IRInst* inst) { set-&gt;remove(inst); }</span></span>
-<span id="L2412"><span class="lineNum">    2412</span> <span class="tlaGNC">           1 :     void clear() { set-&gt;clear(); }</span></span>
-<span id="L2413"><span class="lineNum">    2413</span>              : };</span>
-<span id="L2414"><span class="lineNum">    2414</span>              : </span>
-<span id="L2415"><span class="lineNum">    2415</span>              : struct IRDumpOptions</span>
-<span id="L2416"><span class="lineNum">    2416</span>              : {</span>
-<span id="L2417"><span class="lineNum">    2417</span>              :     typedef uint32_t Flags;</span>
-<span id="L2418"><span class="lineNum">    2418</span>              :     struct Flag</span>
-<span id="L2419"><span class="lineNum">    2419</span>              :     {</span>
-<span id="L2420"><span class="lineNum">    2420</span>              :         enum Enum : Flags</span>
-<span id="L2421"><span class="lineNum">    2421</span>              :         {</span>
-<span id="L2422"><span class="lineNum">    2422</span>              :             SourceLocations = 0x1, ///&lt; If set will output source locations</span>
-<span id="L2423"><span class="lineNum">    2423</span>              :             DumpDebugIds = 0x2,    ///&lt; If set *and* debug build will write ids</span>
-<span id="L2424"><span class="lineNum">    2424</span>              :         };</span>
-<span id="L2425"><span class="lineNum">    2425</span>              :     };</span>
-<span id="L2426"><span class="lineNum">    2426</span>              : </span>
-<span id="L2427"><span class="lineNum">    2427</span>              :     /// How much detail to include in dumped IR.</span>
-<span id="L2428"><span class="lineNum">    2428</span>              :     ///</span>
-<span id="L2429"><span class="lineNum">    2429</span>              :     /// Used with the `dumpIR` functions to determine</span>
-<span id="L2430"><span class="lineNum">    2430</span>              :     /// whether a completely faithful, but verbose, IR</span>
-<span id="L2431"><span class="lineNum">    2431</span>              :     /// dump is produced, or something simplified for ease</span>
-<span id="L2432"><span class="lineNum">    2432</span>              :     /// or reading.</span>
-<span id="L2433"><span class="lineNum">    2433</span>              :     ///</span>
-<span id="L2434"><span class="lineNum">    2434</span>              :     enum class Mode</span>
-<span id="L2435"><span class="lineNum">    2435</span>              :     {</span>
-<span id="L2436"><span class="lineNum">    2436</span>              :         /// Produce a simplified IR dump.</span>
-<span id="L2437"><span class="lineNum">    2437</span>              :         ///</span>
-<span id="L2438"><span class="lineNum">    2438</span>              :         /// Simplified IR dumping will skip certain instructions</span>
-<span id="L2439"><span class="lineNum">    2439</span>              :         /// and print them at their use sites instead, so that</span>
-<span id="L2440"><span class="lineNum">    2440</span>              :         /// the overall dump is shorter and easier to read.</span>
-<span id="L2441"><span class="lineNum">    2441</span>              :         Simplified,</span>
-<span id="L2442"><span class="lineNum">    2442</span>              : </span>
-<span id="L2443"><span class="lineNum">    2443</span>              :         /// Produce a detailed/accurate IR dump.</span>
-<span id="L2444"><span class="lineNum">    2444</span>              :         ///</span>
-<span id="L2445"><span class="lineNum">    2445</span>              :         /// A detailed IR dump will make sure to emit exactly</span>
-<span id="L2446"><span class="lineNum">    2446</span>              :         /// the instructions that were present with no attempt</span>
-<span id="L2447"><span class="lineNum">    2447</span>              :         /// to selectively skip them or give special formatting.</span>
-<span id="L2448"><span class="lineNum">    2448</span>              :         ///</span>
-<span id="L2449"><span class="lineNum">    2449</span>              :         Detailed,</span>
-<span id="L2450"><span class="lineNum">    2450</span>              :     };</span>
-<span id="L2451"><span class="lineNum">    2451</span>              : </span>
-<span id="L2452"><span class="lineNum">    2452</span>              :     Mode mode = Mode::Simplified;</span>
-<span id="L2453"><span class="lineNum">    2453</span>              :     /// Flags to control output</span>
-<span id="L2454"><span class="lineNum">    2454</span>              :     /// Add Flag::SourceLocations to output source locations set on IR</span>
-<span id="L2455"><span class="lineNum">    2455</span>              :     Flags flags = 0;</span>
-<span id="L2456"><span class="lineNum">    2456</span>              : };</span>
-<span id="L2457"><span class="lineNum">    2457</span>              : </span>
-<span id="L2458"><span class="lineNum">    2458</span>              : void printSlangIRAssembly(</span>
-<span id="L2459"><span class="lineNum">    2459</span>              :     StringBuilder&amp; builder,</span>
-<span id="L2460"><span class="lineNum">    2460</span>              :     IRModule* module,</span>
-<span id="L2461"><span class="lineNum">    2461</span>              :     const IRDumpOptions&amp; options,</span>
-<span id="L2462"><span class="lineNum">    2462</span>              :     SourceManager* sourceManager);</span>
-<span id="L2463"><span class="lineNum">    2463</span>              : String getSlangIRAssembly(</span>
-<span id="L2464"><span class="lineNum">    2464</span>              :     IRModule* module,</span>
-<span id="L2465"><span class="lineNum">    2465</span>              :     const IRDumpOptions&amp; options,</span>
-<span id="L2466"><span class="lineNum">    2466</span>              :     SourceManager* sourceManager);</span>
-<span id="L2467"><span class="lineNum">    2467</span>              : </span>
-<span id="L2468"><span class="lineNum">    2468</span>              : void dumpIR(</span>
-<span id="L2469"><span class="lineNum">    2469</span>              :     IRModule* module,</span>
-<span id="L2470"><span class="lineNum">    2470</span>              :     const IRDumpOptions&amp; options,</span>
-<span id="L2471"><span class="lineNum">    2471</span>              :     SourceManager* sourceManager,</span>
-<span id="L2472"><span class="lineNum">    2472</span>              :     ISlangWriter* writer);</span>
-<span id="L2473"><span class="lineNum">    2473</span>              : void dumpIR(</span>
-<span id="L2474"><span class="lineNum">    2474</span>              :     IRInst* globalVal,</span>
-<span id="L2475"><span class="lineNum">    2475</span>              :     const IRDumpOptions&amp; options,</span>
-<span id="L2476"><span class="lineNum">    2476</span>              :     SourceManager* sourceManager,</span>
-<span id="L2477"><span class="lineNum">    2477</span>              :     ISlangWriter* writer);</span>
-<span id="L2478"><span class="lineNum">    2478</span>              : void dumpIR(</span>
-<span id="L2479"><span class="lineNum">    2479</span>              :     IRModule* module,</span>
-<span id="L2480"><span class="lineNum">    2480</span>              :     const IRDumpOptions&amp; options,</span>
-<span id="L2481"><span class="lineNum">    2481</span>              :     char const* label,</span>
-<span id="L2482"><span class="lineNum">    2482</span>              :     SourceManager* sourceManager,</span>
-<span id="L2483"><span class="lineNum">    2483</span>              :     ISlangWriter* writer);</span>
-<span id="L2484"><span class="lineNum">    2484</span>              : </span>
-<span id="L2485"><span class="lineNum">    2485</span>              : /// True if the op type can be handled &#x27;nominally&#x27; meaning that pointer identity is applicable.</span>
-<span id="L2486"><span class="lineNum">    2486</span>              : bool isNominalOp(IROp op);</span>
-<span id="L2487"><span class="lineNum">    2487</span>              : </span>
-<span id="L2488"><span class="lineNum">    2488</span>              : // True if the IR inst represents a builtin object (e.g. __BuiltinFloatingPointType).</span>
-<span id="L2489"><span class="lineNum">    2489</span>              : bool isBuiltin(IRInst* inst);</span>
-<span id="L2490"><span class="lineNum">    2490</span>              : </span>
-<span id="L2491"><span class="lineNum">    2491</span>              : // Get the enclosuing function of an instruction.</span>
-<span id="L2492"><span class="lineNum">    2492</span>              : IRFunc* getParentFunc(IRInst* inst);</span>
-<span id="L2493"><span class="lineNum">    2493</span>              : </span>
-<span id="L2494"><span class="lineNum">    2494</span>              : // Is child a descendent of inst</span>
-<span id="L2495"><span class="lineNum">    2495</span>              : bool hasDescendent(IRInst* inst, IRInst* child);</span>
-<span id="L2496"><span class="lineNum">    2496</span>              : </span>
-<span id="L2497"><span class="lineNum">    2497</span>              : // True if moving this inst will not change the semantics of the program</span>
-<span id="L2498"><span class="lineNum">    2498</span>              : bool isMovableInst(IRInst* inst);</span>
-<span id="L2499"><span class="lineNum">    2499</span>              : </span>
-<span id="L2500"><span class="lineNum">    2500</span>              : #if SLANG_ENABLE_IR_BREAK_ALLOC</span>
-<span id="L2501"><span class="lineNum">    2501</span>              : uint32_t&amp; _debugGetIRAllocCounter();</span>
-<span id="L2502"><span class="lineNum">    2502</span>              : extern uint32_t _slangIRAllocBreak;</span>
-<span id="L2503"><span class="lineNum">    2503</span>              : extern bool _slangIRPrintStackAtBreak;</span>
-<span id="L2504"><span class="lineNum">    2504</span>              : void _debugSetInstBeingCloned(uint32_t uid);</span>
-<span id="L2505"><span class="lineNum">    2505</span>              : void _debugResetInstBeingCloned();</span>
-<span id="L2506"><span class="lineNum">    2506</span>              : #endif</span>
-<span id="L2507"><span class="lineNum">    2507</span>              : </span>
-<span id="L2508"><span class="lineNum">    2508</span>              : // Print a call stack leading to &#x27;inst&#x27; as a series of</span>
-<span id="L2509"><span class="lineNum">    2509</span>              : // Diagnostics::seeCallOfFunc diagnostic messages.</span>
-<span id="L2510"><span class="lineNum">    2510</span>              : void diagnoseCallStack(IRInst* inst, DiagnosticSink* sink);</span>
-<span id="L2511"><span class="lineNum">    2511</span>              : </span>
-<span id="L2512"><span class="lineNum">    2512</span>              : </span>
-<span id="L2513"><span class="lineNum">    2513</span>              : // TODO: Ellie, comment and move somewhere more appropriate?</span>
+<span id="L2310"><span class="lineNum">    2310</span>              :     Dictionary&lt;ImmutableHashedString, List&lt;IRInst*&gt;&gt; m_mapMangledNameToGlobalInst;</span>
+<span id="L2311"><span class="lineNum">    2311</span>              : </span>
+<span id="L2312"><span class="lineNum">    2312</span>              :     /// Hold a mapping for inst -&gt; uniqueID. This mapping is generated on</span>
+<span id="L2313"><span class="lineNum">    2313</span>              :     /// demand if passes need them, rather than eagerly storing them on</span>
+<span id="L2314"><span class="lineNum">    2314</span>              :     /// insts when unnecessary.</span>
+<span id="L2315"><span class="lineNum">    2315</span>              :     ///</span>
+<span id="L2316"><span class="lineNum">    2316</span>              :     Dictionary&lt;IRInst*, UInt&gt; m_mapInstToUniqueId;</span>
+<span id="L2317"><span class="lineNum">    2317</span>              : </span>
+<span id="L2318"><span class="lineNum">    2318</span>              :     // Translation cache.</span>
+<span id="L2319"><span class="lineNum">    2319</span> <span class="tlaGNC">           1 :     IRCompilerDictionary* m_translationDict = nullptr;</span></span>
+<span id="L2320"><span class="lineNum">    2320</span>              : </span>
+<span id="L2321"><span class="lineNum">    2321</span>              :     // (inst, association-kind) -&gt; associated-inst</span>
+<span id="L2322"><span class="lineNum">    2322</span>              :     Dictionary&lt;AnnotationCacheKey, IRAnnotation*&gt; m_annotationLookupCache;</span>
+<span id="L2323"><span class="lineNum">    2323</span>              : </span>
+<span id="L2324"><span class="lineNum">    2324</span>              :     // Acceleration cache for linker global handling.</span>
+<span id="L2325"><span class="lineNum">    2325</span>              :     // Assumes the module will not change after the cache is built; rebuild manually if it does.</span>
+<span id="L2326"><span class="lineNum">    2326</span>              :     RefPtr&lt;ModuleLinkingInfo&gt; m_linkingInfo;</span>
+<span id="L2327"><span class="lineNum">    2327</span>              :     std::mutex m_linkingInfoMutex;</span>
+<span id="L2328"><span class="lineNum">    2328</span>              : };</span>
+<span id="L2329"><span class="lineNum">    2329</span>              : </span>
+<span id="L2330"><span class="lineNum">    2330</span>              : </span>
+<span id="L2331"><span class="lineNum">    2331</span>              : struct InstWorkList</span>
+<span id="L2332"><span class="lineNum">    2332</span>              : {</span>
+<span id="L2333"><span class="lineNum">    2333</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt;* workList = nullptr;</span></span>
+<span id="L2334"><span class="lineNum">    2334</span>              :     ContainerPool* pool = nullptr;</span>
+<span id="L2335"><span class="lineNum">    2335</span>              : </span>
+<span id="L2336"><span class="lineNum">    2336</span>              :     InstWorkList() = default;</span>
+<span id="L2337"><span class="lineNum">    2337</span> <span class="tlaGNC">           1 :     InstWorkList(IRModule* module)</span></span>
+<span id="L2338"><span class="lineNum">    2338</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L2339"><span class="lineNum">    2339</span> <span class="tlaGNC">           1 :         pool = &amp;module-&gt;getContainerPool();</span></span>
+<span id="L2340"><span class="lineNum">    2340</span> <span class="tlaGNC">           1 :         workList = module-&gt;getContainerPool().getList&lt;IRInst&gt;();</span></span>
+<span id="L2341"><span class="lineNum">    2341</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L2342"><span class="lineNum">    2342</span>              :     ~InstWorkList()</span>
+<span id="L2343"><span class="lineNum">    2343</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L2344"><span class="lineNum">    2344</span> <span class="tlaGNC">           1 :         if (pool)</span></span>
+<span id="L2345"><span class="lineNum">    2345</span> <span class="tlaGNC">           1 :             pool-&gt;free(workList);</span></span>
+<span id="L2346"><span class="lineNum">    2346</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L2347"><span class="lineNum">    2347</span>              :     InstWorkList(const InstWorkList&amp;) = delete;</span>
+<span id="L2348"><span class="lineNum">    2348</span>              :     InstWorkList(InstWorkList&amp;&amp; other)</span>
+<span id="L2349"><span class="lineNum">    2349</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L2350"><span class="lineNum">    2350</span> <span class="tlaUNC">           0 :         workList = other.workList;</span></span>
+<span id="L2351"><span class="lineNum">    2351</span> <span class="tlaUNC">           0 :         pool = other.pool;</span></span>
+<span id="L2352"><span class="lineNum">    2352</span> <span class="tlaUNC">           0 :         other.workList = nullptr;</span></span>
+<span id="L2353"><span class="lineNum">    2353</span> <span class="tlaUNC">           0 :         other.pool = nullptr;</span></span>
+<span id="L2354"><span class="lineNum">    2354</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L2355"><span class="lineNum">    2355</span>              :     InstWorkList&amp; operator=(InstWorkList&amp;&amp; other)</span>
+<span id="L2356"><span class="lineNum">    2356</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L2357"><span class="lineNum">    2357</span> <span class="tlaUNC">           0 :         workList = other.workList;</span></span>
+<span id="L2358"><span class="lineNum">    2358</span> <span class="tlaUNC">           0 :         pool = other.pool;</span></span>
+<span id="L2359"><span class="lineNum">    2359</span> <span class="tlaUNC">           0 :         other.workList = nullptr;</span></span>
+<span id="L2360"><span class="lineNum">    2360</span> <span class="tlaUNC">           0 :         other.pool = nullptr;</span></span>
+<span id="L2361"><span class="lineNum">    2361</span> <span class="tlaUNC">           0 :         return *this;</span></span>
+<span id="L2362"><span class="lineNum">    2362</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L2363"><span class="lineNum">    2363</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt;&amp; getList() { return *workList; }</span></span>
+<span id="L2364"><span class="lineNum">    2364</span> <span class="tlaGNC">           1 :     IRInst* operator[](Index i) { return (*workList)[i]; }</span></span>
+<span id="L2365"><span class="lineNum">    2365</span> <span class="tlaGNC">           1 :     Index getCount() { return workList-&gt;getCount(); }</span></span>
+<span id="L2366"><span class="lineNum">    2366</span> <span class="tlaUNC">           0 :     IRInst** begin() { return workList-&gt;begin(); }</span></span>
+<span id="L2367"><span class="lineNum">    2367</span> <span class="tlaUNC">           0 :     IRInst** end() { return workList-&gt;end(); }</span></span>
+<span id="L2368"><span class="lineNum">    2368</span> <span class="tlaGNC">           1 :     IRInst* getLast() { return workList-&gt;getLast(); }</span></span>
+<span id="L2369"><span class="lineNum">    2369</span> <span class="tlaGNC">           1 :     void removeLast() { workList-&gt;removeLast(); }</span></span>
+<span id="L2370"><span class="lineNum">    2370</span> <span class="tlaUNC">           0 :     void remove(IRInst* val) { workList-&gt;remove(val); }</span></span>
+<span id="L2371"><span class="lineNum">    2371</span> <span class="tlaGNC">           1 :     void fastRemoveAt(Index index) { workList-&gt;fastRemoveAt(index); }</span></span>
+<span id="L2372"><span class="lineNum">    2372</span> <span class="tlaGNC">           1 :     void add(IRInst* inst) { workList-&gt;add(inst); }</span></span>
+<span id="L2373"><span class="lineNum">    2373</span> <span class="tlaGNC">           1 :     void clear() { workList-&gt;clear(); }</span></span>
+<span id="L2374"><span class="lineNum">    2374</span> <span class="tlaGNC">           1 :     void setCount(Index count) { workList-&gt;setCount(count); }</span></span>
+<span id="L2375"><span class="lineNum">    2375</span>              : };</span>
+<span id="L2376"><span class="lineNum">    2376</span>              : </span>
+<span id="L2377"><span class="lineNum">    2377</span>              : struct InstHashSet</span>
+<span id="L2378"><span class="lineNum">    2378</span>              : {</span>
+<span id="L2379"><span class="lineNum">    2379</span> <span class="tlaGNC">           1 :     HashSet&lt;IRInst*&gt;* set = nullptr;</span></span>
+<span id="L2380"><span class="lineNum">    2380</span> <span class="tlaGNC">           1 :     ContainerPool* pool = nullptr;</span></span>
+<span id="L2381"><span class="lineNum">    2381</span>              : </span>
+<span id="L2382"><span class="lineNum">    2382</span> <span class="tlaGNC">           1 :     InstHashSet() = default;</span></span>
+<span id="L2383"><span class="lineNum">    2383</span> <span class="tlaGNC">           1 :     InstHashSet(IRModule* module)</span></span>
+<span id="L2384"><span class="lineNum">    2384</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L2385"><span class="lineNum">    2385</span> <span class="tlaGNC">           1 :         pool = &amp;module-&gt;getContainerPool();</span></span>
+<span id="L2386"><span class="lineNum">    2386</span> <span class="tlaGNC">           1 :         set = module-&gt;getContainerPool().getHashSet&lt;IRInst&gt;();</span></span>
+<span id="L2387"><span class="lineNum">    2387</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L2388"><span class="lineNum">    2388</span>              :     ~InstHashSet()</span>
+<span id="L2389"><span class="lineNum">    2389</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L2390"><span class="lineNum">    2390</span> <span class="tlaGNC">           1 :         if (pool)</span></span>
+<span id="L2391"><span class="lineNum">    2391</span> <span class="tlaGNC">           1 :             pool-&gt;free(set);</span></span>
+<span id="L2392"><span class="lineNum">    2392</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L2393"><span class="lineNum">    2393</span>              :     InstHashSet(const InstHashSet&amp;) = delete;</span>
+<span id="L2394"><span class="lineNum">    2394</span>              :     InstHashSet(InstHashSet&amp;&amp; other)</span>
+<span id="L2395"><span class="lineNum">    2395</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L2396"><span class="lineNum">    2396</span> <span class="tlaUNC">           0 :         set = other.set;</span></span>
+<span id="L2397"><span class="lineNum">    2397</span> <span class="tlaUNC">           0 :         pool = other.pool;</span></span>
+<span id="L2398"><span class="lineNum">    2398</span> <span class="tlaUNC">           0 :         other.set = nullptr;</span></span>
+<span id="L2399"><span class="lineNum">    2399</span> <span class="tlaUNC">           0 :         other.pool = nullptr;</span></span>
+<span id="L2400"><span class="lineNum">    2400</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L2401"><span class="lineNum">    2401</span>              :     InstHashSet&amp; operator=(InstHashSet&amp;&amp; other)</span>
+<span id="L2402"><span class="lineNum">    2402</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L2403"><span class="lineNum">    2403</span> <span class="tlaGNC">           1 :         set = other.set;</span></span>
+<span id="L2404"><span class="lineNum">    2404</span> <span class="tlaGNC">           1 :         pool = other.pool;</span></span>
+<span id="L2405"><span class="lineNum">    2405</span> <span class="tlaGNC">           1 :         other.set = nullptr;</span></span>
+<span id="L2406"><span class="lineNum">    2406</span> <span class="tlaGNC">           1 :         other.pool = nullptr;</span></span>
+<span id="L2407"><span class="lineNum">    2407</span> <span class="tlaGNC">           1 :         return *this;</span></span>
+<span id="L2408"><span class="lineNum">    2408</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L2409"><span class="lineNum">    2409</span> <span class="tlaGNC">           1 :     HashSet&lt;IRInst*&gt;&amp; getHashSet() { return *set; }</span></span>
+<span id="L2410"><span class="lineNum">    2410</span> <span class="tlaGNC">           1 :     Index getCount() { return set-&gt;getCount(); }</span></span>
+<span id="L2411"><span class="lineNum">    2411</span> <span class="tlaGNC">           1 :     bool add(IRInst* inst) { return set-&gt;add(inst); }</span></span>
+<span id="L2412"><span class="lineNum">    2412</span> <span class="tlaGNC">           1 :     bool contains(IRInst* inst) { return set-&gt;contains(inst); }</span></span>
+<span id="L2413"><span class="lineNum">    2413</span> <span class="tlaGNC">           1 :     void remove(IRInst* inst) { set-&gt;remove(inst); }</span></span>
+<span id="L2414"><span class="lineNum">    2414</span> <span class="tlaGNC">           1 :     void clear() { set-&gt;clear(); }</span></span>
+<span id="L2415"><span class="lineNum">    2415</span>              : };</span>
+<span id="L2416"><span class="lineNum">    2416</span>              : </span>
+<span id="L2417"><span class="lineNum">    2417</span>              : struct IRDumpOptions</span>
+<span id="L2418"><span class="lineNum">    2418</span>              : {</span>
+<span id="L2419"><span class="lineNum">    2419</span>              :     typedef uint32_t Flags;</span>
+<span id="L2420"><span class="lineNum">    2420</span>              :     struct Flag</span>
+<span id="L2421"><span class="lineNum">    2421</span>              :     {</span>
+<span id="L2422"><span class="lineNum">    2422</span>              :         enum Enum : Flags</span>
+<span id="L2423"><span class="lineNum">    2423</span>              :         {</span>
+<span id="L2424"><span class="lineNum">    2424</span>              :             SourceLocations = 0x1, ///&lt; If set will output source locations</span>
+<span id="L2425"><span class="lineNum">    2425</span>              :             DumpDebugIds = 0x2,    ///&lt; If set *and* debug build will write ids</span>
+<span id="L2426"><span class="lineNum">    2426</span>              :         };</span>
+<span id="L2427"><span class="lineNum">    2427</span>              :     };</span>
+<span id="L2428"><span class="lineNum">    2428</span>              : </span>
+<span id="L2429"><span class="lineNum">    2429</span>              :     /// How much detail to include in dumped IR.</span>
+<span id="L2430"><span class="lineNum">    2430</span>              :     ///</span>
+<span id="L2431"><span class="lineNum">    2431</span>              :     /// Used with the `dumpIR` functions to determine</span>
+<span id="L2432"><span class="lineNum">    2432</span>              :     /// whether a completely faithful, but verbose, IR</span>
+<span id="L2433"><span class="lineNum">    2433</span>              :     /// dump is produced, or something simplified for ease</span>
+<span id="L2434"><span class="lineNum">    2434</span>              :     /// or reading.</span>
+<span id="L2435"><span class="lineNum">    2435</span>              :     ///</span>
+<span id="L2436"><span class="lineNum">    2436</span>              :     enum class Mode</span>
+<span id="L2437"><span class="lineNum">    2437</span>              :     {</span>
+<span id="L2438"><span class="lineNum">    2438</span>              :         /// Produce a simplified IR dump.</span>
+<span id="L2439"><span class="lineNum">    2439</span>              :         ///</span>
+<span id="L2440"><span class="lineNum">    2440</span>              :         /// Simplified IR dumping will skip certain instructions</span>
+<span id="L2441"><span class="lineNum">    2441</span>              :         /// and print them at their use sites instead, so that</span>
+<span id="L2442"><span class="lineNum">    2442</span>              :         /// the overall dump is shorter and easier to read.</span>
+<span id="L2443"><span class="lineNum">    2443</span>              :         Simplified,</span>
+<span id="L2444"><span class="lineNum">    2444</span>              : </span>
+<span id="L2445"><span class="lineNum">    2445</span>              :         /// Produce a detailed/accurate IR dump.</span>
+<span id="L2446"><span class="lineNum">    2446</span>              :         ///</span>
+<span id="L2447"><span class="lineNum">    2447</span>              :         /// A detailed IR dump will make sure to emit exactly</span>
+<span id="L2448"><span class="lineNum">    2448</span>              :         /// the instructions that were present with no attempt</span>
+<span id="L2449"><span class="lineNum">    2449</span>              :         /// to selectively skip them or give special formatting.</span>
+<span id="L2450"><span class="lineNum">    2450</span>              :         ///</span>
+<span id="L2451"><span class="lineNum">    2451</span>              :         Detailed,</span>
+<span id="L2452"><span class="lineNum">    2452</span>              :     };</span>
+<span id="L2453"><span class="lineNum">    2453</span>              : </span>
+<span id="L2454"><span class="lineNum">    2454</span>              :     Mode mode = Mode::Simplified;</span>
+<span id="L2455"><span class="lineNum">    2455</span>              :     /// Flags to control output</span>
+<span id="L2456"><span class="lineNum">    2456</span>              :     /// Add Flag::SourceLocations to output source locations set on IR</span>
+<span id="L2457"><span class="lineNum">    2457</span>              :     Flags flags = 0;</span>
+<span id="L2458"><span class="lineNum">    2458</span>              : };</span>
+<span id="L2459"><span class="lineNum">    2459</span>              : </span>
+<span id="L2460"><span class="lineNum">    2460</span>              : void printSlangIRAssembly(</span>
+<span id="L2461"><span class="lineNum">    2461</span>              :     StringBuilder&amp; builder,</span>
+<span id="L2462"><span class="lineNum">    2462</span>              :     IRModule* module,</span>
+<span id="L2463"><span class="lineNum">    2463</span>              :     const IRDumpOptions&amp; options,</span>
+<span id="L2464"><span class="lineNum">    2464</span>              :     SourceManager* sourceManager);</span>
+<span id="L2465"><span class="lineNum">    2465</span>              : String getSlangIRAssembly(</span>
+<span id="L2466"><span class="lineNum">    2466</span>              :     IRModule* module,</span>
+<span id="L2467"><span class="lineNum">    2467</span>              :     const IRDumpOptions&amp; options,</span>
+<span id="L2468"><span class="lineNum">    2468</span>              :     SourceManager* sourceManager);</span>
+<span id="L2469"><span class="lineNum">    2469</span>              : </span>
+<span id="L2470"><span class="lineNum">    2470</span>              : void dumpIR(</span>
+<span id="L2471"><span class="lineNum">    2471</span>              :     IRModule* module,</span>
+<span id="L2472"><span class="lineNum">    2472</span>              :     const IRDumpOptions&amp; options,</span>
+<span id="L2473"><span class="lineNum">    2473</span>              :     SourceManager* sourceManager,</span>
+<span id="L2474"><span class="lineNum">    2474</span>              :     ISlangWriter* writer);</span>
+<span id="L2475"><span class="lineNum">    2475</span>              : void dumpIR(</span>
+<span id="L2476"><span class="lineNum">    2476</span>              :     IRInst* globalVal,</span>
+<span id="L2477"><span class="lineNum">    2477</span>              :     const IRDumpOptions&amp; options,</span>
+<span id="L2478"><span class="lineNum">    2478</span>              :     SourceManager* sourceManager,</span>
+<span id="L2479"><span class="lineNum">    2479</span>              :     ISlangWriter* writer);</span>
+<span id="L2480"><span class="lineNum">    2480</span>              : void dumpIR(</span>
+<span id="L2481"><span class="lineNum">    2481</span>              :     IRModule* module,</span>
+<span id="L2482"><span class="lineNum">    2482</span>              :     const IRDumpOptions&amp; options,</span>
+<span id="L2483"><span class="lineNum">    2483</span>              :     char const* label,</span>
+<span id="L2484"><span class="lineNum">    2484</span>              :     SourceManager* sourceManager,</span>
+<span id="L2485"><span class="lineNum">    2485</span>              :     ISlangWriter* writer);</span>
+<span id="L2486"><span class="lineNum">    2486</span>              : </span>
+<span id="L2487"><span class="lineNum">    2487</span>              : /// True if the op type can be handled &#x27;nominally&#x27; meaning that pointer identity is applicable.</span>
+<span id="L2488"><span class="lineNum">    2488</span>              : bool isNominalOp(IROp op);</span>
+<span id="L2489"><span class="lineNum">    2489</span>              : </span>
+<span id="L2490"><span class="lineNum">    2490</span>              : // True if the IR inst represents a builtin object (e.g. __BuiltinFloatingPointType).</span>
+<span id="L2491"><span class="lineNum">    2491</span>              : bool isBuiltin(IRInst* inst);</span>
+<span id="L2492"><span class="lineNum">    2492</span>              : </span>
+<span id="L2493"><span class="lineNum">    2493</span>              : // Get the enclosuing function of an instruction.</span>
+<span id="L2494"><span class="lineNum">    2494</span>              : IRFunc* getParentFunc(IRInst* inst);</span>
+<span id="L2495"><span class="lineNum">    2495</span>              : </span>
+<span id="L2496"><span class="lineNum">    2496</span>              : // Is child a descendent of inst</span>
+<span id="L2497"><span class="lineNum">    2497</span>              : bool hasDescendent(IRInst* inst, IRInst* child);</span>
+<span id="L2498"><span class="lineNum">    2498</span>              : </span>
+<span id="L2499"><span class="lineNum">    2499</span>              : // True if moving this inst will not change the semantics of the program</span>
+<span id="L2500"><span class="lineNum">    2500</span>              : bool isMovableInst(IRInst* inst);</span>
+<span id="L2501"><span class="lineNum">    2501</span>              : </span>
+<span id="L2502"><span class="lineNum">    2502</span>              : #if SLANG_ENABLE_IR_BREAK_ALLOC</span>
+<span id="L2503"><span class="lineNum">    2503</span>              : uint32_t&amp; _debugGetIRAllocCounter();</span>
+<span id="L2504"><span class="lineNum">    2504</span>              : extern uint32_t _slangIRAllocBreak;</span>
+<span id="L2505"><span class="lineNum">    2505</span>              : extern bool _slangIRPrintStackAtBreak;</span>
+<span id="L2506"><span class="lineNum">    2506</span>              : void _debugSetInstBeingCloned(uint32_t uid);</span>
+<span id="L2507"><span class="lineNum">    2507</span>              : void _debugResetInstBeingCloned();</span>
+<span id="L2508"><span class="lineNum">    2508</span>              : #endif</span>
+<span id="L2509"><span class="lineNum">    2509</span>              : </span>
+<span id="L2510"><span class="lineNum">    2510</span>              : // Print a call stack leading to &#x27;inst&#x27; as a series of</span>
+<span id="L2511"><span class="lineNum">    2511</span>              : // Diagnostics::seeCallOfFunc diagnostic messages.</span>
+<span id="L2512"><span class="lineNum">    2512</span>              : void diagnoseCallStack(IRInst* inst, DiagnosticSink* sink);</span>
+<span id="L2513"><span class="lineNum">    2513</span>              : </span>
 <span id="L2514"><span class="lineNum">    2514</span>              : </span>
-<span id="L2515"><span class="lineNum">    2515</span>              : template&lt;typename I = IRInst, typename F&gt;</span>
-<span id="L2516"><span class="lineNum">    2516</span>              : static void traverseUsers(IRInst* inst, F f)</span>
-<span id="L2517"><span class="lineNum">    2517</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L2518"><span class="lineNum">    2518</span> <span class="tlaGNC">           1 :     List&lt;IRUse*&gt; uses;</span></span>
-<span id="L2519"><span class="lineNum">    2519</span> <span class="tlaGNC">           1 :     for (auto use = inst-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L2520"><span class="lineNum">    2520</span>              :     {</span>
-<span id="L2521"><span class="lineNum">    2521</span> <span class="tlaGNC">           1 :         uses.add(use);</span></span>
-<span id="L2522"><span class="lineNum">    2522</span>              :     }</span>
-<span id="L2523"><span class="lineNum">    2523</span> <span class="tlaGNC">           1 :     for (auto u : uses)</span></span>
-<span id="L2524"><span class="lineNum">    2524</span>              :     {</span>
-<span id="L2525"><span class="lineNum">    2525</span> <span class="tlaGNC">           1 :         if (u-&gt;usedValue != inst)</span></span>
-<span id="L2526"><span class="lineNum">    2526</span>              :             continue;</span>
-<span id="L2527"><span class="lineNum">    2527</span> <span class="tlaGNC">           1 :         if (auto s = as&lt;I&gt;(u-&gt;getUser()))</span></span>
-<span id="L2528"><span class="lineNum">    2528</span>              :         {</span>
-<span id="L2529"><span class="lineNum">    2529</span> <span class="tlaGNC">           1 :             f(s);</span></span>
-<span id="L2530"><span class="lineNum">    2530</span>              :         }</span>
-<span id="L2531"><span class="lineNum">    2531</span>              :     }</span>
-<span id="L2532"><span class="lineNum">    2532</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L2533"><span class="lineNum">    2533</span>              : </span>
-<span id="L2534"><span class="lineNum">    2534</span>              : template&lt;typename F&gt;</span>
-<span id="L2535"><span class="lineNum">    2535</span>              : static void traverseUses(IRInst* inst, F f)</span>
-<span id="L2536"><span class="lineNum">    2536</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L2537"><span class="lineNum">    2537</span> <span class="tlaGNC">           1 :     List&lt;IRUse*&gt; uses;</span></span>
-<span id="L2538"><span class="lineNum">    2538</span> <span class="tlaGNC">           1 :     for (auto use = inst-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L2539"><span class="lineNum">    2539</span>              :     {</span>
-<span id="L2540"><span class="lineNum">    2540</span> <span class="tlaGNC">           1 :         uses.add(use);</span></span>
-<span id="L2541"><span class="lineNum">    2541</span>              :     }</span>
-<span id="L2542"><span class="lineNum">    2542</span> <span class="tlaGNC">           1 :     for (auto u : uses)</span></span>
-<span id="L2543"><span class="lineNum">    2543</span>              :     {</span>
-<span id="L2544"><span class="lineNum">    2544</span> <span class="tlaGNC">           1 :         if (u-&gt;usedValue != inst)</span></span>
-<span id="L2545"><span class="lineNum">    2545</span>              :             continue;</span>
-<span id="L2546"><span class="lineNum">    2546</span> <span class="tlaGNC">           1 :         f(u);</span></span>
-<span id="L2547"><span class="lineNum">    2547</span>              :     }</span>
-<span id="L2548"><span class="lineNum">    2548</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L2549"><span class="lineNum">    2549</span>              : </span>
-<span id="L2550"><span class="lineNum">    2550</span>              : namespace detail</span>
-<span id="L2551"><span class="lineNum">    2551</span>              : {</span>
-<span id="L2552"><span class="lineNum">    2552</span>              : // A helper to get the singular pointer argument of something callable</span>
-<span id="L2553"><span class="lineNum">    2553</span>              : // Use std::function to allow passing in anything from which std::function can</span>
-<span id="L2554"><span class="lineNum">    2554</span>              : // be deduced (pointers, lambdas, functors):</span>
-<span id="L2555"><span class="lineNum">    2555</span>              : // https://en.cppreference.com/w/cpp/utility/functional/function/deduction_guides</span>
-<span id="L2556"><span class="lineNum">    2556</span>              : // argType&lt;T&gt; matches T against R(A*) and returns A</span>
-<span id="L2557"><span class="lineNum">    2557</span>              : template&lt;typename R, typename A&gt;</span>
-<span id="L2558"><span class="lineNum">    2558</span>              : static A argType(std::function&lt;R(A*)&gt;);</span>
-<span id="L2559"><span class="lineNum">    2559</span>              : </span>
-<span id="L2560"><span class="lineNum">    2560</span>              : // Get the class type from a pointer to member function</span>
-<span id="L2561"><span class="lineNum">    2561</span>              : template&lt;typename R, typename T&gt;</span>
-<span id="L2562"><span class="lineNum">    2562</span>              : static T thisArg(R (T::* &amp;&amp; ())());</span>
-<span id="L2563"><span class="lineNum">    2563</span>              : } // namespace detail</span>
-<span id="L2564"><span class="lineNum">    2564</span>              : </span>
-<span id="L2565"><span class="lineNum">    2565</span>              : // A tool to &quot;pattern match&quot; an instruction against multiple cases</span>
-<span id="L2566"><span class="lineNum">    2566</span>              : // Use like:</span>
-<span id="L2567"><span class="lineNum">    2567</span>              : //</span>
-<span id="L2568"><span class="lineNum">    2568</span>              : // ```</span>
-<span id="L2569"><span class="lineNum">    2569</span>              : // auto r = instMatch_(myInst,</span>
-<span id="L2570"><span class="lineNum">    2570</span>              : //   default,</span>
-<span id="L2571"><span class="lineNum">    2571</span>              : //   [](IRStore* store){ return handleStore... },</span>
-<span id="L2572"><span class="lineNum">    2572</span>              : //   [](IRType* type){ return handleTypes... },</span>
-<span id="L2573"><span class="lineNum">    2573</span>              : //   );</span>
-<span id="L2574"><span class="lineNum">    2574</span>              : // ```</span>
-<span id="L2575"><span class="lineNum">    2575</span>              : //</span>
-<span id="L2576"><span class="lineNum">    2576</span>              : // This version returns default if none of the cases match</span>
-<span id="L2577"><span class="lineNum">    2577</span>              : template&lt;typename R, typename F, typename... Fs&gt;</span>
-<span id="L2578"><span class="lineNum">    2578</span>              : R instMatch(IRInst* i, R def, F f, Fs... fs)</span>
-<span id="L2579"><span class="lineNum">    2579</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L2580"><span class="lineNum">    2580</span>              :     // Recursive case</span>
-<span id="L2581"><span class="lineNum">    2581</span>              :     using P = decltype(detail::argType(std::function{std::declval&lt;F&gt;()}));</span>
-<span id="L2582"><span class="lineNum">    2582</span> <span class="tlaGNC">           1 :     if (auto s = as&lt;P&gt;(i))</span></span>
-<span id="L2583"><span class="lineNum">    2583</span>              :     {</span>
-<span id="L2584"><span class="lineNum">    2584</span> <span class="tlaGNC">           1 :         return f(s);</span></span>
-<span id="L2585"><span class="lineNum">    2585</span>              :     }</span>
-<span id="L2586"><span class="lineNum">    2586</span> <span class="tlaGNC">           1 :     return instMatch(i, def, fs...);</span></span>
-<span id="L2587"><span class="lineNum">    2587</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L2588"><span class="lineNum">    2588</span>              : </span>
-<span id="L2589"><span class="lineNum">    2589</span>              : // Base case with no eliminators, return the default value</span>
-<span id="L2590"><span class="lineNum">    2590</span>              : template&lt;typename R&gt;</span>
-<span id="L2591"><span class="lineNum">    2591</span>              : R instMatch(IRInst*, R def)</span>
-<span id="L2592"><span class="lineNum">    2592</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L2593"><span class="lineNum">    2593</span> <span class="tlaGNC">           1 :     return def;</span></span>
-<span id="L2594"><span class="lineNum">    2594</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L2595"><span class="lineNum">    2595</span>              : </span>
-<span id="L2596"><span class="lineNum">    2596</span>              : // A tool to &quot;pattern match&quot; an instruction against multiple cases</span>
-<span id="L2597"><span class="lineNum">    2597</span>              : // Use like:</span>
-<span id="L2598"><span class="lineNum">    2598</span>              : //</span>
-<span id="L2599"><span class="lineNum">    2599</span>              : // ```</span>
-<span id="L2600"><span class="lineNum">    2600</span>              : // instMatch_(myInst,</span>
-<span id="L2601"><span class="lineNum">    2601</span>              : //   [](IRStore* store){ handleStore... },</span>
-<span id="L2602"><span class="lineNum">    2602</span>              : //   [](IRType* type){ handleTypes... },</span>
-<span id="L2603"><span class="lineNum">    2603</span>              : //   [](IRInst* inst){ catch-all case...}</span>
-<span id="L2604"><span class="lineNum">    2604</span>              : //   );</span>
-<span id="L2605"><span class="lineNum">    2605</span>              : // ```</span>
-<span id="L2606"><span class="lineNum">    2606</span>              : //</span>
-<span id="L2607"><span class="lineNum">    2607</span>              : // This version returns nothing</span>
-<span id="L2608"><span class="lineNum">    2608</span>              : template&lt;typename F, typename... Fs&gt;</span>
-<span id="L2609"><span class="lineNum">    2609</span>              : void instMatch_(IRInst* i, F f, Fs... fs)</span>
-<span id="L2610"><span class="lineNum">    2610</span>              : {</span>
-<span id="L2611"><span class="lineNum">    2611</span>              :     // Recursive case</span>
-<span id="L2612"><span class="lineNum">    2612</span>              :     using P = decltype(detail::argType(std::function{std::declval&lt;F&gt;()}));</span>
-<span id="L2613"><span class="lineNum">    2613</span>              :     if (auto s = as&lt;P&gt;(i))</span>
-<span id="L2614"><span class="lineNum">    2614</span>              :     {</span>
-<span id="L2615"><span class="lineNum">    2615</span>              :         return f(s);</span>
-<span id="L2616"><span class="lineNum">    2616</span>              :     }</span>
-<span id="L2617"><span class="lineNum">    2617</span>              :     return instMatch_(i, fs...);</span>
-<span id="L2618"><span class="lineNum">    2618</span>              : }</span>
-<span id="L2619"><span class="lineNum">    2619</span>              : </span>
-<span id="L2620"><span class="lineNum">    2620</span>              : template&lt;typename... Fs&gt;</span>
-<span id="L2621"><span class="lineNum">    2621</span>              : void instMatch_(IRInst*)</span>
-<span id="L2622"><span class="lineNum">    2622</span>              : {</span>
-<span id="L2623"><span class="lineNum">    2623</span>              :     // Base case with no eliminators</span>
-<span id="L2624"><span class="lineNum">    2624</span>              : }</span>
-<span id="L2625"><span class="lineNum">    2625</span>              : </span>
-<span id="L2626"><span class="lineNum">    2626</span>              : // A tool to compose a bunch of downcasts and accessors</span>
-<span id="L2627"><span class="lineNum">    2627</span>              : // `composeGetters&lt;R&gt;(x, &amp;MyStruct::getFoo, &amp;MyOtherStruct::getBar)` translates to</span>
-<span id="L2628"><span class="lineNum">    2628</span>              : // `if(auto y = as&lt;MyStruct&gt;) if(auto z = as&lt;MyOtherStruct&gt;(y-&gt;getFoo())) return as&lt;R&gt;(z-&gt;getBar())`</span>
-<span id="L2629"><span class="lineNum">    2629</span>              : template&lt;typename R, typename T, typename F, typename... Fs&gt;</span>
-<span id="L2630"><span class="lineNum">    2630</span>              : R* composeGetters(T* t, F f, Fs... fs)</span>
-<span id="L2631"><span class="lineNum">    2631</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L2632"><span class="lineNum">    2632</span>              :     using D = decltype(detail::thisArg(std::declval&lt;F&gt;));</span>
-<span id="L2633"><span class="lineNum">    2633</span> <span class="tlaGNC">           1 :     if (D* d = as&lt;D&gt;(t))</span></span>
-<span id="L2634"><span class="lineNum">    2634</span>              :     {</span>
-<span id="L2635"><span class="lineNum">    2635</span> <span class="tlaGNC">           1 :         auto* n = std::invoke(f, d);</span></span>
-<span id="L2636"><span class="lineNum">    2636</span> <span class="tlaGNC">           1 :         return composeGetters&lt;R&gt;(n, fs...);</span></span>
-<span id="L2637"><span class="lineNum">    2637</span>              :     }</span>
-<span id="L2638"><span class="lineNum">    2638</span>              :     return nullptr;</span>
-<span id="L2639"><span class="lineNum">    2639</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L2640"><span class="lineNum">    2640</span>              : </span>
-<span id="L2641"><span class="lineNum">    2641</span>              : template&lt;typename R, typename T&gt;</span>
-<span id="L2642"><span class="lineNum">    2642</span>              : R* composeGetters(T* t)</span>
-<span id="L2643"><span class="lineNum">    2643</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L2644"><span class="lineNum">    2644</span> <span class="tlaGNC">           1 :     return as&lt;R&gt;(t);</span></span>
-<span id="L2645"><span class="lineNum">    2645</span>              : }</span>
-<span id="L2646"><span class="lineNum">    2646</span>              : </span>
-<span id="L2647"><span class="lineNum">    2647</span>              : } // namespace Slang</span>
+<span id="L2515"><span class="lineNum">    2515</span>              : // TODO: Ellie, comment and move somewhere more appropriate?</span>
+<span id="L2516"><span class="lineNum">    2516</span>              : </span>
+<span id="L2517"><span class="lineNum">    2517</span>              : template&lt;typename I = IRInst, typename F&gt;</span>
+<span id="L2518"><span class="lineNum">    2518</span>              : static void traverseUsers(IRInst* inst, F f)</span>
+<span id="L2519"><span class="lineNum">    2519</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L2520"><span class="lineNum">    2520</span> <span class="tlaGNC">           1 :     List&lt;IRUse*&gt; uses;</span></span>
+<span id="L2521"><span class="lineNum">    2521</span> <span class="tlaGNC">           1 :     for (auto use = inst-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L2522"><span class="lineNum">    2522</span>              :     {</span>
+<span id="L2523"><span class="lineNum">    2523</span> <span class="tlaGNC">           1 :         uses.add(use);</span></span>
+<span id="L2524"><span class="lineNum">    2524</span>              :     }</span>
+<span id="L2525"><span class="lineNum">    2525</span> <span class="tlaGNC">           1 :     for (auto u : uses)</span></span>
+<span id="L2526"><span class="lineNum">    2526</span>              :     {</span>
+<span id="L2527"><span class="lineNum">    2527</span> <span class="tlaGNC">           1 :         if (u-&gt;usedValue != inst)</span></span>
+<span id="L2528"><span class="lineNum">    2528</span>              :             continue;</span>
+<span id="L2529"><span class="lineNum">    2529</span> <span class="tlaGNC">           1 :         if (auto s = as&lt;I&gt;(u-&gt;getUser()))</span></span>
+<span id="L2530"><span class="lineNum">    2530</span>              :         {</span>
+<span id="L2531"><span class="lineNum">    2531</span> <span class="tlaGNC">           1 :             f(s);</span></span>
+<span id="L2532"><span class="lineNum">    2532</span>              :         }</span>
+<span id="L2533"><span class="lineNum">    2533</span>              :     }</span>
+<span id="L2534"><span class="lineNum">    2534</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L2535"><span class="lineNum">    2535</span>              : </span>
+<span id="L2536"><span class="lineNum">    2536</span>              : template&lt;typename F&gt;</span>
+<span id="L2537"><span class="lineNum">    2537</span>              : static void traverseUses(IRInst* inst, F f)</span>
+<span id="L2538"><span class="lineNum">    2538</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L2539"><span class="lineNum">    2539</span> <span class="tlaGNC">           1 :     List&lt;IRUse*&gt; uses;</span></span>
+<span id="L2540"><span class="lineNum">    2540</span> <span class="tlaGNC">           1 :     for (auto use = inst-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L2541"><span class="lineNum">    2541</span>              :     {</span>
+<span id="L2542"><span class="lineNum">    2542</span> <span class="tlaGNC">           1 :         uses.add(use);</span></span>
+<span id="L2543"><span class="lineNum">    2543</span>              :     }</span>
+<span id="L2544"><span class="lineNum">    2544</span> <span class="tlaGNC">           1 :     for (auto u : uses)</span></span>
+<span id="L2545"><span class="lineNum">    2545</span>              :     {</span>
+<span id="L2546"><span class="lineNum">    2546</span> <span class="tlaGNC">           1 :         if (u-&gt;usedValue != inst)</span></span>
+<span id="L2547"><span class="lineNum">    2547</span>              :             continue;</span>
+<span id="L2548"><span class="lineNum">    2548</span> <span class="tlaGNC">           1 :         f(u);</span></span>
+<span id="L2549"><span class="lineNum">    2549</span>              :     }</span>
+<span id="L2550"><span class="lineNum">    2550</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L2551"><span class="lineNum">    2551</span>              : </span>
+<span id="L2552"><span class="lineNum">    2552</span>              : namespace detail</span>
+<span id="L2553"><span class="lineNum">    2553</span>              : {</span>
+<span id="L2554"><span class="lineNum">    2554</span>              : // A helper to get the singular pointer argument of something callable</span>
+<span id="L2555"><span class="lineNum">    2555</span>              : // Use std::function to allow passing in anything from which std::function can</span>
+<span id="L2556"><span class="lineNum">    2556</span>              : // be deduced (pointers, lambdas, functors):</span>
+<span id="L2557"><span class="lineNum">    2557</span>              : // https://en.cppreference.com/w/cpp/utility/functional/function/deduction_guides</span>
+<span id="L2558"><span class="lineNum">    2558</span>              : // argType&lt;T&gt; matches T against R(A*) and returns A</span>
+<span id="L2559"><span class="lineNum">    2559</span>              : template&lt;typename R, typename A&gt;</span>
+<span id="L2560"><span class="lineNum">    2560</span>              : static A argType(std::function&lt;R(A*)&gt;);</span>
+<span id="L2561"><span class="lineNum">    2561</span>              : </span>
+<span id="L2562"><span class="lineNum">    2562</span>              : // Get the class type from a pointer to member function</span>
+<span id="L2563"><span class="lineNum">    2563</span>              : template&lt;typename R, typename T&gt;</span>
+<span id="L2564"><span class="lineNum">    2564</span>              : static T thisArg(R (T::* &amp;&amp; ())());</span>
+<span id="L2565"><span class="lineNum">    2565</span>              : } // namespace detail</span>
+<span id="L2566"><span class="lineNum">    2566</span>              : </span>
+<span id="L2567"><span class="lineNum">    2567</span>              : // A tool to &quot;pattern match&quot; an instruction against multiple cases</span>
+<span id="L2568"><span class="lineNum">    2568</span>              : // Use like:</span>
+<span id="L2569"><span class="lineNum">    2569</span>              : //</span>
+<span id="L2570"><span class="lineNum">    2570</span>              : // ```</span>
+<span id="L2571"><span class="lineNum">    2571</span>              : // auto r = instMatch_(myInst,</span>
+<span id="L2572"><span class="lineNum">    2572</span>              : //   default,</span>
+<span id="L2573"><span class="lineNum">    2573</span>              : //   [](IRStore* store){ return handleStore... },</span>
+<span id="L2574"><span class="lineNum">    2574</span>              : //   [](IRType* type){ return handleTypes... },</span>
+<span id="L2575"><span class="lineNum">    2575</span>              : //   );</span>
+<span id="L2576"><span class="lineNum">    2576</span>              : // ```</span>
+<span id="L2577"><span class="lineNum">    2577</span>              : //</span>
+<span id="L2578"><span class="lineNum">    2578</span>              : // This version returns default if none of the cases match</span>
+<span id="L2579"><span class="lineNum">    2579</span>              : template&lt;typename R, typename F, typename... Fs&gt;</span>
+<span id="L2580"><span class="lineNum">    2580</span>              : R instMatch(IRInst* i, R def, F f, Fs... fs)</span>
+<span id="L2581"><span class="lineNum">    2581</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L2582"><span class="lineNum">    2582</span>              :     // Recursive case</span>
+<span id="L2583"><span class="lineNum">    2583</span>              :     using P = decltype(detail::argType(std::function{std::declval&lt;F&gt;()}));</span>
+<span id="L2584"><span class="lineNum">    2584</span> <span class="tlaGNC">           1 :     if (auto s = as&lt;P&gt;(i))</span></span>
+<span id="L2585"><span class="lineNum">    2585</span>              :     {</span>
+<span id="L2586"><span class="lineNum">    2586</span> <span class="tlaGNC">           1 :         return f(s);</span></span>
+<span id="L2587"><span class="lineNum">    2587</span>              :     }</span>
+<span id="L2588"><span class="lineNum">    2588</span> <span class="tlaGNC">           1 :     return instMatch(i, def, fs...);</span></span>
+<span id="L2589"><span class="lineNum">    2589</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L2590"><span class="lineNum">    2590</span>              : </span>
+<span id="L2591"><span class="lineNum">    2591</span>              : // Base case with no eliminators, return the default value</span>
+<span id="L2592"><span class="lineNum">    2592</span>              : template&lt;typename R&gt;</span>
+<span id="L2593"><span class="lineNum">    2593</span>              : R instMatch(IRInst*, R def)</span>
+<span id="L2594"><span class="lineNum">    2594</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L2595"><span class="lineNum">    2595</span> <span class="tlaGNC">           1 :     return def;</span></span>
+<span id="L2596"><span class="lineNum">    2596</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L2597"><span class="lineNum">    2597</span>              : </span>
+<span id="L2598"><span class="lineNum">    2598</span>              : // A tool to &quot;pattern match&quot; an instruction against multiple cases</span>
+<span id="L2599"><span class="lineNum">    2599</span>              : // Use like:</span>
+<span id="L2600"><span class="lineNum">    2600</span>              : //</span>
+<span id="L2601"><span class="lineNum">    2601</span>              : // ```</span>
+<span id="L2602"><span class="lineNum">    2602</span>              : // instMatch_(myInst,</span>
+<span id="L2603"><span class="lineNum">    2603</span>              : //   [](IRStore* store){ handleStore... },</span>
+<span id="L2604"><span class="lineNum">    2604</span>              : //   [](IRType* type){ handleTypes... },</span>
+<span id="L2605"><span class="lineNum">    2605</span>              : //   [](IRInst* inst){ catch-all case...}</span>
+<span id="L2606"><span class="lineNum">    2606</span>              : //   );</span>
+<span id="L2607"><span class="lineNum">    2607</span>              : // ```</span>
+<span id="L2608"><span class="lineNum">    2608</span>              : //</span>
+<span id="L2609"><span class="lineNum">    2609</span>              : // This version returns nothing</span>
+<span id="L2610"><span class="lineNum">    2610</span>              : template&lt;typename F, typename... Fs&gt;</span>
+<span id="L2611"><span class="lineNum">    2611</span>              : void instMatch_(IRInst* i, F f, Fs... fs)</span>
+<span id="L2612"><span class="lineNum">    2612</span>              : {</span>
+<span id="L2613"><span class="lineNum">    2613</span>              :     // Recursive case</span>
+<span id="L2614"><span class="lineNum">    2614</span>              :     using P = decltype(detail::argType(std::function{std::declval&lt;F&gt;()}));</span>
+<span id="L2615"><span class="lineNum">    2615</span>              :     if (auto s = as&lt;P&gt;(i))</span>
+<span id="L2616"><span class="lineNum">    2616</span>              :     {</span>
+<span id="L2617"><span class="lineNum">    2617</span>              :         return f(s);</span>
+<span id="L2618"><span class="lineNum">    2618</span>              :     }</span>
+<span id="L2619"><span class="lineNum">    2619</span>              :     return instMatch_(i, fs...);</span>
+<span id="L2620"><span class="lineNum">    2620</span>              : }</span>
+<span id="L2621"><span class="lineNum">    2621</span>              : </span>
+<span id="L2622"><span class="lineNum">    2622</span>              : template&lt;typename... Fs&gt;</span>
+<span id="L2623"><span class="lineNum">    2623</span>              : void instMatch_(IRInst*)</span>
+<span id="L2624"><span class="lineNum">    2624</span>              : {</span>
+<span id="L2625"><span class="lineNum">    2625</span>              :     // Base case with no eliminators</span>
+<span id="L2626"><span class="lineNum">    2626</span>              : }</span>
+<span id="L2627"><span class="lineNum">    2627</span>              : </span>
+<span id="L2628"><span class="lineNum">    2628</span>              : // A tool to compose a bunch of downcasts and accessors</span>
+<span id="L2629"><span class="lineNum">    2629</span>              : // `composeGetters&lt;R&gt;(x, &amp;MyStruct::getFoo, &amp;MyOtherStruct::getBar)` translates to</span>
+<span id="L2630"><span class="lineNum">    2630</span>              : // `if(auto y = as&lt;MyStruct&gt;) if(auto z = as&lt;MyOtherStruct&gt;(y-&gt;getFoo())) return as&lt;R&gt;(z-&gt;getBar())`</span>
+<span id="L2631"><span class="lineNum">    2631</span>              : template&lt;typename R, typename T, typename F, typename... Fs&gt;</span>
+<span id="L2632"><span class="lineNum">    2632</span>              : R* composeGetters(T* t, F f, Fs... fs)</span>
+<span id="L2633"><span class="lineNum">    2633</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L2634"><span class="lineNum">    2634</span>              :     using D = decltype(detail::thisArg(std::declval&lt;F&gt;));</span>
+<span id="L2635"><span class="lineNum">    2635</span> <span class="tlaGNC">           1 :     if (D* d = as&lt;D&gt;(t))</span></span>
+<span id="L2636"><span class="lineNum">    2636</span>              :     {</span>
+<span id="L2637"><span class="lineNum">    2637</span> <span class="tlaGNC">           1 :         auto* n = std::invoke(f, d);</span></span>
+<span id="L2638"><span class="lineNum">    2638</span> <span class="tlaGNC">           1 :         return composeGetters&lt;R&gt;(n, fs...);</span></span>
+<span id="L2639"><span class="lineNum">    2639</span>              :     }</span>
+<span id="L2640"><span class="lineNum">    2640</span>              :     return nullptr;</span>
+<span id="L2641"><span class="lineNum">    2641</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L2642"><span class="lineNum">    2642</span>              : </span>
+<span id="L2643"><span class="lineNum">    2643</span>              : template&lt;typename R, typename T&gt;</span>
+<span id="L2644"><span class="lineNum">    2644</span>              : R* composeGetters(T* t)</span>
+<span id="L2645"><span class="lineNum">    2645</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L2646"><span class="lineNum">    2646</span> <span class="tlaGNC">           1 :     return as&lt;R&gt;(t);</span></span>
+<span id="L2647"><span class="lineNum">    2647</span>              : }</span>
+<span id="L2648"><span class="lineNum">    2648</span>              : </span>
+<span id="L2649"><span class="lineNum">    2649</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-14 05:11:41 UTC</td>
+      <td class="headerValue">2026-10-15 03:53:13 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -320,23 +320,23 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L29"><span class="lineNum">      29</span>                         :     std::optional&lt;PerformanceProfilerFuncRAIIContext&gt; perfContext;</span>
 <span id="L30"><span class="lineNum">      30</span>                         : </span>
 <span id="L31"><span class="lineNum">      31</span>                         :     PassHooksRAII(CodeGenContext* ctx, IRModule* module, const char* name)</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">     1191872            :         : codeGenContext(ctx), irModule(module), passName(name)</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">     1191872            :     {</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">     1191872            :         prePassHooks(codeGenContext, irModule, passName);</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">     1231776            :         : codeGenContext(ctx), irModule(module), passName(name)</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">     1231776            :     {</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">     1231776            :         prePassHooks(codeGenContext, irModule, passName);</span></span>
 <span id="L35"><span class="lineNum">      35</span>                         : </span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">     1191872            :         auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">     1191872            :         auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">     1191872 <span class="branchPart" title="br0: 0; br1: 1191872">(1/2)</span>      :         if (targetCompilerOptions.getBoolOption(CompilerOptionName::ReportDetailedPerfBenchmark))</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">     1231776            :         auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">     1231776            :         auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">     1231776 <span class="branchPart" title="br0: 0; br1: 1231776">(1/2)</span>      :         if (targetCompilerOptions.getBoolOption(CompilerOptionName::ReportDetailedPerfBenchmark))</span></span>
 <span id="L39"><span class="lineNum">      39</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0            :             perfContext.emplace(passName);</span></span>
 <span id="L41"><span class="lineNum">      41</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">     1191872            :     }</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">     1231776            :     }</span></span>
 <span id="L43"><span class="lineNum">      43</span>                         : </span>
 <span id="L44"><span class="lineNum">      44</span>                         :     ~PassHooksRAII()</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">     1191872            :     {</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">     1191872            :         perfContext.reset(); // End profiler timing before post hooks</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">     1191872            :         postPassHooks(codeGenContext, irModule, passName);</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">     1191872            :     }</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">     1231782            :     {</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">     1231782            :         perfContext.reset(); // End profiler timing before post hooks</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">     1231782            :         postPassHooks(codeGenContext, irModule, passName);</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">     1231782            :     }</span></span>
 <span id="L49"><span class="lineNum">      49</span>                         : };</span>
 <span id="L50"><span class="lineNum">      50</span>                         : </span>
 <span id="L51"><span class="lineNum">      51</span>                         : template&lt;typename PassFunc, typename... Args&gt;</span>
@@ -346,10 +346,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L55"><span class="lineNum">      55</span>                         :     PassFunc&amp;&amp; passFunc,</span>
 <span id="L56"><span class="lineNum">      56</span>                         :     IRModule* irModule,</span>
 <span id="L57"><span class="lineNum">      57</span>                         :     Args&amp;&amp;... args)</span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">     1191981            : {</span></span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">     1191981            :     PassHooksRAII passHooks(codeGenContext, irModule, passName);</span></span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">     1191981            :     return passFunc(irModule, std::forward&lt;Args&gt;(args)...);</span></span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">     1191981            : }</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">     1231888            : {</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">     1231888            :     PassHooksRAII passHooks(codeGenContext, irModule, passName);</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">     1231888            :     return passFunc(irModule, std::forward&lt;Args&gt;(args)...);</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">     1231888            : }</span></span>
 <span id="L62"><span class="lineNum">      62</span>                         : </span>
 <span id="L63"><span class="lineNum">      63</span>                         : } // namespace Slang</span>
 <span id="L64"><span class="lineNum">      64</span>                         : </span>

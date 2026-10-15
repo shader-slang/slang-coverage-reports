@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-14 05:12:08 UTC</td>
+      <td class="headerValue">2026-10-15 03:53:36 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -548,595 +548,597 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L275"><span class="lineNum">     275</span>              :                     // that represent entry points.</span>
 <span id="L276"><span class="lineNum">     276</span>              :                     //</span>
 <span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">           1 :                     auto func = cast&lt;IRFunc&gt;(inst);</span></span>
-<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">           1 :                     if (!func-&gt;findDecoration&lt;IREntryPointDecoration&gt;())</span></span>
-<span id="L279"><span class="lineNum">     279</span>              :                         continue;</span>
-<span id="L280"><span class="lineNum">     280</span>              : </span>
-<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">           1 :                     m_entryPoints.add(func);</span></span>
-<span id="L282"><span class="lineNum">     282</span>              :                 }</span>
-<span id="L283"><span class="lineNum">     283</span>              :                 break;</span>
-<span id="L284"><span class="lineNum">     284</span>              :             }</span>
-<span id="L285"><span class="lineNum">     285</span>              :         }</span>
-<span id="L286"><span class="lineNum">     286</span>              : </span>
-<span id="L287"><span class="lineNum">     287</span>              :         // If there are no global-scope entities that require processing,</span>
-<span id="L288"><span class="lineNum">     288</span>              :         // then we can completely skip the work of this pass for CUDA/Metal.</span>
-<span id="L289"><span class="lineNum">     289</span>              :         //</span>
-<span id="L290"><span class="lineNum">     290</span>              :         // Note: We cannot skip the rest of the pass for CPU, because</span>
-<span id="L291"><span class="lineNum">     291</span>              :         // it is responsible for introducing the explicit entry-point</span>
-<span id="L292"><span class="lineNum">     292</span>              :         // parameter that is used for passing in the global param(s).</span>
-<span id="L293"><span class="lineNum">     293</span>              :         //</span>
-<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">           1 :         if (!isCPUTarget(m_target))</span></span>
-<span id="L295"><span class="lineNum">     295</span>              :         {</span>
-<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">           1 :             if (m_globalParams.getCount() == 0 &amp;&amp; m_globalVars.getCount() == 0)</span></span>
-<span id="L297"><span class="lineNum">     297</span>              :             {</span>
-<span id="L298"><span class="lineNum">     298</span>              :                 return;</span>
-<span id="L299"><span class="lineNum">     299</span>              :             }</span>
-<span id="L300"><span class="lineNum">     300</span>              :         }</span>
-<span id="L301"><span class="lineNum">     301</span>              : </span>
-<span id="L302"><span class="lineNum">     302</span>              :         // Now that we&#x27;ve capture all the relevant global entities from the IR,</span>
-<span id="L303"><span class="lineNum">     303</span>              :         // we can being to transform them in an appropriate order.</span>
-<span id="L304"><span class="lineNum">     304</span>              :         //</span>
-<span id="L305"><span class="lineNum">     305</span>              :         // The global context will be represneted by a `struct`</span>
-<span id="L306"><span class="lineNum">     306</span>              :         // type with a name hint of `KernelContext`.</span>
-<span id="L307"><span class="lineNum">     307</span>              :         //</span>
-<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">           1 :         m_contextStructType = builder.createStructType();</span></span>
-<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">           1 :         if (m_target == CodeGenTarget::CPPHeader)</span></span>
-<span id="L310"><span class="lineNum">     310</span>              :         {</span>
-<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">           1 :             builder.addExternCppDecoration(</span></span>
-<span id="L312"><span class="lineNum">     312</span>              :                 m_contextStructType,</span>
-<span id="L313"><span class="lineNum">     313</span>              :                 UnownedTerminatedStringSlice(&quot;KernelContext&quot;));</span>
-<span id="L314"><span class="lineNum">     314</span>              :         }</span>
-<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           1 :         builder.addNameHintDecoration(</span></span>
-<span id="L316"><span class="lineNum">     316</span>              :             m_contextStructType,</span>
-<span id="L317"><span class="lineNum">     317</span>              :             UnownedTerminatedStringSlice(&quot;KernelContext&quot;));</span>
-<span id="L318"><span class="lineNum">     318</span>              : </span>
-<span id="L319"><span class="lineNum">     319</span>              :         // The context will usually be passed around by pointer,</span>
-<span id="L320"><span class="lineNum">     320</span>              :         // so we get and cache that pointer type up front.</span>
-<span id="L321"><span class="lineNum">     321</span>              :         //</span>
-<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">           1 :         m_contextStructPtrType = builder.getPtrType(m_contextStructType, getAddressSpaceOfLocal());</span></span>
-<span id="L323"><span class="lineNum">     323</span>              : </span>
-<span id="L324"><span class="lineNum">     324</span>              : </span>
-<span id="L325"><span class="lineNum">     325</span>              :         // The first step will be to create fields in the `KernelContext`</span>
-<span id="L326"><span class="lineNum">     326</span>              :         // type to represent any global parameters or global variables.</span>
-<span id="L327"><span class="lineNum">     327</span>              :         //</span>
-<span id="L328"><span class="lineNum">     328</span>              :         // The keys for the fields that are created will be remembered</span>
-<span id="L329"><span class="lineNum">     329</span>              :         // in a dictionary, so that we can find them later based on</span>
-<span id="L330"><span class="lineNum">     330</span>              :         // the global parameter/variable.</span>
-<span id="L331"><span class="lineNum">     331</span>              :         //</span>
-<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">           1 :         for (auto globalParam : m_globalParams)</span></span>
-<span id="L333"><span class="lineNum">     333</span>              :         {</span>
-<span id="L334"><span class="lineNum">     334</span>              :             // For the parameter representing all the global uniform shader</span>
-<span id="L335"><span class="lineNum">     335</span>              :             // parameters, we create a field that exactly matches its type.</span>
-<span id="L336"><span class="lineNum">     336</span>              :             //</span>
-<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">           1 :             createContextStructField(</span></span>
-<span id="L338"><span class="lineNum">     338</span>              :                 globalParam.globalParam,</span>
-<span id="L339"><span class="lineNum">     339</span>              :                 GlobalObjectKind::GlobalParam,</span>
-<span id="L340"><span class="lineNum">     340</span>              :                 globalParam.globalParam-&gt;getFullType());</span>
-<span id="L341"><span class="lineNum">     341</span>              :         }</span>
-<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">           1 :         for (auto globalVar : m_globalVars)</span></span>
-<span id="L343"><span class="lineNum">     343</span>              :         {</span>
-<span id="L344"><span class="lineNum">     344</span>              :             // A `IRGlobalVar` represents a pointer to where the variable is stored,</span>
-<span id="L345"><span class="lineNum">     345</span>              :             // so we need to create a field of the pointed-to type to represent it.</span>
-<span id="L346"><span class="lineNum">     346</span>              :             //</span>
-<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">           1 :             createContextStructField(</span></span>
-<span id="L348"><span class="lineNum">     348</span>              :                 globalVar,</span>
-<span id="L349"><span class="lineNum">     349</span>              :                 GlobalObjectKind::GlobalVar,</span>
-<span id="L350"><span class="lineNum">     350</span>              :                 getGlobalVarPtrType(globalVar));</span>
-<span id="L351"><span class="lineNum">     351</span>              :         }</span>
-<span id="L352"><span class="lineNum">     352</span>              : </span>
-<span id="L353"><span class="lineNum">     353</span>              :         // Once all the fields have been created, we can process the entry points.</span>
-<span id="L354"><span class="lineNum">     354</span>              :         //</span>
-<span id="L355"><span class="lineNum">     355</span>              :         // Each entry point will create a local `KernelContext` variable and</span>
-<span id="L356"><span class="lineNum">     356</span>              :         // initialize it based on the parameters passed to the entry point.</span>
-<span id="L357"><span class="lineNum">     357</span>              :         //</span>
-<span id="L358"><span class="lineNum">     358</span>              :         // The local variable introduced here will be registered as the representation</span>
-<span id="L359"><span class="lineNum">     359</span>              :         // of the context to be used in the body of the entry point.</span>
-<span id="L360"><span class="lineNum">     360</span>              :         //</span>
-<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">           1 :         for (auto entryPoint : m_entryPoints)</span></span>
-<span id="L362"><span class="lineNum">     362</span>              :         {</span>
-<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">           1 :             createContextForEntryPoint(entryPoint);</span></span>
-<span id="L364"><span class="lineNum">     364</span>              :         }</span>
-<span id="L365"><span class="lineNum">     365</span>              : </span>
-<span id="L366"><span class="lineNum">     366</span>              :         // Now that we&#x27;ve prepared all the entry points, we can make another</span>
-<span id="L367"><span class="lineNum">     367</span>              :         // pass over the global parameters/variables and start to replace</span>
-<span id="L368"><span class="lineNum">     368</span>              :         // their use sites with references to the fields of the context.</span>
-<span id="L369"><span class="lineNum">     369</span>              :         //</span>
-<span id="L370"><span class="lineNum">     370</span>              :         // Wherever a global parameter/variable is being referenced in a function,</span>
-<span id="L371"><span class="lineNum">     371</span>              :         // we will need to find or create a context value for that function</span>
-<span id="L372"><span class="lineNum">     372</span>              :         // to use. The context value for entry points has already been established</span>
-<span id="L373"><span class="lineNum">     373</span>              :         // above, but other functions will have an explicit context parameter</span>
-<span id="L374"><span class="lineNum">     374</span>              :         // added on demand.</span>
-<span id="L375"><span class="lineNum">     375</span>              :         //</span>
-<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">           1 :         for (auto globalParam : m_globalParams)</span></span>
-<span id="L377"><span class="lineNum">     377</span>              :         {</span>
-<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">           1 :             replaceUsesOfGlobalParam(globalParam.globalParam);</span></span>
-<span id="L379"><span class="lineNum">     379</span>              :         }</span>
-<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">           1 :         for (auto globalVar : m_globalVars)</span></span>
-<span id="L381"><span class="lineNum">     381</span>              :         {</span>
-<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">           1 :             replaceUsesOfGlobalVar(globalVar);</span></span>
-<span id="L383"><span class="lineNum">     383</span>              :         }</span>
-<span id="L384"><span class="lineNum">     384</span>              : </span>
-<span id="L385"><span class="lineNum">     385</span>              :         // SPIRV requires a correct IR func-type to emit properly</span>
-<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">           1 :         if (m_options.requiresFuncTypeCorrection())</span></span>
-<span id="L387"><span class="lineNum">     387</span>              :         {</span>
-<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">           1 :             for (auto pairOfFuncs : m_mapFuncToContextPtr)</span></span>
-<span id="L389"><span class="lineNum">     389</span>              :             {</span>
-<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">           1 :                 if (pairOfFuncs.second-&gt;getOp() == kIROp_Var)</span></span>
-<span id="L391"><span class="lineNum">     391</span>              :                     continue;</span>
-<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">           1 :                 fixUpFuncType(pairOfFuncs.first);</span></span>
-<span id="L393"><span class="lineNum">     393</span>              :             }</span>
-<span id="L394"><span class="lineNum">     394</span>              :         }</span>
-<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L396"><span class="lineNum">     396</span>              : </span>
-<span id="L397"><span class="lineNum">     397</span>              :     // As noted above, we will maintain mappings to record</span>
-<span id="L398"><span class="lineNum">     398</span>              :     // the key for the context field created for a global</span>
-<span id="L399"><span class="lineNum">     399</span>              :     // variable parameter, and to record the context pointer</span>
-<span id="L400"><span class="lineNum">     400</span>              :     // value to use for a function.</span>
-<span id="L401"><span class="lineNum">     401</span>              :     //</span>
-<span id="L402"><span class="lineNum">     402</span>              :     struct ContextFieldInfo</span>
-<span id="L403"><span class="lineNum">     403</span>              :     {</span>
-<span id="L404"><span class="lineNum">     404</span>              :         IRStructKey* key = nullptr;</span>
-<span id="L405"><span class="lineNum">     405</span>              : </span>
-<span id="L406"><span class="lineNum">     406</span>              :         // Is this field a pointer to the actual value?</span>
-<span id="L407"><span class="lineNum">     407</span>              :         // For groupshared variables, this will be true.</span>
-<span id="L408"><span class="lineNum">     408</span>              :         bool needDereference = false;</span>
-<span id="L409"><span class="lineNum">     409</span>              :     };</span>
-<span id="L410"><span class="lineNum">     410</span>              :     Dictionary&lt;IRInst*, ContextFieldInfo&gt; m_mapInstToContextFieldInfo;</span>
-<span id="L411"><span class="lineNum">     411</span>              :     Dictionary&lt;IRFunc*, IRInst*&gt; m_mapFuncToContextPtr;</span>
-<span id="L412"><span class="lineNum">     412</span>              : </span>
-<span id="L413"><span class="lineNum">     413</span>              :     void createContextStructField(IRInst* originalInst, GlobalObjectKind kind, IRType* type)</span>
-<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L415"><span class="lineNum">     415</span>              :         // Creating a field in the context struct to represent</span>
-<span id="L416"><span class="lineNum">     416</span>              :         // `originalInst` is straightforward.</span>
-<span id="L417"><span class="lineNum">     417</span>              : </span>
-<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
-<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(m_contextStructType);</span></span>
-<span id="L420"><span class="lineNum">     420</span>              : </span>
-<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">           1 :         IRType* fieldDataType = type;</span></span>
-<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">           1 :         bool needDereference = false;</span></span>
-<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">           1 :         if (kind == GlobalObjectKind::GlobalVar)</span></span>
-<span id="L424"><span class="lineNum">     424</span>              :         {</span>
-<span id="L425"><span class="lineNum">     425</span> <span class="tlaGNC">           1 :             auto ptrType = as&lt;IRPtrTypeBase&gt;(type);</span></span>
-<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">           1 :             if (ptrType-&gt;getAddressSpace() == AddressSpace::GroupShared)</span></span>
-<span id="L427"><span class="lineNum">     427</span>              :             {</span>
-<span id="L428"><span class="lineNum">     428</span>              :                 fieldDataType = ptrType;</span>
-<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">           1 :                 needDereference = true;</span></span>
-<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L431"><span class="lineNum">     431</span>              :             else</span>
-<span id="L432"><span class="lineNum">     432</span>              :             {</span>
-<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">           1 :                 fieldDataType = as&lt;IRPtrTypeBase&gt;(type)-&gt;getValueType();</span></span>
-<span id="L434"><span class="lineNum">     434</span>              :             }</span>
-<span id="L435"><span class="lineNum">     435</span>              :         }</span>
-<span id="L436"><span class="lineNum">     436</span>              : </span>
-<span id="L437"><span class="lineNum">     437</span>              :         // We create a &quot;key&quot; for the new field, and then a field</span>
-<span id="L438"><span class="lineNum">     438</span>              :         // of the appropraite type.</span>
-<span id="L439"><span class="lineNum">     439</span>              :         //</span>
-<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">           1 :         auto key = builder.createStructKey();</span></span>
-<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">           1 :         builder.createStructField(m_contextStructType, key, fieldDataType);</span></span>
-<span id="L442"><span class="lineNum">     442</span>              : </span>
-<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">           1 :         key-&gt;sourceLoc = originalInst-&gt;sourceLoc;</span></span>
+<span id="L278"><span class="lineNum">     278</span>              :                     // Each shader or CUDA launch creates per-invocation global storage. Ordinary</span>
+<span id="L279"><span class="lineNum">     279</span>              :                     // clones instead receive their caller&#x27;s context through the direct call.</span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">           1 :                     if (!isShaderOrCudaKernelEntryPoint(func))</span></span>
+<span id="L281"><span class="lineNum">     281</span>              :                         continue;</span>
+<span id="L282"><span class="lineNum">     282</span>              : </span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">           1 :                     m_entryPoints.add(func);</span></span>
+<span id="L284"><span class="lineNum">     284</span>              :                 }</span>
+<span id="L285"><span class="lineNum">     285</span>              :                 break;</span>
+<span id="L286"><span class="lineNum">     286</span>              :             }</span>
+<span id="L287"><span class="lineNum">     287</span>              :         }</span>
+<span id="L288"><span class="lineNum">     288</span>              : </span>
+<span id="L289"><span class="lineNum">     289</span>              :         // If there are no global-scope entities that require processing,</span>
+<span id="L290"><span class="lineNum">     290</span>              :         // then we can completely skip the work of this pass for CUDA/Metal.</span>
+<span id="L291"><span class="lineNum">     291</span>              :         //</span>
+<span id="L292"><span class="lineNum">     292</span>              :         // Note: We cannot skip the rest of the pass for CPU, because</span>
+<span id="L293"><span class="lineNum">     293</span>              :         // it is responsible for introducing the explicit entry-point</span>
+<span id="L294"><span class="lineNum">     294</span>              :         // parameter that is used for passing in the global param(s).</span>
+<span id="L295"><span class="lineNum">     295</span>              :         //</span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">           1 :         if (!isCPUTarget(m_target))</span></span>
+<span id="L297"><span class="lineNum">     297</span>              :         {</span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">           1 :             if (m_globalParams.getCount() == 0 &amp;&amp; m_globalVars.getCount() == 0)</span></span>
+<span id="L299"><span class="lineNum">     299</span>              :             {</span>
+<span id="L300"><span class="lineNum">     300</span>              :                 return;</span>
+<span id="L301"><span class="lineNum">     301</span>              :             }</span>
+<span id="L302"><span class="lineNum">     302</span>              :         }</span>
+<span id="L303"><span class="lineNum">     303</span>              : </span>
+<span id="L304"><span class="lineNum">     304</span>              :         // Now that we&#x27;ve capture all the relevant global entities from the IR,</span>
+<span id="L305"><span class="lineNum">     305</span>              :         // we can being to transform them in an appropriate order.</span>
+<span id="L306"><span class="lineNum">     306</span>              :         //</span>
+<span id="L307"><span class="lineNum">     307</span>              :         // The global context will be represneted by a `struct`</span>
+<span id="L308"><span class="lineNum">     308</span>              :         // type with a name hint of `KernelContext`.</span>
+<span id="L309"><span class="lineNum">     309</span>              :         //</span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">           1 :         m_contextStructType = builder.createStructType();</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">           1 :         if (m_target == CodeGenTarget::CPPHeader)</span></span>
+<span id="L312"><span class="lineNum">     312</span>              :         {</span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">           1 :             builder.addExternCppDecoration(</span></span>
+<span id="L314"><span class="lineNum">     314</span>              :                 m_contextStructType,</span>
+<span id="L315"><span class="lineNum">     315</span>              :                 UnownedTerminatedStringSlice(&quot;KernelContext&quot;));</span>
+<span id="L316"><span class="lineNum">     316</span>              :         }</span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">           1 :         builder.addNameHintDecoration(</span></span>
+<span id="L318"><span class="lineNum">     318</span>              :             m_contextStructType,</span>
+<span id="L319"><span class="lineNum">     319</span>              :             UnownedTerminatedStringSlice(&quot;KernelContext&quot;));</span>
+<span id="L320"><span class="lineNum">     320</span>              : </span>
+<span id="L321"><span class="lineNum">     321</span>              :         // The context will usually be passed around by pointer,</span>
+<span id="L322"><span class="lineNum">     322</span>              :         // so we get and cache that pointer type up front.</span>
+<span id="L323"><span class="lineNum">     323</span>              :         //</span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">           1 :         m_contextStructPtrType = builder.getPtrType(m_contextStructType, getAddressSpaceOfLocal());</span></span>
+<span id="L325"><span class="lineNum">     325</span>              : </span>
+<span id="L326"><span class="lineNum">     326</span>              : </span>
+<span id="L327"><span class="lineNum">     327</span>              :         // The first step will be to create fields in the `KernelContext`</span>
+<span id="L328"><span class="lineNum">     328</span>              :         // type to represent any global parameters or global variables.</span>
+<span id="L329"><span class="lineNum">     329</span>              :         //</span>
+<span id="L330"><span class="lineNum">     330</span>              :         // The keys for the fields that are created will be remembered</span>
+<span id="L331"><span class="lineNum">     331</span>              :         // in a dictionary, so that we can find them later based on</span>
+<span id="L332"><span class="lineNum">     332</span>              :         // the global parameter/variable.</span>
+<span id="L333"><span class="lineNum">     333</span>              :         //</span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">           1 :         for (auto globalParam : m_globalParams)</span></span>
+<span id="L335"><span class="lineNum">     335</span>              :         {</span>
+<span id="L336"><span class="lineNum">     336</span>              :             // For the parameter representing all the global uniform shader</span>
+<span id="L337"><span class="lineNum">     337</span>              :             // parameters, we create a field that exactly matches its type.</span>
+<span id="L338"><span class="lineNum">     338</span>              :             //</span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">           1 :             createContextStructField(</span></span>
+<span id="L340"><span class="lineNum">     340</span>              :                 globalParam.globalParam,</span>
+<span id="L341"><span class="lineNum">     341</span>              :                 GlobalObjectKind::GlobalParam,</span>
+<span id="L342"><span class="lineNum">     342</span>              :                 globalParam.globalParam-&gt;getFullType());</span>
+<span id="L343"><span class="lineNum">     343</span>              :         }</span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">           1 :         for (auto globalVar : m_globalVars)</span></span>
+<span id="L345"><span class="lineNum">     345</span>              :         {</span>
+<span id="L346"><span class="lineNum">     346</span>              :             // A `IRGlobalVar` represents a pointer to where the variable is stored,</span>
+<span id="L347"><span class="lineNum">     347</span>              :             // so we need to create a field of the pointed-to type to represent it.</span>
+<span id="L348"><span class="lineNum">     348</span>              :             //</span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">           1 :             createContextStructField(</span></span>
+<span id="L350"><span class="lineNum">     350</span>              :                 globalVar,</span>
+<span id="L351"><span class="lineNum">     351</span>              :                 GlobalObjectKind::GlobalVar,</span>
+<span id="L352"><span class="lineNum">     352</span>              :                 getGlobalVarPtrType(globalVar));</span>
+<span id="L353"><span class="lineNum">     353</span>              :         }</span>
+<span id="L354"><span class="lineNum">     354</span>              : </span>
+<span id="L355"><span class="lineNum">     355</span>              :         // Once all the fields have been created, we can process the entry points.</span>
+<span id="L356"><span class="lineNum">     356</span>              :         //</span>
+<span id="L357"><span class="lineNum">     357</span>              :         // Each entry point will create a local `KernelContext` variable and</span>
+<span id="L358"><span class="lineNum">     358</span>              :         // initialize it based on the parameters passed to the entry point.</span>
+<span id="L359"><span class="lineNum">     359</span>              :         //</span>
+<span id="L360"><span class="lineNum">     360</span>              :         // The local variable introduced here will be registered as the representation</span>
+<span id="L361"><span class="lineNum">     361</span>              :         // of the context to be used in the body of the entry point.</span>
+<span id="L362"><span class="lineNum">     362</span>              :         //</span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">           1 :         for (auto entryPoint : m_entryPoints)</span></span>
+<span id="L364"><span class="lineNum">     364</span>              :         {</span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">           1 :             createContextForEntryPoint(entryPoint);</span></span>
+<span id="L366"><span class="lineNum">     366</span>              :         }</span>
+<span id="L367"><span class="lineNum">     367</span>              : </span>
+<span id="L368"><span class="lineNum">     368</span>              :         // Now that we&#x27;ve prepared all the entry points, we can make another</span>
+<span id="L369"><span class="lineNum">     369</span>              :         // pass over the global parameters/variables and start to replace</span>
+<span id="L370"><span class="lineNum">     370</span>              :         // their use sites with references to the fields of the context.</span>
+<span id="L371"><span class="lineNum">     371</span>              :         //</span>
+<span id="L372"><span class="lineNum">     372</span>              :         // Wherever a global parameter/variable is being referenced in a function,</span>
+<span id="L373"><span class="lineNum">     373</span>              :         // we will need to find or create a context value for that function</span>
+<span id="L374"><span class="lineNum">     374</span>              :         // to use. The context value for entry points has already been established</span>
+<span id="L375"><span class="lineNum">     375</span>              :         // above, but other functions will have an explicit context parameter</span>
+<span id="L376"><span class="lineNum">     376</span>              :         // added on demand.</span>
+<span id="L377"><span class="lineNum">     377</span>              :         //</span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">           1 :         for (auto globalParam : m_globalParams)</span></span>
+<span id="L379"><span class="lineNum">     379</span>              :         {</span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">           1 :             replaceUsesOfGlobalParam(globalParam.globalParam);</span></span>
+<span id="L381"><span class="lineNum">     381</span>              :         }</span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">           1 :         for (auto globalVar : m_globalVars)</span></span>
+<span id="L383"><span class="lineNum">     383</span>              :         {</span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">           1 :             replaceUsesOfGlobalVar(globalVar);</span></span>
+<span id="L385"><span class="lineNum">     385</span>              :         }</span>
+<span id="L386"><span class="lineNum">     386</span>              : </span>
+<span id="L387"><span class="lineNum">     387</span>              :         // SPIRV requires a correct IR func-type to emit properly</span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">           1 :         if (m_options.requiresFuncTypeCorrection())</span></span>
+<span id="L389"><span class="lineNum">     389</span>              :         {</span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">           1 :             for (auto pairOfFuncs : m_mapFuncToContextPtr)</span></span>
+<span id="L391"><span class="lineNum">     391</span>              :             {</span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">           1 :                 if (pairOfFuncs.second-&gt;getOp() == kIROp_Var)</span></span>
+<span id="L393"><span class="lineNum">     393</span>              :                     continue;</span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">           1 :                 fixUpFuncType(pairOfFuncs.first);</span></span>
+<span id="L395"><span class="lineNum">     395</span>              :             }</span>
+<span id="L396"><span class="lineNum">     396</span>              :         }</span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L398"><span class="lineNum">     398</span>              : </span>
+<span id="L399"><span class="lineNum">     399</span>              :     // As noted above, we will maintain mappings to record</span>
+<span id="L400"><span class="lineNum">     400</span>              :     // the key for the context field created for a global</span>
+<span id="L401"><span class="lineNum">     401</span>              :     // variable parameter, and to record the context pointer</span>
+<span id="L402"><span class="lineNum">     402</span>              :     // value to use for a function.</span>
+<span id="L403"><span class="lineNum">     403</span>              :     //</span>
+<span id="L404"><span class="lineNum">     404</span>              :     struct ContextFieldInfo</span>
+<span id="L405"><span class="lineNum">     405</span>              :     {</span>
+<span id="L406"><span class="lineNum">     406</span>              :         IRStructKey* key = nullptr;</span>
+<span id="L407"><span class="lineNum">     407</span>              : </span>
+<span id="L408"><span class="lineNum">     408</span>              :         // Is this field a pointer to the actual value?</span>
+<span id="L409"><span class="lineNum">     409</span>              :         // For groupshared variables, this will be true.</span>
+<span id="L410"><span class="lineNum">     410</span>              :         bool needDereference = false;</span>
+<span id="L411"><span class="lineNum">     411</span>              :     };</span>
+<span id="L412"><span class="lineNum">     412</span>              :     Dictionary&lt;IRInst*, ContextFieldInfo&gt; m_mapInstToContextFieldInfo;</span>
+<span id="L413"><span class="lineNum">     413</span>              :     Dictionary&lt;IRFunc*, IRInst*&gt; m_mapFuncToContextPtr;</span>
+<span id="L414"><span class="lineNum">     414</span>              : </span>
+<span id="L415"><span class="lineNum">     415</span>              :     void createContextStructField(IRInst* originalInst, GlobalObjectKind kind, IRType* type)</span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L417"><span class="lineNum">     417</span>              :         // Creating a field in the context struct to represent</span>
+<span id="L418"><span class="lineNum">     418</span>              :         // `originalInst` is straightforward.</span>
+<span id="L419"><span class="lineNum">     419</span>              : </span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(m_contextStructType);</span></span>
+<span id="L422"><span class="lineNum">     422</span>              : </span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">           1 :         IRType* fieldDataType = type;</span></span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">           1 :         bool needDereference = false;</span></span>
+<span id="L425"><span class="lineNum">     425</span> <span class="tlaGNC">           1 :         if (kind == GlobalObjectKind::GlobalVar)</span></span>
+<span id="L426"><span class="lineNum">     426</span>              :         {</span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">           1 :             auto ptrType = as&lt;IRPtrTypeBase&gt;(type);</span></span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">           1 :             if (ptrType-&gt;getAddressSpace() == AddressSpace::GroupShared)</span></span>
+<span id="L429"><span class="lineNum">     429</span>              :             {</span>
+<span id="L430"><span class="lineNum">     430</span>              :                 fieldDataType = ptrType;</span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">           1 :                 needDereference = true;</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L433"><span class="lineNum">     433</span>              :             else</span>
+<span id="L434"><span class="lineNum">     434</span>              :             {</span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">           1 :                 fieldDataType = as&lt;IRPtrTypeBase&gt;(type)-&gt;getValueType();</span></span>
+<span id="L436"><span class="lineNum">     436</span>              :             }</span>
+<span id="L437"><span class="lineNum">     437</span>              :         }</span>
+<span id="L438"><span class="lineNum">     438</span>              : </span>
+<span id="L439"><span class="lineNum">     439</span>              :         // We create a &quot;key&quot; for the new field, and then a field</span>
+<span id="L440"><span class="lineNum">     440</span>              :         // of the appropraite type.</span>
+<span id="L441"><span class="lineNum">     441</span>              :         //</span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">           1 :         auto key = builder.createStructKey();</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">           1 :         builder.createStructField(m_contextStructType, key, fieldDataType);</span></span>
 <span id="L444"><span class="lineNum">     444</span>              : </span>
-<span id="L445"><span class="lineNum">     445</span>              :         // Clone all original decorations to the new struct key.</span>
-<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">           1 :         IRCloneEnv cloneEnv;</span></span>
-<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">           1 :         cloneInstDecorationsAndChildren(&amp;cloneEnv, m_module, originalInst, key);</span></span>
-<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">           1 :         if (m_target == CodeGenTarget::CPPHeader)</span></span>
-<span id="L449"><span class="lineNum">     449</span>              :         {</span>
-<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">           1 :             builder.addExternCppDecoration(</span></span>
-<span id="L451"><span class="lineNum">     451</span>              :                 key,</span>
-<span id="L452"><span class="lineNum">     452</span>              :                 originalInst-&gt;findDecoration&lt;IRNameHintDecoration&gt;()-&gt;getName());</span>
-<span id="L453"><span class="lineNum">     453</span>              :         }</span>
-<span id="L454"><span class="lineNum">     454</span>              : </span>
-<span id="L455"><span class="lineNum">     455</span>              :         // We end by making note of the key that was created</span>
-<span id="L456"><span class="lineNum">     456</span>              :         // for the instruction, so that we can use the key</span>
-<span id="L457"><span class="lineNum">     457</span>              :         // to access the field later.</span>
-<span id="L458"><span class="lineNum">     458</span>              :         //</span>
-<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">           1 :         m_mapInstToContextFieldInfo.add(originalInst, ContextFieldInfo{key, needDereference});</span></span>
-<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L461"><span class="lineNum">     461</span>              : </span>
-<span id="L462"><span class="lineNum">     462</span>              :     void createContextForEntryPoint(IRFunc* entryPointFunc)</span>
-<span id="L463"><span class="lineNum">     463</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L464"><span class="lineNum">     464</span>              :         // We can only introduce the explicit context into</span>
-<span id="L465"><span class="lineNum">     465</span>              :         // entry points that have definitions.</span>
-<span id="L466"><span class="lineNum">     466</span>              :         //</span>
-<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">           1 :         auto firstBlock = entryPointFunc-&gt;getFirstBlock();</span></span>
-<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">           1 :         if (!firstBlock)</span></span>
-<span id="L469"><span class="lineNum">     469</span>              :             return;</span>
-<span id="L470"><span class="lineNum">     470</span>              : </span>
-<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">           1 :         key-&gt;sourceLoc = originalInst-&gt;sourceLoc;</span></span>
+<span id="L446"><span class="lineNum">     446</span>              : </span>
+<span id="L447"><span class="lineNum">     447</span>              :         // Clone all original decorations to the new struct key.</span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">           1 :         IRCloneEnv cloneEnv;</span></span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">           1 :         cloneInstDecorationsAndChildren(&amp;cloneEnv, m_module, originalInst, key);</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">           1 :         if (m_target == CodeGenTarget::CPPHeader)</span></span>
+<span id="L451"><span class="lineNum">     451</span>              :         {</span>
+<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">           1 :             builder.addExternCppDecoration(</span></span>
+<span id="L453"><span class="lineNum">     453</span>              :                 key,</span>
+<span id="L454"><span class="lineNum">     454</span>              :                 originalInst-&gt;findDecoration&lt;IRNameHintDecoration&gt;()-&gt;getName());</span>
+<span id="L455"><span class="lineNum">     455</span>              :         }</span>
+<span id="L456"><span class="lineNum">     456</span>              : </span>
+<span id="L457"><span class="lineNum">     457</span>              :         // We end by making note of the key that was created</span>
+<span id="L458"><span class="lineNum">     458</span>              :         // for the instruction, so that we can use the key</span>
+<span id="L459"><span class="lineNum">     459</span>              :         // to access the field later.</span>
+<span id="L460"><span class="lineNum">     460</span>              :         //</span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">           1 :         m_mapInstToContextFieldInfo.add(originalInst, ContextFieldInfo{key, needDereference});</span></span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L463"><span class="lineNum">     463</span>              : </span>
+<span id="L464"><span class="lineNum">     464</span>              :     void createContextForEntryPoint(IRFunc* entryPointFunc)</span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L466"><span class="lineNum">     466</span>              :         // We can only introduce the explicit context into</span>
+<span id="L467"><span class="lineNum">     467</span>              :         // entry points that have definitions.</span>
+<span id="L468"><span class="lineNum">     468</span>              :         //</span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">           1 :         auto firstBlock = entryPointFunc-&gt;getFirstBlock();</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">           1 :         if (!firstBlock)</span></span>
+<span id="L471"><span class="lineNum">     471</span>              :             return;</span>
 <span id="L472"><span class="lineNum">     472</span>              : </span>
-<span id="L473"><span class="lineNum">     473</span>              :         // The code we introduce will all be added to the start</span>
-<span id="L474"><span class="lineNum">     474</span>              :         // of the first block of the function.</span>
-<span id="L475"><span class="lineNum">     475</span>              :         //</span>
-<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">           1 :         auto firstOrdinary = firstBlock-&gt;getFirstOrdinaryInst();</span></span>
-<span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(firstOrdinary);</span></span>
-<span id="L478"><span class="lineNum">     478</span>              : </span>
-<span id="L479"><span class="lineNum">     479</span>              :         // If there was a global-scope uniform parameter before,</span>
-<span id="L480"><span class="lineNum">     480</span>              :         // then we need to introduce an explicit parameter onto</span>
-<span id="L481"><span class="lineNum">     481</span>              :         // each entry-point function to represent it.</span>
-<span id="L482"><span class="lineNum">     482</span>              :         //</span>
-<span id="L483"><span class="lineNum">     483</span>              : </span>
-<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">           1 :         List&lt;GlobalParamInfo&gt; entryPointParamsToAdd;</span></span>
-<span id="L485"><span class="lineNum">     485</span> <span class="tlaGNC">           1 :         for (auto globalParam : m_globalParams)</span></span>
-<span id="L486"><span class="lineNum">     486</span>              :         {</span>
-<span id="L487"><span class="lineNum">     487</span>              :             // Do not add global param to current entry point if global param</span>
-<span id="L488"><span class="lineNum">     488</span>              :             // explicitly originates from a different entry point.</span>
-<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">           1 :             if (globalParam.originatingEntryPoint &amp;&amp;</span></span>
-<span id="L490"><span class="lineNum">     490</span>              :                 globalParam.originatingEntryPoint != entryPointFunc)</span>
-<span id="L491"><span class="lineNum">     491</span>              :             {</span>
-<span id="L492"><span class="lineNum">     492</span>              :                 continue;</span>
-<span id="L493"><span class="lineNum">     493</span>              :             }</span>
-<span id="L494"><span class="lineNum">     494</span>              : </span>
-<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">           1 :             globalParam.entryPointParam =</span></span>
-<span id="L496"><span class="lineNum">     496</span>              :                 builder.createParam(globalParam.globalParam-&gt;getFullType());</span>
-<span id="L497"><span class="lineNum">     497</span> <span class="tlaGNC">           1 :             IRCloneEnv cloneEnv;</span></span>
-<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">           1 :             cloneInstDecorationsAndChildren(</span></span>
-<span id="L499"><span class="lineNum">     499</span>              :                 &amp;cloneEnv,</span>
-<span id="L500"><span class="lineNum">     500</span>              :                 m_module,</span>
-<span id="L501"><span class="lineNum">     501</span>              :                 globalParam.globalParam,</span>
-<span id="L502"><span class="lineNum">     502</span>              :                 globalParam.entryPointParam);</span>
-<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">           1 :             entryPointParamsToAdd.add(globalParam);</span></span>
-<span id="L504"><span class="lineNum">     504</span>              : </span>
-<span id="L505"><span class="lineNum">     505</span>              :             // The new parameter will be the last one in the</span>
-<span id="L506"><span class="lineNum">     506</span>              :             // parameter list of the entry point.</span>
-<span id="L507"><span class="lineNum">     507</span>              :             //</span>
-<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">           1 :             globalParam.entryPointParam-&gt;insertBefore(firstOrdinary);</span></span>
-<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L510"><span class="lineNum">     510</span>              : </span>
-<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">           1 :         if (isCPUTarget(m_target) &amp;&amp; m_globalParams.getCount() == 0)</span></span>
-<span id="L512"><span class="lineNum">     512</span>              :         {</span>
-<span id="L513"><span class="lineNum">     513</span>              :             // The nature of our current ABI for entry points on CPU</span>
-<span id="L514"><span class="lineNum">     514</span>              :             // means that we need an explicit parameter to be *declared*</span>
-<span id="L515"><span class="lineNum">     515</span>              :             // for the global uniforms, even if it is never used.</span>
-<span id="L516"><span class="lineNum">     516</span>              :             //</span>
-<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">           1 :             auto placeholderParam = builder.createParam(builder.getRawPointerType());</span></span>
-<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">           1 :             placeholderParam-&gt;insertBefore(firstOrdinary);</span></span>
-<span id="L519"><span class="lineNum">     519</span>              :         }</span>
-<span id="L520"><span class="lineNum">     520</span>              : </span>
-<span id="L521"><span class="lineNum">     521</span>              :         // The `KernelContext` to use inside the entry point</span>
-<span id="L522"><span class="lineNum">     522</span>              :         // will be a local variable declared in the first block.</span>
-<span id="L523"><span class="lineNum">     523</span>              :         //</span>
-<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">           1 :         auto contextVarPtr = builder.emitVar(m_contextStructType);</span></span>
-<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">           1 :         addKernelContextNameHint(contextVarPtr);</span></span>
-<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">           1 :         m_mapFuncToContextPtr.add(entryPointFunc, contextVarPtr);</span></span>
-<span id="L527"><span class="lineNum">     527</span>              : </span>
-<span id="L528"><span class="lineNum">     528</span>              :         // If there is a global-scope uniform parameter, then</span>
-<span id="L529"><span class="lineNum">     529</span>              :         // we need to use our new explicit entry point parameter</span>
-<span id="L530"><span class="lineNum">     530</span>              :         // to inialize the corresponding field of the `KernelContext`</span>
-<span id="L531"><span class="lineNum">     531</span>              :         // before moving on with execution of the kernel body.</span>
-<span id="L532"><span class="lineNum">     532</span>              :         //</span>
-<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">           1 :         for (auto entryPointParam : entryPointParamsToAdd)</span></span>
-<span id="L534"><span class="lineNum">     534</span>              :         {</span>
-<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">           1 :             auto fieldInfo = m_mapInstToContextFieldInfo[entryPointParam.globalParam];</span></span>
-<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">           1 :             auto fieldType = entryPointParam.globalParam-&gt;getFullType();</span></span>
-<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">           1 :             auto fieldPtrType = builder.getPtrType(fieldType);</span></span>
-<span id="L538"><span class="lineNum">     538</span>              : </span>
-<span id="L539"><span class="lineNum">     539</span>              :             // We compute the addrress of the field and store the</span>
-<span id="L540"><span class="lineNum">     540</span>              :             // value of the parameter into it.</span>
-<span id="L541"><span class="lineNum">     541</span>              :             //</span>
-<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">           1 :             auto fieldPtr = builder.emitFieldAddress(fieldPtrType, contextVarPtr, fieldInfo.key);</span></span>
-<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">           1 :             builder.emitStore(fieldPtr, entryPointParam.entryPointParam);</span></span>
-<span id="L544"><span class="lineNum">     544</span>              :         }</span>
-<span id="L545"><span class="lineNum">     545</span>              : </span>
-<span id="L546"><span class="lineNum">     546</span>              :         // Note: at this point the `KernelContext` has additional</span>
-<span id="L547"><span class="lineNum">     547</span>              :         // fields for global variables that do not seem to have</span>
-<span id="L548"><span class="lineNum">     548</span>              :         // been initialized.</span>
-<span id="L549"><span class="lineNum">     549</span>              :         //</span>
-<span id="L550"><span class="lineNum">     550</span>              :         // Instead of making this pass take responsibility for initializing</span>
-<span id="L551"><span class="lineNum">     551</span>              :         // global variables, it is instead expected that clients will</span>
-<span id="L552"><span class="lineNum">     552</span>              :         // run the pass in `slang-ir-explicit-global-init` first,</span>
-<span id="L553"><span class="lineNum">     553</span>              :         // in order to move all initialization of globals into the</span>
-<span id="L554"><span class="lineNum">     554</span>              :         // entry point functions.</span>
-<span id="L555"><span class="lineNum">     555</span>              :         //</span>
-<span id="L556"><span class="lineNum">     556</span>              :         // To support groupshared variables on Metal,we need to allocate the</span>
-<span id="L557"><span class="lineNum">     557</span>              :         // memory by defining a local variable in the entry point, and pass</span>
-<span id="L558"><span class="lineNum">     558</span>              :         // the address of that variable to the context.</span>
-<span id="L559"><span class="lineNum">     559</span>              :         //</span>
-<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">           1 :         for (auto globalVar : m_globalVars)</span></span>
-<span id="L561"><span class="lineNum">     561</span>              :         {</span>
-<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">           1 :             auto fieldInfo = m_mapInstToContextFieldInfo[globalVar];</span></span>
-<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">           1 :             if (fieldInfo.needDereference)</span></span>
-<span id="L564"><span class="lineNum">     564</span>              :             {</span>
-<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">           1 :                 auto var = builder.emitVar(</span></span>
-<span id="L566"><span class="lineNum">     566</span>              :                     globalVar-&gt;getDataType()-&gt;getValueType(),</span>
-<span id="L567"><span class="lineNum">     567</span>              :                     AddressSpace::GroupShared);</span>
-<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">           1 :                 if (auto nameDecor = globalVar-&gt;findDecoration&lt;IRNameHintDecoration&gt;())</span></span>
-<span id="L569"><span class="lineNum">     569</span>              :                 {</span>
-<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">           1 :                     builder.addNameHintDecoration(var, nameDecor-&gt;getName());</span></span>
-<span id="L571"><span class="lineNum">     571</span>              :                 }</span>
-<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">           1 :                 auto ptrPtrType =</span></span>
-<span id="L573"><span class="lineNum">     573</span>              :                     builder.getPtrType(getGlobalVarPtrType(globalVar), getAddressSpaceOfLocal());</span>
-<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">           1 :                 auto fieldPtr = builder.emitFieldAddress(ptrPtrType, contextVarPtr, fieldInfo.key);</span></span>
-<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">           1 :                 builder.emitStore(fieldPtr, var);</span></span>
-<span id="L576"><span class="lineNum">     576</span>              :             }</span>
-<span id="L577"><span class="lineNum">     577</span>              :         }</span>
-<span id="L578"><span class="lineNum">     578</span>              : </span>
-<span id="L579"><span class="lineNum">     579</span>              :         // Update entry point function type after potentially adding parameters.</span>
-<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">           1 :         fixUpFuncType(entryPointFunc);</span></span>
-<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L582"><span class="lineNum">     582</span>              : </span>
-<span id="L583"><span class="lineNum">     583</span>              :     void replaceUsesOfGlobalParam(IRGlobalParam* globalParam)</span>
-<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
-<span id="L586"><span class="lineNum">     586</span>              : </span>
-<span id="L587"><span class="lineNum">     587</span>              :         // A global shader parameter was mapped to a field</span>
-<span id="L588"><span class="lineNum">     588</span>              :         // in the context structure, so we find the appropriate key.</span>
-<span id="L589"><span class="lineNum">     589</span>              :         //</span>
-<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">           1 :         auto fieldInfo = m_mapInstToContextFieldInfo[globalParam];</span></span>
-<span id="L591"><span class="lineNum">     591</span>              : </span>
-<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">           1 :         auto valType = globalParam-&gt;getFullType();</span></span>
-<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">           1 :         auto ptrType = builder.getPtrType(valType);</span></span>
-<span id="L594"><span class="lineNum">     594</span>              : </span>
-<span id="L595"><span class="lineNum">     595</span>              :         // We then iterate over the uses of the parameter,</span>
-<span id="L596"><span class="lineNum">     596</span>              :         // being careful to defend against the use/def information</span>
-<span id="L597"><span class="lineNum">     597</span>              :         // being changed while we walk it.</span>
-<span id="L598"><span class="lineNum">     598</span>              :         //</span>
-<span id="L599"><span class="lineNum">     599</span>              :         IRUse* nextUse = nullptr;</span>
-<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">           1 :         for (IRUse* use = globalParam-&gt;firstUse; use; use = nextUse)</span></span>
-<span id="L601"><span class="lineNum">     601</span>              :         {</span>
-<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">           1 :             nextUse = use-&gt;nextUse;</span></span>
-<span id="L603"><span class="lineNum">     603</span>              : </span>
-<span id="L604"><span class="lineNum">     604</span>              :             // Consider this example:</span>
-<span id="L605"><span class="lineNum">     605</span>              :             //</span>
-<span id="L606"><span class="lineNum">     606</span>              :             //     AppendStructuredBuffer&lt;int&gt; output;</span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
+<span id="L474"><span class="lineNum">     474</span>              : </span>
+<span id="L475"><span class="lineNum">     475</span>              :         // The code we introduce will all be added to the start</span>
+<span id="L476"><span class="lineNum">     476</span>              :         // of the first block of the function.</span>
+<span id="L477"><span class="lineNum">     477</span>              :         //</span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">           1 :         auto firstOrdinary = firstBlock-&gt;getFirstOrdinaryInst();</span></span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(firstOrdinary);</span></span>
+<span id="L480"><span class="lineNum">     480</span>              : </span>
+<span id="L481"><span class="lineNum">     481</span>              :         // If there was a global-scope uniform parameter before,</span>
+<span id="L482"><span class="lineNum">     482</span>              :         // then we need to introduce an explicit parameter onto</span>
+<span id="L483"><span class="lineNum">     483</span>              :         // each entry-point function to represent it.</span>
+<span id="L484"><span class="lineNum">     484</span>              :         //</span>
+<span id="L485"><span class="lineNum">     485</span>              : </span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">           1 :         List&lt;GlobalParamInfo&gt; entryPointParamsToAdd;</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">           1 :         for (auto globalParam : m_globalParams)</span></span>
+<span id="L488"><span class="lineNum">     488</span>              :         {</span>
+<span id="L489"><span class="lineNum">     489</span>              :             // Do not add global param to current entry point if global param</span>
+<span id="L490"><span class="lineNum">     490</span>              :             // explicitly originates from a different entry point.</span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">           1 :             if (globalParam.originatingEntryPoint &amp;&amp;</span></span>
+<span id="L492"><span class="lineNum">     492</span>              :                 globalParam.originatingEntryPoint != entryPointFunc)</span>
+<span id="L493"><span class="lineNum">     493</span>              :             {</span>
+<span id="L494"><span class="lineNum">     494</span>              :                 continue;</span>
+<span id="L495"><span class="lineNum">     495</span>              :             }</span>
+<span id="L496"><span class="lineNum">     496</span>              : </span>
+<span id="L497"><span class="lineNum">     497</span> <span class="tlaGNC">           1 :             globalParam.entryPointParam =</span></span>
+<span id="L498"><span class="lineNum">     498</span>              :                 builder.createParam(globalParam.globalParam-&gt;getFullType());</span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">           1 :             IRCloneEnv cloneEnv;</span></span>
+<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">           1 :             cloneInstDecorationsAndChildren(</span></span>
+<span id="L501"><span class="lineNum">     501</span>              :                 &amp;cloneEnv,</span>
+<span id="L502"><span class="lineNum">     502</span>              :                 m_module,</span>
+<span id="L503"><span class="lineNum">     503</span>              :                 globalParam.globalParam,</span>
+<span id="L504"><span class="lineNum">     504</span>              :                 globalParam.entryPointParam);</span>
+<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">           1 :             entryPointParamsToAdd.add(globalParam);</span></span>
+<span id="L506"><span class="lineNum">     506</span>              : </span>
+<span id="L507"><span class="lineNum">     507</span>              :             // The new parameter will be the last one in the</span>
+<span id="L508"><span class="lineNum">     508</span>              :             // parameter list of the entry point.</span>
+<span id="L509"><span class="lineNum">     509</span>              :             //</span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">           1 :             globalParam.entryPointParam-&gt;insertBefore(firstOrdinary);</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L512"><span class="lineNum">     512</span>              : </span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">           1 :         if (isCPUTarget(m_target) &amp;&amp; m_globalParams.getCount() == 0)</span></span>
+<span id="L514"><span class="lineNum">     514</span>              :         {</span>
+<span id="L515"><span class="lineNum">     515</span>              :             // The nature of our current ABI for entry points on CPU</span>
+<span id="L516"><span class="lineNum">     516</span>              :             // means that we need an explicit parameter to be *declared*</span>
+<span id="L517"><span class="lineNum">     517</span>              :             // for the global uniforms, even if it is never used.</span>
+<span id="L518"><span class="lineNum">     518</span>              :             //</span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">           1 :             auto placeholderParam = builder.createParam(builder.getRawPointerType());</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">           1 :             placeholderParam-&gt;insertBefore(firstOrdinary);</span></span>
+<span id="L521"><span class="lineNum">     521</span>              :         }</span>
+<span id="L522"><span class="lineNum">     522</span>              : </span>
+<span id="L523"><span class="lineNum">     523</span>              :         // The `KernelContext` to use inside the entry point</span>
+<span id="L524"><span class="lineNum">     524</span>              :         // will be a local variable declared in the first block.</span>
+<span id="L525"><span class="lineNum">     525</span>              :         //</span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">           1 :         auto contextVarPtr = builder.emitVar(m_contextStructType);</span></span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">           1 :         addKernelContextNameHint(contextVarPtr);</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">           1 :         m_mapFuncToContextPtr.add(entryPointFunc, contextVarPtr);</span></span>
+<span id="L529"><span class="lineNum">     529</span>              : </span>
+<span id="L530"><span class="lineNum">     530</span>              :         // If there is a global-scope uniform parameter, then</span>
+<span id="L531"><span class="lineNum">     531</span>              :         // we need to use our new explicit entry point parameter</span>
+<span id="L532"><span class="lineNum">     532</span>              :         // to inialize the corresponding field of the `KernelContext`</span>
+<span id="L533"><span class="lineNum">     533</span>              :         // before moving on with execution of the kernel body.</span>
+<span id="L534"><span class="lineNum">     534</span>              :         //</span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">           1 :         for (auto entryPointParam : entryPointParamsToAdd)</span></span>
+<span id="L536"><span class="lineNum">     536</span>              :         {</span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">           1 :             auto fieldInfo = m_mapInstToContextFieldInfo[entryPointParam.globalParam];</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">           1 :             auto fieldType = entryPointParam.globalParam-&gt;getFullType();</span></span>
+<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">           1 :             auto fieldPtrType = builder.getPtrType(fieldType);</span></span>
+<span id="L540"><span class="lineNum">     540</span>              : </span>
+<span id="L541"><span class="lineNum">     541</span>              :             // We compute the addrress of the field and store the</span>
+<span id="L542"><span class="lineNum">     542</span>              :             // value of the parameter into it.</span>
+<span id="L543"><span class="lineNum">     543</span>              :             //</span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">           1 :             auto fieldPtr = builder.emitFieldAddress(fieldPtrType, contextVarPtr, fieldInfo.key);</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">           1 :             builder.emitStore(fieldPtr, entryPointParam.entryPointParam);</span></span>
+<span id="L546"><span class="lineNum">     546</span>              :         }</span>
+<span id="L547"><span class="lineNum">     547</span>              : </span>
+<span id="L548"><span class="lineNum">     548</span>              :         // Note: at this point the `KernelContext` has additional</span>
+<span id="L549"><span class="lineNum">     549</span>              :         // fields for global variables that do not seem to have</span>
+<span id="L550"><span class="lineNum">     550</span>              :         // been initialized.</span>
+<span id="L551"><span class="lineNum">     551</span>              :         //</span>
+<span id="L552"><span class="lineNum">     552</span>              :         // Instead of making this pass take responsibility for initializing</span>
+<span id="L553"><span class="lineNum">     553</span>              :         // global variables, it is instead expected that clients will</span>
+<span id="L554"><span class="lineNum">     554</span>              :         // run the pass in `slang-ir-explicit-global-init` first,</span>
+<span id="L555"><span class="lineNum">     555</span>              :         // in order to move all initialization of globals into the</span>
+<span id="L556"><span class="lineNum">     556</span>              :         // entry point functions.</span>
+<span id="L557"><span class="lineNum">     557</span>              :         //</span>
+<span id="L558"><span class="lineNum">     558</span>              :         // To support groupshared variables on Metal,we need to allocate the</span>
+<span id="L559"><span class="lineNum">     559</span>              :         // memory by defining a local variable in the entry point, and pass</span>
+<span id="L560"><span class="lineNum">     560</span>              :         // the address of that variable to the context.</span>
+<span id="L561"><span class="lineNum">     561</span>              :         //</span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">           1 :         for (auto globalVar : m_globalVars)</span></span>
+<span id="L563"><span class="lineNum">     563</span>              :         {</span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">           1 :             auto fieldInfo = m_mapInstToContextFieldInfo[globalVar];</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">           1 :             if (fieldInfo.needDereference)</span></span>
+<span id="L566"><span class="lineNum">     566</span>              :             {</span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">           1 :                 auto var = builder.emitVar(</span></span>
+<span id="L568"><span class="lineNum">     568</span>              :                     globalVar-&gt;getDataType()-&gt;getValueType(),</span>
+<span id="L569"><span class="lineNum">     569</span>              :                     AddressSpace::GroupShared);</span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">           1 :                 if (auto nameDecor = globalVar-&gt;findDecoration&lt;IRNameHintDecoration&gt;())</span></span>
+<span id="L571"><span class="lineNum">     571</span>              :                 {</span>
+<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">           1 :                     builder.addNameHintDecoration(var, nameDecor-&gt;getName());</span></span>
+<span id="L573"><span class="lineNum">     573</span>              :                 }</span>
+<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">           1 :                 auto ptrPtrType =</span></span>
+<span id="L575"><span class="lineNum">     575</span>              :                     builder.getPtrType(getGlobalVarPtrType(globalVar), getAddressSpaceOfLocal());</span>
+<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">           1 :                 auto fieldPtr = builder.emitFieldAddress(ptrPtrType, contextVarPtr, fieldInfo.key);</span></span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">           1 :                 builder.emitStore(fieldPtr, var);</span></span>
+<span id="L578"><span class="lineNum">     578</span>              :             }</span>
+<span id="L579"><span class="lineNum">     579</span>              :         }</span>
+<span id="L580"><span class="lineNum">     580</span>              : </span>
+<span id="L581"><span class="lineNum">     581</span>              :         // Update entry point function type after potentially adding parameters.</span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">           1 :         fixUpFuncType(entryPointFunc);</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L584"><span class="lineNum">     584</span>              : </span>
+<span id="L585"><span class="lineNum">     585</span>              :     void replaceUsesOfGlobalParam(IRGlobalParam* globalParam)</span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
+<span id="L588"><span class="lineNum">     588</span>              : </span>
+<span id="L589"><span class="lineNum">     589</span>              :         // A global shader parameter was mapped to a field</span>
+<span id="L590"><span class="lineNum">     590</span>              :         // in the context structure, so we find the appropriate key.</span>
+<span id="L591"><span class="lineNum">     591</span>              :         //</span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">           1 :         auto fieldInfo = m_mapInstToContextFieldInfo[globalParam];</span></span>
+<span id="L593"><span class="lineNum">     593</span>              : </span>
+<span id="L594"><span class="lineNum">     594</span> <span class="tlaGNC">           1 :         auto valType = globalParam-&gt;getFullType();</span></span>
+<span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">           1 :         auto ptrType = builder.getPtrType(valType);</span></span>
+<span id="L596"><span class="lineNum">     596</span>              : </span>
+<span id="L597"><span class="lineNum">     597</span>              :         // We then iterate over the uses of the parameter,</span>
+<span id="L598"><span class="lineNum">     598</span>              :         // being careful to defend against the use/def information</span>
+<span id="L599"><span class="lineNum">     599</span>              :         // being changed while we walk it.</span>
+<span id="L600"><span class="lineNum">     600</span>              :         //</span>
+<span id="L601"><span class="lineNum">     601</span>              :         IRUse* nextUse = nullptr;</span>
+<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">           1 :         for (IRUse* use = globalParam-&gt;firstUse; use; use = nextUse)</span></span>
+<span id="L603"><span class="lineNum">     603</span>              :         {</span>
+<span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">           1 :             nextUse = use-&gt;nextUse;</span></span>
+<span id="L605"><span class="lineNum">     605</span>              : </span>
+<span id="L606"><span class="lineNum">     606</span>              :             // Consider this example:</span>
 <span id="L607"><span class="lineNum">     607</span>              :             //</span>
-<span id="L608"><span class="lineNum">     608</span>              :             // Earlier passes split `output` into `output.elements` and `output.counter`, then</span>
-<span id="L609"><span class="lineNum">     609</span>              :             // produce IR like this:</span>
-<span id="L610"><span class="lineNum">     610</span>              :             //</span>
-<span id="L611"><span class="lineNum">     611</span>              :             //     [CounterBuffer(%outputCounter)]</span>
-<span id="L612"><span class="lineNum">     612</span>              :             //     %outputElements = global_param</span>
-<span id="L613"><span class="lineNum">     613</span>              :             //     %outputCounter = global_param</span>
-<span id="L614"><span class="lineNum">     614</span>              :             //</span>
-<span id="L615"><span class="lineNum">     615</span>              :             // `CounterBuffer` identifies the counter associated with the elements parameter; it</span>
-<span id="L616"><span class="lineNum">     616</span>              :             // does not read the counter&#x27;s runtime value. This pass moves both parameters into a</span>
-<span id="L617"><span class="lineNum">     617</span>              :             // structure:</span>
-<span id="L618"><span class="lineNum">     618</span>              :             //</span>
-<span id="L619"><span class="lineNum">     619</span>              :             //     %outputElementsKey = key</span>
-<span id="L620"><span class="lineNum">     620</span>              :             //     %outputCounterKey = key</span>
-<span id="L621"><span class="lineNum">     621</span>              :             //     struct KernelContext</span>
-<span id="L622"><span class="lineNum">     622</span>              :             //     {</span>
-<span id="L623"><span class="lineNum">     623</span>              :             //         field(%outputElementsKey, ...)</span>
-<span id="L624"><span class="lineNum">     624</span>              :             //         field(%outputCounterKey, ...)</span>
-<span id="L625"><span class="lineNum">     625</span>              :             //     }</span>
-<span id="L626"><span class="lineNum">     626</span>              :             //</span>
-<span id="L627"><span class="lineNum">     627</span>              :             // Therefore the decoration must become `CounterBuffer(%outputCounterKey)`. When this</span>
-<span id="L628"><span class="lineNum">     628</span>              :             // loop processes `%outputCounter`, `fieldInfo.key` is `%outputCounterKey`, so replace</span>
-<span id="L629"><span class="lineNum">     629</span>              :             // the decoration operand directly. Ordinary uses inside functions are instead</span>
-<span id="L630"><span class="lineNum">     630</span>              :             // replaced with loads from the corresponding field below.</span>
-<span id="L631"><span class="lineNum">     631</span> <span class="tlaGNC">           1 :             auto user = use-&gt;getUser();</span></span>
-<span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">           1 :             if (as&lt;IRDecoration&gt;(user))</span></span>
-<span id="L633"><span class="lineNum">     633</span>              :             {</span>
-<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">           1 :                 use-&gt;set(fieldInfo.key);</span></span>
-<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">           1 :                 continue;</span></span>
-<span id="L636"><span class="lineNum">     636</span>              :             }</span>
-<span id="L637"><span class="lineNum">     637</span>              : </span>
-<span id="L638"><span class="lineNum">     638</span>              :             // At each use site, we need to look up the context</span>
-<span id="L639"><span class="lineNum">     639</span>              :             // pointer that is appropriate for that use.</span>
-<span id="L640"><span class="lineNum">     640</span>              :             //</span>
-<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">           1 :             auto contextParam = findOrCreateContextPtrForInst(user);</span></span>
-<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(user);</span></span>
-<span id="L643"><span class="lineNum">     643</span>              : </span>
-<span id="L644"><span class="lineNum">     644</span>              :             // The value of the parameter can be produced by</span>
-<span id="L645"><span class="lineNum">     645</span>              :             // taking the address of the corresponding field</span>
-<span id="L646"><span class="lineNum">     646</span>              :             // in the context struct and loading from it.</span>
-<span id="L647"><span class="lineNum">     647</span>              :             //</span>
-<span id="L648"><span class="lineNum">     648</span> <span class="tlaGNC">           1 :             auto ptr = builder.emitFieldAddress(ptrType, contextParam, fieldInfo.key);</span></span>
-<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">           1 :             auto val = builder.emitLoad(valType, ptr);</span></span>
-<span id="L650"><span class="lineNum">     650</span>              :             use-&gt;set(val);</span>
-<span id="L651"><span class="lineNum">     651</span>              :         }</span>
-<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L653"><span class="lineNum">     653</span>              : </span>
-<span id="L654"><span class="lineNum">     654</span>              :     IRType* getGlobalVarPtrType(IRGlobalVar* globalVar)</span>
-<span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L656"><span class="lineNum">     656</span> <span class="tlaGNC">           1 :         IRBuilder builder(globalVar);</span></span>
-<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">           1 :         if (as&lt;IRGroupSharedRate&gt;(globalVar-&gt;getRate()))</span></span>
-<span id="L658"><span class="lineNum">     658</span>              :         {</span>
-<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">           1 :             return builder.getPtrType(</span></span>
-<span id="L660"><span class="lineNum">     660</span>              :                 globalVar-&gt;getDataType()-&gt;getValueType(),</span>
-<span id="L661"><span class="lineNum">     661</span>              :                 AddressSpace::GroupShared);</span>
-<span id="L662"><span class="lineNum">     662</span>              :         }</span>
-<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">           1 :         return builder.getPtrType(</span></span>
-<span id="L664"><span class="lineNum">     664</span>              :             globalVar-&gt;getDataType()-&gt;getValueType(),</span>
-<span id="L665"><span class="lineNum">     665</span>              :             getAddressSpaceOfLocal());</span>
-<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L667"><span class="lineNum">     667</span>              : </span>
-<span id="L668"><span class="lineNum">     668</span>              :     void replaceUsesOfGlobalVar(IRGlobalVar* globalVar)</span>
-<span id="L669"><span class="lineNum">     669</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
-<span id="L671"><span class="lineNum">     671</span>              : </span>
-<span id="L672"><span class="lineNum">     672</span>              :         // A global variable was mapped to a field</span>
-<span id="L673"><span class="lineNum">     673</span>              :         // in the context structure, so we find the appropriate key.</span>
-<span id="L674"><span class="lineNum">     674</span>              :         //</span>
-<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">           1 :         auto fieldInfo = m_mapInstToContextFieldInfo[globalVar];</span></span>
-<span id="L676"><span class="lineNum">     676</span>              : </span>
-<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :         auto ptrType = getGlobalVarPtrType(globalVar);</span></span>
-<span id="L678"><span class="lineNum">     678</span> <span class="tlaGNC">           1 :         if (fieldInfo.needDereference)</span></span>
-<span id="L679"><span class="lineNum">     679</span> <span class="tlaGNC">           1 :             ptrType = builder.getPtrType(ptrType, getAddressSpaceOfLocal());</span></span>
-<span id="L680"><span class="lineNum">     680</span>              : </span>
-<span id="L681"><span class="lineNum">     681</span>              :         // We then iterate over the uses of the variable,</span>
-<span id="L682"><span class="lineNum">     682</span>              :         // being careful to defend against the use/def information</span>
-<span id="L683"><span class="lineNum">     683</span>              :         // being changed while we walk it.</span>
-<span id="L684"><span class="lineNum">     684</span>              :         //</span>
-<span id="L685"><span class="lineNum">     685</span>              :         IRUse* nextUse = nullptr;</span>
-<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">           1 :         for (IRUse* use = globalVar-&gt;firstUse; use; use = nextUse)</span></span>
-<span id="L687"><span class="lineNum">     687</span>              :         {</span>
-<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">           1 :             nextUse = use-&gt;nextUse;</span></span>
-<span id="L689"><span class="lineNum">     689</span> <span class="tlaGNC">           1 :             auto user = use-&gt;getUser();</span></span>
-<span id="L690"><span class="lineNum">     690</span>              : </span>
-<span id="L691"><span class="lineNum">     691</span>              :             // Ensure the use site checked actually requires a replacement</span>
-<span id="L692"><span class="lineNum">     692</span> <span class="tlaGNC">           1 :             if (as&lt;IRDecoration&gt;(user))</span></span>
-<span id="L693"><span class="lineNum">     693</span>              :                 continue;</span>
-<span id="L694"><span class="lineNum">     694</span>              : </span>
-<span id="L695"><span class="lineNum">     695</span>              :             // At each use site, we need to look up the context</span>
-<span id="L696"><span class="lineNum">     696</span>              :             // pointer that is appropriate for that use.</span>
-<span id="L697"><span class="lineNum">     697</span>              :             //</span>
-<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">           1 :             auto contextParam = findOrCreateContextPtrForInst(user);</span></span>
-<span id="L699"><span class="lineNum">     699</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(user);</span></span>
-<span id="L700"><span class="lineNum">     700</span>              : </span>
-<span id="L701"><span class="lineNum">     701</span>              :             // The address of the variable can be produced by</span>
-<span id="L702"><span class="lineNum">     702</span>              :             // taking the address of the corresponding field</span>
-<span id="L703"><span class="lineNum">     703</span>              :             // in the context struct.</span>
-<span id="L704"><span class="lineNum">     704</span>              :             //</span>
-<span id="L705"><span class="lineNum">     705</span> <span class="tlaGNC">           1 :             auto ptr = builder.emitFieldAddress(ptrType, contextParam, fieldInfo.key);</span></span>
-<span id="L706"><span class="lineNum">     706</span> <span class="tlaGNC">           1 :             if (fieldInfo.needDereference)</span></span>
-<span id="L707"><span class="lineNum">     707</span> <span class="tlaGNC">           1 :                 ptr = builder.emitLoad(ptr);</span></span>
-<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">           1 :             use-&gt;set(ptr);</span></span>
-<span id="L709"><span class="lineNum">     709</span>              :         }</span>
-<span id="L710"><span class="lineNum">     710</span>              : </span>
-<span id="L711"><span class="lineNum">     711</span>              :         // We&#x27;ve replaced all uses of the global var so we should remove it.</span>
-<span id="L712"><span class="lineNum">     712</span>              :         // We leave decorations on the global var above, so if we do not remove it</span>
-<span id="L713"><span class="lineNum">     713</span>              :         // here, the global var will not be processed for elimination in</span>
-<span id="L714"><span class="lineNum">     714</span>              :         // eliminateDeadCode.</span>
-<span id="L715"><span class="lineNum">     715</span> <span class="tlaGNC">           1 :         globalVar-&gt;removeAndDeallocate();</span></span>
-<span id="L716"><span class="lineNum">     716</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L717"><span class="lineNum">     717</span>              : </span>
-<span id="L718"><span class="lineNum">     718</span>              :     IRInst* findOrCreateContextPtrForInst(IRInst* inst)</span>
-<span id="L719"><span class="lineNum">     719</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L720"><span class="lineNum">     720</span>              :         // When looking up the context pointer to use for</span>
-<span id="L721"><span class="lineNum">     721</span>              :         // an instruction, we need to find the enclosing</span>
-<span id="L722"><span class="lineNum">     722</span>              :         // function and use whatever context pointer it uses.</span>
-<span id="L723"><span class="lineNum">     723</span>              :         //</span>
-<span id="L724"><span class="lineNum">     724</span> <span class="tlaGNC">           1 :         for (IRInst* i = inst; i; i = i-&gt;getParent())</span></span>
-<span id="L725"><span class="lineNum">     725</span>              :         {</span>
-<span id="L726"><span class="lineNum">     726</span> <span class="tlaGNC">           1 :             if (auto func = as&lt;IRFunc&gt;(i))</span></span>
-<span id="L727"><span class="lineNum">     727</span>              :             {</span>
-<span id="L728"><span class="lineNum">     728</span> <span class="tlaGNC">           1 :                 return findOrCreateContextPtrForFunc(func);</span></span>
-<span id="L729"><span class="lineNum">     729</span>              :             }</span>
-<span id="L730"><span class="lineNum">     730</span>              :         }</span>
-<span id="L731"><span class="lineNum">     731</span>              : </span>
-<span id="L732"><span class="lineNum">     732</span>              :         // If a non-constant global entity is being referenced by</span>
-<span id="L733"><span class="lineNum">     733</span>              :         // something that is *not* nested under an IR function, then</span>
-<span id="L734"><span class="lineNum">     734</span>              :         // we are in trouble.</span>
-<span id="L735"><span class="lineNum">     735</span>              :         //</span>
-<span id="L736"><span class="lineNum">     736</span> <span class="tlaUNC">           0 :         SLANG_UNEXPECTED(&quot;no outer func at use site for global&quot;);</span></span>
-<span id="L737"><span class="lineNum">     737</span>              :         UNREACHABLE_RETURN(nullptr);</span>
-<span id="L738"><span class="lineNum">     738</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L739"><span class="lineNum">     739</span>              : </span>
-<span id="L740"><span class="lineNum">     740</span>              :     IRInst* findOrCreateContextPtrForFunc(IRFunc* func)</span>
-<span id="L741"><span class="lineNum">     741</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L742"><span class="lineNum">     742</span>              :         // At this point we are being asked to either find or</span>
-<span id="L743"><span class="lineNum">     743</span>              :         // produce a context pointer for use inside `func`.</span>
-<span id="L744"><span class="lineNum">     744</span>              :         //</span>
-<span id="L745"><span class="lineNum">     745</span>              :         // If we already created such a pointer (perhaps because</span>
-<span id="L746"><span class="lineNum">     746</span>              :         // `func` is an entry point), then we are home free.</span>
-<span id="L747"><span class="lineNum">     747</span>              :         //</span>
-<span id="L748"><span class="lineNum">     748</span> <span class="tlaGNC">           1 :         if (auto found = m_mapFuncToContextPtr.tryGetValue(func))</span></span>
-<span id="L749"><span class="lineNum">     749</span>              :         {</span>
-<span id="L750"><span class="lineNum">     750</span> <span class="tlaGNC">           1 :             return *found;</span></span>
-<span id="L751"><span class="lineNum">     751</span>              :         }</span>
-<span id="L752"><span class="lineNum">     752</span>              : </span>
-<span id="L753"><span class="lineNum">     753</span>              :         // Otherwise, we are going to need to introduce an</span>
-<span id="L754"><span class="lineNum">     754</span>              :         // explicit parameter to `func` to represent the</span>
-<span id="L755"><span class="lineNum">     755</span>              :         // context.</span>
-<span id="L756"><span class="lineNum">     756</span>              :         //</span>
-<span id="L757"><span class="lineNum">     757</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
-<span id="L758"><span class="lineNum">     758</span>              : </span>
-<span id="L759"><span class="lineNum">     759</span>              :         // We can safely assume that `func` has a body, because</span>
-<span id="L760"><span class="lineNum">     760</span>              :         // otherwise we wouldn&#x27;t be getting a request for the</span>
-<span id="L761"><span class="lineNum">     761</span>              :         // context pointer value to use in its body.</span>
-<span id="L762"><span class="lineNum">     762</span>              :         //</span>
-<span id="L763"><span class="lineNum">     763</span> <span class="tlaGNC">           1 :         auto firstBlock = func-&gt;getFirstBlock();</span></span>
-<span id="L764"><span class="lineNum">     764</span>              :         SLANG_ASSERT(firstBlock);</span>
-<span id="L765"><span class="lineNum">     765</span>              : </span>
-<span id="L766"><span class="lineNum">     766</span>              :         // We create a new parameter at the end of the parameter</span>
-<span id="L767"><span class="lineNum">     767</span>              :         // list for `func`, with a type of `KernelContext*`.</span>
-<span id="L768"><span class="lineNum">     768</span>              :         //</span>
-<span id="L769"><span class="lineNum">     769</span> <span class="tlaGNC">           1 :         IRParam* contextParam = builder.createParam(m_contextStructPtrType);</span></span>
-<span id="L770"><span class="lineNum">     770</span> <span class="tlaGNC">           1 :         addKernelContextNameHint(contextParam);</span></span>
-<span id="L771"><span class="lineNum">     771</span> <span class="tlaGNC">           1 :         contextParam-&gt;insertBefore(firstBlock-&gt;getFirstOrdinaryInst());</span></span>
-<span id="L772"><span class="lineNum">     772</span>              : </span>
-<span id="L773"><span class="lineNum">     773</span>              :         // Update the type of the function to reflect this new parameter.</span>
-<span id="L774"><span class="lineNum">     774</span> <span class="tlaGNC">           1 :         fixUpFuncType(func);</span></span>
-<span id="L775"><span class="lineNum">     775</span>              : </span>
-<span id="L776"><span class="lineNum">     776</span>              :         // The new parameter can be registered as the context value</span>
-<span id="L777"><span class="lineNum">     777</span>              :         // to be used for `func` right away.</span>
-<span id="L778"><span class="lineNum">     778</span>              :         //</span>
-<span id="L779"><span class="lineNum">     779</span>              :         // Note: we register the value *before* modifying locations</span>
-<span id="L780"><span class="lineNum">     780</span>              :         // that call `func` to protect against a possible infinite-recursion</span>
-<span id="L781"><span class="lineNum">     781</span>              :         // situation if `func` is recursive along some path.</span>
-<span id="L782"><span class="lineNum">     782</span>              :         //</span>
-<span id="L783"><span class="lineNum">     783</span> <span class="tlaGNC">           1 :         m_mapFuncToContextPtr.add(func, contextParam);</span></span>
-<span id="L784"><span class="lineNum">     784</span>              : </span>
-<span id="L785"><span class="lineNum">     785</span>              :         // Any code that calls `func` now needs to be updated to pass</span>
-<span id="L786"><span class="lineNum">     786</span>              :         // the context parameter.</span>
-<span id="L787"><span class="lineNum">     787</span>              :         //</span>
-<span id="L788"><span class="lineNum">     788</span>              :         // TODO: There is an issue here if `func` might be called</span>
-<span id="L789"><span class="lineNum">     789</span>              :         // dynamically, through something like a witness table.</span>
-<span id="L790"><span class="lineNum">     790</span>              :         //</span>
-<span id="L791"><span class="lineNum">     791</span>              :         // We collect all the uses first which are in calls.</span>
-<span id="L792"><span class="lineNum">     792</span>              :         // NOTE! That we collect all calls and then process (and don&#x27;t iterate</span>
-<span id="L793"><span class="lineNum">     793</span>              :         // using the linked list), because when a replacement is made the func usage</span>
-<span id="L794"><span class="lineNum">     794</span>              :         // linked list will no longer hold all of the use sites.</span>
-<span id="L795"><span class="lineNum">     795</span> <span class="tlaGNC">           1 :         List&lt;IRCall*&gt; callUses;</span></span>
-<span id="L796"><span class="lineNum">     796</span> <span class="tlaGNC">           1 :         for (auto use = func-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L797"><span class="lineNum">     797</span>              :         {</span>
-<span id="L798"><span class="lineNum">     798</span>              :             // We will only fix up calls to `func`, and ignore</span>
-<span id="L799"><span class="lineNum">     799</span>              :             // other operations that might refer to it.</span>
-<span id="L800"><span class="lineNum">     800</span>              :             //</span>
-<span id="L801"><span class="lineNum">     801</span>              :             // TODO: We need to allow things like decorations that might</span>
-<span id="L802"><span class="lineNum">     802</span>              :             // refer to `func`, but this logic is also going to</span>
-<span id="L803"><span class="lineNum">     803</span>              :             // ignore things like witness tables that refer to `func`,</span>
-<span id="L804"><span class="lineNum">     804</span>              :             // or operations that pass `func` as a function pointer</span>
-<span id="L805"><span class="lineNum">     805</span>              :             // to a higher-order function.</span>
-<span id="L806"><span class="lineNum">     806</span>              :             //</span>
-<span id="L807"><span class="lineNum">     807</span> <span class="tlaGNC">           1 :             auto call = as&lt;IRCall&gt;(use-&gt;getUser());</span></span>
-<span id="L808"><span class="lineNum">     808</span> <span class="tlaGNC">           1 :             if (call)</span></span>
-<span id="L809"><span class="lineNum">     809</span>              :             {</span>
-<span id="L810"><span class="lineNum">     810</span> <span class="tlaGNC">           1 :                 callUses.add(call);</span></span>
-<span id="L811"><span class="lineNum">     811</span>              :             }</span>
-<span id="L812"><span class="lineNum">     812</span>              :         }</span>
-<span id="L813"><span class="lineNum">     813</span>              : </span>
-<span id="L814"><span class="lineNum">     814</span>              :         // Fix up all of the call uses</span>
-<span id="L815"><span class="lineNum">     815</span> <span class="tlaGNC">           1 :         for (auto call : callUses)</span></span>
-<span id="L816"><span class="lineNum">     816</span>              :         {</span>
-<span id="L817"><span class="lineNum">     817</span>              :             // We are going to construct a new call to `func`</span>
-<span id="L818"><span class="lineNum">     818</span>              :             // that has all of the arguments of the original call...</span>
-<span id="L819"><span class="lineNum">     819</span>              :             //</span>
-<span id="L820"><span class="lineNum">     820</span> <span class="tlaGNC">           1 :             UInt originalArgCount = call-&gt;getArgCount();</span></span>
-<span id="L821"><span class="lineNum">     821</span> <span class="tlaGNC">           1 :             List&lt;IRInst*&gt; args;</span></span>
-<span id="L822"><span class="lineNum">     822</span> <span class="tlaGNC">           1 :             for (UInt aa = 0; aa &lt; originalArgCount; ++aa)</span></span>
-<span id="L823"><span class="lineNum">     823</span>              :             {</span>
-<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">           1 :                 args.add(call-&gt;getArg(aa));</span></span>
-<span id="L825"><span class="lineNum">     825</span>              :             }</span>
-<span id="L826"><span class="lineNum">     826</span>              : </span>
-<span id="L827"><span class="lineNum">     827</span>              :             // ... plus an additional argument representing</span>
-<span id="L828"><span class="lineNum">     828</span>              :             // the context pointer at the call site (note that</span>
-<span id="L829"><span class="lineNum">     829</span>              :             // this step leads to a potential for recursion in this pass;</span>
-<span id="L830"><span class="lineNum">     830</span>              :             // the maximum depth of the recursion is bounded by the</span>
-<span id="L831"><span class="lineNum">     831</span>              :             // maximum length of a cycle-free path through the call</span>
-<span id="L832"><span class="lineNum">     832</span>              :             // graph of the program).</span>
-<span id="L833"><span class="lineNum">     833</span>              :             //</span>
-<span id="L834"><span class="lineNum">     834</span> <span class="tlaGNC">           1 :             args.add(findOrCreateContextPtrForInst(call));</span></span>
-<span id="L835"><span class="lineNum">     835</span>              : </span>
-<span id="L836"><span class="lineNum">     836</span>              :             // The new call will be emitted right before the old one,</span>
-<span id="L837"><span class="lineNum">     837</span>              :             // then used to replace it.</span>
-<span id="L838"><span class="lineNum">     838</span>              :             //</span>
-<span id="L839"><span class="lineNum">     839</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(call);</span></span>
-<span id="L840"><span class="lineNum">     840</span> <span class="tlaGNC">           1 :             auto newCall = builder.emitCallInst(call-&gt;getFullType(), call-&gt;getCallee(), args);</span></span>
-<span id="L841"><span class="lineNum">     841</span> <span class="tlaGNC">           1 :             call-&gt;replaceUsesWith(newCall);</span></span>
-<span id="L842"><span class="lineNum">     842</span> <span class="tlaGNC">           1 :             call-&gt;removeAndDeallocate();</span></span>
-<span id="L843"><span class="lineNum">     843</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L844"><span class="lineNum">     844</span>              : </span>
-<span id="L845"><span class="lineNum">     845</span> <span class="tlaGNC">           1 :         return contextParam;</span></span>
-<span id="L846"><span class="lineNum">     846</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L847"><span class="lineNum">     847</span>              : </span>
-<span id="L848"><span class="lineNum">     848</span>              :     // Because we have multiple places where instructions representing</span>
-<span id="L849"><span class="lineNum">     849</span>              :     // the kernel context get introduced, we have factored out a subroutine</span>
-<span id="L850"><span class="lineNum">     850</span>              :     // for setting up the name hint to be used by those instructions.</span>
-<span id="L851"><span class="lineNum">     851</span>              :     //</span>
-<span id="L852"><span class="lineNum">     852</span>              :     void addKernelContextNameHint(IRInst* inst)</span>
-<span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L854"><span class="lineNum">     854</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
-<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">           1 :         builder.addNameHintDecoration(inst, UnownedTerminatedStringSlice(&quot;kernelContext&quot;));</span></span>
-<span id="L856"><span class="lineNum">     856</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L857"><span class="lineNum">     857</span>              : };</span>
-<span id="L858"><span class="lineNum">     858</span>              : </span>
-<span id="L859"><span class="lineNum">     859</span>              : /// Collect global-scope variables/paramters to form an explicit context that gets threaded through</span>
-<span id="L860"><span class="lineNum">     860</span>              : void introduceExplicitGlobalContext(IRModule* module, CodeGenTarget target)</span>
-<span id="L861"><span class="lineNum">     861</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L862"><span class="lineNum">     862</span> <span class="tlaGNC">           1 :     IntroduceExplicitGlobalContextPass pass(module, target);</span></span>
-<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">           1 :     pass.processModule();</span></span>
-<span id="L864"><span class="lineNum">     864</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L865"><span class="lineNum">     865</span>              : </span>
-<span id="L866"><span class="lineNum">     866</span>              : } // namespace Slang</span>
+<span id="L608"><span class="lineNum">     608</span>              :             //     AppendStructuredBuffer&lt;int&gt; output;</span>
+<span id="L609"><span class="lineNum">     609</span>              :             //</span>
+<span id="L610"><span class="lineNum">     610</span>              :             // Earlier passes split `output` into `output.elements` and `output.counter`, then</span>
+<span id="L611"><span class="lineNum">     611</span>              :             // produce IR like this:</span>
+<span id="L612"><span class="lineNum">     612</span>              :             //</span>
+<span id="L613"><span class="lineNum">     613</span>              :             //     [CounterBuffer(%outputCounter)]</span>
+<span id="L614"><span class="lineNum">     614</span>              :             //     %outputElements = global_param</span>
+<span id="L615"><span class="lineNum">     615</span>              :             //     %outputCounter = global_param</span>
+<span id="L616"><span class="lineNum">     616</span>              :             //</span>
+<span id="L617"><span class="lineNum">     617</span>              :             // `CounterBuffer` identifies the counter associated with the elements parameter; it</span>
+<span id="L618"><span class="lineNum">     618</span>              :             // does not read the counter&#x27;s runtime value. This pass moves both parameters into a</span>
+<span id="L619"><span class="lineNum">     619</span>              :             // structure:</span>
+<span id="L620"><span class="lineNum">     620</span>              :             //</span>
+<span id="L621"><span class="lineNum">     621</span>              :             //     %outputElementsKey = key</span>
+<span id="L622"><span class="lineNum">     622</span>              :             //     %outputCounterKey = key</span>
+<span id="L623"><span class="lineNum">     623</span>              :             //     struct KernelContext</span>
+<span id="L624"><span class="lineNum">     624</span>              :             //     {</span>
+<span id="L625"><span class="lineNum">     625</span>              :             //         field(%outputElementsKey, ...)</span>
+<span id="L626"><span class="lineNum">     626</span>              :             //         field(%outputCounterKey, ...)</span>
+<span id="L627"><span class="lineNum">     627</span>              :             //     }</span>
+<span id="L628"><span class="lineNum">     628</span>              :             //</span>
+<span id="L629"><span class="lineNum">     629</span>              :             // Therefore the decoration must become `CounterBuffer(%outputCounterKey)`. When this</span>
+<span id="L630"><span class="lineNum">     630</span>              :             // loop processes `%outputCounter`, `fieldInfo.key` is `%outputCounterKey`, so replace</span>
+<span id="L631"><span class="lineNum">     631</span>              :             // the decoration operand directly. Ordinary uses inside functions are instead</span>
+<span id="L632"><span class="lineNum">     632</span>              :             // replaced with loads from the corresponding field below.</span>
+<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">           1 :             auto user = use-&gt;getUser();</span></span>
+<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">           1 :             if (as&lt;IRDecoration&gt;(user))</span></span>
+<span id="L635"><span class="lineNum">     635</span>              :             {</span>
+<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">           1 :                 use-&gt;set(fieldInfo.key);</span></span>
+<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">           1 :                 continue;</span></span>
+<span id="L638"><span class="lineNum">     638</span>              :             }</span>
+<span id="L639"><span class="lineNum">     639</span>              : </span>
+<span id="L640"><span class="lineNum">     640</span>              :             // At each use site, we need to look up the context</span>
+<span id="L641"><span class="lineNum">     641</span>              :             // pointer that is appropriate for that use.</span>
+<span id="L642"><span class="lineNum">     642</span>              :             //</span>
+<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC">           1 :             auto contextParam = findOrCreateContextPtrForInst(user);</span></span>
+<span id="L644"><span class="lineNum">     644</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(user);</span></span>
+<span id="L645"><span class="lineNum">     645</span>              : </span>
+<span id="L646"><span class="lineNum">     646</span>              :             // The value of the parameter can be produced by</span>
+<span id="L647"><span class="lineNum">     647</span>              :             // taking the address of the corresponding field</span>
+<span id="L648"><span class="lineNum">     648</span>              :             // in the context struct and loading from it.</span>
+<span id="L649"><span class="lineNum">     649</span>              :             //</span>
+<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">           1 :             auto ptr = builder.emitFieldAddress(ptrType, contextParam, fieldInfo.key);</span></span>
+<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">           1 :             auto val = builder.emitLoad(valType, ptr);</span></span>
+<span id="L652"><span class="lineNum">     652</span>              :             use-&gt;set(val);</span>
+<span id="L653"><span class="lineNum">     653</span>              :         }</span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L655"><span class="lineNum">     655</span>              : </span>
+<span id="L656"><span class="lineNum">     656</span>              :     IRType* getGlobalVarPtrType(IRGlobalVar* globalVar)</span>
+<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">           1 :         IRBuilder builder(globalVar);</span></span>
+<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">           1 :         if (as&lt;IRGroupSharedRate&gt;(globalVar-&gt;getRate()))</span></span>
+<span id="L660"><span class="lineNum">     660</span>              :         {</span>
+<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">           1 :             return builder.getPtrType(</span></span>
+<span id="L662"><span class="lineNum">     662</span>              :                 globalVar-&gt;getDataType()-&gt;getValueType(),</span>
+<span id="L663"><span class="lineNum">     663</span>              :                 AddressSpace::GroupShared);</span>
+<span id="L664"><span class="lineNum">     664</span>              :         }</span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">           1 :         return builder.getPtrType(</span></span>
+<span id="L666"><span class="lineNum">     666</span>              :             globalVar-&gt;getDataType()-&gt;getValueType(),</span>
+<span id="L667"><span class="lineNum">     667</span>              :             getAddressSpaceOfLocal());</span>
+<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L669"><span class="lineNum">     669</span>              : </span>
+<span id="L670"><span class="lineNum">     670</span>              :     void replaceUsesOfGlobalVar(IRGlobalVar* globalVar)</span>
+<span id="L671"><span class="lineNum">     671</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
+<span id="L673"><span class="lineNum">     673</span>              : </span>
+<span id="L674"><span class="lineNum">     674</span>              :         // A global variable was mapped to a field</span>
+<span id="L675"><span class="lineNum">     675</span>              :         // in the context structure, so we find the appropriate key.</span>
+<span id="L676"><span class="lineNum">     676</span>              :         //</span>
+<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :         auto fieldInfo = m_mapInstToContextFieldInfo[globalVar];</span></span>
+<span id="L678"><span class="lineNum">     678</span>              : </span>
+<span id="L679"><span class="lineNum">     679</span> <span class="tlaGNC">           1 :         auto ptrType = getGlobalVarPtrType(globalVar);</span></span>
+<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">           1 :         if (fieldInfo.needDereference)</span></span>
+<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">           1 :             ptrType = builder.getPtrType(ptrType, getAddressSpaceOfLocal());</span></span>
+<span id="L682"><span class="lineNum">     682</span>              : </span>
+<span id="L683"><span class="lineNum">     683</span>              :         // We then iterate over the uses of the variable,</span>
+<span id="L684"><span class="lineNum">     684</span>              :         // being careful to defend against the use/def information</span>
+<span id="L685"><span class="lineNum">     685</span>              :         // being changed while we walk it.</span>
+<span id="L686"><span class="lineNum">     686</span>              :         //</span>
+<span id="L687"><span class="lineNum">     687</span>              :         IRUse* nextUse = nullptr;</span>
+<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">           1 :         for (IRUse* use = globalVar-&gt;firstUse; use; use = nextUse)</span></span>
+<span id="L689"><span class="lineNum">     689</span>              :         {</span>
+<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">           1 :             nextUse = use-&gt;nextUse;</span></span>
+<span id="L691"><span class="lineNum">     691</span> <span class="tlaGNC">           1 :             auto user = use-&gt;getUser();</span></span>
+<span id="L692"><span class="lineNum">     692</span>              : </span>
+<span id="L693"><span class="lineNum">     693</span>              :             // Ensure the use site checked actually requires a replacement</span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">           1 :             if (as&lt;IRDecoration&gt;(user))</span></span>
+<span id="L695"><span class="lineNum">     695</span>              :                 continue;</span>
+<span id="L696"><span class="lineNum">     696</span>              : </span>
+<span id="L697"><span class="lineNum">     697</span>              :             // At each use site, we need to look up the context</span>
+<span id="L698"><span class="lineNum">     698</span>              :             // pointer that is appropriate for that use.</span>
+<span id="L699"><span class="lineNum">     699</span>              :             //</span>
+<span id="L700"><span class="lineNum">     700</span> <span class="tlaGNC">           1 :             auto contextParam = findOrCreateContextPtrForInst(user);</span></span>
+<span id="L701"><span class="lineNum">     701</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(user);</span></span>
+<span id="L702"><span class="lineNum">     702</span>              : </span>
+<span id="L703"><span class="lineNum">     703</span>              :             // The address of the variable can be produced by</span>
+<span id="L704"><span class="lineNum">     704</span>              :             // taking the address of the corresponding field</span>
+<span id="L705"><span class="lineNum">     705</span>              :             // in the context struct.</span>
+<span id="L706"><span class="lineNum">     706</span>              :             //</span>
+<span id="L707"><span class="lineNum">     707</span> <span class="tlaGNC">           1 :             auto ptr = builder.emitFieldAddress(ptrType, contextParam, fieldInfo.key);</span></span>
+<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">           1 :             if (fieldInfo.needDereference)</span></span>
+<span id="L709"><span class="lineNum">     709</span> <span class="tlaGNC">           1 :                 ptr = builder.emitLoad(ptr);</span></span>
+<span id="L710"><span class="lineNum">     710</span> <span class="tlaGNC">           1 :             use-&gt;set(ptr);</span></span>
+<span id="L711"><span class="lineNum">     711</span>              :         }</span>
+<span id="L712"><span class="lineNum">     712</span>              : </span>
+<span id="L713"><span class="lineNum">     713</span>              :         // We&#x27;ve replaced all uses of the global var so we should remove it.</span>
+<span id="L714"><span class="lineNum">     714</span>              :         // We leave decorations on the global var above, so if we do not remove it</span>
+<span id="L715"><span class="lineNum">     715</span>              :         // here, the global var will not be processed for elimination in</span>
+<span id="L716"><span class="lineNum">     716</span>              :         // eliminateDeadCode.</span>
+<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">           1 :         globalVar-&gt;removeAndDeallocate();</span></span>
+<span id="L718"><span class="lineNum">     718</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L719"><span class="lineNum">     719</span>              : </span>
+<span id="L720"><span class="lineNum">     720</span>              :     IRInst* findOrCreateContextPtrForInst(IRInst* inst)</span>
+<span id="L721"><span class="lineNum">     721</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L722"><span class="lineNum">     722</span>              :         // When looking up the context pointer to use for</span>
+<span id="L723"><span class="lineNum">     723</span>              :         // an instruction, we need to find the enclosing</span>
+<span id="L724"><span class="lineNum">     724</span>              :         // function and use whatever context pointer it uses.</span>
+<span id="L725"><span class="lineNum">     725</span>              :         //</span>
+<span id="L726"><span class="lineNum">     726</span> <span class="tlaGNC">           1 :         for (IRInst* i = inst; i; i = i-&gt;getParent())</span></span>
+<span id="L727"><span class="lineNum">     727</span>              :         {</span>
+<span id="L728"><span class="lineNum">     728</span> <span class="tlaGNC">           1 :             if (auto func = as&lt;IRFunc&gt;(i))</span></span>
+<span id="L729"><span class="lineNum">     729</span>              :             {</span>
+<span id="L730"><span class="lineNum">     730</span> <span class="tlaGNC">           1 :                 return findOrCreateContextPtrForFunc(func);</span></span>
+<span id="L731"><span class="lineNum">     731</span>              :             }</span>
+<span id="L732"><span class="lineNum">     732</span>              :         }</span>
+<span id="L733"><span class="lineNum">     733</span>              : </span>
+<span id="L734"><span class="lineNum">     734</span>              :         // If a non-constant global entity is being referenced by</span>
+<span id="L735"><span class="lineNum">     735</span>              :         // something that is *not* nested under an IR function, then</span>
+<span id="L736"><span class="lineNum">     736</span>              :         // we are in trouble.</span>
+<span id="L737"><span class="lineNum">     737</span>              :         //</span>
+<span id="L738"><span class="lineNum">     738</span> <span class="tlaUNC">           0 :         SLANG_UNEXPECTED(&quot;no outer func at use site for global&quot;);</span></span>
+<span id="L739"><span class="lineNum">     739</span>              :         UNREACHABLE_RETURN(nullptr);</span>
+<span id="L740"><span class="lineNum">     740</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L741"><span class="lineNum">     741</span>              : </span>
+<span id="L742"><span class="lineNum">     742</span>              :     IRInst* findOrCreateContextPtrForFunc(IRFunc* func)</span>
+<span id="L743"><span class="lineNum">     743</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L744"><span class="lineNum">     744</span>              :         // At this point we are being asked to either find or</span>
+<span id="L745"><span class="lineNum">     745</span>              :         // produce a context pointer for use inside `func`.</span>
+<span id="L746"><span class="lineNum">     746</span>              :         //</span>
+<span id="L747"><span class="lineNum">     747</span>              :         // If we already created such a pointer (perhaps because</span>
+<span id="L748"><span class="lineNum">     748</span>              :         // `func` is an entry point), then we are home free.</span>
+<span id="L749"><span class="lineNum">     749</span>              :         //</span>
+<span id="L750"><span class="lineNum">     750</span> <span class="tlaGNC">           1 :         if (auto found = m_mapFuncToContextPtr.tryGetValue(func))</span></span>
+<span id="L751"><span class="lineNum">     751</span>              :         {</span>
+<span id="L752"><span class="lineNum">     752</span> <span class="tlaGNC">           1 :             return *found;</span></span>
+<span id="L753"><span class="lineNum">     753</span>              :         }</span>
+<span id="L754"><span class="lineNum">     754</span>              : </span>
+<span id="L755"><span class="lineNum">     755</span>              :         // Otherwise, we are going to need to introduce an</span>
+<span id="L756"><span class="lineNum">     756</span>              :         // explicit parameter to `func` to represent the</span>
+<span id="L757"><span class="lineNum">     757</span>              :         // context.</span>
+<span id="L758"><span class="lineNum">     758</span>              :         //</span>
+<span id="L759"><span class="lineNum">     759</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
+<span id="L760"><span class="lineNum">     760</span>              : </span>
+<span id="L761"><span class="lineNum">     761</span>              :         // We can safely assume that `func` has a body, because</span>
+<span id="L762"><span class="lineNum">     762</span>              :         // otherwise we wouldn&#x27;t be getting a request for the</span>
+<span id="L763"><span class="lineNum">     763</span>              :         // context pointer value to use in its body.</span>
+<span id="L764"><span class="lineNum">     764</span>              :         //</span>
+<span id="L765"><span class="lineNum">     765</span> <span class="tlaGNC">           1 :         auto firstBlock = func-&gt;getFirstBlock();</span></span>
+<span id="L766"><span class="lineNum">     766</span>              :         SLANG_ASSERT(firstBlock);</span>
+<span id="L767"><span class="lineNum">     767</span>              : </span>
+<span id="L768"><span class="lineNum">     768</span>              :         // We create a new parameter at the end of the parameter</span>
+<span id="L769"><span class="lineNum">     769</span>              :         // list for `func`, with a type of `KernelContext*`.</span>
+<span id="L770"><span class="lineNum">     770</span>              :         //</span>
+<span id="L771"><span class="lineNum">     771</span> <span class="tlaGNC">           1 :         IRParam* contextParam = builder.createParam(m_contextStructPtrType);</span></span>
+<span id="L772"><span class="lineNum">     772</span> <span class="tlaGNC">           1 :         addKernelContextNameHint(contextParam);</span></span>
+<span id="L773"><span class="lineNum">     773</span> <span class="tlaGNC">           1 :         contextParam-&gt;insertBefore(firstBlock-&gt;getFirstOrdinaryInst());</span></span>
+<span id="L774"><span class="lineNum">     774</span>              : </span>
+<span id="L775"><span class="lineNum">     775</span>              :         // Update the type of the function to reflect this new parameter.</span>
+<span id="L776"><span class="lineNum">     776</span> <span class="tlaGNC">           1 :         fixUpFuncType(func);</span></span>
+<span id="L777"><span class="lineNum">     777</span>              : </span>
+<span id="L778"><span class="lineNum">     778</span>              :         // The new parameter can be registered as the context value</span>
+<span id="L779"><span class="lineNum">     779</span>              :         // to be used for `func` right away.</span>
+<span id="L780"><span class="lineNum">     780</span>              :         //</span>
+<span id="L781"><span class="lineNum">     781</span>              :         // Note: we register the value *before* modifying locations</span>
+<span id="L782"><span class="lineNum">     782</span>              :         // that call `func` to protect against a possible infinite-recursion</span>
+<span id="L783"><span class="lineNum">     783</span>              :         // situation if `func` is recursive along some path.</span>
+<span id="L784"><span class="lineNum">     784</span>              :         //</span>
+<span id="L785"><span class="lineNum">     785</span> <span class="tlaGNC">           1 :         m_mapFuncToContextPtr.add(func, contextParam);</span></span>
+<span id="L786"><span class="lineNum">     786</span>              : </span>
+<span id="L787"><span class="lineNum">     787</span>              :         // Any code that calls `func` now needs to be updated to pass</span>
+<span id="L788"><span class="lineNum">     788</span>              :         // the context parameter.</span>
+<span id="L789"><span class="lineNum">     789</span>              :         //</span>
+<span id="L790"><span class="lineNum">     790</span>              :         // TODO: There is an issue here if `func` might be called</span>
+<span id="L791"><span class="lineNum">     791</span>              :         // dynamically, through something like a witness table.</span>
+<span id="L792"><span class="lineNum">     792</span>              :         //</span>
+<span id="L793"><span class="lineNum">     793</span>              :         // We collect all the uses first which are in calls.</span>
+<span id="L794"><span class="lineNum">     794</span>              :         // NOTE! That we collect all calls and then process (and don&#x27;t iterate</span>
+<span id="L795"><span class="lineNum">     795</span>              :         // using the linked list), because when a replacement is made the func usage</span>
+<span id="L796"><span class="lineNum">     796</span>              :         // linked list will no longer hold all of the use sites.</span>
+<span id="L797"><span class="lineNum">     797</span> <span class="tlaGNC">           1 :         List&lt;IRCall*&gt; callUses;</span></span>
+<span id="L798"><span class="lineNum">     798</span> <span class="tlaGNC">           1 :         for (auto use = func-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L799"><span class="lineNum">     799</span>              :         {</span>
+<span id="L800"><span class="lineNum">     800</span>              :             // We will only fix up calls to `func`, and ignore</span>
+<span id="L801"><span class="lineNum">     801</span>              :             // other operations that might refer to it.</span>
+<span id="L802"><span class="lineNum">     802</span>              :             //</span>
+<span id="L803"><span class="lineNum">     803</span>              :             // TODO: We need to allow things like decorations that might</span>
+<span id="L804"><span class="lineNum">     804</span>              :             // refer to `func`, but this logic is also going to</span>
+<span id="L805"><span class="lineNum">     805</span>              :             // ignore things like witness tables that refer to `func`,</span>
+<span id="L806"><span class="lineNum">     806</span>              :             // or operations that pass `func` as a function pointer</span>
+<span id="L807"><span class="lineNum">     807</span>              :             // to a higher-order function.</span>
+<span id="L808"><span class="lineNum">     808</span>              :             //</span>
+<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">           1 :             auto call = as&lt;IRCall&gt;(use-&gt;getUser());</span></span>
+<span id="L810"><span class="lineNum">     810</span> <span class="tlaGNC">           1 :             if (call)</span></span>
+<span id="L811"><span class="lineNum">     811</span>              :             {</span>
+<span id="L812"><span class="lineNum">     812</span> <span class="tlaGNC">           1 :                 callUses.add(call);</span></span>
+<span id="L813"><span class="lineNum">     813</span>              :             }</span>
+<span id="L814"><span class="lineNum">     814</span>              :         }</span>
+<span id="L815"><span class="lineNum">     815</span>              : </span>
+<span id="L816"><span class="lineNum">     816</span>              :         // Fix up all of the call uses</span>
+<span id="L817"><span class="lineNum">     817</span> <span class="tlaGNC">           1 :         for (auto call : callUses)</span></span>
+<span id="L818"><span class="lineNum">     818</span>              :         {</span>
+<span id="L819"><span class="lineNum">     819</span>              :             // We are going to construct a new call to `func`</span>
+<span id="L820"><span class="lineNum">     820</span>              :             // that has all of the arguments of the original call...</span>
+<span id="L821"><span class="lineNum">     821</span>              :             //</span>
+<span id="L822"><span class="lineNum">     822</span> <span class="tlaGNC">           1 :             UInt originalArgCount = call-&gt;getArgCount();</span></span>
+<span id="L823"><span class="lineNum">     823</span> <span class="tlaGNC">           1 :             List&lt;IRInst*&gt; args;</span></span>
+<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">           1 :             for (UInt aa = 0; aa &lt; originalArgCount; ++aa)</span></span>
+<span id="L825"><span class="lineNum">     825</span>              :             {</span>
+<span id="L826"><span class="lineNum">     826</span> <span class="tlaGNC">           1 :                 args.add(call-&gt;getArg(aa));</span></span>
+<span id="L827"><span class="lineNum">     827</span>              :             }</span>
+<span id="L828"><span class="lineNum">     828</span>              : </span>
+<span id="L829"><span class="lineNum">     829</span>              :             // ... plus an additional argument representing</span>
+<span id="L830"><span class="lineNum">     830</span>              :             // the context pointer at the call site (note that</span>
+<span id="L831"><span class="lineNum">     831</span>              :             // this step leads to a potential for recursion in this pass;</span>
+<span id="L832"><span class="lineNum">     832</span>              :             // the maximum depth of the recursion is bounded by the</span>
+<span id="L833"><span class="lineNum">     833</span>              :             // maximum length of a cycle-free path through the call</span>
+<span id="L834"><span class="lineNum">     834</span>              :             // graph of the program).</span>
+<span id="L835"><span class="lineNum">     835</span>              :             //</span>
+<span id="L836"><span class="lineNum">     836</span> <span class="tlaGNC">           1 :             args.add(findOrCreateContextPtrForInst(call));</span></span>
+<span id="L837"><span class="lineNum">     837</span>              : </span>
+<span id="L838"><span class="lineNum">     838</span>              :             // The new call will be emitted right before the old one,</span>
+<span id="L839"><span class="lineNum">     839</span>              :             // then used to replace it.</span>
+<span id="L840"><span class="lineNum">     840</span>              :             //</span>
+<span id="L841"><span class="lineNum">     841</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(call);</span></span>
+<span id="L842"><span class="lineNum">     842</span> <span class="tlaGNC">           1 :             auto newCall = builder.emitCallInst(call-&gt;getFullType(), call-&gt;getCallee(), args);</span></span>
+<span id="L843"><span class="lineNum">     843</span> <span class="tlaGNC">           1 :             call-&gt;replaceUsesWith(newCall);</span></span>
+<span id="L844"><span class="lineNum">     844</span> <span class="tlaGNC">           1 :             call-&gt;removeAndDeallocate();</span></span>
+<span id="L845"><span class="lineNum">     845</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L846"><span class="lineNum">     846</span>              : </span>
+<span id="L847"><span class="lineNum">     847</span> <span class="tlaGNC">           1 :         return contextParam;</span></span>
+<span id="L848"><span class="lineNum">     848</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L849"><span class="lineNum">     849</span>              : </span>
+<span id="L850"><span class="lineNum">     850</span>              :     // Because we have multiple places where instructions representing</span>
+<span id="L851"><span class="lineNum">     851</span>              :     // the kernel context get introduced, we have factored out a subroutine</span>
+<span id="L852"><span class="lineNum">     852</span>              :     // for setting up the name hint to be used by those instructions.</span>
+<span id="L853"><span class="lineNum">     853</span>              :     //</span>
+<span id="L854"><span class="lineNum">     854</span>              :     void addKernelContextNameHint(IRInst* inst)</span>
+<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L856"><span class="lineNum">     856</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_module);</span></span>
+<span id="L857"><span class="lineNum">     857</span> <span class="tlaGNC">           1 :         builder.addNameHintDecoration(inst, UnownedTerminatedStringSlice(&quot;kernelContext&quot;));</span></span>
+<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L859"><span class="lineNum">     859</span>              : };</span>
+<span id="L860"><span class="lineNum">     860</span>              : </span>
+<span id="L861"><span class="lineNum">     861</span>              : /// Collect global-scope variables/paramters to form an explicit context that gets threaded through</span>
+<span id="L862"><span class="lineNum">     862</span>              : void introduceExplicitGlobalContext(IRModule* module, CodeGenTarget target)</span>
+<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L864"><span class="lineNum">     864</span> <span class="tlaGNC">           1 :     IntroduceExplicitGlobalContextPass pass(module, target);</span></span>
+<span id="L865"><span class="lineNum">     865</span> <span class="tlaGNC">           1 :     pass.processModule();</span></span>
+<span id="L866"><span class="lineNum">     866</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L867"><span class="lineNum">     867</span>              : </span>
+<span id="L868"><span class="lineNum">     868</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

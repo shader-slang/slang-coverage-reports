@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-14 05:11:47 UTC</td>
+      <td class="headerValue">2026-10-15 03:53:19 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -313,25 +313,25 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L22"><span class="lineNum">      22</span>                         :         ReplayContext::get().marker(label); \</span>
 <span id="L23"><span class="lineNum">      23</span>                         :     } while (0)</span>
 <span id="L24"><span class="lineNum">      24</span>                         : </span>
-<span id="L25"><span class="lineNum">      25</span>                         : // Begins a recorded instance method call - locks context, records signature and &#x27;this&#x27;</span>
-<span id="L26"><span class="lineNum">      26</span>                         : // Uses compiler-specific macro for full signature including type name</span>
+<span id="L25"><span class="lineNum">      25</span>                         : // Begins a recorded instance method call. The process-wide mutex is taken only when</span>
+<span id="L26"><span class="lineNum">      26</span>                         : // the record layer is active, so the idle default path does not serialize callers.</span>
 <span id="L27"><span class="lineNum">      27</span>                         : #define RECORD_CALL()                  \</span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         356            :     auto&amp; _ctx = ReplayContext::get(); \</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">         356            :     auto _lock = _ctx.lock();          \</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">         356            :     _ctx.beginCall(SLANG_FUNC_SIG, this)</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         408            :     auto&amp; _ctx = ReplayContext::get(); \</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">         408            :     auto _lock = _ctx.lockIfActive();  \</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">         408            :     _ctx.beginCall(SLANG_FUNC_SIG, this)</span></span>
 <span id="L31"><span class="lineNum">      31</span>                         : </span>
 <span id="L32"><span class="lineNum">      32</span>                         : // For static/free functions (no &#x27;this&#x27; pointer)</span>
 <span id="L33"><span class="lineNum">      33</span>                         : #define RECORD_STATIC_CALL()           \</span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">        1717            :     auto&amp; _ctx = ReplayContext::get(); \</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        1717            :     auto _lock = _ctx.lock();          \</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">        1717            :     _ctx.beginStaticCall(SLANG_FUNC_SIG)</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">        1721            :     auto&amp; _ctx = ReplayContext::get(); \</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        1721            :     auto _lock = _ctx.lockIfActive();  \</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">        1721            :     _ctx.beginStaticCall(SLANG_FUNC_SIG)</span></span>
 <span id="L37"><span class="lineNum">      37</span>                         : </span>
 <span id="L38"><span class="lineNum">      38</span>                         : // Record an input parameter</span>
 <span id="L39"><span class="lineNum">      39</span>                         : // Note: We cast away const for inputs since recording only reads the value</span>
 <span id="L40"><span class="lineNum">      40</span>                         : #define RECORD_INPUT(arg)  \</span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        1962            :     _ctx.record(           \</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">        1962            :         RecordFlag::Input, \</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">        1962            :         const_cast&lt;std::remove_const_t&lt;std::remove_reference_t&lt;decltype(arg)&gt;&gt;&amp;&gt;(arg))</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        2010            :     _ctx.record(           \</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">        2010            :         RecordFlag::Input, \</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">        2010            :         const_cast&lt;std::remove_const_t&lt;std::remove_reference_t&lt;decltype(arg)&gt;&gt;&amp;&gt;(arg))</span></span>
 <span id="L44"><span class="lineNum">      44</span>                         : </span>
 <span id="L45"><span class="lineNum">      45</span>                         : // Record an input array parameter</span>
 <span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">           2            : #define RECORD_INPUT_ARRAY(arr, count) _ctx.recordArray(RecordFlag::Input, arr, count)</span></span>
@@ -464,8 +464,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L173"><span class="lineNum">     173</span>                         : </span>
 <span id="L174"><span class="lineNum">     174</span>                         : // Record return value and return it</span>
 <span id="L175"><span class="lineNum">     175</span>                         : #define RECORD_RETURN(result)                     \</span>
-<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">         278            :     _ctx.record(RecordFlag::ReturnValue, result); \</span></span>
-<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">         278            :     return result</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">         326            :     _ctx.record(RecordFlag::ReturnValue, result); \</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">         326            :     return result</span></span>
 <span id="L178"><span class="lineNum">     178</span>                         : </span>
 <span id="L179"><span class="lineNum">     179</span>                         : // For void returns</span>
 <span id="L180"><span class="lineNum">     180</span> <span class="tlaUNC">           0            : #define RECORD_RETURN_VOID() ((void)0)</span></span>
@@ -479,24 +479,24 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L188"><span class="lineNum">     188</span>                         : // ProxyType is the concrete proxy class (e.g., SessionProxy)</span>
 <span id="L189"><span class="lineNum">     189</span>                         : #define PROXY_ADDREF_IMPL(ProxyType)                      \</span>
 <span id="L190"><span class="lineNum">     190</span>                         :     SLANG_NO_THROW uint32_t SLANG_MCALL addRef() override \</span>
-<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        1450            :     {                                                     \</span></span>
-<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">        1450 <span class="branchPart" title="br0: 189; br1: 0; br2: 828; br3: 3; br4: 404; br5: 26; br6: -; br7: -; br8: -; br9: -; br10: -; br11: -; br12: -; br13: -">(5/14)</span>     :         if (SlangRecord::isRefCountRecordingSuppressed()) \</span></span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        1450            :             return ProxyBase::addRefImpl();               \</span></span>
-<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">        1450            :         RECORD_CALL();                                    \</span></span>
-<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">          29            :         uint32_t result = ProxyBase::addRefImpl();        \</span></span>
-<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">          29            :         RECORD_RETURN(result);                            \</span></span>
-<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">        1450            :     }</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        1622            :     {                                                     \</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">        1622 <span class="branchPart" title="br0: 189; br1: 0; br2: 994; br3: 9; br4: 404; br5: 26; br6: -; br7: -; br8: -; br9: -; br10: -; br11: -; br12: -; br13: -">(5/14)</span>     :         if (SlangRecord::isRefCountRecordingSuppressed()) \</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        1622            :             return ProxyBase::addRefImpl();               \</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">        1622            :         RECORD_CALL();                                    \</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">          35            :         uint32_t result = ProxyBase::addRefImpl();        \</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">          35            :         RECORD_RETURN(result);                            \</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">        1622            :     }</span></span>
 <span id="L198"><span class="lineNum">     198</span>                         : </span>
 <span id="L199"><span class="lineNum">     199</span>                         : // Override release to record the call</span>
 <span id="L200"><span class="lineNum">     200</span>                         : #define PROXY_RELEASE_IMPL(ProxyType)                      \</span>
 <span id="L201"><span class="lineNum">     201</span>                         :     SLANG_NO_THROW uint32_t SLANG_MCALL release() override \</span>
-<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">        1561            :     {                                                      \</span></span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        1561 <span class="branchPart" title="br0: 189; br1: 16; br2: -; br3: -; br4: -; br5: -; br6: -; br7: -; br8: -; br9: -; br10: 420; br11: 53; br12: 844; br13: 39">(6/14)</span>     :         if (SlangRecord::isRefCountRecordingSuppressed())  \</span></span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">        1561            :             return ProxyBase::releaseImpl();               \</span></span>
-<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">        1561            :         RECORD_CALL();                                     \</span></span>
-<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">         108            :         uint32_t result = ProxyBase::releaseImpl();        \</span></span>
-<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">         108            :         RECORD_RETURN(result);                             \</span></span>
-<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">        1561            :     }</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">        1735            :     {                                                      \</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        1735 <span class="branchPart" title="br0: 189; br1: 16; br2: -; br3: -; br4: -; br5: -; br6: -; br7: -; br8: -; br9: -; br10: 420; br11: 53; br12: 1010; br13: 47">(6/14)</span>     :         if (SlangRecord::isRefCountRecordingSuppressed())  \</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">        1735            :             return ProxyBase::releaseImpl();               \</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">        1735            :         RECORD_CALL();                                     \</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">         116            :         uint32_t result = ProxyBase::releaseImpl();        \</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">         116            :         RECORD_RETURN(result);                             \</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">        1735            :     }</span></span>
 <span id="L209"><span class="lineNum">     209</span>                         : </span>
 <span id="L210"><span class="lineNum">     210</span>                         : // Convenience macro to add both overrides</span>
 <span id="L211"><span class="lineNum">     211</span>                         : #define PROXY_REFCOUNT_IMPL(ProxyType) \</span>
@@ -732,14 +732,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L441"><span class="lineNum">     441</span>                         : // parseSignature extracts from __FUNCSIG__.</span>
 <span id="L442"><span class="lineNum">     442</span>                         : </span>
 <span id="L443"><span class="lineNum">     443</span>                         : #define REPLAY_REGISTER(ProxyType, methodName)                                      \</span>
-<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">       70576            :     do                                                                              \</span></span>
-<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">       70576            :     {                                                                               \</span></span>
-<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">       70576            :         /* Create a handler that captures the method pointer */                     \</span></span>
-<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">       70576            :         static auto handler = [](ReplayContext&amp; ctx)                                \</span></span>
-<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">       70576            :         { replayHandler&lt;ProxyType, ProxyType&gt;(ctx, &amp;ProxyType::methodName); };      \</span></span>
-<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">       70576            :         /* Register with normalized signature &quot;ProxyType::methodName&quot; */            \</span></span>
-<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       70576            :         ReplayContext::get().registerHandler(#ProxyType &quot;::&quot; #methodName, handler); \</span></span>
-<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">       70576            :     } while (0)</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">       71280            :     do                                                                              \</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">       71280            :     {                                                                               \</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">       71280            :         /* Create a handler that captures the method pointer */                     \</span></span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">       71280            :         static auto handler = [](ReplayContext&amp; ctx)                                \</span></span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">       71280            :         { replayHandler&lt;ProxyType, ProxyType&gt;(ctx, &amp;ProxyType::methodName); };      \</span></span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">       71280            :         /* Register with normalized signature &quot;ProxyType::methodName&quot; */            \</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       71280            :         ReplayContext::get().registerHandler(#ProxyType &quot;::&quot; #methodName, handler); \</span></span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">       71280            :     } while (0)</span></span>
 <span id="L452"><span class="lineNum">     452</span>                         : </span>
 <span id="L453"><span class="lineNum">     453</span>                         : } // namespace SlangRecord</span>
 </pre>

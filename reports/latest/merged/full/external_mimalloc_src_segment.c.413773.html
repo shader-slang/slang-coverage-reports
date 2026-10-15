@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-14 05:11:32 UTC</td>
+      <td class="headerValue">2026-10-15 03:53:06 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">86.2&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:86.2%;background-color:hsl(99, 70%, 50%)"></div></div>
-      <span class="metricCounts">493 / 572</span>
+      <span class="metricValue">89.5&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:89.5%;background-color:hsl(104, 70%, 50%)"></div></div>
+      <span class="metricCounts">512 / 572</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -911,7 +911,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L638"><span class="lineNum">     638</span>              : </span>
 <span id="L639"><span class="lineNum">     639</span>              :   // and push it on the free page queue (if it was not a huge page)</span>
 <span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">           1 :   if (sq != NULL) mi_span_queue_push( sq, slice );</span></span>
-<span id="L641"><span class="lineNum">     641</span> <span class="tlaUNC">           0 :              else slice-&gt;block_size = 0; // mark huge page as free anyways</span></span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">           1 :              else slice-&gt;block_size = 0; // mark huge page as free anyways</span></span>
 <span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L643"><span class="lineNum">     643</span>              : </span>
 <span id="L644"><span class="lineNum">     644</span>              : /*</span>
@@ -1379,8 +1379,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1106"><span class="lineNum">    1106</span> <span class="tlaGNC">           1 :   segment-&gt;thread_id = 0;</span></span>
 <span id="L1107"><span class="lineNum">    1107</span> <span class="tlaGNC">           1 :   segment-&gt;abandoned_visits = 1;   // from 0 to 1 to signify it is abandoned</span></span>
 <span id="L1108"><span class="lineNum">    1108</span> <span class="tlaGNC">           1 :   if (segment-&gt;was_reclaimed) {</span></span>
-<span id="L1109"><span class="lineNum">    1109</span> <span class="tlaUNC">           0 :     tld-&gt;reclaim_count--;</span></span>
-<span id="L1110"><span class="lineNum">    1110</span> <span class="tlaUNC">           0 :     segment-&gt;was_reclaimed = false;</span></span>
+<span id="L1109"><span class="lineNum">    1109</span> <span class="tlaGNC">           1 :     tld-&gt;reclaim_count--;</span></span>
+<span id="L1110"><span class="lineNum">    1110</span> <span class="tlaGNC">           1 :     segment-&gt;was_reclaimed = false;</span></span>
 <span id="L1111"><span class="lineNum">    1111</span>              :   }</span>
 <span id="L1112"><span class="lineNum">    1112</span> <span class="tlaGNC">           1 :   _mi_arena_segment_mark_abandoned(segment);</span></span>
 <span id="L1113"><span class="lineNum">    1113</span> <span class="tlaGNC">           1 : }</span></span>
@@ -1433,11 +1433,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1160"><span class="lineNum">    1160</span> <span class="tlaGNC">           1 :       if (mi_page_all_free(page)) {</span></span>
 <span id="L1161"><span class="lineNum">    1161</span>              :         // if this page is all free now, free it without adding to any queues (yet)</span>
 <span id="L1162"><span class="lineNum">    1162</span>              :         mi_assert_internal(page-&gt;next == NULL &amp;&amp; page-&gt;prev==NULL);</span>
-<span id="L1163"><span class="lineNum">    1163</span> <span class="tlaUNC">           0 :         _mi_stat_decrease(&amp;tld-&gt;stats-&gt;pages_abandoned, 1);</span></span>
-<span id="L1164"><span class="lineNum">    1164</span> <span class="tlaUNC">           0 :         segment-&gt;abandoned--;</span></span>
-<span id="L1165"><span class="lineNum">    1165</span> <span class="tlaUNC">           0 :         slice = mi_segment_page_clear(page, tld); // re-assign slice due to coalesce!</span></span>
+<span id="L1163"><span class="lineNum">    1163</span> <span class="tlaGNC">           1 :         _mi_stat_decrease(&amp;tld-&gt;stats-&gt;pages_abandoned, 1);</span></span>
+<span id="L1164"><span class="lineNum">    1164</span> <span class="tlaGNC">           1 :         segment-&gt;abandoned--;</span></span>
+<span id="L1165"><span class="lineNum">    1165</span> <span class="tlaGNC">           1 :         slice = mi_segment_page_clear(page, tld); // re-assign slice due to coalesce!</span></span>
 <span id="L1166"><span class="lineNum">    1166</span>              :         mi_assert_internal(!mi_slice_is_used(slice));</span>
-<span id="L1167"><span class="lineNum">    1167</span> <span class="tlaUNC">           0 :         if (slice-&gt;slice_count &gt;= slices_needed) {</span></span>
+<span id="L1167"><span class="lineNum">    1167</span> <span class="tlaGNC">           1 :         if (slice-&gt;slice_count &gt;= slices_needed) {</span></span>
 <span id="L1168"><span class="lineNum">    1168</span>              :           has_page = true;</span>
 <span id="L1169"><span class="lineNum">    1169</span>              :         }</span>
 <span id="L1170"><span class="lineNum">    1170</span>              :       }</span>
@@ -1445,7 +1445,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1172"><span class="lineNum">    1172</span>              :         // a page has available free blocks of the right size</span>
 <span id="L1173"><span class="lineNum">    1173</span>              :         has_page = true;</span>
 <span id="L1174"><span class="lineNum">    1174</span>              :       }</span>
-<span id="L1175"><span class="lineNum">    1175</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L1175"><span class="lineNum">    1175</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L1176"><span class="lineNum">    1176</span>              :     else {</span>
 <span id="L1177"><span class="lineNum">    1177</span>              :       // empty span</span>
 <span id="L1178"><span class="lineNum">    1178</span> <span class="tlaGNC">           1 :       if (slice-&gt;slice_count &gt;= slices_needed) {</span></span>
@@ -1555,10 +1555,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1282"><span class="lineNum">    1282</span> <span class="tlaGNC">           1 :   if (perc &lt;= 0) return 0;</span></span>
 <span id="L1283"><span class="lineNum">    1283</span> <span class="tlaGNC">           1 :   const size_t total_count = _mi_arena_segment_abandoned_count();</span></span>
 <span id="L1284"><span class="lineNum">    1284</span> <span class="tlaGNC">           1 :   if (total_count == 0) return 0;</span></span>
-<span id="L1285"><span class="lineNum">    1285</span> <span class="tlaUNC">           0 :   const size_t relative_count = (total_count &gt; 10000 ? (total_count / 100) * perc : (total_count * perc) / 100); // avoid overflow</span></span>
-<span id="L1286"><span class="lineNum">    1286</span> <span class="tlaUNC">           0 :   long max_tries = (long)(relative_count &lt;= 1 ? 1 : (relative_count &gt; 1024 ? 1024 : relative_count));</span></span>
-<span id="L1287"><span class="lineNum">    1287</span> <span class="tlaUNC">           0 :   if (max_tries &lt; 8 &amp;&amp; total_count &gt; 8) { max_tries = 8;  }</span></span>
-<span id="L1288"><span class="lineNum">    1288</span> <span class="tlaUNC">           0 :   return max_tries;</span></span>
+<span id="L1285"><span class="lineNum">    1285</span> <span class="tlaGNC">           1 :   const size_t relative_count = (total_count &gt; 10000 ? (total_count / 100) * perc : (total_count * perc) / 100); // avoid overflow</span></span>
+<span id="L1286"><span class="lineNum">    1286</span> <span class="tlaGNC">           1 :   long max_tries = (long)(relative_count &lt;= 1 ? 1 : (relative_count &gt; 1024 ? 1024 : relative_count));</span></span>
+<span id="L1287"><span class="lineNum">    1287</span> <span class="tlaGNC">           1 :   if (max_tries &lt; 8 &amp;&amp; total_count &gt; 8) { max_tries = 8;  }</span></span>
+<span id="L1288"><span class="lineNum">    1288</span> <span class="tlaGNC">           1 :   return max_tries;</span></span>
 <span id="L1289"><span class="lineNum">    1289</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1290"><span class="lineNum">    1290</span>              : </span>
 <span id="L1291"><span class="lineNum">    1291</span>              : static mi_segment_t* mi_segment_try_reclaim(mi_heap_t* heap, size_t needed_slices, size_t block_size, bool* reclaimed, mi_segments_tld_t* tld)</span>
@@ -1568,16 +1568,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1295"><span class="lineNum">    1295</span> <span class="tlaGNC">           1 :   if (max_tries &lt;= 0) return NULL;</span></span>
 <span id="L1296"><span class="lineNum">    1296</span>              : </span>
 <span id="L1297"><span class="lineNum">    1297</span>              :   mi_segment_t* segment;</span>
-<span id="L1298"><span class="lineNum">    1298</span> <span class="tlaUNC">           0 :   mi_arena_field_cursor_t current; _mi_arena_field_cursor_init(heap, &amp;current);</span></span>
-<span id="L1299"><span class="lineNum">    1299</span> <span class="tlaUNC">           0 :   while ((max_tries-- &gt; 0) &amp;&amp; ((segment = _mi_arena_segment_clear_abandoned_next(&amp;current)) != NULL))</span></span>
+<span id="L1298"><span class="lineNum">    1298</span> <span class="tlaGNC">           1 :   mi_arena_field_cursor_t current; _mi_arena_field_cursor_init(heap, &amp;current);</span></span>
+<span id="L1299"><span class="lineNum">    1299</span> <span class="tlaGNC">           1 :   while ((max_tries-- &gt; 0) &amp;&amp; ((segment = _mi_arena_segment_clear_abandoned_next(&amp;current)) != NULL))</span></span>
 <span id="L1300"><span class="lineNum">    1300</span>              :   {</span>
 <span id="L1301"><span class="lineNum">    1301</span>              :     segment-&gt;abandoned_visits++;</span>
 <span id="L1302"><span class="lineNum">    1302</span>              :     // todo: should we respect numa affinity for abondoned reclaim? perhaps only for the first visit?</span>
 <span id="L1303"><span class="lineNum">    1303</span>              :     // todo: an arena exclusive heap will potentially visit many abandoned unsuitable segments and use many tries</span>
 <span id="L1304"><span class="lineNum">    1304</span>              :     // Perhaps we can skip non-suitable ones in a better way?</span>
-<span id="L1305"><span class="lineNum">    1305</span> <span class="tlaUNC">           0 :     bool is_suitable = _mi_heap_memid_is_suitable(heap, segment-&gt;memid);</span></span>
-<span id="L1306"><span class="lineNum">    1306</span> <span class="tlaUNC">           0 :     bool has_page = mi_segment_check_free(segment,needed_slices,block_size,tld); // try to free up pages (due to concurrent frees)</span></span>
-<span id="L1307"><span class="lineNum">    1307</span> <span class="tlaUNC">           0 :     if (segment-&gt;used == 0) {</span></span>
+<span id="L1305"><span class="lineNum">    1305</span> <span class="tlaGNC">           1 :     bool is_suitable = _mi_heap_memid_is_suitable(heap, segment-&gt;memid);</span></span>
+<span id="L1306"><span class="lineNum">    1306</span> <span class="tlaGNC">           1 :     bool has_page = mi_segment_check_free(segment,needed_slices,block_size,tld); // try to free up pages (due to concurrent frees)</span></span>
+<span id="L1307"><span class="lineNum">    1307</span> <span class="tlaGNC">           1 :     if (segment-&gt;used == 0) {</span></span>
 <span id="L1308"><span class="lineNum">    1308</span>              :       // free the segment (by forced reclaim) to make it available to other threads.</span>
 <span id="L1309"><span class="lineNum">    1309</span>              :       // note1: we prefer to free a segment as that might lead to reclaiming another</span>
 <span id="L1310"><span class="lineNum">    1310</span>              :       // segment that is still partially used.</span>
@@ -1585,11 +1585,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1312"><span class="lineNum">    1312</span>              :       // freeing but that would violate some invariants temporarily)</span>
 <span id="L1313"><span class="lineNum">    1313</span>              :       mi_segment_reclaim(segment, heap, 0, NULL, tld);</span>
 <span id="L1314"><span class="lineNum">    1314</span>              :     }</span>
-<span id="L1315"><span class="lineNum">    1315</span> <span class="tlaUNC">           0 :     else if (has_page &amp;&amp; is_suitable) {</span></span>
+<span id="L1315"><span class="lineNum">    1315</span> <span class="tlaGNC">           1 :     else if (has_page &amp;&amp; is_suitable) {</span></span>
 <span id="L1316"><span class="lineNum">    1316</span>              :       // found a large enough free span, or a page of the right block_size with free space</span>
 <span id="L1317"><span class="lineNum">    1317</span>              :       // we return the result of reclaim (which is usually `segment`) as it might free</span>
 <span id="L1318"><span class="lineNum">    1318</span>              :       // the segment due to concurrent frees (in which case `NULL` is returned).</span>
-<span id="L1319"><span class="lineNum">    1319</span> <span class="tlaUNC">           0 :       return mi_segment_reclaim(segment, heap, block_size, reclaimed, tld);</span></span>
+<span id="L1319"><span class="lineNum">    1319</span> <span class="tlaGNC">           1 :       return mi_segment_reclaim(segment, heap, block_size, reclaimed, tld);</span></span>
 <span id="L1320"><span class="lineNum">    1320</span>              :     }</span>
 <span id="L1321"><span class="lineNum">    1321</span> <span class="tlaUNC">           0 :     else if (segment-&gt;abandoned_visits &gt; 3 &amp;&amp; is_suitable) {</span></span>
 <span id="L1322"><span class="lineNum">    1322</span>              :       // always reclaim on 3rd visit to limit the abandoned queue length.</span>
