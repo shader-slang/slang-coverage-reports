@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-16 03:57:04 UTC</td>
+      <td class="headerValue">2026-10-17 05:11:10 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -340,12 +340,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L49"><span class="lineNum">      49</span>                         : using namespace LanguageServerProtocol;</span>
 <span id="L50"><span class="lineNum">      50</span>                         : </span>
 <span id="L51"><span class="lineNum">      51</span>                         : ArrayView&lt;const char*&gt; getCommitChars()</span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         109            : {</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         109            :     static const char* _commitCharsArray[] = {&quot;,&quot;, &quot;.&quot;, &quot;;&quot;, &quot;:&quot;, &quot;(&quot;, &quot;)&quot;, &quot;[&quot;, &quot;]&quot;,</span></span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         109            :                                               &quot;&lt;&quot;, &quot;&gt;&quot;, &quot;{&quot;, &quot;}&quot;, &quot;*&quot;, &quot;&amp;&quot;, &quot;^&quot;, &quot;%&quot;,</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         109            :                                               &quot;!&quot;, &quot;-&quot;, &quot;=&quot;, &quot;+&quot;, &quot;|&quot;, &quot;/&quot;, &quot;?&quot;};</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">         109            :     return makeArrayView(_commitCharsArray, SLANG_COUNT_OF(_commitCharsArray));</span></span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">         109            : }</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         100            : {</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         100            :     static const char* _commitCharsArray[] = {&quot;,&quot;, &quot;.&quot;, &quot;;&quot;, &quot;:&quot;, &quot;(&quot;, &quot;)&quot;, &quot;[&quot;, &quot;]&quot;,</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         100            :                                               &quot;&lt;&quot;, &quot;&gt;&quot;, &quot;{&quot;, &quot;}&quot;, &quot;*&quot;, &quot;&amp;&quot;, &quot;^&quot;, &quot;%&quot;,</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         100            :                                               &quot;!&quot;, &quot;-&quot;, &quot;=&quot;, &quot;+&quot;, &quot;|&quot;, &quot;/&quot;, &quot;?&quot;};</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">         100            :     return makeArrayView(_commitCharsArray, SLANG_COUNT_OF(_commitCharsArray));</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">         100            : }</span></span>
 <span id="L58"><span class="lineNum">      58</span>                         : </span>
 <span id="L59"><span class="lineNum">      59</span>                         : SlangResult LanguageServerCore::init(const InitializeParams&amp; args)</span>
 <span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">          77            : {</span></span>
@@ -723,18 +723,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L432"><span class="lineNum">     432</span>                         : </span>
 <span id="L433"><span class="lineNum">     433</span>                         : </span>
 <span id="L434"><span class="lineNum">     434</span>                         : static String _formatDocumentation(String doc)</span>
-<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">          66            : {</span></span>
-<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">          66            :     bool hasDoxygen = false;</span></span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">          61            : {</span></span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">          61            :     bool hasDoxygen = false;</span></span>
 <span id="L437"><span class="lineNum">     437</span>                         :     // TODO: may want to use DocMarkdownWriter in the future to format the text.</span>
 <span id="L438"><span class="lineNum">     438</span>                         :     // For now just insert line breaks before `\param` and `\returns` markups.</span>
-<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">          66            :     List&lt;UnownedStringSlice&gt; lines;</span></span>
-<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">          66            :     StringUtil::split(doc.getUnownedSlice(), &#x27;\n&#x27;, lines);</span></span>
-<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">          66            :     StringBuilder result;</span></span>
-<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">          66            :     StringBuilder returnDocSB;</span></span>
-<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">          66            :     StringBuilder parameterDocSB;</span></span>
-<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">          66            :     StringBuilder* currentSection = &amp;result;</span></span>
-<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">          66            :     bool isFirstParam = true;</span></span>
-<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">          81 <span class="branchAll" title="br0: 15; br1: 66">(2/2)</span>      :     for (Index i = 0; i &lt; lines.getCount(); i++)</span></span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">          61            :     List&lt;UnownedStringSlice&gt; lines;</span></span>
+<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">          61            :     StringUtil::split(doc.getUnownedSlice(), &#x27;\n&#x27;, lines);</span></span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">          61            :     StringBuilder result;</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">          61            :     StringBuilder returnDocSB;</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">          61            :     StringBuilder parameterDocSB;</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">          61            :     StringBuilder* currentSection = &amp;result;</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">          61            :     bool isFirstParam = true;</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">          76 <span class="branchAll" title="br0: 15; br1: 61">(2/2)</span>      :     for (Index i = 0; i &lt; lines.getCount(); i++)</span></span>
 <span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">          15            :     {</span></span>
 <span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">          15            :         auto trimedLine = lines[i].trimStart();</span></span>
 <span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">          15 <span class="branchPart" title="br0: 0; br1: 15; br2: 0; br3: 15">(2/4)</span>      :         if (trimedLine.startsWith(&quot;\\&quot;) || trimedLine.startsWith(&quot;@&quot;))</span></span>
@@ -789,74 +789,74 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">          15            :             (*currentSection) &lt;&lt; trimedLine &lt;&lt; &quot;\n&quot;;</span></span>
 <span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">          15            :         }</span></span>
 <span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">          15            :     }</span></span>
-<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">          66            :     result &lt;&lt; &quot;\n&quot;;</span></span>
-<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">          66 <span class="branchPart" title="br0: 0; br1: 66">(1/2)</span>      :     if (parameterDocSB.getLength())</span></span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">          61            :     result &lt;&lt; &quot;\n&quot;;</span></span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">          61 <span class="branchPart" title="br0: 0; br1: 61">(1/2)</span>      :     if (parameterDocSB.getLength())</span></span>
 <span id="L503"><span class="lineNum">     503</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L504"><span class="lineNum">     504</span> <span class="tlaUNC">           0            :         result &lt;&lt; &quot;**Parameters**  \n&quot;;</span></span>
 <span id="L505"><span class="lineNum">     505</span> <span class="tlaUNC">           0            :         result &lt;&lt; parameterDocSB.produceString() &lt;&lt; &quot;\n\n&quot;;</span></span>
 <span id="L506"><span class="lineNum">     506</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">          66 <span class="branchPart" title="br0: 0; br1: 66">(1/2)</span>      :     if (returnDocSB.getLength())</span></span>
+<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">          61 <span class="branchPart" title="br0: 0; br1: 61">(1/2)</span>      :     if (returnDocSB.getLength())</span></span>
 <span id="L508"><span class="lineNum">     508</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L509"><span class="lineNum">     509</span> <span class="tlaUNC">           0            :         result &lt;&lt; &quot;**Returns**  \n&quot;;</span></span>
 <span id="L510"><span class="lineNum">     510</span> <span class="tlaUNC">           0            :         result &lt;&lt; returnDocSB.produceString();</span></span>
 <span id="L511"><span class="lineNum">     511</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L512"><span class="lineNum">     512</span>                         : </span>
-<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">          66 <span class="branchPart" title="br0: 66; br1: 0">(1/2)</span>      :     if (!hasDoxygen)</span></span>
-<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">          66            :     {</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">          61 <span class="branchPart" title="br0: 61; br1: 0">(1/2)</span>      :     if (!hasDoxygen)</span></span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">          61            :     {</span></span>
 <span id="L515"><span class="lineNum">     515</span>                         :         // For ordinary comments, we want to preserve line breaks in the original comment.</span>
-<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">          66            :         result.clear();</span></span>
-<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">          81 <span class="branchAll" title="br0: 15; br1: 66">(2/2)</span>      :         for (Index i = 0; i &lt; lines.getCount(); i++)</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">          61            :         result.clear();</span></span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">          76 <span class="branchAll" title="br0: 15; br1: 61">(2/2)</span>      :         for (Index i = 0; i &lt; lines.getCount(); i++)</span></span>
 <span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">          15            :         {</span></span>
 <span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">          15            :             result &lt;&lt; lines[i] &lt;&lt; &quot;  \n&quot;;</span></span>
 <span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">          15            :         }</span></span>
-<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">          66            :     }</span></span>
-<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">          66            :     return result.produceString();</span></span>
-<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">          66            : }</span></span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">          61            :     }</span></span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">          61            :     return result.produceString();</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">          61            : }</span></span>
 <span id="L524"><span class="lineNum">     524</span>                         : </span>
 <span id="L525"><span class="lineNum">     525</span>                         : static void _tryGetDocumentation(StringBuilder&amp; sb, WorkspaceVersion* workspace, Decl* decl)</span>
-<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">          70            : {</span></span>
-<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">          70            :     auto definingModule = getModuleDecl(decl);</span></span>
-<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">          70 <span class="branchPart" title="br0: 70; br1: 0">(1/2)</span>      :     if (definingModule)</span></span>
-<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">          70            :     {</span></span>
-<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">          70            :         MarkupEntry* markupEntry = nullptr;</span></span>
-<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">          70 <span class="branchPart" title="br0: 0; br1: 70">(1/2)</span>      :         if (decl-&gt;markup)</span></span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">          65            : {</span></span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">          65            :     auto definingModule = getModuleDecl(decl);</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">          65 <span class="branchPart" title="br0: 65; br1: 0">(1/2)</span>      :     if (definingModule)</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">          65            :     {</span></span>
+<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">          65            :         MarkupEntry* markupEntry = nullptr;</span></span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">          65 <span class="branchPart" title="br0: 0; br1: 65">(1/2)</span>      :         if (decl-&gt;markup)</span></span>
 <span id="L532"><span class="lineNum">     532</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L533"><span class="lineNum">     533</span> <span class="tlaUNC">           0            :             markupEntry = decl-&gt;markup;</span></span>
 <span id="L534"><span class="lineNum">     534</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">          70            :         else</span></span>
-<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">          70            :         {</span></span>
-<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">          70            :             auto markupAST = workspace-&gt;getOrCreateMarkupAST(definingModule);</span></span>
-<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">          70            :             markupEntry = markupAST-&gt;getEntry(decl);</span></span>
-<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">          70            :         }</span></span>
-<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">          70 <span class="branchAll" title="br0: 66; br1: 4">(2/2)</span>      :         if (markupEntry)</span></span>
-<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">          66            :         {</span></span>
-<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">          66            :             sb &lt;&lt; &quot;\n&quot;;</span></span>
-<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">          66            :             sb &lt;&lt; _formatDocumentation(markupEntry-&gt;m_markup);</span></span>
-<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">          66            :             sb &lt;&lt; &quot;\n&quot;;</span></span>
-<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">          66            :         }</span></span>
-<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">          70            :     }</span></span>
-<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">          70            : }</span></span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">          65            :         else</span></span>
+<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">          65            :         {</span></span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">          65            :             auto markupAST = workspace-&gt;getOrCreateMarkupAST(definingModule);</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">          65            :             markupEntry = markupAST-&gt;getEntry(decl);</span></span>
+<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">          65            :         }</span></span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">          65 <span class="branchAll" title="br0: 61; br1: 4">(2/2)</span>      :         if (markupEntry)</span></span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">          61            :         {</span></span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">          61            :             sb &lt;&lt; &quot;\n&quot;;</span></span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">          61            :             sb &lt;&lt; _formatDocumentation(markupEntry-&gt;m_markup);</span></span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">          61            :             sb &lt;&lt; &quot;\n&quot;;</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">          61            :         }</span></span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">          65            :     }</span></span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">          65            : }</span></span>
 <span id="L548"><span class="lineNum">     548</span>                         : </span>
 <span id="L549"><span class="lineNum">     549</span>                         : void appendDefinitionLocation(StringBuilder&amp; sb, Workspace* workspace, const HumaneSourceLoc&amp; loc)</span>
-<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">          76            : {</span></span>
-<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">          76            :     auto path = loc.pathInfo.foundPath;</span></span>
-<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">          76            :     Path::getCanonical(path, path);</span></span>
-<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">          76            :     UnownedStringSlice pathSlice = path.getUnownedSlice();</span></span>
-<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">          76 <span class="branchPart" title="br0: 76; br1: 0">(1/2)</span>      :     if (workspace)</span></span>
-<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">          76            :     {</span></span>
-<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">          76 <span class="branchAll" title="br0: 76; br1: 25">(2/2)</span>      :         for (auto&amp; root : workspace-&gt;rootDirectories)</span></span>
-<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">          76            :         {</span></span>
-<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">          76 <span class="branchAll" title="br0: 51; br1: 25">(2/2)</span>      :             if (pathSlice.startsWith(root.getUnownedSlice()))</span></span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">          71            : {</span></span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">          71            :     auto path = loc.pathInfo.foundPath;</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">          71            :     Path::getCanonical(path, path);</span></span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">          71            :     UnownedStringSlice pathSlice = path.getUnownedSlice();</span></span>
+<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">          71 <span class="branchPart" title="br0: 71; br1: 0">(1/2)</span>      :     if (workspace)</span></span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">          71            :     {</span></span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">          71 <span class="branchAll" title="br0: 71; br1: 20">(2/2)</span>      :         for (auto&amp; root : workspace-&gt;rootDirectories)</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">          71            :         {</span></span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">          71 <span class="branchAll" title="br0: 51; br1: 20">(2/2)</span>      :             if (pathSlice.startsWith(root.getUnownedSlice()))</span></span>
 <span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">          51            :             {</span></span>
 <span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">          51            :                 pathSlice = pathSlice.tail(root.getLength());</span></span>
 <span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">          51 <span class="branchPart" title="br0: 0; br1: 51; br2: 51; br3: 0">(2/4)</span>      :                 if (pathSlice.startsWith(&quot;\\&quot;) || pathSlice.startsWith(&quot;/&quot;))</span></span>
 <span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">          51            :                     pathSlice = pathSlice.tail(1);</span></span>
 <span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">          51            :                 break;</span></span>
 <span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">          51            :             }</span></span>
-<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">          76            :         }</span></span>
-<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">          76            :     }</span></span>
-<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">          76            :     sb &lt;&lt; &quot;Defined in &quot; &lt;&lt; pathSlice &lt;&lt; &quot;(&quot; &lt;&lt; loc.line &lt;&lt; &quot;)\n&quot;;</span></span>
-<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">          76            : }</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">          71            :         }</span></span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">          71            :     }</span></span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">          71            :     sb &lt;&lt; &quot;Defined in &quot; &lt;&lt; pathSlice &lt;&lt; &quot;(&quot; &lt;&lt; loc.line &lt;&lt; &quot;)\n&quot;;</span></span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">          71            : }</span></span>
 <span id="L569"><span class="lineNum">     569</span>                         : </span>
 <span id="L570"><span class="lineNum">     570</span>                         : HumaneSourceLoc getModuleLoc(SourceManager* manager, ContainerDecl* moduleDecl)</span>
 <span id="L571"><span class="lineNum">     571</span> <span class="tlaUNC">           0            : {</span></span>
@@ -1923,32 +1923,32 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1632"><span class="lineNum">    1632</span>                         :     DeclRef&lt;Decl&gt; declRef,</span>
 <span id="L1633"><span class="lineNum">    1633</span>                         :     String* outDocumentation,</span>
 <span id="L1634"><span class="lineNum">    1634</span>                         :     List&lt;Slang::Range&lt;Index&gt;&gt;* outParamRanges)</span>
-<span id="L1635"><span class="lineNum">    1635</span> <span class="tlaGNC">          35            : {</span></span>
-<span id="L1636"><span class="lineNum">    1636</span> <span class="tlaGNC">          35            :     auto version = m_workspace-&gt;getCurrentVersion();</span></span>
-<span id="L1637"><span class="lineNum">    1637</span> <span class="tlaGNC">          35            :     SLANG_AST_BUILDER_RAII(version-&gt;linkage-&gt;getASTBuilder());</span></span>
+<span id="L1635"><span class="lineNum">    1635</span> <span class="tlaGNC">          30            : {</span></span>
+<span id="L1636"><span class="lineNum">    1636</span> <span class="tlaGNC">          30            :     auto version = m_workspace-&gt;getCurrentVersion();</span></span>
+<span id="L1637"><span class="lineNum">    1637</span> <span class="tlaGNC">          30            :     SLANG_AST_BUILDER_RAII(version-&gt;linkage-&gt;getASTBuilder());</span></span>
 <span id="L1638"><span class="lineNum">    1638</span>                         : </span>
-<span id="L1639"><span class="lineNum">    1639</span> <span class="tlaGNC">          35            :     ASTPrinter printer(</span></span>
-<span id="L1640"><span class="lineNum">    1640</span> <span class="tlaGNC">          35            :         version-&gt;linkage-&gt;getASTBuilder(),</span></span>
-<span id="L1641"><span class="lineNum">    1641</span> <span class="tlaGNC">          35            :         ASTPrinter::OptionFlag::ParamNames | ASTPrinter::OptionFlag::NoInternalKeywords |</span></span>
-<span id="L1642"><span class="lineNum">    1642</span> <span class="tlaGNC">          35            :             ASTPrinter::OptionFlag::SimplifiedBuiltinType);</span></span>
+<span id="L1639"><span class="lineNum">    1639</span> <span class="tlaGNC">          30            :     ASTPrinter printer(</span></span>
+<span id="L1640"><span class="lineNum">    1640</span> <span class="tlaGNC">          30            :         version-&gt;linkage-&gt;getASTBuilder(),</span></span>
+<span id="L1641"><span class="lineNum">    1641</span> <span class="tlaGNC">          30            :         ASTPrinter::OptionFlag::ParamNames | ASTPrinter::OptionFlag::NoInternalKeywords |</span></span>
+<span id="L1642"><span class="lineNum">    1642</span> <span class="tlaGNC">          30            :             ASTPrinter::OptionFlag::SimplifiedBuiltinType);</span></span>
 <span id="L1643"><span class="lineNum">    1643</span>                         : </span>
-<span id="L1644"><span class="lineNum">    1644</span> <span class="tlaGNC">          35            :     printer.addDeclKindPrefix(declRef.getDecl());</span></span>
-<span id="L1645"><span class="lineNum">    1645</span> <span class="tlaGNC">          35            :     printer.addDeclPath(declRef);</span></span>
-<span id="L1646"><span class="lineNum">    1646</span> <span class="tlaGNC">          35            :     printer.addDeclParams(declRef, outParamRanges);</span></span>
-<span id="L1647"><span class="lineNum">    1647</span> <span class="tlaGNC">          35            :     printer.addDeclResultType(declRef);</span></span>
+<span id="L1644"><span class="lineNum">    1644</span> <span class="tlaGNC">          30            :     printer.addDeclKindPrefix(declRef.getDecl());</span></span>
+<span id="L1645"><span class="lineNum">    1645</span> <span class="tlaGNC">          30            :     printer.addDeclPath(declRef);</span></span>
+<span id="L1646"><span class="lineNum">    1646</span> <span class="tlaGNC">          30            :     printer.addDeclParams(declRef, outParamRanges);</span></span>
+<span id="L1647"><span class="lineNum">    1647</span> <span class="tlaGNC">          30            :     printer.addDeclResultType(declRef);</span></span>
 <span id="L1648"><span class="lineNum">    1648</span>                         : </span>
-<span id="L1649"><span class="lineNum">    1649</span> <span class="tlaGNC">          35 <span class="branchPart" title="br0: 35; br1: 0">(1/2)</span>      :     if (outDocumentation)</span></span>
-<span id="L1650"><span class="lineNum">    1650</span> <span class="tlaGNC">          35            :     {</span></span>
-<span id="L1651"><span class="lineNum">    1651</span> <span class="tlaGNC">          35            :         StringBuilder docSB;</span></span>
-<span id="L1652"><span class="lineNum">    1652</span> <span class="tlaGNC">          35            :         auto humaneLoc = version-&gt;linkage-&gt;getSourceManager()-&gt;getHumaneLoc(</span></span>
-<span id="L1653"><span class="lineNum">    1653</span> <span class="tlaGNC">          35            :             declRef.getLoc(),</span></span>
-<span id="L1654"><span class="lineNum">    1654</span> <span class="tlaGNC">          35            :             SourceLocType::Actual);</span></span>
-<span id="L1655"><span class="lineNum">    1655</span> <span class="tlaGNC">          35            :         _tryGetDocumentation(docSB, version, declRef.getDecl());</span></span>
-<span id="L1656"><span class="lineNum">    1656</span> <span class="tlaGNC">          35            :         appendDefinitionLocation(docSB, m_workspace, humaneLoc);</span></span>
-<span id="L1657"><span class="lineNum">    1657</span> <span class="tlaGNC">          35            :         *outDocumentation = docSB.produceString();</span></span>
-<span id="L1658"><span class="lineNum">    1658</span> <span class="tlaGNC">          35            :     }</span></span>
-<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">          35            :     return printer.getString();</span></span>
-<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">          35            : }</span></span>
+<span id="L1649"><span class="lineNum">    1649</span> <span class="tlaGNC">          30 <span class="branchPart" title="br0: 30; br1: 0">(1/2)</span>      :     if (outDocumentation)</span></span>
+<span id="L1650"><span class="lineNum">    1650</span> <span class="tlaGNC">          30            :     {</span></span>
+<span id="L1651"><span class="lineNum">    1651</span> <span class="tlaGNC">          30            :         StringBuilder docSB;</span></span>
+<span id="L1652"><span class="lineNum">    1652</span> <span class="tlaGNC">          30            :         auto humaneLoc = version-&gt;linkage-&gt;getSourceManager()-&gt;getHumaneLoc(</span></span>
+<span id="L1653"><span class="lineNum">    1653</span> <span class="tlaGNC">          30            :             declRef.getLoc(),</span></span>
+<span id="L1654"><span class="lineNum">    1654</span> <span class="tlaGNC">          30            :             SourceLocType::Actual);</span></span>
+<span id="L1655"><span class="lineNum">    1655</span> <span class="tlaGNC">          30            :         _tryGetDocumentation(docSB, version, declRef.getDecl());</span></span>
+<span id="L1656"><span class="lineNum">    1656</span> <span class="tlaGNC">          30            :         appendDefinitionLocation(docSB, m_workspace, humaneLoc);</span></span>
+<span id="L1657"><span class="lineNum">    1657</span> <span class="tlaGNC">          30            :         *outDocumentation = docSB.produceString();</span></span>
+<span id="L1658"><span class="lineNum">    1658</span> <span class="tlaGNC">          30            :     }</span></span>
+<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">          30            :     return printer.getString();</span></span>
+<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">          30            : }</span></span>
 <span id="L1661"><span class="lineNum">    1661</span>                         : </span>
 <span id="L1662"><span class="lineNum">    1662</span>                         : SlangResult LanguageServer::signatureHelp(</span>
 <span id="L1663"><span class="lineNum">    1663</span>                         :     const LanguageServerProtocol::SignatureHelpParams&amp; args,</span>
@@ -1981,11 +1981,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1690"><span class="lineNum">    1690</span>                         :     ConversionCost maxArgConversionCost = 0;</span>
 <span id="L1691"><span class="lineNum">    1691</span>                         : </span>
 <span id="L1692"><span class="lineNum">    1692</span>                         :     bool isBetterThan(const CallCandidateMatchCost&amp; other) const</span>
-<span id="L1693"><span class="lineNum">    1693</span> <span class="tlaGNC">          32            :     {</span></span>
-<span id="L1694"><span class="lineNum">    1694</span> <span class="tlaGNC">          32 <span class="branchPart" title="br0: 0; br1: 32">(1/2)</span>      :         if (excessArgCount &lt; other.excessArgCount)</span></span>
+<span id="L1693"><span class="lineNum">    1693</span> <span class="tlaGNC">          27            :     {</span></span>
+<span id="L1694"><span class="lineNum">    1694</span> <span class="tlaGNC">          27 <span class="branchPart" title="br0: 0; br1: 27">(1/2)</span>      :         if (excessArgCount &lt; other.excessArgCount)</span></span>
 <span id="L1695"><span class="lineNum">    1695</span> <span class="tlaUNC">           0            :             return true;</span></span>
-<span id="L1696"><span class="lineNum">    1696</span> <span class="tlaGNC">          32 <span class="branchAll" title="br0: 23; br1: 9">(2/2)</span>      :         else if (excessArgCount &gt; other.excessArgCount)</span></span>
-<span id="L1697"><span class="lineNum">    1697</span> <span class="tlaGNC">          23            :             return false;</span></span>
+<span id="L1696"><span class="lineNum">    1696</span> <span class="tlaGNC">          27 <span class="branchAll" title="br0: 18; br1: 9">(2/2)</span>      :         else if (excessArgCount &gt; other.excessArgCount)</span></span>
+<span id="L1697"><span class="lineNum">    1697</span> <span class="tlaGNC">          18            :             return false;</span></span>
 <span id="L1698"><span class="lineNum">    1698</span> <span class="tlaGNC">           9 <span class="branchAll" title="br0: 4; br1: 5">(2/2)</span>      :         if (matchedArgCount &gt; other.matchedArgCount)</span></span>
 <span id="L1699"><span class="lineNum">    1699</span> <span class="tlaGNC">           4            :             return true;</span></span>
 <span id="L1700"><span class="lineNum">    1700</span> <span class="tlaGNC">           5 <span class="branchPart" title="br0: 0; br1: 5">(1/2)</span>      :         else if (matchedArgCount &lt; other.matchedArgCount)</span></span>
@@ -2006,34 +2006,34 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1715"><span class="lineNum">    1715</span>                         :     AppExprBase* appExpr,</span>
 <span id="L1716"><span class="lineNum">    1716</span>                         :     SemanticsVisitor&amp; semanticsVisitor,</span>
 <span id="L1717"><span class="lineNum">    1717</span>                         :     WorkspaceVersion* version)</span>
-<span id="L1718"><span class="lineNum">    1718</span> <span class="tlaGNC">          32            : {</span></span>
-<span id="L1719"><span class="lineNum">    1719</span> <span class="tlaGNC">          32            :     CallCandidateMatchCost result;</span></span>
-<span id="L1720"><span class="lineNum">    1720</span> <span class="tlaGNC">          32            :     auto astBuilder = version-&gt;linkage-&gt;getASTBuilder();</span></span>
-<span id="L1721"><span class="lineNum">    1721</span> <span class="tlaGNC">          32            :     auto paramList = getMembersOfType&lt;ParamDecl&gt;(astBuilder, callableDeclRef).toArray();</span></span>
+<span id="L1718"><span class="lineNum">    1718</span> <span class="tlaGNC">          27            : {</span></span>
+<span id="L1719"><span class="lineNum">    1719</span> <span class="tlaGNC">          27            :     CallCandidateMatchCost result;</span></span>
+<span id="L1720"><span class="lineNum">    1720</span> <span class="tlaGNC">          27            :     auto astBuilder = version-&gt;linkage-&gt;getASTBuilder();</span></span>
+<span id="L1721"><span class="lineNum">    1721</span> <span class="tlaGNC">          27            :     auto paramList = getMembersOfType&lt;ParamDecl&gt;(astBuilder, callableDeclRef).toArray();</span></span>
 <span id="L1722"><span class="lineNum">    1722</span>                         : </span>
-<span id="L1723"><span class="lineNum">    1723</span> <span class="tlaGNC">          64 <span class="branchAll" title="br0: 32; br1: 32">(2/2)</span>      :     for (Index argId = 0; argId &lt; appExpr-&gt;arguments.getCount(); argId++)</span></span>
-<span id="L1724"><span class="lineNum">    1724</span> <span class="tlaGNC">          32            :     {</span></span>
-<span id="L1725"><span class="lineNum">    1725</span> <span class="tlaGNC">          32            :         auto arg = appExpr-&gt;arguments[argId];</span></span>
-<span id="L1726"><span class="lineNum">    1726</span> <span class="tlaGNC">          32 <span class="branchPart" title="br0: 0; br1: 32">(1/2)</span>      :         if (!arg)</span></span>
+<span id="L1723"><span class="lineNum">    1723</span> <span class="tlaGNC">          54 <span class="branchAll" title="br0: 27; br1: 27">(2/2)</span>      :     for (Index argId = 0; argId &lt; appExpr-&gt;arguments.getCount(); argId++)</span></span>
+<span id="L1724"><span class="lineNum">    1724</span> <span class="tlaGNC">          27            :     {</span></span>
+<span id="L1725"><span class="lineNum">    1725</span> <span class="tlaGNC">          27            :         auto arg = appExpr-&gt;arguments[argId];</span></span>
+<span id="L1726"><span class="lineNum">    1726</span> <span class="tlaGNC">          27 <span class="branchPart" title="br0: 0; br1: 27">(1/2)</span>      :         if (!arg)</span></span>
 <span id="L1727"><span class="lineNum">    1727</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L1728"><span class="lineNum">    1728</span> <span class="tlaGNC">          32 <span class="branchPart" title="br0: 0; br1: 32">(1/2)</span>      :         if (!arg-&gt;type.type)</span></span>
+<span id="L1728"><span class="lineNum">    1728</span> <span class="tlaGNC">          27 <span class="branchPart" title="br0: 0; br1: 27">(1/2)</span>      :         if (!arg-&gt;type.type)</span></span>
 <span id="L1729"><span class="lineNum">    1729</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L1730"><span class="lineNum">    1730</span> <span class="tlaGNC">          32 <span class="branchAll" title="br0: 30; br1: 2">(2/2)</span>      :         if (argId &lt; paramList.getCount())</span></span>
-<span id="L1731"><span class="lineNum">    1731</span> <span class="tlaGNC">          30            :         {</span></span>
-<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">          30            :             auto paramType = getType(version-&gt;linkage-&gt;getASTBuilder(), paramList[argId]);</span></span>
-<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaGNC">          30            :             ConversionCost argCost = 0;</span></span>
-<span id="L1734"><span class="lineNum">    1734</span> <span class="tlaGNC">          30 <span class="branchPart" title="br0: 30; br1: 0; br2: 23; br3: 7">(3/4)</span>      :             if (paramType &amp;&amp; semanticsVisitor.canCoerce(paramType, arg-&gt;type.type, arg, &amp;argCost))</span></span>
-<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">          23            :             {</span></span>
-<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaGNC">          23            :                 result.matchedArgCount++;</span></span>
-<span id="L1737"><span class="lineNum">    1737</span> <span class="tlaGNC">          23            :                 result.maxArgConversionCost = Math::Max(result.maxArgConversionCost, argCost);</span></span>
-<span id="L1738"><span class="lineNum">    1738</span> <span class="tlaGNC">          23            :             }</span></span>
-<span id="L1739"><span class="lineNum">    1739</span> <span class="tlaGNC">          30            :         }</span></span>
-<span id="L1740"><span class="lineNum">    1740</span> <span class="tlaGNC">          32            :     }</span></span>
-<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaGNC">          32            :     result.excessArgCount =</span></span>
-<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaGNC">          32            :         Math::Max((Index)0, (appExpr-&gt;argumentDelimeterLocs.getCount() - 1) - paramList.getCount());</span></span>
-<span id="L1743"><span class="lineNum">    1743</span> <span class="tlaGNC">          32            :     result.unmatchedParamCount = paramList.getCount() - result.matchedArgCount;</span></span>
-<span id="L1744"><span class="lineNum">    1744</span> <span class="tlaGNC">          32            :     return result;</span></span>
-<span id="L1745"><span class="lineNum">    1745</span> <span class="tlaGNC">          32            : }</span></span>
+<span id="L1730"><span class="lineNum">    1730</span> <span class="tlaGNC">          27 <span class="branchAll" title="br0: 25; br1: 2">(2/2)</span>      :         if (argId &lt; paramList.getCount())</span></span>
+<span id="L1731"><span class="lineNum">    1731</span> <span class="tlaGNC">          25            :         {</span></span>
+<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">          25            :             auto paramType = getType(version-&gt;linkage-&gt;getASTBuilder(), paramList[argId]);</span></span>
+<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaGNC">          25            :             ConversionCost argCost = 0;</span></span>
+<span id="L1734"><span class="lineNum">    1734</span> <span class="tlaGNC">          25 <span class="branchPart" title="br0: 25; br1: 0; br2: 19; br3: 6">(3/4)</span>      :             if (paramType &amp;&amp; semanticsVisitor.canCoerce(paramType, arg-&gt;type.type, arg, &amp;argCost))</span></span>
+<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">          19            :             {</span></span>
+<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaGNC">          19            :                 result.matchedArgCount++;</span></span>
+<span id="L1737"><span class="lineNum">    1737</span> <span class="tlaGNC">          19            :                 result.maxArgConversionCost = Math::Max(result.maxArgConversionCost, argCost);</span></span>
+<span id="L1738"><span class="lineNum">    1738</span> <span class="tlaGNC">          19            :             }</span></span>
+<span id="L1739"><span class="lineNum">    1739</span> <span class="tlaGNC">          25            :         }</span></span>
+<span id="L1740"><span class="lineNum">    1740</span> <span class="tlaGNC">          27            :     }</span></span>
+<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaGNC">          27            :     result.excessArgCount =</span></span>
+<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaGNC">          27            :         Math::Max((Index)0, (appExpr-&gt;argumentDelimeterLocs.getCount() - 1) - paramList.getCount());</span></span>
+<span id="L1743"><span class="lineNum">    1743</span> <span class="tlaGNC">          27            :     result.unmatchedParamCount = paramList.getCount() - result.matchedArgCount;</span></span>
+<span id="L1744"><span class="lineNum">    1744</span> <span class="tlaGNC">          27            :     return result;</span></span>
+<span id="L1745"><span class="lineNum">    1745</span> <span class="tlaGNC">          27            : }</span></span>
 <span id="L1746"><span class="lineNum">    1746</span>                         : </span>
 <span id="L1747"><span class="lineNum">    1747</span>                         : LanguageServerResult&lt;LanguageServerProtocol::SignatureHelp&gt; LanguageServerCore::signatureHelp(</span>
 <span id="L1748"><span class="lineNum">    1748</span>                         :     const LanguageServerProtocol::SignatureHelpParams&amp; args)</span>
@@ -2168,56 +2168,56 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1877"><span class="lineNum">    1877</span> <span class="tlaGNC">           9            :     SemanticsVisitor semanticsVisitor(&amp;semanticsContext);</span></span>
 <span id="L1878"><span class="lineNum">    1878</span>                         : </span>
 <span id="L1879"><span class="lineNum">    1879</span> <span class="tlaGNC">           9            :     auto addDeclRef = [&amp;](DeclRef&lt;Decl&gt; declRef)</span></span>
-<span id="L1880"><span class="lineNum">    1880</span> <span class="tlaGNC">          35            :     {</span></span>
-<span id="L1881"><span class="lineNum">    1881</span> <span class="tlaGNC">          35 <span class="branchPart" title="br0: 0; br1: 35">(1/2)</span>      :         if (!declRef.getDecl())</span></span>
+<span id="L1880"><span class="lineNum">    1880</span> <span class="tlaGNC">          30            :     {</span></span>
+<span id="L1881"><span class="lineNum">    1881</span> <span class="tlaGNC">          30 <span class="branchPart" title="br0: 0; br1: 30">(1/2)</span>      :         if (!declRef.getDecl())</span></span>
 <span id="L1882"><span class="lineNum">    1882</span> <span class="tlaUNC">           0            :             return;</span></span>
 <span id="L1883"><span class="lineNum">    1883</span>                         : </span>
 <span id="L1884"><span class="lineNum">    1884</span>                         :         // If funcExpr is a direct reference to a generic, we should either</span>
 <span id="L1885"><span class="lineNum">    1885</span>                         :         // show the generic signature if we are inside `&lt;&gt;`, or show the function</span>
 <span id="L1886"><span class="lineNum">    1886</span>                         :         // parameter signature if we are inside `()`. If we are inside `()`, we will</span>
 <span id="L1887"><span class="lineNum">    1887</span>                         :         // need to form a decl ref to the inner decl and show its signature.</span>
-<span id="L1888"><span class="lineNum">    1888</span> <span class="tlaGNC">          35 <span class="branchAll" title="br0: 32; br1: 3">(2/2)</span>      :         if (!as&lt;GenericAppExpr&gt;(appExpr))</span></span>
-<span id="L1889"><span class="lineNum">    1889</span> <span class="tlaGNC">          32            :         {</span></span>
-<span id="L1890"><span class="lineNum">    1890</span> <span class="tlaGNC">          32 <span class="branchAll" title="br0: 7; br1: 25">(2/2)</span>      :             if (auto genDeclRef = as&lt;GenericDecl&gt;(declRef))</span></span>
-<span id="L1891"><span class="lineNum">    1891</span> <span class="tlaGNC">           7            :             {</span></span>
-<span id="L1892"><span class="lineNum">    1892</span> <span class="tlaGNC">           7            :                 declRef = createDefaultSubstitutionsIfNeeded(</span></span>
-<span id="L1893"><span class="lineNum">    1893</span> <span class="tlaGNC">           7            :                     version-&gt;linkage-&gt;getASTBuilder(),</span></span>
-<span id="L1894"><span class="lineNum">    1894</span> <span class="tlaGNC">           7            :                     &amp;semanticsVisitor,</span></span>
-<span id="L1895"><span class="lineNum">    1895</span> <span class="tlaGNC">           7            :                     version-&gt;linkage-&gt;getASTBuilder()-&gt;getMemberDeclRef(</span></span>
-<span id="L1896"><span class="lineNum">    1896</span> <span class="tlaGNC">           7            :                         declRef,</span></span>
-<span id="L1897"><span class="lineNum">    1897</span> <span class="tlaGNC">           7            :                         genDeclRef.getDecl()-&gt;inner));</span></span>
-<span id="L1898"><span class="lineNum">    1898</span> <span class="tlaGNC">           7            :             }</span></span>
-<span id="L1899"><span class="lineNum">    1899</span> <span class="tlaGNC">          32            :         }</span></span>
+<span id="L1888"><span class="lineNum">    1888</span> <span class="tlaGNC">          30 <span class="branchAll" title="br0: 27; br1: 3">(2/2)</span>      :         if (!as&lt;GenericAppExpr&gt;(appExpr))</span></span>
+<span id="L1889"><span class="lineNum">    1889</span> <span class="tlaGNC">          27            :         {</span></span>
+<span id="L1890"><span class="lineNum">    1890</span> <span class="tlaGNC">          27 <span class="branchAll" title="br0: 6; br1: 21">(2/2)</span>      :             if (auto genDeclRef = as&lt;GenericDecl&gt;(declRef))</span></span>
+<span id="L1891"><span class="lineNum">    1891</span> <span class="tlaGNC">           6            :             {</span></span>
+<span id="L1892"><span class="lineNum">    1892</span> <span class="tlaGNC">           6            :                 declRef = createDefaultSubstitutionsIfNeeded(</span></span>
+<span id="L1893"><span class="lineNum">    1893</span> <span class="tlaGNC">           6            :                     version-&gt;linkage-&gt;getASTBuilder(),</span></span>
+<span id="L1894"><span class="lineNum">    1894</span> <span class="tlaGNC">           6            :                     &amp;semanticsVisitor,</span></span>
+<span id="L1895"><span class="lineNum">    1895</span> <span class="tlaGNC">           6            :                     version-&gt;linkage-&gt;getASTBuilder()-&gt;getMemberDeclRef(</span></span>
+<span id="L1896"><span class="lineNum">    1896</span> <span class="tlaGNC">           6            :                         declRef,</span></span>
+<span id="L1897"><span class="lineNum">    1897</span> <span class="tlaGNC">           6            :                         genDeclRef.getDecl()-&gt;inner));</span></span>
+<span id="L1898"><span class="lineNum">    1898</span> <span class="tlaGNC">           6            :             }</span></span>
+<span id="L1899"><span class="lineNum">    1899</span> <span class="tlaGNC">          27            :         }</span></span>
 <span id="L1900"><span class="lineNum">    1900</span>                         :         // If we have a better match than the current best, we will update response.activeSignature</span>
 <span id="L1901"><span class="lineNum">    1901</span>                         :         // to this signature.</span>
-<span id="L1902"><span class="lineNum">    1902</span> <span class="tlaGNC">          35 <span class="branchAll" title="br0: 32; br1: 3">(2/2)</span>      :         if (auto callableDeclRef = declRef.as&lt;CallableDecl&gt;())</span></span>
-<span id="L1903"><span class="lineNum">    1903</span> <span class="tlaGNC">          32            :         {</span></span>
-<span id="L1904"><span class="lineNum">    1904</span> <span class="tlaGNC">          32            :             auto matchCost =</span></span>
-<span id="L1905"><span class="lineNum">    1905</span> <span class="tlaGNC">          32            :                 getCallCandidateMatchCost(callableDeclRef, appExpr, semanticsVisitor, version);</span></span>
-<span id="L1906"><span class="lineNum">    1906</span> <span class="tlaGNC">          32 <span class="branchAll" title="br0: 4; br1: 28">(2/2)</span>      :             if (matchCost.isBetterThan(bestCandidateMatchCost))</span></span>
+<span id="L1902"><span class="lineNum">    1902</span> <span class="tlaGNC">          30 <span class="branchAll" title="br0: 27; br1: 3">(2/2)</span>      :         if (auto callableDeclRef = declRef.as&lt;CallableDecl&gt;())</span></span>
+<span id="L1903"><span class="lineNum">    1903</span> <span class="tlaGNC">          27            :         {</span></span>
+<span id="L1904"><span class="lineNum">    1904</span> <span class="tlaGNC">          27            :             auto matchCost =</span></span>
+<span id="L1905"><span class="lineNum">    1905</span> <span class="tlaGNC">          27            :                 getCallCandidateMatchCost(callableDeclRef, appExpr, semanticsVisitor, version);</span></span>
+<span id="L1906"><span class="lineNum">    1906</span> <span class="tlaGNC">          27 <span class="branchAll" title="br0: 4; br1: 23">(2/2)</span>      :             if (matchCost.isBetterThan(bestCandidateMatchCost))</span></span>
 <span id="L1907"><span class="lineNum">    1907</span> <span class="tlaGNC">           4            :             {</span></span>
 <span id="L1908"><span class="lineNum">    1908</span> <span class="tlaGNC">           4            :                 bestCandidateMatchCost = matchCost;</span></span>
 <span id="L1909"><span class="lineNum">    1909</span> <span class="tlaGNC">           4            :                 response.activeSignature = (uint32_t)response.signatures.getCount();</span></span>
 <span id="L1910"><span class="lineNum">    1910</span> <span class="tlaGNC">           4            :             }</span></span>
-<span id="L1911"><span class="lineNum">    1911</span> <span class="tlaGNC">          32            :         }</span></span>
+<span id="L1911"><span class="lineNum">    1911</span> <span class="tlaGNC">          27            :         }</span></span>
 <span id="L1912"><span class="lineNum">    1912</span>                         : </span>
-<span id="L1913"><span class="lineNum">    1913</span> <span class="tlaGNC">          35            :         SignatureInformation sigInfo;</span></span>
+<span id="L1913"><span class="lineNum">    1913</span> <span class="tlaGNC">          30            :         SignatureInformation sigInfo;</span></span>
 <span id="L1914"><span class="lineNum">    1914</span>                         : </span>
-<span id="L1915"><span class="lineNum">    1915</span> <span class="tlaGNC">          35            :         List&lt;Slang::Range&lt;Index&gt;&gt; paramRanges;</span></span>
-<span id="L1916"><span class="lineNum">    1916</span> <span class="tlaGNC">          35            :         String documentation;</span></span>
-<span id="L1917"><span class="lineNum">    1917</span> <span class="tlaGNC">          35            :         sigInfo.label = getDeclRefSignature(declRef, &amp;documentation, &amp;paramRanges);</span></span>
-<span id="L1918"><span class="lineNum">    1918</span> <span class="tlaGNC">          35            :         sigInfo.documentation.value = documentation;</span></span>
-<span id="L1919"><span class="lineNum">    1919</span> <span class="tlaGNC">          35            :         sigInfo.documentation.kind = &quot;markdown&quot;;</span></span>
+<span id="L1915"><span class="lineNum">    1915</span> <span class="tlaGNC">          30            :         List&lt;Slang::Range&lt;Index&gt;&gt; paramRanges;</span></span>
+<span id="L1916"><span class="lineNum">    1916</span> <span class="tlaGNC">          30            :         String documentation;</span></span>
+<span id="L1917"><span class="lineNum">    1917</span> <span class="tlaGNC">          30            :         sigInfo.label = getDeclRefSignature(declRef, &amp;documentation, &amp;paramRanges);</span></span>
+<span id="L1918"><span class="lineNum">    1918</span> <span class="tlaGNC">          30            :         sigInfo.documentation.value = documentation;</span></span>
+<span id="L1919"><span class="lineNum">    1919</span> <span class="tlaGNC">          30            :         sigInfo.documentation.kind = &quot;markdown&quot;;</span></span>
 <span id="L1920"><span class="lineNum">    1920</span>                         : </span>
-<span id="L1921"><span class="lineNum">    1921</span> <span class="tlaGNC">          35 <span class="branchAll" title="br0: 41; br1: 35">(2/2)</span>      :         for (auto&amp; range : paramRanges)</span></span>
-<span id="L1922"><span class="lineNum">    1922</span> <span class="tlaGNC">          41            :         {</span></span>
-<span id="L1923"><span class="lineNum">    1923</span> <span class="tlaGNC">          41            :             ParameterInformation paramInfo;</span></span>
-<span id="L1924"><span class="lineNum">    1924</span> <span class="tlaGNC">          41            :             paramInfo.label[0] = (uint32_t)range.begin;</span></span>
-<span id="L1925"><span class="lineNum">    1925</span> <span class="tlaGNC">          41            :             paramInfo.label[1] = (uint32_t)range.end;</span></span>
-<span id="L1926"><span class="lineNum">    1926</span> <span class="tlaGNC">          41            :             sigInfo.parameters.add(paramInfo);</span></span>
-<span id="L1927"><span class="lineNum">    1927</span> <span class="tlaGNC">          41            :         }</span></span>
-<span id="L1928"><span class="lineNum">    1928</span> <span class="tlaGNC">          35            :         response.signatures.add(sigInfo);</span></span>
-<span id="L1929"><span class="lineNum">    1929</span> <span class="tlaGNC">          35            :     };</span></span>
+<span id="L1921"><span class="lineNum">    1921</span> <span class="tlaGNC">          30 <span class="branchAll" title="br0: 36; br1: 30">(2/2)</span>      :         for (auto&amp; range : paramRanges)</span></span>
+<span id="L1922"><span class="lineNum">    1922</span> <span class="tlaGNC">          36            :         {</span></span>
+<span id="L1923"><span class="lineNum">    1923</span> <span class="tlaGNC">          36            :             ParameterInformation paramInfo;</span></span>
+<span id="L1924"><span class="lineNum">    1924</span> <span class="tlaGNC">          36            :             paramInfo.label[0] = (uint32_t)range.begin;</span></span>
+<span id="L1925"><span class="lineNum">    1925</span> <span class="tlaGNC">          36            :             paramInfo.label[1] = (uint32_t)range.end;</span></span>
+<span id="L1926"><span class="lineNum">    1926</span> <span class="tlaGNC">          36            :             sigInfo.parameters.add(paramInfo);</span></span>
+<span id="L1927"><span class="lineNum">    1927</span> <span class="tlaGNC">          36            :         }</span></span>
+<span id="L1928"><span class="lineNum">    1928</span> <span class="tlaGNC">          30            :         response.signatures.add(sigInfo);</span></span>
+<span id="L1929"><span class="lineNum">    1929</span> <span class="tlaGNC">          30            :     };</span></span>
 <span id="L1930"><span class="lineNum">    1930</span>                         : </span>
 <span id="L1931"><span class="lineNum">    1931</span> <span class="tlaGNC">           9            :     auto addExpr = [&amp;](Expr* expr)</span></span>
 <span id="L1932"><span class="lineNum">    1932</span> <span class="tlaGNC">           9            :     {</span></span>
@@ -2289,10 +2289,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1998"><span class="lineNum">    1998</span> <span class="tlaGNC">           1            :                 auto ctors = semanticsVisitor.lookupConstructorsInType(</span></span>
 <span id="L1999"><span class="lineNum">    1999</span> <span class="tlaGNC">           1            :                     typeType-&gt;getType(),</span></span>
 <span id="L2000"><span class="lineNum">    2000</span> <span class="tlaGNC">           1            :                     declRefExpr-&gt;scope);</span></span>
-<span id="L2001"><span class="lineNum">    2001</span> <span class="tlaGNC">           1 <span class="branchAll" title="br0: 24; br1: 1">(2/2)</span>      :                 for (auto ctor : ctors)</span></span>
-<span id="L2002"><span class="lineNum">    2002</span> <span class="tlaGNC">          24            :                 {</span></span>
-<span id="L2003"><span class="lineNum">    2003</span> <span class="tlaGNC">          24            :                     addDeclRef(ctor.declRef);</span></span>
-<span id="L2004"><span class="lineNum">    2004</span> <span class="tlaGNC">          24            :                 }</span></span>
+<span id="L2001"><span class="lineNum">    2001</span> <span class="tlaGNC">           1 <span class="branchAll" title="br0: 19; br1: 1">(2/2)</span>      :                 for (auto ctor : ctors)</span></span>
+<span id="L2002"><span class="lineNum">    2002</span> <span class="tlaGNC">          19            :                 {</span></span>
+<span id="L2003"><span class="lineNum">    2003</span> <span class="tlaGNC">          19            :                     addDeclRef(ctor.declRef);</span></span>
+<span id="L2004"><span class="lineNum">    2004</span> <span class="tlaGNC">          19            :                 }</span></span>
 <span id="L2005"><span class="lineNum">    2005</span> <span class="tlaGNC">           1            :             }</span></span>
 <span id="L2006"><span class="lineNum">    2006</span> <span class="tlaGNC">           3            :         }</span></span>
 <span id="L2007"><span class="lineNum">    2007</span> <span class="tlaGNC">           2            :         else</span></span>
@@ -3338,9 +3338,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3047"><span class="lineNum">    3047</span> <span class="tlaGNC">          95            : }</span></span>
 <span id="L3048"><span class="lineNum">    3048</span>                         : </span>
 <span id="L3049"><span class="lineNum">    3049</span>                         : void LanguageServer::processCommands()</span>
-<span id="L3050"><span class="lineNum">    3050</span> <span class="tlaGNC">        1127            : {</span></span>
-<span id="L3051"><span class="lineNum">    3051</span> <span class="tlaGNC">        1127            :     HashSet&lt;int64_t&gt; canceledIDs;</span></span>
-<span id="L3052"><span class="lineNum">    3052</span> <span class="tlaGNC">        1127 <span class="branchAll" title="br0: 249; br1: 1127">(2/2)</span>      :     for (auto&amp; cmd : commands)</span></span>
+<span id="L3050"><span class="lineNum">    3050</span> <span class="tlaGNC">        1003            : {</span></span>
+<span id="L3051"><span class="lineNum">    3051</span> <span class="tlaGNC">        1003            :     HashSet&lt;int64_t&gt; canceledIDs;</span></span>
+<span id="L3052"><span class="lineNum">    3052</span> <span class="tlaGNC">        1003 <span class="branchAll" title="br0: 249; br1: 1003">(2/2)</span>      :     for (auto&amp; cmd : commands)</span></span>
 <span id="L3053"><span class="lineNum">    3053</span> <span class="tlaGNC">         249            :     {</span></span>
 <span id="L3054"><span class="lineNum">    3054</span> <span class="tlaGNC">         249 <span class="branchPart" title="br0: 0; br1: 249">(1/2)</span>      :         if (cmd.method == &quot;$/cancelRequest&quot;)</span></span>
 <span id="L3055"><span class="lineNum">    3055</span> <span class="tlaUNC">           0            :         {</span></span>
@@ -3351,8 +3351,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3060"><span class="lineNum">    3060</span> <span class="tlaUNC">           0            :             }</span></span>
 <span id="L3061"><span class="lineNum">    3061</span> <span class="tlaUNC">           0            :         }</span></span>
 <span id="L3062"><span class="lineNum">    3062</span> <span class="tlaGNC">         249            :     }</span></span>
-<span id="L3063"><span class="lineNum">    3063</span> <span class="tlaGNC">        1127            :     const int kErrorRequestCanceled = -32800;</span></span>
-<span id="L3064"><span class="lineNum">    3064</span> <span class="tlaGNC">        1127 <span class="branchAll" title="br0: 249; br1: 1127">(2/2)</span>      :     for (auto&amp; cmd : commands)</span></span>
+<span id="L3063"><span class="lineNum">    3063</span> <span class="tlaGNC">        1003            :     const int kErrorRequestCanceled = -32800;</span></span>
+<span id="L3064"><span class="lineNum">    3064</span> <span class="tlaGNC">        1003 <span class="branchAll" title="br0: 249; br1: 1003">(2/2)</span>      :     for (auto&amp; cmd : commands)</span></span>
 <span id="L3065"><span class="lineNum">    3065</span> <span class="tlaGNC">         249            :     {</span></span>
 <span id="L3066"><span class="lineNum">    3066</span> <span class="tlaGNC">         249 <span class="branchPart" title="br0: 249; br1: 249; br2: 249; br3: 0">(3/4)</span>      :         if (cmd.id.getKind() == JSONValue::Kind::Integer &amp;&amp;</span></span>
 <span id="L3067"><span class="lineNum">    3067</span> <span class="tlaGNC">         249 <span class="branchPart" title="br0: 0; br1: 249">(1/2)</span>      :             canceledIDs.contains(cmd.id.asInteger()))</span></span>
@@ -3364,7 +3364,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3073"><span class="lineNum">    3073</span> <span class="tlaGNC">         249            :             runCommand(cmd);</span></span>
 <span id="L3074"><span class="lineNum">    3074</span> <span class="tlaGNC">         249            :         }</span></span>
 <span id="L3075"><span class="lineNum">    3075</span> <span class="tlaGNC">         249            :     }</span></span>
-<span id="L3076"><span class="lineNum">    3076</span> <span class="tlaGNC">        1127            : }</span></span>
+<span id="L3076"><span class="lineNum">    3076</span> <span class="tlaGNC">        1003            : }</span></span>
 <span id="L3077"><span class="lineNum">    3077</span>                         : </span>
 <span id="L3078"><span class="lineNum">    3078</span>                         : SlangResult LanguageServer::didCloseTextDocument(const DidCloseTextDocumentParams&amp; args)</span>
 <span id="L3079"><span class="lineNum">    3079</span> <span class="tlaGNC">          77            : {</span></span>
@@ -3431,12 +3431,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3140"><span class="lineNum">    3140</span> <span class="tlaGNC">          17            : }</span></span>
 <span id="L3141"><span class="lineNum">    3141</span>                         : </span>
 <span id="L3142"><span class="lineNum">    3142</span>                         : void LanguageServer::update()</span>
-<span id="L3143"><span class="lineNum">    3143</span> <span class="tlaGNC">        1127            : {</span></span>
-<span id="L3144"><span class="lineNum">    3144</span> <span class="tlaGNC">        1127 <span class="branchAll" title="br0: 528; br1: 599">(2/2)</span>      :     if (!m_core.m_workspace)</span></span>
-<span id="L3145"><span class="lineNum">    3145</span> <span class="tlaGNC">         528            :         return;</span></span>
-<span id="L3146"><span class="lineNum">    3146</span> <span class="tlaGNC">         599 <span class="branchPart" title="br0: 0; br1: 599">(1/2)</span>      :     if (m_core.m_options.periodicDiagnosticUpdate)</span></span>
+<span id="L3143"><span class="lineNum">    3143</span> <span class="tlaGNC">        1003            : {</span></span>
+<span id="L3144"><span class="lineNum">    3144</span> <span class="tlaGNC">        1003 <span class="branchAll" title="br0: 466; br1: 537">(2/2)</span>      :     if (!m_core.m_workspace)</span></span>
+<span id="L3145"><span class="lineNum">    3145</span> <span class="tlaGNC">         466            :         return;</span></span>
+<span id="L3146"><span class="lineNum">    3146</span> <span class="tlaGNC">         537 <span class="branchPart" title="br0: 0; br1: 537">(1/2)</span>      :     if (m_core.m_options.periodicDiagnosticUpdate)</span></span>
 <span id="L3147"><span class="lineNum">    3147</span> <span class="tlaUNC">           0            :         publishDiagnostics();</span></span>
-<span id="L3148"><span class="lineNum">    3148</span> <span class="tlaGNC">         599            : }</span></span>
+<span id="L3148"><span class="lineNum">    3148</span> <span class="tlaGNC">         537            : }</span></span>
 <span id="L3149"><span class="lineNum">    3149</span>                         : </span>
 <span id="L3150"><span class="lineNum">    3150</span>                         : void LanguageServer::updateConfigFromJSON(const JSONValue&amp; jsonVal)</span>
 <span id="L3151"><span class="lineNum">    3151</span> <span class="tlaGNC">          16            : {</span></span>
@@ -3553,28 +3553,28 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3262"><span class="lineNum">    3262</span> <span class="tlaGNC">           2            :     m_connection = new JSONRPCConnection();</span></span>
 <span id="L3263"><span class="lineNum">    3263</span> <span class="tlaGNC">           2            :     m_connection-&gt;initWithStdStreams();</span></span>
 <span id="L3264"><span class="lineNum">    3264</span>                         : </span>
-<span id="L3265"><span class="lineNum">    3265</span> <span class="tlaGNC">        1129 <span class="branchPart" title="br0: 1129; br1: 0; br2: 1127; br3: 2">(3/4)</span>      :     while (m_connection-&gt;isActive() &amp;&amp; !m_quit)</span></span>
-<span id="L3266"><span class="lineNum">    3266</span> <span class="tlaGNC">        1127            :     {</span></span>
+<span id="L3265"><span class="lineNum">    3265</span> <span class="tlaGNC">        1005 <span class="branchPart" title="br0: 1005; br1: 0; br2: 1003; br3: 2">(3/4)</span>      :     while (m_connection-&gt;isActive() &amp;&amp; !m_quit)</span></span>
+<span id="L3266"><span class="lineNum">    3266</span> <span class="tlaGNC">        1003            :     {</span></span>
 <span id="L3267"><span class="lineNum">    3267</span>                         :         // Consume all messages first.</span>
-<span id="L3268"><span class="lineNum">    3268</span> <span class="tlaGNC">        1127            :         commands.clear();</span></span>
-<span id="L3269"><span class="lineNum">    3269</span> <span class="tlaGNC">        1485 <span class="branchPart" title="br0: 1328; br1: 0">(1/2)</span>      :         while (true)</span></span>
-<span id="L3270"><span class="lineNum">    3270</span> <span class="tlaGNC">        1485            :         {</span></span>
-<span id="L3271"><span class="lineNum">    3271</span> <span class="tlaGNC">        1485            :             m_connection-&gt;tryReadMessage();</span></span>
-<span id="L3272"><span class="lineNum">    3272</span> <span class="tlaGNC">        1485 <span class="branchAll" title="br0: 1127; br1: 358">(2/2)</span>      :             if (!m_connection-&gt;hasMessage())</span></span>
-<span id="L3273"><span class="lineNum">    3273</span> <span class="tlaGNC">        1127            :                 break;</span></span>
+<span id="L3268"><span class="lineNum">    3268</span> <span class="tlaGNC">        1003            :         commands.clear();</span></span>
+<span id="L3269"><span class="lineNum">    3269</span> <span class="tlaGNC">        1361 <span class="branchPart" title="br0: 1201; br1: 0">(1/2)</span>      :         while (true)</span></span>
+<span id="L3270"><span class="lineNum">    3270</span> <span class="tlaGNC">        1361            :         {</span></span>
+<span id="L3271"><span class="lineNum">    3271</span> <span class="tlaGNC">        1361            :             m_connection-&gt;tryReadMessage();</span></span>
+<span id="L3272"><span class="lineNum">    3272</span> <span class="tlaGNC">        1361 <span class="branchAll" title="br0: 1003; br1: 358">(2/2)</span>      :             if (!m_connection-&gt;hasMessage())</span></span>
+<span id="L3273"><span class="lineNum">    3273</span> <span class="tlaGNC">        1003            :                 break;</span></span>
 <span id="L3274"><span class="lineNum">    3274</span> <span class="tlaGNC">         358            :             parseNextMessage();</span></span>
 <span id="L3275"><span class="lineNum">    3275</span> <span class="tlaGNC">         358            :         }</span></span>
 <span id="L3276"><span class="lineNum">    3276</span>                         : </span>
-<span id="L3277"><span class="lineNum">    3277</span> <span class="tlaGNC">        1127            :         auto workStart = platform::PerformanceCounter::now();</span></span>
+<span id="L3277"><span class="lineNum">    3277</span> <span class="tlaGNC">        1003            :         auto workStart = platform::PerformanceCounter::now();</span></span>
 <span id="L3278"><span class="lineNum">    3278</span>                         : </span>
-<span id="L3279"><span class="lineNum">    3279</span> <span class="tlaGNC">        1127            :         processCommands();</span></span>
+<span id="L3279"><span class="lineNum">    3279</span> <span class="tlaGNC">        1003            :         processCommands();</span></span>
 <span id="L3280"><span class="lineNum">    3280</span>                         : </span>
 <span id="L3281"><span class="lineNum">    3281</span>                         :         // Report diagnostics if it hasn&#x27;t been updated for a while.</span>
-<span id="L3282"><span class="lineNum">    3282</span> <span class="tlaGNC">        1127            :         update();</span></span>
+<span id="L3282"><span class="lineNum">    3282</span> <span class="tlaGNC">        1003            :         update();</span></span>
 <span id="L3283"><span class="lineNum">    3283</span>                         : </span>
-<span id="L3284"><span class="lineNum">    3284</span> <span class="tlaGNC">        1127            :         auto workTime = platform::PerformanceCounter::getElapsedTimeInSeconds(workStart);</span></span>
+<span id="L3284"><span class="lineNum">    3284</span> <span class="tlaGNC">        1003            :         auto workTime = platform::PerformanceCounter::getElapsedTimeInSeconds(workStart);</span></span>
 <span id="L3285"><span class="lineNum">    3285</span>                         : </span>
-<span id="L3286"><span class="lineNum">    3286</span> <span class="tlaGNC">        1127 <span class="branchPart" title="br0: 173; br1: 955; br2: 150; br3: 23; br4: 0; br5: 150">(5/6)</span>      :         if (commands.getCount() &gt; 0 &amp;&amp; m_initialized &amp;&amp; m_traceOptions != TraceOptions::Off)</span></span>
+<span id="L3286"><span class="lineNum">    3286</span> <span class="tlaGNC">        1003 <span class="branchPart" title="br0: 172; br1: 831; br2: 149; br3: 23; br4: 0; br5: 149">(5/6)</span>      :         if (commands.getCount() &gt; 0 &amp;&amp; m_initialized &amp;&amp; m_traceOptions != TraceOptions::Off)</span></span>
 <span id="L3287"><span class="lineNum">    3287</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L3288"><span class="lineNum">    3288</span> <span class="tlaUNC">           0            :             StringBuilder msgBuilder;</span></span>
 <span id="L3289"><span class="lineNum">    3289</span> <span class="tlaUNC">           0            :             msgBuilder &lt;&lt; &quot;Server processed &quot; &lt;&lt; commands.getCount() &lt;&lt; &quot; commands, executed in &quot;</span></span>
@@ -3582,8 +3582,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3291"><span class="lineNum">    3291</span> <span class="tlaUNC">           0            :             logMessage(3, msgBuilder.produceString());</span></span>
 <span id="L3292"><span class="lineNum">    3292</span> <span class="tlaUNC">           0            :         }</span></span>
 <span id="L3293"><span class="lineNum">    3293</span>                         : </span>
-<span id="L3294"><span class="lineNum">    3294</span> <span class="tlaGNC">        1127            :         m_connection-&gt;getUnderlyingConnection()-&gt;waitForResult(1000);</span></span>
-<span id="L3295"><span class="lineNum">    3295</span> <span class="tlaGNC">        1127            :     }</span></span>
+<span id="L3294"><span class="lineNum">    3294</span> <span class="tlaGNC">        1003            :         m_connection-&gt;getUnderlyingConnection()-&gt;waitForResult(1000);</span></span>
+<span id="L3295"><span class="lineNum">    3295</span> <span class="tlaGNC">        1003            :     }</span></span>
 <span id="L3296"><span class="lineNum">    3296</span>                         : </span>
 <span id="L3297"><span class="lineNum">    3297</span> <span class="tlaGNC">           2            :     return SLANG_OK;</span></span>
 <span id="L3298"><span class="lineNum">    3298</span> <span class="tlaGNC">           2            : }</span></span>
