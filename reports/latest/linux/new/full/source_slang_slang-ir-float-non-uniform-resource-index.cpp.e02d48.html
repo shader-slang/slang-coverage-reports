@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-17 05:11:28 UTC</td>
+      <td class="headerValue">2026-10-18 05:11:15 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -490,7 +490,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L199"><span class="lineNum">     199</span>                         : void processNonUniformResourceIndex(</span>
 <span id="L200"><span class="lineNum">     200</span>                         :     IRInst* nonUniformResourceIndexInst,</span>
 <span id="L201"><span class="lineNum">     201</span>                         :     NonUniformResourceIndexFloatMode floatMode)</span>
-<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">         180            : {</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">         194            : {</span></span>
 <span id="L203"><span class="lineNum">     203</span>                         :     // Float `NonUniformResourceIndex()` outward along the use-def chain, from</span>
 <span id="L204"><span class="lineNum">     204</span>                         :     // the wrapped index toward the leaf operation that consumes the resource,</span>
 <span id="L205"><span class="lineNum">     205</span>                         :     // then decorate the resulting chain. The processing switch below lists the</span>
@@ -502,36 +502,36 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L211"><span class="lineNum">     211</span>                         :     // that predicate for the arithmetic op-set. See the architecture overview at</span>
 <span id="L212"><span class="lineNum">     212</span>                         :     // the top of this file for how the float pass and the legalize forward scan</span>
 <span id="L213"><span class="lineNum">     213</span>                         :     // divide the work.</span>
-<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">         180            :     List&lt;IRInst*&gt; resWorkList;</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">         194            :     List&lt;IRInst*&gt; resWorkList;</span></span>
 <span id="L215"><span class="lineNum">     215</span>                         : </span>
 <span id="L216"><span class="lineNum">     216</span>                         :     // Handle cases when `nonUniformResourceIndexInst` inst is wrapped around</span>
 <span id="L217"><span class="lineNum">     217</span>                         :     // an index in a nested fashion, i.e. nonUniform(nonUniform(index)) by</span>
 <span id="L218"><span class="lineNum">     218</span>                         :     // only adding the inner-most inst in the worklist, and work our way out.</span>
-<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">         180            :     auto insti = nonUniformResourceIndexInst;</span></span>
-<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">         360 <span class="branchAll" title="br0: 180; br1: 180">(2/2)</span>      :     while (insti-&gt;getOp() == kIROp_NonUniformResourceIndex)</span></span>
-<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">         180            :     {</span></span>
-<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">         180 <span class="branchPart" title="br0: 0; br1: 180">(1/2)</span>      :         if (resWorkList.getCount() != 0)</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">         194            :     auto insti = nonUniformResourceIndexInst;</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">         388 <span class="branchAll" title="br0: 194; br1: 194">(2/2)</span>      :     while (insti-&gt;getOp() == kIROp_NonUniformResourceIndex)</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">         194            :     {</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">         194 <span class="branchPart" title="br0: 0; br1: 194">(1/2)</span>      :         if (resWorkList.getCount() != 0)</span></span>
 <span id="L223"><span class="lineNum">     223</span> <span class="tlaUNC">           0            :             resWorkList.removeLast();</span></span>
-<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">         180            :         resWorkList.add(insti);</span></span>
-<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">         180            :         insti = insti-&gt;getOperand(0);</span></span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         180            :     }</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">         194            :         resWorkList.add(insti);</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">         194            :         insti = insti-&gt;getOperand(0);</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         194            :     }</span></span>
 <span id="L227"><span class="lineNum">     227</span>                         : </span>
 <span id="L228"><span class="lineNum">     228</span>                         :     // For all the users of a `nonUniformResourceIndexInst`, make them directly</span>
 <span id="L229"><span class="lineNum">     229</span>                         :     // use the underlying base inst that is wrapped by `nonUniformResourceIndex`</span>
 <span id="L230"><span class="lineNum">     230</span>                         :     // and finally wrap them with a `nonUniformResourceIndex`, and add back to the</span>
 <span id="L231"><span class="lineNum">     231</span>                         :     // worklist, and keep bubbling them up until it can.</span>
-<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">         617 <span class="branchAll" title="br0: 437; br1: 180">(2/2)</span>      :     for (Index i = 0; i &lt; resWorkList.getCount(); i++)</span></span>
-<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">         437            :     {</span></span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">         437            :         auto inst = resWorkList[i];</span></span>
-<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">         437            :         traverseUses(</span></span>
-<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">         437            :             inst,</span></span>
-<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">         437            :             [&amp;](IRUse* use)</span></span>
-<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">         437            :             {</span></span>
-<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">         422            :                 auto user = use-&gt;getUser();</span></span>
-<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">         422            :                 IRBuilder builder(user);</span></span>
-<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">         422            :                 builder.setInsertBefore(user);</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">         645 <span class="branchAll" title="br0: 451; br1: 194">(2/2)</span>      :     for (Index i = 0; i &lt; resWorkList.getCount(); i++)</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">         451            :     {</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">         451            :         auto inst = resWorkList[i];</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">         451            :         traverseUses(</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">         451            :             inst,</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">         451            :             [&amp;](IRUse* use)</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">         451            :             {</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">         446            :                 auto user = use-&gt;getUser();</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">         446            :                 IRBuilder builder(user);</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">         446            :                 builder.setInsertBefore(user);</span></span>
 <span id="L242"><span class="lineNum">     242</span>                         : </span>
-<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">         422            :                 IRInst* newUser = nullptr;</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">         446            :                 IRInst* newUser = nullptr;</span></span>
 <span id="L244"><span class="lineNum">     244</span>                         : </span>
 <span id="L245"><span class="lineNum">     245</span>                         :                 // Re-emit `user` with every operand that is the wrapper `inst`</span>
 <span id="L246"><span class="lineNum">     246</span>                         :                 // replaced by the wrapped value `inst-&gt;getOperand(0)`, keeping the</span>
@@ -540,8 +540,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L249"><span class="lineNum">     249</span>                         :                 // that pass non-uniformity through to their result unchanged: the</span>
 <span id="L250"><span class="lineNum">     250</span>                         :                 // combined-sampler accessors, the image-texel pointer, and integer</span>
 <span id="L251"><span class="lineNum">     251</span>                         :                 // index arithmetic.</span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">         422            :                 auto floatThroughOperands = [&amp;]() -&gt; IRInst*</span></span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         422            :                 {</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">         446            :                 auto floatThroughOperands = [&amp;]() -&gt; IRInst*</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         446            :                 {</span></span>
 <span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">          19            :                     ShortList&lt;IRInst*&gt; operands;</span></span>
 <span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">          55 <span class="branchAll" title="br0: 36; br1: 19">(2/2)</span>      :                     for (UInt opIndex = 0; opIndex &lt; user-&gt;getOperandCount(); opIndex++)</span></span>
 <span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">          36            :                         operands.add(</span></span>
@@ -554,13 +554,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">          19            :                         operands.getArrayView().getBuffer());</span></span>
 <span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">          19            :                 };</span></span>
 <span id="L265"><span class="lineNum">     265</span>                         : </span>
-<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">         422            :                 switch (user-&gt;getOp())</span></span>
-<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">         422            :                 {</span></span>
-<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">          18 <span class="branchAll" title="br0: 18; br1: 404">(2/2)</span>      :                 case kIROp_IntCast:</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">         446            :                 switch (user-&gt;getOp())</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">         446            :                 {</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">          18 <span class="branchAll" title="br0: 18; br1: 428">(2/2)</span>      :                 case kIROp_IntCast:</span></span>
 <span id="L269"><span class="lineNum">     269</span>                         :                     // Replace intCast(nonUniformRes(x)), into nonUniformRes(intCast(x))</span>
 <span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">          18            :                     newUser = builder.emitCast(user-&gt;getFullType(), inst-&gt;getOperand(0));</span></span>
 <span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">          18            :                     break;</span></span>
-<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">           4 <span class="branchAll" title="br0: 4; br1: 418">(2/2)</span>      :                 case kIROp_CastDescriptorHandleToUInt2:</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">           4 <span class="branchAll" title="br0: 4; br1: 442">(2/2)</span>      :                 case kIROp_CastDescriptorHandleToUInt2:</span></span>
 <span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">           4            :                     {</span></span>
 <span id="L274"><span class="lineNum">     274</span>                         :                         // Replace castBindlessToInt(nonUniformRes(x)), into</span>
 <span id="L275"><span class="lineNum">     275</span>                         :                         // nonUniformRes(castBindlessToInt(x))</span>
@@ -572,7 +572,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">           4            :                             &amp;operand);</span></span>
 <span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">           4            :                     }</span></span>
 <span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">           4            :                     break;</span></span>
-<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">          73 <span class="branchAll" title="br0: 73; br1: 349">(2/2)</span>      :                 case kIROp_GetElementPtr:</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">          73 <span class="branchAll" title="br0: 73; br1: 373">(2/2)</span>      :                 case kIROp_GetElementPtr:</span></span>
 <span id="L285"><span class="lineNum">     285</span>                         :                     // Ignore when `NonUniformResourceIndex` is not on the index</span>
 <span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">          73 <span class="branchPart" title="br0: 0; br1: 73">(1/2)</span>      :                     if (floatMode != NonUniformResourceIndexFloatMode::SPIRV)</span></span>
 <span id="L287"><span class="lineNum">     287</span> <span class="tlaUNC">           0            :                         break;</span></span>
@@ -586,7 +586,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">          73            :                             inst-&gt;getOperand(0));</span></span>
 <span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">          73            :                     }</span></span>
 <span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">          73            :                     break;</span></span>
-<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">          37 <span class="branchAll" title="br0: 37; br1: 385">(2/2)</span>      :                 case kIROp_GetElement:</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">          37 <span class="branchAll" title="br0: 37; br1: 409">(2/2)</span>      :                 case kIROp_GetElement:</span></span>
 <span id="L299"><span class="lineNum">     299</span>                         :                     // A getElement can use the `NonUniformResourceIndex` either as</span>
 <span id="L300"><span class="lineNum">     300</span>                         :                     // its base (operand 0) or as its index (operand 1). The base</span>
 <span id="L301"><span class="lineNum">     301</span>                         :                     // case runs unconditionally (the base wraps a resource value</span>
@@ -617,7 +617,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L326"><span class="lineNum">     326</span> <span class="tlaUNC">           0            :                             inst-&gt;getOperand(0));</span></span>
 <span id="L327"><span class="lineNum">     327</span> <span class="tlaUNC">           0            :                     }</span></span>
 <span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">          37            :                     break;</span></span>
-<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">           2 <span class="branchAll" title="br0: 2; br1: 420">(2/2)</span>      :                 case kIROp_Swizzle:</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">           2 <span class="branchAll" title="br0: 2; br1: 444">(2/2)</span>      :                 case kIROp_Swizzle:</span></span>
 <span id="L330"><span class="lineNum">     330</span>                         :                     // Ignore when `NonUniformResourceIndex` is not on base</span>
 <span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">           2 <span class="branchPart" title="br0: 2; br1: 0">(1/2)</span>      :                     if (user-&gt;getOperand(0) == inst)</span></span>
 <span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">           2            :                     {</span></span>
@@ -634,16 +634,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">           2            :                             operands.getArrayView().getBuffer());</span></span>
 <span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">           2            :                     }</span></span>
 <span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">           2            :                     break;</span></span>
-<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">           8 <span class="branchAll" title="br0: 8; br1: 414">(2/2)</span>      :                 case kIROp_NonUniformResourceIndex:</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">           8 <span class="branchAll" title="br0: 8; br1: 438">(2/2)</span>      :                 case kIROp_NonUniformResourceIndex:</span></span>
 <span id="L347"><span class="lineNum">     347</span>                         :                     // Replace nonUniformRes(nonUniformRes(x)), into nonUniformRes(x)</span>
 <span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">           8            :                     newUser = inst-&gt;getOperand(0);</span></span>
 <span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">           8            :                     break;</span></span>
-<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">          74 <span class="branchAll" title="br0: 74; br1: 348">(2/2)</span>      :                 case kIROp_Load:</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">          74 <span class="branchAll" title="br0: 74; br1: 372">(2/2)</span>      :                 case kIROp_Load:</span></span>
 <span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">          74 <span class="branchPart" title="br0: 0; br1: 74">(1/2)</span>      :                     if (floatMode != NonUniformResourceIndexFloatMode::SPIRV)</span></span>
 <span id="L352"><span class="lineNum">     352</span> <span class="tlaUNC">           0            :                         break;</span></span>
 <span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">          74            :                     newUser = builder.emitLoad(user-&gt;getFullType(), inst-&gt;getOperand(0));</span></span>
 <span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">          74            :                     break;</span></span>
-<span id="L355"><span class="lineNum">     355</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 422">(1/2)</span>      :                 case kIROp_GetLegalizedSPIRVGlobalParamAddr:</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 446">(1/2)</span>      :                 case kIROp_GetLegalizedSPIRVGlobalParamAddr:</span></span>
 <span id="L356"><span class="lineNum">     356</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                     if (floatMode != NonUniformResourceIndexFloatMode::SPIRV)</span></span>
 <span id="L357"><span class="lineNum">     357</span> <span class="tlaUNC">           0            :                         break;</span></span>
 <span id="L358"><span class="lineNum">     358</span> <span class="tlaUNC">           0            :                     {</span></span>
@@ -656,7 +656,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L365"><span class="lineNum">     365</span> <span class="tlaUNC">           0            :                             operands);</span></span>
 <span id="L366"><span class="lineNum">     366</span> <span class="tlaUNC">           0            :                     }</span></span>
 <span id="L367"><span class="lineNum">     367</span> <span class="tlaUNC">           0            :                     break;</span></span>
-<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">          55 <span class="branchAll" title="br0: 55; br1: 367">(2/2)</span>      :                 case kIROp_MakeCombinedTextureSampler:</span></span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">          55 <span class="branchAll" title="br0: 55; br1: 391">(2/2)</span>      :                 case kIROp_MakeCombinedTextureSampler:</span></span>
 <span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">          55            :                     {</span></span>
 <span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">          55            :                         auto tex = user-&gt;getOperand(0);</span></span>
 <span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">          55            :                         auto samp = user-&gt;getOperand(1);</span></span>
@@ -684,12 +684,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">          55            :                             decorateNonUniformResourceChain(nonUniformOperand);</span></span>
 <span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">          55            :                     }</span></span>
 <span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">          55            :                     break;</span></span>
-<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">           1 <span class="branchAll" title="br0: 1; br1: 421">(2/2)</span>      :                 case kIROp_CombinedTextureSamplerGetTexture:</span></span>
-<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">           1 <span class="branchPart" title="br0: 0; br1: 422">(1/2)</span>      :                 case kIROp_CombinedTextureSamplerGetSampler:</span></span>
-<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">           2 <span class="branchAll" title="br0: 1; br1: 421">(2/2)</span>      :                 case kIROp_ImageTexelPointer:</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">           1 <span class="branchAll" title="br0: 1; br1: 445">(2/2)</span>      :                 case kIROp_CombinedTextureSamplerGetTexture:</span></span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">           1 <span class="branchPart" title="br0: 0; br1: 446">(1/2)</span>      :                 case kIROp_CombinedTextureSamplerGetSampler:</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">           2 <span class="branchAll" title="br0: 1; br1: 445">(2/2)</span>      :                 case kIROp_ImageTexelPointer:</span></span>
 <span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">           2            :                     newUser = floatThroughOperands();</span></span>
 <span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">           2            :                     break;</span></span>
-<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">         149 <span class="branchAll" title="br0: 149; br1: 273">(2/2)</span>      :                 default:</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">         173 <span class="branchAll" title="br0: 173; br1: 273">(2/2)</span>      :                 default:</span></span>
 <span id="L402"><span class="lineNum">     402</span>                         :                     // Integer index arithmetic: non-uniformity is contagious, so an</span>
 <span id="L403"><span class="lineNum">     403</span>                         :                     // elementwise integer/bitwise op with a non-uniform operand yields a</span>
 <span id="L404"><span class="lineNum">     404</span>                         :                     // non-uniform result. Float the wrapper onto the op result so the</span>
@@ -701,15 +701,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L410"><span class="lineNum">     410</span>                         :                     // indexing (VUID-RuntimeSpirv-None-10148); other targets keep the</span>
 <span id="L411"><span class="lineNum">     411</span>                         :                     // wrapper on the sub-expression and let their downstream compiler</span>
 <span id="L412"><span class="lineNum">     412</span>                         :                     // propagate it (see the file header). Any other op is left alone.</span>
-<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">         149 <span class="branchAll" title="br0: 121; br1: 28">(2/2)</span>      :                     if (floatMode == NonUniformResourceIndexFloatMode::SPIRV &amp;&amp;</span></span>
-<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">         149 <span class="branchAll" title="br0: 17; br1: 104">(2/2)</span>      :                         isNonUniformIndexArithmeticOp(user-&gt;getOp()))</span></span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">         173 <span class="branchAll" title="br0: 125; br1: 48">(2/2)</span>      :                     if (floatMode == NonUniformResourceIndexFloatMode::SPIRV &amp;&amp;</span></span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">         173 <span class="branchAll" title="br0: 17; br1: 108">(2/2)</span>      :                         isNonUniformIndexArithmeticOp(user-&gt;getOp()))</span></span>
 <span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">          17            :                         newUser = floatThroughOperands();</span></span>
-<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">         149            :                     break;</span></span>
-<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">         422            :                 };</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">         173            :                     break;</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">         446            :                 };</span></span>
 <span id="L418"><span class="lineNum">     418</span>                         : </span>
 <span id="L419"><span class="lineNum">     419</span>                         :                 // Early exit when we could not process the `NonUniformResourceIndex` inst.</span>
-<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">         422 <span class="branchAll" title="br0: 165; br1: 257">(2/2)</span>      :                 if (!newUser)</span></span>
-<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">         165            :                     return;</span></span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">         446 <span class="branchAll" title="br0: 189; br1: 257">(2/2)</span>      :                 if (!newUser)</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">         189            :                     return;</span></span>
 <span id="L422"><span class="lineNum">     422</span>                         : </span>
 <span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">         257            :                 auto nonuniformUser = builder.emitNonUniformResourceIndexInst(newUser);</span></span>
 <span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">         257            :                 user-&gt;replaceUsesWith(nonuniformUser);</span></span>
@@ -747,18 +747,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L456"><span class="lineNum">     456</span>                         :                 // Clean up the base inst from the IR module, to avoid duplicate decorations.</span>
 <span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">         257            :                 user-&gt;removeAndDeallocate();</span></span>
 <span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">         257            :             });</span></span>
-<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">         437            :     }</span></span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">         451            :     }</span></span>
 <span id="L460"><span class="lineNum">     460</span>                         : </span>
-<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">         180 <span class="branchAll" title="br0: 58; br1: 122">(2/2)</span>      :     if (floatMode != NonUniformResourceIndexFloatMode::SPIRV)</span></span>
-<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">          58            :         return;</span></span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">         194 <span class="branchAll" title="br0: 70; br1: 124">(2/2)</span>      :     if (floatMode != NonUniformResourceIndexFloatMode::SPIRV)</span></span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">          70            :         return;</span></span>
 <span id="L463"><span class="lineNum">     463</span>                         :     // Once all the `NonUniformResourceIndex` insts are visited, and the inst type is bubbled up</span>
 <span id="L464"><span class="lineNum">     464</span>                         :     // to the parent, a decoration is added to the operands of the insts.</span>
-<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">         476 <span class="branchAll" title="br0: 354; br1: 122">(2/2)</span>      :     for (int i = 0; i &lt; resWorkList.getCount(); ++i)</span></span>
-<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">         354            :     {</span></span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">         480 <span class="branchAll" title="br0: 356; br1: 124">(2/2)</span>      :     for (int i = 0; i &lt; resWorkList.getCount(); ++i)</span></span>
+<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">         356            :     {</span></span>
 <span id="L467"><span class="lineNum">     467</span>                         :         // It is only required to decorate the base inst, if the `NonUniformResourceIndex` inst</span>
 <span id="L468"><span class="lineNum">     468</span>                         :         // around it has any active uses.</span>
-<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">         354            :         auto inst = resWorkList[i];</span></span>
-<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">         354 <span class="branchAll" title="br0: 251; br1: 103">(2/2)</span>      :         if (!inst-&gt;hasUses())</span></span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">         356            :         auto inst = resWorkList[i];</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">         356 <span class="branchAll" title="br0: 251; br1: 105">(2/2)</span>      :         if (!inst-&gt;hasUses())</span></span>
 <span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">         251            :         {</span></span>
 <span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">         251            :             inst-&gt;removeAndDeallocate();</span></span>
 <span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">         251            :             continue;</span></span>
@@ -767,51 +767,51 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L476"><span class="lineNum">     476</span>                         :         // the operand chain to find and decorate the access-chain index. For</span>
 <span id="L477"><span class="lineNum">     477</span>                         :         // resource-creating ops (MakeCombinedTextureSampler, etc.) also</span>
 <span id="L478"><span class="lineNum">     478</span>                         :         // decorate the op itself, then recurse into its source operand.</span>
-<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">         103            :         auto operand = inst-&gt;getOperand(0);</span></span>
-<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">         103            :         auto type = operand-&gt;getDataType();</span></span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">         105            :         auto operand = inst-&gt;getOperand(0);</span></span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">         105            :         auto type = operand-&gt;getDataType();</span></span>
 <span id="L481"><span class="lineNum">     481</span>                         :         // An ImageTexelPointer (from the GLSL imageAtomic* path) has a texel</span>
 <span id="L482"><span class="lineNum">     482</span>                         :         // pointer result type (e.g. Ptr&lt;uint&gt; in the Image address space), not</span>
 <span id="L483"><span class="lineNum">     483</span>                         :         // a resource type, so it fails the isResourceType/isPointerToResourceType</span>
 <span id="L484"><span class="lineNum">     484</span>                         :         // checks. Decorate its chain explicitly so the texel pointer, the</span>
 <span id="L485"><span class="lineNum">     485</span>                         :         // legalized global-param address, and the access-chain index all carry</span>
 <span id="L486"><span class="lineNum">     486</span>                         :         // NonUniform as required for image atomics (VUID-RuntimeSpirv-None-10148).</span>
-<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">         103 <span class="branchAll" title="br0: 74; br1: 29; br2: 3; br3: 26">(4/4)</span>      :         if (isResourceType(type) || isPointerToResourceType(type) ||</span></span>
-<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">         103 <span class="branchAll" title="br0: 1; br1: 25">(2/2)</span>      :             operand-&gt;getOp() == kIROp_ImageTexelPointer)</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">         105 <span class="branchAll" title="br0: 74; br1: 31; br2: 3; br3: 28">(4/4)</span>      :         if (isResourceType(type) || isPointerToResourceType(type) ||</span></span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">         105 <span class="branchAll" title="br0: 1; br1: 27">(2/2)</span>      :             operand-&gt;getOp() == kIROp_ImageTexelPointer)</span></span>
 <span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">          78            :         {</span></span>
 <span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">          78            :             decorateNonUniformResourceChain(operand);</span></span>
 <span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">          78            :         }</span></span>
-<span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">         103            :         inst-&gt;replaceUsesWith(operand);</span></span>
-<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">         103            :         inst-&gt;removeAndDeallocate();</span></span>
-<span id="L494"><span class="lineNum">     494</span> <span class="tlaGNC">         103            :     }</span></span>
-<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">         122            : }</span></span>
+<span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">         105            :         inst-&gt;replaceUsesWith(operand);</span></span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">         105            :         inst-&gt;removeAndDeallocate();</span></span>
+<span id="L494"><span class="lineNum">     494</span> <span class="tlaGNC">         105            :     }</span></span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">         124            : }</span></span>
 <span id="L496"><span class="lineNum">     496</span>                         : </span>
 <span id="L497"><span class="lineNum">     497</span>                         : void floatNonUniformResourceIndex(IRModule* module, NonUniformResourceIndexFloatMode floatMode)</span>
-<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">       10042            : {</span></span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">       10066            : {</span></span>
 <span id="L499"><span class="lineNum">     499</span>                         :     // Walk through all the instructions in the module, and float the `NonUniformResourceIndex`</span>
 <span id="L500"><span class="lineNum">     500</span>                         :     // insts to the right place in the IR module.</span>
 <span id="L501"><span class="lineNum">     501</span>                         : </span>
-<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">       10042            :     List&lt;IRInst*&gt; workList;</span></span>
-<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">       10042 <span class="branchAll" title="br0: 1754527; br1: 10042">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">     1754527            :     {</span></span>
-<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">     1754527            :         auto func = as&lt;IRGlobalValueWithCode&gt;(getGenericReturnVal(globalInst));</span></span>
-<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">     1754527 <span class="branchAll" title="br0: 1689739; br1: 64788">(2/2)</span>      :         if (!func)</span></span>
-<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">     1689739            :             continue;</span></span>
-<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">       64788            :         workList.clear();</span></span>
-<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">       64788 <span class="branchAll" title="br0: 377350; br1: 64788">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">      377350            :         {</span></span>
-<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">      377350 <span class="branchAll" title="br0: 1747373; br1: 377350">(2/2)</span>      :             for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">     1747373            :             {</span></span>
-<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">     1747373 <span class="branchAll" title="br0: 64; br1: 1747309">(2/2)</span>      :                 if (inst-&gt;getOp() == kIROp_NonUniformResourceIndex)</span></span>
-<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">          64            :                     workList.add(inst);</span></span>
-<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">     1747373            :             }</span></span>
-<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">      377350            :         }</span></span>
-<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">       64788 <span class="branchAll" title="br0: 64; br1: 64788">(2/2)</span>      :         for (auto inst : workList)</span></span>
-<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">          64            :         {</span></span>
-<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">          64 <span class="branchAll" title="br0: 58; br1: 6">(2/2)</span>      :             if (inst-&gt;getParent() != nullptr)</span></span>
-<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">          58            :                 processNonUniformResourceIndex(inst, floatMode);</span></span>
-<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">          64            :         }</span></span>
-<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       64788            :     }</span></span>
-<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       10042            : }</span></span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">       10066            :     List&lt;IRInst*&gt; workList;</span></span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">       10066 <span class="branchAll" title="br0: 1758989; br1: 10066">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">     1758989            :     {</span></span>
+<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">     1758989            :         auto func = as&lt;IRGlobalValueWithCode&gt;(getGenericReturnVal(globalInst));</span></span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">     1758989 <span class="branchAll" title="br0: 1694015; br1: 64974">(2/2)</span>      :         if (!func)</span></span>
+<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">     1694015            :             continue;</span></span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">       64974            :         workList.clear();</span></span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">       64974 <span class="branchAll" title="br0: 377857; br1: 64974">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">      377857            :         {</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">      377857 <span class="branchAll" title="br0: 1753239; br1: 377857">(2/2)</span>      :             for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">     1753239            :             {</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">     1753239 <span class="branchAll" title="br0: 76; br1: 1753163">(2/2)</span>      :                 if (inst-&gt;getOp() == kIROp_NonUniformResourceIndex)</span></span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">          76            :                     workList.add(inst);</span></span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">     1753239            :             }</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">      377857            :         }</span></span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">       64974 <span class="branchAll" title="br0: 76; br1: 64974">(2/2)</span>      :         for (auto inst : workList)</span></span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">          76            :         {</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">          76 <span class="branchAll" title="br0: 70; br1: 6">(2/2)</span>      :             if (inst-&gt;getParent() != nullptr)</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">          70            :                 processNonUniformResourceIndex(inst, floatMode);</span></span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">          76            :         }</span></span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       64974            :     }</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       10066            : }</span></span>
 <span id="L524"><span class="lineNum">     524</span>                         : </span>
 <span id="L525"><span class="lineNum">     525</span>                         : // Forward-scan decoration phase, phase 2 of the SPIR-V path (see the</span>
 <span id="L526"><span class="lineNum">     526</span>                         : // &quot;Invocation / ownership&quot; note in the file header). Complements the float</span>
@@ -835,23 +835,23 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L544"><span class="lineNum">     544</span>                         : // Single forward pass suffices because IR instructions are in dominance</span>
 <span id="L545"><span class="lineNum">     545</span>                         : // order (producers before consumers).</span>
 <span id="L546"><span class="lineNum">     546</span>                         : void propagateNonUniformDecorations(IRModule* module)</span>
-<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">        4992            : {</span></span>
-<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">        4992 <span class="branchAll" title="br0: 786349; br1: 4993">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">      786349            :     {</span></span>
-<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">      786349            :         auto func = as&lt;IRFunc&gt;(globalInst);</span></span>
-<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">      786349 <span class="branchAll" title="br0: 770902; br1: 15447">(2/2)</span>      :         if (!func)</span></span>
-<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">      770902            :             continue;</span></span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">        4995            : {</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">        4995 <span class="branchAll" title="br0: 787012; br1: 4995">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">      787012            :     {</span></span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">      787012            :         auto func = as&lt;IRFunc&gt;(globalInst);</span></span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">      787012 <span class="branchAll" title="br0: 771520; br1: 15492">(2/2)</span>      :         if (!func)</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">      771520            :             continue;</span></span>
 <span id="L553"><span class="lineNum">     553</span>                         : </span>
-<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">       15447 <span class="branchAll" title="br0: 88203; br1: 15448">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">       88203            :         {</span></span>
-<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">       88203 <span class="branchAll" title="br0: 613070; br1: 88204">(2/2)</span>      :             for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">      613070            :             {</span></span>
-<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">      613070            :                 switch (inst-&gt;getOp())</span></span>
-<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">      613070            :                 {</span></span>
-<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">        6772 <span class="branchAll" title="br0: 6772; br1: 606298">(2/2)</span>      :                 case kIROp_GetElement:</span></span>
-<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">       28291 <span class="branchAll" title="br0: 21519; br1: 591551">(2/2)</span>      :                 case kIROp_GetElementPtr:</span></span>
-<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       39651 <span class="branchAll" title="br0: 11360; br1: 601710">(2/2)</span>      :                 case kIROp_RWStructuredBufferGetElementPtr:</span></span>
-<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">       39651            :                     {</span></span>
+<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">       15492 <span class="branchAll" title="br0: 88288; br1: 15492">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">       88288            :         {</span></span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">       88288 <span class="branchAll" title="br0: 614262; br1: 88288">(2/2)</span>      :             for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">      614262            :             {</span></span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">      614262            :                 switch (inst-&gt;getOp())</span></span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">      614262            :                 {</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">        6772 <span class="branchAll" title="br0: 6772; br1: 607490">(2/2)</span>      :                 case kIROp_GetElement:</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">       28334 <span class="branchAll" title="br0: 21562; br1: 592700">(2/2)</span>      :                 case kIROp_GetElementPtr:</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       39729 <span class="branchAll" title="br0: 11395; br1: 602867">(2/2)</span>      :                 case kIROp_RWStructuredBufferGetElementPtr:</span></span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">       39729            :                     {</span></span>
 <span id="L564"><span class="lineNum">     564</span>                         :                         // Contract (VUID-RuntimeSpirv-None-10148): the</span>
 <span id="L565"><span class="lineNum">     565</span>                         :                         // resource operand consumed by the access (the final</span>
 <span id="L566"><span class="lineNum">     566</span>                         :                         // OpAccessChain result) must be NonUniform. So when a</span>
@@ -867,18 +867,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L576"><span class="lineNum">     576</span>                         :                         // dynamically uniform and is skipped automatically by</span>
 <span id="L577"><span class="lineNum">     577</span>                         :                         // addSPIRVNonUniformResourceDecoration -- so only the</span>
 <span id="L578"><span class="lineNum">     578</span>                         :                         // result is decorated for the constant-index case.</span>
-<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">       39651            :                         auto baseOperand = inst-&gt;getOperand(0);</span></span>
-<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">       39651            :                         auto indexOperand = inst-&gt;getOperand(1);</span></span>
-<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">       39651            :                         auto baseDecorated =</span></span>
-<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">       39651            :                             baseOperand-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() !=</span></span>
-<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">       39651            :                             nullptr;</span></span>
-<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">       39651            :                         auto indexDecorated =</span></span>
-<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">       39651            :                             indexOperand-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() !=</span></span>
-<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">       39651            :                             nullptr;</span></span>
-<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">       39651            :                         auto instDecorated =</span></span>
-<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">       39651            :                             inst-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() != nullptr;</span></span>
-<span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">       39651 <span class="branchAll" title="br0: 39637; br1: 14; br2: 39565; br3: 72; br4: 39553; br5: 12">(6/6)</span>      :                         if (!baseDecorated &amp;&amp; !indexDecorated &amp;&amp; !instDecorated)</span></span>
-<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">       39553            :                             break;</span></span>
+<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">       39729            :                         auto baseOperand = inst-&gt;getOperand(0);</span></span>
+<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">       39729            :                         auto indexOperand = inst-&gt;getOperand(1);</span></span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">       39729            :                         auto baseDecorated =</span></span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">       39729            :                             baseOperand-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() !=</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">       39729            :                             nullptr;</span></span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">       39729            :                         auto indexDecorated =</span></span>
+<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">       39729            :                             indexOperand-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() !=</span></span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">       39729            :                             nullptr;</span></span>
+<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">       39729            :                         auto instDecorated =</span></span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">       39729            :                             inst-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() != nullptr;</span></span>
+<span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">       39729 <span class="branchAll" title="br0: 39716; br1: 13; br2: 39644; br3: 72; br4: 39631; br5: 13">(6/6)</span>      :                         if (!baseDecorated &amp;&amp; !indexDecorated &amp;&amp; !instDecorated)</span></span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">       39631            :                             break;</span></span>
 <span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">          98            :                         IRBuilder builder(inst);</span></span>
 <span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">          98            :                         builder.setInsertBefore(inst);</span></span>
 <span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">          98 <span class="branchAll" title="br0: 25; br1: 73">(2/2)</span>      :                         if (!indexDecorated)</span></span>
@@ -887,17 +887,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">          85            :                             builder.addSPIRVNonUniformResourceDecoration(inst);</span></span>
 <span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">          98            :                     }</span></span>
 <span id="L598"><span class="lineNum">     598</span> <span class="tlaUNC">           0            :                     break;</span></span>
-<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">       21043 <span class="branchAll" title="br0: 21043; br1: 592027">(2/2)</span>      :                 case kIROp_FieldAddress:</span></span>
-<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">       28851 <span class="branchAll" title="br0: 7808; br1: 605262">(2/2)</span>      :                 case kIROp_FieldExtract:</span></span>
-<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">       28851 <span class="branchAll" title="br0: 2; br1: 28849">(2/2)</span>      :                     if (inst-&gt;getOperand(0)</span></span>
-<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">       28851            :                             -&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() &amp;&amp;</span></span>
-<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">       28851 <span class="branchPart" title="br0: 2; br1: 0">(1/2)</span>      :                         !inst-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;())</span></span>
+<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">       21185 <span class="branchAll" title="br0: 21185; br1: 593077">(2/2)</span>      :                 case kIROp_FieldAddress:</span></span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">       29069 <span class="branchAll" title="br0: 7884; br1: 606378">(2/2)</span>      :                 case kIROp_FieldExtract:</span></span>
+<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">       29069 <span class="branchAll" title="br0: 2; br1: 29067">(2/2)</span>      :                     if (inst-&gt;getOperand(0)</span></span>
+<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">       29069            :                             -&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() &amp;&amp;</span></span>
+<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">       29069 <span class="branchPart" title="br0: 2; br1: 0">(1/2)</span>      :                         !inst-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;())</span></span>
 <span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">           2            :                     {</span></span>
 <span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC">           2            :                         IRBuilder builder(inst);</span></span>
 <span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">           2            :                         builder.addSPIRVNonUniformResourceDecoration(inst);</span></span>
 <span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">           2            :                     }</span></span>
-<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">       28851            :                     break;</span></span>
-<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">         174 <span class="branchAll" title="br0: 174; br1: 612896">(2/2)</span>      :                 case kIROp_ImageSubscript:</span></span>
+<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">       29069            :                     break;</span></span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">         174 <span class="branchAll" title="br0: 174; br1: 614088">(2/2)</span>      :                 case kIROp_ImageSubscript:</span></span>
 <span id="L610"><span class="lineNum">     610</span>                         :                     // ImageSubscript lowers directly to SpvOpImageTexelPointer</span>
 <span id="L611"><span class="lineNum">     611</span>                         :                     // at emit time (it is never turned into a</span>
 <span id="L612"><span class="lineNum">     612</span>                         :                     // kIROp_ImageTexelPointer IR inst), so the NonUniform</span>
@@ -920,16 +920,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L629"><span class="lineNum">     629</span> <span class="tlaGNC">           3            :                         builder.addSPIRVNonUniformResourceDecoration(inst);</span></span>
 <span id="L630"><span class="lineNum">     630</span> <span class="tlaGNC">           3            :                     }</span></span>
 <span id="L631"><span class="lineNum">     631</span> <span class="tlaGNC">         174            :                     break;</span></span>
-<span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">       65573 <span class="branchAll" title="br0: 65573; br1: 547497">(2/2)</span>      :                 case kIROp_Load:</span></span>
-<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">       65573 <span class="branchAll" title="br0: 80; br1: 65493">(2/2)</span>      :                     if (inst-&gt;getOperand(0)</span></span>
-<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">       65573            :                             -&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() &amp;&amp;</span></span>
-<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">       65573 <span class="branchPart" title="br0: 80; br1: 0">(1/2)</span>      :                         !inst-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;())</span></span>
+<span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">       65684 <span class="branchAll" title="br0: 65684; br1: 548578">(2/2)</span>      :                 case kIROp_Load:</span></span>
+<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">       65684 <span class="branchAll" title="br0: 80; br1: 65604">(2/2)</span>      :                     if (inst-&gt;getOperand(0)</span></span>
+<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">       65684            :                             -&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;() &amp;&amp;</span></span>
+<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">       65684 <span class="branchPart" title="br0: 80; br1: 0">(1/2)</span>      :                         !inst-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;())</span></span>
 <span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">          80            :                     {</span></span>
 <span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">          80            :                         IRBuilder builder(inst);</span></span>
 <span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">          80            :                         builder.addSPIRVNonUniformResourceDecoration(inst);</span></span>
 <span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">          80            :                     }</span></span>
-<span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">       65573            :                     break;</span></span>
-<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">      478825 <span class="branchAll" title="br0: 478825; br1: 134245">(2/2)</span>      :                 default:</span></span>
+<span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">       65684            :                     break;</span></span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">      479607 <span class="branchAll" title="br0: 479607; br1: 134655">(2/2)</span>      :                 default:</span></span>
 <span id="L642"><span class="lineNum">     642</span>                         :                     // MakeCombinedTextureSampler, CombinedTextureSamplerGetTexture,</span>
 <span id="L643"><span class="lineNum">     643</span>                         :                     // ImageTexelPointer, and GetLegalizedSPIRVGlobalParamAddr are</span>
 <span id="L644"><span class="lineNum">     644</span>                         :                     // intentionally absent -- handled by the float pass.</span>
@@ -937,12 +937,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L646"><span class="lineNum">     646</span>                         :                     // handled anywhere: the descriptor-heap image-atomic path</span>
 <span id="L647"><span class="lineNum">     647</span>                         :                     // that would need it is rejected by E41403 (see the note</span>
 <span id="L648"><span class="lineNum">     648</span>                         :                     // in processImageSubscript), so it is currently unreachable.</span>
-<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">      478825            :                     break;</span></span>
-<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">      613070            :                 }</span></span>
-<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">      613070            :             }</span></span>
-<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">       88203            :         }</span></span>
-<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">       15447            :     }</span></span>
-<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">        4992            : }</span></span>
+<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">      479607            :                     break;</span></span>
+<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">      614262            :                 }</span></span>
+<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">      614262            :             }</span></span>
+<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">       88288            :         }</span></span>
+<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">       15492            :     }</span></span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">        4995            : }</span></span>
 <span id="L655"><span class="lineNum">     655</span>                         : } // namespace Slang</span>
 </pre>
   <br>

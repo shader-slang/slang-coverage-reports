@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-17 05:11:28 UTC</td>
+      <td class="headerValue">2026-10-18 05:11:15 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -418,7 +418,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L127"><span class="lineNum">     127</span>                         :     /// Update state</span>
 <span id="L128"><span class="lineNum">     128</span>                         :     SlangResult update();</span>
 <span id="L129"><span class="lineNum">     129</span>                         :     /// Get the current read staet</span>
-<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        1781            :     ReadState getReadState() const { return m_readState; }</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        1587            :     ReadState getReadState() const { return m_readState; }</span></span>
 <span id="L131"><span class="lineNum">     131</span>                         :     /// Get the cause when the current read state is Error.</span>
 <span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">         210            :     ReadError getReadError() const { return m_readError; }</span></span>
 <span id="L133"><span class="lineNum">     133</span>                         :     /// Get the read header</span>
@@ -447,31 +447,31 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L156"><span class="lineNum">     156</span>                         : </span>
 <span id="L157"><span class="lineNum">     157</span>                         :     /// True if connection is active.</span>
 <span id="L158"><span class="lineNum">     158</span>                         :     bool isActive() const</span>
-<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">        2201            :     {</span></span>
-<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">        2201 <span class="branchPart" title="br0: 2201; br1: 0; br2: 2201; br3: 0">(2/4)</span>      :         return m_readState != ReadState::Error &amp;&amp; m_readState != ReadState::Closed;</span></span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        2201            :     }</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">        2001            :     {</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">        2001 <span class="branchPart" title="br0: 2001; br1: 0; br2: 2001; br3: 0">(2/4)</span>      :         return m_readState != ReadState::Error &amp;&amp; m_readState != ReadState::Closed;</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        2001            :     }</span></span>
 <span id="L162"><span class="lineNum">     162</span>                         : </span>
 <span id="L163"><span class="lineNum">     163</span>                         :     bool hasHeader() const</span>
 <span id="L164"><span class="lineNum">     164</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L165"><span class="lineNum">     165</span> <span class="tlaUNC">           0            :         return m_readState == ReadState::Content || m_readState == ReadState::Done;</span></span>
 <span id="L166"><span class="lineNum">     166</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L167"><span class="lineNum">     167</span>                         :     /// True if has content (implies has header)</span>
-<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">        3349            :     bool hasContent() const { return m_readState == ReadState::Done; }</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">        3155            :     bool hasContent() const { return m_readState == ReadState::Done; }</span></span>
 <span id="L169"><span class="lineNum">     169</span>                         : </span>
 <span id="L170"><span class="lineNum">     170</span>                         :     /// Ctor</span>
 <span id="L171"><span class="lineNum">     171</span>                         :     HTTPPacketConnection(BufferedReadStream* readStream, Stream* writeStream);</span>
 <span id="L172"><span class="lineNum">     172</span>                         : </span>
 <span id="L173"><span class="lineNum">     173</span>                         : protected:</span>
 <span id="L174"><span class="lineNum">     174</span>                         :     SlangResult _setReadError(SlangResult res, ReadError error)</span>
-<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       60131            :     {</span></span>
-<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       60131            :         if (SLANG_FAILED(res) &amp;&amp; SLANG_SUCCEEDED(m_readResult))</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       51696            :     {</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       51696            :         if (SLANG_FAILED(res) &amp;&amp; SLANG_SUCCEEDED(m_readResult))</span></span>
 <span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">         208            :         {</span></span>
 <span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">         208            :             m_readState = ReadState::Error;</span></span>
 <span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">         208            :             m_readResult = res;</span></span>
 <span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">         208            :             m_readError = error;</span></span>
 <span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">         208            :         }</span></span>
-<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       60131            :         return res;</span></span>
-<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">       60131            :     }</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       51696            :         return res;</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">       51696            :     }</span></span>
 <span id="L184"><span class="lineNum">     184</span>                         : </span>
 <span id="L185"><span class="lineNum">     185</span>                         :     SlangResult _handleHeader();</span>
 <span id="L186"><span class="lineNum">     186</span>                         :     SlangResult _handleContent();</span>
