@@ -1,0 +1,802 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Slang macos coverage (new renderer) - source/slang/slang-profile.cpp</title>
+  <style>/* Palette pulled from shader-slang.org:
+   primary teal #105f65, accent orange #F14D1B, success green #2c882c,
+   amber #ffc107, red #dc3545, body bg #fff, subtle gray #f8f9fa.
+   Tier cells use the categorical brand colors; rate bars use a
+   continuous HSL gradient (set per-row inline). */
+:root {
+  --slang-teal:   #105f65;
+  --slang-teal-hover: #0d4d52;
+  --slang-orange: #F14D1B;
+  --tier-hi:      #2c882c;
+  --tier-hi-bg:   #d6ebd5;
+  --tier-med:     #ffc107;
+  --tier-med-bg:  #fff3cd;
+  --tier-lo:      #dc3545;
+  --tier-lo-bg:   #f8d7da;
+  --row-bg:       #f8f9fa;
+  --row-bg-alt:   #ffffff;
+  --row-hover:    #e9ecef;
+  --text:         #212529;
+  --text-muted:   #6c757d;
+  --link:         #105f65;
+}
+
+body { color: var(--text); background-color: #fff;
+       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    Roboto, Helvetica, Arial, sans-serif;
+       margin: 0; padding: 0 24px; }
+a:link, a:visited { color: var(--link); text-decoration: underline; }
+a:hover           { color: var(--slang-teal-hover); }
+a:active          { color: var(--slang-orange); }
+
+table.chrome { width: 100%; border-collapse: collapse; }
+td.title   { text-align: center; padding: 14px 0 10px; font-size: 22pt;
+             font-weight: 600; color: var(--slang-teal);
+             letter-spacing: 0.02em; }
+td.ruler   { background-color: var(--slang-teal); height: 3px; padding: 0; }
+
+/* Sticky page chrome: title + meta + metric cards stay visible
+   when the user scrolls. The data table's <thead> sticks directly
+   underneath at top: var(--chrome-h), measured by JS on page load. */
+div.topChrome { position: sticky; top: 0; z-index: 20;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); }
+table.chromeMeta { width: 100%; border-collapse: collapse;
+                   margin: 6px 0; }
+table.chromeMeta td { padding: 2px 8px; }
+
+/* Per-file summary cards. Wide flex row, one card per metric
+   (Lines / Functions / Branches), each showing the metric name,
+   the rate %, a thin progress bar and the hit/total counts on
+   one line. Replaces the old 4×N transposed grid that was tall
+   and narrow. */
+div.metricCards { display: flex; flex-wrap: wrap; gap: 12px;
+                  margin: 10px 0 12px; }
+div.metricCard  { flex: 1 1 240px; padding: 8px 14px;
+                  background-color: var(--row-bg-alt);
+                  border: 1px solid var(--row-bg);
+                  border-radius: 6px;
+                  display: flex; align-items: center; gap: 12px;
+                  font-size: 90%; }
+span.metricLabel { font-weight: 600; color: var(--text-muted);
+                   text-transform: uppercase; letter-spacing: 0.04em;
+                   font-size: 78%; min-width: 4.5em; }
+span.metricValue { font-size: 16pt; font-weight: 700;
+                   color: var(--text); min-width: 4em;
+                   text-align: right; }
+div.metricBarMini { flex: 1; height: 6px; min-width: 60px;
+                    background-color: #e0e3e6; border-radius: 3px;
+                    overflow: hidden; }
+div.metricBarFill { height: 100%; }
+span.metricCounts { color: var(--text-muted); white-space: nowrap;
+                    min-width: 5em; text-align: right; font-variant-numeric: tabular-nums; }
+
+td.headerItem        { text-align: right; padding-right: 6px; font-weight: 600;
+                       vertical-align: top; white-space: nowrap; color: var(--text-muted); }
+td.headerValue       { text-align: left; color: var(--slang-teal); font-weight: 600;
+                       white-space: nowrap; }
+td.headerCovTableHead { text-align: center; padding: 0 6px; white-space: nowrap;
+                        color: var(--text-muted); }
+td.headerCovTableEntry    { text-align: right; color: var(--text); font-weight: 600;
+                            padding-left: 12px; padding-right: 4px;
+                            background-color: var(--row-bg); white-space: nowrap; }
+
+/* Top-level index table: full window width with a small breathing
+   margin. Both the file-summary table and any embedded fnInner
+   share these column widths so the same metric column lines up
+   vertically across the file row and its expanded function rows. */
+table.indexTable { margin: 0 auto; width: 100%;
+                   border-collapse: collapse; }
+table.indexTable col.colFile   { width: 47%; }
+table.indexTable col.colLBar   { width: 9%; }
+table.indexTable col.colLRate  { width: 5%; }
+table.indexTable col.colLTotal { width: 4%; }
+table.indexTable col.colLHit   { width: 4%; }
+table.indexTable col.colFRate  { width: 5%; }
+table.indexTable col.colFTotal { width: 4%; }
+table.indexTable col.colFHit   { width: 4%; }
+table.indexTable col.colBRate  { width: 5%; }
+table.indexTable col.colBTotal { width: 4%; }
+table.indexTable col.colBHit   { width: 4%; }
+
+td.tableHead { text-align: center; color: #fff; background-color: var(--slang-teal);
+               font-size: 110%; font-weight: 600; padding: 4px 6px;
+               white-space: nowrap; letter-spacing: 0.02em; }
+
+/* Make the index table's <thead> sticky right under the chrome.
+   `--chrome-h` is set by the inline JS at page load to the
+   measured height of `div.topChrome` so the two sticky layers
+   stack without overlap. */
+table.indexTable thead    { position: sticky;
+                            top: var(--chrome-h, 200px);
+                            z-index: 10; }
+table.indexTable thead td { background-color: var(--slang-teal); }
+
+tr.fileSummary > td:not(.coverBar):not(.coverFile):not(.coverDirectory) {
+  text-align: right;
+}
+/* Zebra-stripe ONLY .fileSummary rows. Plain `:nth-child(odd)`
+   counts position among ALL siblings in the <tbody>, which mixes
+   dirHeader / fileSummary / fileFunctions and produces sporadic
+   striping. The CSS-Selectors-Level-4 `of S` form fixes the count
+   to the .fileSummary subset; baseline-widely-available in modern
+   evergreen browsers (Chromium/Firefox/Safari). */
+tr:nth-child(odd of tr.fileSummary) > td.coverFile,
+tr:nth-child(odd of tr.fileSummary) > td.coverNumDflt { background-color: var(--row-bg); }
+
+td.coverFile       { text-align: left; padding: 3px 20px 3px 10px;
+                     color: var(--link); background-color: var(--row-bg-alt);
+                     font-family: ui-monospace, SFMono-Regular, Menlo,
+                                  Monaco, Consolas, monospace;
+                     overflow-wrap: anywhere; }
+/* Directory rows: white background like file rows so they don't get
+   confused with the teal column-header. A 3 px teal stripe on the
+   left edge plus a teal chevron and bold dark-teal text mark them
+   as expandable parents. */
+td.coverDirectory  { text-align: left; padding: 4px 20px 4px 10px;
+                     color: var(--slang-teal);
+                     background-color: var(--row-bg-alt);
+                     border-left: 3px solid var(--slang-teal);
+                     font-family: ui-monospace, SFMono-Regular, Menlo,
+                                  Monaco, Consolas, monospace;
+                     font-weight: 700; }
+td.coverBar        { padding: 3px 10px; background-color: var(--row-bg-alt); }
+tr:nth-child(odd of tr.fileSummary) > td.coverBar { background-color: var(--row-bg); }
+span.coverBarOutline { display: inline-block; height: 10px; width: 100px;
+                       background-color: #cfd4d8; vertical-align: middle;
+                       line-height: 0; border-radius: 1px; overflow: hidden; }
+span.coverBarFill  { display: inline-block; height: 10px; vertical-align: top; }
+span.coverBarRest    { background-color: transparent; display: inline-block;
+                       height: 10px; vertical-align: top; }
+
+/* Rate cells use a continuous gradient background that matches
+   the progress-bar fill. The exact color is computed per-row and
+   set via inline `style="background-color: hsl(...)"`. The class
+   provides only the layout / typography. */
+td.coverPerCell { text-align: right; padding: 3px 10px;
+                  color: var(--text); font-weight: 700; }
+td.coverNumDflt { text-align: right; padding: 3px 10px;
+                  background-color: var(--row-bg-alt); white-space: nowrap; }
+
+td.footnote    { padding: 6px 10px; background-color: var(--row-bg);
+                 color: var(--text-muted); font-style: italic; font-size: 85%; }
+td.versionInfo { text-align: center; padding: 8px; color: var(--text-muted);
+                 font-size: 90%; }
+
+pre.sourceHeading { font-family: ui-monospace, SFMono-Regular, Menlo,
+                                 Monaco, Consolas, monospace;
+                    font-weight: 700; margin: 0; padding: 6px 0;
+                    color: var(--text-muted);
+                    background-color: #fff;
+                    border-bottom: 1px solid var(--row-bg);
+                    position: sticky;
+                    top: var(--chrome-h, 200px);
+                    z-index: 5; }
+pre.source        { font-family: ui-monospace, SFMono-Regular, Menlo,
+                                 Monaco, Consolas, monospace;
+                    margin-top: 2px; }
+span.lineNum      { background-color: #f1f3f5; display: inline-block;
+                    min-width: 6em; text-align: right; padding-right: 4px;
+                    color: var(--text-muted); }
+span.tlaGNC       { background-color: #d6ebd5; }
+span.tlaUNC       { background-color: #f8d7da; }
+
+td.coverFn        { text-align: left; padding: 2px 20px 2px 10px;
+                    color: var(--text);
+                    background-color: var(--row-bg-alt);
+                    font-family: ui-monospace, SFMono-Regular, Menlo,
+                                 Monaco, Consolas, monospace;
+                    word-break: break-all; font-size: 92%; }
+
+span.branchAll   { background-color: var(--tier-hi-bg);  color: var(--text); }
+span.branchPart  { background-color: var(--tier-med-bg); color: var(--text); }
+span.branchNone  { background-color: var(--tier-lo-bg);  color: var(--text); }
+
+/* Expand-chevrons. The placeholder variant reserves the same column
+   width on rows that have no functions, so the file-name column
+   stays vertically aligned across all rows. */
+span.fnToggle, span.fnTogglePlaceholder, span.dirToggle
+                 { display: inline-block; width: 1em;
+                   font-family: ui-monospace, SFMono-Regular, Menlo,
+                                Monaco, Consolas, monospace;
+                   user-select: none; margin-right: 4px; text-align: center; }
+span.fnToggle    { cursor: pointer; color: var(--slang-teal); }
+span.dirToggle   { cursor: pointer; color: var(--slang-teal); }
+span.fnTogglePlaceholder { color: transparent; }
+span.fnToggle:focus, span.dirToggle:focus { outline: 1px dotted var(--slang-orange); }
+tr.fileFunctions[hidden]  { display: none; }
+tr.fileSummary[hidden]    { display: none; }
+/* fileFunctions row's <td> matches the parent indexTable edges
+   (body padding already provides the 24px window inset).  A 3px
+   teal stripe on the left visually marks the expanded region. */
+tr.fileFunctions > td   { background-color: #fdfdfe; padding: 6px 0;
+                          border-left: 3px solid var(--slang-teal); }
+
+/* Embedded function table inside an expanded file row. The colgroup
+   widths mirror the parent indexTable so cells line up vertically
+   across the file row and its expanded function rows.
+   Cells inherit padding / font from their class-specific rules
+   above (coverPerHi/Med/Lo, coverNumDflt, coverBar, coverFn …) —
+   no generic `table.fnInner td` overrides — which is what makes
+   metric cells use the parent's sans-serif and 3px/10px padding,
+   while only the function name cell (td.coverFn) stays monospace. */
+table.fnInner   { border-collapse: collapse; margin: 0; width: 100%;
+                  table-layout: fixed; }
+table.fnInner td { overflow-wrap: break-word; }
+table.fnInner td.tableHead { font-family: -apple-system, BlinkMacSystemFont,
+                             "Segoe UI", Roboto, sans-serif; }
+/* fn-specific cols subdivide the parent's File column (47%) into
+   Name (43%) + Line (4%). The remaining cols reuse the parent's
+   classes so the line-coverage / fn / branch columns line up
+   vertically with the file-summary row above. */
+table.fnInner col.fnNameCol  { width: 43%; }
+table.fnInner col.fnLineCol  { width: 4%; }
+
+.sourceUnavailable { color: var(--slang-orange); font-style: italic;
+                     padding: 8px; }
+</style>
+</head>
+<body>
+<div class="topChrome">
+  <table class="chrome" cellpadding="0" cellspacing="0">
+    <tr><td class="title">Slang macos coverage (new renderer) - source/slang/slang-profile.cpp</td></tr>
+    <tr><td class="ruler"></td></tr>
+  </table>
+  <table class="chromeMeta">
+    <tr>
+      <td class="headerItem">Current view:</td>
+      <td class="headerValue"><a href="index.html" title="Click to go to top-level">top level</a> - source/slang/slang-profile.cpp</td>
+      <td class="headerItem">Test:</td>
+      <td class="headerValue">coverage.lcov</td>
+      <td class="headerItem">Date:</td>
+      <td class="headerValue">2026-10-19 05:21:35 UTC</td>
+    </tr>
+  </table>
+  <div class="metricCards">
+    <div class="metricCard">
+      <span class="metricLabel">Lines</span>
+      <span class="metricValue">72.8&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:72.8%;background-color:hsl(47, 70%, 50%)"></div></div>
+      <span class="metricCounts">187 / 257</span>
+    </div>
+    <div class="metricCard">
+      <span class="metricLabel">Functions</span>
+      <span class="metricValue">86.7&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:86.7%;background-color:hsl(100, 70%, 50%)"></div></div>
+      <span class="metricCounts">13 / 15</span>
+    </div>
+    <div class="metricCard">
+      <span class="metricLabel">Branches</span>
+      <span class="metricValue">70.0&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:70.0%;background-color:hsl(30, 70%, 50%)"></div></div>
+      <span class="metricCounts">753 / 1,076</span>
+    </div>
+    <div class="metricCard">
+      <span class="metricLabel">Regions</span>
+      <span class="metricValue">58.8&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:58.8%;background-color:hsl(25, 70%, 50%)"></div></div>
+      <span class="metricCounts">1,719 / 2,921</span>
+    </div>
+  </div>
+  <table class="chrome" cellpadding="0" cellspacing="0">
+    <tr><td class="ruler"></td></tr>
+  </table>
+</div>
+<pre class="sourceHeading">    Line        Hits   Branch    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>                         : // slang-profile.cpp</span>
+<span id="L2"><span class="lineNum">       2</span>                         : #include &quot;slang-profile.h&quot;</span>
+<span id="L3"><span class="lineNum">       3</span>                         : </span>
+<span id="L4"><span class="lineNum">       4</span>                         : namespace Slang</span>
+<span id="L5"><span class="lineNum">       5</span>                         : {</span>
+<span id="L6"><span class="lineNum">       6</span>                         : </span>
+<span id="L7"><span class="lineNum">       7</span>                         : Profile Profile::lookUp(UnownedStringSlice const&amp; name)</span>
+<span id="L8"><span class="lineNum">       8</span> <span class="tlaGNC">        2012            : {</span></span>
+<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC">        2012            : #define PROFILE(TAG, NAME, STAGE, VERSION)           \</span></span>
+<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC">      186712 <span class="branchAll" title="br0: 1441; br1: 185271">(2/2)</span>      :     if (name == UnownedTerminatedStringSlice(#NAME)) \</span></span>
+<span id="L11"><span class="lineNum">      11</span> <span class="tlaGNC">      186712            :         return Profile::TAG;</span></span>
+<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">        2012            : #define PROFILE_ALIAS(TAG, DEF, NAME)                \</span></span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">        9020 <span class="branchAll" title="br0: 502; br1: 8518">(2/2)</span>      :     if (name == UnownedTerminatedStringSlice(#NAME)) \</span></span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">        9020            :         return Profile::TAG;</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">        2012 <span class="branchPart" title="br0: 0; br1: 2012; br2: 0; br3: 2012; br4: 53; br5: 1959; br6: 9; br7: 1950; br8: 114; br9: 1836; br10: 4; br11: 1832; br12: 36; br13: 1796; br14: 12; br15: 1784; br16: 1; br17: 1783; br18: 21; br19: 1762; br20: 39; br21: 1723; br22: 3; br23: 1720; br24: 1; br25: 1719; br26: 89; br27: 1630; br28: 16; br29: 1614; br30: 0; br31: 1614; br32: 0; br33: 1614; br34: 0; br35: 1614; br36: 0; br37: 1614; br38: 0; br39: 1614; br40: 0; br41: 1614; br42: 0; br43: 1614; br44: 1; br45: 1613; br46: 0; br47: 1613; br48: 0; br49: 1613; br50: 0; br51: 1613; br52: 0; br53: 1613; br54: 0; br55: 1613; br56: 0; br57: 1613; br58: 0; br59: 1613; br60: 0; br61: 1613; br62: 0; br63: 1613; br64: 0; br65: 1613; br66: 0; br67: 1613; br68: 0; br69: 1613; br70: 0; br71: 1613; br72: 0; br73: 1613; br74: 0; br75: 1613; br76: 0; br77: 1613; br78: 0; br79: 1613; br80: 0; br81: 1613; br82: 0; br83: 1613; br84: 0; br85: 1613; br86: 0; br87: 1613; br88: 0; br89: 1613; br90: 0; br91: 1613; br92: 0; br93: 1613; br94: 0; br95: 1613; br96: 0; br97: 1613; br98: 0; br99: 1613; br100: 0; br101: 1613; br102: 0; br103: 1613; br104: 0; br105: 1613; br106: 0; br107: 1613; br108: 0; br109: 1613; br110: 0; br111: 1613; br112: 24; br113: 1589; br114: 0; br115: 1589; br116: 18; br117: 1571; br118: 2; br119: 1569; br120: 12; br121: 1557; br122: 0; br123: 1557; br124: 0; br125: 1557; br126: 0; br127: 1557; br128: 0; br129: 1557; br130: 0; br131: 1557; br132: 6; br133: 1551; br134: 0; br135: 1551; br136: 1; br137: 1550; br138: 0; br139: 1550; br140: 0; br141: 1550; br142: 2; br143: 1548; br144: 0; br145: 1548; br146: 5; br147: 1543; br148: 2; br149: 1541; br150: 4; br151: 1537; br152: 0; br153: 1537; br154: 0; br155: 1537; br156: 0; br157: 1537; br158: 0; br159: 1537; br160: 0; br161: 1537; br162: 0; br163: 1537; br164: 0; br165: 1537; br166: 0; br167: 1537; br168: 0; br169: 1537; br170: 0; br171: 1537; br172: 0; br173: 1537; br174: 0; br175: 1537; br176: 0; br177: 1537; br178: 0; br179: 1537; br180: 0; br181: 1537; br182: 0; br183: 1537; br184: 0; br185: 1537; br186: 0; br187: 1537; br188: 0; br189: 1537; br190: 0; br191: 1537; br192: 0; br193: 1537; br194: 0; br195: 1537; br196: 1; br197: 1536; br198: 0; br199: 1536; br200: 249; br201: 1287; br202: 8; br203: 1279; br204: 48; br205: 1231; br206: 0; br207: 1231; br208: 0; br209: 1231; br210: 3; br211: 1228; br212: 0; br213: 1228; br214: 0; br215: 1228; br216: 28; br217: 1200; br218: 14; br219: 1186; br220: 121; br221: 1065; br222: 0; br223: 1065; br224: 0; br225: 1065; br226: 3; br227: 1062; br228: 6; br229: 1056; br230: 7; br231: 1049; br232: 0; br233: 1049; br234: 262; br235: 787; br236: 137; br237: 650; br238: 62; br239: 588; br240: 0; br241: 588; br242: 16; br243: 572; br244: 8; br245: 564; br246: 28; br247: 536; br248: 3; br249: 533; br250: 2; br251: 531; br252: 0; br253: 531; br254: 0; br255: 531; br256: 30; br257: 501; br258: 20; br259: 481; br260: 237; br261: 244; br262: 39; br263: 205; br264: 10; br265: 195; br266: 1; br267: 194; br268: 1; br269: 193; br270: 0; br271: 193; br272: 12; br273: 181; br274: 0; br275: 181; br276: 2; br277: 179; br278: 68; br279: 111; br280: 41; br281: 70; br282: 0; br283: 70; br284: 0; br285: 70; br286: 0; br287: 70; br288: 0; br289: 70; br290: 0; br291: 70; br292: 0; br293: 70; br294: 0; br295: 70; br296: 0; br297: 70; br298: 0; br299: 70; br300: 0; br301: 70; br302: 0; br303: 70; br304: 0; br305: 70; br306: 0; br307: 70; br308: 0; br309: 70; br310: 0; br311: 70; br312: 0; br313: 70; br314: 0; br315: 70; br316: 0; br317: 70; br318: 0; br319: 70; br320: 0; br321: 70; br322: 0; br323: 70; br324: 0; br325: 70; br326: 0; br327: 70; br328: 0; br329: 70; br330: 0; br331: 70; br332: 0; br333: 70; br334: 0; br335: 70; br336: 0; br337: 70; br338: 0; br339: 70; br340: 0; br341: 70; br342: 0; br343: 70; br344: 0; br345: 70; br346: 0; br347: 70; br348: 0; br349: 70; br350: 0; br351: 70; br352: 0; br353: 70; br354: 0; br355: 70; br356: 0; br357: 70; br358: 0; br359: 70; br360: 0; br361: 70; br362: 0; br363: 70; br364: 0; br365: 70; br366: 1; br367: 69; br368: 0; br369: 69; br370: 0; br371: 69; br372: 0; br373: 69; br374: 0; br375: 69; br376: 0; br377: 69; br378: 0; br379: 69">(245/380)</span>  : #include &quot;slang-profile-defs.h&quot;</span></span>
+<span id="L16"><span class="lineNum">      16</span>                         : </span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">          69            :     return Profile::Unknown;</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">      193720            : }</span></span>
+<span id="L19"><span class="lineNum">      19</span>                         : </span>
+<span id="L20"><span class="lineNum">      20</span>                         : Profile Profile::lookUp(char const* name)</span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">         970            : {</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">         970            :     return lookUp(UnownedStringSlice(name));</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">         970            : }</span></span>
+<span id="L24"><span class="lineNum">      24</span>                         : </span>
+<span id="L25"><span class="lineNum">      25</span>                         : CapabilitySet Profile::getCapabilityName()</span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">       51000            : {</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">       51000            :     List&lt;CapabilityName&gt; result;</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">       51000            :     switch (getVersion())</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">       51000            :     {</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaUNC">           0            : #define PROFILE_VERSION(TAG, NAME)       \</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">        2834 <span class="branchAll" title="br0: 2834; br1: 1680166">(2/2)</span>      :     case ProfileVersion::TAG:            \</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">        2834            :         result.add(CapabilityName::TAG); \</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">        2834            :         break;</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 36; br1: 50964; br2: 0; br3: 51000; br4: 403; br5: 50597; br6: 32; br7: 50968; br8: 264; br9: 50736; br10: 13; br11: 50987; br12: 60; br13: 50940; br14: 36; br15: 50964; br16: 1; br17: 50999; br18: 307; br19: 50693; br20: 215; br21: 50785; br22: 155; br23: 50845; br24: 241; br25: 50759; br26: 167; br27: 50833; br28: 35; br29: 50965; br30: 20; br31: 50980; br32: 2; br33: 50998; br34: 2; br35: 50998; br36: 0; br37: 51000; br38: 24; br39: 50976; br40: 0; br41: 51000; br42: 2; br43: 50998; br44: 93; br45: 50907; br46: 57; br47: 50943; br48: 56; br49: 50944; br50: 5; br51: 50995; br52: 4; br53: 50996; br54: 0; br55: 51000; br56: 0; br57: 51000; br58: 55; br59: 50945; br60: 33; br61: 50967; br62: 454; br63: 50546; br64: 62; br65: 50938">(61/66)</span>    : #include &quot;slang-profile-defs.h&quot;</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">       48166 <span class="branchAll" title="br0: 48166; br1: 2834">(2/2)</span>      :     default:</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">       48166            :         break;</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       51000            :     }</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">       51000            :     switch (getStage())</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">       51000            :     {</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0            : #define PROFILE_STAGE(TAG, NAME, VAL)     \</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">       25840 <span class="branchAll" title="br0: 25840; br1: 790160">(2/2)</span>      :     case Stage::TAG:                      \</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       25840            :         result.add(CapabilityName::NAME); \</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       25840            :         break;</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC">           0 <span class="branchAll" title="br0: 571; br1: 50429; br2: 56; br3: 50944; br4: 25; br5: 50975; br6: 81; br7: 50919; br8: 1306; br9: 49694; br10: 21800; br11: 29200; br12: 289; br13: 50711; br14: 51; br15: 50949; br16: 54; br17: 50946; br18: 131; br19: 50869; br20: 72; br21: 50928; br22: 70; br23: 50930; br24: 123; br25: 50877; br26: 29; br27: 50971; br28: 1062; br29: 49938; br30: 120; br31: 50880">(32/32)</span>    : #include &quot;slang-profile-defs.h&quot;</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       25160 <span class="branchAll" title="br0: 25160; br1: 25840">(2/2)</span>      :     default:</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       25160            :         break;</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       51000            :     }</span></span>
+<span id="L48"><span class="lineNum">      48</span>                         : </span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       51000            :     CapabilitySet resultSet = CapabilitySet(result);</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       51000 <span class="branchAll" title="br0: 5696; br1: 51000">(2/2)</span>      :     for (auto i : this-&gt;additionalCapabilities)</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        5696            :         resultSet.join(i);</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       51000            :     return resultSet;</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       51000            : }</span></span>
+<span id="L54"><span class="lineNum">      54</span>                         : </span>
+<span id="L55"><span class="lineNum">      55</span>                         : char const* Profile::getName()</span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">         218            : {</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">         218            :     switch (raw)</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         218            :     {</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">          62 <span class="branchAll" title="br0: 62; br1: 156">(2/2)</span>      :     default:</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">          62            :         return &quot;unknown&quot;;</span></span>
+<span id="L61"><span class="lineNum">      61</span>                         : </span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0            : #define PROFILE(TAG, NAME, STAGE, VERSION) \</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">         156 <span class="branchAll" title="br0: 156; br1: 37340">(2/2)</span>      :     case Profile::TAG:                     \</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         156            :         return #NAME;</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaUNC">           0            : #define PROFILE_ALIAS(TAG, DEF, NAME) /* empty */</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         218 <span class="branchPart" title="br0: 0; br1: 218; br2: 0; br3: 218; br4: 0; br5: 218; br6: 0; br7: 218; br8: 16; br9: 202; br10: 0; br11: 218; br12: 7; br13: 211; br14: 0; br15: 218; br16: 0; br17: 218; br18: 4; br19: 214; br20: 2; br21: 216; br22: 0; br23: 218; br24: 0; br25: 218; br26: 0; br27: 218; br28: 0; br29: 218; br30: 0; br31: 218; br32: 0; br33: 218; br34: 0; br35: 218; br36: 0; br37: 218; br38: 0; br39: 218; br40: 0; br41: 218; br42: 0; br43: 218; br44: 0; br45: 218; br46: 0; br47: 218; br48: 0; br49: 218; br50: 0; br51: 218; br52: 0; br53: 218; br54: 0; br55: 218; br56: 0; br57: 218; br58: 0; br59: 218; br60: 0; br61: 218; br62: 0; br63: 218; br64: 0; br65: 218; br66: 0; br67: 218; br68: 0; br69: 218; br70: 0; br71: 218; br72: 0; br73: 218; br74: 0; br75: 218; br76: 0; br77: 218; br78: 0; br79: 218; br80: 0; br81: 218; br82: 0; br83: 218; br84: 0; br85: 218; br86: 0; br87: 218; br88: 0; br89: 218; br90: 0; br91: 218; br92: 0; br93: 218; br94: 0; br95: 218; br96: 0; br97: 218; br98: 0; br99: 218; br100: 0; br101: 218; br102: 0; br103: 218; br104: 0; br105: 218; br106: 0; br107: 218; br108: 0; br109: 218; br110: 0; br111: 218; br112: 0; br113: 218; br114: 0; br115: 218; br116: 0; br117: 218; br118: 0; br119: 218; br120: 2; br121: 216; br122: 0; br123: 218; br124: 0; br125: 218; br126: 0; br127: 218; br128: 0; br129: 218; br130: 0; br131: 218; br132: 0; br133: 218; br134: 0; br135: 218; br136: 0; br137: 218; br138: 0; br139: 218; br140: 0; br141: 218; br142: 0; br143: 218; br144: 0; br145: 218; br146: 0; br147: 218; br148: 0; br149: 218; br150: 2; br151: 216; br152: 0; br153: 218; br154: 0; br155: 218; br156: 0; br157: 218; br158: 0; br159: 218; br160: 0; br161: 218; br162: 0; br163: 218; br164: 0; br165: 218; br166: 0; br167: 218; br168: 0; br169: 218; br170: 0; br171: 218; br172: 0; br173: 218; br174: 0; br175: 218; br176: 0; br177: 218; br178: 0; br179: 218; br180: 0; br181: 218; br182: 0; br183: 218; br184: 0; br185: 218; br186: 0; br187: 218; br188: 0; br189: 218; br190: 0; br191: 218; br192: 0; br193: 218; br194: 0; br195: 218; br196: 0; br197: 218; br198: 0; br199: 218; br200: 23; br201: 195; br202: 0; br203: 218; br204: 6; br205: 212; br206: 0; br207: 218; br208: 0; br209: 218; br210: 0; br211: 218; br212: 0; br213: 218; br214: 16; br215: 202; br216: 3; br217: 215; br218: 0; br219: 218; br220: 0; br221: 218; br222: 8; br223: 210; br224: 4; br225: 214; br226: 0; br227: 218; br228: 0; br229: 218; br230: 0; br231: 218; br232: 0; br233: 218; br234: 0; br235: 218; br236: 8; br237: 210; br238: 5; br239: 213; br240: 15; br241: 203; br242: 8; br243: 210; br244: 0; br245: 218; br246: 0; br247: 218; br248: 0; br249: 218; br250: 0; br251: 218; br252: 0; br253: 218; br254: 0; br255: 218; br256: 2; br257: 216; br258: 6; br259: 212; br260: 19; br261: 199; br262: 0; br263: 218; br264: 0; br265: 218; br266: 0; br267: 218; br268: 0; br269: 218; br270: 0; br271: 218; br272: 0; br273: 218; br274: 0; br275: 218; br276: 0; br277: 218; br278: 0; br279: 218; br280: 0; br281: 218; br282: 0; br283: 218; br284: 0; br285: 218; br286: 0; br287: 218; br288: 0; br289: 218; br290: 0; br291: 218; br292: 0; br293: 218; br294: 0; br295: 218; br296: 0; br297: 218; br298: 0; br299: 218; br300: 0; br301: 218; br302: 0; br303: 218; br304: 0; br305: 218; br306: 0; br307: 218; br308: 0; br309: 218; br310: 0; br311: 218; br312: 0; br313: 218; br314: 0; br315: 218; br316: 0; br317: 218; br318: 0; br319: 218; br320: 0; br321: 218; br322: 0; br323: 218; br324: 0; br325: 218; br326: 0; br327: 218; br328: 0; br329: 218; br330: 0; br331: 218; br332: 0; br333: 218; br334: 0; br335: 218; br336: 0; br337: 218; br338: 0; br339: 218; br340: 0; br341: 218; br342: 0; br343: 218">(191/344)</span>  : #include &quot;slang-profile-defs.h&quot;</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">         218            :     }</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">         218            : }</span></span>
+<span id="L69"><span class="lineNum">      69</span>                         : </span>
+<span id="L70"><span class="lineNum">      70</span>                         : static const StageInfo kStages[] = {</span>
+<span id="L71"><span class="lineNum">      71</span>                         : #define PROFILE_STAGE(ID, NAME, ENUM) {#NAME, Stage::ID},</span>
+<span id="L72"><span class="lineNum">      72</span>                         : </span>
+<span id="L73"><span class="lineNum">      73</span>                         : #define PROFILE_STAGE_ALIAS(ID, NAME, VAL) {#NAME, Stage::ID},</span>
+<span id="L74"><span class="lineNum">      74</span>                         : </span>
+<span id="L75"><span class="lineNum">      75</span>                         : #include &quot;slang-profile-defs.h&quot;</span>
+<span id="L76"><span class="lineNum">      76</span>                         : };</span>
+<span id="L77"><span class="lineNum">      77</span>                         : </span>
+<span id="L78"><span class="lineNum">      78</span>                         : ConstArrayView&lt;StageInfo&gt; getStageInfos()</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">        1905            : {</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">        1905            :     return makeConstArrayView(kStages);</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">        1905            : }</span></span>
+<span id="L82"><span class="lineNum">      82</span>                         : </span>
+<span id="L83"><span class="lineNum">      83</span>                         : Stage findStageByName(String const&amp; name)</span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">        7706            : {</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">        7706 <span class="branchAll" title="br0: 69682; br1: 1">(2/2)</span>      :     for (auto entry : kStages)</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">       69682            :     {</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">       69682 <span class="branchAll" title="br0: 7705; br1: 61977">(2/2)</span>      :         if (name == entry.name)</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">        7705            :         {</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">        7705            :             return entry.stage;</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">        7705            :         }</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       69682            :     }</span></span>
+<span id="L92"><span class="lineNum">      92</span>                         : </span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">           1            :     return Stage::Unknown;</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">        7706            : }</span></span>
+<span id="L95"><span class="lineNum">      95</span>                         : </span>
+<span id="L96"><span class="lineNum">      96</span>                         : UnownedStringSlice getStageText(Stage stage)</span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">         204            : {</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">         204 <span class="branchPart" title="br0: 1017; br1: 0">(1/2)</span>      :     for (auto entry : kStages)</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">        1017            :     {</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">        1017 <span class="branchAll" title="br0: 204; br1: 813">(2/2)</span>      :         if (stage == entry.stage)</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">         204            :         {</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">         204            :             return UnownedStringSlice(entry.name);</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">         204            :         }</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">        1017            :     }</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaUNC">           0            :     return UnownedStringSlice();</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">         204            : }</span></span>
+<span id="L107"><span class="lineNum">     107</span>                         : </span>
+<span id="L108"><span class="lineNum">     108</span>                         : Stage getStageFromAtom(CapabilityAtom atom)</span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">        5806            : {</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">        5806            :     switch (atom)</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">        5806            :     {</span></span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">         284 <span class="branchAll" title="br0: 284; br1: 5522">(2/2)</span>      :     case CapabilityAtom::vertex:</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">         284            :         return Stage::Vertex;</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">           6 <span class="branchAll" title="br0: 6; br1: 5800">(2/2)</span>      :     case CapabilityAtom::hull:</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">           6            :         return Stage::Hull;</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">          10 <span class="branchAll" title="br0: 10; br1: 5796">(2/2)</span>      :     case CapabilityAtom::domain:</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">          10            :         return Stage::Domain;</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">          29 <span class="branchAll" title="br0: 29; br1: 5777">(2/2)</span>      :     case CapabilityAtom::geometry:</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">          29            :         return Stage::Geometry;</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">         579 <span class="branchAll" title="br0: 579; br1: 5227">(2/2)</span>      :     case CapabilityAtom::fragment:</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">         579            :         return Stage::Fragment;</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">        4122 <span class="branchAll" title="br0: 4122; br1: 1684">(2/2)</span>      :     case CapabilityAtom::compute:</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">        4122            :         return Stage::Compute;</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">          80 <span class="branchAll" title="br0: 80; br1: 5726">(2/2)</span>      :     case CapabilityAtom::_mesh:</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">          80            :         return Stage::Mesh;</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">          23 <span class="branchAll" title="br0: 23; br1: 5783">(2/2)</span>      :     case CapabilityAtom::_amplification:</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">          23            :         return Stage::Amplification;</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">          44 <span class="branchAll" title="br0: 44; br1: 5762">(2/2)</span>      :     case CapabilityAtom::_anyhit:</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">          44            :         return Stage::AnyHit;</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">         123 <span class="branchAll" title="br0: 123; br1: 5683">(2/2)</span>      :     case CapabilityAtom::_closesthit:</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">         123            :         return Stage::ClosestHit;</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">          39 <span class="branchAll" title="br0: 39; br1: 5767">(2/2)</span>      :     case CapabilityAtom::_intersection:</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">          39            :         return Stage::Intersection;</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">         201 <span class="branchAll" title="br0: 201; br1: 5605">(2/2)</span>      :     case CapabilityAtom::_raygen:</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">         201            :         return Stage::RayGeneration;</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">          63 <span class="branchAll" title="br0: 63; br1: 5743">(2/2)</span>      :     case CapabilityAtom::_miss:</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">          63            :         return Stage::Miss;</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">          66 <span class="branchAll" title="br0: 66; br1: 5740">(2/2)</span>      :     case CapabilityAtom::_callable:</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">          66            :         return Stage::Callable;</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">           4 <span class="branchAll" title="br0: 4; br1: 5802">(2/2)</span>      :     case CapabilityAtom::dispatch:</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">           4            :         return Stage::Dispatch;</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">         133 <span class="branchAll" title="br0: 133; br1: 5673">(2/2)</span>      :     case CapabilityAtom::_node:</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">         133            :         return Stage::Node;</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 5806">(1/2)</span>      :     default:</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaUNC">           0            :         SLANG_UNEXPECTED(&quot;unknown stage atom&quot;);</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaUNC">           0            :         UNREACHABLE_RETURN(Stage::Unknown);</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        5806            :     }</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">        5806            : }</span></span>
+<span id="L149"><span class="lineNum">     149</span>                         : </span>
+<span id="L150"><span class="lineNum">     150</span>                         : CapabilityAtom getAtomFromStage(Stage stage)</span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       45064            : {</span></span>
+<span id="L152"><span class="lineNum">     152</span>                         :     // Convert Slang::Stage to CapabilityAtom.</span>
+<span id="L153"><span class="lineNum">     153</span>                         :     // Note that capabilities do not share the same values as Slang::Stage</span>
+<span id="L154"><span class="lineNum">     154</span>                         :     // and must be explicitly converted.</span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       45064            :     switch (stage)</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       45064            :     {</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       41197 <span class="branchAll" title="br0: 41197; br1: 3867">(2/2)</span>      :     case Stage::Compute:</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">       41197            :         return CapabilityAtom::compute;</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">        1484 <span class="branchAll" title="br0: 1484; br1: 43580">(2/2)</span>      :     case Stage::Vertex:</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">        1484            :         return CapabilityAtom::vertex;</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        1012 <span class="branchAll" title="br0: 1012; br1: 44052">(2/2)</span>      :     case Stage::Fragment:</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">        1012            :         return CapabilityAtom::fragment;</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">         285 <span class="branchAll" title="br0: 285; br1: 44779">(2/2)</span>      :     case Stage::Geometry:</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">         285            :         return CapabilityAtom::geometry;</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">          50 <span class="branchAll" title="br0: 50; br1: 45014">(2/2)</span>      :     case Stage::Hull:</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">          50            :         return CapabilityAtom::hull;</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">         237 <span class="branchAll" title="br0: 237; br1: 44827">(2/2)</span>      :     case Stage::Domain:</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">         237            :         return CapabilityAtom::domain;</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">         662 <span class="branchAll" title="br0: 662; br1: 44402">(2/2)</span>      :     case Stage::Mesh:</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">         662            :         return CapabilityAtom::_mesh;</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">          64 <span class="branchAll" title="br0: 64; br1: 45000">(2/2)</span>      :     case Stage::Amplification:</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">          64            :         return CapabilityAtom::_amplification;</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 45064">(1/2)</span>      :     case Stage::RayGeneration:</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaUNC">           0            :         return CapabilityAtom::_raygen;</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 45064">(1/2)</span>      :     case Stage::AnyHit:</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaUNC">           0            :         return CapabilityAtom::_anyhit;</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 45064">(1/2)</span>      :     case Stage::ClosestHit:</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaUNC">           0            :         return CapabilityAtom::_closesthit;</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 45064">(1/2)</span>      :     case Stage::Miss:</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaUNC">           0            :         return CapabilityAtom::_miss;</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 45064">(1/2)</span>      :     case Stage::Intersection:</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaUNC">           0            :         return CapabilityAtom::_intersection;</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 45064">(1/2)</span>      :     case Stage::Callable:</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaUNC">           0            :         return CapabilityAtom::_callable;</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 45064">(1/2)</span>      :     case Stage::Dispatch:</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaUNC">           0            :         return CapabilityAtom::dispatch;</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">          73 <span class="branchAll" title="br0: 73; br1: 44991">(2/2)</span>      :     case Stage::Node:</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">          73            :         return CapabilityAtom::_node;</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 45064">(1/2)</span>      :     default:</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaUNC">           0            :         SLANG_UNEXPECTED(&quot;unknown stage&quot;);</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaUNC">           0            :         UNREACHABLE_RETURN(CapabilityAtom::Invalid);</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       45064            :     }</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">       45064            : }</span></span>
+<span id="L194"><span class="lineNum">     194</span>                         : </span>
+<span id="L195"><span class="lineNum">     195</span>                         : ProfileFamily getProfileFamily(ProfileVersion version)</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">      104682            : {</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">      104682            :     switch (version)</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">      104682            :     {</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       39690 <span class="branchAll" title="br0: 39690; br1: 64992">(2/2)</span>      :     default:</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">       39690            :         return ProfileFamily::Unknown;</span></span>
+<span id="L201"><span class="lineNum">     201</span>                         : </span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaUNC">           0            : #define PROFILE_VERSION(TAG, FAMILY) \</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">       64992 <span class="branchAll" title="br0: 64992; br1: 3389514">(2/2)</span>      :     case ProfileVersion::TAG:        \</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">       64992            :         return ProfileFamily::FAMILY;</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">      104682 <span class="branchPart" title="br0: 55; br1: 104627; br2: 0; br3: 104682; br4: 3684; br5: 100998; br6: 24835; br7: 79847; br8: 3631; br9: 101051; br10: 132; br11: 104550; br12: 635; br13: 104047; br14: 448; br15: 104234; br16: 12; br17: 104670; br18: 8601; br19: 96081; br20: 3686; br21: 100996; br22: 2023; br23: 102659; br24: 1347; br25: 103335; br26: 4376; br27: 100306; br28: 1126; br29: 103556; br30: 3716; br31: 100966; br32: 7; br33: 104675; br34: 7; br35: 104675; br36: 0; br37: 104682; br38: 84; br39: 104598; br40: 0; br41: 104682; br42: 1; br43: 104681; br44: 414; br45: 104268; br46: 277; br47: 104405; br48: 5773; br49: 98909; br50: 7; br51: 104675; br52: 2; br53: 104680; br54: 0; br55: 104682; br56: 0; br57: 104682; br58: 29; br59: 104653; br60: 22; br61: 104660; br62: 39; br63: 104643; br64: 23; br65: 104659">(61/66)</span>    : #include &quot;slang-profile-defs.h&quot;</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      104682            :     }</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      104682            : }</span></span>
+<span id="L208"><span class="lineNum">     208</span>                         : </span>
+<span id="L209"><span class="lineNum">     209</span>                         : bool isRaytracingStage(Stage inStage)</span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">          25            : {</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">          25            :     switch (inStage)</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">          25            :     {</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">          17 <span class="branchAll" title="br0: 17; br1: 8">(2/2)</span>      :     case Stage::RayGeneration:</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">          21 <span class="branchAll" title="br0: 4; br1: 21">(2/2)</span>      :     case Stage::Miss:</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">          21 <span class="branchPart" title="br0: 0; br1: 25">(1/2)</span>      :     case Stage::Intersection:</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">          22 <span class="branchAll" title="br0: 1; br1: 24">(2/2)</span>      :     case Stage::ClosestHit:</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">          22 <span class="branchPart" title="br0: 0; br1: 25">(1/2)</span>      :     case Stage::Callable:</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">          22 <span class="branchPart" title="br0: 0; br1: 25">(1/2)</span>      :     case Stage::AnyHit:</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">          22            :         return true;</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">           3 <span class="branchAll" title="br0: 3; br1: 22">(2/2)</span>      :     default:</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">           3            :         return false;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">          25            :     }</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">          25            : }</span></span>
+<span id="L224"><span class="lineNum">     224</span>                         : </span>
+<span id="L225"><span class="lineNum">     225</span>                         : const char* getStageName(Stage stage)</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       12199            : {</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">       12199            :     switch (stage)</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">       12199            :     {</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaUNC">           0            : #define PROFILE_STAGE(ID, NAME, ENUM) \</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       12199 <span class="branchAll" title="br0: 12199; br1: 182985">(2/2)</span>      :     case Stage::ID:                   \</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">       12199            :         return #NAME;</span></span>
+<span id="L232"><span class="lineNum">     232</span>                         : </span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 523; br1: 11676; br2: 21; br3: 12178; br4: 73; br5: 12126; br6: 96; br7: 12103; br8: 389; br9: 11810; br10: 10491; br11: 1708; br12: 67; br13: 12132; br14: 23; br15: 12176; br16: 21; br17: 12178; br18: 66; br19: 12133; br20: 43; br21: 12156; br22: 41; br23: 12158; br24: 235; br25: 11964; br26: 25; br27: 12174; br28: 0; br29: 12199; br30: 85; br31: 12114">(31/32)</span>    : #include &quot;slang-profile-defs.h&quot;</span></span>
+<span id="L234"><span class="lineNum">     234</span>                         : </span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 12199">(1/2)</span>      :     default:</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaUNC">           0            :         return nullptr;</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">       12199            :     }</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       12199            : }</span></span>
+<span id="L239"><span class="lineNum">     239</span>                         : </span>
+<span id="L240"><span class="lineNum">     240</span>                         : void printDiagnosticArg(StringBuilder&amp; sb, Stage val)</span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaUNC">           0            : {</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaUNC">           0            :     sb &lt;&lt; getStageName(val);</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaUNC">           0            : }</span></span>
+<span id="L244"><span class="lineNum">     244</span>                         : </span>
+<span id="L245"><span class="lineNum">     245</span>                         : void printDiagnosticArg(StringBuilder&amp; sb, ProfileVersion val)</span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaUNC">           0            : {</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaUNC">           0            :     sb &lt;&lt; Profile(val).getName();</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaUNC">           0            : }</span></span>
+<span id="L249"><span class="lineNum">     249</span>                         : </span>
+<span id="L250"><span class="lineNum">     250</span>                         : String getHLSLProfileName(Profile profile)</span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">         326            : {</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">         326            :     switch (profile.getFamily())</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         326            :     {</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">         218 <span class="branchAll" title="br0: 218; br1: 108">(2/2)</span>      :     case ProfileFamily::DX:</span></span>
+<span id="L255"><span class="lineNum">     255</span>                         :         // Profile version is a DX one, so stick with it.</span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">         218            :         break;</span></span>
+<span id="L257"><span class="lineNum">     257</span>                         : </span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">         108 <span class="branchAll" title="br0: 108; br1: 218">(2/2)</span>      :     default:</span></span>
+<span id="L259"><span class="lineNum">     259</span>                         :         // Profile is a non-DX profile family, so we need to try</span>
+<span id="L260"><span class="lineNum">     260</span>                         :         // to clobber it with something to get a default.</span>
+<span id="L261"><span class="lineNum">     261</span>                         :         //</span>
+<span id="L262"><span class="lineNum">     262</span>                         :         // TODO: This is a huge hack...</span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">         108            :         profile.setVersion(ProfileVersion::DX_5_1);</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">         108            :         break;</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">         326            :     }</span></span>
+<span id="L266"><span class="lineNum">     266</span>                         : </span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">         326            :     char const* stagePrefix = nullptr;</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">         326            :     switch (profile.getStage())</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">         326            :     {</span></span>
+<span id="L270"><span class="lineNum">     270</span>                         :         // Note: All of the raytracing-related stages require</span>
+<span id="L271"><span class="lineNum">     271</span>                         :         // compiling for a `lib_*` profile, even when only a</span>
+<span id="L272"><span class="lineNum">     272</span>                         :         // single entry point is present.</span>
+<span id="L273"><span class="lineNum">     273</span>                         :         //</span>
+<span id="L274"><span class="lineNum">     274</span>                         :         // We also go ahead and use this target in any case</span>
+<span id="L275"><span class="lineNum">     275</span>                         :         // where we don&#x27;t know the actual stage to compiel for,</span>
+<span id="L276"><span class="lineNum">     276</span>                         :         // as a fallback option.</span>
+<span id="L277"><span class="lineNum">     277</span>                         :         //</span>
+<span id="L278"><span class="lineNum">     278</span>                         :         // TODO: We also want to use this option when compiling</span>
+<span id="L279"><span class="lineNum">     279</span>                         :         // multiple entry points to a DXIL library.</span>
+<span id="L280"><span class="lineNum">     280</span>                         :         //</span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">         103 <span class="branchAll" title="br0: 103; br1: 223">(2/2)</span>      :     default:</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">         103            :         stagePrefix = &quot;lib&quot;;</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">         103            :         break;</span></span>
+<span id="L284"><span class="lineNum">     284</span>                         : </span>
+<span id="L285"><span class="lineNum">     285</span>                         :         // The traditional rasterization pipeline and compute</span>
+<span id="L286"><span class="lineNum">     286</span>                         :         // shaders all have custom profile names that identify</span>
+<span id="L287"><span class="lineNum">     287</span>                         :         // both the stage and shader model, which need to be</span>
+<span id="L288"><span class="lineNum">     288</span>                         :         // used when compiling a single entry point.</span>
+<span id="L289"><span class="lineNum">     289</span>                         :         //</span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaUNC">           0            : #define CASE(NAME, PREFIX)     \</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">         223 <span class="branchAll" title="br0: 223; br1: 2385">(2/2)</span>      :     case Stage::NAME:          \</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">         223            :         stagePrefix = #PREFIX; \</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">         223            :         break</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">          11 <span class="branchAll" title="br0: 11; br1: 315">(2/2)</span>      :         CASE(Vertex, vs);</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :         CASE(Hull, hs);</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :         CASE(Domain, ds);</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :         CASE(Geometry, gs);</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">          28 <span class="branchAll" title="br0: 28; br1: 298">(2/2)</span>      :         CASE(Fragment, ps);</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">         170 <span class="branchAll" title="br0: 170; br1: 156">(2/2)</span>      :         CASE(Compute, cs);</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :         CASE(Amplification, as);</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">         326 <span class="branchAll" title="br0: 14; br1: 312">(2/2)</span>      :         CASE(Mesh, ms);</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">         326            : #undef CASE</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">         326            :     }</span></span>
+<span id="L304"><span class="lineNum">     304</span>                         : </span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">         326            :     char const* versionSuffix = nullptr;</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">         326            :     switch (profile.getVersion())</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">         326            :     {</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaUNC">           0            : #define CASE(TAG, SUFFIX)        \</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">         326 <span class="branchAll" title="br0: 326; br1: 4564">(2/2)</span>      :     case ProfileVersion::TAG:    \</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">         326            :         versionSuffix = #SUFFIX; \</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">         326            :         break</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :         CASE(DX_4_0, _4_0);</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :         CASE(DX_4_1, _4_1);</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :         CASE(DX_5_0, _5_0);</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">         108 <span class="branchAll" title="br0: 108; br1: 218">(2/2)</span>      :         CASE(DX_5_1, _5_1);</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">          37 <span class="branchAll" title="br0: 37; br1: 289">(2/2)</span>      :         CASE(DX_6_0, _6_0);</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">           2 <span class="branchAll" title="br0: 2; br1: 324">(2/2)</span>      :         CASE(DX_6_1, _6_1);</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">          17 <span class="branchAll" title="br0: 17; br1: 309">(2/2)</span>      :         CASE(DX_6_2, _6_2);</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">           8 <span class="branchAll" title="br0: 8; br1: 318">(2/2)</span>      :         CASE(DX_6_3, _6_3);</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :         CASE(DX_6_4, _6_4);</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">          12 <span class="branchAll" title="br0: 12; br1: 314">(2/2)</span>      :         CASE(DX_6_5, _6_5);</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">          34 <span class="branchAll" title="br0: 34; br1: 292">(2/2)</span>      :         CASE(DX_6_6, _6_6);</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">          35 <span class="branchAll" title="br0: 35; br1: 291">(2/2)</span>      :         CASE(DX_6_7, _6_7);</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">          20 <span class="branchAll" title="br0: 20; br1: 306">(2/2)</span>      :         CASE(DX_6_8, _6_8);</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">          53 <span class="branchAll" title="br0: 53; br1: 273">(2/2)</span>      :         CASE(DX_6_9, _6_9);</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :         CASE(DX_6_10, _6_10);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaUNC">           0            : #undef CASE</span></span>
+<span id="L328"><span class="lineNum">     328</span>                         : </span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 326">(1/2)</span>      :     default:</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaUNC">           0            :         return &quot;unknown&quot;;</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">         326            :     }</span></span>
+<span id="L332"><span class="lineNum">     332</span>                         : </span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">         326            :     String result;</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">         326            :     result.append(stagePrefix);</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">         326            :     result.append(versionSuffix);</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">         326            :     return result;</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">         326            : }</span></span>
+<span id="L338"><span class="lineNum">     338</span>                         : </span>
+<span id="L339"><span class="lineNum">     339</span>                         : </span>
+<span id="L340"><span class="lineNum">     340</span>                         : } // namespace Slang</span>
+</pre>
+  <br>
+  <table class="chrome" cellpadding="0" cellspacing="0">
+    <tr><td class="ruler"></td></tr>
+    <tr><td class="versionInfo">Generated by:
+      <a href="https://github.com/shader-slang/slang">slang-coverage-html</a></td></tr>
+  </table>
+<script>
+(function () {
+  // Measure the sticky chrome's height after layout so any sticky
+  // element below it (table <thead>, source heading, …) can stack
+  // directly underneath via top: var(--chrome-h).
+  //
+  // We listen for several signals because chrome height can shift
+  // after the initial `load`:
+  //   * `load` — basic case after document is ready.
+  //   * `resize` — viewport changes.
+  //   * `document.fonts.ready` — late web-font swap can change
+  //     the title's measured height. Baseline-widely-available.
+  //   * `ResizeObserver` — any other reflow (zoom, expanding an
+  //     auth-summary banner, etc.) re-syncs the variable.
+  function measureChrome() {
+    var c = document.querySelector('.topChrome');
+    if (c) {
+      document.documentElement.style.setProperty(
+        '--chrome-h', c.offsetHeight + 'px'
+      );
+    }
+  }
+  if (document.readyState === 'complete') measureChrome();
+  else window.addEventListener('load', measureChrome);
+  window.addEventListener('resize', measureChrome);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(measureChrome);
+  }
+  if ('ResizeObserver' in window) {
+    var c = document.querySelector('.topChrome');
+    if (c) new ResizeObserver(measureChrome).observe(c);
+  }
+})();
+(function () {
+  // Per-file toggle: reveals the next sibling fileFunctions row,
+  // lazy-cloning the function table from a <template> on first
+  // open so the initial DOM stays small.
+  function ensureFnLoaded(row) {
+    if (row.dataset.loaded === '1') return;
+    var tid = row.getAttribute('data-fn-tmpl');
+    if (tid) {
+      var tmpl = document.getElementById(tid);
+      var td = row.querySelector('td');
+      if (tmpl && td && td.children.length === 0) {
+        td.appendChild(tmpl.content.cloneNode(true));
+      }
+    }
+    row.dataset.loaded = '1';
+  }
+  function toggleFn(el) {
+    var row = el.closest('tr');
+    if (!row) return;
+    var next = row.nextElementSibling;
+    if (!next || !next.classList.contains('fileFunctions')) return;
+    var hidden = next.hasAttribute('hidden');
+    if (hidden) {
+      ensureFnLoaded(next);
+      next.removeAttribute('hidden');
+      el.textContent = '\u25BC';
+      el.setAttribute('aria-expanded', 'true');
+    } else {
+      next.setAttribute('hidden', '');
+      el.textContent = '\u25B6';
+      el.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  // Per-directory toggle: hides every descendant row when collapsing
+  // (anything whose data-dir or data-path lives under this dir's
+  // path); when expanding, reveals only direct children — files
+  // sitting in this dir, plus immediate sub-directory headers — all
+  // in collapsed state. The user can drill further by clicking any
+  // child chevron.
+  function isDescendant(rowKey, parentPath) {
+    if (rowKey === null) return false;
+    if (parentPath === '') return rowKey !== '';
+    return rowKey === parentPath || rowKey.indexOf(parentPath + '/') === 0;
+  }
+  function pathDepth(p) {
+    return p === '' ? 0 : p.split('/').length;
+  }
+  function toggleDir(el) {
+    var path = el.getAttribute('data-path');
+    if (path === null) return;
+    var collapsing = el.getAttribute('aria-expanded') !== 'false';
+    var directChildDepth = pathDepth(path) + 1;
+
+    var rows = document.querySelectorAll(
+      'tr.dirHeader, tr.fileSummary, tr.fileFunctions'
+    );
+    rows.forEach(function (r) {
+      // Skip the dir-header row that owns this toggle.
+      if (r.classList.contains('dirHeader') &&
+          r.getAttribute('data-path') === path) return;
+
+      var rowKey = r.getAttribute('data-dir');
+      if (rowKey === null) rowKey = r.getAttribute('data-path');
+      if (!isDescendant(rowKey, path)) return;
+
+      if (collapsing) {
+        r.setAttribute('hidden', '');
+        // Also reset any toggle widget on a hidden descendant so
+        // the chevron / aria-expanded state matches "hidden" when
+        // the user re-expands later. Without this, deep `fnToggle`
+        // / `dirToggle` widgets keep stale "open" state from a
+        // previous session and the chevron disagrees with the
+        // hidden content for one click.
+        var collapseToggle = r.querySelector('.fnToggle, .dirToggle');
+        if (collapseToggle) {
+          collapseToggle.textContent = '\u25B6';
+          collapseToggle.setAttribute('aria-expanded', 'false');
+        }
+        return;
+      }
+      // Expanding: reveal only direct children of `path`.
+      if (r.classList.contains('fileSummary')) {
+        if (rowKey === path) {
+          r.removeAttribute('hidden');
+          var t = r.querySelector('.fnToggle');
+          if (t) {
+            t.textContent = '\u25B6';
+            t.setAttribute('aria-expanded', 'false');
+          }
+        }
+      } else if (r.classList.contains('dirHeader')) {
+        var rDepth = parseInt(r.getAttribute('data-depth') || '0', 10);
+        if (rDepth === directChildDepth) {
+          r.removeAttribute('hidden');
+          var dt = r.querySelector('.dirToggle');
+          if (dt) {
+            dt.textContent = '\u25B6';
+            dt.setAttribute('aria-expanded', 'false');
+          }
+        }
+      }
+      // fileFunctions rows stay hidden when expanding a directory.
+    });
+
+    el.textContent = collapsing ? '\u25B6' : '\u25BC';
+    el.setAttribute('aria-expanded', collapsing ? 'false' : 'true');
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.classList) return;
+    if (t.classList.contains('fnToggle'))   toggleFn(t);
+    else if (t.classList.contains('dirToggle')) toggleDir(t);
+  });
+  document.addEventListener('keydown', function (e) {
+    var t = e.target;
+    if (!t || !t.classList) return;
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (t.classList.contains('fnToggle')) {
+      e.preventDefault();
+      toggleFn(t);
+    } else if (t.classList.contains('dirToggle')) {
+      e.preventDefault();
+      toggleDir(t);
+    }
+  });
+})();
+</script>
+</body>
+</html>

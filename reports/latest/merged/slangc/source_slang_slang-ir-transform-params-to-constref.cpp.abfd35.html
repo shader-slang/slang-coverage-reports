@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-18 05:11:10 UTC</td>
+      <td class="headerValue">2026-10-19 05:21:07 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -306,9 +306,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L15"><span class="lineNum">      15</span>                         :     bool changed = false;</span>
 <span id="L16"><span class="lineNum">      16</span>                         : </span>
 <span id="L17"><span class="lineNum">      17</span>                         :     TransformParamsToConstRefContext(IRModule* module, DiagnosticSink* sink)</span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">       27240            :         : module(module), sink(sink), builder(module)</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">       27240            :     {</span></span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">       27240            :     }</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">       27244            :         : module(module), sink(sink), builder(module)</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">       27244            :     {</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">       27244            :     }</span></span>
 <span id="L21"><span class="lineNum">      21</span>                         : </span>
 <span id="L22"><span class="lineNum">      22</span>                         :     // Check if a type should be transformed (struct, array, or other composite types)</span>
 <span id="L23"><span class="lineNum">      23</span>                         :     virtual bool shouldTransformParam(IRParam* param)</span>
@@ -333,7 +333,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       55853            :     }</span></span>
 <span id="L43"><span class="lineNum">      43</span>                         : </span>
 <span id="L44"><span class="lineNum">      44</span>                         :     void rewriteValueUsesToAddrUses(IRInst* newAddrInst)</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       24951            :     {</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       24953            :     {</span></span>
 <span id="L46"><span class="lineNum">      46</span>                         :         // The overall strategy here is as follows:</span>
 <span id="L47"><span class="lineNum">      47</span>                         :         //</span>
 <span id="L48"><span class="lineNum">      48</span>                         :         // - First, insert IRLoad() in front of all uses of newAddrInst. This</span>
@@ -349,35 +349,35 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L58"><span class="lineNum">      58</span>                         :         //   - If all uses of the inserted IRLoad() were translated, remove the</span>
 <span id="L59"><span class="lineNum">      59</span>                         :         //     IRLoad() to keep this pass clean</span>
 <span id="L60"><span class="lineNum">      60</span>                         : </span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       24951            :         List&lt;IRLoad*&gt; workList;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       24953            :         List&lt;IRLoad*&gt; workList;</span></span>
 <span id="L62"><span class="lineNum">      62</span>                         : </span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       24951            :         traverseUses(</span></span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       24951            :             newAddrInst,</span></span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       24951            :             [&amp;](IRUse* use)</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       43550            :             {</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       43550            :                 auto user = use-&gt;getUser();</span></span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       43550            :                 builder.setInsertBefore(user);</span></span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       43550            :                 IRLoad* loadInst = as&lt;IRLoad&gt;(builder.emitLoad(newAddrInst));</span></span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       43550            :                 use-&gt;set(loadInst);</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       24953            :         traverseUses(</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       24953            :             newAddrInst,</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       24953            :             [&amp;](IRUse* use)</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       43552            :             {</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       43552            :                 auto user = use-&gt;getUser();</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       43552            :                 builder.setInsertBefore(user);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       43552            :                 IRLoad* loadInst = as&lt;IRLoad&gt;(builder.emitLoad(newAddrInst));</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       43552            :                 use-&gt;set(loadInst);</span></span>
 <span id="L71"><span class="lineNum">      71</span>                         : </span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       43550            :                 workList.add(loadInst);</span></span>
-<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       43550            :             });</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       43552            :                 workList.add(loadInst);</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       43552            :             });</span></span>
 <span id="L74"><span class="lineNum">      74</span>                         : </span>
-<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       96337 <span class="branchAll" title="br0: 71386; br1: 24951">(2/2)</span>      :         for (Index i = 0; i &lt; workList.getCount(); i++)</span></span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">       71386            :         {</span></span>
-<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">       71386            :             IRLoad* loadInst = workList[i];</span></span>
-<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       71386            :             bool allUsesTranslated = true;</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       96341 <span class="branchAll" title="br0: 71388; br1: 24953">(2/2)</span>      :         for (Index i = 0; i &lt; workList.getCount(); i++)</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">       71388            :         {</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">       71388            :             IRLoad* loadInst = workList[i];</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       71388            :             bool allUsesTranslated = true;</span></span>
 <span id="L79"><span class="lineNum">      79</span>                         : </span>
-<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">       71386            :             traverseUses(</span></span>
-<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       71386            :                 loadInst,</span></span>
-<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       71386            :                 [&amp;](IRUse* use)</span></span>
-<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       83060            :                 {</span></span>
-<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       83060            :                     IRInst* userInst = use-&gt;getUser();</span></span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">       83060            :                     bool useTranslated = false;</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">       71388            :             traverseUses(</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       71388            :                 loadInst,</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       71388            :                 [&amp;](IRUse* use)</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       83062            :                 {</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       83062            :                     IRInst* userInst = use-&gt;getUser();</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">       83062            :                     bool useTranslated = false;</span></span>
 <span id="L86"><span class="lineNum">      86</span>                         : </span>
-<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">       83060 <span class="branchAll" title="br0: 45394; br1: 45884">(2/2)</span>      :                     switch (userInst-&gt;getOp())</span></span>
-<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">       83060            :                     {</span></span>
-<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       20159 <span class="branchAll" title="br0: 20159; br1: 62901">(2/2)</span>      :                     case kIROp_FieldExtract:</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">       83062 <span class="branchAll" title="br0: 45394; br1: 45886">(2/2)</span>      :                     switch (userInst-&gt;getOp())</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">       83062            :                     {</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       20159 <span class="branchAll" title="br0: 20159; br1: 62903">(2/2)</span>      :                     case kIROp_FieldExtract:</span></span>
 <span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">       20159            :                         {</span></span>
 <span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       20159 <span class="branchPart" title="br0: 20159; br1: 0">(1/2)</span>      :                             if (isUseBaseAddrOperand(use, userInst))</span></span>
 <span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">       20159            :                             {</span></span>
@@ -401,7 +401,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">       20159            :                             break;</span></span>
 <span id="L111"><span class="lineNum">     111</span> <span class="tlaUNC">           0            :                         }</span></span>
 <span id="L112"><span class="lineNum">     112</span>                         : </span>
-<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">        7732 <span class="branchAll" title="br0: 7732; br1: 75328">(2/2)</span>      :                     case kIROp_GetElement:</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">        7732 <span class="branchAll" title="br0: 7732; br1: 75330">(2/2)</span>      :                     case kIROp_GetElement:</span></span>
 <span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">        7732            :                         {</span></span>
 <span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">        7732 <span class="branchAll" title="br0: 7677; br1: 55">(2/2)</span>      :                             if (isUseBaseAddrOperand(use, userInst))</span></span>
 <span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">        7677            :                             {</span></span>
@@ -425,7 +425,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">        7732            :                             break;</span></span>
 <span id="L135"><span class="lineNum">     135</span> <span class="tlaUNC">           0            :                         }</span></span>
 <span id="L136"><span class="lineNum">     136</span>                         : </span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">        9285 <span class="branchAll" title="br0: 9285; br1: 73775">(2/2)</span>      :                     case kIROp_Store:</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">        9285 <span class="branchAll" title="br0: 9285; br1: 73777">(2/2)</span>      :                     case kIROp_Store:</span></span>
 <span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">        9285            :                         {</span></span>
 <span id="L139"><span class="lineNum">     139</span>                         :                             // If the current value is being stored into a write-once temp var that</span>
 <span id="L140"><span class="lineNum">     140</span>                         :                             // is immediately passed into a constref location in a call, we can get</span>
@@ -453,25 +453,25 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">        4639            :                             }</span></span>
 <span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">        9285            :                             break;</span></span>
 <span id="L164"><span class="lineNum">     164</span> <span class="tlaUNC">           0            :                         }</span></span>
-<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       83060            :                     }</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       83062            :                     }</span></span>
 <span id="L166"><span class="lineNum">     166</span>                         : </span>
-<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       83060 <span class="branchAll" title="br0: 76483; br1: 6577; br2: 32444; br3: 44039">(4/4)</span>      :                     allUsesTranslated = allUsesTranslated &amp;&amp; useTranslated;</span></span>
-<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       83060            :                 });</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       83062 <span class="branchAll" title="br0: 76485; br1: 6577; br2: 32444; br3: 44041">(4/4)</span>      :                     allUsesTranslated = allUsesTranslated &amp;&amp; useTranslated;</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       83062            :                 });</span></span>
 <span id="L169"><span class="lineNum">     169</span>                         : </span>
-<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">       71386 <span class="branchAll" title="br0: 27347; br1: 44039">(2/2)</span>      :             if (allUsesTranslated)</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">       71388 <span class="branchAll" title="br0: 27347; br1: 44041">(2/2)</span>      :             if (allUsesTranslated)</span></span>
 <span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       27347            :                 loadInst-&gt;removeAndDeallocate();</span></span>
-<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">       71386            :         }</span></span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       24951            :     }</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">       71388            :         }</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       24953            :     }</span></span>
 <span id="L174"><span class="lineNum">     174</span>                         : </span>
 <span id="L175"><span class="lineNum">     175</span>                         :     void rewriteParamUseSitesToSupportConstRefUsage(HashSet&lt;IRParam*&gt;&amp; updatedParams)</span>
-<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       21701            :     {</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       21703            :     {</span></span>
 <span id="L177"><span class="lineNum">     177</span>                         :         // Traverse the uses of our updated params to rewrite them.</span>
 <span id="L178"><span class="lineNum">     178</span>                         :         // Assume a `in` parameter has been converted to a `constref` parameter.</span>
-<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       21701 <span class="branchAll" title="br0: 24951; br1: 21701">(2/2)</span>      :         for (auto param : updatedParams)</span></span>
-<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       24951            :         {</span></span>
-<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       24951            :             rewriteValueUsesToAddrUses(param);</span></span>
-<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       24951            :         }</span></span>
-<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">       21701            :     }</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       21703 <span class="branchAll" title="br0: 24953; br1: 21703">(2/2)</span>      :         for (auto param : updatedParams)</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       24953            :         {</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       24953            :             rewriteValueUsesToAddrUses(param);</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       24953            :         }</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">       21703            :     }</span></span>
 <span id="L184"><span class="lineNum">     184</span>                         : </span>
 <span id="L185"><span class="lineNum">     185</span>                         :     // Check if `load` is an `IRLoad(addr)` where `addr` is a immutable location.</span>
 <span id="L186"><span class="lineNum">     186</span>                         :     IRInst* isLoadFromImmutableAddress(IRInst* load)</span>
@@ -502,13 +502,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L211"><span class="lineNum">     211</span>                         : </span>
 <span id="L212"><span class="lineNum">     212</span>                         :     // Update call sites to pass an address instead of value for each updated-param</span>
 <span id="L213"><span class="lineNum">     213</span>                         :     void updateCallSites(IRFunc* func, HashSet&lt;IRParam*&gt;&amp; updatedParams)</span>
-<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">       21701            :     {</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">       21703            :     {</span></span>
 <span id="L215"><span class="lineNum">     215</span>                         :         // Find all calls which use `func`.</span>
-<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       21701            :         List&lt;IRCall*&gt; callsToUpdate;</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       21703            :         List&lt;IRCall*&gt; callsToUpdate;</span></span>
 <span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">       23330            :         traverseUsers&lt;IRCall&gt;(func, [&amp;](IRCall* call) { callsToUpdate.add(call); });</span></span>
 <span id="L218"><span class="lineNum">     218</span>                         : </span>
 <span id="L219"><span class="lineNum">     219</span>                         :         // Update each call site</span>
-<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       21701 <span class="branchAll" title="br0: 23330; br1: 21701">(2/2)</span>      :         for (auto call : callsToUpdate)</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       21703 <span class="branchAll" title="br0: 23330; br1: 21703">(2/2)</span>      :         for (auto call : callsToUpdate)</span></span>
 <span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">       23330            :         {</span></span>
 <span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">       23330            :             builder.setInsertBefore(call);</span></span>
 <span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">       23330            :             List&lt;IRInst*&gt; newArgs;</span></span>
@@ -543,29 +543,29 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       23330            :             call-&gt;replaceUsesWith(newCall);</span></span>
 <span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       23330            :             call-&gt;removeAndDeallocate();</span></span>
 <span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">       23330            :         }</span></span>
-<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">       21701            :     }</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">       21703            :     }</span></span>
 <span id="L256"><span class="lineNum">     256</span>                         : </span>
 <span id="L257"><span class="lineNum">     257</span>                         :     // Check if function should be excluded from transformation</span>
 <span id="L258"><span class="lineNum">     258</span>                         :     virtual bool shouldProcessFunction(IRFunc* func)</span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       55168            :     {</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       55170            :     {</span></span>
 <span id="L260"><span class="lineNum">     260</span>                         :         // Skip functions without definitions</span>
-<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       55168 <span class="branchAll" title="br0: 447; br1: 54721">(2/2)</span>      :         if (!func-&gt;isDefinition())</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       55170 <span class="branchAll" title="br0: 447; br1: 54723">(2/2)</span>      :         if (!func-&gt;isDefinition())</span></span>
 <span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">         447            :             return false;</span></span>
 <span id="L263"><span class="lineNum">     263</span>                         : </span>
 <span id="L264"><span class="lineNum">     264</span>                         :         // Skip if we find any of these decorations</span>
-<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">       54721 <span class="branchAll" title="br0: 172856; br1: 44163">(2/2)</span>      :         for (auto decoration : func-&gt;getDecorations())</span></span>
-<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">      172856            :         {</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">       54723 <span class="branchAll" title="br0: 172858; br1: 44163">(2/2)</span>      :         for (auto decoration : func-&gt;getDecorations())</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">      172858            :         {</span></span>
 <span id="L267"><span class="lineNum">     267</span>                         :             // Skip functions with target intrinsic decorations.</span>
 <span id="L268"><span class="lineNum">     268</span>                         :             // These functions cannot be properly legalized after</span>
 <span id="L269"><span class="lineNum">     269</span>                         :             // transformation.</span>
-<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">      172856 <span class="branchAll" title="br0: 1; br1: 172855">(2/2)</span>      :             if (as&lt;IRTargetIntrinsicDecoration&gt;(decoration))</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">      172858 <span class="branchAll" title="br0: 1; br1: 172857">(2/2)</span>      :             if (as&lt;IRTargetIntrinsicDecoration&gt;(decoration))</span></span>
 <span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">           1            :                 return false;</span></span>
 <span id="L272"><span class="lineNum">     272</span>                         : </span>
 <span id="L273"><span class="lineNum">     273</span>                         :             // Skip entry-point and pseudo-entry-point functions</span>
 <span id="L274"><span class="lineNum">     274</span>                         :             // since we cannot legalize the input parameters.</span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">      172855 <span class="branchAll" title="br0: 10497; br1: 162358; br2: 39; br3: 162319">(4/4)</span>      :             if (as&lt;IREntryPointDecoration&gt;(decoration) || as&lt;IRCudaKernelDecoration&gt;(decoration) ||</span></span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">      172855 <span class="branchPart" title="br0: 0; br1: 162319">(1/2)</span>      :                 as&lt;IRAutoPyBindCudaDecoration&gt;(decoration))</span></span>
-<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       10536            :                 return false;</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">      172857 <span class="branchAll" title="br0: 10499; br1: 162358; br2: 39; br3: 162319">(4/4)</span>      :             if (as&lt;IREntryPointDecoration&gt;(decoration) || as&lt;IRCudaKernelDecoration&gt;(decoration) ||</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">      172857 <span class="branchPart" title="br0: 0; br1: 162319">(1/2)</span>      :                 as&lt;IRAutoPyBindCudaDecoration&gt;(decoration))</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       10538            :                 return false;</span></span>
 <span id="L278"><span class="lineNum">     278</span>                         : </span>
 <span id="L279"><span class="lineNum">     279</span>                         :             // Skip functions with CudaDeviceExport decoration.</span>
 <span id="L280"><span class="lineNum">     280</span>                         :             // These functions have externally visible signatures that should not be changed.</span>
@@ -592,14 +592,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L301"><span class="lineNum">     301</span>                         : </span>
 <span id="L302"><span class="lineNum">     302</span>                         :     // Process a single function</span>
 <span id="L303"><span class="lineNum">     303</span>                         :     void processFunc(IRFunc* func)</span>
-<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">       52647            :     {</span></span>
-<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">       52647            :         HashSet&lt;IRParam*&gt; updatedParams;</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">       52649            :     {</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">       52649            :         HashSet&lt;IRParam*&gt; updatedParams;</span></span>
 <span id="L306"><span class="lineNum">     306</span>                         : </span>
 <span id="L307"><span class="lineNum">     307</span>                         :         // If the function is used in any way that is not understood by the</span>
 <span id="L308"><span class="lineNum">     308</span>                         :         // compiler, do not modify it.</span>
 <span id="L309"><span class="lineNum">     309</span>                         :         // For example, if the function is used as callback, we must preserve</span>
 <span id="L310"><span class="lineNum">     310</span>                         :         // its signature.</span>
-<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">      130665 <span class="branchAll" title="br0: 78059; br1: 52606">(2/2)</span>      :         for (auto use = func-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">      130667 <span class="branchAll" title="br0: 78059; br1: 52608">(2/2)</span>      :         for (auto use = func-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
 <span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       78059            :         {</span></span>
 <span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">       78059            :             auto user = use-&gt;getUser();</span></span>
 <span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       78059 <span class="branchAll" title="br0: 17; br1: 78042">(2/2)</span>      :             if (as&lt;IRDecoration&gt;(user))</span></span>
@@ -620,10 +620,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">       76409            :         }</span></span>
 <span id="L330"><span class="lineNum">     330</span>                         : </span>
 <span id="L331"><span class="lineNum">     331</span>                         :         // First pass: Transform parameter types</span>
-<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">      120663 <span class="branchAll" title="br0: 68057; br1: 52606">(2/2)</span>      :         for (auto param = func-&gt;getFirstParam(); param; param = param-&gt;getNextParam())</span></span>
-<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">       68057            :         {</span></span>
-<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">       68057 <span class="branchAll" title="br0: 24951; br1: 43106">(2/2)</span>      :             if (shouldTransformParam(param))</span></span>
-<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">       24951            :             {</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">      120667 <span class="branchAll" title="br0: 68059; br1: 52608">(2/2)</span>      :         for (auto param = func-&gt;getFirstParam(); param; param = param-&gt;getNextParam())</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">       68059            :         {</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">       68059 <span class="branchAll" title="br0: 24953; br1: 43106">(2/2)</span>      :             if (shouldTransformParam(param))</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">       24953            :             {</span></span>
 <span id="L336"><span class="lineNum">     336</span>                         :                 // Our goal here is to transform `in T` parameters to `borrow in T`.</span>
 <span id="L337"><span class="lineNum">     337</span>                         :                 // We are selective about what we will transform for a few reasons:</span>
 <span id="L338"><span class="lineNum">     338</span>                         :                 // 1. no reason to transform simple primitives like `int`.</span>
@@ -633,47 +633,47 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L342"><span class="lineNum">     342</span>                         :                 //</span>
 <span id="L343"><span class="lineNum">     343</span>                         :                 // This allows us to pass the address of variables directly into a function,</span>
 <span id="L344"><span class="lineNum">     344</span>                         :                 // giving us the choice to remove copies into a parameter.</span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">       24951            :                 auto paramType = param-&gt;getDataType();</span></span>
-<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">       24951            :                 auto constRefType = builder.getBorrowInParamType(paramType, AddressSpace::Generic);</span></span>
-<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">       24951            :                 param-&gt;setFullType(constRefType);</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">       24953            :                 auto paramType = param-&gt;getDataType();</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">       24953            :                 auto constRefType = builder.getBorrowInParamType(paramType, AddressSpace::Generic);</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">       24953            :                 param-&gt;setFullType(constRefType);</span></span>
 <span id="L348"><span class="lineNum">     348</span>                         : </span>
-<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">       24951            :                 changed = true;</span></span>
-<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">       24951            :                 updatedParams.add(param);</span></span>
-<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">       24951            :             }</span></span>
-<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">       68057            :         }</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">       24953            :                 changed = true;</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">       24953            :                 updatedParams.add(param);</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">       24953            :             }</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">       68059            :         }</span></span>
 <span id="L353"><span class="lineNum">     353</span>                         : </span>
-<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">       52606 <span class="branchAll" title="br0: 30905; br1: 21701">(2/2)</span>      :         if (updatedParams.getCount() == 0)</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">       52608 <span class="branchAll" title="br0: 30905; br1: 21703">(2/2)</span>      :         if (updatedParams.getCount() == 0)</span></span>
 <span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">       30905            :         {</span></span>
 <span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">       30905            :             return;</span></span>
 <span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">       30905            :         }</span></span>
 <span id="L358"><span class="lineNum">     358</span>                         : </span>
-<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">       21701            :         fixUpFuncType(func);</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">       21703            :         fixUpFuncType(func);</span></span>
 <span id="L360"><span class="lineNum">     360</span>                         : </span>
 <span id="L361"><span class="lineNum">     361</span>                         :         // Second pass: Update function body according to the new `constref` parameters</span>
-<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">       21701            :         rewriteParamUseSitesToSupportConstRefUsage(updatedParams);</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">       21703            :         rewriteParamUseSitesToSupportConstRefUsage(updatedParams);</span></span>
 <span id="L363"><span class="lineNum">     363</span>                         : </span>
 <span id="L364"><span class="lineNum">     364</span>                         :         // Third pass: Update call sites</span>
-<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">       21701            :         updateCallSites(func, updatedParams);</span></span>
-<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">       21701            :     }</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">       21703            :         updateCallSites(func, updatedParams);</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">       21703            :     }</span></span>
 <span id="L367"><span class="lineNum">     367</span>                         : </span>
 <span id="L368"><span class="lineNum">     368</span>                         :     void addFuncsToCallListInTopologicalOrder(</span>
 <span id="L369"><span class="lineNum">     369</span>                         :         IRFunc* root,</span>
 <span id="L370"><span class="lineNum">     370</span>                         :         List&lt;IRFunc*&gt;&amp; functionsToProcess,</span>
 <span id="L371"><span class="lineNum">     371</span>                         :         HashSet&lt;IRFunc*&gt;&amp; visitedCandidates)</span>
-<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">      291241            :     {</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">      291245            :     {</span></span>
 <span id="L373"><span class="lineNum">     373</span>                         :         // We added &#x27;root&#x27; already, leave</span>
-<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">      291241 <span class="branchAll" title="br0: 143435; br1: 147806">(2/2)</span>      :         if (visitedCandidates.contains(root))</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">      291245 <span class="branchAll" title="br0: 143435; br1: 147810">(2/2)</span>      :         if (visitedCandidates.contains(root))</span></span>
 <span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">      143435            :             return;</span></span>
 <span id="L376"><span class="lineNum">     376</span>                         : </span>
-<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">      147806            :         visitedCandidates.add(root);</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">      147810            :         visitedCandidates.add(root);</span></span>
 <span id="L378"><span class="lineNum">     378</span>                         : </span>
-<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">      147806 <span class="branchAll" title="br0: 555793; br1: 147806">(2/2)</span>      :         for (auto block : root-&gt;getBlocks())</span></span>
-<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">      555793            :         {</span></span>
-<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">      555793 <span class="branchAll" title="br0: 2862879; br1: 555793">(2/2)</span>      :             for (auto blockInst : block-&gt;getChildren())</span></span>
-<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">     2862879            :             {</span></span>
-<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">     2862879            :                 auto call = as&lt;IRCall&gt;(blockInst);</span></span>
-<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">     2862879 <span class="branchAll" title="br0: 2677900; br1: 184979">(2/2)</span>      :                 if (!call)</span></span>
-<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">     2677900            :                     continue;</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">      147810 <span class="branchAll" title="br0: 555797; br1: 147810">(2/2)</span>      :         for (auto block : root-&gt;getBlocks())</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">      555797            :         {</span></span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">      555797 <span class="branchAll" title="br0: 2862921; br1: 555797">(2/2)</span>      :             for (auto blockInst : block-&gt;getChildren())</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">     2862921            :             {</span></span>
+<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">     2862921            :                 auto call = as&lt;IRCall&gt;(blockInst);</span></span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">     2862921 <span class="branchAll" title="br0: 2677942; br1: 184979">(2/2)</span>      :                 if (!call)</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">     2677942            :                     continue;</span></span>
 <span id="L386"><span class="lineNum">     386</span>                         : </span>
 <span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">      184979            :                 auto callee = as&lt;IRFunc&gt;(call-&gt;getCallee());</span></span>
 <span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">      184979 <span class="branchAll" title="br0: 41544; br1: 143435">(2/2)</span>      :                 if (!callee)</span></span>
@@ -681,68 +681,68 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L390"><span class="lineNum">     390</span>                         : </span>
 <span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">      143435            :                 addFuncsToCallListInTopologicalOrder(callee, functionsToProcess, visitedCandidates);</span></span>
 <span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">      143435            :             }</span></span>
-<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">      555793            :         }</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">      555797            :         }</span></span>
 <span id="L394"><span class="lineNum">     394</span>                         : </span>
-<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">      147806 <span class="branchAll" title="br0: 95159; br1: 52647">(2/2)</span>      :         if (!shouldProcessFunction(root))</span></span>
-<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">       95159            :             return;</span></span>
-<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">       52647            :         functionsToProcess.add(root);</span></span>
-<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">       52647            :     }</span></span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">      147810 <span class="branchAll" title="br0: 95161; br1: 52649">(2/2)</span>      :         if (!shouldProcessFunction(root))</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">       95161            :             return;</span></span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">       52649            :         functionsToProcess.add(root);</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">       52649            :     }</span></span>
 <span id="L399"><span class="lineNum">     399</span>                         : </span>
 <span id="L400"><span class="lineNum">     400</span>                         :     SlangResult processModule()</span>
-<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">       27240            :     {</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">       27244            :     {</span></span>
 <span id="L402"><span class="lineNum">     402</span>                         :         // Collect all functions that need processing.</span>
 <span id="L403"><span class="lineNum">     403</span>                         :         // Process all callee&#x27;s before callers; otherwise we introduce bugs</span>
 <span id="L404"><span class="lineNum">     404</span>                         : </span>
-<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">       27240            :         HashSet&lt;IRFunc*&gt; visitedCandidates;</span></span>
-<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">       27240            :         List&lt;IRFunc*&gt; functionsToProcess;</span></span>
-<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">     7591650 <span class="branchAll" title="br0: 7564410; br1: 27240">(2/2)</span>      :         for (auto inst = module-&gt;getModuleInst()-&gt;getFirstChild(); inst; inst = inst-&gt;getNextInst())</span></span>
-<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">     7564410            :         {</span></span>
-<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">     7564410            :             auto func = as&lt;IRFunc&gt;(inst);</span></span>
-<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">     7564410 <span class="branchAll" title="br0: 7416604; br1: 147806">(2/2)</span>      :             if (!func)</span></span>
-<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">     7416604            :                 continue;</span></span>
-<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">      147806            :             addFuncsToCallListInTopologicalOrder(func, functionsToProcess, visitedCandidates);</span></span>
-<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">      147806            :         }</span></span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">       27244            :         HashSet&lt;IRFunc*&gt; visitedCandidates;</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">       27244            :         List&lt;IRFunc*&gt; functionsToProcess;</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">     7592029 <span class="branchAll" title="br0: 7564785; br1: 27244">(2/2)</span>      :         for (auto inst = module-&gt;getModuleInst()-&gt;getFirstChild(); inst; inst = inst-&gt;getNextInst())</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">     7564785            :         {</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">     7564785            :             auto func = as&lt;IRFunc&gt;(inst);</span></span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">     7564785 <span class="branchAll" title="br0: 7416975; br1: 147810">(2/2)</span>      :             if (!func)</span></span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">     7416975            :                 continue;</span></span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">      147810            :             addFuncsToCallListInTopologicalOrder(func, functionsToProcess, visitedCandidates);</span></span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">      147810            :         }</span></span>
 <span id="L414"><span class="lineNum">     414</span>                         : </span>
 <span id="L415"><span class="lineNum">     415</span>                         :         // Process each function</span>
-<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">       27240 <span class="branchAll" title="br0: 52647; br1: 27240">(2/2)</span>      :         for (auto func : functionsToProcess)</span></span>
-<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">       52647            :         {</span></span>
-<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">       52647            :             processFunc(func);</span></span>
-<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">       52647            :         }</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">       27244 <span class="branchAll" title="br0: 52649; br1: 27244">(2/2)</span>      :         for (auto func : functionsToProcess)</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">       52649            :         {</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">       52649            :             processFunc(func);</span></span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">       52649            :         }</span></span>
 <span id="L420"><span class="lineNum">     420</span>                         : </span>
-<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">       27240            :         return SLANG_OK;</span></span>
-<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">       27240            :     }</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">       27244            :         return SLANG_OK;</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">       27244            :     }</span></span>
 <span id="L423"><span class="lineNum">     423</span>                         : };</span>
 <span id="L424"><span class="lineNum">     424</span>                         : </span>
 <span id="L425"><span class="lineNum">     425</span>                         : SlangResult transformParamsToConstRef(IRModule* module, DiagnosticSink* sink)</span>
-<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">       10429            : {</span></span>
-<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">       10429            :     TransformParamsToConstRefContext context(module, sink);</span></span>
-<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">       10429            :     return context.processModule();</span></span>
-<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">       10429            : }</span></span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">       10431            : {</span></span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">       10431            :     TransformParamsToConstRefContext context(module, sink);</span></span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">       10431            :     return context.processModule();</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">       10431            : }</span></span>
 <span id="L430"><span class="lineNum">     430</span>                         : </span>
 <span id="L431"><span class="lineNum">     431</span>                         : struct EntryPointInParamToBorrowContext : public TransformParamsToConstRefContext</span>
 <span id="L432"><span class="lineNum">     432</span>                         : {</span>
 <span id="L433"><span class="lineNum">     433</span>                         :     EntryPointInParamToBorrowContext(IRModule* module, DiagnosticSink* sink)</span>
-<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">       16811            :         : TransformParamsToConstRefContext(module, sink)</span></span>
-<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">       16811            :     {</span></span>
-<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">       16811            :     }</span></span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">       16813            :         : TransformParamsToConstRefContext(module, sink)</span></span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">       16813            :     {</span></span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">       16813            :     }</span></span>
 <span id="L437"><span class="lineNum">     437</span>                         :     virtual bool shouldProcessFunction(IRFunc* func) override</span>
-<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">       92638            :     {</span></span>
-<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">       92638 <span class="branchAll" title="br0: 30209; br1: 62429">(2/2)</span>      :         if (!func-&gt;isDefinition())</span></span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">       92640            :     {</span></span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">       92640 <span class="branchAll" title="br0: 30209; br1: 62431">(2/2)</span>      :         if (!func-&gt;isDefinition())</span></span>
 <span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">       30209            :             return false;</span></span>
-<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">       62429 <span class="branchAll" title="br0: 16943; br1: 45486">(2/2)</span>      :         if (func-&gt;findDecoration&lt;IREntryPointDecoration&gt;() != nullptr)</span></span>
-<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">       16943            :             return true;</span></span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">       62431 <span class="branchAll" title="br0: 16945; br1: 45486">(2/2)</span>      :         if (func-&gt;findDecoration&lt;IREntryPointDecoration&gt;() != nullptr)</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">       16945            :             return true;</span></span>
 <span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">       45486            :         return false;</span></span>
-<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">       62429            :     }</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">       62431            :     }</span></span>
 <span id="L445"><span class="lineNum">     445</span>                         :     virtual bool shouldTransformParam(IRParam* param) override</span>
-<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">       12204            :     {</span></span>
-<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">       12204            :         auto type = param-&gt;getDataType();</span></span>
-<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">       12204 <span class="branchAll" title="br0: 30; br1: 12174">(2/2)</span>      :         if (as&lt;IRPointerLikeType&gt;(type))</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">       12206            :     {</span></span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">       12206            :         auto type = param-&gt;getDataType();</span></span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">       12206 <span class="branchAll" title="br0: 30; br1: 12176">(2/2)</span>      :         if (as&lt;IRPointerLikeType&gt;(type))</span></span>
 <span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">          30            :             return false;</span></span>
-<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       12174 <span class="branchAll" title="br0: 643; br1: 11531">(2/2)</span>      :         if (as&lt;IRPtrTypeBase&gt;(type))</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       12176 <span class="branchAll" title="br0: 643; br1: 11533">(2/2)</span>      :         if (as&lt;IRPtrTypeBase&gt;(type))</span></span>
 <span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">         643            :             return false;</span></span>
-<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">       11531 <span class="branchPart" title="br0: 0; br1: 11531">(1/2)</span>      :         if (as&lt;IRMeshOutputType&gt;(type))</span></span>
+<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">       11533 <span class="branchPart" title="br0: 0; br1: 11533">(1/2)</span>      :         if (as&lt;IRMeshOutputType&gt;(type))</span></span>
 <span id="L453"><span class="lineNum">     453</span> <span class="tlaUNC">           0            :             return false;</span></span>
-<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">       11531 <span class="branchAll" title="br0: 29; br1: 11502">(2/2)</span>      :         if (as&lt;IRHLSLPatchType&gt;(type))</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">       11533 <span class="branchAll" title="br0: 29; br1: 11504">(2/2)</span>      :         if (as&lt;IRHLSLPatchType&gt;(type))</span></span>
 <span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">          29            :             return false;</span></span>
 <span id="L456"><span class="lineNum">     456</span>                         : </span>
 <span id="L457"><span class="lineNum">     457</span>                         :         // Skip uniform parameters.</span>
@@ -750,28 +750,28 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L459"><span class="lineNum">     459</span>                         :         // but we will be defensive and skip parameters without the required</span>
 <span id="L460"><span class="lineNum">     460</span>                         :         // information when we are in a release build.</span>
 <span id="L461"><span class="lineNum">     461</span>                         :         //</span>
-<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">       11502            :         auto layoutDecoration = param-&gt;findDecoration&lt;IRLayoutDecoration&gt;();</span></span>
-<span id="L463"><span class="lineNum">     463</span> <span class="tlaGNC">       11502            :         SLANG_ASSERT(layoutDecoration);</span></span>
-<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">       11502 <span class="branchPart" title="br0: 0; br1: 11502">(1/2)</span>      :         if (!layoutDecoration)</span></span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">       11504            :         auto layoutDecoration = param-&gt;findDecoration&lt;IRLayoutDecoration&gt;();</span></span>
+<span id="L463"><span class="lineNum">     463</span> <span class="tlaGNC">       11504            :         SLANG_ASSERT(layoutDecoration);</span></span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">       11504 <span class="branchPart" title="br0: 0; br1: 11504">(1/2)</span>      :         if (!layoutDecoration)</span></span>
 <span id="L465"><span class="lineNum">     465</span> <span class="tlaUNC">           0            :             return false;</span></span>
-<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">       11502            :         auto paramLayout = as&lt;IRVarLayout&gt;(layoutDecoration-&gt;getLayout());</span></span>
-<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">       11502            :         SLANG_ASSERT(paramLayout);</span></span>
-<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">       11502 <span class="branchPart" title="br0: 0; br1: 11502">(1/2)</span>      :         if (!paramLayout)</span></span>
+<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">       11504            :         auto paramLayout = as&lt;IRVarLayout&gt;(layoutDecoration-&gt;getLayout());</span></span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">       11504            :         SLANG_ASSERT(paramLayout);</span></span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">       11504 <span class="branchPart" title="br0: 0; br1: 11504">(1/2)</span>      :         if (!paramLayout)</span></span>
 <span id="L469"><span class="lineNum">     469</span> <span class="tlaUNC">           0            :             return false;</span></span>
-<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">       11502 <span class="branchAll" title="br0: 581; br1: 10921">(2/2)</span>      :         if (!isVaryingParameter(paramLayout))</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">       11504 <span class="branchAll" title="br0: 581; br1: 10923">(2/2)</span>      :         if (!isVaryingParameter(paramLayout))</span></span>
 <span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">         581            :             return false;</span></span>
 <span id="L472"><span class="lineNum">     472</span>                         : </span>
 <span id="L473"><span class="lineNum">     473</span>                         :         // If we reach here, we are dealing with a varying in parameter.</span>
 <span id="L474"><span class="lineNum">     474</span>                         :         // We need to rewrite it to be a `borrow in` parameter.</span>
-<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">       10921            :         return true;</span></span>
-<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">       11502            :     }</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">       10923            :         return true;</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">       11504            :     }</span></span>
 <span id="L477"><span class="lineNum">     477</span>                         : };</span>
 <span id="L478"><span class="lineNum">     478</span>                         : </span>
 <span id="L479"><span class="lineNum">     479</span>                         : SlangResult translateEntryPointInParamToBorrow(IRModule* module, DiagnosticSink* sink)</span>
-<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">       16811            : {</span></span>
-<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">       16811            :     EntryPointInParamToBorrowContext context(module, sink);</span></span>
-<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">       16811            :     return context.processModule();</span></span>
-<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">       16811            : }</span></span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">       16813            : {</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">       16813            :     EntryPointInParamToBorrowContext context(module, sink);</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">       16813            :     return context.processModule();</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">       16813            : }</span></span>
 <span id="L484"><span class="lineNum">     484</span>                         : </span>
 <span id="L485"><span class="lineNum">     485</span>                         : } // namespace Slang</span>
 </pre>
