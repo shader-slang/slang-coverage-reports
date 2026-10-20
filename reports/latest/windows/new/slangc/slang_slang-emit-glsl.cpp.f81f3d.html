@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-19 05:21:48 UTC</td>
+      <td class="headerValue">2026-10-20 05:15:42 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">80.0&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:80.0%;background-color:hsl(90, 70%, 50%)"></div></div>
-      <span class="metricCounts">1,268 / 1,585</span>
+      <span class="metricValue">80.2&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:80.2%;background-color:hsl(90, 70%, 50%)"></div></div>
+      <span class="metricCounts">1,274 / 1,589</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -4271,87 +4271,96 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3998"><span class="lineNum">    3998</span> <span class="tlaGNC">           1 :             _requireGLSLExtension(toSlice(&quot;GL_EXT_fragment_shader_barycentric&quot;));</span></span>
 <span id="L3999"><span class="lineNum">    3999</span> <span class="tlaGNC">           1 :             prefix = toSlice(&quot;pervertex&quot;);</span></span>
 <span id="L4000"><span class="lineNum">    4000</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L4001"><span class="lineNum">    4001</span>              :         else</span>
+<span id="L4001"><span class="lineNum">    4001</span> <span class="tlaGNC">           1 :         else if (as&lt;IRGLSLPatchDecoration&gt;(decoration))</span></span>
 <span id="L4002"><span class="lineNum">    4002</span>              :         {</span>
-<span id="L4003"><span class="lineNum">    4003</span>              :             IRIntegerValue locationValue = -1;</span>
-<span id="L4004"><span class="lineNum">    4004</span> <span class="tlaGNC">           1 :             switch (decoration-&gt;getOp())</span></span>
-<span id="L4005"><span class="lineNum">    4005</span>              :             {</span>
-<span id="L4006"><span class="lineNum">    4006</span>              :             case kIROp_VulkanCallablePayloadDecoration:</span>
-<span id="L4007"><span class="lineNum">    4007</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;callableData&quot;);</span></span>
-<span id="L4008"><span class="lineNum">    4008</span>              :                 locationValue = getIntVal(decoration-&gt;getOperand(0));</span>
-<span id="L4009"><span class="lineNum">    4009</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L4010"><span class="lineNum">    4010</span>              :             case kIROp_VulkanCallablePayloadInDecoration:</span>
-<span id="L4011"><span class="lineNum">    4011</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;callableDataIn&quot;);</span></span>
-<span id="L4012"><span class="lineNum">    4012</span>              :                 locationValue = getIntVal(decoration-&gt;getOperand(0));</span>
-<span id="L4013"><span class="lineNum">    4013</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L4014"><span class="lineNum">    4014</span>              :             case kIROp_VulkanRayPayloadDecoration:</span>
-<span id="L4015"><span class="lineNum">    4015</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;rayPayload&quot;);</span></span>
-<span id="L4016"><span class="lineNum">    4016</span>              :                 locationValue = getIntVal(decoration-&gt;getOperand(0));</span>
-<span id="L4017"><span class="lineNum">    4017</span>              :                 break;</span>
-<span id="L4018"><span class="lineNum">    4018</span>              :             case kIROp_VulkanRayPayloadInDecoration:</span>
-<span id="L4019"><span class="lineNum">    4019</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;rayPayloadIn&quot;);</span></span>
-<span id="L4020"><span class="lineNum">    4020</span>              :                 locationValue = getIntVal(decoration-&gt;getOperand(0));</span>
-<span id="L4021"><span class="lineNum">    4021</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L4022"><span class="lineNum">    4022</span>              :             case kIROp_VulkanHitObjectAttributesDecoration:</span>
-<span id="L4023"><span class="lineNum">    4023</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;hitObjectAttribute&quot;);</span></span>
-<span id="L4024"><span class="lineNum">    4024</span>              :                 {</span>
-<span id="L4025"><span class="lineNum">    4025</span> <span class="tlaGNC">           1 :                     auto targetCaps = getTargetCaps();</span></span>
-<span id="L4026"><span class="lineNum">    4026</span> <span class="tlaGNC">           1 :                     if (targetCaps.implies(CapabilityAtom::_GL_NV_shader_invocation_reorder))</span></span>
-<span id="L4027"><span class="lineNum">    4027</span> <span class="tlaGNC">           1 :                         postfix = toSlice(&quot;NV&quot;);</span></span>
-<span id="L4028"><span class="lineNum">    4028</span> <span class="tlaGNC">           1 :                 }</span></span>
+<span id="L4003"><span class="lineNum">    4003</span> <span class="tlaGNC">           1 :             prefix = toSlice(&quot;patch&quot;);</span></span>
+<span id="L4004"><span class="lineNum">    4004</span>              :             // `patch` is a core GLSL keyword, no need for suffix like EXT</span>
+<span id="L4005"><span class="lineNum">    4005</span> <span class="tlaGNC">           1 :             postfix = toSlice(&quot;&quot;);</span></span>
+<span id="L4006"><span class="lineNum">    4006</span>              :             // Unlike the payload branches below, no `layout(location = ...)` here: a patch</span>
+<span id="L4007"><span class="lineNum">    4007</span>              :             // variable is an ordinary varying, so its location comes from the normal varying</span>
+<span id="L4008"><span class="lineNum">    4008</span>              :             // layout path (`emitLayoutQualifiersImpl`), and emitting one here would duplicate it.</span>
+<span id="L4009"><span class="lineNum">    4009</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L4010"><span class="lineNum">    4010</span>              :         else</span>
+<span id="L4011"><span class="lineNum">    4011</span>              :         {</span>
+<span id="L4012"><span class="lineNum">    4012</span>              :             IRIntegerValue locationValue = -1;</span>
+<span id="L4013"><span class="lineNum">    4013</span> <span class="tlaGNC">           1 :             switch (decoration-&gt;getOp())</span></span>
+<span id="L4014"><span class="lineNum">    4014</span>              :             {</span>
+<span id="L4015"><span class="lineNum">    4015</span>              :             case kIROp_VulkanCallablePayloadDecoration:</span>
+<span id="L4016"><span class="lineNum">    4016</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;callableData&quot;);</span></span>
+<span id="L4017"><span class="lineNum">    4017</span>              :                 locationValue = getIntVal(decoration-&gt;getOperand(0));</span>
+<span id="L4018"><span class="lineNum">    4018</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L4019"><span class="lineNum">    4019</span>              :             case kIROp_VulkanCallablePayloadInDecoration:</span>
+<span id="L4020"><span class="lineNum">    4020</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;callableDataIn&quot;);</span></span>
+<span id="L4021"><span class="lineNum">    4021</span>              :                 locationValue = getIntVal(decoration-&gt;getOperand(0));</span>
+<span id="L4022"><span class="lineNum">    4022</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L4023"><span class="lineNum">    4023</span>              :             case kIROp_VulkanRayPayloadDecoration:</span>
+<span id="L4024"><span class="lineNum">    4024</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;rayPayload&quot;);</span></span>
+<span id="L4025"><span class="lineNum">    4025</span>              :                 locationValue = getIntVal(decoration-&gt;getOperand(0));</span>
+<span id="L4026"><span class="lineNum">    4026</span>              :                 break;</span>
+<span id="L4027"><span class="lineNum">    4027</span>              :             case kIROp_VulkanRayPayloadInDecoration:</span>
+<span id="L4028"><span class="lineNum">    4028</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;rayPayloadIn&quot;);</span></span>
 <span id="L4029"><span class="lineNum">    4029</span>              :                 locationValue = getIntVal(decoration-&gt;getOperand(0));</span>
 <span id="L4030"><span class="lineNum">    4030</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L4031"><span class="lineNum">    4031</span>              :             default:</span>
-<span id="L4032"><span class="lineNum">    4032</span>              :                 continue;</span>
-<span id="L4033"><span class="lineNum">    4033</span>              :             }</span>
-<span id="L4034"><span class="lineNum">    4034</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(toSlice(&quot;layout(location = &quot;));</span></span>
-<span id="L4035"><span class="lineNum">    4035</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(locationValue);</span></span>
-<span id="L4036"><span class="lineNum">    4036</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(toSlice(&quot;)\n&quot;));</span></span>
-<span id="L4037"><span class="lineNum">    4037</span>              :         }</span>
-<span id="L4038"><span class="lineNum">    4038</span>              : </span>
-<span id="L4039"><span class="lineNum">    4039</span>              :         SLANG_ASSERT(prefix.getLength());</span>
-<span id="L4040"><span class="lineNum">    4040</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(prefix);</span></span>
-<span id="L4041"><span class="lineNum">    4041</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(postfix);</span></span>
-<span id="L4042"><span class="lineNum">    4042</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(toSlice(&quot;\n&quot;));</span></span>
-<span id="L4043"><span class="lineNum">    4043</span>              : </span>
-<span id="L4044"><span class="lineNum">    4044</span>              :         // If we emit a location we are done.</span>
-<span id="L4045"><span class="lineNum">    4045</span>              :         break;</span>
-<span id="L4046"><span class="lineNum">    4046</span>              :     }</span>
-<span id="L4047"><span class="lineNum">    4047</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4048"><span class="lineNum">    4048</span>              : </span>
-<span id="L4049"><span class="lineNum">    4049</span>              : void GLSLSourceEmitter::emitMatrixLayoutModifiersImpl(IRType* varType)</span>
-<span id="L4050"><span class="lineNum">    4050</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L4051"><span class="lineNum">    4051</span>              :     // When a variable has a matrix type, we want to emit an explicit</span>
-<span id="L4052"><span class="lineNum">    4052</span>              :     // layout qualifier based on what the layout has been computed to be.</span>
-<span id="L4053"><span class="lineNum">    4053</span>              :     //</span>
-<span id="L4054"><span class="lineNum">    4054</span>              : </span>
-<span id="L4055"><span class="lineNum">    4055</span> <span class="tlaGNC">           1 :     auto matrixType = as&lt;IRMatrixType&gt;(unwrapArray(varType));</span></span>
-<span id="L4056"><span class="lineNum">    4056</span> <span class="tlaGNC">           1 :     if (matrixType)</span></span>
-<span id="L4057"><span class="lineNum">    4057</span>              :     {</span>
-<span id="L4058"><span class="lineNum">    4058</span> <span class="tlaUNC">           0 :         auto layout = getIntVal(matrixType-&gt;getLayout());</span></span>
-<span id="L4059"><span class="lineNum">    4059</span> <span class="tlaUNC">           0 :         if (layout == getTargetProgram()-&gt;getOptionSet().getMatrixLayoutMode())</span></span>
-<span id="L4060"><span class="lineNum">    4060</span>              :             return;</span>
-<span id="L4061"><span class="lineNum">    4061</span>              : </span>
-<span id="L4062"><span class="lineNum">    4062</span>              :         // Reminder: the meaning of row/column major layout</span>
-<span id="L4063"><span class="lineNum">    4063</span>              :         // in our semantics is the *opposite* of what GLSL</span>
-<span id="L4064"><span class="lineNum">    4064</span>              :         // calls them, because what they call &quot;columns&quot;</span>
-<span id="L4065"><span class="lineNum">    4065</span>              :         // are what we call &quot;rows.&quot;</span>
-<span id="L4066"><span class="lineNum">    4066</span>              :         //</span>
-<span id="L4067"><span class="lineNum">    4067</span> <span class="tlaUNC">           0 :         switch (layout)</span></span>
-<span id="L4068"><span class="lineNum">    4068</span>              :         {</span>
-<span id="L4069"><span class="lineNum">    4069</span>              :         case SLANG_MATRIX_LAYOUT_COLUMN_MAJOR:</span>
-<span id="L4070"><span class="lineNum">    4070</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;layout(row_major)\n&quot;);</span></span>
-<span id="L4071"><span class="lineNum">    4071</span> <span class="tlaUNC">           0 :             break;</span></span>
-<span id="L4072"><span class="lineNum">    4072</span>              : </span>
-<span id="L4073"><span class="lineNum">    4073</span>              :         case SLANG_MATRIX_LAYOUT_ROW_MAJOR:</span>
-<span id="L4074"><span class="lineNum">    4074</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;layout(column_major)\n&quot;);</span></span>
-<span id="L4075"><span class="lineNum">    4075</span>              :             break;</span>
-<span id="L4076"><span class="lineNum">    4076</span>              :         }</span>
-<span id="L4077"><span class="lineNum">    4077</span>              :     }</span>
-<span id="L4078"><span class="lineNum">    4078</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4079"><span class="lineNum">    4079</span>              : </span>
-<span id="L4080"><span class="lineNum">    4080</span>              : </span>
-<span id="L4081"><span class="lineNum">    4081</span>              : } // namespace Slang</span>
+<span id="L4031"><span class="lineNum">    4031</span>              :             case kIROp_VulkanHitObjectAttributesDecoration:</span>
+<span id="L4032"><span class="lineNum">    4032</span> <span class="tlaGNC">           1 :                 prefix = toSlice(&quot;hitObjectAttribute&quot;);</span></span>
+<span id="L4033"><span class="lineNum">    4033</span>              :                 {</span>
+<span id="L4034"><span class="lineNum">    4034</span> <span class="tlaGNC">           1 :                     auto targetCaps = getTargetCaps();</span></span>
+<span id="L4035"><span class="lineNum">    4035</span> <span class="tlaGNC">           1 :                     if (targetCaps.implies(CapabilityAtom::_GL_NV_shader_invocation_reorder))</span></span>
+<span id="L4036"><span class="lineNum">    4036</span> <span class="tlaGNC">           1 :                         postfix = toSlice(&quot;NV&quot;);</span></span>
+<span id="L4037"><span class="lineNum">    4037</span> <span class="tlaGNC">           1 :                 }</span></span>
+<span id="L4038"><span class="lineNum">    4038</span>              :                 locationValue = getIntVal(decoration-&gt;getOperand(0));</span>
+<span id="L4039"><span class="lineNum">    4039</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L4040"><span class="lineNum">    4040</span>              :             default:</span>
+<span id="L4041"><span class="lineNum">    4041</span>              :                 continue;</span>
+<span id="L4042"><span class="lineNum">    4042</span>              :             }</span>
+<span id="L4043"><span class="lineNum">    4043</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(toSlice(&quot;layout(location = &quot;));</span></span>
+<span id="L4044"><span class="lineNum">    4044</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(locationValue);</span></span>
+<span id="L4045"><span class="lineNum">    4045</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(toSlice(&quot;)\n&quot;));</span></span>
+<span id="L4046"><span class="lineNum">    4046</span>              :         }</span>
+<span id="L4047"><span class="lineNum">    4047</span>              : </span>
+<span id="L4048"><span class="lineNum">    4048</span>              :         SLANG_ASSERT(prefix.getLength());</span>
+<span id="L4049"><span class="lineNum">    4049</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(prefix);</span></span>
+<span id="L4050"><span class="lineNum">    4050</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(postfix);</span></span>
+<span id="L4051"><span class="lineNum">    4051</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(toSlice(&quot;\n&quot;));</span></span>
+<span id="L4052"><span class="lineNum">    4052</span>              : </span>
+<span id="L4053"><span class="lineNum">    4053</span>              :         // If we emit a location we are done.</span>
+<span id="L4054"><span class="lineNum">    4054</span>              :         break;</span>
+<span id="L4055"><span class="lineNum">    4055</span>              :     }</span>
+<span id="L4056"><span class="lineNum">    4056</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4057"><span class="lineNum">    4057</span>              : </span>
+<span id="L4058"><span class="lineNum">    4058</span>              : void GLSLSourceEmitter::emitMatrixLayoutModifiersImpl(IRType* varType)</span>
+<span id="L4059"><span class="lineNum">    4059</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4060"><span class="lineNum">    4060</span>              :     // When a variable has a matrix type, we want to emit an explicit</span>
+<span id="L4061"><span class="lineNum">    4061</span>              :     // layout qualifier based on what the layout has been computed to be.</span>
+<span id="L4062"><span class="lineNum">    4062</span>              :     //</span>
+<span id="L4063"><span class="lineNum">    4063</span>              : </span>
+<span id="L4064"><span class="lineNum">    4064</span> <span class="tlaGNC">           1 :     auto matrixType = as&lt;IRMatrixType&gt;(unwrapArray(varType));</span></span>
+<span id="L4065"><span class="lineNum">    4065</span> <span class="tlaGNC">           1 :     if (matrixType)</span></span>
+<span id="L4066"><span class="lineNum">    4066</span>              :     {</span>
+<span id="L4067"><span class="lineNum">    4067</span> <span class="tlaGNC">           1 :         auto layout = getIntVal(matrixType-&gt;getLayout());</span></span>
+<span id="L4068"><span class="lineNum">    4068</span> <span class="tlaGNC">           1 :         if (layout == getTargetProgram()-&gt;getOptionSet().getMatrixLayoutMode())</span></span>
+<span id="L4069"><span class="lineNum">    4069</span>              :             return;</span>
+<span id="L4070"><span class="lineNum">    4070</span>              : </span>
+<span id="L4071"><span class="lineNum">    4071</span>              :         // Reminder: the meaning of row/column major layout</span>
+<span id="L4072"><span class="lineNum">    4072</span>              :         // in our semantics is the *opposite* of what GLSL</span>
+<span id="L4073"><span class="lineNum">    4073</span>              :         // calls them, because what they call &quot;columns&quot;</span>
+<span id="L4074"><span class="lineNum">    4074</span>              :         // are what we call &quot;rows.&quot;</span>
+<span id="L4075"><span class="lineNum">    4075</span>              :         //</span>
+<span id="L4076"><span class="lineNum">    4076</span> <span class="tlaUNC">           0 :         switch (layout)</span></span>
+<span id="L4077"><span class="lineNum">    4077</span>              :         {</span>
+<span id="L4078"><span class="lineNum">    4078</span>              :         case SLANG_MATRIX_LAYOUT_COLUMN_MAJOR:</span>
+<span id="L4079"><span class="lineNum">    4079</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;layout(row_major)\n&quot;);</span></span>
+<span id="L4080"><span class="lineNum">    4080</span> <span class="tlaUNC">           0 :             break;</span></span>
+<span id="L4081"><span class="lineNum">    4081</span>              : </span>
+<span id="L4082"><span class="lineNum">    4082</span>              :         case SLANG_MATRIX_LAYOUT_ROW_MAJOR:</span>
+<span id="L4083"><span class="lineNum">    4083</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;layout(column_major)\n&quot;);</span></span>
+<span id="L4084"><span class="lineNum">    4084</span>              :             break;</span>
+<span id="L4085"><span class="lineNum">    4085</span>              :         }</span>
+<span id="L4086"><span class="lineNum">    4086</span>              :     }</span>
+<span id="L4087"><span class="lineNum">    4087</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4088"><span class="lineNum">    4088</span>              : </span>
+<span id="L4089"><span class="lineNum">    4089</span>              : </span>
+<span id="L4090"><span class="lineNum">    4090</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

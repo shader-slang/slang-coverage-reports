@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-19 05:21:48 UTC</td>
+      <td class="headerValue">2026-10-20 05:15:42 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -6558,411 +6558,430 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L6285"><span class="lineNum">    6285</span>              :     return createSimpleTypeLayout(SimpleLayoutInfo(), type, rules);</span>
 <span id="L6286"><span class="lineNum">    6286</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L6287"><span class="lineNum">    6287</span>              : </span>
-<span id="L6288"><span class="lineNum">    6288</span>              : RefPtr&lt;TypeLayout&gt; getSimpleVaryingParameterTypeLayout(</span>
-<span id="L6289"><span class="lineNum">    6289</span>              :     TypeLayoutContext const&amp; context,</span>
-<span id="L6290"><span class="lineNum">    6290</span>              :     Type* type,</span>
-<span id="L6291"><span class="lineNum">    6291</span>              :     EntryPointParameterDirectionMask directionMask)</span>
-<span id="L6292"><span class="lineNum">    6292</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L6293"><span class="lineNum">    6293</span> <span class="tlaGNC">           1 :     auto rules = context.rules;</span></span>
-<span id="L6294"><span class="lineNum">    6294</span>              : </span>
-<span id="L6295"><span class="lineNum">    6295</span>              :     // TODO: This logic should ideally share as much</span>
-<span id="L6296"><span class="lineNum">    6296</span>              :     // as possible with the `_createTypeLayout` function,</span>
-<span id="L6297"><span class="lineNum">    6297</span>              :     // to avoid duplication, but we also have to deal</span>
-<span id="L6298"><span class="lineNum">    6298</span>              :     // with the many ways in which varying parameter</span>
-<span id="L6299"><span class="lineNum">    6299</span>              :     // layout differs from non-varying layout.</span>
-<span id="L6300"><span class="lineNum">    6300</span>              : </span>
-<span id="L6301"><span class="lineNum">    6301</span>              :     // We will compute resource consumption for the type</span>
-<span id="L6302"><span class="lineNum">    6302</span>              :     // as a varying input, output, or both/neither.</span>
-<span id="L6303"><span class="lineNum">    6303</span>              :     // To avoid duplication, we&#x27;ll build an array that</span>
-<span id="L6304"><span class="lineNum">    6304</span>              :     // includes all the layout rules we need to apply.</span>
-<span id="L6305"><span class="lineNum">    6305</span>              :     //</span>
-<span id="L6306"><span class="lineNum">    6306</span> <span class="tlaGNC">           1 :     int varyingRulesCount = 0;</span></span>
-<span id="L6307"><span class="lineNum">    6307</span>              :     LayoutRulesImpl* varyingRules[2];</span>
-<span id="L6308"><span class="lineNum">    6308</span>              : </span>
-<span id="L6309"><span class="lineNum">    6309</span> <span class="tlaGNC">           1 :     if (directionMask &amp; kEntryPointParameterDirection_Input)</span></span>
-<span id="L6310"><span class="lineNum">    6310</span>              :     {</span>
-<span id="L6311"><span class="lineNum">    6311</span> <span class="tlaGNC">           1 :         varyingRules[varyingRulesCount++] = context.getRulesFamily()-&gt;getVaryingInputRules();</span></span>
-<span id="L6312"><span class="lineNum">    6312</span>              :     }</span>
-<span id="L6313"><span class="lineNum">    6313</span> <span class="tlaGNC">           1 :     if (directionMask &amp; kEntryPointParameterDirection_Output)</span></span>
-<span id="L6314"><span class="lineNum">    6314</span>              :     {</span>
-<span id="L6315"><span class="lineNum">    6315</span> <span class="tlaGNC">           1 :         varyingRules[varyingRulesCount++] = context.getRulesFamily()-&gt;getVaryingOutputRules();</span></span>
-<span id="L6316"><span class="lineNum">    6316</span>              :     }</span>
-<span id="L6317"><span class="lineNum">    6317</span>              : </span>
-<span id="L6318"><span class="lineNum">    6318</span> <span class="tlaGNC">           1 :     if (auto basicType = as&lt;BasicExpressionType&gt;(type))</span></span>
-<span id="L6319"><span class="lineNum">    6319</span>              :     {</span>
-<span id="L6320"><span class="lineNum">    6320</span> <span class="tlaGNC">           1 :         auto baseType = basicType-&gt;getBaseType();</span></span>
-<span id="L6321"><span class="lineNum">    6321</span>              : </span>
-<span id="L6322"><span class="lineNum">    6322</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; typeLayout = new TypeLayout();</span></span>
-<span id="L6323"><span class="lineNum">    6323</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = type;</span></span>
-<span id="L6324"><span class="lineNum">    6324</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
-<span id="L6325"><span class="lineNum">    6325</span>              : </span>
-<span id="L6326"><span class="lineNum">    6326</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
-<span id="L6327"><span class="lineNum">    6327</span>              :         {</span>
-<span id="L6328"><span class="lineNum">    6328</span> <span class="tlaGNC">           1 :             auto info = varyingRules[rr]-&gt;GetScalarLayout(baseType, context);</span></span>
-<span id="L6329"><span class="lineNum">    6329</span> <span class="tlaGNC">           1 :             typeLayout-&gt;addResourceUsage(info.kind, info.size);</span></span>
-<span id="L6330"><span class="lineNum">    6330</span>              :         }</span>
-<span id="L6331"><span class="lineNum">    6331</span>              : </span>
-<span id="L6332"><span class="lineNum">    6332</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
-<span id="L6333"><span class="lineNum">    6333</span>              :     }</span>
-<span id="L6334"><span class="lineNum">    6334</span> <span class="tlaGNC">           1 :     else if (as&lt;PtrType&gt;(type))</span></span>
-<span id="L6335"><span class="lineNum">    6335</span>              :     {</span>
-<span id="L6336"><span class="lineNum">    6336</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; typeLayout = new PointerTypeLayout();</span></span>
-<span id="L6337"><span class="lineNum">    6337</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = type;</span></span>
-<span id="L6338"><span class="lineNum">    6338</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
-<span id="L6339"><span class="lineNum">    6339</span>              : </span>
-<span id="L6340"><span class="lineNum">    6340</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
-<span id="L6341"><span class="lineNum">    6341</span>              :         {</span>
-<span id="L6342"><span class="lineNum">    6342</span> <span class="tlaGNC">           1 :             auto info = varyingRules[rr]-&gt;GetPointerLayout(context);</span></span>
-<span id="L6343"><span class="lineNum">    6343</span> <span class="tlaGNC">           1 :             typeLayout-&gt;addResourceUsage(info.kind, info.size);</span></span>
-<span id="L6344"><span class="lineNum">    6344</span>              :         }</span>
-<span id="L6345"><span class="lineNum">    6345</span>              : </span>
-<span id="L6346"><span class="lineNum">    6346</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
-<span id="L6347"><span class="lineNum">    6347</span>              :     }</span>
-<span id="L6348"><span class="lineNum">    6348</span> <span class="tlaGNC">           1 :     else if (auto vecType = as&lt;VectorExpressionType&gt;(type))</span></span>
-<span id="L6349"><span class="lineNum">    6349</span>              :     {</span>
-<span id="L6350"><span class="lineNum">    6350</span> <span class="tlaGNC">           1 :         auto elementType = vecType-&gt;getElementType();</span></span>
-<span id="L6351"><span class="lineNum">    6351</span>              : </span>
-<span id="L6352"><span class="lineNum">    6352</span>              :         // Handle conditionally-sized vectors (e.g., 0-length vectors or non-constant sizes)</span>
-<span id="L6353"><span class="lineNum">    6353</span> <span class="tlaGNC">           1 :         auto elementCountVal = context.tryResolveLinkTimeVal(vecType-&gt;getElementCount());</span></span>
-<span id="L6354"><span class="lineNum">    6354</span> <span class="tlaGNC">           1 :         if (!as&lt;ConstantIntVal&gt;(elementCountVal) || getIntVal(elementCountVal) == 0)</span></span>
-<span id="L6355"><span class="lineNum">    6355</span>              :         {</span>
-<span id="L6356"><span class="lineNum">    6356</span>              :             // If the vector size is not a compile-time constant, we cannot</span>
-<span id="L6357"><span class="lineNum">    6357</span>              :             // compute a fixed layout for it. Treat it as having zero size.</span>
-<span id="L6358"><span class="lineNum">    6358</span>              :             // This will be handled later during IR legalization.</span>
-<span id="L6359"><span class="lineNum">    6359</span> <span class="tlaUNC">           0 :             RefPtr&lt;TypeLayout&gt; typeLayout = new TypeLayout();</span></span>
-<span id="L6360"><span class="lineNum">    6360</span> <span class="tlaUNC">           0 :             typeLayout-&gt;type = type;</span></span>
-<span id="L6361"><span class="lineNum">    6361</span> <span class="tlaUNC">           0 :             typeLayout-&gt;rules = rules;</span></span>
-<span id="L6362"><span class="lineNum">    6362</span> <span class="tlaUNC">           0 :             return typeLayout;</span></span>
+<span id="L6288"><span class="lineNum">    6288</span>              : void getMatrixLayoutAxisCounts(</span>
+<span id="L6289"><span class="lineNum">    6289</span>              :     size_t rowCount,</span>
+<span id="L6290"><span class="lineNum">    6290</span>              :     size_t columnCount,</span>
+<span id="L6291"><span class="lineNum">    6291</span>              :     MatrixLayoutMode matrixLayoutMode,</span>
+<span id="L6292"><span class="lineNum">    6292</span>              :     size_t&amp; outLayoutMajorCount,</span>
+<span id="L6293"><span class="lineNum">    6293</span>              :     size_t&amp; outLayoutMinorCount)</span>
+<span id="L6294"><span class="lineNum">    6294</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6295"><span class="lineNum">    6295</span>              :     if (matrixLayoutMode == kMatrixLayoutMode_ColumnMajor)</span>
+<span id="L6296"><span class="lineNum">    6296</span>              :     {</span>
+<span id="L6297"><span class="lineNum">    6297</span>              :         outLayoutMajorCount = columnCount;</span>
+<span id="L6298"><span class="lineNum">    6298</span>              :         outLayoutMinorCount = rowCount;</span>
+<span id="L6299"><span class="lineNum">    6299</span>              :     }</span>
+<span id="L6300"><span class="lineNum">    6300</span>              :     else</span>
+<span id="L6301"><span class="lineNum">    6301</span>              :     {</span>
+<span id="L6302"><span class="lineNum">    6302</span>              :         outLayoutMajorCount = rowCount;</span>
+<span id="L6303"><span class="lineNum">    6303</span>              :         outLayoutMinorCount = columnCount;</span>
+<span id="L6304"><span class="lineNum">    6304</span>              :     }</span>
+<span id="L6305"><span class="lineNum">    6305</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6306"><span class="lineNum">    6306</span>              : </span>
+<span id="L6307"><span class="lineNum">    6307</span>              : RefPtr&lt;TypeLayout&gt; getSimpleVaryingParameterTypeLayout(</span>
+<span id="L6308"><span class="lineNum">    6308</span>              :     TypeLayoutContext const&amp; context,</span>
+<span id="L6309"><span class="lineNum">    6309</span>              :     Type* type,</span>
+<span id="L6310"><span class="lineNum">    6310</span>              :     EntryPointParameterDirectionMask directionMask)</span>
+<span id="L6311"><span class="lineNum">    6311</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6312"><span class="lineNum">    6312</span> <span class="tlaGNC">           1 :     auto rules = context.rules;</span></span>
+<span id="L6313"><span class="lineNum">    6313</span>              : </span>
+<span id="L6314"><span class="lineNum">    6314</span>              :     // TODO: This logic should ideally share as much</span>
+<span id="L6315"><span class="lineNum">    6315</span>              :     // as possible with the `_createTypeLayout` function,</span>
+<span id="L6316"><span class="lineNum">    6316</span>              :     // to avoid duplication, but we also have to deal</span>
+<span id="L6317"><span class="lineNum">    6317</span>              :     // with the many ways in which varying parameter</span>
+<span id="L6318"><span class="lineNum">    6318</span>              :     // layout differs from non-varying layout.</span>
+<span id="L6319"><span class="lineNum">    6319</span>              : </span>
+<span id="L6320"><span class="lineNum">    6320</span>              :     // We will compute resource consumption for the type</span>
+<span id="L6321"><span class="lineNum">    6321</span>              :     // as a varying input, output, or both/neither.</span>
+<span id="L6322"><span class="lineNum">    6322</span>              :     // To avoid duplication, we&#x27;ll build an array that</span>
+<span id="L6323"><span class="lineNum">    6323</span>              :     // includes all the layout rules we need to apply.</span>
+<span id="L6324"><span class="lineNum">    6324</span>              :     //</span>
+<span id="L6325"><span class="lineNum">    6325</span> <span class="tlaGNC">           1 :     int varyingRulesCount = 0;</span></span>
+<span id="L6326"><span class="lineNum">    6326</span>              :     LayoutRulesImpl* varyingRules[2];</span>
+<span id="L6327"><span class="lineNum">    6327</span>              : </span>
+<span id="L6328"><span class="lineNum">    6328</span> <span class="tlaGNC">           1 :     if (directionMask &amp; kEntryPointParameterDirection_Input)</span></span>
+<span id="L6329"><span class="lineNum">    6329</span>              :     {</span>
+<span id="L6330"><span class="lineNum">    6330</span> <span class="tlaGNC">           1 :         varyingRules[varyingRulesCount++] = context.getRulesFamily()-&gt;getVaryingInputRules();</span></span>
+<span id="L6331"><span class="lineNum">    6331</span>              :     }</span>
+<span id="L6332"><span class="lineNum">    6332</span> <span class="tlaGNC">           1 :     if (directionMask &amp; kEntryPointParameterDirection_Output)</span></span>
+<span id="L6333"><span class="lineNum">    6333</span>              :     {</span>
+<span id="L6334"><span class="lineNum">    6334</span> <span class="tlaGNC">           1 :         varyingRules[varyingRulesCount++] = context.getRulesFamily()-&gt;getVaryingOutputRules();</span></span>
+<span id="L6335"><span class="lineNum">    6335</span>              :     }</span>
+<span id="L6336"><span class="lineNum">    6336</span>              : </span>
+<span id="L6337"><span class="lineNum">    6337</span> <span class="tlaGNC">           1 :     if (auto basicType = as&lt;BasicExpressionType&gt;(type))</span></span>
+<span id="L6338"><span class="lineNum">    6338</span>              :     {</span>
+<span id="L6339"><span class="lineNum">    6339</span> <span class="tlaGNC">           1 :         auto baseType = basicType-&gt;getBaseType();</span></span>
+<span id="L6340"><span class="lineNum">    6340</span>              : </span>
+<span id="L6341"><span class="lineNum">    6341</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; typeLayout = new TypeLayout();</span></span>
+<span id="L6342"><span class="lineNum">    6342</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = type;</span></span>
+<span id="L6343"><span class="lineNum">    6343</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
+<span id="L6344"><span class="lineNum">    6344</span>              : </span>
+<span id="L6345"><span class="lineNum">    6345</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
+<span id="L6346"><span class="lineNum">    6346</span>              :         {</span>
+<span id="L6347"><span class="lineNum">    6347</span> <span class="tlaGNC">           1 :             auto info = varyingRules[rr]-&gt;GetScalarLayout(baseType, context);</span></span>
+<span id="L6348"><span class="lineNum">    6348</span> <span class="tlaGNC">           1 :             typeLayout-&gt;addResourceUsage(info.kind, info.size);</span></span>
+<span id="L6349"><span class="lineNum">    6349</span>              :         }</span>
+<span id="L6350"><span class="lineNum">    6350</span>              : </span>
+<span id="L6351"><span class="lineNum">    6351</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
+<span id="L6352"><span class="lineNum">    6352</span>              :     }</span>
+<span id="L6353"><span class="lineNum">    6353</span> <span class="tlaGNC">           1 :     else if (as&lt;PtrType&gt;(type))</span></span>
+<span id="L6354"><span class="lineNum">    6354</span>              :     {</span>
+<span id="L6355"><span class="lineNum">    6355</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; typeLayout = new PointerTypeLayout();</span></span>
+<span id="L6356"><span class="lineNum">    6356</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = type;</span></span>
+<span id="L6357"><span class="lineNum">    6357</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
+<span id="L6358"><span class="lineNum">    6358</span>              : </span>
+<span id="L6359"><span class="lineNum">    6359</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
+<span id="L6360"><span class="lineNum">    6360</span>              :         {</span>
+<span id="L6361"><span class="lineNum">    6361</span> <span class="tlaGNC">           1 :             auto info = varyingRules[rr]-&gt;GetPointerLayout(context);</span></span>
+<span id="L6362"><span class="lineNum">    6362</span> <span class="tlaGNC">           1 :             typeLayout-&gt;addResourceUsage(info.kind, info.size);</span></span>
 <span id="L6363"><span class="lineNum">    6363</span>              :         }</span>
 <span id="L6364"><span class="lineNum">    6364</span>              : </span>
-<span id="L6365"><span class="lineNum">    6365</span> <span class="tlaGNC">           1 :         size_t elementCount = (size_t)getIntVal(elementCountVal);</span></span>
-<span id="L6366"><span class="lineNum">    6366</span>              : </span>
-<span id="L6367"><span class="lineNum">    6367</span> <span class="tlaGNC">           1 :         BaseType elementBaseType = BaseType::Void;</span></span>
-<span id="L6368"><span class="lineNum">    6368</span> <span class="tlaGNC">           1 :         if (auto elementBasicType = as&lt;BasicExpressionType&gt;(elementType))</span></span>
-<span id="L6369"><span class="lineNum">    6369</span>              :         {</span>
-<span id="L6370"><span class="lineNum">    6370</span> <span class="tlaGNC">           1 :             elementBaseType = elementBasicType-&gt;getBaseType();</span></span>
-<span id="L6371"><span class="lineNum">    6371</span>              :         }</span>
-<span id="L6372"><span class="lineNum">    6372</span>              : </span>
-<span id="L6373"><span class="lineNum">    6373</span>              :         // Note that we do *not* add any resource usage to the type</span>
-<span id="L6374"><span class="lineNum">    6374</span>              :         // layout for the element type, because we currently cannot count</span>
-<span id="L6375"><span class="lineNum">    6375</span>              :         // varying parameter usage at a granularity finer than</span>
-<span id="L6376"><span class="lineNum">    6376</span>              :         // individual &quot;locations.&quot;</span>
-<span id="L6377"><span class="lineNum">    6377</span>              :         //</span>
-<span id="L6378"><span class="lineNum">    6378</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; elementTypeLayout = new TypeLayout();</span></span>
-<span id="L6379"><span class="lineNum">    6379</span> <span class="tlaGNC">           1 :         elementTypeLayout-&gt;type = elementType;</span></span>
-<span id="L6380"><span class="lineNum">    6380</span> <span class="tlaGNC">           1 :         elementTypeLayout-&gt;rules = rules;</span></span>
-<span id="L6381"><span class="lineNum">    6381</span>              : </span>
-<span id="L6382"><span class="lineNum">    6382</span> <span class="tlaGNC">           1 :         RefPtr&lt;VectorTypeLayout&gt; typeLayout = new VectorTypeLayout();</span></span>
-<span id="L6383"><span class="lineNum">    6383</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = vecType;</span></span>
-<span id="L6384"><span class="lineNum">    6384</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
-<span id="L6385"><span class="lineNum">    6385</span> <span class="tlaGNC">           1 :         typeLayout-&gt;elementTypeLayout = elementTypeLayout;</span></span>
-<span id="L6386"><span class="lineNum">    6386</span>              : </span>
-<span id="L6387"><span class="lineNum">    6387</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
+<span id="L6365"><span class="lineNum">    6365</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
+<span id="L6366"><span class="lineNum">    6366</span>              :     }</span>
+<span id="L6367"><span class="lineNum">    6367</span> <span class="tlaGNC">           1 :     else if (auto vecType = as&lt;VectorExpressionType&gt;(type))</span></span>
+<span id="L6368"><span class="lineNum">    6368</span>              :     {</span>
+<span id="L6369"><span class="lineNum">    6369</span> <span class="tlaGNC">           1 :         auto elementType = vecType-&gt;getElementType();</span></span>
+<span id="L6370"><span class="lineNum">    6370</span>              : </span>
+<span id="L6371"><span class="lineNum">    6371</span>              :         // Handle conditionally-sized vectors (e.g., 0-length vectors or non-constant sizes)</span>
+<span id="L6372"><span class="lineNum">    6372</span> <span class="tlaGNC">           1 :         auto elementCountVal = context.tryResolveLinkTimeVal(vecType-&gt;getElementCount());</span></span>
+<span id="L6373"><span class="lineNum">    6373</span> <span class="tlaGNC">           1 :         if (!as&lt;ConstantIntVal&gt;(elementCountVal) || getIntVal(elementCountVal) == 0)</span></span>
+<span id="L6374"><span class="lineNum">    6374</span>              :         {</span>
+<span id="L6375"><span class="lineNum">    6375</span>              :             // If the vector size is not a compile-time constant, we cannot</span>
+<span id="L6376"><span class="lineNum">    6376</span>              :             // compute a fixed layout for it. Treat it as having zero size.</span>
+<span id="L6377"><span class="lineNum">    6377</span>              :             // This will be handled later during IR legalization.</span>
+<span id="L6378"><span class="lineNum">    6378</span> <span class="tlaUNC">           0 :             RefPtr&lt;TypeLayout&gt; typeLayout = new TypeLayout();</span></span>
+<span id="L6379"><span class="lineNum">    6379</span> <span class="tlaUNC">           0 :             typeLayout-&gt;type = type;</span></span>
+<span id="L6380"><span class="lineNum">    6380</span> <span class="tlaUNC">           0 :             typeLayout-&gt;rules = rules;</span></span>
+<span id="L6381"><span class="lineNum">    6381</span> <span class="tlaUNC">           0 :             return typeLayout;</span></span>
+<span id="L6382"><span class="lineNum">    6382</span>              :         }</span>
+<span id="L6383"><span class="lineNum">    6383</span>              : </span>
+<span id="L6384"><span class="lineNum">    6384</span> <span class="tlaGNC">           1 :         size_t elementCount = (size_t)getIntVal(elementCountVal);</span></span>
+<span id="L6385"><span class="lineNum">    6385</span>              : </span>
+<span id="L6386"><span class="lineNum">    6386</span> <span class="tlaGNC">           1 :         BaseType elementBaseType = BaseType::Void;</span></span>
+<span id="L6387"><span class="lineNum">    6387</span> <span class="tlaGNC">           1 :         if (auto elementBasicType = as&lt;BasicExpressionType&gt;(elementType))</span></span>
 <span id="L6388"><span class="lineNum">    6388</span>              :         {</span>
-<span id="L6389"><span class="lineNum">    6389</span> <span class="tlaGNC">           1 :             auto varyingRuleSet = varyingRules[rr];</span></span>
-<span id="L6390"><span class="lineNum">    6390</span> <span class="tlaGNC">           1 :             auto elementInfo = varyingRuleSet-&gt;GetScalarLayout(elementBaseType, context);</span></span>
-<span id="L6391"><span class="lineNum">    6391</span> <span class="tlaGNC">           1 :             auto info = varyingRuleSet-&gt;GetVectorLayout(elementBaseType, elementInfo, elementCount);</span></span>
-<span id="L6392"><span class="lineNum">    6392</span> <span class="tlaGNC">           1 :             typeLayout-&gt;addResourceUsage(info.kind, info.size);</span></span>
-<span id="L6393"><span class="lineNum">    6393</span>              :         }</span>
-<span id="L6394"><span class="lineNum">    6394</span>              : </span>
-<span id="L6395"><span class="lineNum">    6395</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
-<span id="L6396"><span class="lineNum">    6396</span>              :     }</span>
-<span id="L6397"><span class="lineNum">    6397</span> <span class="tlaGNC">           1 :     else if (auto matType = as&lt;MatrixExpressionType&gt;(type))</span></span>
-<span id="L6398"><span class="lineNum">    6398</span>              :     {</span>
-<span id="L6399"><span class="lineNum">    6399</span> <span class="tlaGNC">           1 :         size_t rowCount = (size_t)getIntVal(matType-&gt;getRowCount());</span></span>
-<span id="L6400"><span class="lineNum">    6400</span> <span class="tlaGNC">           1 :         size_t colCount = (size_t)getIntVal(matType-&gt;getColumnCount());</span></span>
-<span id="L6401"><span class="lineNum">    6401</span> <span class="tlaGNC">           1 :         auto elementType = matType-&gt;getElementType();</span></span>
-<span id="L6402"><span class="lineNum">    6402</span>              : </span>
-<span id="L6403"><span class="lineNum">    6403</span> <span class="tlaGNC">           1 :         BaseType elementBaseType = BaseType::Void;</span></span>
-<span id="L6404"><span class="lineNum">    6404</span> <span class="tlaGNC">           1 :         if (auto elementBasicType = as&lt;BasicExpressionType&gt;(elementType))</span></span>
-<span id="L6405"><span class="lineNum">    6405</span>              :         {</span>
-<span id="L6406"><span class="lineNum">    6406</span> <span class="tlaGNC">           1 :             elementBaseType = elementBasicType-&gt;getBaseType();</span></span>
-<span id="L6407"><span class="lineNum">    6407</span>              :         }</span>
-<span id="L6408"><span class="lineNum">    6408</span>              : </span>
-<span id="L6409"><span class="lineNum">    6409</span>              :         // Just as for `_createTypeLayout`, we need to handle row- and</span>
-<span id="L6410"><span class="lineNum">    6410</span>              :         // column-major matrices differently, to ensure we get</span>
-<span id="L6411"><span class="lineNum">    6411</span>              :         // the expected layout.</span>
-<span id="L6412"><span class="lineNum">    6412</span>              :         //</span>
-<span id="L6413"><span class="lineNum">    6413</span>              :         // A varying parameter with row-major layout is effectively</span>
-<span id="L6414"><span class="lineNum">    6414</span>              :         // just an array of row vectors, while a column-major one</span>
-<span id="L6415"><span class="lineNum">    6415</span>              :         // is just an array of column vectors.</span>
-<span id="L6416"><span class="lineNum">    6416</span>              :         //</span>
-<span id="L6417"><span class="lineNum">    6417</span> <span class="tlaGNC">           1 :         size_t layoutMajorCount = rowCount;</span></span>
-<span id="L6418"><span class="lineNum">    6418</span> <span class="tlaGNC">           1 :         size_t layoutMinorCount = colCount;</span></span>
-<span id="L6419"><span class="lineNum">    6419</span> <span class="tlaGNC">           1 :         if (context.matrixLayoutMode == kMatrixLayoutMode_ColumnMajor)</span></span>
-<span id="L6420"><span class="lineNum">    6420</span>              :         {</span>
-<span id="L6421"><span class="lineNum">    6421</span>              :             size_t tmp = layoutMajorCount;</span>
-<span id="L6422"><span class="lineNum">    6422</span> <span class="tlaGNC">           1 :             layoutMajorCount = layoutMinorCount;</span></span>
-<span id="L6423"><span class="lineNum">    6423</span> <span class="tlaGNC">           1 :             layoutMinorCount = tmp;</span></span>
-<span id="L6424"><span class="lineNum">    6424</span>              :         }</span>
-<span id="L6425"><span class="lineNum">    6425</span>              : </span>
-<span id="L6426"><span class="lineNum">    6426</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; elementTypeLayout = new TypeLayout();</span></span>
-<span id="L6427"><span class="lineNum">    6427</span> <span class="tlaGNC">           1 :         elementTypeLayout-&gt;type = elementType;</span></span>
-<span id="L6428"><span class="lineNum">    6428</span> <span class="tlaGNC">           1 :         elementTypeLayout-&gt;rules = rules;</span></span>
-<span id="L6429"><span class="lineNum">    6429</span>              : </span>
-<span id="L6430"><span class="lineNum">    6430</span> <span class="tlaGNC">           1 :         RefPtr&lt;VectorTypeLayout&gt; rowTypeLayout = new VectorTypeLayout();</span></span>
-<span id="L6431"><span class="lineNum">    6431</span> <span class="tlaGNC">           1 :         rowTypeLayout-&gt;type = matType-&gt;getRowType();</span></span>
-<span id="L6432"><span class="lineNum">    6432</span> <span class="tlaGNC">           1 :         rowTypeLayout-&gt;rules = rules;</span></span>
-<span id="L6433"><span class="lineNum">    6433</span> <span class="tlaGNC">           1 :         rowTypeLayout-&gt;elementTypeLayout = elementTypeLayout;</span></span>
-<span id="L6434"><span class="lineNum">    6434</span>              : </span>
-<span id="L6435"><span class="lineNum">    6435</span> <span class="tlaGNC">           1 :         RefPtr&lt;MatrixTypeLayout&gt; typeLayout = new MatrixTypeLayout();</span></span>
-<span id="L6436"><span class="lineNum">    6436</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = type;</span></span>
-<span id="L6437"><span class="lineNum">    6437</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
-<span id="L6438"><span class="lineNum">    6438</span> <span class="tlaGNC">           1 :         typeLayout-&gt;elementTypeLayout = rowTypeLayout;</span></span>
-<span id="L6439"><span class="lineNum">    6439</span> <span class="tlaGNC">           1 :         typeLayout-&gt;mode = context.matrixLayoutMode;</span></span>
-<span id="L6440"><span class="lineNum">    6440</span>              : </span>
-<span id="L6441"><span class="lineNum">    6441</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
-<span id="L6442"><span class="lineNum">    6442</span>              :         {</span>
-<span id="L6443"><span class="lineNum">    6443</span> <span class="tlaGNC">           1 :             auto varyingRuleSet = varyingRules[rr];</span></span>
-<span id="L6444"><span class="lineNum">    6444</span> <span class="tlaGNC">           1 :             auto elementInfo = varyingRuleSet-&gt;GetScalarLayout(elementBaseType, context);</span></span>
-<span id="L6445"><span class="lineNum">    6445</span>              : </span>
-<span id="L6446"><span class="lineNum">    6446</span> <span class="tlaGNC">           1 :             auto info = varyingRuleSet-&gt;GetMatrixLayout(</span></span>
-<span id="L6447"><span class="lineNum">    6447</span>              :                 elementBaseType,</span>
-<span id="L6448"><span class="lineNum">    6448</span>              :                 elementInfo,</span>
-<span id="L6449"><span class="lineNum">    6449</span>              :                 layoutMajorCount,</span>
-<span id="L6450"><span class="lineNum">    6450</span>              :                 layoutMinorCount);</span>
-<span id="L6451"><span class="lineNum">    6451</span> <span class="tlaGNC">           1 :             typeLayout-&gt;addResourceUsage(info.kind, info.size);</span></span>
-<span id="L6452"><span class="lineNum">    6452</span>              : </span>
-<span id="L6453"><span class="lineNum">    6453</span> <span class="tlaGNC">           1 :             if (context.matrixLayoutMode == kMatrixLayoutMode_RowMajor)</span></span>
-<span id="L6454"><span class="lineNum">    6454</span>              :             {</span>
-<span id="L6455"><span class="lineNum">    6455</span>              :                 // For row-major matrices only, we can compute an effective</span>
-<span id="L6456"><span class="lineNum">    6456</span>              :                 // resource usage for the row type.</span>
-<span id="L6457"><span class="lineNum">    6457</span>              :                 auto rowInfo =</span>
-<span id="L6458"><span class="lineNum">    6458</span> <span class="tlaGNC">           1 :                     varyingRuleSet-&gt;GetVectorLayout(elementBaseType, elementInfo, colCount);</span></span>
-<span id="L6459"><span class="lineNum">    6459</span> <span class="tlaGNC">           1 :                 rowTypeLayout-&gt;addResourceUsage(rowInfo.kind, rowInfo.size);</span></span>
-<span id="L6460"><span class="lineNum">    6460</span>              :             }</span>
-<span id="L6461"><span class="lineNum">    6461</span>              :         }</span>
-<span id="L6462"><span class="lineNum">    6462</span>              : </span>
-<span id="L6463"><span class="lineNum">    6463</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
-<span id="L6464"><span class="lineNum">    6464</span>              :     }</span>
-<span id="L6465"><span class="lineNum">    6465</span> <span class="tlaGNC">           1 :     else if (auto descriptorHandleType = as&lt;DescriptorHandleType&gt;(type))</span></span>
-<span id="L6466"><span class="lineNum">    6466</span>              :     {</span>
-<span id="L6467"><span class="lineNum">    6467</span> <span class="tlaGNC">           1 :         maybePromoteDescriptorHandleCapability(context.targetReq);</span></span>
-<span id="L6468"><span class="lineNum">    6468</span>              : </span>
-<span id="L6469"><span class="lineNum">    6469</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; typeLayout = new TypeLayout();</span></span>
-<span id="L6470"><span class="lineNum">    6470</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = type; // Preserve the original DescriptorHandle type</span></span>
-<span id="L6471"><span class="lineNum">    6471</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
-<span id="L6472"><span class="lineNum">    6472</span>              : </span>
-<span id="L6473"><span class="lineNum">    6473</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
-<span id="L6474"><span class="lineNum">    6474</span>              :         {</span>
-<span id="L6475"><span class="lineNum">    6475</span>              :             // Determine the layout resource kind based on the direction mask</span>
-<span id="L6476"><span class="lineNum">    6476</span>              :             LayoutResourceKind varyingKind = LayoutResourceKind::VaryingInput;</span>
-<span id="L6477"><span class="lineNum">    6477</span>              :             if (directionMask &amp; kEntryPointParameterDirection_Output)</span>
-<span id="L6478"><span class="lineNum">    6478</span>              :                 varyingKind = LayoutResourceKind::VaryingOutput;</span>
-<span id="L6479"><span class="lineNum">    6479</span>              : </span>
-<span id="L6480"><span class="lineNum">    6480</span> <span class="tlaGNC">           1 :             auto objLayoutInfo = varyingRules[rr]-&gt;simpleRules-&gt;GetDescriptorHandleLayout(</span></span>
-<span id="L6481"><span class="lineNum">    6481</span>              :                 varyingKind,</span>
-<span id="L6482"><span class="lineNum">    6482</span>              :                 descriptorHandleType-&gt;getElementType(),</span>
-<span id="L6483"><span class="lineNum">    6483</span>              :                 context);</span>
-<span id="L6484"><span class="lineNum">    6484</span>              : </span>
-<span id="L6485"><span class="lineNum">    6485</span>              :             // For combined texture samplers, objLayoutInfo may contain multiple layoutInfos</span>
-<span id="L6486"><span class="lineNum">    6486</span>              :             // (e.g., one for texture and one for sampler)</span>
-<span id="L6487"><span class="lineNum">    6487</span> <span class="tlaGNC">           1 :             for (const auto&amp; layoutInfo : objLayoutInfo.layoutInfos)</span></span>
-<span id="L6488"><span class="lineNum">    6488</span>              :             {</span>
-<span id="L6489"><span class="lineNum">    6489</span> <span class="tlaGNC">           1 :                 typeLayout-&gt;addResourceUsage(layoutInfo.kind, layoutInfo.size);</span></span>
-<span id="L6490"><span class="lineNum">    6490</span>              :             }</span>
-<span id="L6491"><span class="lineNum">    6491</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L6492"><span class="lineNum">    6492</span>              : </span>
-<span id="L6493"><span class="lineNum">    6493</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
-<span id="L6494"><span class="lineNum">    6494</span>              :     }</span>
-<span id="L6495"><span class="lineNum">    6495</span>              : </span>
-<span id="L6496"><span class="lineNum">    6496</span>              :     // catch-all case in case nothing matched</span>
-<span id="L6497"><span class="lineNum">    6497</span>              :     SLANG_ASSERT(!&quot;unimplemented case for varying parameter layout&quot;);</span>
-<span id="L6498"><span class="lineNum">    6498</span> <span class="tlaUNC">           0 :     return createSimpleTypeLayout(SimpleLayoutInfo(), type, rules).layout;</span></span>
-<span id="L6499"><span class="lineNum">    6499</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L6500"><span class="lineNum">    6500</span>              : </span>
-<span id="L6501"><span class="lineNum">    6501</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayout(TypeLayoutContext&amp; context, Type* type)</span>
-<span id="L6502"><span class="lineNum">    6502</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L6503"><span class="lineNum">    6503</span> <span class="tlaGNC">           1 :     return _createTypeLayout(context, type).layout;</span></span>
-<span id="L6504"><span class="lineNum">    6504</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L6505"><span class="lineNum">    6505</span>              : </span>
-<span id="L6506"><span class="lineNum">    6506</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayoutWith(</span>
-<span id="L6507"><span class="lineNum">    6507</span>              :     const TypeLayoutContext&amp; context,</span>
-<span id="L6508"><span class="lineNum">    6508</span>              :     LayoutRulesImpl* rules,</span>
-<span id="L6509"><span class="lineNum">    6509</span>              :     Type* type)</span>
-<span id="L6510"><span class="lineNum">    6510</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L6511"><span class="lineNum">    6511</span>              :     // `createTypeLayout` dereferences `rules` unconditionally, so a null here is</span>
-<span id="L6512"><span class="lineNum">    6512</span>              :     // a caller bug that would otherwise surface as a silent access violation.</span>
-<span id="L6513"><span class="lineNum">    6513</span> <span class="tlaGNC">           1 :     SLANG_RELEASE_ASSERT(rules);</span></span>
-<span id="L6514"><span class="lineNum">    6514</span> <span class="tlaGNC">           1 :     auto c = context.with(rules);</span></span>
-<span id="L6515"><span class="lineNum">    6515</span> <span class="tlaGNC">           1 :     return createTypeLayout(c, type);</span></span>
-<span id="L6516"><span class="lineNum">    6516</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L6517"><span class="lineNum">    6517</span>              : </span>
-<span id="L6518"><span class="lineNum">    6518</span>              : </span>
-<span id="L6519"><span class="lineNum">    6519</span>              : void TypeLayout::removeResourceUsage(LayoutResourceKind kind)</span>
-<span id="L6520"><span class="lineNum">    6520</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L6521"><span class="lineNum">    6521</span> <span class="tlaGNC">           1 :     Int infoCount = resourceInfos.getCount();</span></span>
-<span id="L6522"><span class="lineNum">    6522</span> <span class="tlaGNC">           1 :     for (Int ii = 0; ii &lt; infoCount; ++ii)</span></span>
-<span id="L6523"><span class="lineNum">    6523</span>              :     {</span>
-<span id="L6524"><span class="lineNum">    6524</span> <span class="tlaGNC">           1 :         if (resourceInfos[ii].kind == kind)</span></span>
-<span id="L6525"><span class="lineNum">    6525</span>              :         {</span>
-<span id="L6526"><span class="lineNum">    6526</span> <span class="tlaGNC">           1 :             resourceInfos.removeAt(ii);</span></span>
-<span id="L6527"><span class="lineNum">    6527</span>              :             return;</span>
-<span id="L6528"><span class="lineNum">    6528</span>              :         }</span>
-<span id="L6529"><span class="lineNum">    6529</span>              :     }</span>
-<span id="L6530"><span class="lineNum">    6530</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L6531"><span class="lineNum">    6531</span>              : </span>
-<span id="L6532"><span class="lineNum">    6532</span>              : void VarLayout::removeResourceUsage(LayoutResourceKind kind)</span>
-<span id="L6533"><span class="lineNum">    6533</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L6534"><span class="lineNum">    6534</span> <span class="tlaGNC">           1 :     Int infoCount = resourceInfos.getCount();</span></span>
-<span id="L6535"><span class="lineNum">    6535</span> <span class="tlaGNC">           1 :     for (Int ii = 0; ii &lt; infoCount; ++ii)</span></span>
-<span id="L6536"><span class="lineNum">    6536</span>              :     {</span>
-<span id="L6537"><span class="lineNum">    6537</span> <span class="tlaGNC">           1 :         if (resourceInfos[ii].kind == kind)</span></span>
-<span id="L6538"><span class="lineNum">    6538</span>              :         {</span>
-<span id="L6539"><span class="lineNum">    6539</span> <span class="tlaGNC">           1 :             resourceInfos.removeAt(ii);</span></span>
-<span id="L6540"><span class="lineNum">    6540</span>              :             return;</span>
-<span id="L6541"><span class="lineNum">    6541</span>              :         }</span>
-<span id="L6542"><span class="lineNum">    6542</span>              :     }</span>
-<span id="L6543"><span class="lineNum">    6543</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L6544"><span class="lineNum">    6544</span>              : </span>
-<span id="L6545"><span class="lineNum">    6545</span>              : </span>
-<span id="L6546"><span class="lineNum">    6546</span>              : void TypeLayout::addResourceUsageFrom(TypeLayout* otherTypeLayout)</span>
-<span id="L6547"><span class="lineNum">    6547</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L6548"><span class="lineNum">    6548</span> <span class="tlaGNC">           1 :     for (auto resInfo : otherTypeLayout-&gt;resourceInfos)</span></span>
-<span id="L6549"><span class="lineNum">    6549</span> <span class="tlaGNC">           1 :         addResourceUsage(resInfo);</span></span>
-<span id="L6550"><span class="lineNum">    6550</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L6551"><span class="lineNum">    6551</span>              : </span>
-<span id="L6552"><span class="lineNum">    6552</span>              : </span>
-<span id="L6553"><span class="lineNum">    6553</span>              : RefPtr&lt;TypeLayout&gt; TypeLayout::unwrapArray()</span>
-<span id="L6554"><span class="lineNum">    6554</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L6555"><span class="lineNum">    6555</span>              :     TypeLayout* typeLayout = this;</span>
-<span id="L6556"><span class="lineNum">    6556</span>              : </span>
-<span id="L6557"><span class="lineNum">    6557</span> <span class="tlaUNC">           0 :     while (auto arrayTypeLayout = as&lt;ArrayTypeLayout&gt;(typeLayout))</span></span>
-<span id="L6558"><span class="lineNum">    6558</span> <span class="tlaUNC">           0 :         typeLayout = arrayTypeLayout-&gt;elementTypeLayout;</span></span>
-<span id="L6559"><span class="lineNum">    6559</span>              : </span>
-<span id="L6560"><span class="lineNum">    6560</span> <span class="tlaUNC">           0 :     return typeLayout;</span></span>
-<span id="L6561"><span class="lineNum">    6561</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L6562"><span class="lineNum">    6562</span>              : </span>
+<span id="L6389"><span class="lineNum">    6389</span> <span class="tlaGNC">           1 :             elementBaseType = elementBasicType-&gt;getBaseType();</span></span>
+<span id="L6390"><span class="lineNum">    6390</span>              :         }</span>
+<span id="L6391"><span class="lineNum">    6391</span>              : </span>
+<span id="L6392"><span class="lineNum">    6392</span>              :         // Note that we do *not* add any resource usage to the type</span>
+<span id="L6393"><span class="lineNum">    6393</span>              :         // layout for the element type, because we currently cannot count</span>
+<span id="L6394"><span class="lineNum">    6394</span>              :         // varying parameter usage at a granularity finer than</span>
+<span id="L6395"><span class="lineNum">    6395</span>              :         // individual &quot;locations.&quot;</span>
+<span id="L6396"><span class="lineNum">    6396</span>              :         //</span>
+<span id="L6397"><span class="lineNum">    6397</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; elementTypeLayout = new TypeLayout();</span></span>
+<span id="L6398"><span class="lineNum">    6398</span> <span class="tlaGNC">           1 :         elementTypeLayout-&gt;type = elementType;</span></span>
+<span id="L6399"><span class="lineNum">    6399</span> <span class="tlaGNC">           1 :         elementTypeLayout-&gt;rules = rules;</span></span>
+<span id="L6400"><span class="lineNum">    6400</span>              : </span>
+<span id="L6401"><span class="lineNum">    6401</span> <span class="tlaGNC">           1 :         RefPtr&lt;VectorTypeLayout&gt; typeLayout = new VectorTypeLayout();</span></span>
+<span id="L6402"><span class="lineNum">    6402</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = vecType;</span></span>
+<span id="L6403"><span class="lineNum">    6403</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
+<span id="L6404"><span class="lineNum">    6404</span> <span class="tlaGNC">           1 :         typeLayout-&gt;elementTypeLayout = elementTypeLayout;</span></span>
+<span id="L6405"><span class="lineNum">    6405</span>              : </span>
+<span id="L6406"><span class="lineNum">    6406</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
+<span id="L6407"><span class="lineNum">    6407</span>              :         {</span>
+<span id="L6408"><span class="lineNum">    6408</span> <span class="tlaGNC">           1 :             auto varyingRuleSet = varyingRules[rr];</span></span>
+<span id="L6409"><span class="lineNum">    6409</span> <span class="tlaGNC">           1 :             auto elementInfo = varyingRuleSet-&gt;GetScalarLayout(elementBaseType, context);</span></span>
+<span id="L6410"><span class="lineNum">    6410</span> <span class="tlaGNC">           1 :             auto info = varyingRuleSet-&gt;GetVectorLayout(elementBaseType, elementInfo, elementCount);</span></span>
+<span id="L6411"><span class="lineNum">    6411</span> <span class="tlaGNC">           1 :             typeLayout-&gt;addResourceUsage(info.kind, info.size);</span></span>
+<span id="L6412"><span class="lineNum">    6412</span>              :         }</span>
+<span id="L6413"><span class="lineNum">    6413</span>              : </span>
+<span id="L6414"><span class="lineNum">    6414</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
+<span id="L6415"><span class="lineNum">    6415</span>              :     }</span>
+<span id="L6416"><span class="lineNum">    6416</span> <span class="tlaGNC">           1 :     else if (auto matType = as&lt;MatrixExpressionType&gt;(type))</span></span>
+<span id="L6417"><span class="lineNum">    6417</span>              :     {</span>
+<span id="L6418"><span class="lineNum">    6418</span> <span class="tlaGNC">           1 :         size_t rowCount = (size_t)getIntVal(matType-&gt;getRowCount());</span></span>
+<span id="L6419"><span class="lineNum">    6419</span> <span class="tlaGNC">           1 :         size_t colCount = (size_t)getIntVal(matType-&gt;getColumnCount());</span></span>
+<span id="L6420"><span class="lineNum">    6420</span> <span class="tlaGNC">           1 :         auto elementType = matType-&gt;getElementType();</span></span>
+<span id="L6421"><span class="lineNum">    6421</span>              : </span>
+<span id="L6422"><span class="lineNum">    6422</span> <span class="tlaGNC">           1 :         BaseType elementBaseType = BaseType::Void;</span></span>
+<span id="L6423"><span class="lineNum">    6423</span> <span class="tlaGNC">           1 :         if (auto elementBasicType = as&lt;BasicExpressionType&gt;(elementType))</span></span>
+<span id="L6424"><span class="lineNum">    6424</span>              :         {</span>
+<span id="L6425"><span class="lineNum">    6425</span> <span class="tlaGNC">           1 :             elementBaseType = elementBasicType-&gt;getBaseType();</span></span>
+<span id="L6426"><span class="lineNum">    6426</span>              :         }</span>
+<span id="L6427"><span class="lineNum">    6427</span>              : </span>
+<span id="L6428"><span class="lineNum">    6428</span>              :         // Just as for `_createTypeLayout`, we need to handle row- and</span>
+<span id="L6429"><span class="lineNum">    6429</span>              :         // column-major matrices differently, to ensure we get</span>
+<span id="L6430"><span class="lineNum">    6430</span>              :         // the expected layout.</span>
+<span id="L6431"><span class="lineNum">    6431</span>              :         //</span>
+<span id="L6432"><span class="lineNum">    6432</span>              :         // A varying parameter with row-major layout is effectively</span>
+<span id="L6433"><span class="lineNum">    6433</span>              :         // just an array of row vectors, while a column-major one</span>
+<span id="L6434"><span class="lineNum">    6434</span>              :         // is just an array of column vectors.</span>
+<span id="L6435"><span class="lineNum">    6435</span>              :         //</span>
+<span id="L6436"><span class="lineNum">    6436</span> <span class="tlaGNC">           1 :         size_t layoutMajorCount = 0;</span></span>
+<span id="L6437"><span class="lineNum">    6437</span> <span class="tlaGNC">           1 :         size_t layoutMinorCount = 0;</span></span>
+<span id="L6438"><span class="lineNum">    6438</span> <span class="tlaGNC">           1 :         getMatrixLayoutAxisCounts(</span></span>
+<span id="L6439"><span class="lineNum">    6439</span>              :             rowCount,</span>
+<span id="L6440"><span class="lineNum">    6440</span>              :             colCount,</span>
+<span id="L6441"><span class="lineNum">    6441</span>              :             context.matrixLayoutMode,</span>
+<span id="L6442"><span class="lineNum">    6442</span>              :             layoutMajorCount,</span>
+<span id="L6443"><span class="lineNum">    6443</span>              :             layoutMinorCount);</span>
+<span id="L6444"><span class="lineNum">    6444</span>              : </span>
+<span id="L6445"><span class="lineNum">    6445</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; elementTypeLayout = new TypeLayout();</span></span>
+<span id="L6446"><span class="lineNum">    6446</span> <span class="tlaGNC">           1 :         elementTypeLayout-&gt;type = elementType;</span></span>
+<span id="L6447"><span class="lineNum">    6447</span> <span class="tlaGNC">           1 :         elementTypeLayout-&gt;rules = rules;</span></span>
+<span id="L6448"><span class="lineNum">    6448</span>              : </span>
+<span id="L6449"><span class="lineNum">    6449</span> <span class="tlaGNC">           1 :         RefPtr&lt;VectorTypeLayout&gt; rowTypeLayout = new VectorTypeLayout();</span></span>
+<span id="L6450"><span class="lineNum">    6450</span> <span class="tlaGNC">           1 :         rowTypeLayout-&gt;type = matType-&gt;getRowType();</span></span>
+<span id="L6451"><span class="lineNum">    6451</span> <span class="tlaGNC">           1 :         rowTypeLayout-&gt;rules = rules;</span></span>
+<span id="L6452"><span class="lineNum">    6452</span> <span class="tlaGNC">           1 :         rowTypeLayout-&gt;elementTypeLayout = elementTypeLayout;</span></span>
+<span id="L6453"><span class="lineNum">    6453</span>              : </span>
+<span id="L6454"><span class="lineNum">    6454</span> <span class="tlaGNC">           1 :         RefPtr&lt;MatrixTypeLayout&gt; typeLayout = new MatrixTypeLayout();</span></span>
+<span id="L6455"><span class="lineNum">    6455</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = type;</span></span>
+<span id="L6456"><span class="lineNum">    6456</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
+<span id="L6457"><span class="lineNum">    6457</span> <span class="tlaGNC">           1 :         typeLayout-&gt;elementTypeLayout = rowTypeLayout;</span></span>
+<span id="L6458"><span class="lineNum">    6458</span> <span class="tlaGNC">           1 :         typeLayout-&gt;mode = context.matrixLayoutMode;</span></span>
+<span id="L6459"><span class="lineNum">    6459</span>              : </span>
+<span id="L6460"><span class="lineNum">    6460</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
+<span id="L6461"><span class="lineNum">    6461</span>              :         {</span>
+<span id="L6462"><span class="lineNum">    6462</span> <span class="tlaGNC">           1 :             auto varyingRuleSet = varyingRules[rr];</span></span>
+<span id="L6463"><span class="lineNum">    6463</span> <span class="tlaGNC">           1 :             auto elementInfo = varyingRuleSet-&gt;GetScalarLayout(elementBaseType, context);</span></span>
+<span id="L6464"><span class="lineNum">    6464</span>              : </span>
+<span id="L6465"><span class="lineNum">    6465</span> <span class="tlaGNC">           1 :             auto info = varyingRuleSet-&gt;GetMatrixLayout(</span></span>
+<span id="L6466"><span class="lineNum">    6466</span>              :                 elementBaseType,</span>
+<span id="L6467"><span class="lineNum">    6467</span>              :                 elementInfo,</span>
+<span id="L6468"><span class="lineNum">    6468</span>              :                 layoutMajorCount,</span>
+<span id="L6469"><span class="lineNum">    6469</span>              :                 layoutMinorCount);</span>
+<span id="L6470"><span class="lineNum">    6470</span> <span class="tlaGNC">           1 :             typeLayout-&gt;addResourceUsage(info.kind, info.size);</span></span>
+<span id="L6471"><span class="lineNum">    6471</span>              : </span>
+<span id="L6472"><span class="lineNum">    6472</span> <span class="tlaGNC">           1 :             if (context.matrixLayoutMode == kMatrixLayoutMode_RowMajor)</span></span>
+<span id="L6473"><span class="lineNum">    6473</span>              :             {</span>
+<span id="L6474"><span class="lineNum">    6474</span>              :                 // For row-major matrices only, we can compute an effective</span>
+<span id="L6475"><span class="lineNum">    6475</span>              :                 // resource usage for the row type.</span>
+<span id="L6476"><span class="lineNum">    6476</span>              :                 auto rowInfo =</span>
+<span id="L6477"><span class="lineNum">    6477</span> <span class="tlaGNC">           1 :                     varyingRuleSet-&gt;GetVectorLayout(elementBaseType, elementInfo, colCount);</span></span>
+<span id="L6478"><span class="lineNum">    6478</span> <span class="tlaGNC">           1 :                 rowTypeLayout-&gt;addResourceUsage(rowInfo.kind, rowInfo.size);</span></span>
+<span id="L6479"><span class="lineNum">    6479</span>              :             }</span>
+<span id="L6480"><span class="lineNum">    6480</span>              :         }</span>
+<span id="L6481"><span class="lineNum">    6481</span>              : </span>
+<span id="L6482"><span class="lineNum">    6482</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
+<span id="L6483"><span class="lineNum">    6483</span>              :     }</span>
+<span id="L6484"><span class="lineNum">    6484</span> <span class="tlaGNC">           1 :     else if (auto descriptorHandleType = as&lt;DescriptorHandleType&gt;(type))</span></span>
+<span id="L6485"><span class="lineNum">    6485</span>              :     {</span>
+<span id="L6486"><span class="lineNum">    6486</span> <span class="tlaGNC">           1 :         maybePromoteDescriptorHandleCapability(context.targetReq);</span></span>
+<span id="L6487"><span class="lineNum">    6487</span>              : </span>
+<span id="L6488"><span class="lineNum">    6488</span> <span class="tlaGNC">           1 :         RefPtr&lt;TypeLayout&gt; typeLayout = new TypeLayout();</span></span>
+<span id="L6489"><span class="lineNum">    6489</span> <span class="tlaGNC">           1 :         typeLayout-&gt;type = type; // Preserve the original DescriptorHandle type</span></span>
+<span id="L6490"><span class="lineNum">    6490</span> <span class="tlaGNC">           1 :         typeLayout-&gt;rules = rules;</span></span>
+<span id="L6491"><span class="lineNum">    6491</span>              : </span>
+<span id="L6492"><span class="lineNum">    6492</span> <span class="tlaGNC">           1 :         for (int rr = 0; rr &lt; varyingRulesCount; ++rr)</span></span>
+<span id="L6493"><span class="lineNum">    6493</span>              :         {</span>
+<span id="L6494"><span class="lineNum">    6494</span>              :             // Determine the layout resource kind based on the direction mask</span>
+<span id="L6495"><span class="lineNum">    6495</span>              :             LayoutResourceKind varyingKind = LayoutResourceKind::VaryingInput;</span>
+<span id="L6496"><span class="lineNum">    6496</span>              :             if (directionMask &amp; kEntryPointParameterDirection_Output)</span>
+<span id="L6497"><span class="lineNum">    6497</span>              :                 varyingKind = LayoutResourceKind::VaryingOutput;</span>
+<span id="L6498"><span class="lineNum">    6498</span>              : </span>
+<span id="L6499"><span class="lineNum">    6499</span> <span class="tlaGNC">           1 :             auto objLayoutInfo = varyingRules[rr]-&gt;simpleRules-&gt;GetDescriptorHandleLayout(</span></span>
+<span id="L6500"><span class="lineNum">    6500</span>              :                 varyingKind,</span>
+<span id="L6501"><span class="lineNum">    6501</span>              :                 descriptorHandleType-&gt;getElementType(),</span>
+<span id="L6502"><span class="lineNum">    6502</span>              :                 context);</span>
+<span id="L6503"><span class="lineNum">    6503</span>              : </span>
+<span id="L6504"><span class="lineNum">    6504</span>              :             // For combined texture samplers, objLayoutInfo may contain multiple layoutInfos</span>
+<span id="L6505"><span class="lineNum">    6505</span>              :             // (e.g., one for texture and one for sampler)</span>
+<span id="L6506"><span class="lineNum">    6506</span> <span class="tlaGNC">           1 :             for (const auto&amp; layoutInfo : objLayoutInfo.layoutInfos)</span></span>
+<span id="L6507"><span class="lineNum">    6507</span>              :             {</span>
+<span id="L6508"><span class="lineNum">    6508</span> <span class="tlaGNC">           1 :                 typeLayout-&gt;addResourceUsage(layoutInfo.kind, layoutInfo.size);</span></span>
+<span id="L6509"><span class="lineNum">    6509</span>              :             }</span>
+<span id="L6510"><span class="lineNum">    6510</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L6511"><span class="lineNum">    6511</span>              : </span>
+<span id="L6512"><span class="lineNum">    6512</span> <span class="tlaGNC">           1 :         return typeLayout;</span></span>
+<span id="L6513"><span class="lineNum">    6513</span>              :     }</span>
+<span id="L6514"><span class="lineNum">    6514</span>              : </span>
+<span id="L6515"><span class="lineNum">    6515</span>              :     // catch-all case in case nothing matched</span>
+<span id="L6516"><span class="lineNum">    6516</span>              :     SLANG_ASSERT(!&quot;unimplemented case for varying parameter layout&quot;);</span>
+<span id="L6517"><span class="lineNum">    6517</span> <span class="tlaUNC">           0 :     return createSimpleTypeLayout(SimpleLayoutInfo(), type, rules).layout;</span></span>
+<span id="L6518"><span class="lineNum">    6518</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6519"><span class="lineNum">    6519</span>              : </span>
+<span id="L6520"><span class="lineNum">    6520</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayout(TypeLayoutContext&amp; context, Type* type)</span>
+<span id="L6521"><span class="lineNum">    6521</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6522"><span class="lineNum">    6522</span> <span class="tlaGNC">           1 :     return _createTypeLayout(context, type).layout;</span></span>
+<span id="L6523"><span class="lineNum">    6523</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6524"><span class="lineNum">    6524</span>              : </span>
+<span id="L6525"><span class="lineNum">    6525</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayoutWith(</span>
+<span id="L6526"><span class="lineNum">    6526</span>              :     const TypeLayoutContext&amp; context,</span>
+<span id="L6527"><span class="lineNum">    6527</span>              :     LayoutRulesImpl* rules,</span>
+<span id="L6528"><span class="lineNum">    6528</span>              :     Type* type)</span>
+<span id="L6529"><span class="lineNum">    6529</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6530"><span class="lineNum">    6530</span>              :     // `createTypeLayout` dereferences `rules` unconditionally, so a null here is</span>
+<span id="L6531"><span class="lineNum">    6531</span>              :     // a caller bug that would otherwise surface as a silent access violation.</span>
+<span id="L6532"><span class="lineNum">    6532</span> <span class="tlaGNC">           1 :     SLANG_RELEASE_ASSERT(rules);</span></span>
+<span id="L6533"><span class="lineNum">    6533</span> <span class="tlaGNC">           1 :     auto c = context.with(rules);</span></span>
+<span id="L6534"><span class="lineNum">    6534</span> <span class="tlaGNC">           1 :     return createTypeLayout(c, type);</span></span>
+<span id="L6535"><span class="lineNum">    6535</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6536"><span class="lineNum">    6536</span>              : </span>
+<span id="L6537"><span class="lineNum">    6537</span>              : </span>
+<span id="L6538"><span class="lineNum">    6538</span>              : void TypeLayout::removeResourceUsage(LayoutResourceKind kind)</span>
+<span id="L6539"><span class="lineNum">    6539</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6540"><span class="lineNum">    6540</span> <span class="tlaGNC">           1 :     Int infoCount = resourceInfos.getCount();</span></span>
+<span id="L6541"><span class="lineNum">    6541</span> <span class="tlaGNC">           1 :     for (Int ii = 0; ii &lt; infoCount; ++ii)</span></span>
+<span id="L6542"><span class="lineNum">    6542</span>              :     {</span>
+<span id="L6543"><span class="lineNum">    6543</span> <span class="tlaGNC">           1 :         if (resourceInfos[ii].kind == kind)</span></span>
+<span id="L6544"><span class="lineNum">    6544</span>              :         {</span>
+<span id="L6545"><span class="lineNum">    6545</span> <span class="tlaGNC">           1 :             resourceInfos.removeAt(ii);</span></span>
+<span id="L6546"><span class="lineNum">    6546</span>              :             return;</span>
+<span id="L6547"><span class="lineNum">    6547</span>              :         }</span>
+<span id="L6548"><span class="lineNum">    6548</span>              :     }</span>
+<span id="L6549"><span class="lineNum">    6549</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6550"><span class="lineNum">    6550</span>              : </span>
+<span id="L6551"><span class="lineNum">    6551</span>              : void VarLayout::removeResourceUsage(LayoutResourceKind kind)</span>
+<span id="L6552"><span class="lineNum">    6552</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6553"><span class="lineNum">    6553</span> <span class="tlaGNC">           1 :     Int infoCount = resourceInfos.getCount();</span></span>
+<span id="L6554"><span class="lineNum">    6554</span> <span class="tlaGNC">           1 :     for (Int ii = 0; ii &lt; infoCount; ++ii)</span></span>
+<span id="L6555"><span class="lineNum">    6555</span>              :     {</span>
+<span id="L6556"><span class="lineNum">    6556</span> <span class="tlaGNC">           1 :         if (resourceInfos[ii].kind == kind)</span></span>
+<span id="L6557"><span class="lineNum">    6557</span>              :         {</span>
+<span id="L6558"><span class="lineNum">    6558</span> <span class="tlaGNC">           1 :             resourceInfos.removeAt(ii);</span></span>
+<span id="L6559"><span class="lineNum">    6559</span>              :             return;</span>
+<span id="L6560"><span class="lineNum">    6560</span>              :         }</span>
+<span id="L6561"><span class="lineNum">    6561</span>              :     }</span>
+<span id="L6562"><span class="lineNum">    6562</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L6563"><span class="lineNum">    6563</span>              : </span>
-<span id="L6564"><span class="lineNum">    6564</span>              : GlobalGenericParamDecl* GenericParamTypeLayout::getGlobalGenericParamDecl()</span>
-<span id="L6565"><span class="lineNum">    6565</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L6566"><span class="lineNum">    6566</span> <span class="tlaUNC">           0 :     auto declRefType = as&lt;DeclRefType&gt;(type);</span></span>
-<span id="L6567"><span class="lineNum">    6567</span>              :     SLANG_ASSERT(declRefType);</span>
-<span id="L6568"><span class="lineNum">    6568</span> <span class="tlaUNC">           0 :     auto rsDeclRef = declRefType-&gt;getDeclRef().as&lt;GlobalGenericParamDecl&gt;();</span></span>
-<span id="L6569"><span class="lineNum">    6569</span> <span class="tlaUNC">           0 :     return rsDeclRef.getDecl();</span></span>
-<span id="L6570"><span class="lineNum">    6570</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L6564"><span class="lineNum">    6564</span>              : </span>
+<span id="L6565"><span class="lineNum">    6565</span>              : void TypeLayout::addResourceUsageFrom(TypeLayout* otherTypeLayout)</span>
+<span id="L6566"><span class="lineNum">    6566</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6567"><span class="lineNum">    6567</span> <span class="tlaGNC">           1 :     for (auto resInfo : otherTypeLayout-&gt;resourceInfos)</span></span>
+<span id="L6568"><span class="lineNum">    6568</span> <span class="tlaGNC">           1 :         addResourceUsage(resInfo);</span></span>
+<span id="L6569"><span class="lineNum">    6569</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6570"><span class="lineNum">    6570</span>              : </span>
 <span id="L6571"><span class="lineNum">    6571</span>              : </span>
-<span id="L6572"><span class="lineNum">    6572</span>              : // Get the decl ref to the outer generic if the decl referenced by `declRef` is generic.</span>
-<span id="L6573"><span class="lineNum">    6573</span>              : DeclRef&lt;GenericDecl&gt; getOuterGeneric(DeclRef&lt;Decl&gt; declRef)</span>
-<span id="L6574"><span class="lineNum">    6574</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L6575"><span class="lineNum">    6575</span> <span class="tlaGNC">           1 :     if (auto directDeclRef = as&lt;DirectDeclRef&gt;(declRef.declRefBase))</span></span>
-<span id="L6576"><span class="lineNum">    6576</span>              :     {</span>
-<span id="L6577"><span class="lineNum">    6577</span> <span class="tlaGNC">           1 :         if (as&lt;GenericDecl&gt;(directDeclRef-&gt;getDecl()))</span></span>
-<span id="L6578"><span class="lineNum">    6578</span> <span class="tlaUNC">           0 :             return DeclRef&lt;GenericDecl&gt;(directDeclRef);</span></span>
-<span id="L6579"><span class="lineNum">    6579</span> <span class="tlaGNC">           1 :         if (as&lt;GenericDecl&gt;(directDeclRef-&gt;getParent()-&gt;getDecl()))</span></span>
-<span id="L6580"><span class="lineNum">    6580</span> <span class="tlaGNC">           1 :             return DeclRef&lt;GenericDecl&gt;(directDeclRef-&gt;getParent());</span></span>
-<span id="L6581"><span class="lineNum">    6581</span>              :     }</span>
-<span id="L6582"><span class="lineNum">    6582</span> <span class="tlaUNC">           0 :     else if (auto genAppDeclRef = as&lt;GenericAppDeclRef&gt;(declRef.declRefBase))</span></span>
-<span id="L6583"><span class="lineNum">    6583</span>              :     {</span>
-<span id="L6584"><span class="lineNum">    6584</span> <span class="tlaUNC">           0 :         return DeclRef&lt;GenericDecl&gt;(genAppDeclRef-&gt;getBase());</span></span>
-<span id="L6585"><span class="lineNum">    6585</span>              :     }</span>
-<span id="L6586"><span class="lineNum">    6586</span> <span class="tlaUNC">           0 :     return DeclRef&lt;GenericDecl&gt;();</span></span>
-<span id="L6587"><span class="lineNum">    6587</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L6588"><span class="lineNum">    6588</span>              : </span>
-<span id="L6589"><span class="lineNum">    6589</span>              : Type* TypeLayoutContext::lookupExternDeclRefType(DeclRefType* declRefType)</span>
-<span id="L6590"><span class="lineNum">    6590</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L6591"><span class="lineNum">    6591</span> <span class="tlaGNC">           1 :     const auto declRef = declRefType-&gt;getDeclRef();</span></span>
-<span id="L6592"><span class="lineNum">    6592</span> <span class="tlaGNC">           1 :     const auto decl = declRef.getDecl();</span></span>
-<span id="L6593"><span class="lineNum">    6593</span> <span class="tlaGNC">           1 :     const auto isExtern =</span></span>
-<span id="L6594"><span class="lineNum">    6594</span>              :         decl-&gt;hasModifier&lt;ExternAttribute&gt;() || decl-&gt;hasModifier&lt;ExternModifier&gt;();</span>
-<span id="L6595"><span class="lineNum">    6595</span> <span class="tlaGNC">           1 :     Type* resultType = declRefType;</span></span>
-<span id="L6596"><span class="lineNum">    6596</span>              :     if (isExtern)</span>
-<span id="L6597"><span class="lineNum">    6597</span>              :     {</span>
-<span id="L6598"><span class="lineNum">    6598</span> <span class="tlaGNC">           1 :         if (!externTypeMap)</span></span>
-<span id="L6599"><span class="lineNum">    6599</span> <span class="tlaGNC">           1 :             buildExternTypeMap();</span></span>
-<span id="L6600"><span class="lineNum">    6600</span> <span class="tlaGNC">           1 :         const auto mangledName = getMangledName(targetReq-&gt;getLinkage()-&gt;getASTBuilder(), decl);</span></span>
-<span id="L6601"><span class="lineNum">    6601</span> <span class="tlaGNC">           1 :         externTypeMap-&gt;tryGetValue(mangledName, resultType);</span></span>
-<span id="L6602"><span class="lineNum">    6602</span> <span class="tlaGNC">           1 :         if (auto resolvedDeclRef = isDeclRefTypeOf&lt;Decl&gt;(resultType))</span></span>
-<span id="L6603"><span class="lineNum">    6603</span>              :         {</span>
-<span id="L6604"><span class="lineNum">    6604</span> <span class="tlaGNC">           1 :             if (resolvedDeclRef != declRef)</span></span>
-<span id="L6605"><span class="lineNum">    6605</span>              :             {</span>
-<span id="L6606"><span class="lineNum">    6606</span>              :                 // If declRef is a GenericApp, we should replace the generic base to</span>
-<span id="L6607"><span class="lineNum">    6607</span>              :                 // resolveDeclRef&#x27;s base.</span>
-<span id="L6608"><span class="lineNum">    6608</span> <span class="tlaGNC">           1 :                 if (auto originalGenericApp = as&lt;GenericAppDeclRef&gt;(declRef.declRefBase))</span></span>
-<span id="L6609"><span class="lineNum">    6609</span>              :                 {</span>
-<span id="L6610"><span class="lineNum">    6610</span> <span class="tlaGNC">           1 :                     if (auto resolvedOuterGeneric = getOuterGeneric(resolvedDeclRef.getDecl()))</span></span>
-<span id="L6611"><span class="lineNum">    6611</span>              :                     {</span>
-<span id="L6612"><span class="lineNum">    6612</span> <span class="tlaGNC">           1 :                         auto substGenericApp = astBuilder-&gt;getGenericAppDeclRef(</span></span>
-<span id="L6613"><span class="lineNum">    6613</span>              :                             resolvedOuterGeneric,</span>
-<span id="L6614"><span class="lineNum">    6614</span>              :                             originalGenericApp-&gt;getArgs());</span>
-<span id="L6615"><span class="lineNum">    6615</span> <span class="tlaGNC">           1 :                         resultType = DeclRefType::create(astBuilder, substGenericApp);</span></span>
-<span id="L6616"><span class="lineNum">    6616</span>              :                     }</span>
-<span id="L6617"><span class="lineNum">    6617</span>              :                 }</span>
-<span id="L6618"><span class="lineNum">    6618</span>              :             }</span>
-<span id="L6619"><span class="lineNum">    6619</span>              :         }</span>
-<span id="L6620"><span class="lineNum">    6620</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L6621"><span class="lineNum">    6621</span>              : </span>
-<span id="L6622"><span class="lineNum">    6622</span>              :     // If the type is an alias of another type, then we should create the type layout</span>
-<span id="L6623"><span class="lineNum">    6623</span>              :     // from the aliased type instead.</span>
-<span id="L6624"><span class="lineNum">    6624</span> <span class="tlaGNC">           1 :     if (auto aggTypeDeclRef = isDeclRefTypeOf&lt;AggTypeDecl&gt;(resultType))</span></span>
-<span id="L6625"><span class="lineNum">    6625</span>              :     {</span>
-<span id="L6626"><span class="lineNum">    6626</span> <span class="tlaGNC">           1 :         if (auto aliasedType = as&lt;Type&gt;(getAliasedType(astBuilder, aggTypeDeclRef)))</span></span>
-<span id="L6627"><span class="lineNum">    6627</span>              :         {</span>
-<span id="L6628"><span class="lineNum">    6628</span>              :             return aliasedType;</span>
-<span id="L6629"><span class="lineNum">    6629</span>              :         }</span>
-<span id="L6630"><span class="lineNum">    6630</span>              :     }</span>
-<span id="L6631"><span class="lineNum">    6631</span> <span class="tlaGNC">           1 :     return resultType;</span></span>
-<span id="L6632"><span class="lineNum">    6632</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L6633"><span class="lineNum">    6633</span>              : </span>
-<span id="L6634"><span class="lineNum">    6634</span>              : void TypeLayoutContext::buildExternTypeMap()</span>
-<span id="L6635"><span class="lineNum">    6635</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L6636"><span class="lineNum">    6636</span> <span class="tlaGNC">           1 :     externTypeMap.emplace();</span></span>
-<span id="L6637"><span class="lineNum">    6637</span>              : </span>
-<span id="L6638"><span class="lineNum">    6638</span> <span class="tlaGNC">           1 :     HashSet&lt;String&gt; externNames;</span></span>
-<span id="L6639"><span class="lineNum">    6639</span> <span class="tlaGNC">           1 :     Dictionary&lt;String, DeclRefType*&gt; allTypes;</span></span>
+<span id="L6572"><span class="lineNum">    6572</span>              : RefPtr&lt;TypeLayout&gt; TypeLayout::unwrapArray()</span>
+<span id="L6573"><span class="lineNum">    6573</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L6574"><span class="lineNum">    6574</span>              :     TypeLayout* typeLayout = this;</span>
+<span id="L6575"><span class="lineNum">    6575</span>              : </span>
+<span id="L6576"><span class="lineNum">    6576</span> <span class="tlaUNC">           0 :     while (auto arrayTypeLayout = as&lt;ArrayTypeLayout&gt;(typeLayout))</span></span>
+<span id="L6577"><span class="lineNum">    6577</span> <span class="tlaUNC">           0 :         typeLayout = arrayTypeLayout-&gt;elementTypeLayout;</span></span>
+<span id="L6578"><span class="lineNum">    6578</span>              : </span>
+<span id="L6579"><span class="lineNum">    6579</span> <span class="tlaUNC">           0 :     return typeLayout;</span></span>
+<span id="L6580"><span class="lineNum">    6580</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L6581"><span class="lineNum">    6581</span>              : </span>
+<span id="L6582"><span class="lineNum">    6582</span>              : </span>
+<span id="L6583"><span class="lineNum">    6583</span>              : GlobalGenericParamDecl* GenericParamTypeLayout::getGlobalGenericParamDecl()</span>
+<span id="L6584"><span class="lineNum">    6584</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L6585"><span class="lineNum">    6585</span> <span class="tlaUNC">           0 :     auto declRefType = as&lt;DeclRefType&gt;(type);</span></span>
+<span id="L6586"><span class="lineNum">    6586</span>              :     SLANG_ASSERT(declRefType);</span>
+<span id="L6587"><span class="lineNum">    6587</span> <span class="tlaUNC">           0 :     auto rsDeclRef = declRefType-&gt;getDeclRef().as&lt;GlobalGenericParamDecl&gt;();</span></span>
+<span id="L6588"><span class="lineNum">    6588</span> <span class="tlaUNC">           0 :     return rsDeclRef.getDecl();</span></span>
+<span id="L6589"><span class="lineNum">    6589</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L6590"><span class="lineNum">    6590</span>              : </span>
+<span id="L6591"><span class="lineNum">    6591</span>              : // Get the decl ref to the outer generic if the decl referenced by `declRef` is generic.</span>
+<span id="L6592"><span class="lineNum">    6592</span>              : DeclRef&lt;GenericDecl&gt; getOuterGeneric(DeclRef&lt;Decl&gt; declRef)</span>
+<span id="L6593"><span class="lineNum">    6593</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6594"><span class="lineNum">    6594</span> <span class="tlaGNC">           1 :     if (auto directDeclRef = as&lt;DirectDeclRef&gt;(declRef.declRefBase))</span></span>
+<span id="L6595"><span class="lineNum">    6595</span>              :     {</span>
+<span id="L6596"><span class="lineNum">    6596</span> <span class="tlaGNC">           1 :         if (as&lt;GenericDecl&gt;(directDeclRef-&gt;getDecl()))</span></span>
+<span id="L6597"><span class="lineNum">    6597</span> <span class="tlaUNC">           0 :             return DeclRef&lt;GenericDecl&gt;(directDeclRef);</span></span>
+<span id="L6598"><span class="lineNum">    6598</span> <span class="tlaGNC">           1 :         if (as&lt;GenericDecl&gt;(directDeclRef-&gt;getParent()-&gt;getDecl()))</span></span>
+<span id="L6599"><span class="lineNum">    6599</span> <span class="tlaGNC">           1 :             return DeclRef&lt;GenericDecl&gt;(directDeclRef-&gt;getParent());</span></span>
+<span id="L6600"><span class="lineNum">    6600</span>              :     }</span>
+<span id="L6601"><span class="lineNum">    6601</span> <span class="tlaUNC">           0 :     else if (auto genAppDeclRef = as&lt;GenericAppDeclRef&gt;(declRef.declRefBase))</span></span>
+<span id="L6602"><span class="lineNum">    6602</span>              :     {</span>
+<span id="L6603"><span class="lineNum">    6603</span> <span class="tlaUNC">           0 :         return DeclRef&lt;GenericDecl&gt;(genAppDeclRef-&gt;getBase());</span></span>
+<span id="L6604"><span class="lineNum">    6604</span>              :     }</span>
+<span id="L6605"><span class="lineNum">    6605</span> <span class="tlaUNC">           0 :     return DeclRef&lt;GenericDecl&gt;();</span></span>
+<span id="L6606"><span class="lineNum">    6606</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6607"><span class="lineNum">    6607</span>              : </span>
+<span id="L6608"><span class="lineNum">    6608</span>              : Type* TypeLayoutContext::lookupExternDeclRefType(DeclRefType* declRefType)</span>
+<span id="L6609"><span class="lineNum">    6609</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6610"><span class="lineNum">    6610</span> <span class="tlaGNC">           1 :     const auto declRef = declRefType-&gt;getDeclRef();</span></span>
+<span id="L6611"><span class="lineNum">    6611</span> <span class="tlaGNC">           1 :     const auto decl = declRef.getDecl();</span></span>
+<span id="L6612"><span class="lineNum">    6612</span> <span class="tlaGNC">           1 :     const auto isExtern =</span></span>
+<span id="L6613"><span class="lineNum">    6613</span>              :         decl-&gt;hasModifier&lt;ExternAttribute&gt;() || decl-&gt;hasModifier&lt;ExternModifier&gt;();</span>
+<span id="L6614"><span class="lineNum">    6614</span> <span class="tlaGNC">           1 :     Type* resultType = declRefType;</span></span>
+<span id="L6615"><span class="lineNum">    6615</span>              :     if (isExtern)</span>
+<span id="L6616"><span class="lineNum">    6616</span>              :     {</span>
+<span id="L6617"><span class="lineNum">    6617</span> <span class="tlaGNC">           1 :         if (!externTypeMap)</span></span>
+<span id="L6618"><span class="lineNum">    6618</span> <span class="tlaGNC">           1 :             buildExternTypeMap();</span></span>
+<span id="L6619"><span class="lineNum">    6619</span> <span class="tlaGNC">           1 :         const auto mangledName = getMangledName(targetReq-&gt;getLinkage()-&gt;getASTBuilder(), decl);</span></span>
+<span id="L6620"><span class="lineNum">    6620</span> <span class="tlaGNC">           1 :         externTypeMap-&gt;tryGetValue(mangledName, resultType);</span></span>
+<span id="L6621"><span class="lineNum">    6621</span> <span class="tlaGNC">           1 :         if (auto resolvedDeclRef = isDeclRefTypeOf&lt;Decl&gt;(resultType))</span></span>
+<span id="L6622"><span class="lineNum">    6622</span>              :         {</span>
+<span id="L6623"><span class="lineNum">    6623</span> <span class="tlaGNC">           1 :             if (resolvedDeclRef != declRef)</span></span>
+<span id="L6624"><span class="lineNum">    6624</span>              :             {</span>
+<span id="L6625"><span class="lineNum">    6625</span>              :                 // If declRef is a GenericApp, we should replace the generic base to</span>
+<span id="L6626"><span class="lineNum">    6626</span>              :                 // resolveDeclRef&#x27;s base.</span>
+<span id="L6627"><span class="lineNum">    6627</span> <span class="tlaGNC">           1 :                 if (auto originalGenericApp = as&lt;GenericAppDeclRef&gt;(declRef.declRefBase))</span></span>
+<span id="L6628"><span class="lineNum">    6628</span>              :                 {</span>
+<span id="L6629"><span class="lineNum">    6629</span> <span class="tlaGNC">           1 :                     if (auto resolvedOuterGeneric = getOuterGeneric(resolvedDeclRef.getDecl()))</span></span>
+<span id="L6630"><span class="lineNum">    6630</span>              :                     {</span>
+<span id="L6631"><span class="lineNum">    6631</span> <span class="tlaGNC">           1 :                         auto substGenericApp = astBuilder-&gt;getGenericAppDeclRef(</span></span>
+<span id="L6632"><span class="lineNum">    6632</span>              :                             resolvedOuterGeneric,</span>
+<span id="L6633"><span class="lineNum">    6633</span>              :                             originalGenericApp-&gt;getArgs());</span>
+<span id="L6634"><span class="lineNum">    6634</span> <span class="tlaGNC">           1 :                         resultType = DeclRefType::create(astBuilder, substGenericApp);</span></span>
+<span id="L6635"><span class="lineNum">    6635</span>              :                     }</span>
+<span id="L6636"><span class="lineNum">    6636</span>              :                 }</span>
+<span id="L6637"><span class="lineNum">    6637</span>              :             }</span>
+<span id="L6638"><span class="lineNum">    6638</span>              :         }</span>
+<span id="L6639"><span class="lineNum">    6639</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L6640"><span class="lineNum">    6640</span>              : </span>
-<span id="L6641"><span class="lineNum">    6641</span>              :     // Traverse the AST and keep track of all extern names and all type definitions</span>
-<span id="L6642"><span class="lineNum">    6642</span>              :     // We&#x27;ll match them up later</span>
-<span id="L6643"><span class="lineNum">    6643</span> <span class="tlaGNC">           1 :     auto processDecl = [&amp;](auto&amp;&amp; go, Decl* decl) -&gt; void</span></span>
-<span id="L6644"><span class="lineNum">    6644</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L6645"><span class="lineNum">    6645</span> <span class="tlaGNC">           1 :         if (auto genericDecl = as&lt;GenericDecl&gt;(decl))</span></span>
-<span id="L6646"><span class="lineNum">    6646</span> <span class="tlaGNC">           1 :             decl = genericDecl-&gt;inner;</span></span>
-<span id="L6647"><span class="lineNum">    6647</span> <span class="tlaGNC">           1 :         const auto isExtern =</span></span>
-<span id="L6648"><span class="lineNum">    6648</span>              :             decl-&gt;hasModifier&lt;ExternAttribute&gt;() || decl-&gt;hasModifier&lt;ExternModifier&gt;();</span>
-<span id="L6649"><span class="lineNum">    6649</span>              : </span>
-<span id="L6650"><span class="lineNum">    6650</span> <span class="tlaGNC">           1 :         if (auto declRefType = as&lt;DeclRefType&gt;(DeclRefType::create(astBuilder, decl)))</span></span>
-<span id="L6651"><span class="lineNum">    6651</span>              :         {</span>
-<span id="L6652"><span class="lineNum">    6652</span> <span class="tlaGNC">           1 :             String mangledName = getMangledName(astBuilder, decl);</span></span>
-<span id="L6653"><span class="lineNum">    6653</span>              : </span>
-<span id="L6654"><span class="lineNum">    6654</span> <span class="tlaGNC">           1 :             if (isExtern)</span></span>
-<span id="L6655"><span class="lineNum">    6655</span>              :             {</span>
-<span id="L6656"><span class="lineNum">    6656</span> <span class="tlaGNC">           1 :                 externNames.add(mangledName);</span></span>
-<span id="L6657"><span class="lineNum">    6657</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L6658"><span class="lineNum">    6658</span>              :             else</span>
-<span id="L6659"><span class="lineNum">    6659</span>              :             {</span>
-<span id="L6660"><span class="lineNum">    6660</span> <span class="tlaGNC">           1 :                 allTypes[mangledName] = declRefType;</span></span>
-<span id="L6661"><span class="lineNum">    6661</span>              :             }</span>
-<span id="L6662"><span class="lineNum">    6662</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L6663"><span class="lineNum">    6663</span>              : </span>
-<span id="L6664"><span class="lineNum">    6664</span> <span class="tlaGNC">           1 :         if (auto scopeDecl = isStaticScopeDecl(decl))</span></span>
-<span id="L6665"><span class="lineNum">    6665</span>              :         {</span>
-<span id="L6666"><span class="lineNum">    6666</span> <span class="tlaUNC">           0 :             for (auto member : scopeDecl-&gt;getDirectMemberDecls())</span></span>
-<span id="L6667"><span class="lineNum">    6667</span>              :             {</span>
-<span id="L6668"><span class="lineNum">    6668</span> <span class="tlaUNC">           0 :                 go(go, member);</span></span>
-<span id="L6669"><span class="lineNum">    6669</span>              :             }</span>
-<span id="L6670"><span class="lineNum">    6670</span>              :         }</span>
-<span id="L6671"><span class="lineNum">    6671</span> <span class="tlaGNC">           1 :     };</span></span>
+<span id="L6641"><span class="lineNum">    6641</span>              :     // If the type is an alias of another type, then we should create the type layout</span>
+<span id="L6642"><span class="lineNum">    6642</span>              :     // from the aliased type instead.</span>
+<span id="L6643"><span class="lineNum">    6643</span> <span class="tlaGNC">           1 :     if (auto aggTypeDeclRef = isDeclRefTypeOf&lt;AggTypeDecl&gt;(resultType))</span></span>
+<span id="L6644"><span class="lineNum">    6644</span>              :     {</span>
+<span id="L6645"><span class="lineNum">    6645</span> <span class="tlaGNC">           1 :         if (auto aliasedType = as&lt;Type&gt;(getAliasedType(astBuilder, aggTypeDeclRef)))</span></span>
+<span id="L6646"><span class="lineNum">    6646</span>              :         {</span>
+<span id="L6647"><span class="lineNum">    6647</span>              :             return aliasedType;</span>
+<span id="L6648"><span class="lineNum">    6648</span>              :         }</span>
+<span id="L6649"><span class="lineNum">    6649</span>              :     }</span>
+<span id="L6650"><span class="lineNum">    6650</span> <span class="tlaGNC">           1 :     return resultType;</span></span>
+<span id="L6651"><span class="lineNum">    6651</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6652"><span class="lineNum">    6652</span>              : </span>
+<span id="L6653"><span class="lineNum">    6653</span>              : void TypeLayoutContext::buildExternTypeMap()</span>
+<span id="L6654"><span class="lineNum">    6654</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L6655"><span class="lineNum">    6655</span> <span class="tlaGNC">           1 :     externTypeMap.emplace();</span></span>
+<span id="L6656"><span class="lineNum">    6656</span>              : </span>
+<span id="L6657"><span class="lineNum">    6657</span> <span class="tlaGNC">           1 :     HashSet&lt;String&gt; externNames;</span></span>
+<span id="L6658"><span class="lineNum">    6658</span> <span class="tlaGNC">           1 :     Dictionary&lt;String, DeclRefType*&gt; allTypes;</span></span>
+<span id="L6659"><span class="lineNum">    6659</span>              : </span>
+<span id="L6660"><span class="lineNum">    6660</span>              :     // Traverse the AST and keep track of all extern names and all type definitions</span>
+<span id="L6661"><span class="lineNum">    6661</span>              :     // We&#x27;ll match them up later</span>
+<span id="L6662"><span class="lineNum">    6662</span> <span class="tlaGNC">           1 :     auto processDecl = [&amp;](auto&amp;&amp; go, Decl* decl) -&gt; void</span></span>
+<span id="L6663"><span class="lineNum">    6663</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L6664"><span class="lineNum">    6664</span> <span class="tlaGNC">           1 :         if (auto genericDecl = as&lt;GenericDecl&gt;(decl))</span></span>
+<span id="L6665"><span class="lineNum">    6665</span> <span class="tlaGNC">           1 :             decl = genericDecl-&gt;inner;</span></span>
+<span id="L6666"><span class="lineNum">    6666</span> <span class="tlaGNC">           1 :         const auto isExtern =</span></span>
+<span id="L6667"><span class="lineNum">    6667</span>              :             decl-&gt;hasModifier&lt;ExternAttribute&gt;() || decl-&gt;hasModifier&lt;ExternModifier&gt;();</span>
+<span id="L6668"><span class="lineNum">    6668</span>              : </span>
+<span id="L6669"><span class="lineNum">    6669</span> <span class="tlaGNC">           1 :         if (auto declRefType = as&lt;DeclRefType&gt;(DeclRefType::create(astBuilder, decl)))</span></span>
+<span id="L6670"><span class="lineNum">    6670</span>              :         {</span>
+<span id="L6671"><span class="lineNum">    6671</span> <span class="tlaGNC">           1 :             String mangledName = getMangledName(astBuilder, decl);</span></span>
 <span id="L6672"><span class="lineNum">    6672</span>              : </span>
-<span id="L6673"><span class="lineNum">    6673</span> <span class="tlaGNC">           1 :     for (const auto&amp; m : programLayout-&gt;getProgram()-&gt;getModuleDependencies())</span></span>
-<span id="L6674"><span class="lineNum">    6674</span>              :     {</span>
-<span id="L6675"><span class="lineNum">    6675</span> <span class="tlaGNC">           1 :         const auto&amp; ast = m-&gt;getModuleDecl();</span></span>
-<span id="L6676"><span class="lineNum">    6676</span> <span class="tlaGNC">           1 :         for (auto member : ast-&gt;getDirectMemberDecls())</span></span>
-<span id="L6677"><span class="lineNum">    6677</span>              :         {</span>
-<span id="L6678"><span class="lineNum">    6678</span> <span class="tlaGNC">           1 :             processDecl(processDecl, member);</span></span>
-<span id="L6679"><span class="lineNum">    6679</span>              :         }</span>
-<span id="L6680"><span class="lineNum">    6680</span>              :     }</span>
-<span id="L6681"><span class="lineNum">    6681</span>              : </span>
-<span id="L6682"><span class="lineNum">    6682</span>              :     // Only keep the types that have matching extern declarations</span>
-<span id="L6683"><span class="lineNum">    6683</span> <span class="tlaGNC">           1 :     for (const auto&amp; externName : externNames)</span></span>
-<span id="L6684"><span class="lineNum">    6684</span>              :     {</span>
-<span id="L6685"><span class="lineNum">    6685</span> <span class="tlaGNC">           1 :         if (allTypes.containsKey(externName))</span></span>
-<span id="L6686"><span class="lineNum">    6686</span>              :         {</span>
-<span id="L6687"><span class="lineNum">    6687</span> <span class="tlaGNC">           1 :             externTypeMap.value()[externName] = allTypes[externName];</span></span>
-<span id="L6688"><span class="lineNum">    6688</span>              :         }</span>
-<span id="L6689"><span class="lineNum">    6689</span>              :     }</span>
-<span id="L6690"><span class="lineNum">    6690</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6673"><span class="lineNum">    6673</span> <span class="tlaGNC">           1 :             if (isExtern)</span></span>
+<span id="L6674"><span class="lineNum">    6674</span>              :             {</span>
+<span id="L6675"><span class="lineNum">    6675</span> <span class="tlaGNC">           1 :                 externNames.add(mangledName);</span></span>
+<span id="L6676"><span class="lineNum">    6676</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L6677"><span class="lineNum">    6677</span>              :             else</span>
+<span id="L6678"><span class="lineNum">    6678</span>              :             {</span>
+<span id="L6679"><span class="lineNum">    6679</span> <span class="tlaGNC">           1 :                 allTypes[mangledName] = declRefType;</span></span>
+<span id="L6680"><span class="lineNum">    6680</span>              :             }</span>
+<span id="L6681"><span class="lineNum">    6681</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L6682"><span class="lineNum">    6682</span>              : </span>
+<span id="L6683"><span class="lineNum">    6683</span> <span class="tlaGNC">           1 :         if (auto scopeDecl = isStaticScopeDecl(decl))</span></span>
+<span id="L6684"><span class="lineNum">    6684</span>              :         {</span>
+<span id="L6685"><span class="lineNum">    6685</span> <span class="tlaUNC">           0 :             for (auto member : scopeDecl-&gt;getDirectMemberDecls())</span></span>
+<span id="L6686"><span class="lineNum">    6686</span>              :             {</span>
+<span id="L6687"><span class="lineNum">    6687</span> <span class="tlaUNC">           0 :                 go(go, member);</span></span>
+<span id="L6688"><span class="lineNum">    6688</span>              :             }</span>
+<span id="L6689"><span class="lineNum">    6689</span>              :         }</span>
+<span id="L6690"><span class="lineNum">    6690</span> <span class="tlaGNC">           1 :     };</span></span>
 <span id="L6691"><span class="lineNum">    6691</span>              : </span>
-<span id="L6692"><span class="lineNum">    6692</span>              : } // namespace Slang</span>
+<span id="L6692"><span class="lineNum">    6692</span> <span class="tlaGNC">           1 :     for (const auto&amp; m : programLayout-&gt;getProgram()-&gt;getModuleDependencies())</span></span>
+<span id="L6693"><span class="lineNum">    6693</span>              :     {</span>
+<span id="L6694"><span class="lineNum">    6694</span> <span class="tlaGNC">           1 :         const auto&amp; ast = m-&gt;getModuleDecl();</span></span>
+<span id="L6695"><span class="lineNum">    6695</span> <span class="tlaGNC">           1 :         for (auto member : ast-&gt;getDirectMemberDecls())</span></span>
+<span id="L6696"><span class="lineNum">    6696</span>              :         {</span>
+<span id="L6697"><span class="lineNum">    6697</span> <span class="tlaGNC">           1 :             processDecl(processDecl, member);</span></span>
+<span id="L6698"><span class="lineNum">    6698</span>              :         }</span>
+<span id="L6699"><span class="lineNum">    6699</span>              :     }</span>
+<span id="L6700"><span class="lineNum">    6700</span>              : </span>
+<span id="L6701"><span class="lineNum">    6701</span>              :     // Only keep the types that have matching extern declarations</span>
+<span id="L6702"><span class="lineNum">    6702</span> <span class="tlaGNC">           1 :     for (const auto&amp; externName : externNames)</span></span>
+<span id="L6703"><span class="lineNum">    6703</span>              :     {</span>
+<span id="L6704"><span class="lineNum">    6704</span> <span class="tlaGNC">           1 :         if (allTypes.containsKey(externName))</span></span>
+<span id="L6705"><span class="lineNum">    6705</span>              :         {</span>
+<span id="L6706"><span class="lineNum">    6706</span> <span class="tlaGNC">           1 :             externTypeMap.value()[externName] = allTypes[externName];</span></span>
+<span id="L6707"><span class="lineNum">    6707</span>              :         }</span>
+<span id="L6708"><span class="lineNum">    6708</span>              :     }</span>
+<span id="L6709"><span class="lineNum">    6709</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L6710"><span class="lineNum">    6710</span>              : </span>
+<span id="L6711"><span class="lineNum">    6711</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

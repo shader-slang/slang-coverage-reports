@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-19 05:21:07 UTC</td>
+      <td class="headerValue">2026-10-20 05:15:00 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -304,63 +304,63 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L13"><span class="lineNum">      13</span>                         :     TargetRequest* target,</span>
 <span id="L14"><span class="lineNum">      14</span>                         :     IRGlobalValueWithCode* code,</span>
 <span id="L15"><span class="lineNum">      15</span>                         :     DiagnosticSink* sink)</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">      555216            : {</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">      555216 <span class="branchAll" title="br0: 383795; br1: 171421">(2/2)</span>      :     if (auto gen = as&lt;IRGeneric&gt;(code))</span></span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">      383795            :     {</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">      383795            :         auto retVal = findGenericReturnVal(gen);</span></span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">      383795 <span class="branchAll" title="br0: 103180; br1: 280615">(2/2)</span>      :         if (auto innerCode = as&lt;IRGlobalValueWithCode&gt;(retVal))</span></span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">      103180            :         {</span></span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">      103180            :             specializeTargetSwitch(target, innerCode, sink);</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">      103180            :             return;</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">      103180            :         }</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">      383795            :     }</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">      555380            : {</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">      555380 <span class="branchAll" title="br0: 383899; br1: 171481">(2/2)</span>      :     if (auto gen = as&lt;IRGeneric&gt;(code))</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">      383899            :     {</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">      383899            :         auto retVal = findGenericReturnVal(gen);</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">      383899 <span class="branchAll" title="br0: 103258; br1: 280641">(2/2)</span>      :         if (auto innerCode = as&lt;IRGlobalValueWithCode&gt;(retVal))</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">      103258            :         {</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">      103258            :             specializeTargetSwitch(target, innerCode, sink);</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">      103258            :             return;</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">      103258            :         }</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">      383899            :     }</span></span>
 <span id="L26"><span class="lineNum">      26</span>                         : </span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">      452036            :     bool changed = false;</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">      452036 <span class="branchAll" title="br0: 1201201; br1: 452036">(2/2)</span>      :     for (auto block : code-&gt;getBlocks())</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">     1201201            :     {</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">     1201201            :         bool failedImplies = false;</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">     1201201 <span class="branchAll" title="br0: 37199; br1: 1164002">(2/2)</span>      :         if (auto targetSwitch = as&lt;IRTargetSwitch&gt;(block-&gt;getTerminator()))</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">       37199            :         {</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">       37199            :             bool isEqual;</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">       37199            :             CapabilitySet bestCapSet = CapabilitySet::makeInvalid();</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">       37199            :             IRBlock* targetBlock = nullptr;</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">       37199            :             CapabilitySet::ImpliesReturnFlags impliesReturnType =</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       37199            :                 CapabilitySet::ImpliesReturnFlags::NotImplied;</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">      209252 <span class="branchAll" title="br0: 172053; br1: 37199">(2/2)</span>      :             for (UInt i = 0; i &lt; targetSwitch-&gt;getCaseCount(); i++)</span></span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">      172053            :             {</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">      172053            :                 auto cap = (CapabilityName)getIntVal(targetSwitch-&gt;getCaseValue(i));</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      172053 <span class="branchAll" title="br0: 119095; br1: 52958">(2/2)</span>      :                 if (target-&gt;getTargetCaps().isIncompatibleWith(cap))</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      119095            :                     continue;</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       52958            :                 CapabilitySet capSet;</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       52958 <span class="branchAll" title="br0: 16158; br1: 36800">(2/2)</span>      :                 if (cap == CapabilityName::Invalid) // `default` case</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       16158            :                     capSet = CapabilitySet::makeEmpty();</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">      452122            :     bool changed = false;</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">      452122 <span class="branchAll" title="br0: 1201376; br1: 452122">(2/2)</span>      :     for (auto block : code-&gt;getBlocks())</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">     1201376            :     {</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">     1201376            :         bool failedImplies = false;</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">     1201376 <span class="branchAll" title="br0: 37225; br1: 1164151">(2/2)</span>      :         if (auto targetSwitch = as&lt;IRTargetSwitch&gt;(block-&gt;getTerminator()))</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">       37225            :         {</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">       37225            :             bool isEqual;</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">       37225            :             CapabilitySet bestCapSet = CapabilitySet::makeInvalid();</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">       37225            :             IRBlock* targetBlock = nullptr;</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">       37225            :             CapabilitySet::ImpliesReturnFlags impliesReturnType =</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       37225            :                 CapabilitySet::ImpliesReturnFlags::NotImplied;</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">      209330 <span class="branchAll" title="br0: 172105; br1: 37225">(2/2)</span>      :             for (UInt i = 0; i &lt; targetSwitch-&gt;getCaseCount(); i++)</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">      172105            :             {</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">      172105            :                 auto cap = (CapabilityName)getIntVal(targetSwitch-&gt;getCaseValue(i));</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      172105 <span class="branchAll" title="br0: 119121; br1: 52984">(2/2)</span>      :                 if (target-&gt;getTargetCaps().isIncompatibleWith(cap))</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      119121            :                     continue;</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       52984            :                 CapabilitySet capSet;</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       52984 <span class="branchAll" title="br0: 16184; br1: 36800">(2/2)</span>      :                 if (cap == CapabilityName::Invalid) // `default` case</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       16184            :                     capSet = CapabilitySet::makeEmpty();</span></span>
 <span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       36800            :                 else</span></span>
 <span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       36800            :                     capSet = CapabilitySet(cap);</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       52958            :                 bool isBetterForTarget =</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       52958            :                     capSet.isBetterForTarget(bestCapSet, target-&gt;getTargetCaps(), isEqual);</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       52958 <span class="branchAll" title="br0: 35444; br1: 17514">(2/2)</span>      :                 if (isBetterForTarget)</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       35444            :                 {</span></span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       35444            :                     impliesReturnType = target-&gt;getTargetCaps().atLeastOneSetImpliedInOther(capSet);</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       35444            :                     bool targetImpliesCapSet =</span></span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">       35444 <span class="branchAll" title="br0: 35050; br1: 394">(2/2)</span>      :                         ((int)impliesReturnType &amp; (int)CapabilitySet::ImpliesReturnFlags::Implied ||</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       35444 <span class="branchPart" title="br0: 0; br1: 394">(1/2)</span>      :                          capSet.isEmpty());</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       35444 <span class="branchAll" title="br0: 35050; br1: 394">(2/2)</span>      :                     if (targetImpliesCapSet)</span></span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       35050            :                     {</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       52984            :                 bool isBetterForTarget =</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       52984            :                     capSet.isBetterForTarget(bestCapSet, target-&gt;getTargetCaps(), isEqual);</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       52984 <span class="branchAll" title="br0: 35470; br1: 17514">(2/2)</span>      :                 if (isBetterForTarget)</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       35470            :                 {</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       35470            :                     impliesReturnType = target-&gt;getTargetCaps().atLeastOneSetImpliedInOther(capSet);</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       35470            :                     bool targetImpliesCapSet =</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">       35470 <span class="branchAll" title="br0: 35076; br1: 394">(2/2)</span>      :                         ((int)impliesReturnType &amp; (int)CapabilitySet::ImpliesReturnFlags::Implied ||</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       35470 <span class="branchPart" title="br0: 0; br1: 394">(1/2)</span>      :                          capSet.isEmpty());</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       35470 <span class="branchAll" title="br0: 35076; br1: 394">(2/2)</span>      :                     if (targetImpliesCapSet)</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       35076            :                     {</span></span>
 <span id="L58"><span class="lineNum">      58</span>                         :                         // Now check if bestCapSet contains targetCaps. If it does not then this is</span>
 <span id="L59"><span class="lineNum">      59</span>                         :                         // an invalid target</span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">       35050            :                         targetBlock = targetSwitch-&gt;getCaseBlock(i);</span></span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       35050            :                         bestCapSet = capSet;</span></span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">       35050            :                     }</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">       35076            :                         targetBlock = targetSwitch-&gt;getCaseBlock(i);</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       35076            :                         bestCapSet = capSet;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">       35076            :                     }</span></span>
 <span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">         394            :                     else</span></span>
 <span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         394            :                         failedImplies = true;</span></span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       35444            :                 }</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       52958            :             }</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       37199            :             IRBuilder builder(targetSwitch);</span></span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       37199            :             builder.setInsertBefore(targetSwitch);</span></span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       37199 <span class="branchAll" title="br0: 34923; br1: 2276">(2/2)</span>      :             if (targetBlock)</span></span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       34923            :             {</span></span>
-<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       34923            :                 builder.emitBranch(targetBlock);</span></span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       34923            :             }</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       35470            :                 }</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       52984            :             }</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       37225            :             IRBuilder builder(targetSwitch);</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       37225            :             builder.setInsertBefore(targetSwitch);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       37225 <span class="branchAll" title="br0: 34949; br1: 2276">(2/2)</span>      :             if (targetBlock)</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       34949            :             {</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       34949            :                 builder.emitBranch(targetBlock);</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       34949            :             }</span></span>
 <span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">        2276            :             else</span></span>
 <span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">        2276            :             {</span></span>
 <span id="L75"><span class="lineNum">      75</span>                         :                 // only error if we have the chance of setting a valid target switch, but did not</span>
@@ -377,27 +377,27 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">           6            :                 }</span></span>
 <span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">        2276            :                 builder.emitMissingReturn();</span></span>
 <span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">        2276            :             }</span></span>
-<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       37199            :             targetSwitch-&gt;removeAndDeallocate();</span></span>
-<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">       37199            :             changed = true;</span></span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       37199            :         }</span></span>
-<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">     1201201            :     }</span></span>
-<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">      452036 <span class="branchAll" title="br0: 36774; br1: 415262">(2/2)</span>      :     if (changed)</span></span>
-<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">       36774            :     {</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       37225            :             targetSwitch-&gt;removeAndDeallocate();</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">       37225            :             changed = true;</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       37225            :         }</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">     1201376            :     }</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">      452122 <span class="branchAll" title="br0: 36800; br1: 415322">(2/2)</span>      :     if (changed)</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">       36800            :     {</span></span>
 <span id="L95"><span class="lineNum">      95</span>                         :         // Remove unreachable blocks after specialization.</span>
-<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">       36774            :         eliminateDeadCode(code);</span></span>
-<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">       36774            :     }</span></span>
-<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">      452036            : }</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">       36800            :         eliminateDeadCode(code);</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">       36800            :     }</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">      452122            : }</span></span>
 <span id="L99"><span class="lineNum">      99</span>                         : </span>
 <span id="L100"><span class="lineNum">     100</span>                         : void specializeTargetSwitch(TargetRequest* target, IRModule* module, DiagnosticSink* sink)</span>
-<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">       16823            : {</span></span>
-<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">       16823 <span class="branchAll" title="br0: 5720745; br1: 16823">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">     5720745            :     {</span></span>
-<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">     5720745 <span class="branchAll" title="br0: 452036; br1: 5268709">(2/2)</span>      :         if (auto code = as&lt;IRGlobalValueWithCode&gt;(globalInst))</span></span>
-<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">      452036            :         {</span></span>
-<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">      452036            :             specializeTargetSwitch(target, code, sink);</span></span>
-<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">      452036            :         }</span></span>
-<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">     5720745            :     }</span></span>
-<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">       16823            : }</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">       16846            : {</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">       16846 <span class="branchAll" title="br0: 5729525; br1: 16846">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">     5729525            :     {</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">     5729525 <span class="branchAll" title="br0: 452122; br1: 5277403">(2/2)</span>      :         if (auto code = as&lt;IRGlobalValueWithCode&gt;(globalInst))</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">      452122            :         {</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">      452122            :             specializeTargetSwitch(target, code, sink);</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">      452122            :         }</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">     5729525            :     }</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">       16846            : }</span></span>
 <span id="L110"><span class="lineNum">     110</span>                         : </span>
 <span id="L111"><span class="lineNum">     111</span>                         : } // namespace Slang</span>
 </pre>
