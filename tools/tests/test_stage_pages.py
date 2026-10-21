@@ -1,7 +1,13 @@
 import importlib.util
+import contextlib
+import io
+import json
+import os
+import shutil
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('stage_pages', Path(__file__).parents[1] / 'stage-pages.py')
 stage_pages = importlib.util.module_from_spec(spec)
@@ -24,6 +30,7 @@ class StagePagesTests(unittest.TestCase):
         self.put('reports/history/2026-01-01-abc/macos/coverage-summary.json', '{}')
         self.put('reports/slangc-coverage-trend.html', 'trend')
         self.put('reports/coverage-data.json', '[]')
+        self.put('reports/latest/combined-summary.json', json.dumps({'platforms': {'windows': {'line_coverage': '50'}}}))
         self.put('reports/latest/coverage/stale.html', 'stale legacy report')
         for view in stage_pages.VIEWS:
             self.put(f'reports/latest/{view}/index.html', '<a href="file.html#L1">File</a>')
@@ -51,6 +58,28 @@ class StagePagesTests(unittest.TestCase):
         self.assertIn('../new/slangc/index.html', (self.output / 'reports/latest/linux/slangc/index.html').read_text())
         after = {p.relative_to(self.source): p.read_bytes() for p in self.source.rglob('*') if p.is_file()}
         self.assertEqual(before, after)
+
+    def test_warning_summary_and_publication_marker(self):
+        summary = Path(self.temp.name) / "summary.md"
+        output = io.StringIO()
+        with patch.object(stage_pages, "WARN_CONTENT_BYTES", 1), \
+                patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(summary)}), \
+                contextlib.redirect_stdout(output):
+            stage_pages.stage(self.source, self.output, SHA)
+        self.assertIn("::warning::Pages content", output.getvalue())
+        self.assertIn("byte budget", summary.read_text())
+        self.assertEqual(json.loads((self.output / "reports/publication.json").read_text()),
+                         {"report_commit": SHA})
+
+    def test_windows_is_optional_only_when_summary_has_no_result(self):
+        self.put('reports/latest/combined-summary.json', '{"platforms":{"windows":{}}}')
+        shutil.rmtree(self.source / 'reports/latest/windows')
+        stage_pages.stage(self.source, self.output, SHA)
+        self.assertIn('Windows coverage is unavailable',
+                      (self.output / 'reports/latest/index.html').read_text())
+        self.assertIn('No Windows result',
+                      (self.output / 'reports/latest/windows/index.html').read_text())
+        self.assertFalse((self.output / 'reports/latest/windows/new').exists())
 
     def test_missing_view_fails(self):
         (self.source / 'reports/latest/windows/new/full/index.html').unlink()

@@ -31,7 +31,11 @@ To inspect an archived or native report, clone this repository, check out the
 revision linked from the site, and open its `index.html` locally. GitHub's source
 viewer does not render the report HTML as a website.
 
-Staging requires all eight current report indexes. It fails if content exceeds
+Staging requires Linux/macOS and merged full/slangc report indexes. Windows
+views are required when the combined summary contains a Windows result; an
+empty Windows result produces an explicit unavailable notice instead. Every run
+records the content size and tar bound in the Actions job summary. Content at or above 800,000,000
+bytes emits an early GitHub warning. It fails if content exceeds
 950,000,000 bytes or a conservative tar size bound reaches 1,000,000,000 bytes.
 This leaves room for tar metadata under the
 [1 GB published-site limit](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits).
@@ -52,3 +56,12 @@ A successful local build does not verify GitHub's deployment acceptance or the
 served site. After an authorized rollout, check the Pages run, dashboard date,
 all platform and merged views, history notices, exports, and trend page. The next
 nightly should also publish successfully with the same staging policy.
+
+The staged site also includes `reports/publication.json`, identifying the report
+repository commit being published. The source nightly's publication checker
+requires both a successful Pages run for its pushed commit and this exact marker
+on the public site. Deploy this staging/marker change before enabling that
+source-side check. The checker uses public read-only endpoints, has a bounded
+wait, and makes deployment failures or stale content fail the source nightly.
+Existing workflow failure notifications can then report the publication problem.
+This does not require new credentials or change report retention.

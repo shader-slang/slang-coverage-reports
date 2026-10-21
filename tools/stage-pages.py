@@ -3,6 +3,7 @@
 
 import argparse
 import html
+import json
 import os
 from pathlib import Path
 import re
@@ -14,6 +15,7 @@ from urllib.parse import quote
 VIEWS = [f"{os_name}/new/{view}" for os_name in ("linux", "macos", "windows")
          for view in ("full", "slangc")] + ["merged/full", "merged/slangc"]
 # Published sites are limited to 1 GB. Leave room for tar headers and padding.
+WARN_CONTENT_BYTES = 800_000_000
 MAX_CONTENT_BYTES = 950_000_000
 MAX_ARCHIVE_BYTES = 1_000_000_000
 OMIT = {"coverage.lcov", "coverage-report.txt", "slang-coverage-html.marker"}
@@ -57,8 +59,13 @@ def stage(source, output, revision, max_bytes=MAX_CONTENT_BYTES):
     if not re.fullmatch(r"[0-9a-f]{40}", revision):
         raise ValueError("Archive revision must be a full Git commit SHA")
     latest = source / "reports/latest"
-    # All eight views are required. Never silently publish an incomplete nightly.
-    for view in VIEWS:
+    # The source nightly permits Windows coverage to fail. Its combined summary
+    # has an empty Windows entry in that case; Linux/macOS and merged views
+    # remain required. A claimed Windows result must have both browsing views.
+    combined = json.loads((latest / "combined-summary.json").read_text(encoding="utf-8"))
+    windows_available = bool(combined["platforms"].get("windows"))
+    views = [view for view in VIEWS if windows_available or not view.startswith("windows/")]
+    for view in views:
         if not (latest / view / "index.html").is_file():
             raise ValueError(f"Missing current report: {view}")
     for name in ("index.html", "reports/history/index.html", "reports/slangc-coverage-trend.html"):
@@ -72,7 +79,7 @@ def stage(source, output, revision, max_bytes=MAX_CONTENT_BYTES):
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(path, destination)
 
-    for view in VIEWS:
+    for view in views:
         for path in regular_files(latest / view):
             if path.name not in OMIT:
                 copy(path)
@@ -119,7 +126,9 @@ def stage(source, output, revision, max_bytes=MAX_CONTENT_BYTES):
     navigation += 'The original llvm-cov / ReportGenerator HTML and raw LCOV remain in Git. '
     navigation += 'Linux/macOS source annotations use LCOV; native region detail is available '
     navigation += 'in the original reports.</p><ul>'
-    navigation += ''.join('<li>' + link(view + '/index.html', view) + '</li>' for view in VIEWS)
+    navigation += ''.join('<li>' + link(view + '/index.html', view) + '</li>' for view in views)
+    if not windows_available:
+        navigation += '<li>Windows coverage is unavailable for this report.</li>'
     navigation += '</ul><p>' + link(archive + 'reports/latest', 'Original report files and raw coverage data') + '</p>'
     navigation += '<p>' + link('../../index.html', 'Dashboard') + ' | '
     navigation += link('../history/index.html', 'Historical metrics and archive links') + ' | '
@@ -128,6 +137,10 @@ def stage(source, output, revision, max_bytes=MAX_CONTENT_BYTES):
     # Preserve the native report entry URLs used by the existing dashboard.
     for os_name in ('linux', 'macos', 'windows'):
         for suffix, target in (('', 'new/full/index.html'), ('/slangc', '../new/slangc/index.html')):
+            if os_name == "windows" and not windows_available:
+                write(output / f'reports/latest/{os_name}{suffix}/index.html',
+                      page("Windows coverage unavailable", "<p>No Windows result was collected for this report.</p>"))
+                continue
             write(output / f'reports/latest/{os_name}{suffix}/index.html', page('Current coverage',
                   '<meta http-equiv="refresh" content="0;url=' + target + '"><p>'
                   + link(target, 'Open current report') + '</p>'))
@@ -140,12 +153,27 @@ def stage(source, output, revision, max_bytes=MAX_CONTENT_BYTES):
         raise ValueError('Dashboard is missing its body element')
     write(dashboard, text)
 
+    write(output / "reports/publication.json", json.dumps({"report_commit": revision}) + "\n")
+
     files = list(regular_files(output))
     total = sum(p.stat().st_size for p in files)
     # Conservative allowance for GNU tar headers, long names, and 512-byte padding.
     entries = sum(1 for _ in output.rglob('*')) + 1
     archive_bound = total + entries * 4096 + 10240
     print(f'Pages content: {total:,} bytes in {len(files):,} files; tar upper bound: {archive_bound:,} bytes')
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary:
+        with open(summary, "a", encoding="utf-8") as stream:
+            stream.write(
+                f"Pages content: **{total:,} bytes** / {max_bytes:,} byte budget.\n\n"
+                f"Conservative tar bound: {archive_bound:,} bytes.\n"
+            )
+    if total >= WARN_CONTENT_BYTES:
+        print(
+            f"::warning::Pages content is {total:,} bytes, above the "
+            f"{WARN_CONTENT_BYTES:,} byte warning threshold; "
+            "review growth before the publication budget is exhausted."
+        )
     if total > max_bytes or archive_bound >= MAX_ARCHIVE_BYTES:
         raise ValueError('Pages size budget exceeded; reduce published views before uploading')
     return total
