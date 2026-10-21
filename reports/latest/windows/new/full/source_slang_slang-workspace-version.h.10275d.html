@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-21 05:18:46 UTC</td>
+      <td class="headerValue">2026-10-21 12:43:49 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">86.7&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:86.7%;background-color:hsl(100, 70%, 50%)"></div></div>
-      <span class="metricCounts">39 / 45</span>
+      <span class="metricValue">89.1&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:89.1%;background-color:hsl(104, 70%, 50%)"></div></div>
+      <span class="metricCounts">41 / 46</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -437,59 +437,64 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L164"><span class="lineNum">     164</span>              : private:</span>
 <span id="L165"><span class="lineNum">     165</span>              :     RefPtr&lt;WorkspaceVersion&gt; currentVersion;</span>
 <span id="L166"><span class="lineNum">     166</span>              :     RefPtr&lt;WorkspaceVersion&gt; currentCompletionVersion;</span>
-<span id="L167"><span class="lineNum">     167</span>              :     RefPtr&lt;WorkspaceVersion&gt; createWorkspaceVersion();</span>
-<span id="L168"><span class="lineNum">     168</span>              : </span>
-<span id="L169"><span class="lineNum">     169</span>              : public:</span>
-<span id="L170"><span class="lineNum">     170</span>              :     List&lt;String&gt; rootDirectories;</span>
-<span id="L171"><span class="lineNum">     171</span>              :     List&lt;String&gt; additionalSearchPaths;</span>
-<span id="L172"><span class="lineNum">     172</span>              :     OrderedHashSet&lt;String&gt; workspaceSearchPaths;</span>
-<span id="L173"><span class="lineNum">     173</span>              :     List&lt;OwnedPreprocessorMacroDefinition&gt; predefinedMacros;</span>
-<span id="L174"><span class="lineNum">     174</span>              :     static constexpr bool kDefaultSearchInWorkspace = true;</span>
-<span id="L175"><span class="lineNum">     175</span>              :     bool searchInWorkspace = kDefaultSearchInWorkspace;</span>
-<span id="L176"><span class="lineNum">     176</span>              :     WorkspaceFlavor workspaceFlavor = WorkspaceFlavor::Standard;</span>
-<span id="L177"><span class="lineNum">     177</span>              : </span>
-<span id="L178"><span class="lineNum">     178</span>              :     // Language version assumed for files with no `#language` directive, from the</span>
-<span id="L179"><span class="lineNum">     179</span>              :     // `slang.predefinedLanguageVersion` setting. UNKNOWN means &quot;unset&quot;: nothing is injected and the</span>
-<span id="L180"><span class="lineNum">     180</span>              :     // compiler default stands. A `#language` directive still wins, since the preprocessor applies</span>
-<span id="L181"><span class="lineNum">     181</span>              :     // it unconditionally.</span>
-<span id="L182"><span class="lineNum">     182</span>              :     SlangLanguageVersion predefinedLanguageVersion = SLANG_LANGUAGE_VERSION_UNKNOWN;</span>
-<span id="L183"><span class="lineNum">     183</span>              : </span>
-<span id="L184"><span class="lineNum">     184</span>              :     slang::IGlobalSession* slangGlobalSession;</span>
-<span id="L185"><span class="lineNum">     185</span>              :     Dictionary&lt;String, RefPtr&lt;DocumentVersion&gt;&gt; openedDocuments;</span>
-<span id="L186"><span class="lineNum">     186</span>              :     DocumentVersion* openDoc(String path, String text);</span>
-<span id="L187"><span class="lineNum">     187</span>              :     void changeDoc(const String&amp; path, LanguageServerProtocol::Range range, const String&amp; text);</span>
-<span id="L188"><span class="lineNum">     188</span>              :     void changeDoc(DocumentVersion* doc, const String&amp; newText);</span>
-<span id="L189"><span class="lineNum">     189</span>              : </span>
-<span id="L190"><span class="lineNum">     190</span>              :     void closeDoc(const String&amp; path);</span>
-<span id="L191"><span class="lineNum">     191</span>              : </span>
-<span id="L192"><span class="lineNum">     192</span>              :     // Update predefined macro settings. Returns true if the new settings are different from</span>
-<span id="L193"><span class="lineNum">     193</span>              :     // existing ones.</span>
-<span id="L194"><span class="lineNum">     194</span>              :     bool updatePredefinedMacros(List&lt;String&gt; predefinedMacros);</span>
-<span id="L195"><span class="lineNum">     195</span>              :     bool updateSearchPaths(List&lt;String&gt; searchPaths);</span>
-<span id="L196"><span class="lineNum">     196</span>              :     bool updateSearchInWorkspace(bool value);</span>
-<span id="L197"><span class="lineNum">     197</span>              :     bool updatePredefinedLanguageVersion(SlangLanguageVersion version);</span>
-<span id="L198"><span class="lineNum">     198</span>              :     bool updateWorkspaceFlavor(WorkspaceFlavor flavor);</span>
-<span id="L199"><span class="lineNum">     199</span>              : </span>
-<span id="L200"><span class="lineNum">     200</span>              :     void init(List&lt;URI&gt; rootDirURI, slang::IGlobalSession* globalSession);</span>
-<span id="L201"><span class="lineNum">     201</span>              :     void invalidate();</span>
-<span id="L202"><span class="lineNum">     202</span>              :     WorkspaceVersion* getCurrentVersion();</span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaUNC">           0 :     WorkspaceVersion* getCurrentCompletionVersion() { return currentCompletionVersion.Ptr(); }</span></span>
-<span id="L204"><span class="lineNum">     204</span>              :     WorkspaceVersion* createVersionForCompletion();</span>
-<span id="L205"><span class="lineNum">     205</span>              : </span>
-<span id="L206"><span class="lineNum">     206</span>              : public:</span>
-<span id="L207"><span class="lineNum">     207</span>              :     // Inherited via ISlangFileSystem</span>
-<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">           1 :     SLANG_COM_OBJECT_IUNKNOWN_ALL</span></span>
-<span id="L209"><span class="lineNum">     209</span>              :     void* getInterface(const Guid&amp; uuid);</span>
-<span id="L210"><span class="lineNum">     210</span>              :     void* getObject(const Guid&amp; uuid);</span>
-<span id="L211"><span class="lineNum">     211</span>              : </span>
-<span id="L212"><span class="lineNum">     212</span>              :     // ISlangCastable</span>
-<span id="L213"><span class="lineNum">     213</span>              :     virtual SLANG_NO_THROW void* SLANG_MCALL castAs(const Guid&amp; guid) override;</span>
-<span id="L214"><span class="lineNum">     214</span>              : </span>
-<span id="L215"><span class="lineNum">     215</span>              :     // ISlangFileSystem</span>
-<span id="L216"><span class="lineNum">     216</span>              :     virtual SLANG_NO_THROW SlangResult SLANG_MCALL</span>
-<span id="L217"><span class="lineNum">     217</span>              :     loadFile(const char* path, ISlangBlob** outBlob) override;</span>
-<span id="L218"><span class="lineNum">     218</span>              : };</span>
-<span id="L219"><span class="lineNum">     219</span>              : } // namespace Slang</span>
+<span id="L167"><span class="lineNum">     167</span>              :     uint64_t completionVersionSerial = 0;</span>
+<span id="L168"><span class="lineNum">     168</span>              :     RefPtr&lt;WorkspaceVersion&gt; createWorkspaceVersion();</span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span>              : public:</span>
+<span id="L171"><span class="lineNum">     171</span>              :     List&lt;String&gt; rootDirectories;</span>
+<span id="L172"><span class="lineNum">     172</span>              :     List&lt;String&gt; additionalSearchPaths;</span>
+<span id="L173"><span class="lineNum">     173</span>              :     OrderedHashSet&lt;String&gt; workspaceSearchPaths;</span>
+<span id="L174"><span class="lineNum">     174</span>              :     List&lt;OwnedPreprocessorMacroDefinition&gt; predefinedMacros;</span>
+<span id="L175"><span class="lineNum">     175</span>              :     static constexpr bool kDefaultSearchInWorkspace = true;</span>
+<span id="L176"><span class="lineNum">     176</span>              :     bool searchInWorkspace = kDefaultSearchInWorkspace;</span>
+<span id="L177"><span class="lineNum">     177</span>              :     WorkspaceFlavor workspaceFlavor = WorkspaceFlavor::Standard;</span>
+<span id="L178"><span class="lineNum">     178</span>              : </span>
+<span id="L179"><span class="lineNum">     179</span>              :     // Language version assumed for files with no `#language` directive, from the</span>
+<span id="L180"><span class="lineNum">     180</span>              :     // `slang.predefinedLanguageVersion` setting. UNKNOWN means &quot;unset&quot;: nothing is injected and the</span>
+<span id="L181"><span class="lineNum">     181</span>              :     // compiler default stands. A `#language` directive still wins, since the preprocessor applies</span>
+<span id="L182"><span class="lineNum">     182</span>              :     // it unconditionally.</span>
+<span id="L183"><span class="lineNum">     183</span>              :     SlangLanguageVersion predefinedLanguageVersion = SLANG_LANGUAGE_VERSION_UNKNOWN;</span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span>              :     slang::IGlobalSession* slangGlobalSession;</span>
+<span id="L186"><span class="lineNum">     186</span>              :     Dictionary&lt;String, RefPtr&lt;DocumentVersion&gt;&gt; openedDocuments;</span>
+<span id="L187"><span class="lineNum">     187</span>              :     DocumentVersion* openDoc(String path, String text);</span>
+<span id="L188"><span class="lineNum">     188</span>              :     void changeDoc(const String&amp; path, LanguageServerProtocol::Range range, const String&amp; text);</span>
+<span id="L189"><span class="lineNum">     189</span>              :     void changeDoc(DocumentVersion* doc, const String&amp; newText);</span>
+<span id="L190"><span class="lineNum">     190</span>              : </span>
+<span id="L191"><span class="lineNum">     191</span>              :     void closeDoc(const String&amp; path);</span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span>              :     // Update predefined macro settings. Returns true if the new settings are different from</span>
+<span id="L194"><span class="lineNum">     194</span>              :     // existing ones.</span>
+<span id="L195"><span class="lineNum">     195</span>              :     bool updatePredefinedMacros(List&lt;String&gt; predefinedMacros);</span>
+<span id="L196"><span class="lineNum">     196</span>              :     bool updateSearchPaths(List&lt;String&gt; searchPaths);</span>
+<span id="L197"><span class="lineNum">     197</span>              :     bool updateSearchInWorkspace(bool value);</span>
+<span id="L198"><span class="lineNum">     198</span>              :     bool updatePredefinedLanguageVersion(SlangLanguageVersion version);</span>
+<span id="L199"><span class="lineNum">     199</span>              :     bool updateWorkspaceFlavor(WorkspaceFlavor flavor);</span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span>              :     void init(List&lt;URI&gt; rootDirURI, slang::IGlobalSession* globalSession);</span>
+<span id="L202"><span class="lineNum">     202</span>              :     void invalidate();</span>
+<span id="L203"><span class="lineNum">     203</span>              :     WorkspaceVersion* getCurrentVersion();</span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">           1 :     WorkspaceVersion* getCurrentCompletionVersion() { return currentCompletionVersion.Ptr(); }</span></span>
+<span id="L205"><span class="lineNum">     205</span>              :     // Identifies the completion version returned by `getCurrentCompletionVersion`. It changes every</span>
+<span id="L206"><span class="lineNum">     206</span>              :     // time `createVersionForCompletion` is called, so a completion item can record which version</span>
+<span id="L207"><span class="lineNum">     207</span>              :     // its candidate index refers to.</span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">           1 :     uint64_t getCompletionVersionSerial() const { return completionVersionSerial; }</span></span>
+<span id="L209"><span class="lineNum">     209</span>              :     WorkspaceVersion* createVersionForCompletion();</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span>              : public:</span>
+<span id="L212"><span class="lineNum">     212</span>              :     // Inherited via ISlangFileSystem</span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">           1 :     SLANG_COM_OBJECT_IUNKNOWN_ALL</span></span>
+<span id="L214"><span class="lineNum">     214</span>              :     void* getInterface(const Guid&amp; uuid);</span>
+<span id="L215"><span class="lineNum">     215</span>              :     void* getObject(const Guid&amp; uuid);</span>
+<span id="L216"><span class="lineNum">     216</span>              : </span>
+<span id="L217"><span class="lineNum">     217</span>              :     // ISlangCastable</span>
+<span id="L218"><span class="lineNum">     218</span>              :     virtual SLANG_NO_THROW void* SLANG_MCALL castAs(const Guid&amp; guid) override;</span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span>              :     // ISlangFileSystem</span>
+<span id="L221"><span class="lineNum">     221</span>              :     virtual SLANG_NO_THROW SlangResult SLANG_MCALL</span>
+<span id="L222"><span class="lineNum">     222</span>              :     loadFile(const char* path, ISlangBlob** outBlob) override;</span>
+<span id="L223"><span class="lineNum">     223</span>              : };</span>
+<span id="L224"><span class="lineNum">     224</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

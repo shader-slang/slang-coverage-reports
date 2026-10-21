@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-21 05:17:53 UTC</td>
+      <td class="headerValue">2026-10-21 12:43:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -369,7 +369,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L78"><span class="lineNum">      78</span>                         :     void swapWith(ThisType&amp; rhs);</span>
 <span id="L79"><span class="lineNum">      79</span>                         : </span>
 <span id="L80"><span class="lineNum">      80</span>                         :     /// Default Ctor</span>
-<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">      424654            :     FreeList() { _init(); }</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">      425079            :     FreeList() { _init(); }</span></span>
 <span id="L82"><span class="lineNum">      82</span>                         :     /// Ctor</span>
 <span id="L83"><span class="lineNum">      83</span>                         :     FreeList(size_t elementSize, size_t alignment, size_t elemsPerBlock)</span>
 <span id="L84"><span class="lineNum">      84</span> <span class="tlaUNC">           0            :     {</span></span>
@@ -387,9 +387,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L96"><span class="lineNum">      96</span>                         :     void _init();</span>
 <span id="L97"><span class="lineNum">      97</span>                         : </span>
 <span id="L98"><span class="lineNum">      98</span>                         :     SLANG_FORCE_INLINE static size_t _calcAlignedBlockSize(size_t align)</span>
-<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">      424664            :     {</span></span>
-<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">      424664            :         return (sizeof(Block) + align - 1) &amp; ~(align - 1);</span></span>
-<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">      424664            :     }</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">      425090            :     {</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">      425090            :         return (sizeof(Block) + align - 1) &amp; ~(align - 1);</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">      425090            :     }</span></span>
 <span id="L102"><span class="lineNum">     102</span>                         : </span>
 <span id="L103"><span class="lineNum">     103</span>                         :     void _initAllocate(void* mem);</span>
 <span id="L104"><span class="lineNum">     104</span>                         :     void _initDeallocate(void* mem);</span>
@@ -411,27 +411,27 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L120"><span class="lineNum">     120</span>                         : </span>
 <span id="L121"><span class="lineNum">     121</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L122"><span class="lineNum">     122</span>                         : SLANG_FORCE_INLINE void* FreeList::allocate()</span>
-<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">     9400938            : {</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">     9397360            : {</span></span>
 <span id="L124"><span class="lineNum">     124</span>                         :     // First see if there are any freeElements ready to go</span>
-<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">     9400938            :     {</span></span>
-<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">     9400938            :         Element* element = m_freeElements;</span></span>
-<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">     9400938 <span class="branchAll" title="br0: 18044; br1: 9382894">(2/2)</span>      :         if (element)</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">     9397360            :     {</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">     9397360            :         Element* element = m_freeElements;</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">     9397360 <span class="branchAll" title="br0: 18044; br1: 9379316">(2/2)</span>      :         if (element)</span></span>
 <span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       18044            :         {</span></span>
 <span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">       18044            :             m_freeElements = element-&gt;m_next;</span></span>
 <span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">       18044            :             SLANG_FREE_LIST_INIT_ALLOCATE(element)</span></span>
 <span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       18044            :             return element;</span></span>
 <span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">       18044            :         }</span></span>
-<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">     9400938            :     }</span></span>
-<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">     9382894 <span class="branchAll" title="br0: 681879; br1: 8701015">(2/2)</span>      :     if (m_top &gt;= m_end)</span></span>
-<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">      681879            :     {</span></span>
-<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">      681879            :         return _allocate();</span></span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">      681879            :     }</span></span>
-<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">     8701015            :     void* data = (void*)m_top;</span></span>
-<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">     8701015            :     SLANG_FREE_LIST_INIT_ALLOCATE(data)</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">     9397360            :     }</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">     9379316 <span class="branchAll" title="br0: 681722; br1: 8697594">(2/2)</span>      :     if (m_top &gt;= m_end)</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">      681722            :     {</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">      681722            :         return _allocate();</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">      681722            :     }</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">     8697594            :     void* data = (void*)m_top;</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">     8697594            :     SLANG_FREE_LIST_INIT_ALLOCATE(data)</span></span>
 <span id="L140"><span class="lineNum">     140</span>                         : </span>
-<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">     8701015            :     m_top += m_elementSize;</span></span>
-<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">     8701015            :     return data;</span></span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">     9382894            : }</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">     8697594            :     m_top += m_elementSize;</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">     8697594            :     return data;</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">     9379316            : }</span></span>
 <span id="L144"><span class="lineNum">     144</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L145"><span class="lineNum">     145</span>                         : SLANG_FORCE_INLINE void FreeList::deallocate(void* data)</span>
 <span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">       18437            : {</span></span>

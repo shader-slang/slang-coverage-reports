@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-21 05:18:06 UTC</td>
+      <td class="headerValue">2026-10-21 12:43:14 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -313,67 +313,67 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L22"><span class="lineNum">      22</span>                         :     CompilerOptionSet&amp; options,</span>
 <span id="L23"><span class="lineNum">      23</span>                         :     CompilerOptionName optionName,</span>
 <span id="L24"><span class="lineNum">      24</span>                         :     const char* passName)</span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">     2493487            : {</span></span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">     2493487 <span class="branchPart" title="br0: 0; br1: 2493487">(1/2)</span>      :     if (!passName)</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">     2497672            : {</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">     2497672 <span class="branchPart" title="br0: 0; br1: 2497672">(1/2)</span>      :     if (!passName)</span></span>
 <span id="L27"><span class="lineNum">      27</span> <span class="tlaUNC">           0            :         return false;</span></span>
 <span id="L28"><span class="lineNum">      28</span>                         : </span>
 <span id="L29"><span class="lineNum">      29</span>                         :     // For after dumps, -dump-ir enables dumping after every pass</span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">     2493487 <span class="branchAll" title="br0: 1246779; br1: 1246708; br2: 77077; br3: 1169702">(4/4)</span>      :     if (optionName == CompilerOptionName::DumpIRAfter &amp;&amp; options.shouldDumpIR())</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">       77077            :         return true;</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">     2497672 <span class="branchAll" title="br0: 1248884; br1: 1248788; br2: 77080; br3: 1171804">(4/4)</span>      :     if (optionName == CompilerOptionName::DumpIRAfter &amp;&amp; options.shouldDumpIR())</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">       77080            :         return true;</span></span>
 <span id="L32"><span class="lineNum">      32</span>                         : </span>
 <span id="L33"><span class="lineNum">      33</span>                         :     // Check if this specific pass is in the list</span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">     2416410 <span class="branchAll" title="br0: 2424; br1: 2413986">(2/2)</span>      :     if (auto passOptions = options.options.tryGetValue(optionName))</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">     2420592 <span class="branchAll" title="br0: 2424; br1: 2418168">(2/2)</span>      :     if (auto passOptions = options.options.tryGetValue(optionName))</span></span>
 <span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        2424            :     {</span></span>
 <span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">        2424            :         return passOptions-&gt;findFirstIndex([passName](const CompilerOptionValue&amp; option)</span></span>
 <span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">        2495            :                                            { return option.stringValue == passName; }) != -1;</span></span>
 <span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        2424            :     }</span></span>
 <span id="L39"><span class="lineNum">      39</span>                         : </span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">     2413986            :     return false;</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">     2416410            : }</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">     2418168            :     return false;</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">     2420592            : }</span></span>
 <span id="L42"><span class="lineNum">      42</span>                         : </span>
 <span id="L43"><span class="lineNum">      43</span>                         : // Helper function to dump IR for specific passes (doesn&#x27;t check shouldDumpIR)</span>
 <span id="L44"><span class="lineNum">      44</span>                         : static void dumpIRForPass(CodeGenContext* codeGenContext, IRModule* irModule, const char* label)</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       77129            : {</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       77129            :     DiagnosticSinkWriter writer(codeGenContext-&gt;getSink());</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       77129            :     dumpIR(</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       77129            :         irModule,</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       77129            :         codeGenContext-&gt;getIRDumpOptions(),</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       77129            :         label,</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       77129            :         codeGenContext-&gt;getSourceManager(),</span></span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       77129            :         &amp;writer);</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       77129            : }</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       77132            : {</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       77132            :     DiagnosticSinkWriter writer(codeGenContext-&gt;getSink());</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       77132            :     dumpIR(</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       77132            :         irModule,</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       77132            :         codeGenContext-&gt;getIRDumpOptions(),</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       77132            :         label,</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       77132            :         codeGenContext-&gt;getSourceManager(),</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       77132            :         &amp;writer);</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       77132            : }</span></span>
 <span id="L54"><span class="lineNum">      54</span>                         : </span>
 <span id="L55"><span class="lineNum">      55</span>                         : void prePassHooks(CodeGenContext* codeGenContext, IRModule* irModule, const char* passName)</span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">     1246731            : {</span></span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">     1246731            :     auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">     1246731            :     auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">     1248858            : {</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">     1248858            :     auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">     1248858            :     auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
 <span id="L59"><span class="lineNum">      59</span>                         : </span>
 <span id="L60"><span class="lineNum">      60</span>                         :     // Check if we should dump IR before this pass</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">     1246731 <span class="branchAll" title="br0: 3; br1: 1246728">(2/2)</span>      :     if (shouldDumpPass(targetCompilerOptions, CompilerOptionName::DumpIRBefore, passName))</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">     1248858 <span class="branchAll" title="br0: 3; br1: 1248855">(2/2)</span>      :     if (shouldDumpPass(targetCompilerOptions, CompilerOptionName::DumpIRBefore, passName))</span></span>
 <span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">           3            :     {</span></span>
 <span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">           3            :         String label = String(&quot;BEFORE &quot;) + passName;</span></span>
 <span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">           3            :         dumpIRForPass(codeGenContext, irModule, label.getBuffer());</span></span>
 <span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">           3            :     }</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">     1246731            : }</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">     1248858            : }</span></span>
 <span id="L67"><span class="lineNum">      67</span>                         : </span>
 <span id="L68"><span class="lineNum">      68</span>                         : void postPassHooks(CodeGenContext* codeGenContext, IRModule* irModule, const char* passName)</span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">     1246719            : {</span></span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">     1246719            :     auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
-<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">     1246719            :     auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">     1248889            : {</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">     1248889            :     auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">     1248889            :     auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
 <span id="L72"><span class="lineNum">      72</span>                         : </span>
 <span id="L73"><span class="lineNum">      73</span>                         :     // Check if we should perform detailed IR validation</span>
-<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">     1246719 <span class="branchAll" title="br0: 2590; br1: 1244129">(2/2)</span>      :     if (targetCompilerOptions.getBoolOption(CompilerOptionName::ValidateIRDetailed))</span></span>
-<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        2590            :     {</span></span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">        2590            :         validateIRModule(irModule, codeGenContext-&gt;getSink());</span></span>
-<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">        2590            :     }</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">     1248889 <span class="branchAll" title="br0: 2593; br1: 1246296">(2/2)</span>      :     if (targetCompilerOptions.getBoolOption(CompilerOptionName::ValidateIRDetailed))</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        2593            :     {</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">        2593            :         validateIRModule(irModule, codeGenContext-&gt;getSink());</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">        2593            :     }</span></span>
 <span id="L78"><span class="lineNum">      78</span>                         : </span>
 <span id="L79"><span class="lineNum">      79</span>                         :     // Check if we should dump IR after this pass</span>
-<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">     1246719 <span class="branchAll" title="br0: 77126; br1: 1169593">(2/2)</span>      :     if (shouldDumpPass(targetCompilerOptions, CompilerOptionName::DumpIRAfter, passName))</span></span>
-<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       77126            :     {</span></span>
-<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       77126            :         String label = String(&quot;AFTER &quot;) + passName;</span></span>
-<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       77126            :         dumpIRForPass(codeGenContext, irModule, label.getBuffer());</span></span>
-<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       77126            :     }</span></span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">     1246719            : }</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">     1248889 <span class="branchAll" title="br0: 77129; br1: 1171760">(2/2)</span>      :     if (shouldDumpPass(targetCompilerOptions, CompilerOptionName::DumpIRAfter, passName))</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       77129            :     {</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       77129            :         String label = String(&quot;AFTER &quot;) + passName;</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       77129            :         dumpIRForPass(codeGenContext, irModule, label.getBuffer());</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       77129            :     }</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">     1248889            : }</span></span>
 <span id="L86"><span class="lineNum">      86</span>                         : </span>
 <span id="L87"><span class="lineNum">      87</span>                         : } // namespace Slang</span>
 </pre>
