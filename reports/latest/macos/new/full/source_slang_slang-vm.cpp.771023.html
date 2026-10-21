@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-20 05:15:28 UTC</td>
+      <td class="headerValue">2026-10-21 05:18:34 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -818,9 +818,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">        1436            : }</span></span>
 <span id="L528"><span class="lineNum">     528</span>                         : </span>
 <span id="L529"><span class="lineNum">     529</span>                         : static bool isPointerInRangeOrAtEnd(uintptr_t ptr, uintptr_t rangeStart, uintptr_t rangeEnd)</span>
-<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">        2277            : {</span></span>
-<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">        2277 <span class="branchAll" title="br0: 1841; br1: 436; br2: 1616; br3: 225">(4/4)</span>      :     return ptr &gt;= rangeStart &amp;&amp; ptr &lt;= rangeEnd;</span></span>
-<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">        2277            : }</span></span>
+<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">        2269            : {</span></span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">        2269 <span class="branchAll" title="br0: 1652; br1: 617; br2: 1616; br3: 36">(4/4)</span>      :     return ptr &gt;= rangeStart &amp;&amp; ptr &lt;= rangeEnd;</span></span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">        2269            : }</span></span>
 <span id="L533"><span class="lineNum">     533</span>                         : </span>
 <span id="L534"><span class="lineNum">     534</span>                         : static bool isPointerRangeInRange(</span>
 <span id="L535"><span class="lineNum">     535</span>                         :     uintptr_t start,</span>
@@ -836,25 +836,25 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L545"><span class="lineNum">     545</span>                         :     uintptr_t ptr,</span>
 <span id="L546"><span class="lineNum">     546</span>                         :     uintptr_t&amp; outFrameStart,</span>
 <span id="L547"><span class="lineNum">     547</span>                         :     uintptr_t&amp; outFrameEnd)</span>
-<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">         211            : {</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">         209            : {</span></span>
 <span id="L549"><span class="lineNum">     549</span>                         :     // A callee can legally receive an out/ref pointer into one of its caller&#x27;s</span>
 <span id="L550"><span class="lineNum">     550</span>                         :     // working sets. Find that ancestor frame so later validation can bound the</span>
 <span id="L551"><span class="lineNum">     551</span>                         :     // actual access to the same frame instead of accepting an arbitrary pointer.</span>
-<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">         211            :     auto workingSetBuffer = ctx-&gt;m_workingSetBuffer.getBuffer();</span></span>
-<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">         211 <span class="branchAll" title="br0: 240; br1: 13">(2/2)</span>      :     for (auto&amp; stackFrame : ctx-&gt;m_stack)</span></span>
-<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">         240            :     {</span></span>
-<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">         240            :         auto frameStart =</span></span>
-<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">         240            :             reinterpret_cast&lt;uintptr_t&gt;(workingSetBuffer + stackFrame.m_workingSetOffset);</span></span>
-<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">         240            :         auto frameEnd = frameStart + stackFrame.m_currentWorkingSetSizeInBytes;</span></span>
-<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">         240 <span class="branchAll" title="br0: 198; br1: 42">(2/2)</span>      :         if (isPointerInRangeOrAtEnd(ptr, frameStart, frameEnd))</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">         209            :     auto workingSetBuffer = ctx-&gt;m_workingSetBuffer.getBuffer();</span></span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">         209 <span class="branchAll" title="br0: 232; br1: 11">(2/2)</span>      :     for (auto&amp; stackFrame : ctx-&gt;m_stack)</span></span>
+<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">         232            :     {</span></span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">         232            :         auto frameStart =</span></span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">         232            :             reinterpret_cast&lt;uintptr_t&gt;(workingSetBuffer + stackFrame.m_workingSetOffset);</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">         232            :         auto frameEnd = frameStart + stackFrame.m_currentWorkingSetSizeInBytes;</span></span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">         232 <span class="branchAll" title="br0: 198; br1: 34">(2/2)</span>      :         if (isPointerInRangeOrAtEnd(ptr, frameStart, frameEnd))</span></span>
 <span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">         198            :         {</span></span>
 <span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">         198            :             outFrameStart = frameStart;</span></span>
 <span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">         198            :             outFrameEnd = frameEnd;</span></span>
 <span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">         198            :             return true;</span></span>
 <span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">         198            :         }</span></span>
-<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">         240            :     }</span></span>
-<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">          13            :     return false;</span></span>
-<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">         211            : }</span></span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">         232            :     }</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">          11            :     return false;</span></span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">         209            : }</span></span>
 <span id="L567"><span class="lineNum">     567</span>                         : </span>
 <span id="L568"><span class="lineNum">     568</span>                         : static bool isAccessThroughPointerParameter(</span>
 <span id="L569"><span class="lineNum">     569</span>                         :     ByteCodeInterpreter* ctx,</span>
@@ -882,17 +882,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">         232            :         void* parameterPtr = nullptr;</span></span>
 <span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">         232            :         memcpy(&amp;parameterPtr, parameterBytes + parameterOffset, sizeof(parameterPtr));</span></span>
 <span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">         232            :         auto parameterPtrStart = reinterpret_cast&lt;uintptr_t&gt;(parameterPtr);</span></span>
-<span id="L594"><span class="lineNum">     594</span> <span class="tlaGNC">         232 <span class="branchAll" title="br0: 21; br1: 211">(2/2)</span>      :         if (accessStart &lt; parameterPtrStart)</span></span>
-<span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">          21            :             continue;</span></span>
+<span id="L594"><span class="lineNum">     594</span> <span class="tlaGNC">         232 <span class="branchAll" title="br0: 23; br1: 209">(2/2)</span>      :         if (accessStart &lt; parameterPtrStart)</span></span>
+<span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">          23            :             continue;</span></span>
 <span id="L596"><span class="lineNum">     596</span>                         : </span>
-<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">         211            :         uintptr_t frameStart = 0;</span></span>
-<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">         211            :         uintptr_t frameEnd = 0;</span></span>
-<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">         211 <span class="branchAll" title="br0: 198; br1: 13">(2/2)</span>      :         if (findAncestorWorkingSetContainingPointer(ctx, parameterPtrStart, frameStart, frameEnd) &amp;&amp;</span></span>
-<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">         211 <span class="branchAll" title="br0: 142; br1: 56">(2/2)</span>      :             isPointerRangeInRange(accessStart, accessEnd, frameStart, frameEnd))</span></span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">         209            :         uintptr_t frameStart = 0;</span></span>
+<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">         209            :         uintptr_t frameEnd = 0;</span></span>
+<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">         209 <span class="branchAll" title="br0: 198; br1: 11">(2/2)</span>      :         if (findAncestorWorkingSetContainingPointer(ctx, parameterPtrStart, frameStart, frameEnd) &amp;&amp;</span></span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">         209 <span class="branchAll" title="br0: 142; br1: 56">(2/2)</span>      :             isPointerRangeInRange(accessStart, accessEnd, frameStart, frameEnd))</span></span>
 <span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">         142            :         {</span></span>
 <span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">         142            :             return true;</span></span>
 <span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">         142            :         }</span></span>
-<span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">         211            :     }</span></span>
+<span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">         209            :     }</span></span>
 <span id="L605"><span class="lineNum">     605</span>                         : </span>
 <span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">          61            :     return false;</span></span>
 <span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">         203            : }</span></span>

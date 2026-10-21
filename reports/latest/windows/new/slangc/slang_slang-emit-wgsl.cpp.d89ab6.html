@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-20 05:15:42 UTC</td>
+      <td class="headerValue">2026-10-21 05:18:48 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">80.9&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:80.9%;background-color:hsl(91, 70%, 50%)"></div></div>
-      <span class="metricCounts">552 / 682</span>
+      <span class="metricValue">80.8&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:80.8%;background-color:hsl(91, 70%, 50%)"></div></div>
+      <span class="metricCounts">548 / 678</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -2181,25 +2181,20 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1908"><span class="lineNum">    1908</span>              :     {</span>
 <span id="L1909"><span class="lineNum">    1909</span> <span class="tlaGNC">           1 :         if (const auto extensionDecoration = as&lt;IRRequireWGSLExtensionDecoration&gt;(decoration))</span></span>
 <span id="L1910"><span class="lineNum">    1910</span>              :         {</span>
-<span id="L1911"><span class="lineNum">    1911</span> <span class="tlaGNC">           1 :             _requireExtension(extensionDecoration-&gt;getExtensionName());</span></span>
-<span id="L1912"><span class="lineNum">    1912</span>              : </span>
-<span id="L1913"><span class="lineNum">    1913</span>              :             // TODO: Make this cleaner and only enable this extension if f16 is actually used on the</span>
-<span id="L1914"><span class="lineNum">    1914</span>              :             // subgroup intrinsic. Check float type in meta file.</span>
-<span id="L1915"><span class="lineNum">    1915</span> <span class="tlaGNC">           1 :             if (m_f16ExtensionEnabled &amp;&amp; extensionDecoration-&gt;getExtensionName() == &quot;subgroups&quot;)</span></span>
-<span id="L1916"><span class="lineNum">    1916</span>              :             {</span>
-<span id="L1917"><span class="lineNum">    1917</span> <span class="tlaGNC">           1 :                 String extName = &quot;subgroups_f16&quot;;</span></span>
-<span id="L1918"><span class="lineNum">    1918</span> <span class="tlaGNC">           1 :                 _requireExtension(extName.getUnownedSlice());</span></span>
-<span id="L1919"><span class="lineNum">    1919</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L1920"><span class="lineNum">    1920</span>              :         }</span>
-<span id="L1921"><span class="lineNum">    1921</span>              :     }</span>
+<span id="L1911"><span class="lineNum">    1911</span>              :             // Subgroup operations on f16 values need only `enable f16;` and</span>
+<span id="L1912"><span class="lineNum">    1912</span>              :             // `enable subgroups;`. WGSL has no separate `subgroups_f16` extension</span>
+<span id="L1913"><span class="lineNum">    1913</span>              :             // (it was folded into `subgroups`), and validators reject it.</span>
+<span id="L1914"><span class="lineNum">    1914</span> <span class="tlaGNC">           1 :             _requireExtension(extensionDecoration-&gt;getExtensionName());</span></span>
+<span id="L1915"><span class="lineNum">    1915</span>              :         }</span>
+<span id="L1916"><span class="lineNum">    1916</span>              :     }</span>
+<span id="L1917"><span class="lineNum">    1917</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1918"><span class="lineNum">    1918</span>              : </span>
+<span id="L1919"><span class="lineNum">    1919</span>              : void WGSLSourceEmitter::emitRequireExtension(IRRequireTargetExtension* inst)</span>
+<span id="L1920"><span class="lineNum">    1920</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1921"><span class="lineNum">    1921</span> <span class="tlaGNC">           1 :     _requireExtension(inst-&gt;getExtensionName());</span></span>
 <span id="L1922"><span class="lineNum">    1922</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1923"><span class="lineNum">    1923</span>              : </span>
-<span id="L1924"><span class="lineNum">    1924</span>              : void WGSLSourceEmitter::emitRequireExtension(IRRequireTargetExtension* inst)</span>
-<span id="L1925"><span class="lineNum">    1925</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1926"><span class="lineNum">    1926</span> <span class="tlaGNC">           1 :     _requireExtension(inst-&gt;getExtensionName());</span></span>
-<span id="L1927"><span class="lineNum">    1927</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1928"><span class="lineNum">    1928</span>              : </span>
-<span id="L1929"><span class="lineNum">    1929</span>              : } // namespace Slang</span>
+<span id="L1924"><span class="lineNum">    1924</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

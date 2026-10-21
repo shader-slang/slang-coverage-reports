@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-20 05:15:40 UTC</td>
+      <td class="headerValue">2026-10-21 05:18:46 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">98.0&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:98.0%;background-color:hsl(117, 70%, 50%)"></div></div>
-      <span class="metricCounts">148 / 151</span>
+      <span class="metricCounts">150 / 153</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -855,109 +855,117 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">           1 :         builder.addNameHintDecoration(</span></span>
 <span id="L583"><span class="lineNum">     583</span>              :             collectedParam,</span>
 <span id="L584"><span class="lineNum">     584</span>              :             UnownedTerminatedStringSlice(&quot;entryPointParams&quot;));</span>
-<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L586"><span class="lineNum">     586</span>              : };</span>
-<span id="L587"><span class="lineNum">     587</span>              : </span>
-<span id="L588"><span class="lineNum">     588</span>              : struct MoveEntryPointUniformParametersToGlobalScope : PerEntryPointPass</span>
-<span id="L589"><span class="lineNum">     589</span>              : {</span>
-<span id="L590"><span class="lineNum">     590</span>              :     void processEntryPointImpl(EntryPointInfo const&amp; info) SLANG_OVERRIDE</span>
-<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">           1 :         auto entryPointFunc = info.func;</span></span>
-<span id="L593"><span class="lineNum">     593</span>              : </span>
-<span id="L594"><span class="lineNum">     594</span>              :         // We will set up an IR builder so that we are ready to generate code.</span>
-<span id="L595"><span class="lineNum">     595</span>              :         //</span>
-<span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">           1 :         IRBuilder builderStorage(m_module);</span></span>
-<span id="L597"><span class="lineNum">     597</span>              :         auto builder = &amp;builderStorage;</span>
-<span id="L598"><span class="lineNum">     598</span>              : </span>
-<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">           1 :         builder-&gt;setInsertBefore(entryPointFunc);</span></span>
+<span id="L585"><span class="lineNum">     585</span>              : </span>
+<span id="L586"><span class="lineNum">     586</span>              :         // The collected parameter has no declaration of its own; it stands for the entry</span>
+<span id="L587"><span class="lineNum">     587</span>              :         // point&#x27;s `uniform` parameters, so it takes the entry point&#x27;s location. A diagnostic</span>
+<span id="L588"><span class="lineNum">     588</span>              :         // about it then points at the entry point, and</span>
+<span id="L589"><span class="lineNum">     589</span>              :         // `checkForMultiplePushConstantBlocksPerEntryPoint` recognizes an entry point&#x27;s own</span>
+<span id="L590"><span class="lineNum">     590</span>              :         // block by that shared location.</span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">           1 :         collectedParam-&gt;sourceLoc = m_entryPoint.func-&gt;sourceLoc;</span></span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L593"><span class="lineNum">     593</span>              : };</span>
+<span id="L594"><span class="lineNum">     594</span>              : </span>
+<span id="L595"><span class="lineNum">     595</span>              : struct MoveEntryPointUniformParametersToGlobalScope : PerEntryPointPass</span>
+<span id="L596"><span class="lineNum">     596</span>              : {</span>
+<span id="L597"><span class="lineNum">     597</span>              :     void processEntryPointImpl(EntryPointInfo const&amp; info) SLANG_OVERRIDE</span>
+<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">           1 :         auto entryPointFunc = info.func;</span></span>
 <span id="L600"><span class="lineNum">     600</span>              : </span>
-<span id="L601"><span class="lineNum">     601</span>              :         // We will be removing any uniform parameters we run into, so we</span>
-<span id="L602"><span class="lineNum">     602</span>              :         // need to iterate the parameter list carefully to deal with</span>
-<span id="L603"><span class="lineNum">     603</span>              :         // us modifying it along the way.</span>
-<span id="L604"><span class="lineNum">     604</span>              :         //</span>
-<span id="L605"><span class="lineNum">     605</span>              :         IRParam* nextParam = nullptr;</span>
-<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">           1 :         for (IRParam* param = entryPointFunc-&gt;getFirstParam(); param; param = nextParam)</span></span>
-<span id="L607"><span class="lineNum">     607</span>              :         {</span>
-<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">           1 :             nextParam = param-&gt;getNextParam();</span></span>
-<span id="L609"><span class="lineNum">     609</span>              : </span>
-<span id="L610"><span class="lineNum">     610</span>              :             // We expect all entry-point parameters to have layout information,</span>
-<span id="L611"><span class="lineNum">     611</span>              :             // but we will be defensive and skip parameters without the required</span>
-<span id="L612"><span class="lineNum">     612</span>              :             // information when we are in a release build.</span>
-<span id="L613"><span class="lineNum">     613</span>              :             //</span>
-<span id="L614"><span class="lineNum">     614</span> <span class="tlaGNC">           1 :             auto layoutDecoration = param-&gt;findDecoration&lt;IRLayoutDecoration&gt;();</span></span>
-<span id="L615"><span class="lineNum">     615</span>              :             SLANG_ASSERT(layoutDecoration);</span>
-<span id="L616"><span class="lineNum">     616</span>              :             if (!layoutDecoration)</span>
-<span id="L617"><span class="lineNum">     617</span>              :                 continue;</span>
-<span id="L618"><span class="lineNum">     618</span> <span class="tlaGNC">           1 :             auto paramLayout = as&lt;IRVarLayout&gt;(layoutDecoration-&gt;getLayout());</span></span>
-<span id="L619"><span class="lineNum">     619</span>              :             SLANG_ASSERT(paramLayout);</span>
-<span id="L620"><span class="lineNum">     620</span>              :             if (!paramLayout)</span>
-<span id="L621"><span class="lineNum">     621</span>              :                 continue;</span>
-<span id="L622"><span class="lineNum">     622</span>              : </span>
-<span id="L623"><span class="lineNum">     623</span>              :             // A parameter that has varying input/output behavior should be left alone,</span>
-<span id="L624"><span class="lineNum">     624</span>              :             // since this pass is only supposed to apply to uniform (non-varying)</span>
-<span id="L625"><span class="lineNum">     625</span>              :             // parameters.</span>
-<span id="L626"><span class="lineNum">     626</span>              :             //</span>
-<span id="L627"><span class="lineNum">     627</span> <span class="tlaGNC">           1 :             if (isVaryingParameter(paramLayout))</span></span>
+<span id="L601"><span class="lineNum">     601</span>              :         // We will set up an IR builder so that we are ready to generate code.</span>
+<span id="L602"><span class="lineNum">     602</span>              :         //</span>
+<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">           1 :         IRBuilder builderStorage(m_module);</span></span>
+<span id="L604"><span class="lineNum">     604</span>              :         auto builder = &amp;builderStorage;</span>
+<span id="L605"><span class="lineNum">     605</span>              : </span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">           1 :         builder-&gt;setInsertBefore(entryPointFunc);</span></span>
+<span id="L607"><span class="lineNum">     607</span>              : </span>
+<span id="L608"><span class="lineNum">     608</span>              :         // We will be removing any uniform parameters we run into, so we</span>
+<span id="L609"><span class="lineNum">     609</span>              :         // need to iterate the parameter list carefully to deal with</span>
+<span id="L610"><span class="lineNum">     610</span>              :         // us modifying it along the way.</span>
+<span id="L611"><span class="lineNum">     611</span>              :         //</span>
+<span id="L612"><span class="lineNum">     612</span>              :         IRParam* nextParam = nullptr;</span>
+<span id="L613"><span class="lineNum">     613</span> <span class="tlaGNC">           1 :         for (IRParam* param = entryPointFunc-&gt;getFirstParam(); param; param = nextParam)</span></span>
+<span id="L614"><span class="lineNum">     614</span>              :         {</span>
+<span id="L615"><span class="lineNum">     615</span> <span class="tlaGNC">           1 :             nextParam = param-&gt;getNextParam();</span></span>
+<span id="L616"><span class="lineNum">     616</span>              : </span>
+<span id="L617"><span class="lineNum">     617</span>              :             // We expect all entry-point parameters to have layout information,</span>
+<span id="L618"><span class="lineNum">     618</span>              :             // but we will be defensive and skip parameters without the required</span>
+<span id="L619"><span class="lineNum">     619</span>              :             // information when we are in a release build.</span>
+<span id="L620"><span class="lineNum">     620</span>              :             //</span>
+<span id="L621"><span class="lineNum">     621</span> <span class="tlaGNC">           1 :             auto layoutDecoration = param-&gt;findDecoration&lt;IRLayoutDecoration&gt;();</span></span>
+<span id="L622"><span class="lineNum">     622</span>              :             SLANG_ASSERT(layoutDecoration);</span>
+<span id="L623"><span class="lineNum">     623</span>              :             if (!layoutDecoration)</span>
+<span id="L624"><span class="lineNum">     624</span>              :                 continue;</span>
+<span id="L625"><span class="lineNum">     625</span> <span class="tlaGNC">           1 :             auto paramLayout = as&lt;IRVarLayout&gt;(layoutDecoration-&gt;getLayout());</span></span>
+<span id="L626"><span class="lineNum">     626</span>              :             SLANG_ASSERT(paramLayout);</span>
+<span id="L627"><span class="lineNum">     627</span>              :             if (!paramLayout)</span>
 <span id="L628"><span class="lineNum">     628</span>              :                 continue;</span>
 <span id="L629"><span class="lineNum">     629</span>              : </span>
-<span id="L630"><span class="lineNum">     630</span> <span class="tlaGNC">           1 :             auto paramType = param-&gt;getFullType();</span></span>
-<span id="L631"><span class="lineNum">     631</span>              : </span>
-<span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">           1 :             builder-&gt;setInsertBefore(entryPointFunc);</span></span>
-<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">           1 :             auto globalParam = builder-&gt;createGlobalParam(paramType);</span></span>
-<span id="L634"><span class="lineNum">     634</span>              : </span>
-<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">           1 :             param-&gt;transferDecorationsTo(globalParam);</span></span>
+<span id="L630"><span class="lineNum">     630</span>              :             // A parameter that has varying input/output behavior should be left alone,</span>
+<span id="L631"><span class="lineNum">     631</span>              :             // since this pass is only supposed to apply to uniform (non-varying)</span>
+<span id="L632"><span class="lineNum">     632</span>              :             // parameters.</span>
+<span id="L633"><span class="lineNum">     633</span>              :             //</span>
+<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">           1 :             if (isVaryingParameter(paramLayout))</span></span>
+<span id="L635"><span class="lineNum">     635</span>              :                 continue;</span>
 <span id="L636"><span class="lineNum">     636</span>              : </span>
-<span id="L637"><span class="lineNum">     637</span>              :             // We also decorate the parameter for the entry-point parameters</span>
-<span id="L638"><span class="lineNum">     638</span>              :             // so that we can find it again in downstream passes (like emit</span>
-<span id="L639"><span class="lineNum">     639</span>              :             // for CPU/CUDA) that might want to treat entry-point parameters</span>
-<span id="L640"><span class="lineNum">     640</span>              :             // different from other cases.</span>
-<span id="L641"><span class="lineNum">     641</span>              :             //</span>
-<span id="L642"><span class="lineNum">     642</span>              :             // We need a way to associate these per-entry-point parameters</span>
-<span id="L643"><span class="lineNum">     643</span>              :             // more closely with the original entry point. The two current</span>
-<span id="L644"><span class="lineNum">     644</span>              :             // methods are:</span>
-<span id="L645"><span class="lineNum">     645</span>              :             //</span>
-<span id="L646"><span class="lineNum">     646</span>              :             // 1. Don&#x27;t move the new aggregate parameter to the global scope</span>
-<span id="L647"><span class="lineNum">     647</span>              :             // on those targets, and instead keep it as a parameter of the</span>
-<span id="L648"><span class="lineNum">     648</span>              :             // entry point. This is used for CPU/CUDA targets.</span>
+<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">           1 :             auto paramType = param-&gt;getFullType();</span></span>
+<span id="L638"><span class="lineNum">     638</span>              : </span>
+<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">           1 :             builder-&gt;setInsertBefore(entryPointFunc);</span></span>
+<span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">           1 :             auto globalParam = builder-&gt;createGlobalParam(paramType);</span></span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">           1 :             globalParam-&gt;sourceLoc = param-&gt;sourceLoc;</span></span>
+<span id="L642"><span class="lineNum">     642</span>              : </span>
+<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC">           1 :             param-&gt;transferDecorationsTo(globalParam);</span></span>
+<span id="L644"><span class="lineNum">     644</span>              : </span>
+<span id="L645"><span class="lineNum">     645</span>              :             // We also decorate the parameter for the entry-point parameters</span>
+<span id="L646"><span class="lineNum">     646</span>              :             // so that we can find it again in downstream passes (like emit</span>
+<span id="L647"><span class="lineNum">     647</span>              :             // for CPU/CUDA) that might want to treat entry-point parameters</span>
+<span id="L648"><span class="lineNum">     648</span>              :             // different from other cases.</span>
 <span id="L649"><span class="lineNum">     649</span>              :             //</span>
-<span id="L650"><span class="lineNum">     650</span>              :             // 2. Use a decoration on the global param itself to point at the</span>
-<span id="L651"><span class="lineNum">     651</span>              :             // entry point for its per-entry-point parameter data, without moving</span>
-<span id="L652"><span class="lineNum">     652</span>              :             // the parameter to the global scope. This is used for Metal targets, as</span>
-<span id="L653"><span class="lineNum">     653</span>              :             // Metal does not have global parameters at the global scope.</span>
-<span id="L654"><span class="lineNum">     654</span>              :             //</span>
-<span id="L655"><span class="lineNum">     655</span>              :             // Method (1) is not used because Metal contains shading language concepts</span>
-<span id="L656"><span class="lineNum">     656</span>              :             // such as binding offets, similar to other shading language targets.</span>
-<span id="L657"><span class="lineNum">     657</span>              :             // We want to reuse code from other shading language targets for Metal, hence</span>
-<span id="L658"><span class="lineNum">     658</span>              :             // we move parameters to the global scope, and then move the parameters back to</span>
-<span id="L659"><span class="lineNum">     659</span>              :             // the entry points that they originate from. The originating entry points are</span>
-<span id="L660"><span class="lineNum">     660</span>              :             // tracked through this decoration.</span>
-<span id="L661"><span class="lineNum">     661</span>              :             //</span>
-<span id="L662"><span class="lineNum">     662</span> <span class="tlaGNC">           1 :             builder-&gt;addEntryPointParamDecoration(globalParam, entryPointFunc);</span></span>
-<span id="L663"><span class="lineNum">     663</span>              : </span>
-<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">           1 :             param-&gt;replaceUsesWith(globalParam);</span></span>
-<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">           1 :             param-&gt;removeAndDeallocate();</span></span>
-<span id="L666"><span class="lineNum">     666</span>              :         }</span>
-<span id="L667"><span class="lineNum">     667</span>              : </span>
-<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">           1 :         fixUpFuncType(entryPointFunc);</span></span>
-<span id="L669"><span class="lineNum">     669</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L670"><span class="lineNum">     670</span>              : };</span>
+<span id="L650"><span class="lineNum">     650</span>              :             // We need a way to associate these per-entry-point parameters</span>
+<span id="L651"><span class="lineNum">     651</span>              :             // more closely with the original entry point. The two current</span>
+<span id="L652"><span class="lineNum">     652</span>              :             // methods are:</span>
+<span id="L653"><span class="lineNum">     653</span>              :             //</span>
+<span id="L654"><span class="lineNum">     654</span>              :             // 1. Don&#x27;t move the new aggregate parameter to the global scope</span>
+<span id="L655"><span class="lineNum">     655</span>              :             // on those targets, and instead keep it as a parameter of the</span>
+<span id="L656"><span class="lineNum">     656</span>              :             // entry point. This is used for CPU/CUDA targets.</span>
+<span id="L657"><span class="lineNum">     657</span>              :             //</span>
+<span id="L658"><span class="lineNum">     658</span>              :             // 2. Use a decoration on the global param itself to point at the</span>
+<span id="L659"><span class="lineNum">     659</span>              :             // entry point for its per-entry-point parameter data, without moving</span>
+<span id="L660"><span class="lineNum">     660</span>              :             // the parameter to the global scope. This is used for Metal targets, as</span>
+<span id="L661"><span class="lineNum">     661</span>              :             // Metal does not have global parameters at the global scope.</span>
+<span id="L662"><span class="lineNum">     662</span>              :             //</span>
+<span id="L663"><span class="lineNum">     663</span>              :             // Method (1) is not used because Metal contains shading language concepts</span>
+<span id="L664"><span class="lineNum">     664</span>              :             // such as binding offets, similar to other shading language targets.</span>
+<span id="L665"><span class="lineNum">     665</span>              :             // We want to reuse code from other shading language targets for Metal, hence</span>
+<span id="L666"><span class="lineNum">     666</span>              :             // we move parameters to the global scope, and then move the parameters back to</span>
+<span id="L667"><span class="lineNum">     667</span>              :             // the entry points that they originate from. The originating entry points are</span>
+<span id="L668"><span class="lineNum">     668</span>              :             // tracked through this decoration.</span>
+<span id="L669"><span class="lineNum">     669</span>              :             //</span>
+<span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">           1 :             builder-&gt;addEntryPointParamDecoration(globalParam, entryPointFunc);</span></span>
 <span id="L671"><span class="lineNum">     671</span>              : </span>
-<span id="L672"><span class="lineNum">     672</span>              : void collectEntryPointUniformParams(</span>
-<span id="L673"><span class="lineNum">     673</span>              :     IRModule* module,</span>
-<span id="L674"><span class="lineNum">     674</span>              :     CollectEntryPointUniformParamsOptions const&amp; options)</span>
-<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">           1 :     CollectEntryPointUniformParams context;</span></span>
-<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :     context.m_options = options;</span></span>
-<span id="L678"><span class="lineNum">     678</span> <span class="tlaGNC">           1 :     context.processModule(module);</span></span>
-<span id="L679"><span class="lineNum">     679</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L680"><span class="lineNum">     680</span>              : </span>
-<span id="L681"><span class="lineNum">     681</span>              : void moveEntryPointUniformParamsToGlobalScope(IRModule* module)</span>
-<span id="L682"><span class="lineNum">     682</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L683"><span class="lineNum">     683</span> <span class="tlaGNC">           1 :     MoveEntryPointUniformParametersToGlobalScope context;</span></span>
-<span id="L684"><span class="lineNum">     684</span> <span class="tlaGNC">           1 :     context.processModule(module);</span></span>
-<span id="L685"><span class="lineNum">     685</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L686"><span class="lineNum">     686</span>              : </span>
-<span id="L687"><span class="lineNum">     687</span>              : } // namespace Slang</span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">           1 :             param-&gt;replaceUsesWith(globalParam);</span></span>
+<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">           1 :             param-&gt;removeAndDeallocate();</span></span>
+<span id="L674"><span class="lineNum">     674</span>              :         }</span>
+<span id="L675"><span class="lineNum">     675</span>              : </span>
+<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">           1 :         fixUpFuncType(entryPointFunc);</span></span>
+<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L678"><span class="lineNum">     678</span>              : };</span>
+<span id="L679"><span class="lineNum">     679</span>              : </span>
+<span id="L680"><span class="lineNum">     680</span>              : void collectEntryPointUniformParams(</span>
+<span id="L681"><span class="lineNum">     681</span>              :     IRModule* module,</span>
+<span id="L682"><span class="lineNum">     682</span>              :     CollectEntryPointUniformParamsOptions const&amp; options)</span>
+<span id="L683"><span class="lineNum">     683</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L684"><span class="lineNum">     684</span> <span class="tlaGNC">           1 :     CollectEntryPointUniformParams context;</span></span>
+<span id="L685"><span class="lineNum">     685</span> <span class="tlaGNC">           1 :     context.m_options = options;</span></span>
+<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">           1 :     context.processModule(module);</span></span>
+<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L688"><span class="lineNum">     688</span>              : </span>
+<span id="L689"><span class="lineNum">     689</span>              : void moveEntryPointUniformParamsToGlobalScope(IRModule* module)</span>
+<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L691"><span class="lineNum">     691</span> <span class="tlaGNC">           1 :     MoveEntryPointUniformParametersToGlobalScope context;</span></span>
+<span id="L692"><span class="lineNum">     692</span> <span class="tlaGNC">           1 :     context.processModule(module);</span></span>
+<span id="L693"><span class="lineNum">     693</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L694"><span class="lineNum">     694</span>              : </span>
+<span id="L695"><span class="lineNum">     695</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

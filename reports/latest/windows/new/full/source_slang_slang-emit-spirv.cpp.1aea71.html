@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-20 05:15:40 UTC</td>
+      <td class="headerValue">2026-10-21 05:18:46 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">89.2&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:89.2%;background-color:hsl(104, 70%, 50%)"></div></div>
-      <span class="metricCounts">3,866 / 4,334</span>
+      <span class="metricCounts">3,868 / 4,336</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -12764,187 +12764,190 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L12491"><span class="lineNum">   12491</span>              : #endif</span>
 <span id="L12492"><span class="lineNum">   12492</span>              : </span>
 <span id="L12493"><span class="lineNum">   12493</span> <span class="tlaGNC">           1 :     SPIRVEmitContext context(irModule, codeGenContext-&gt;getTargetProgram(), sink);</span></span>
-<span id="L12494"><span class="lineNum">   12494</span> <span class="tlaGNC">           1 :     legalizeIRForSPIRV(&amp;context, irModule, irEntryPoints, codeGenContext);</span></span>
-<span id="L12495"><span class="lineNum">   12495</span>              : </span>
-<span id="L12496"><span class="lineNum">   12496</span>              : #if 0</span>
-<span id="L12497"><span class="lineNum">   12497</span>              :     {</span>
-<span id="L12498"><span class="lineNum">   12498</span>              :         DiagnosticSinkWriter writer(codeGenContext-&gt;getSink());</span>
-<span id="L12499"><span class="lineNum">   12499</span>              :         dumpIR(</span>
-<span id="L12500"><span class="lineNum">   12500</span>              :             irModule,</span>
-<span id="L12501"><span class="lineNum">   12501</span>              :             { IRDumpOptions::Mode::Simplified, 0 },</span>
-<span id="L12502"><span class="lineNum">   12502</span>              :             &quot;BEFORE SPIR-V EMIT&quot;,</span>
-<span id="L12503"><span class="lineNum">   12503</span>              :             codeGenContext-&gt;getSourceManager(),</span>
-<span id="L12504"><span class="lineNum">   12504</span>              :             &amp;writer);</span>
-<span id="L12505"><span class="lineNum">   12505</span>              :     }</span>
-<span id="L12506"><span class="lineNum">   12506</span>              : #endif</span>
-<span id="L12507"><span class="lineNum">   12507</span>              : </span>
-<span id="L12508"><span class="lineNum">   12508</span> <span class="tlaGNC">           1 :     removeAvailableInDownstreamModuleDecorations(irModule, CodeGenTarget::SPIRV);</span></span>
-<span id="L12509"><span class="lineNum">   12509</span>              : </span>
-<span id="L12510"><span class="lineNum">   12510</span>              :     // With the IR now in its final emit-visible shape -- legalized, and the bodies of</span>
-<span id="L12511"><span class="lineNum">   12511</span>              :     // functions available in a downstream module gutted just above -- precompute the</span>
-<span id="L12512"><span class="lineNum">   12512</span>              :     // arithmetic instructions that transitively feed a `precise` value. Doing it here keeps</span>
-<span id="L12513"><span class="lineNum">   12513</span>              :     // `emitArithmetic` a plain lookup, and doing it after the gutting keeps the set free of</span>
-<span id="L12514"><span class="lineNum">   12514</span>              :     // pointers to now-deallocated instructions.</span>
-<span id="L12515"><span class="lineNum">   12515</span> <span class="tlaGNC">           1 :     context.computePreciseInsts();</span></span>
-<span id="L12516"><span class="lineNum">   12516</span>              : </span>
-<span id="L12517"><span class="lineNum">   12517</span> <span class="tlaGNC">           1 :     auto shouldPreserveParams = codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L12518"><span class="lineNum">   12518</span>              :         CompilerOptionName::PreserveParameters);</span>
-<span id="L12519"><span class="lineNum">   12519</span> <span class="tlaGNC">           1 :     auto generateWholeProgram = codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L12520"><span class="lineNum">   12520</span>              :         CompilerOptionName::GenerateWholeProgram);</span>
-<span id="L12521"><span class="lineNum">   12521</span>              : </span>
-<span id="L12522"><span class="lineNum">   12522</span>              :     // IR generation preserves debug information according to the source module&#x27;s debug level.</span>
-<span id="L12523"><span class="lineNum">   12523</span>              :     // The emission level may differ when compiling a serialized module:</span>
-<span id="L12524"><span class="lineNum">   12524</span>              :     // - None (g0): No debug instructions in IR</span>
-<span id="L12525"><span class="lineNum">   12525</span>              :     // - Minimal (g1): Source/line records and function/compilation-unit scope metadata.</span>
-<span id="L12526"><span class="lineNum">   12526</span>              :     //                 Source text is retained only with `-debug-info-include-source`.</span>
-<span id="L12527"><span class="lineNum">   12527</span>              :     //                 Emitting at g1 uses only standard SPIR-V debug instructions</span>
-<span id="L12528"><span class="lineNum">   12528</span>              :     //                 (OpString, OpLine, OpSource).</span>
-<span id="L12529"><span class="lineNum">   12529</span>              :     // - Standard (g2): Full NonSemantic debug info including IRDebugVar for local variables</span>
-<span id="L12530"><span class="lineNum">   12530</span>              :     // - Maximal (g3): Same as Standard</span>
-<span id="L12531"><span class="lineNum">   12531</span>              :     //</span>
-<span id="L12532"><span class="lineNum">   12532</span>              :     // In SPIR-V emit, Standard and Maximal are treated identically - both use NonSemantic</span>
-<span id="L12533"><span class="lineNum">   12533</span>              :     // debug info extensions.</span>
-<span id="L12534"><span class="lineNum">   12534</span>              : </span>
-<span id="L12535"><span class="lineNum">   12535</span> <span class="tlaGNC">           1 :     for (auto inst : irModule-&gt;getGlobalInsts())</span></span>
-<span id="L12536"><span class="lineNum">   12536</span>              :     {</span>
-<span id="L12537"><span class="lineNum">   12537</span> <span class="tlaGNC">           1 :         if (as&lt;IRDebugSource&gt;(inst) || as&lt;IRDebugBuildIdentifier&gt;(inst) ||</span></span>
-<span id="L12538"><span class="lineNum">   12538</span>              :             as&lt;IRDebugCompilationUnit&gt;(inst))</span>
-<span id="L12539"><span class="lineNum">   12539</span>              :         {</span>
-<span id="L12540"><span class="lineNum">   12540</span> <span class="tlaGNC">           1 :             context.ensureInst(inst);</span></span>
-<span id="L12541"><span class="lineNum">   12541</span>              :         }</span>
-<span id="L12542"><span class="lineNum">   12542</span>              :     }</span>
-<span id="L12543"><span class="lineNum">   12543</span>              : </span>
-<span id="L12544"><span class="lineNum">   12544</span>              :     // Override m_defaultDebugSource with the entry point&#x27;s source file.</span>
-<span id="L12545"><span class="lineNum">   12545</span>              :     // When multiple compilation units exist (e.g., with &#x27;import&#x27; syntax), global insts</span>
-<span id="L12546"><span class="lineNum">   12546</span>              :     // may be processed in module order and m_defaultDebugSource may end up pointing to</span>
-<span id="L12547"><span class="lineNum">   12547</span>              :     // an imported module rather than the main shader file. Use the entry point location</span>
-<span id="L12548"><span class="lineNum">   12548</span>              :     // to find the correct source for use in DebugGlobalVariable and DebugType fallbacks.</span>
-<span id="L12549"><span class="lineNum">   12549</span> <span class="tlaGNC">           1 :     for (auto irEntryPoint : irEntryPoints)</span></span>
-<span id="L12550"><span class="lineNum">   12550</span>              :     {</span>
-<span id="L12551"><span class="lineNum">   12551</span> <span class="tlaGNC">           1 :         if (auto loc = irEntryPoint-&gt;findDecoration&lt;IRDebugLocationDecoration&gt;())</span></span>
-<span id="L12552"><span class="lineNum">   12552</span>              :         {</span>
-<span id="L12553"><span class="lineNum">   12553</span> <span class="tlaGNC">           1 :             auto entryPointSource = as&lt;IRDebugSource&gt;(loc-&gt;getSource());</span></span>
-<span id="L12554"><span class="lineNum">   12554</span> <span class="tlaGNC">           1 :             if (entryPointSource)</span></span>
-<span id="L12555"><span class="lineNum">   12555</span>              :             {</span>
-<span id="L12556"><span class="lineNum">   12556</span> <span class="tlaGNC">           1 :                 context.m_defaultDebugSource = entryPointSource;</span></span>
-<span id="L12557"><span class="lineNum">   12557</span>              :                 break;</span>
-<span id="L12558"><span class="lineNum">   12558</span>              :             }</span>
-<span id="L12559"><span class="lineNum">   12559</span>              :         }</span>
-<span id="L12560"><span class="lineNum">   12560</span>              :     }</span>
-<span id="L12561"><span class="lineNum">   12561</span>              : </span>
-<span id="L12562"><span class="lineNum">   12562</span>              :     // Also update the module-level debug scope to use the entry point&#x27;s compilation unit.</span>
-<span id="L12563"><span class="lineNum">   12563</span>              :     // Without this, DebugFunction and DebugGlobalVariable from the main shader file would</span>
-<span id="L12564"><span class="lineNum">   12564</span>              :     // have their parent scope set to the first-processed compilation unit, which may belong</span>
-<span id="L12565"><span class="lineNum">   12565</span>              :     // to an imported module rather than the main shader file.</span>
-<span id="L12566"><span class="lineNum">   12566</span> <span class="tlaGNC">           1 :     if (context.m_defaultDebugSource)</span></span>
-<span id="L12567"><span class="lineNum">   12567</span>              :     {</span>
-<span id="L12568"><span class="lineNum">   12568</span> <span class="tlaGNC">           1 :         auto moduleInst = irModule-&gt;getModuleInst();</span></span>
-<span id="L12569"><span class="lineNum">   12569</span> <span class="tlaGNC">           1 :         for (auto inst : irModule-&gt;getGlobalInsts())</span></span>
-<span id="L12570"><span class="lineNum">   12570</span>              :         {</span>
-<span id="L12571"><span class="lineNum">   12571</span> <span class="tlaGNC">           1 :             if (auto cuInst = as&lt;IRDebugCompilationUnit&gt;(inst))</span></span>
-<span id="L12572"><span class="lineNum">   12572</span>              :             {</span>
-<span id="L12573"><span class="lineNum">   12573</span> <span class="tlaGNC">           1 :                 if (cuInst-&gt;getSource() == context.m_defaultDebugSource)</span></span>
-<span id="L12574"><span class="lineNum">   12574</span>              :                 {</span>
-<span id="L12575"><span class="lineNum">   12575</span> <span class="tlaGNC">           1 :                     SpvInst* cuSpvInst = nullptr;</span></span>
-<span id="L12576"><span class="lineNum">   12576</span> <span class="tlaGNC">           1 :                     if (context.m_mapIRInstToSpvInst.tryGetValue(cuInst, cuSpvInst))</span></span>
-<span id="L12577"><span class="lineNum">   12577</span> <span class="tlaGNC">           1 :                         context.m_mapIRInstToSpvDebugInst.set(moduleInst, cuSpvInst);</span></span>
-<span id="L12578"><span class="lineNum">   12578</span>              :                     break;</span>
-<span id="L12579"><span class="lineNum">   12579</span>              :                 }</span>
-<span id="L12580"><span class="lineNum">   12580</span>              :             }</span>
-<span id="L12581"><span class="lineNum">   12581</span>              :         }</span>
-<span id="L12582"><span class="lineNum">   12582</span>              :     }</span>
-<span id="L12583"><span class="lineNum">   12583</span>              : </span>
-<span id="L12584"><span class="lineNum">   12584</span> <span class="tlaGNC">           1 :     for (auto inst : irModule-&gt;getGlobalInsts())</span></span>
-<span id="L12585"><span class="lineNum">   12585</span>              :     {</span>
-<span id="L12586"><span class="lineNum">   12586</span> <span class="tlaGNC">           1 :         if (shouldPreserveParams &amp;&amp; as&lt;IRGlobalParam&gt;(inst))</span></span>
-<span id="L12587"><span class="lineNum">   12587</span>              :         {</span>
-<span id="L12588"><span class="lineNum">   12588</span> <span class="tlaGNC">           1 :             context.ensureInst(inst);</span></span>
-<span id="L12589"><span class="lineNum">   12589</span> <span class="tlaGNC">           1 :             symbolsEmitted = true;</span></span>
-<span id="L12590"><span class="lineNum">   12590</span>              :         }</span>
-<span id="L12591"><span class="lineNum">   12591</span> <span class="tlaGNC">           1 :         if (generateWholeProgram)</span></span>
-<span id="L12592"><span class="lineNum">   12592</span>              :         {</span>
-<span id="L12593"><span class="lineNum">   12593</span> <span class="tlaGNC">           1 :             if (auto func = as&lt;IRFunc&gt;(inst))</span></span>
-<span id="L12594"><span class="lineNum">   12594</span>              :             {</span>
-<span id="L12595"><span class="lineNum">   12595</span> <span class="tlaGNC">           1 :                 if (func-&gt;findDecoration&lt;IRDownstreamModuleExportDecoration&gt;())</span></span>
-<span id="L12596"><span class="lineNum">   12596</span>              :                 {</span>
-<span id="L12597"><span class="lineNum">   12597</span> <span class="tlaGNC">           1 :                     context.ensureInst(inst);</span></span>
-<span id="L12598"><span class="lineNum">   12598</span> <span class="tlaGNC">           1 :                     symbolsEmitted = true;</span></span>
-<span id="L12599"><span class="lineNum">   12599</span>              :                 }</span>
-<span id="L12600"><span class="lineNum">   12600</span>              :             }</span>
-<span id="L12601"><span class="lineNum">   12601</span>              :         }</span>
-<span id="L12602"><span class="lineNum">   12602</span>              :     }</span>
-<span id="L12603"><span class="lineNum">   12603</span>              : </span>
-<span id="L12604"><span class="lineNum">   12604</span>              :     // Emit source language info.</span>
-<span id="L12605"><span class="lineNum">   12605</span>              :     // By default we will use SpvSourceLanguageSlang.</span>
-<span id="L12606"><span class="lineNum">   12606</span>              :     // However this will cause problems when using swiftshader.</span>
-<span id="L12607"><span class="lineNum">   12607</span>              :     // To workaround this problem, we allow overriding this behavior with an</span>
-<span id="L12608"><span class="lineNum">   12608</span>              :     // environment variable that will be set in the software testing environment.</span>
-<span id="L12609"><span class="lineNum">   12609</span>              :     auto sourceLanguage = SpvSourceLanguageSlang;</span>
-<span id="L12610"><span class="lineNum">   12610</span> <span class="tlaGNC">           1 :     StringBuilder noSlangEnv;</span></span>
-<span id="L12611"><span class="lineNum">   12611</span> <span class="tlaGNC">           1 :     PlatformUtil::getEnvironmentVariable(</span></span>
-<span id="L12612"><span class="lineNum">   12612</span>              :         toSlice(&quot;SLANG_USE_SPV_SOURCE_LANGUAGE_UNKNOWN&quot;),</span>
-<span id="L12613"><span class="lineNum">   12613</span>              :         noSlangEnv);</span>
-<span id="L12614"><span class="lineNum">   12614</span> <span class="tlaGNC">           1 :     if (noSlangEnv.produceString() == &quot;1&quot;)</span></span>
-<span id="L12615"><span class="lineNum">   12615</span>              :     {</span>
-<span id="L12616"><span class="lineNum">   12616</span>              :         sourceLanguage = SpvSourceLanguageUnknown;</span>
-<span id="L12617"><span class="lineNum">   12617</span>              :     }</span>
-<span id="L12618"><span class="lineNum">   12618</span> <span class="tlaGNC">           1 :     context.emitSource(</span></span>
-<span id="L12619"><span class="lineNum">   12619</span>              :         context.getSection(SpvLogicalSectionID::DebugStringsAndSource),</span>
-<span id="L12620"><span class="lineNum">   12620</span>              :         sourceLanguage);</span>
-<span id="L12621"><span class="lineNum">   12621</span>              : </span>
-<span id="L12622"><span class="lineNum">   12622</span> <span class="tlaGNC">           1 :     for (auto irEntryPoint : irEntryPoints)</span></span>
-<span id="L12623"><span class="lineNum">   12623</span>              :     {</span>
-<span id="L12624"><span class="lineNum">   12624</span> <span class="tlaGNC">           1 :         context.ensureInst(irEntryPoint);</span></span>
-<span id="L12625"><span class="lineNum">   12625</span>              :         symbolsEmitted = true;</span>
-<span id="L12626"><span class="lineNum">   12626</span>              :     }</span>
-<span id="L12627"><span class="lineNum">   12627</span>              : </span>
-<span id="L12628"><span class="lineNum">   12628</span> <span class="tlaGNC">           1 :     if (!symbolsEmitted)</span></span>
-<span id="L12629"><span class="lineNum">   12629</span>              :     {</span>
-<span id="L12630"><span class="lineNum">   12630</span> <span class="tlaGNC">           1 :         sink-&gt;diagnose(</span></span>
-<span id="L12631"><span class="lineNum">   12631</span>              :             Diagnostics::OutputSpvIsEmpty{.location = irModule-&gt;getModuleInst()-&gt;sourceLoc});</span>
-<span id="L12632"><span class="lineNum">   12632</span>              :         return SLANG_FAIL;</span>
-<span id="L12633"><span class="lineNum">   12633</span>              :     }</span>
-<span id="L12634"><span class="lineNum">   12634</span>              : </span>
-<span id="L12635"><span class="lineNum">   12635</span>              :     // Move forward delcared pointers to the end.</span>
-<span id="L12636"><span class="lineNum">   12636</span>              :     do</span>
-<span id="L12637"><span class="lineNum">   12637</span>              :     {</span>
-<span id="L12638"><span class="lineNum">   12638</span> <span class="tlaGNC">           1 :         auto fwdPointers = context.m_forwardDeclaredPointers;</span></span>
-<span id="L12639"><span class="lineNum">   12639</span> <span class="tlaGNC">           1 :         context.m_forwardDeclaredPointers.clear();</span></span>
-<span id="L12640"><span class="lineNum">   12640</span>              : </span>
-<span id="L12641"><span class="lineNum">   12641</span> <span class="tlaGNC">           1 :         for (auto ptrType : fwdPointers)</span></span>
-<span id="L12642"><span class="lineNum">   12642</span>              :         {</span>
-<span id="L12643"><span class="lineNum">   12643</span> <span class="tlaGNC">           1 :             auto spvPtrType = ptrType.key;</span></span>
-<span id="L12644"><span class="lineNum">   12644</span>              :             // When we emit a pointee type, we may introduce new</span>
-<span id="L12645"><span class="lineNum">   12645</span>              :             // forward-declared pointer types, so we need to</span>
-<span id="L12646"><span class="lineNum">   12646</span>              :             // keep iterating until we have emitted all of them.</span>
-<span id="L12647"><span class="lineNum">   12647</span> <span class="tlaGNC">           1 :             context.ensureInst(ptrType.value-&gt;getValueType());</span></span>
-<span id="L12648"><span class="lineNum">   12648</span> <span class="tlaGNC">           1 :             auto parent = spvPtrType-&gt;parent;</span></span>
-<span id="L12649"><span class="lineNum">   12649</span> <span class="tlaGNC">           1 :             spvPtrType-&gt;removeFromParent();</span></span>
-<span id="L12650"><span class="lineNum">   12650</span> <span class="tlaGNC">           1 :             parent-&gt;addInst(spvPtrType);</span></span>
-<span id="L12651"><span class="lineNum">   12651</span>              :         }</span>
-<span id="L12652"><span class="lineNum">   12652</span> <span class="tlaGNC">           1 :     } while (context.m_forwardDeclaredPointers.getCount() != 0);</span></span>
-<span id="L12653"><span class="lineNum">   12653</span>              : </span>
-<span id="L12654"><span class="lineNum">   12654</span> <span class="tlaGNC">           1 :     context.diagnoseConflictingDescriptorHeapStrideOptions();</span></span>
-<span id="L12655"><span class="lineNum">   12655</span>              : </span>
-<span id="L12656"><span class="lineNum">   12656</span>              :     // Emit extensions and capabilities for which there are multiple options available.</span>
-<span id="L12657"><span class="lineNum">   12657</span>              :     // This is delayed to avoid emitting unnecessary extensions and capabilities if</span>
-<span id="L12658"><span class="lineNum">   12658</span>              :     // one of the options is already required by some other op.</span>
-<span id="L12659"><span class="lineNum">   12659</span> <span class="tlaGNC">           1 :     context.emitSPIRVAnyExtension();</span></span>
-<span id="L12660"><span class="lineNum">   12660</span> <span class="tlaGNC">           1 :     context.emitSPIRVAnyCapabilities();</span></span>
-<span id="L12661"><span class="lineNum">   12661</span>              : </span>
-<span id="L12662"><span class="lineNum">   12662</span> <span class="tlaGNC">           1 :     context.emitFrontMatter();</span></span>
-<span id="L12663"><span class="lineNum">   12663</span>              : </span>
-<span id="L12664"><span class="lineNum">   12664</span> <span class="tlaGNC">           1 :     context.emitPhysicalLayout();</span></span>
-<span id="L12665"><span class="lineNum">   12665</span>              : </span>
-<span id="L12666"><span class="lineNum">   12666</span> <span class="tlaGNC">           1 :     spirvOut.addRange(</span></span>
-<span id="L12667"><span class="lineNum">   12667</span>              :         (uint8_t const*)context.m_words.getBuffer(),</span>
-<span id="L12668"><span class="lineNum">   12668</span>              :         context.m_words.getCount() * Index(sizeof(context.m_words[0])));</span>
-<span id="L12669"><span class="lineNum">   12669</span>              : </span>
-<span id="L12670"><span class="lineNum">   12670</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L12671"><span class="lineNum">   12671</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L12494"><span class="lineNum">   12494</span> <span class="tlaGNC">           1 :     const auto errorCountBeforeLegalize = sink-&gt;getErrorCount();</span></span>
+<span id="L12495"><span class="lineNum">   12495</span> <span class="tlaGNC">           1 :     legalizeIRForSPIRV(&amp;context, irModule, irEntryPoints, codeGenContext);</span></span>
+<span id="L12496"><span class="lineNum">   12496</span> <span class="tlaGNC">           1 :     if (sink-&gt;getErrorCount() &gt; errorCountBeforeLegalize)</span></span>
+<span id="L12497"><span class="lineNum">   12497</span>              :         return SLANG_FAIL;</span>
+<span id="L12498"><span class="lineNum">   12498</span>              : </span>
+<span id="L12499"><span class="lineNum">   12499</span>              : #if 0</span>
+<span id="L12500"><span class="lineNum">   12500</span>              :     {</span>
+<span id="L12501"><span class="lineNum">   12501</span>              :         DiagnosticSinkWriter writer(codeGenContext-&gt;getSink());</span>
+<span id="L12502"><span class="lineNum">   12502</span>              :         dumpIR(</span>
+<span id="L12503"><span class="lineNum">   12503</span>              :             irModule,</span>
+<span id="L12504"><span class="lineNum">   12504</span>              :             { IRDumpOptions::Mode::Simplified, 0 },</span>
+<span id="L12505"><span class="lineNum">   12505</span>              :             &quot;BEFORE SPIR-V EMIT&quot;,</span>
+<span id="L12506"><span class="lineNum">   12506</span>              :             codeGenContext-&gt;getSourceManager(),</span>
+<span id="L12507"><span class="lineNum">   12507</span>              :             &amp;writer);</span>
+<span id="L12508"><span class="lineNum">   12508</span>              :     }</span>
+<span id="L12509"><span class="lineNum">   12509</span>              : #endif</span>
+<span id="L12510"><span class="lineNum">   12510</span>              : </span>
+<span id="L12511"><span class="lineNum">   12511</span> <span class="tlaGNC">           1 :     removeAvailableInDownstreamModuleDecorations(irModule, CodeGenTarget::SPIRV);</span></span>
+<span id="L12512"><span class="lineNum">   12512</span>              : </span>
+<span id="L12513"><span class="lineNum">   12513</span>              :     // With the IR now in its final emit-visible shape -- legalized, and the bodies of</span>
+<span id="L12514"><span class="lineNum">   12514</span>              :     // functions available in a downstream module gutted just above -- precompute the</span>
+<span id="L12515"><span class="lineNum">   12515</span>              :     // arithmetic instructions that transitively feed a `precise` value. Doing it here keeps</span>
+<span id="L12516"><span class="lineNum">   12516</span>              :     // `emitArithmetic` a plain lookup, and doing it after the gutting keeps the set free of</span>
+<span id="L12517"><span class="lineNum">   12517</span>              :     // pointers to now-deallocated instructions.</span>
+<span id="L12518"><span class="lineNum">   12518</span> <span class="tlaGNC">           1 :     context.computePreciseInsts();</span></span>
+<span id="L12519"><span class="lineNum">   12519</span>              : </span>
+<span id="L12520"><span class="lineNum">   12520</span> <span class="tlaGNC">           1 :     auto shouldPreserveParams = codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L12521"><span class="lineNum">   12521</span>              :         CompilerOptionName::PreserveParameters);</span>
+<span id="L12522"><span class="lineNum">   12522</span> <span class="tlaGNC">           1 :     auto generateWholeProgram = codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L12523"><span class="lineNum">   12523</span>              :         CompilerOptionName::GenerateWholeProgram);</span>
+<span id="L12524"><span class="lineNum">   12524</span>              : </span>
+<span id="L12525"><span class="lineNum">   12525</span>              :     // IR generation preserves debug information according to the source module&#x27;s debug level.</span>
+<span id="L12526"><span class="lineNum">   12526</span>              :     // The emission level may differ when compiling a serialized module:</span>
+<span id="L12527"><span class="lineNum">   12527</span>              :     // - None (g0): No debug instructions in IR</span>
+<span id="L12528"><span class="lineNum">   12528</span>              :     // - Minimal (g1): Source/line records and function/compilation-unit scope metadata.</span>
+<span id="L12529"><span class="lineNum">   12529</span>              :     //                 Source text is retained only with `-debug-info-include-source`.</span>
+<span id="L12530"><span class="lineNum">   12530</span>              :     //                 Emitting at g1 uses only standard SPIR-V debug instructions</span>
+<span id="L12531"><span class="lineNum">   12531</span>              :     //                 (OpString, OpLine, OpSource).</span>
+<span id="L12532"><span class="lineNum">   12532</span>              :     // - Standard (g2): Full NonSemantic debug info including IRDebugVar for local variables</span>
+<span id="L12533"><span class="lineNum">   12533</span>              :     // - Maximal (g3): Same as Standard</span>
+<span id="L12534"><span class="lineNum">   12534</span>              :     //</span>
+<span id="L12535"><span class="lineNum">   12535</span>              :     // In SPIR-V emit, Standard and Maximal are treated identically - both use NonSemantic</span>
+<span id="L12536"><span class="lineNum">   12536</span>              :     // debug info extensions.</span>
+<span id="L12537"><span class="lineNum">   12537</span>              : </span>
+<span id="L12538"><span class="lineNum">   12538</span> <span class="tlaGNC">           1 :     for (auto inst : irModule-&gt;getGlobalInsts())</span></span>
+<span id="L12539"><span class="lineNum">   12539</span>              :     {</span>
+<span id="L12540"><span class="lineNum">   12540</span> <span class="tlaGNC">           1 :         if (as&lt;IRDebugSource&gt;(inst) || as&lt;IRDebugBuildIdentifier&gt;(inst) ||</span></span>
+<span id="L12541"><span class="lineNum">   12541</span>              :             as&lt;IRDebugCompilationUnit&gt;(inst))</span>
+<span id="L12542"><span class="lineNum">   12542</span>              :         {</span>
+<span id="L12543"><span class="lineNum">   12543</span> <span class="tlaGNC">           1 :             context.ensureInst(inst);</span></span>
+<span id="L12544"><span class="lineNum">   12544</span>              :         }</span>
+<span id="L12545"><span class="lineNum">   12545</span>              :     }</span>
+<span id="L12546"><span class="lineNum">   12546</span>              : </span>
+<span id="L12547"><span class="lineNum">   12547</span>              :     // Override m_defaultDebugSource with the entry point&#x27;s source file.</span>
+<span id="L12548"><span class="lineNum">   12548</span>              :     // When multiple compilation units exist (e.g., with &#x27;import&#x27; syntax), global insts</span>
+<span id="L12549"><span class="lineNum">   12549</span>              :     // may be processed in module order and m_defaultDebugSource may end up pointing to</span>
+<span id="L12550"><span class="lineNum">   12550</span>              :     // an imported module rather than the main shader file. Use the entry point location</span>
+<span id="L12551"><span class="lineNum">   12551</span>              :     // to find the correct source for use in DebugGlobalVariable and DebugType fallbacks.</span>
+<span id="L12552"><span class="lineNum">   12552</span> <span class="tlaGNC">           1 :     for (auto irEntryPoint : irEntryPoints)</span></span>
+<span id="L12553"><span class="lineNum">   12553</span>              :     {</span>
+<span id="L12554"><span class="lineNum">   12554</span> <span class="tlaGNC">           1 :         if (auto loc = irEntryPoint-&gt;findDecoration&lt;IRDebugLocationDecoration&gt;())</span></span>
+<span id="L12555"><span class="lineNum">   12555</span>              :         {</span>
+<span id="L12556"><span class="lineNum">   12556</span> <span class="tlaGNC">           1 :             auto entryPointSource = as&lt;IRDebugSource&gt;(loc-&gt;getSource());</span></span>
+<span id="L12557"><span class="lineNum">   12557</span> <span class="tlaGNC">           1 :             if (entryPointSource)</span></span>
+<span id="L12558"><span class="lineNum">   12558</span>              :             {</span>
+<span id="L12559"><span class="lineNum">   12559</span> <span class="tlaGNC">           1 :                 context.m_defaultDebugSource = entryPointSource;</span></span>
+<span id="L12560"><span class="lineNum">   12560</span>              :                 break;</span>
+<span id="L12561"><span class="lineNum">   12561</span>              :             }</span>
+<span id="L12562"><span class="lineNum">   12562</span>              :         }</span>
+<span id="L12563"><span class="lineNum">   12563</span>              :     }</span>
+<span id="L12564"><span class="lineNum">   12564</span>              : </span>
+<span id="L12565"><span class="lineNum">   12565</span>              :     // Also update the module-level debug scope to use the entry point&#x27;s compilation unit.</span>
+<span id="L12566"><span class="lineNum">   12566</span>              :     // Without this, DebugFunction and DebugGlobalVariable from the main shader file would</span>
+<span id="L12567"><span class="lineNum">   12567</span>              :     // have their parent scope set to the first-processed compilation unit, which may belong</span>
+<span id="L12568"><span class="lineNum">   12568</span>              :     // to an imported module rather than the main shader file.</span>
+<span id="L12569"><span class="lineNum">   12569</span> <span class="tlaGNC">           1 :     if (context.m_defaultDebugSource)</span></span>
+<span id="L12570"><span class="lineNum">   12570</span>              :     {</span>
+<span id="L12571"><span class="lineNum">   12571</span> <span class="tlaGNC">           1 :         auto moduleInst = irModule-&gt;getModuleInst();</span></span>
+<span id="L12572"><span class="lineNum">   12572</span> <span class="tlaGNC">           1 :         for (auto inst : irModule-&gt;getGlobalInsts())</span></span>
+<span id="L12573"><span class="lineNum">   12573</span>              :         {</span>
+<span id="L12574"><span class="lineNum">   12574</span> <span class="tlaGNC">           1 :             if (auto cuInst = as&lt;IRDebugCompilationUnit&gt;(inst))</span></span>
+<span id="L12575"><span class="lineNum">   12575</span>              :             {</span>
+<span id="L12576"><span class="lineNum">   12576</span> <span class="tlaGNC">           1 :                 if (cuInst-&gt;getSource() == context.m_defaultDebugSource)</span></span>
+<span id="L12577"><span class="lineNum">   12577</span>              :                 {</span>
+<span id="L12578"><span class="lineNum">   12578</span> <span class="tlaGNC">           1 :                     SpvInst* cuSpvInst = nullptr;</span></span>
+<span id="L12579"><span class="lineNum">   12579</span> <span class="tlaGNC">           1 :                     if (context.m_mapIRInstToSpvInst.tryGetValue(cuInst, cuSpvInst))</span></span>
+<span id="L12580"><span class="lineNum">   12580</span> <span class="tlaGNC">           1 :                         context.m_mapIRInstToSpvDebugInst.set(moduleInst, cuSpvInst);</span></span>
+<span id="L12581"><span class="lineNum">   12581</span>              :                     break;</span>
+<span id="L12582"><span class="lineNum">   12582</span>              :                 }</span>
+<span id="L12583"><span class="lineNum">   12583</span>              :             }</span>
+<span id="L12584"><span class="lineNum">   12584</span>              :         }</span>
+<span id="L12585"><span class="lineNum">   12585</span>              :     }</span>
+<span id="L12586"><span class="lineNum">   12586</span>              : </span>
+<span id="L12587"><span class="lineNum">   12587</span> <span class="tlaGNC">           1 :     for (auto inst : irModule-&gt;getGlobalInsts())</span></span>
+<span id="L12588"><span class="lineNum">   12588</span>              :     {</span>
+<span id="L12589"><span class="lineNum">   12589</span> <span class="tlaGNC">           1 :         if (shouldPreserveParams &amp;&amp; as&lt;IRGlobalParam&gt;(inst))</span></span>
+<span id="L12590"><span class="lineNum">   12590</span>              :         {</span>
+<span id="L12591"><span class="lineNum">   12591</span> <span class="tlaGNC">           1 :             context.ensureInst(inst);</span></span>
+<span id="L12592"><span class="lineNum">   12592</span> <span class="tlaGNC">           1 :             symbolsEmitted = true;</span></span>
+<span id="L12593"><span class="lineNum">   12593</span>              :         }</span>
+<span id="L12594"><span class="lineNum">   12594</span> <span class="tlaGNC">           1 :         if (generateWholeProgram)</span></span>
+<span id="L12595"><span class="lineNum">   12595</span>              :         {</span>
+<span id="L12596"><span class="lineNum">   12596</span> <span class="tlaGNC">           1 :             if (auto func = as&lt;IRFunc&gt;(inst))</span></span>
+<span id="L12597"><span class="lineNum">   12597</span>              :             {</span>
+<span id="L12598"><span class="lineNum">   12598</span> <span class="tlaGNC">           1 :                 if (func-&gt;findDecoration&lt;IRDownstreamModuleExportDecoration&gt;())</span></span>
+<span id="L12599"><span class="lineNum">   12599</span>              :                 {</span>
+<span id="L12600"><span class="lineNum">   12600</span> <span class="tlaGNC">           1 :                     context.ensureInst(inst);</span></span>
+<span id="L12601"><span class="lineNum">   12601</span> <span class="tlaGNC">           1 :                     symbolsEmitted = true;</span></span>
+<span id="L12602"><span class="lineNum">   12602</span>              :                 }</span>
+<span id="L12603"><span class="lineNum">   12603</span>              :             }</span>
+<span id="L12604"><span class="lineNum">   12604</span>              :         }</span>
+<span id="L12605"><span class="lineNum">   12605</span>              :     }</span>
+<span id="L12606"><span class="lineNum">   12606</span>              : </span>
+<span id="L12607"><span class="lineNum">   12607</span>              :     // Emit source language info.</span>
+<span id="L12608"><span class="lineNum">   12608</span>              :     // By default we will use SpvSourceLanguageSlang.</span>
+<span id="L12609"><span class="lineNum">   12609</span>              :     // However this will cause problems when using swiftshader.</span>
+<span id="L12610"><span class="lineNum">   12610</span>              :     // To workaround this problem, we allow overriding this behavior with an</span>
+<span id="L12611"><span class="lineNum">   12611</span>              :     // environment variable that will be set in the software testing environment.</span>
+<span id="L12612"><span class="lineNum">   12612</span>              :     auto sourceLanguage = SpvSourceLanguageSlang;</span>
+<span id="L12613"><span class="lineNum">   12613</span> <span class="tlaGNC">           1 :     StringBuilder noSlangEnv;</span></span>
+<span id="L12614"><span class="lineNum">   12614</span> <span class="tlaGNC">           1 :     PlatformUtil::getEnvironmentVariable(</span></span>
+<span id="L12615"><span class="lineNum">   12615</span>              :         toSlice(&quot;SLANG_USE_SPV_SOURCE_LANGUAGE_UNKNOWN&quot;),</span>
+<span id="L12616"><span class="lineNum">   12616</span>              :         noSlangEnv);</span>
+<span id="L12617"><span class="lineNum">   12617</span> <span class="tlaGNC">           1 :     if (noSlangEnv.produceString() == &quot;1&quot;)</span></span>
+<span id="L12618"><span class="lineNum">   12618</span>              :     {</span>
+<span id="L12619"><span class="lineNum">   12619</span>              :         sourceLanguage = SpvSourceLanguageUnknown;</span>
+<span id="L12620"><span class="lineNum">   12620</span>              :     }</span>
+<span id="L12621"><span class="lineNum">   12621</span> <span class="tlaGNC">           1 :     context.emitSource(</span></span>
+<span id="L12622"><span class="lineNum">   12622</span>              :         context.getSection(SpvLogicalSectionID::DebugStringsAndSource),</span>
+<span id="L12623"><span class="lineNum">   12623</span>              :         sourceLanguage);</span>
+<span id="L12624"><span class="lineNum">   12624</span>              : </span>
+<span id="L12625"><span class="lineNum">   12625</span> <span class="tlaGNC">           1 :     for (auto irEntryPoint : irEntryPoints)</span></span>
+<span id="L12626"><span class="lineNum">   12626</span>              :     {</span>
+<span id="L12627"><span class="lineNum">   12627</span> <span class="tlaGNC">           1 :         context.ensureInst(irEntryPoint);</span></span>
+<span id="L12628"><span class="lineNum">   12628</span>              :         symbolsEmitted = true;</span>
+<span id="L12629"><span class="lineNum">   12629</span>              :     }</span>
+<span id="L12630"><span class="lineNum">   12630</span>              : </span>
+<span id="L12631"><span class="lineNum">   12631</span> <span class="tlaGNC">           1 :     if (!symbolsEmitted)</span></span>
+<span id="L12632"><span class="lineNum">   12632</span>              :     {</span>
+<span id="L12633"><span class="lineNum">   12633</span> <span class="tlaGNC">           1 :         sink-&gt;diagnose(</span></span>
+<span id="L12634"><span class="lineNum">   12634</span>              :             Diagnostics::OutputSpvIsEmpty{.location = irModule-&gt;getModuleInst()-&gt;sourceLoc});</span>
+<span id="L12635"><span class="lineNum">   12635</span>              :         return SLANG_FAIL;</span>
+<span id="L12636"><span class="lineNum">   12636</span>              :     }</span>
+<span id="L12637"><span class="lineNum">   12637</span>              : </span>
+<span id="L12638"><span class="lineNum">   12638</span>              :     // Move forward delcared pointers to the end.</span>
+<span id="L12639"><span class="lineNum">   12639</span>              :     do</span>
+<span id="L12640"><span class="lineNum">   12640</span>              :     {</span>
+<span id="L12641"><span class="lineNum">   12641</span> <span class="tlaGNC">           1 :         auto fwdPointers = context.m_forwardDeclaredPointers;</span></span>
+<span id="L12642"><span class="lineNum">   12642</span> <span class="tlaGNC">           1 :         context.m_forwardDeclaredPointers.clear();</span></span>
+<span id="L12643"><span class="lineNum">   12643</span>              : </span>
+<span id="L12644"><span class="lineNum">   12644</span> <span class="tlaGNC">           1 :         for (auto ptrType : fwdPointers)</span></span>
+<span id="L12645"><span class="lineNum">   12645</span>              :         {</span>
+<span id="L12646"><span class="lineNum">   12646</span> <span class="tlaGNC">           1 :             auto spvPtrType = ptrType.key;</span></span>
+<span id="L12647"><span class="lineNum">   12647</span>              :             // When we emit a pointee type, we may introduce new</span>
+<span id="L12648"><span class="lineNum">   12648</span>              :             // forward-declared pointer types, so we need to</span>
+<span id="L12649"><span class="lineNum">   12649</span>              :             // keep iterating until we have emitted all of them.</span>
+<span id="L12650"><span class="lineNum">   12650</span> <span class="tlaGNC">           1 :             context.ensureInst(ptrType.value-&gt;getValueType());</span></span>
+<span id="L12651"><span class="lineNum">   12651</span> <span class="tlaGNC">           1 :             auto parent = spvPtrType-&gt;parent;</span></span>
+<span id="L12652"><span class="lineNum">   12652</span> <span class="tlaGNC">           1 :             spvPtrType-&gt;removeFromParent();</span></span>
+<span id="L12653"><span class="lineNum">   12653</span> <span class="tlaGNC">           1 :             parent-&gt;addInst(spvPtrType);</span></span>
+<span id="L12654"><span class="lineNum">   12654</span>              :         }</span>
+<span id="L12655"><span class="lineNum">   12655</span> <span class="tlaGNC">           1 :     } while (context.m_forwardDeclaredPointers.getCount() != 0);</span></span>
+<span id="L12656"><span class="lineNum">   12656</span>              : </span>
+<span id="L12657"><span class="lineNum">   12657</span> <span class="tlaGNC">           1 :     context.diagnoseConflictingDescriptorHeapStrideOptions();</span></span>
+<span id="L12658"><span class="lineNum">   12658</span>              : </span>
+<span id="L12659"><span class="lineNum">   12659</span>              :     // Emit extensions and capabilities for which there are multiple options available.</span>
+<span id="L12660"><span class="lineNum">   12660</span>              :     // This is delayed to avoid emitting unnecessary extensions and capabilities if</span>
+<span id="L12661"><span class="lineNum">   12661</span>              :     // one of the options is already required by some other op.</span>
+<span id="L12662"><span class="lineNum">   12662</span> <span class="tlaGNC">           1 :     context.emitSPIRVAnyExtension();</span></span>
+<span id="L12663"><span class="lineNum">   12663</span> <span class="tlaGNC">           1 :     context.emitSPIRVAnyCapabilities();</span></span>
+<span id="L12664"><span class="lineNum">   12664</span>              : </span>
+<span id="L12665"><span class="lineNum">   12665</span> <span class="tlaGNC">           1 :     context.emitFrontMatter();</span></span>
+<span id="L12666"><span class="lineNum">   12666</span>              : </span>
+<span id="L12667"><span class="lineNum">   12667</span> <span class="tlaGNC">           1 :     context.emitPhysicalLayout();</span></span>
+<span id="L12668"><span class="lineNum">   12668</span>              : </span>
+<span id="L12669"><span class="lineNum">   12669</span> <span class="tlaGNC">           1 :     spirvOut.addRange(</span></span>
+<span id="L12670"><span class="lineNum">   12670</span>              :         (uint8_t const*)context.m_words.getBuffer(),</span>
+<span id="L12671"><span class="lineNum">   12671</span>              :         context.m_words.getCount() * Index(sizeof(context.m_words[0])));</span>
 <span id="L12672"><span class="lineNum">   12672</span>              : </span>
-<span id="L12673"><span class="lineNum">   12673</span>              : </span>
-<span id="L12674"><span class="lineNum">   12674</span>              : } // namespace Slang</span>
+<span id="L12673"><span class="lineNum">   12673</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L12674"><span class="lineNum">   12674</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L12675"><span class="lineNum">   12675</span>              : </span>
+<span id="L12676"><span class="lineNum">   12676</span>              : </span>
+<span id="L12677"><span class="lineNum">   12677</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

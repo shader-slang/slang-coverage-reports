@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-20 05:15:35 UTC</td>
+      <td class="headerValue">2026-10-21 05:18:41 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -302,45 +302,45 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L11"><span class="lineNum">      11</span>                         : // Every matrix type carries this type on its layout operand, so any of them reveals it.</span>
 <span id="L12"><span class="lineNum">      12</span>                         : // Recurses because matrix types inside generics are not hoisted to global scope.</span>
 <span id="L13"><span class="lineNum">      13</span>                         : static IRType* findMatrixLayoutModeType(IRInst* parent)</span>
-<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">      335742            : {</span></span>
-<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">      335742 <span class="branchAll" title="br0: 335742; br1: 334784">(2/2)</span>      :     for (auto child : parent-&gt;getChildren())</span></span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">      335742            :     {</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">      335742 <span class="branchAll" title="br0: 934; br1: 334808">(2/2)</span>      :         if (auto matrixType = as&lt;IRMatrixType&gt;(child))</span></span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">         934            :             return matrixType-&gt;getLayout()-&gt;getFullType();</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">      334808 <span class="branchAll" title="br0: 24; br1: 334784">(2/2)</span>      :         if (auto layoutModeType = findMatrixLayoutModeType(child))</span></span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">      337110            : {</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">      337110 <span class="branchAll" title="br0: 337110; br1: 336150">(2/2)</span>      :     for (auto child : parent-&gt;getChildren())</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">      337110            :     {</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">      337110 <span class="branchAll" title="br0: 936; br1: 336174">(2/2)</span>      :         if (auto matrixType = as&lt;IRMatrixType&gt;(child))</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">         936            :             return matrixType-&gt;getLayout()-&gt;getFullType();</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">      336174 <span class="branchAll" title="br0: 24; br1: 336150">(2/2)</span>      :         if (auto layoutModeType = findMatrixLayoutModeType(child))</span></span>
 <span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">          24            :             return layoutModeType;</span></span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">      334808            :     }</span></span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">      334784            :     return nullptr;</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">      335742            : }</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">      336174            :     }</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">      336150            :     return nullptr;</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">      337110            : }</span></span>
 <span id="L24"><span class="lineNum">      24</span>                         : </span>
 <span id="L25"><span class="lineNum">      25</span>                         : void specializeMatrixLayout(IRModule* module, TargetProgram* target)</span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">         934            : {</span></span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         934            :     auto matrixLayoutModeType = findMatrixLayoutModeType(module-&gt;getModuleInst());</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         934 <span class="branchPart" title="br0: 0; br1: 934">(1/2)</span>      :     if (!matrixLayoutModeType)</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">         936            : {</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         936            :     auto matrixLayoutModeType = findMatrixLayoutModeType(module-&gt;getModuleInst());</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         936 <span class="branchPart" title="br0: 0; br1: 936">(1/2)</span>      :     if (!matrixLayoutModeType)</span></span>
 <span id="L29"><span class="lineNum">      29</span> <span class="tlaUNC">           0            :         return;</span></span>
 <span id="L30"><span class="lineNum">      30</span>                         : </span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">         934            :     IRIntegerValue defaultLayout = target-&gt;getOptionSet().getMatrixLayoutMode();</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">         934 <span class="branchPart" title="br0: 0; br1: 934">(1/2)</span>      :     if (defaultLayout == SLANG_MATRIX_LAYOUT_MODE_UNKNOWN)</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">         936            :     IRIntegerValue defaultLayout = target-&gt;getOptionSet().getMatrixLayoutMode();</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">         936 <span class="branchPart" title="br0: 0; br1: 936">(1/2)</span>      :     if (defaultLayout == SLANG_MATRIX_LAYOUT_MODE_UNKNOWN)</span></span>
 <span id="L33"><span class="lineNum">      33</span> <span class="tlaUNC">           0            :         defaultLayout = SLANG_MATRIX_LAYOUT_ROW_MAJOR;</span></span>
 <span id="L34"><span class="lineNum">      34</span>                         : </span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">         934            :     IRBuilder builder(module);</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">         934            :     auto unknownLayout =</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">         934            :         builder.getIntValue(matrixLayoutModeType, SLANG_MATRIX_LAYOUT_MODE_UNKNOWN);</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">         934            :     auto resolvedLayout = builder.getIntValue(matrixLayoutModeType, defaultLayout);</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">         936            :     IRBuilder builder(module);</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">         936            :     auto unknownLayout =</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">         936            :         builder.getIntValue(matrixLayoutModeType, SLANG_MATRIX_LAYOUT_MODE_UNKNOWN);</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">         936            :     auto resolvedLayout = builder.getIntValue(matrixLayoutModeType, defaultLayout);</span></span>
 <span id="L39"><span class="lineNum">      39</span>                         : </span>
 <span id="L40"><span class="lineNum">      40</span>                         :     // `Unknown` is one deduplicated constant, so every unspecified layout is a use of it: a matrix</span>
 <span id="L41"><span class="lineNum">      41</span>                         :     // type&#x27;s layout operand, or a `specialize` argument headed into one. Other uses are enum values</span>
 <span id="L42"><span class="lineNum">      42</span>                         :     // the user wrote (e.g. a `switch` case label) and must keep their value. `replaceOperand`</span>
 <span id="L43"><span class="lineNum">      43</span>                         :     // re-deduplicates the user, so no duplicate matrix types are left behind.</span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">        9269 <span class="branchAll" title="br0: 8335; br1: 934">(2/2)</span>      :     for (auto use = unknownLayout-&gt;firstUse; use;)</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">        8335            :     {</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">        8335            :         auto nextUse = use-&gt;nextUse; // `replaceOperand` unlinks `use`.</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">        8335            :         auto user = use-&gt;getUser();</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">        8335 <span class="branchAll" title="br0: 5623; br1: 2712; br2: 2711; br3: 1">(4/4)</span>      :         if (as&lt;IRMatrixType&gt;(user) || as&lt;IRSpecialize&gt;(user))</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">        8334            :             builder.replaceOperand(use, resolvedLayout);</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">        8335            :         use = nextUse;</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        8335            :     }</span></span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         934            : }</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">        9279 <span class="branchAll" title="br0: 8343; br1: 936">(2/2)</span>      :     for (auto use = unknownLayout-&gt;firstUse; use;)</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">        8343            :     {</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">        8343            :         auto nextUse = use-&gt;nextUse; // `replaceOperand` unlinks `use`.</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">        8343            :         auto user = use-&gt;getUser();</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">        8343 <span class="branchAll" title="br0: 5625; br1: 2718; br2: 2717; br3: 1">(4/4)</span>      :         if (as&lt;IRMatrixType&gt;(user) || as&lt;IRSpecialize&gt;(user))</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">        8342            :             builder.replaceOperand(use, resolvedLayout);</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">        8343            :         use = nextUse;</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        8343            :     }</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         936            : }</span></span>
 <span id="L53"><span class="lineNum">      53</span>                         : </span>
 <span id="L54"><span class="lineNum">      54</span>                         : } // namespace Slang</span>
 </pre>

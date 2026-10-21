@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-20 05:15:40 UTC</td>
+      <td class="headerValue">2026-10-21 05:18:46 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">96.0&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:96.0%;background-color:hsl(114, 70%, 50%)"></div></div>
-      <span class="metricCounts">1,141 / 1,189</span>
+      <span class="metricCounts">1,144 / 1,192</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -3357,775 +3357,778 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3084"><span class="lineNum">    3084</span>              :         // passes have been performed, we can emit target code from</span>
 <span id="L3085"><span class="lineNum">    3085</span>              :         // the IR module.</span>
 <span id="L3086"><span class="lineNum">    3086</span>              :         //</span>
-<span id="L3087"><span class="lineNum">    3087</span> <span class="tlaGNC">           1 :         sourceEmitter-&gt;emitModule(irModule, sink);</span></span>
-<span id="L3088"><span class="lineNum">    3088</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L3089"><span class="lineNum">    3089</span>              : </span>
-<span id="L3090"><span class="lineNum">    3090</span> <span class="tlaGNC">           1 :     String code = sourceWriter.getContent();</span></span>
-<span id="L3091"><span class="lineNum">    3091</span> <span class="tlaGNC">           1 :     sourceWriter.clearContent();</span></span>
+<span id="L3087"><span class="lineNum">    3087</span> <span class="tlaGNC">           1 :         const Index errorCountBeforeEmit = sink-&gt;getErrorCount();</span></span>
+<span id="L3088"><span class="lineNum">    3088</span> <span class="tlaGNC">           1 :         sourceEmitter-&gt;emitModule(irModule, sink);</span></span>
+<span id="L3089"><span class="lineNum">    3089</span> <span class="tlaGNC">           1 :         if (sink-&gt;getErrorCount() &gt; errorCountBeforeEmit)</span></span>
+<span id="L3090"><span class="lineNum">    3090</span> <span class="tlaGNC">           1 :             return SLANG_FAIL;</span></span>
+<span id="L3091"><span class="lineNum">    3091</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L3092"><span class="lineNum">    3092</span>              : </span>
-<span id="L3093"><span class="lineNum">    3093</span>              :     // Now that we&#x27;ve emitted the code for all the declarations in the file,</span>
-<span id="L3094"><span class="lineNum">    3094</span>              :     // it is time to stitch together the final output.</span>
+<span id="L3093"><span class="lineNum">    3093</span> <span class="tlaGNC">           1 :     String code = sourceWriter.getContent();</span></span>
+<span id="L3094"><span class="lineNum">    3094</span> <span class="tlaGNC">           1 :     sourceWriter.clearContent();</span></span>
 <span id="L3095"><span class="lineNum">    3095</span>              : </span>
-<span id="L3096"><span class="lineNum">    3096</span>              :     // There may be global-scope modifiers that we should emit now</span>
-<span id="L3097"><span class="lineNum">    3097</span>              :     // Supress emitting line directives when emitting preprocessor directives since</span>
-<span id="L3098"><span class="lineNum">    3098</span>              :     // these preprocessor directives may be required to appear in the first line</span>
-<span id="L3099"><span class="lineNum">    3099</span>              :     // of the output. An example is that the &quot;#version&quot; line in a GLSL source must</span>
-<span id="L3100"><span class="lineNum">    3100</span>              :     // appear before anything else.</span>
-<span id="L3101"><span class="lineNum">    3101</span> <span class="tlaGNC">           1 :     sourceWriter.supressLineDirective();</span></span>
-<span id="L3102"><span class="lineNum">    3102</span>              : </span>
-<span id="L3103"><span class="lineNum">    3103</span>              :     // When emitting front matter we can emit the target-language-specific directives</span>
-<span id="L3104"><span class="lineNum">    3104</span>              :     // needed to get the default matrix layout to match what was requested</span>
-<span id="L3105"><span class="lineNum">    3105</span>              :     // for the given target.</span>
-<span id="L3106"><span class="lineNum">    3106</span>              :     //</span>
-<span id="L3107"><span class="lineNum">    3107</span>              :     // Note: we do not rely on the defaults for the target language,</span>
-<span id="L3108"><span class="lineNum">    3108</span>              :     // because a user could take the HLSL/GLSL generated by Slang and pass</span>
-<span id="L3109"><span class="lineNum">    3109</span>              :     // it to another compiler with non-default options specified on</span>
-<span id="L3110"><span class="lineNum">    3110</span>              :     // the command line, leading to all kinds of trouble.</span>
-<span id="L3111"><span class="lineNum">    3111</span>              :     //</span>
-<span id="L3112"><span class="lineNum">    3112</span>              :     // TODO: We need an approach to &quot;global&quot; layout directives that will work</span>
-<span id="L3113"><span class="lineNum">    3113</span>              :     // in the presence of multiple modules. If modules A and B were each</span>
-<span id="L3114"><span class="lineNum">    3114</span>              :     // compiled with different assumptions about how layout is performed,</span>
-<span id="L3115"><span class="lineNum">    3115</span>              :     // then types/variables defined in those modules should be emitted in</span>
-<span id="L3116"><span class="lineNum">    3116</span>              :     // a way that is consistent with that layout...</span>
-<span id="L3117"><span class="lineNum">    3117</span>              : </span>
-<span id="L3118"><span class="lineNum">    3118</span>              :     // Emit any front matter</span>
-<span id="L3119"><span class="lineNum">    3119</span> <span class="tlaGNC">           1 :     sourceEmitter-&gt;emitFrontMatter(targetRequest);</span></span>
+<span id="L3096"><span class="lineNum">    3096</span>              :     // Now that we&#x27;ve emitted the code for all the declarations in the file,</span>
+<span id="L3097"><span class="lineNum">    3097</span>              :     // it is time to stitch together the final output.</span>
+<span id="L3098"><span class="lineNum">    3098</span>              : </span>
+<span id="L3099"><span class="lineNum">    3099</span>              :     // There may be global-scope modifiers that we should emit now</span>
+<span id="L3100"><span class="lineNum">    3100</span>              :     // Supress emitting line directives when emitting preprocessor directives since</span>
+<span id="L3101"><span class="lineNum">    3101</span>              :     // these preprocessor directives may be required to appear in the first line</span>
+<span id="L3102"><span class="lineNum">    3102</span>              :     // of the output. An example is that the &quot;#version&quot; line in a GLSL source must</span>
+<span id="L3103"><span class="lineNum">    3103</span>              :     // appear before anything else.</span>
+<span id="L3104"><span class="lineNum">    3104</span> <span class="tlaGNC">           1 :     sourceWriter.supressLineDirective();</span></span>
+<span id="L3105"><span class="lineNum">    3105</span>              : </span>
+<span id="L3106"><span class="lineNum">    3106</span>              :     // When emitting front matter we can emit the target-language-specific directives</span>
+<span id="L3107"><span class="lineNum">    3107</span>              :     // needed to get the default matrix layout to match what was requested</span>
+<span id="L3108"><span class="lineNum">    3108</span>              :     // for the given target.</span>
+<span id="L3109"><span class="lineNum">    3109</span>              :     //</span>
+<span id="L3110"><span class="lineNum">    3110</span>              :     // Note: we do not rely on the defaults for the target language,</span>
+<span id="L3111"><span class="lineNum">    3111</span>              :     // because a user could take the HLSL/GLSL generated by Slang and pass</span>
+<span id="L3112"><span class="lineNum">    3112</span>              :     // it to another compiler with non-default options specified on</span>
+<span id="L3113"><span class="lineNum">    3113</span>              :     // the command line, leading to all kinds of trouble.</span>
+<span id="L3114"><span class="lineNum">    3114</span>              :     //</span>
+<span id="L3115"><span class="lineNum">    3115</span>              :     // TODO: We need an approach to &quot;global&quot; layout directives that will work</span>
+<span id="L3116"><span class="lineNum">    3116</span>              :     // in the presence of multiple modules. If modules A and B were each</span>
+<span id="L3117"><span class="lineNum">    3117</span>              :     // compiled with different assumptions about how layout is performed,</span>
+<span id="L3118"><span class="lineNum">    3118</span>              :     // then types/variables defined in those modules should be emitted in</span>
+<span id="L3119"><span class="lineNum">    3119</span>              :     // a way that is consistent with that layout...</span>
 <span id="L3120"><span class="lineNum">    3120</span>              : </span>
-<span id="L3121"><span class="lineNum">    3121</span> <span class="tlaGNC">           1 :     switch (target)</span></span>
-<span id="L3122"><span class="lineNum">    3122</span>              :     {</span>
-<span id="L3123"><span class="lineNum">    3123</span>              :     case CodeGenTarget::PyTorchCppBinding:</span>
-<span id="L3124"><span class="lineNum">    3124</span> <span class="tlaGNC">           1 :         sourceWriter.emit(get_slang_torch_prelude());</span></span>
-<span id="L3125"><span class="lineNum">    3125</span>              :         break;</span>
-<span id="L3126"><span class="lineNum">    3126</span>              :     default:</span>
-<span id="L3127"><span class="lineNum">    3127</span> <span class="tlaGNC">           1 :         if (isHeterogeneousTarget(target))</span></span>
-<span id="L3128"><span class="lineNum">    3128</span>              :         {</span>
-<span id="L3129"><span class="lineNum">    3129</span> <span class="tlaGNC">           1 :             sourceWriter.emit(get_slang_cpp_host_prelude());</span></span>
-<span id="L3130"><span class="lineNum">    3130</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L3131"><span class="lineNum">    3131</span>              :         else</span>
-<span id="L3132"><span class="lineNum">    3132</span>              :         {</span>
-<span id="L3133"><span class="lineNum">    3133</span>              :             // Get the prelude</span>
-<span id="L3134"><span class="lineNum">    3134</span> <span class="tlaGNC">           1 :             String prelude = session-&gt;getPreludeForLanguage(sourceLanguage);</span></span>
-<span id="L3135"><span class="lineNum">    3135</span> <span class="tlaGNC">           1 :             sourceWriter.emit(prelude);</span></span>
-<span id="L3136"><span class="lineNum">    3136</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L3137"><span class="lineNum">    3137</span>              :         break;</span>
-<span id="L3138"><span class="lineNum">    3138</span>              :     }</span>
-<span id="L3139"><span class="lineNum">    3139</span>              : </span>
-<span id="L3140"><span class="lineNum">    3140</span>              :     // Emit anything that goes before the contents of the code generated for the module</span>
-<span id="L3141"><span class="lineNum">    3141</span> <span class="tlaGNC">           1 :     sourceEmitter-&gt;emitPreModule();</span></span>
+<span id="L3121"><span class="lineNum">    3121</span>              :     // Emit any front matter</span>
+<span id="L3122"><span class="lineNum">    3122</span> <span class="tlaGNC">           1 :     sourceEmitter-&gt;emitFrontMatter(targetRequest);</span></span>
+<span id="L3123"><span class="lineNum">    3123</span>              : </span>
+<span id="L3124"><span class="lineNum">    3124</span> <span class="tlaGNC">           1 :     switch (target)</span></span>
+<span id="L3125"><span class="lineNum">    3125</span>              :     {</span>
+<span id="L3126"><span class="lineNum">    3126</span>              :     case CodeGenTarget::PyTorchCppBinding:</span>
+<span id="L3127"><span class="lineNum">    3127</span> <span class="tlaGNC">           1 :         sourceWriter.emit(get_slang_torch_prelude());</span></span>
+<span id="L3128"><span class="lineNum">    3128</span>              :         break;</span>
+<span id="L3129"><span class="lineNum">    3129</span>              :     default:</span>
+<span id="L3130"><span class="lineNum">    3130</span> <span class="tlaGNC">           1 :         if (isHeterogeneousTarget(target))</span></span>
+<span id="L3131"><span class="lineNum">    3131</span>              :         {</span>
+<span id="L3132"><span class="lineNum">    3132</span> <span class="tlaGNC">           1 :             sourceWriter.emit(get_slang_cpp_host_prelude());</span></span>
+<span id="L3133"><span class="lineNum">    3133</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L3134"><span class="lineNum">    3134</span>              :         else</span>
+<span id="L3135"><span class="lineNum">    3135</span>              :         {</span>
+<span id="L3136"><span class="lineNum">    3136</span>              :             // Get the prelude</span>
+<span id="L3137"><span class="lineNum">    3137</span> <span class="tlaGNC">           1 :             String prelude = session-&gt;getPreludeForLanguage(sourceLanguage);</span></span>
+<span id="L3138"><span class="lineNum">    3138</span> <span class="tlaGNC">           1 :             sourceWriter.emit(prelude);</span></span>
+<span id="L3139"><span class="lineNum">    3139</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L3140"><span class="lineNum">    3140</span>              :         break;</span>
+<span id="L3141"><span class="lineNum">    3141</span>              :     }</span>
 <span id="L3142"><span class="lineNum">    3142</span>              : </span>
-<span id="L3143"><span class="lineNum">    3143</span> <span class="tlaGNC">           1 :     sourceWriter.resumeLineDirective();</span></span>
-<span id="L3144"><span class="lineNum">    3144</span>              : </span>
-<span id="L3145"><span class="lineNum">    3145</span>              :     // Get the content built so far from the front matter/prelude/preModule</span>
-<span id="L3146"><span class="lineNum">    3146</span>              :     // By getting in this way, the content is no longer referenced by the sourceWriter.</span>
-<span id="L3147"><span class="lineNum">    3147</span> <span class="tlaGNC">           1 :     String finalResult = sourceWriter.getContentAndClear();</span></span>
-<span id="L3148"><span class="lineNum">    3148</span>              : </span>
-<span id="L3149"><span class="lineNum">    3149</span>              :     // Append the modules output code</span>
-<span id="L3150"><span class="lineNum">    3150</span> <span class="tlaGNC">           1 :     finalResult.append(code);</span></span>
+<span id="L3143"><span class="lineNum">    3143</span>              :     // Emit anything that goes before the contents of the code generated for the module</span>
+<span id="L3144"><span class="lineNum">    3144</span> <span class="tlaGNC">           1 :     sourceEmitter-&gt;emitPreModule();</span></span>
+<span id="L3145"><span class="lineNum">    3145</span>              : </span>
+<span id="L3146"><span class="lineNum">    3146</span> <span class="tlaGNC">           1 :     sourceWriter.resumeLineDirective();</span></span>
+<span id="L3147"><span class="lineNum">    3147</span>              : </span>
+<span id="L3148"><span class="lineNum">    3148</span>              :     // Get the content built so far from the front matter/prelude/preModule</span>
+<span id="L3149"><span class="lineNum">    3149</span>              :     // By getting in this way, the content is no longer referenced by the sourceWriter.</span>
+<span id="L3150"><span class="lineNum">    3150</span> <span class="tlaGNC">           1 :     String finalResult = sourceWriter.getContentAndClear();</span></span>
 <span id="L3151"><span class="lineNum">    3151</span>              : </span>
-<span id="L3152"><span class="lineNum">    3152</span> <span class="tlaGNC">           1 :     finalResult.append(sourceWriter.getContentAndClear());</span></span>
-<span id="L3153"><span class="lineNum">    3153</span>              : </span>
-<span id="L3154"><span class="lineNum">    3154</span>              :     // Write out the result</span>
-<span id="L3155"><span class="lineNum">    3155</span>              : </span>
-<span id="L3156"><span class="lineNum">    3156</span> <span class="tlaGNC">           1 :     auto artifact = ArtifactUtil::createArtifactForCompileTarget(asExternal(target));</span></span>
-<span id="L3157"><span class="lineNum">    3157</span> <span class="tlaGNC">           1 :     artifact-&gt;addRepresentationUnknown(StringBlob::moveCreate(finalResult));</span></span>
+<span id="L3152"><span class="lineNum">    3152</span>              :     // Append the modules output code</span>
+<span id="L3153"><span class="lineNum">    3153</span> <span class="tlaGNC">           1 :     finalResult.append(code);</span></span>
+<span id="L3154"><span class="lineNum">    3154</span>              : </span>
+<span id="L3155"><span class="lineNum">    3155</span> <span class="tlaGNC">           1 :     finalResult.append(sourceWriter.getContentAndClear());</span></span>
+<span id="L3156"><span class="lineNum">    3156</span>              : </span>
+<span id="L3157"><span class="lineNum">    3157</span>              :     // Write out the result</span>
 <span id="L3158"><span class="lineNum">    3158</span>              : </span>
-<span id="L3159"><span class="lineNum">    3159</span> <span class="tlaGNC">           1 :     ArtifactUtil::addAssociated(artifact, metadata);</span></span>
-<span id="L3160"><span class="lineNum">    3160</span>              : </span>
-<span id="L3161"><span class="lineNum">    3161</span> <span class="tlaGNC">           1 :     if (sourceMap)</span></span>
-<span id="L3162"><span class="lineNum">    3162</span>              :     {</span>
-<span id="L3163"><span class="lineNum">    3163</span> <span class="tlaGNC">           1 :         auto sourceMapArtifact = ArtifactUtil::createArtifact(ArtifactDesc::make(</span></span>
-<span id="L3164"><span class="lineNum">    3164</span>              :             ArtifactKind::Json,</span>
-<span id="L3165"><span class="lineNum">    3165</span>              :             ArtifactPayload::SourceMap,</span>
-<span id="L3166"><span class="lineNum">    3166</span>              :             ArtifactStyle::None));</span>
-<span id="L3167"><span class="lineNum">    3167</span>              : </span>
-<span id="L3168"><span class="lineNum">    3168</span> <span class="tlaGNC">           1 :         sourceMapArtifact-&gt;addRepresentation(sourceMap);</span></span>
-<span id="L3169"><span class="lineNum">    3169</span>              : </span>
-<span id="L3170"><span class="lineNum">    3170</span> <span class="tlaGNC">           1 :         artifact-&gt;addAssociated(sourceMapArtifact);</span></span>
-<span id="L3171"><span class="lineNum">    3171</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L3159"><span class="lineNum">    3159</span> <span class="tlaGNC">           1 :     auto artifact = ArtifactUtil::createArtifactForCompileTarget(asExternal(target));</span></span>
+<span id="L3160"><span class="lineNum">    3160</span> <span class="tlaGNC">           1 :     artifact-&gt;addRepresentationUnknown(StringBlob::moveCreate(finalResult));</span></span>
+<span id="L3161"><span class="lineNum">    3161</span>              : </span>
+<span id="L3162"><span class="lineNum">    3162</span> <span class="tlaGNC">           1 :     ArtifactUtil::addAssociated(artifact, metadata);</span></span>
+<span id="L3163"><span class="lineNum">    3163</span>              : </span>
+<span id="L3164"><span class="lineNum">    3164</span> <span class="tlaGNC">           1 :     if (sourceMap)</span></span>
+<span id="L3165"><span class="lineNum">    3165</span>              :     {</span>
+<span id="L3166"><span class="lineNum">    3166</span> <span class="tlaGNC">           1 :         auto sourceMapArtifact = ArtifactUtil::createArtifact(ArtifactDesc::make(</span></span>
+<span id="L3167"><span class="lineNum">    3167</span>              :             ArtifactKind::Json,</span>
+<span id="L3168"><span class="lineNum">    3168</span>              :             ArtifactPayload::SourceMap,</span>
+<span id="L3169"><span class="lineNum">    3169</span>              :             ArtifactStyle::None));</span>
+<span id="L3170"><span class="lineNum">    3170</span>              : </span>
+<span id="L3171"><span class="lineNum">    3171</span> <span class="tlaGNC">           1 :         sourceMapArtifact-&gt;addRepresentation(sourceMap);</span></span>
 <span id="L3172"><span class="lineNum">    3172</span>              : </span>
-<span id="L3173"><span class="lineNum">    3173</span> <span class="tlaGNC">           1 :     outArtifact.swap(artifact);</span></span>
-<span id="L3174"><span class="lineNum">    3174</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L3175"><span class="lineNum">    3175</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3176"><span class="lineNum">    3176</span>              : </span>
-<span id="L3177"><span class="lineNum">    3177</span>              : SlangResult emitSPIRVFromIR(</span>
-<span id="L3178"><span class="lineNum">    3178</span>              :     CodeGenContext* codeGenContext,</span>
-<span id="L3179"><span class="lineNum">    3179</span>              :     IRModule* irModule,</span>
-<span id="L3180"><span class="lineNum">    3180</span>              :     const List&lt;IRFunc*&gt;&amp; irEntryPoints,</span>
-<span id="L3181"><span class="lineNum">    3181</span>              :     List&lt;uint8_t&gt;&amp; spirvOut);</span>
-<span id="L3182"><span class="lineNum">    3182</span>              : </span>
-<span id="L3183"><span class="lineNum">    3183</span>              : // Helper class to assist in stepping through the SPIRV instructions.</span>
-<span id="L3184"><span class="lineNum">    3184</span>              : class SpirvInstructionHelper</span>
-<span id="L3185"><span class="lineNum">    3185</span>              : {</span>
-<span id="L3186"><span class="lineNum">    3186</span>              : public:</span>
-<span id="L3187"><span class="lineNum">    3187</span>              :     // The result id of the OpExtInstImport instruction, eg.g %2 below</span>
-<span id="L3188"><span class="lineNum">    3188</span>              :     // %2 = OpExtInstImport &quot;NonSemantic.Shader.DebugInfo.100&quot;</span>
-<span id="L3189"><span class="lineNum">    3189</span> <span class="tlaGNC">           1 :     uint32_t m_nonSemanticDebugInfoExtSetId = 0;</span></span>
-<span id="L3190"><span class="lineNum">    3190</span>              : </span>
-<span id="L3191"><span class="lineNum">    3191</span>              :     // The index of the SPIRV words in the blob.</span>
-<span id="L3192"><span class="lineNum">    3192</span>              :     // The first 5 words are the header as defined by the SPIRV spec.</span>
-<span id="L3193"><span class="lineNum">    3193</span>              :     enum SpvWordIndex</span>
-<span id="L3194"><span class="lineNum">    3194</span>              :     {</span>
-<span id="L3195"><span class="lineNum">    3195</span>              :         SPV_INDEX_MAGIC_NUMBER,</span>
-<span id="L3196"><span class="lineNum">    3196</span>              :         SPV_INDEX_VERSION_NUMBER,</span>
-<span id="L3197"><span class="lineNum">    3197</span>              :         SPV_INDEX_GENERATOR_NUMBER,</span>
-<span id="L3198"><span class="lineNum">    3198</span>              :         SPV_INDEX_BOUND,</span>
-<span id="L3199"><span class="lineNum">    3199</span>              :         SPV_INDEX_SCHEMA,</span>
-<span id="L3200"><span class="lineNum">    3200</span>              :         SPV_INDEX_INSTRUCTION_START,</span>
-<span id="L3201"><span class="lineNum">    3201</span>              :     };</span>
-<span id="L3202"><span class="lineNum">    3202</span>              : </span>
-<span id="L3203"><span class="lineNum">    3203</span>              :     // An instruction in the SPIRV blob. This points to the first word of the instruction.</span>
-<span id="L3204"><span class="lineNum">    3204</span>              :     struct SpvInstruction</span>
-<span id="L3205"><span class="lineNum">    3205</span>              :     {</span>
-<span id="L3206"><span class="lineNum">    3206</span>              :         SpvInstruction(SpvWord* word)</span>
-<span id="L3207"><span class="lineNum">    3207</span> <span class="tlaGNC">           1 :             : word(word)</span></span>
-<span id="L3208"><span class="lineNum">    3208</span> <span class="tlaGNC">           1 :         {</span></span>
-<span id="L3209"><span class="lineNum">    3209</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L3210"><span class="lineNum">    3210</span>              : </span>
-<span id="L3211"><span class="lineNum">    3211</span> <span class="tlaGNC">           1 :         uint16_t getOpCode() const { return word[0] &amp; 0xFFFF; }</span></span>
-<span id="L3212"><span class="lineNum">    3212</span> <span class="tlaGNC">           1 :         uint16_t getWordCountForInst() const { return (word[0] &gt;&gt; 16) &amp; 0xFFFF; }</span></span>
-<span id="L3213"><span class="lineNum">    3213</span> <span class="tlaGNC">           1 :         SpvWord getOperand(uint32_t index) const { return word[index + 1]; }</span></span>
-<span id="L3214"><span class="lineNum">    3214</span>              : </span>
-<span id="L3215"><span class="lineNum">    3215</span>              :         // Helper function to interpret the instruction as a string and</span>
-<span id="L3216"><span class="lineNum">    3216</span>              :         // extract the string value.</span>
-<span id="L3217"><span class="lineNum">    3217</span>              :         String getStringFromInst() const</span>
-<span id="L3218"><span class="lineNum">    3218</span> <span class="tlaGNC">           1 :         {</span></span>
-<span id="L3219"><span class="lineNum">    3219</span> <span class="tlaGNC">           1 :             String result;</span></span>
-<span id="L3220"><span class="lineNum">    3220</span> <span class="tlaGNC">           1 :             for (uint32_t i = 1; i &lt; getWordCountForInst(); i++)</span></span>
-<span id="L3221"><span class="lineNum">    3221</span>              :             {</span>
-<span id="L3222"><span class="lineNum">    3222</span> <span class="tlaGNC">           1 :                 SpvWord op = getOperand(i);</span></span>
-<span id="L3223"><span class="lineNum">    3223</span> <span class="tlaGNC">           1 :                 for (int b = 0; b &lt; 4; ++b)</span></span>
-<span id="L3224"><span class="lineNum">    3224</span>              :                 {</span>
-<span id="L3225"><span class="lineNum">    3225</span> <span class="tlaGNC">           1 :                     char c = (char)((op &gt;&gt; (b * 8)) &amp; 0xFF);</span></span>
-<span id="L3226"><span class="lineNum">    3226</span> <span class="tlaGNC">           1 :                     if (c == &#x27;\0&#x27;)</span></span>
-<span id="L3227"><span class="lineNum">    3227</span>              :                         return result;</span>
-<span id="L3228"><span class="lineNum">    3228</span> <span class="tlaGNC">           1 :                     result.append(c);</span></span>
-<span id="L3229"><span class="lineNum">    3229</span>              :                 }</span>
-<span id="L3230"><span class="lineNum">    3230</span>              :             }</span>
-<span id="L3231"><span class="lineNum">    3231</span>              :             return result;</span>
-<span id="L3232"><span class="lineNum">    3232</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L3233"><span class="lineNum">    3233</span>              : </span>
-<span id="L3234"><span class="lineNum">    3234</span>              :         SpvWord* word = nullptr;</span>
-<span id="L3235"><span class="lineNum">    3235</span>              :     };</span>
+<span id="L3173"><span class="lineNum">    3173</span> <span class="tlaGNC">           1 :         artifact-&gt;addAssociated(sourceMapArtifact);</span></span>
+<span id="L3174"><span class="lineNum">    3174</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L3175"><span class="lineNum">    3175</span>              : </span>
+<span id="L3176"><span class="lineNum">    3176</span> <span class="tlaGNC">           1 :     outArtifact.swap(artifact);</span></span>
+<span id="L3177"><span class="lineNum">    3177</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L3178"><span class="lineNum">    3178</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3179"><span class="lineNum">    3179</span>              : </span>
+<span id="L3180"><span class="lineNum">    3180</span>              : SlangResult emitSPIRVFromIR(</span>
+<span id="L3181"><span class="lineNum">    3181</span>              :     CodeGenContext* codeGenContext,</span>
+<span id="L3182"><span class="lineNum">    3182</span>              :     IRModule* irModule,</span>
+<span id="L3183"><span class="lineNum">    3183</span>              :     const List&lt;IRFunc*&gt;&amp; irEntryPoints,</span>
+<span id="L3184"><span class="lineNum">    3184</span>              :     List&lt;uint8_t&gt;&amp; spirvOut);</span>
+<span id="L3185"><span class="lineNum">    3185</span>              : </span>
+<span id="L3186"><span class="lineNum">    3186</span>              : // Helper class to assist in stepping through the SPIRV instructions.</span>
+<span id="L3187"><span class="lineNum">    3187</span>              : class SpirvInstructionHelper</span>
+<span id="L3188"><span class="lineNum">    3188</span>              : {</span>
+<span id="L3189"><span class="lineNum">    3189</span>              : public:</span>
+<span id="L3190"><span class="lineNum">    3190</span>              :     // The result id of the OpExtInstImport instruction, eg.g %2 below</span>
+<span id="L3191"><span class="lineNum">    3191</span>              :     // %2 = OpExtInstImport &quot;NonSemantic.Shader.DebugInfo.100&quot;</span>
+<span id="L3192"><span class="lineNum">    3192</span> <span class="tlaGNC">           1 :     uint32_t m_nonSemanticDebugInfoExtSetId = 0;</span></span>
+<span id="L3193"><span class="lineNum">    3193</span>              : </span>
+<span id="L3194"><span class="lineNum">    3194</span>              :     // The index of the SPIRV words in the blob.</span>
+<span id="L3195"><span class="lineNum">    3195</span>              :     // The first 5 words are the header as defined by the SPIRV spec.</span>
+<span id="L3196"><span class="lineNum">    3196</span>              :     enum SpvWordIndex</span>
+<span id="L3197"><span class="lineNum">    3197</span>              :     {</span>
+<span id="L3198"><span class="lineNum">    3198</span>              :         SPV_INDEX_MAGIC_NUMBER,</span>
+<span id="L3199"><span class="lineNum">    3199</span>              :         SPV_INDEX_VERSION_NUMBER,</span>
+<span id="L3200"><span class="lineNum">    3200</span>              :         SPV_INDEX_GENERATOR_NUMBER,</span>
+<span id="L3201"><span class="lineNum">    3201</span>              :         SPV_INDEX_BOUND,</span>
+<span id="L3202"><span class="lineNum">    3202</span>              :         SPV_INDEX_SCHEMA,</span>
+<span id="L3203"><span class="lineNum">    3203</span>              :         SPV_INDEX_INSTRUCTION_START,</span>
+<span id="L3204"><span class="lineNum">    3204</span>              :     };</span>
+<span id="L3205"><span class="lineNum">    3205</span>              : </span>
+<span id="L3206"><span class="lineNum">    3206</span>              :     // An instruction in the SPIRV blob. This points to the first word of the instruction.</span>
+<span id="L3207"><span class="lineNum">    3207</span>              :     struct SpvInstruction</span>
+<span id="L3208"><span class="lineNum">    3208</span>              :     {</span>
+<span id="L3209"><span class="lineNum">    3209</span>              :         SpvInstruction(SpvWord* word)</span>
+<span id="L3210"><span class="lineNum">    3210</span> <span class="tlaGNC">           1 :             : word(word)</span></span>
+<span id="L3211"><span class="lineNum">    3211</span> <span class="tlaGNC">           1 :         {</span></span>
+<span id="L3212"><span class="lineNum">    3212</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L3213"><span class="lineNum">    3213</span>              : </span>
+<span id="L3214"><span class="lineNum">    3214</span> <span class="tlaGNC">           1 :         uint16_t getOpCode() const { return word[0] &amp; 0xFFFF; }</span></span>
+<span id="L3215"><span class="lineNum">    3215</span> <span class="tlaGNC">           1 :         uint16_t getWordCountForInst() const { return (word[0] &gt;&gt; 16) &amp; 0xFFFF; }</span></span>
+<span id="L3216"><span class="lineNum">    3216</span> <span class="tlaGNC">           1 :         SpvWord getOperand(uint32_t index) const { return word[index + 1]; }</span></span>
+<span id="L3217"><span class="lineNum">    3217</span>              : </span>
+<span id="L3218"><span class="lineNum">    3218</span>              :         // Helper function to interpret the instruction as a string and</span>
+<span id="L3219"><span class="lineNum">    3219</span>              :         // extract the string value.</span>
+<span id="L3220"><span class="lineNum">    3220</span>              :         String getStringFromInst() const</span>
+<span id="L3221"><span class="lineNum">    3221</span> <span class="tlaGNC">           1 :         {</span></span>
+<span id="L3222"><span class="lineNum">    3222</span> <span class="tlaGNC">           1 :             String result;</span></span>
+<span id="L3223"><span class="lineNum">    3223</span> <span class="tlaGNC">           1 :             for (uint32_t i = 1; i &lt; getWordCountForInst(); i++)</span></span>
+<span id="L3224"><span class="lineNum">    3224</span>              :             {</span>
+<span id="L3225"><span class="lineNum">    3225</span> <span class="tlaGNC">           1 :                 SpvWord op = getOperand(i);</span></span>
+<span id="L3226"><span class="lineNum">    3226</span> <span class="tlaGNC">           1 :                 for (int b = 0; b &lt; 4; ++b)</span></span>
+<span id="L3227"><span class="lineNum">    3227</span>              :                 {</span>
+<span id="L3228"><span class="lineNum">    3228</span> <span class="tlaGNC">           1 :                     char c = (char)((op &gt;&gt; (b * 8)) &amp; 0xFF);</span></span>
+<span id="L3229"><span class="lineNum">    3229</span> <span class="tlaGNC">           1 :                     if (c == &#x27;\0&#x27;)</span></span>
+<span id="L3230"><span class="lineNum">    3230</span>              :                         return result;</span>
+<span id="L3231"><span class="lineNum">    3231</span> <span class="tlaGNC">           1 :                     result.append(c);</span></span>
+<span id="L3232"><span class="lineNum">    3232</span>              :                 }</span>
+<span id="L3233"><span class="lineNum">    3233</span>              :             }</span>
+<span id="L3234"><span class="lineNum">    3234</span>              :             return result;</span>
+<span id="L3235"><span class="lineNum">    3235</span> <span class="tlaGNC">           1 :         }</span></span>
 <span id="L3236"><span class="lineNum">    3236</span>              : </span>
-<span id="L3237"><span class="lineNum">    3237</span> <span class="tlaGNC">           1 :     SpirvInstructionHelper() {}</span></span>
-<span id="L3238"><span class="lineNum">    3238</span>              : </span>
-<span id="L3239"><span class="lineNum">    3239</span>              :     // Load the SPIRV instructions from the artifact into a data blob that</span>
-<span id="L3240"><span class="lineNum">    3240</span>              :     // we can read.</span>
-<span id="L3241"><span class="lineNum">    3241</span>              :     SlangResult loadBlob(ComPtr&lt;IArtifact&gt;&amp; artifact)</span>
-<span id="L3242"><span class="lineNum">    3242</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L3243"><span class="lineNum">    3243</span> <span class="tlaGNC">           1 :         m_nonSemanticDebugInfoExtSetId = 0;</span></span>
-<span id="L3244"><span class="lineNum">    3244</span> <span class="tlaGNC">           1 :         m_words.clear();</span></span>
-<span id="L3245"><span class="lineNum">    3245</span> <span class="tlaGNC">           1 :         m_headerWords.clear();</span></span>
-<span id="L3246"><span class="lineNum">    3246</span>              : </span>
-<span id="L3247"><span class="lineNum">    3247</span> <span class="tlaGNC">           1 :         ComPtr&lt;ISlangBlob&gt; spirvBlob;</span></span>
-<span id="L3248"><span class="lineNum">    3248</span> <span class="tlaGNC">           1 :         SlangResult res = artifact-&gt;loadBlob(ArtifactKeep::Yes, spirvBlob.writeRef());</span></span>
-<span id="L3249"><span class="lineNum">    3249</span> <span class="tlaGNC">           1 :         if (SLANG_FAILED(res) || !spirvBlob ||</span></span>
-<span id="L3250"><span class="lineNum">    3250</span>              :             spirvBlob-&gt;getBufferSize() &lt; SPV_INDEX_INSTRUCTION_START * sizeof(SpvWord))</span>
-<span id="L3251"><span class="lineNum">    3251</span>              :             return SLANG_FAIL;</span>
-<span id="L3252"><span class="lineNum">    3252</span>              : </span>
-<span id="L3253"><span class="lineNum">    3253</span>              :         // Populate the full array of SPIR-V words.</span>
-<span id="L3254"><span class="lineNum">    3254</span> <span class="tlaGNC">           1 :         m_words.addRange(</span></span>
-<span id="L3255"><span class="lineNum">    3255</span>              :             reinterpret_cast&lt;const SpvWord*&gt;(spirvBlob-&gt;getBufferPointer()),</span>
-<span id="L3256"><span class="lineNum">    3256</span>              :             spirvBlob-&gt;getBufferSize() / sizeof(SpvWord));</span>
-<span id="L3257"><span class="lineNum">    3257</span>              : </span>
-<span id="L3258"><span class="lineNum">    3258</span>              :         // Populate the header words. These are the first 5 words of the SPIR-V</span>
-<span id="L3259"><span class="lineNum">    3259</span>              :         // blob and are treated differently from the rest of the instructions.</span>
-<span id="L3260"><span class="lineNum">    3260</span> <span class="tlaGNC">           1 :         m_headerWords.clear();</span></span>
-<span id="L3261"><span class="lineNum">    3261</span> <span class="tlaGNC">           1 :         m_headerWords.addRange(m_words.getBuffer(), SPV_INDEX_INSTRUCTION_START);</span></span>
-<span id="L3262"><span class="lineNum">    3262</span>              : </span>
-<span id="L3263"><span class="lineNum">    3263</span> <span class="tlaGNC">           1 :         return SLANG_OK;</span></span>
-<span id="L3264"><span class="lineNum">    3264</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L3237"><span class="lineNum">    3237</span>              :         SpvWord* word = nullptr;</span>
+<span id="L3238"><span class="lineNum">    3238</span>              :     };</span>
+<span id="L3239"><span class="lineNum">    3239</span>              : </span>
+<span id="L3240"><span class="lineNum">    3240</span> <span class="tlaGNC">           1 :     SpirvInstructionHelper() {}</span></span>
+<span id="L3241"><span class="lineNum">    3241</span>              : </span>
+<span id="L3242"><span class="lineNum">    3242</span>              :     // Load the SPIRV instructions from the artifact into a data blob that</span>
+<span id="L3243"><span class="lineNum">    3243</span>              :     // we can read.</span>
+<span id="L3244"><span class="lineNum">    3244</span>              :     SlangResult loadBlob(ComPtr&lt;IArtifact&gt;&amp; artifact)</span>
+<span id="L3245"><span class="lineNum">    3245</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L3246"><span class="lineNum">    3246</span> <span class="tlaGNC">           1 :         m_nonSemanticDebugInfoExtSetId = 0;</span></span>
+<span id="L3247"><span class="lineNum">    3247</span> <span class="tlaGNC">           1 :         m_words.clear();</span></span>
+<span id="L3248"><span class="lineNum">    3248</span> <span class="tlaGNC">           1 :         m_headerWords.clear();</span></span>
+<span id="L3249"><span class="lineNum">    3249</span>              : </span>
+<span id="L3250"><span class="lineNum">    3250</span> <span class="tlaGNC">           1 :         ComPtr&lt;ISlangBlob&gt; spirvBlob;</span></span>
+<span id="L3251"><span class="lineNum">    3251</span> <span class="tlaGNC">           1 :         SlangResult res = artifact-&gt;loadBlob(ArtifactKeep::Yes, spirvBlob.writeRef());</span></span>
+<span id="L3252"><span class="lineNum">    3252</span> <span class="tlaGNC">           1 :         if (SLANG_FAILED(res) || !spirvBlob ||</span></span>
+<span id="L3253"><span class="lineNum">    3253</span>              :             spirvBlob-&gt;getBufferSize() &lt; SPV_INDEX_INSTRUCTION_START * sizeof(SpvWord))</span>
+<span id="L3254"><span class="lineNum">    3254</span>              :             return SLANG_FAIL;</span>
+<span id="L3255"><span class="lineNum">    3255</span>              : </span>
+<span id="L3256"><span class="lineNum">    3256</span>              :         // Populate the full array of SPIR-V words.</span>
+<span id="L3257"><span class="lineNum">    3257</span> <span class="tlaGNC">           1 :         m_words.addRange(</span></span>
+<span id="L3258"><span class="lineNum">    3258</span>              :             reinterpret_cast&lt;const SpvWord*&gt;(spirvBlob-&gt;getBufferPointer()),</span>
+<span id="L3259"><span class="lineNum">    3259</span>              :             spirvBlob-&gt;getBufferSize() / sizeof(SpvWord));</span>
+<span id="L3260"><span class="lineNum">    3260</span>              : </span>
+<span id="L3261"><span class="lineNum">    3261</span>              :         // Populate the header words. These are the first 5 words of the SPIR-V</span>
+<span id="L3262"><span class="lineNum">    3262</span>              :         // blob and are treated differently from the rest of the instructions.</span>
+<span id="L3263"><span class="lineNum">    3263</span> <span class="tlaGNC">           1 :         m_headerWords.clear();</span></span>
+<span id="L3264"><span class="lineNum">    3264</span> <span class="tlaGNC">           1 :         m_headerWords.addRange(m_words.getBuffer(), SPV_INDEX_INSTRUCTION_START);</span></span>
 <span id="L3265"><span class="lineNum">    3265</span>              : </span>
-<span id="L3266"><span class="lineNum">    3266</span>              :     // Get the header words.</span>
-<span id="L3267"><span class="lineNum">    3267</span> <span class="tlaGNC">           1 :     const List&lt;SpvWord&gt;&amp; getHeaderWords() const { return m_headerWords; }</span></span>
+<span id="L3266"><span class="lineNum">    3266</span> <span class="tlaGNC">           1 :         return SLANG_OK;</span></span>
+<span id="L3267"><span class="lineNum">    3267</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L3268"><span class="lineNum">    3268</span>              : </span>
-<span id="L3269"><span class="lineNum">    3269</span> <span class="tlaGNC">           1 :     Index getWordCount() const { return m_words.getCount(); }</span></span>
-<span id="L3270"><span class="lineNum">    3270</span>              : </span>
-<span id="L3271"><span class="lineNum">    3271</span>              :     // Visit all SPIRV instructions (excluding header words), invoking the callback for each</span>
-<span id="L3272"><span class="lineNum">    3272</span>              :     // instruction. The callback should be a function or lambda with signature: void(const</span>
-<span id="L3273"><span class="lineNum">    3273</span>              :     // SpvInstruction&amp;).</span>
-<span id="L3274"><span class="lineNum">    3274</span>              :     template&lt;typename Func&gt;</span>
-<span id="L3275"><span class="lineNum">    3275</span>              :     void visitInstructions(Func&amp;&amp; callback)</span>
-<span id="L3276"><span class="lineNum">    3276</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L3277"><span class="lineNum">    3277</span>              :         // Instructions start after the header (first 5 words)</span>
-<span id="L3278"><span class="lineNum">    3278</span>              :         constexpr size_t kHeaderWordCount =</span>
-<span id="L3279"><span class="lineNum">    3279</span>              :             static_cast&lt;size_t&gt;(SpvWordIndex::SPV_INDEX_INSTRUCTION_START);</span>
-<span id="L3280"><span class="lineNum">    3280</span>              :         size_t i = kHeaderWordCount;</span>
-<span id="L3281"><span class="lineNum">    3281</span> <span class="tlaGNC">           1 :         while (i &lt; (size_t)m_words.getCount())</span></span>
-<span id="L3282"><span class="lineNum">    3282</span>              :         {</span>
-<span id="L3283"><span class="lineNum">    3283</span> <span class="tlaGNC">           1 :             SpvWord* wordPtr = m_words.getBuffer() + i;</span></span>
-<span id="L3284"><span class="lineNum">    3284</span> <span class="tlaGNC">           1 :             SpvInstruction inst(wordPtr);</span></span>
-<span id="L3285"><span class="lineNum">    3285</span> <span class="tlaGNC">           1 :             callback(inst);</span></span>
-<span id="L3286"><span class="lineNum">    3286</span> <span class="tlaGNC">           1 :             uint16_t wordCount = inst.getWordCountForInst();</span></span>
-<span id="L3287"><span class="lineNum">    3287</span> <span class="tlaGNC">           1 :             if (wordCount == 0)</span></span>
-<span id="L3288"><span class="lineNum">    3288</span>              :                 break; // Prevent infinite loop on malformed input</span>
-<span id="L3289"><span class="lineNum">    3289</span> <span class="tlaGNC">           1 :             i += wordCount;</span></span>
-<span id="L3290"><span class="lineNum">    3290</span>              :         }</span>
-<span id="L3291"><span class="lineNum">    3291</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L3292"><span class="lineNum">    3292</span>              : </span>
-<span id="L3293"><span class="lineNum">    3293</span>              : private:</span>
-<span id="L3294"><span class="lineNum">    3294</span>              :     // The full array of SPIRV words.</span>
-<span id="L3295"><span class="lineNum">    3295</span>              :     List&lt;SpvWord&gt; m_words;</span>
-<span id="L3296"><span class="lineNum">    3296</span>              : </span>
-<span id="L3297"><span class="lineNum">    3297</span>              :     // The header words.</span>
-<span id="L3298"><span class="lineNum">    3298</span>              :     List&lt;SpvWord&gt; m_headerWords;</span>
-<span id="L3299"><span class="lineNum">    3299</span>              : };</span>
-<span id="L3300"><span class="lineNum">    3300</span>              : </span>
-<span id="L3301"><span class="lineNum">    3301</span>              : // Helper function that takes an artifact populated with SPIRV instructions</span>
-<span id="L3302"><span class="lineNum">    3302</span>              : // after the spirv-opt step, and a previously created but empty</span>
-<span id="L3303"><span class="lineNum">    3303</span>              : // strippedArtifact. The artifact is unmodified, and the strippedArtifact</span>
-<span id="L3304"><span class="lineNum">    3304</span>              : // will contain all the artifact&#x27;s instructions except for debug instructions.</span>
-<span id="L3305"><span class="lineNum">    3305</span>              : static SlangResult stripDbgSpirvFromArtifact(</span>
-<span id="L3306"><span class="lineNum">    3306</span>              :     ComPtr&lt;IArtifact&gt;&amp; artifact,</span>
-<span id="L3307"><span class="lineNum">    3307</span>              :     ComPtr&lt;IArtifact&gt;&amp; strippedArtifact)</span>
-<span id="L3308"><span class="lineNum">    3308</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3309"><span class="lineNum">    3309</span>              :     // Standard debug opcodes to strip out. This mimics the behavior of</span>
-<span id="L3310"><span class="lineNum">    3310</span>              :     // spirv-opt.</span>
-<span id="L3311"><span class="lineNum">    3311</span>              :     static const uint16_t debugOpCodeVals[] = {</span>
-<span id="L3312"><span class="lineNum">    3312</span>              :         SpvOpSourceContinued,</span>
-<span id="L3313"><span class="lineNum">    3313</span>              :         SpvOpSource,</span>
-<span id="L3314"><span class="lineNum">    3314</span>              :         SpvOpSourceExtension,</span>
-<span id="L3315"><span class="lineNum">    3315</span>              :         SpvOpString,</span>
-<span id="L3316"><span class="lineNum">    3316</span>              :         SpvOpName,</span>
-<span id="L3317"><span class="lineNum">    3317</span>              :         SpvOpMemberName,</span>
-<span id="L3318"><span class="lineNum">    3318</span>              :         SpvOpModuleProcessed,</span>
-<span id="L3319"><span class="lineNum">    3319</span>              :         SpvOpLine,</span>
-<span id="L3320"><span class="lineNum">    3320</span>              :         SpvOpNoLine};</span>
-<span id="L3321"><span class="lineNum">    3321</span>              :     // If the instruction is an extended instruction, then we also need</span>
-<span id="L3322"><span class="lineNum">    3322</span>              :     // to check if the instruction number is for a debug instruction as</span>
-<span id="L3323"><span class="lineNum">    3323</span>              :     // listed in slang-emit-spirv-ops-debug-info-ext.h</span>
-<span id="L3324"><span class="lineNum">    3324</span>              :     static const uint32_t debugExtInstVals[] = {</span>
-<span id="L3325"><span class="lineNum">    3325</span>              :         NonSemanticShaderDebugInfo100DebugInfoNone,</span>
-<span id="L3326"><span class="lineNum">    3326</span>              :         NonSemanticShaderDebugInfo100DebugCompilationUnit,</span>
-<span id="L3327"><span class="lineNum">    3327</span>              :         NonSemanticShaderDebugInfo100DebugTypeBasic,</span>
-<span id="L3328"><span class="lineNum">    3328</span>              :         NonSemanticShaderDebugInfo100DebugTypePointer,</span>
-<span id="L3329"><span class="lineNum">    3329</span>              :         NonSemanticShaderDebugInfo100DebugTypeQualifier,</span>
-<span id="L3330"><span class="lineNum">    3330</span>              :         NonSemanticShaderDebugInfo100DebugTypeArray,</span>
-<span id="L3331"><span class="lineNum">    3331</span>              :         NonSemanticShaderDebugInfo100DebugTypeVector,</span>
-<span id="L3332"><span class="lineNum">    3332</span>              :         NonSemanticShaderDebugInfo100DebugTypeFunction,</span>
-<span id="L3333"><span class="lineNum">    3333</span>              :         NonSemanticShaderDebugInfo100DebugTypeComposite,</span>
-<span id="L3334"><span class="lineNum">    3334</span>              :         NonSemanticShaderDebugInfo100DebugTypeMember,</span>
-<span id="L3335"><span class="lineNum">    3335</span>              :         NonSemanticShaderDebugInfo100DebugFunction,</span>
-<span id="L3336"><span class="lineNum">    3336</span>              :         NonSemanticShaderDebugInfo100DebugLexicalBlock,</span>
-<span id="L3337"><span class="lineNum">    3337</span>              :         NonSemanticShaderDebugInfo100DebugScope,</span>
-<span id="L3338"><span class="lineNum">    3338</span>              :         NonSemanticShaderDebugInfo100DebugNoScope,</span>
-<span id="L3339"><span class="lineNum">    3339</span>              :         NonSemanticShaderDebugInfo100DebugInlinedAt,</span>
-<span id="L3340"><span class="lineNum">    3340</span>              :         NonSemanticShaderDebugInfo100DebugLocalVariable,</span>
-<span id="L3341"><span class="lineNum">    3341</span>              :         NonSemanticShaderDebugInfo100DebugGlobalVariable,</span>
-<span id="L3342"><span class="lineNum">    3342</span>              :         NonSemanticShaderDebugInfo100DebugInlinedVariable,</span>
-<span id="L3343"><span class="lineNum">    3343</span>              :         NonSemanticShaderDebugInfo100DebugDeclare,</span>
-<span id="L3344"><span class="lineNum">    3344</span>              :         NonSemanticShaderDebugInfo100DebugValue,</span>
-<span id="L3345"><span class="lineNum">    3345</span>              :         NonSemanticShaderDebugInfo100DebugExpression,</span>
-<span id="L3346"><span class="lineNum">    3346</span>              :         NonSemanticShaderDebugInfo100DebugSource,</span>
-<span id="L3347"><span class="lineNum">    3347</span>              :         NonSemanticShaderDebugInfo100DebugFunctionDefinition,</span>
-<span id="L3348"><span class="lineNum">    3348</span>              :         NonSemanticShaderDebugInfo100DebugSourceContinued,</span>
-<span id="L3349"><span class="lineNum">    3349</span>              :         NonSemanticShaderDebugInfo100DebugLine,</span>
-<span id="L3350"><span class="lineNum">    3350</span>              :         NonSemanticShaderDebugInfo100DebugEntryPoint,</span>
-<span id="L3351"><span class="lineNum">    3351</span>              :         NonSemanticShaderDebugInfo100DebugTypeMatrix,</span>
-<span id="L3352"><span class="lineNum">    3352</span>              :     };</span>
-<span id="L3353"><span class="lineNum">    3353</span>              : </span>
-<span id="L3354"><span class="lineNum">    3354</span>              :     // Hash sets for easier lookup.</span>
-<span id="L3355"><span class="lineNum">    3355</span> <span class="tlaGNC">           1 :     HashSet&lt;uint16_t&gt; debugOpCodes;</span></span>
-<span id="L3356"><span class="lineNum">    3356</span> <span class="tlaGNC">           1 :     for (auto val : debugOpCodeVals)</span></span>
-<span id="L3357"><span class="lineNum">    3357</span> <span class="tlaGNC">           1 :         debugOpCodes.add(val);</span></span>
-<span id="L3358"><span class="lineNum">    3358</span> <span class="tlaGNC">           1 :     HashSet&lt;uint32_t&gt; debugExtInstNumbers;</span></span>
-<span id="L3359"><span class="lineNum">    3359</span> <span class="tlaGNC">           1 :     for (auto val : debugExtInstVals)</span></span>
-<span id="L3360"><span class="lineNum">    3360</span> <span class="tlaGNC">           1 :         debugExtInstNumbers.add(val);</span></span>
-<span id="L3361"><span class="lineNum">    3361</span>              : </span>
-<span id="L3362"><span class="lineNum">    3362</span> <span class="tlaGNC">           1 :     SpirvInstructionHelper spirvInstructionHelper;</span></span>
-<span id="L3363"><span class="lineNum">    3363</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(spirvInstructionHelper.loadBlob(artifact));</span></span>
+<span id="L3269"><span class="lineNum">    3269</span>              :     // Get the header words.</span>
+<span id="L3270"><span class="lineNum">    3270</span> <span class="tlaGNC">           1 :     const List&lt;SpvWord&gt;&amp; getHeaderWords() const { return m_headerWords; }</span></span>
+<span id="L3271"><span class="lineNum">    3271</span>              : </span>
+<span id="L3272"><span class="lineNum">    3272</span> <span class="tlaGNC">           1 :     Index getWordCount() const { return m_words.getCount(); }</span></span>
+<span id="L3273"><span class="lineNum">    3273</span>              : </span>
+<span id="L3274"><span class="lineNum">    3274</span>              :     // Visit all SPIRV instructions (excluding header words), invoking the callback for each</span>
+<span id="L3275"><span class="lineNum">    3275</span>              :     // instruction. The callback should be a function or lambda with signature: void(const</span>
+<span id="L3276"><span class="lineNum">    3276</span>              :     // SpvInstruction&amp;).</span>
+<span id="L3277"><span class="lineNum">    3277</span>              :     template&lt;typename Func&gt;</span>
+<span id="L3278"><span class="lineNum">    3278</span>              :     void visitInstructions(Func&amp;&amp; callback)</span>
+<span id="L3279"><span class="lineNum">    3279</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L3280"><span class="lineNum">    3280</span>              :         // Instructions start after the header (first 5 words)</span>
+<span id="L3281"><span class="lineNum">    3281</span>              :         constexpr size_t kHeaderWordCount =</span>
+<span id="L3282"><span class="lineNum">    3282</span>              :             static_cast&lt;size_t&gt;(SpvWordIndex::SPV_INDEX_INSTRUCTION_START);</span>
+<span id="L3283"><span class="lineNum">    3283</span>              :         size_t i = kHeaderWordCount;</span>
+<span id="L3284"><span class="lineNum">    3284</span> <span class="tlaGNC">           1 :         while (i &lt; (size_t)m_words.getCount())</span></span>
+<span id="L3285"><span class="lineNum">    3285</span>              :         {</span>
+<span id="L3286"><span class="lineNum">    3286</span> <span class="tlaGNC">           1 :             SpvWord* wordPtr = m_words.getBuffer() + i;</span></span>
+<span id="L3287"><span class="lineNum">    3287</span> <span class="tlaGNC">           1 :             SpvInstruction inst(wordPtr);</span></span>
+<span id="L3288"><span class="lineNum">    3288</span> <span class="tlaGNC">           1 :             callback(inst);</span></span>
+<span id="L3289"><span class="lineNum">    3289</span> <span class="tlaGNC">           1 :             uint16_t wordCount = inst.getWordCountForInst();</span></span>
+<span id="L3290"><span class="lineNum">    3290</span> <span class="tlaGNC">           1 :             if (wordCount == 0)</span></span>
+<span id="L3291"><span class="lineNum">    3291</span>              :                 break; // Prevent infinite loop on malformed input</span>
+<span id="L3292"><span class="lineNum">    3292</span> <span class="tlaGNC">           1 :             i += wordCount;</span></span>
+<span id="L3293"><span class="lineNum">    3293</span>              :         }</span>
+<span id="L3294"><span class="lineNum">    3294</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L3295"><span class="lineNum">    3295</span>              : </span>
+<span id="L3296"><span class="lineNum">    3296</span>              : private:</span>
+<span id="L3297"><span class="lineNum">    3297</span>              :     // The full array of SPIRV words.</span>
+<span id="L3298"><span class="lineNum">    3298</span>              :     List&lt;SpvWord&gt; m_words;</span>
+<span id="L3299"><span class="lineNum">    3299</span>              : </span>
+<span id="L3300"><span class="lineNum">    3300</span>              :     // The header words.</span>
+<span id="L3301"><span class="lineNum">    3301</span>              :     List&lt;SpvWord&gt; m_headerWords;</span>
+<span id="L3302"><span class="lineNum">    3302</span>              : };</span>
+<span id="L3303"><span class="lineNum">    3303</span>              : </span>
+<span id="L3304"><span class="lineNum">    3304</span>              : // Helper function that takes an artifact populated with SPIRV instructions</span>
+<span id="L3305"><span class="lineNum">    3305</span>              : // after the spirv-opt step, and a previously created but empty</span>
+<span id="L3306"><span class="lineNum">    3306</span>              : // strippedArtifact. The artifact is unmodified, and the strippedArtifact</span>
+<span id="L3307"><span class="lineNum">    3307</span>              : // will contain all the artifact&#x27;s instructions except for debug instructions.</span>
+<span id="L3308"><span class="lineNum">    3308</span>              : static SlangResult stripDbgSpirvFromArtifact(</span>
+<span id="L3309"><span class="lineNum">    3309</span>              :     ComPtr&lt;IArtifact&gt;&amp; artifact,</span>
+<span id="L3310"><span class="lineNum">    3310</span>              :     ComPtr&lt;IArtifact&gt;&amp; strippedArtifact)</span>
+<span id="L3311"><span class="lineNum">    3311</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3312"><span class="lineNum">    3312</span>              :     // Standard debug opcodes to strip out. This mimics the behavior of</span>
+<span id="L3313"><span class="lineNum">    3313</span>              :     // spirv-opt.</span>
+<span id="L3314"><span class="lineNum">    3314</span>              :     static const uint16_t debugOpCodeVals[] = {</span>
+<span id="L3315"><span class="lineNum">    3315</span>              :         SpvOpSourceContinued,</span>
+<span id="L3316"><span class="lineNum">    3316</span>              :         SpvOpSource,</span>
+<span id="L3317"><span class="lineNum">    3317</span>              :         SpvOpSourceExtension,</span>
+<span id="L3318"><span class="lineNum">    3318</span>              :         SpvOpString,</span>
+<span id="L3319"><span class="lineNum">    3319</span>              :         SpvOpName,</span>
+<span id="L3320"><span class="lineNum">    3320</span>              :         SpvOpMemberName,</span>
+<span id="L3321"><span class="lineNum">    3321</span>              :         SpvOpModuleProcessed,</span>
+<span id="L3322"><span class="lineNum">    3322</span>              :         SpvOpLine,</span>
+<span id="L3323"><span class="lineNum">    3323</span>              :         SpvOpNoLine};</span>
+<span id="L3324"><span class="lineNum">    3324</span>              :     // If the instruction is an extended instruction, then we also need</span>
+<span id="L3325"><span class="lineNum">    3325</span>              :     // to check if the instruction number is for a debug instruction as</span>
+<span id="L3326"><span class="lineNum">    3326</span>              :     // listed in slang-emit-spirv-ops-debug-info-ext.h</span>
+<span id="L3327"><span class="lineNum">    3327</span>              :     static const uint32_t debugExtInstVals[] = {</span>
+<span id="L3328"><span class="lineNum">    3328</span>              :         NonSemanticShaderDebugInfo100DebugInfoNone,</span>
+<span id="L3329"><span class="lineNum">    3329</span>              :         NonSemanticShaderDebugInfo100DebugCompilationUnit,</span>
+<span id="L3330"><span class="lineNum">    3330</span>              :         NonSemanticShaderDebugInfo100DebugTypeBasic,</span>
+<span id="L3331"><span class="lineNum">    3331</span>              :         NonSemanticShaderDebugInfo100DebugTypePointer,</span>
+<span id="L3332"><span class="lineNum">    3332</span>              :         NonSemanticShaderDebugInfo100DebugTypeQualifier,</span>
+<span id="L3333"><span class="lineNum">    3333</span>              :         NonSemanticShaderDebugInfo100DebugTypeArray,</span>
+<span id="L3334"><span class="lineNum">    3334</span>              :         NonSemanticShaderDebugInfo100DebugTypeVector,</span>
+<span id="L3335"><span class="lineNum">    3335</span>              :         NonSemanticShaderDebugInfo100DebugTypeFunction,</span>
+<span id="L3336"><span class="lineNum">    3336</span>              :         NonSemanticShaderDebugInfo100DebugTypeComposite,</span>
+<span id="L3337"><span class="lineNum">    3337</span>              :         NonSemanticShaderDebugInfo100DebugTypeMember,</span>
+<span id="L3338"><span class="lineNum">    3338</span>              :         NonSemanticShaderDebugInfo100DebugFunction,</span>
+<span id="L3339"><span class="lineNum">    3339</span>              :         NonSemanticShaderDebugInfo100DebugLexicalBlock,</span>
+<span id="L3340"><span class="lineNum">    3340</span>              :         NonSemanticShaderDebugInfo100DebugScope,</span>
+<span id="L3341"><span class="lineNum">    3341</span>              :         NonSemanticShaderDebugInfo100DebugNoScope,</span>
+<span id="L3342"><span class="lineNum">    3342</span>              :         NonSemanticShaderDebugInfo100DebugInlinedAt,</span>
+<span id="L3343"><span class="lineNum">    3343</span>              :         NonSemanticShaderDebugInfo100DebugLocalVariable,</span>
+<span id="L3344"><span class="lineNum">    3344</span>              :         NonSemanticShaderDebugInfo100DebugGlobalVariable,</span>
+<span id="L3345"><span class="lineNum">    3345</span>              :         NonSemanticShaderDebugInfo100DebugInlinedVariable,</span>
+<span id="L3346"><span class="lineNum">    3346</span>              :         NonSemanticShaderDebugInfo100DebugDeclare,</span>
+<span id="L3347"><span class="lineNum">    3347</span>              :         NonSemanticShaderDebugInfo100DebugValue,</span>
+<span id="L3348"><span class="lineNum">    3348</span>              :         NonSemanticShaderDebugInfo100DebugExpression,</span>
+<span id="L3349"><span class="lineNum">    3349</span>              :         NonSemanticShaderDebugInfo100DebugSource,</span>
+<span id="L3350"><span class="lineNum">    3350</span>              :         NonSemanticShaderDebugInfo100DebugFunctionDefinition,</span>
+<span id="L3351"><span class="lineNum">    3351</span>              :         NonSemanticShaderDebugInfo100DebugSourceContinued,</span>
+<span id="L3352"><span class="lineNum">    3352</span>              :         NonSemanticShaderDebugInfo100DebugLine,</span>
+<span id="L3353"><span class="lineNum">    3353</span>              :         NonSemanticShaderDebugInfo100DebugEntryPoint,</span>
+<span id="L3354"><span class="lineNum">    3354</span>              :         NonSemanticShaderDebugInfo100DebugTypeMatrix,</span>
+<span id="L3355"><span class="lineNum">    3355</span>              :     };</span>
+<span id="L3356"><span class="lineNum">    3356</span>              : </span>
+<span id="L3357"><span class="lineNum">    3357</span>              :     // Hash sets for easier lookup.</span>
+<span id="L3358"><span class="lineNum">    3358</span> <span class="tlaGNC">           1 :     HashSet&lt;uint16_t&gt; debugOpCodes;</span></span>
+<span id="L3359"><span class="lineNum">    3359</span> <span class="tlaGNC">           1 :     for (auto val : debugOpCodeVals)</span></span>
+<span id="L3360"><span class="lineNum">    3360</span> <span class="tlaGNC">           1 :         debugOpCodes.add(val);</span></span>
+<span id="L3361"><span class="lineNum">    3361</span> <span class="tlaGNC">           1 :     HashSet&lt;uint32_t&gt; debugExtInstNumbers;</span></span>
+<span id="L3362"><span class="lineNum">    3362</span> <span class="tlaGNC">           1 :     for (auto val : debugExtInstVals)</span></span>
+<span id="L3363"><span class="lineNum">    3363</span> <span class="tlaGNC">           1 :         debugExtInstNumbers.add(val);</span></span>
 <span id="L3364"><span class="lineNum">    3364</span>              : </span>
-<span id="L3365"><span class="lineNum">    3365</span> <span class="tlaGNC">           1 :     const auto&amp; headerWords = spirvInstructionHelper.getHeaderWords();</span></span>
-<span id="L3366"><span class="lineNum">    3366</span>              : </span>
-<span id="L3367"><span class="lineNum">    3367</span> <span class="tlaGNC">           1 :     List&lt;uint8_t&gt; spirvWordsList;</span></span>
-<span id="L3368"><span class="lineNum">    3368</span> <span class="tlaGNC">           1 :     if (auto totalWordCapacity = headerWords.getCount() + spirvInstructionHelper.getWordCount())</span></span>
-<span id="L3369"><span class="lineNum">    3369</span>              :     {</span>
-<span id="L3370"><span class="lineNum">    3370</span> <span class="tlaGNC">           1 :         const Index byteCapacity = totalWordCapacity * sizeof(SpvWord);</span></span>
-<span id="L3371"><span class="lineNum">    3371</span> <span class="tlaGNC">           1 :         spirvWordsList.reserve(byteCapacity);</span></span>
-<span id="L3372"><span class="lineNum">    3372</span>              :     }</span>
-<span id="L3373"><span class="lineNum">    3373</span>              : </span>
-<span id="L3374"><span class="lineNum">    3374</span> <span class="tlaGNC">           1 :     spirvWordsList.addRange(</span></span>
-<span id="L3375"><span class="lineNum">    3375</span>              :         reinterpret_cast&lt;const uint8_t*&gt;(headerWords.getBuffer()),</span>
-<span id="L3376"><span class="lineNum">    3376</span>              :         headerWords.getCount() * sizeof(SpvWord));</span>
-<span id="L3377"><span class="lineNum">    3377</span>              : </span>
-<span id="L3378"><span class="lineNum">    3378</span>              :     // First find the DebugBuildIdentifier instruction, and keep track of which string</span>
-<span id="L3379"><span class="lineNum">    3379</span>              :     // it refers to, this string needs to be kept in the final output.</span>
-<span id="L3380"><span class="lineNum">    3380</span> <span class="tlaGNC">           1 :     SpvWord debugStringId = 0;</span></span>
-<span id="L3381"><span class="lineNum">    3381</span> <span class="tlaGNC">           1 :     spirvInstructionHelper.visitInstructions(</span></span>
-<span id="L3382"><span class="lineNum">    3382</span> <span class="tlaGNC">           1 :         [&amp;](const SpirvInstructionHelper::SpvInstruction&amp; inst)</span></span>
-<span id="L3383"><span class="lineNum">    3383</span> <span class="tlaGNC">           1 :         {</span></span>
-<span id="L3384"><span class="lineNum">    3384</span> <span class="tlaGNC">           1 :             if (inst.getOpCode() == SpvOpExtInst)</span></span>
-<span id="L3385"><span class="lineNum">    3385</span>              :             {</span>
-<span id="L3386"><span class="lineNum">    3386</span> <span class="tlaGNC">           1 :                 if (inst.getOperand(3) == NonSemanticShaderDebugInfo100DebugBuildIdentifier)</span></span>
-<span id="L3387"><span class="lineNum">    3387</span>              :                 {</span>
-<span id="L3388"><span class="lineNum">    3388</span> <span class="tlaGNC">           1 :                     debugStringId = inst.getOperand(4);</span></span>
-<span id="L3389"><span class="lineNum">    3389</span>              :                     return;</span>
-<span id="L3390"><span class="lineNum">    3390</span>              :                 }</span>
-<span id="L3391"><span class="lineNum">    3391</span>              :             }</span>
-<span id="L3392"><span class="lineNum">    3392</span> <span class="tlaGNC">           1 :             else if (inst.getOpCode() == SpvOpExtInstImport)</span></span>
-<span id="L3393"><span class="lineNum">    3393</span>              :             {</span>
-<span id="L3394"><span class="lineNum">    3394</span>              :                 // looking for result id of &quot;OpExtInstImport &quot;NonSemantic.Shader.DebugInfo.100&quot;</span>
-<span id="L3395"><span class="lineNum">    3395</span> <span class="tlaGNC">           1 :                 auto importName = inst.getStringFromInst();</span></span>
-<span id="L3396"><span class="lineNum">    3396</span> <span class="tlaGNC">           1 :                 if (importName == &quot;NonSemantic.Shader.DebugInfo.100&quot;)</span></span>
-<span id="L3397"><span class="lineNum">    3397</span>              :                 {</span>
-<span id="L3398"><span class="lineNum">    3398</span> <span class="tlaGNC">           1 :                     spirvInstructionHelper.m_nonSemanticDebugInfoExtSetId = inst.getOperand(0);</span></span>
-<span id="L3399"><span class="lineNum">    3399</span>              :                 }</span>
-<span id="L3400"><span class="lineNum">    3400</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L3401"><span class="lineNum">    3401</span> <span class="tlaGNC">           1 :         });</span></span>
-<span id="L3402"><span class="lineNum">    3402</span>              : </span>
-<span id="L3403"><span class="lineNum">    3403</span>              :     // Iterate over the instructions from the artifact and add them to the list</span>
-<span id="L3404"><span class="lineNum">    3404</span>              :     // only if they are not debug instructions. We also get the debug build hash</span>
-<span id="L3405"><span class="lineNum">    3405</span>              :     // to use as the filename for the debug spirv file.</span>
-<span id="L3406"><span class="lineNum">    3406</span> <span class="tlaGNC">           1 :     String debugBuildHash;</span></span>
-<span id="L3407"><span class="lineNum">    3407</span> <span class="tlaGNC">           1 :     spirvInstructionHelper.visitInstructions(</span></span>
-<span id="L3408"><span class="lineNum">    3408</span> <span class="tlaGNC">           1 :         [&amp;](const SpirvInstructionHelper::SpvInstruction&amp; inst)</span></span>
-<span id="L3409"><span class="lineNum">    3409</span> <span class="tlaGNC">           1 :         {</span></span>
-<span id="L3410"><span class="lineNum">    3410</span> <span class="tlaGNC">           1 :             if (debugOpCodes.contains(inst.getOpCode()))</span></span>
-<span id="L3411"><span class="lineNum">    3411</span>              :             {</span>
-<span id="L3412"><span class="lineNum">    3412</span>              :                 // We can only strip strings if they are not being used by the</span>
-<span id="L3413"><span class="lineNum">    3413</span>              :                 // DebugBuildIdentifier instruction.</span>
-<span id="L3414"><span class="lineNum">    3414</span>              :                 bool foundDebugString = false;</span>
-<span id="L3415"><span class="lineNum">    3415</span> <span class="tlaGNC">           1 :                 if (inst.getOpCode() == SpvOpString &amp;&amp; inst.getOperand(0) == debugStringId)</span></span>
-<span id="L3416"><span class="lineNum">    3416</span>              :                 {</span>
-<span id="L3417"><span class="lineNum">    3417</span> <span class="tlaGNC">           1 :                     debugBuildHash = inst.getStringFromInst();</span></span>
-<span id="L3418"><span class="lineNum">    3418</span>              :                     foundDebugString = true;</span>
-<span id="L3419"><span class="lineNum">    3419</span>              :                 }</span>
-<span id="L3420"><span class="lineNum">    3420</span>              :                 if (!foundDebugString)</span>
-<span id="L3421"><span class="lineNum">    3421</span>              :                 {</span>
-<span id="L3422"><span class="lineNum">    3422</span>              :                     return;</span>
-<span id="L3423"><span class="lineNum">    3423</span>              :                 }</span>
-<span id="L3424"><span class="lineNum">    3424</span>              :             }</span>
-<span id="L3425"><span class="lineNum">    3425</span>              :             // Also check if the instruction is an extended instruction containing DebugInfo.</span>
-<span id="L3426"><span class="lineNum">    3426</span> <span class="tlaGNC">           1 :             if (inst.getOpCode() == SpvOpExtInst)</span></span>
-<span id="L3427"><span class="lineNum">    3427</span>              :             {</span>
-<span id="L3428"><span class="lineNum">    3428</span>              :                 // Ignore this if the instruction contains DebugInfo and is from the debug import</span>
-<span id="L3429"><span class="lineNum">    3429</span> <span class="tlaGNC">           1 :                 if (debugExtInstNumbers.contains(inst.getOperand(3)) &amp;&amp;</span></span>
-<span id="L3430"><span class="lineNum">    3430</span>              :                     inst.getOperand(2) == spirvInstructionHelper.m_nonSemanticDebugInfoExtSetId)</span>
-<span id="L3431"><span class="lineNum">    3431</span>              :                 {</span>
-<span id="L3432"><span class="lineNum">    3432</span>              :                     return;</span>
-<span id="L3433"><span class="lineNum">    3433</span>              :                 }</span>
-<span id="L3434"><span class="lineNum">    3434</span>              :             }</span>
-<span id="L3435"><span class="lineNum">    3435</span>              :             // Otherwise this is a non-debug instruction and should be included.</span>
-<span id="L3436"><span class="lineNum">    3436</span> <span class="tlaGNC">           1 :             spirvWordsList.addRange(</span></span>
-<span id="L3437"><span class="lineNum">    3437</span>              :                 reinterpret_cast&lt;const uint8_t*&gt;(inst.word),</span>
-<span id="L3438"><span class="lineNum">    3438</span>              :                 inst.getWordCountForInst() * sizeof(SpvWord));</span>
-<span id="L3439"><span class="lineNum">    3439</span> <span class="tlaGNC">           1 :         });</span></span>
-<span id="L3440"><span class="lineNum">    3440</span>              : </span>
-<span id="L3441"><span class="lineNum">    3441</span>              :     // Create the stripped artifact using the above created instruction list.</span>
-<span id="L3442"><span class="lineNum">    3442</span> <span class="tlaGNC">           1 :     strippedArtifact-&gt;addRepresentationUnknown(ListBlob::moveCreate(spirvWordsList));</span></span>
+<span id="L3365"><span class="lineNum">    3365</span> <span class="tlaGNC">           1 :     SpirvInstructionHelper spirvInstructionHelper;</span></span>
+<span id="L3366"><span class="lineNum">    3366</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(spirvInstructionHelper.loadBlob(artifact));</span></span>
+<span id="L3367"><span class="lineNum">    3367</span>              : </span>
+<span id="L3368"><span class="lineNum">    3368</span> <span class="tlaGNC">           1 :     const auto&amp; headerWords = spirvInstructionHelper.getHeaderWords();</span></span>
+<span id="L3369"><span class="lineNum">    3369</span>              : </span>
+<span id="L3370"><span class="lineNum">    3370</span> <span class="tlaGNC">           1 :     List&lt;uint8_t&gt; spirvWordsList;</span></span>
+<span id="L3371"><span class="lineNum">    3371</span> <span class="tlaGNC">           1 :     if (auto totalWordCapacity = headerWords.getCount() + spirvInstructionHelper.getWordCount())</span></span>
+<span id="L3372"><span class="lineNum">    3372</span>              :     {</span>
+<span id="L3373"><span class="lineNum">    3373</span> <span class="tlaGNC">           1 :         const Index byteCapacity = totalWordCapacity * sizeof(SpvWord);</span></span>
+<span id="L3374"><span class="lineNum">    3374</span> <span class="tlaGNC">           1 :         spirvWordsList.reserve(byteCapacity);</span></span>
+<span id="L3375"><span class="lineNum">    3375</span>              :     }</span>
+<span id="L3376"><span class="lineNum">    3376</span>              : </span>
+<span id="L3377"><span class="lineNum">    3377</span> <span class="tlaGNC">           1 :     spirvWordsList.addRange(</span></span>
+<span id="L3378"><span class="lineNum">    3378</span>              :         reinterpret_cast&lt;const uint8_t*&gt;(headerWords.getBuffer()),</span>
+<span id="L3379"><span class="lineNum">    3379</span>              :         headerWords.getCount() * sizeof(SpvWord));</span>
+<span id="L3380"><span class="lineNum">    3380</span>              : </span>
+<span id="L3381"><span class="lineNum">    3381</span>              :     // First find the DebugBuildIdentifier instruction, and keep track of which string</span>
+<span id="L3382"><span class="lineNum">    3382</span>              :     // it refers to, this string needs to be kept in the final output.</span>
+<span id="L3383"><span class="lineNum">    3383</span> <span class="tlaGNC">           1 :     SpvWord debugStringId = 0;</span></span>
+<span id="L3384"><span class="lineNum">    3384</span> <span class="tlaGNC">           1 :     spirvInstructionHelper.visitInstructions(</span></span>
+<span id="L3385"><span class="lineNum">    3385</span> <span class="tlaGNC">           1 :         [&amp;](const SpirvInstructionHelper::SpvInstruction&amp; inst)</span></span>
+<span id="L3386"><span class="lineNum">    3386</span> <span class="tlaGNC">           1 :         {</span></span>
+<span id="L3387"><span class="lineNum">    3387</span> <span class="tlaGNC">           1 :             if (inst.getOpCode() == SpvOpExtInst)</span></span>
+<span id="L3388"><span class="lineNum">    3388</span>              :             {</span>
+<span id="L3389"><span class="lineNum">    3389</span> <span class="tlaGNC">           1 :                 if (inst.getOperand(3) == NonSemanticShaderDebugInfo100DebugBuildIdentifier)</span></span>
+<span id="L3390"><span class="lineNum">    3390</span>              :                 {</span>
+<span id="L3391"><span class="lineNum">    3391</span> <span class="tlaGNC">           1 :                     debugStringId = inst.getOperand(4);</span></span>
+<span id="L3392"><span class="lineNum">    3392</span>              :                     return;</span>
+<span id="L3393"><span class="lineNum">    3393</span>              :                 }</span>
+<span id="L3394"><span class="lineNum">    3394</span>              :             }</span>
+<span id="L3395"><span class="lineNum">    3395</span> <span class="tlaGNC">           1 :             else if (inst.getOpCode() == SpvOpExtInstImport)</span></span>
+<span id="L3396"><span class="lineNum">    3396</span>              :             {</span>
+<span id="L3397"><span class="lineNum">    3397</span>              :                 // looking for result id of &quot;OpExtInstImport &quot;NonSemantic.Shader.DebugInfo.100&quot;</span>
+<span id="L3398"><span class="lineNum">    3398</span> <span class="tlaGNC">           1 :                 auto importName = inst.getStringFromInst();</span></span>
+<span id="L3399"><span class="lineNum">    3399</span> <span class="tlaGNC">           1 :                 if (importName == &quot;NonSemantic.Shader.DebugInfo.100&quot;)</span></span>
+<span id="L3400"><span class="lineNum">    3400</span>              :                 {</span>
+<span id="L3401"><span class="lineNum">    3401</span> <span class="tlaGNC">           1 :                     spirvInstructionHelper.m_nonSemanticDebugInfoExtSetId = inst.getOperand(0);</span></span>
+<span id="L3402"><span class="lineNum">    3402</span>              :                 }</span>
+<span id="L3403"><span class="lineNum">    3403</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L3404"><span class="lineNum">    3404</span> <span class="tlaGNC">           1 :         });</span></span>
+<span id="L3405"><span class="lineNum">    3405</span>              : </span>
+<span id="L3406"><span class="lineNum">    3406</span>              :     // Iterate over the instructions from the artifact and add them to the list</span>
+<span id="L3407"><span class="lineNum">    3407</span>              :     // only if they are not debug instructions. We also get the debug build hash</span>
+<span id="L3408"><span class="lineNum">    3408</span>              :     // to use as the filename for the debug spirv file.</span>
+<span id="L3409"><span class="lineNum">    3409</span> <span class="tlaGNC">           1 :     String debugBuildHash;</span></span>
+<span id="L3410"><span class="lineNum">    3410</span> <span class="tlaGNC">           1 :     spirvInstructionHelper.visitInstructions(</span></span>
+<span id="L3411"><span class="lineNum">    3411</span> <span class="tlaGNC">           1 :         [&amp;](const SpirvInstructionHelper::SpvInstruction&amp; inst)</span></span>
+<span id="L3412"><span class="lineNum">    3412</span> <span class="tlaGNC">           1 :         {</span></span>
+<span id="L3413"><span class="lineNum">    3413</span> <span class="tlaGNC">           1 :             if (debugOpCodes.contains(inst.getOpCode()))</span></span>
+<span id="L3414"><span class="lineNum">    3414</span>              :             {</span>
+<span id="L3415"><span class="lineNum">    3415</span>              :                 // We can only strip strings if they are not being used by the</span>
+<span id="L3416"><span class="lineNum">    3416</span>              :                 // DebugBuildIdentifier instruction.</span>
+<span id="L3417"><span class="lineNum">    3417</span>              :                 bool foundDebugString = false;</span>
+<span id="L3418"><span class="lineNum">    3418</span> <span class="tlaGNC">           1 :                 if (inst.getOpCode() == SpvOpString &amp;&amp; inst.getOperand(0) == debugStringId)</span></span>
+<span id="L3419"><span class="lineNum">    3419</span>              :                 {</span>
+<span id="L3420"><span class="lineNum">    3420</span> <span class="tlaGNC">           1 :                     debugBuildHash = inst.getStringFromInst();</span></span>
+<span id="L3421"><span class="lineNum">    3421</span>              :                     foundDebugString = true;</span>
+<span id="L3422"><span class="lineNum">    3422</span>              :                 }</span>
+<span id="L3423"><span class="lineNum">    3423</span>              :                 if (!foundDebugString)</span>
+<span id="L3424"><span class="lineNum">    3424</span>              :                 {</span>
+<span id="L3425"><span class="lineNum">    3425</span>              :                     return;</span>
+<span id="L3426"><span class="lineNum">    3426</span>              :                 }</span>
+<span id="L3427"><span class="lineNum">    3427</span>              :             }</span>
+<span id="L3428"><span class="lineNum">    3428</span>              :             // Also check if the instruction is an extended instruction containing DebugInfo.</span>
+<span id="L3429"><span class="lineNum">    3429</span> <span class="tlaGNC">           1 :             if (inst.getOpCode() == SpvOpExtInst)</span></span>
+<span id="L3430"><span class="lineNum">    3430</span>              :             {</span>
+<span id="L3431"><span class="lineNum">    3431</span>              :                 // Ignore this if the instruction contains DebugInfo and is from the debug import</span>
+<span id="L3432"><span class="lineNum">    3432</span> <span class="tlaGNC">           1 :                 if (debugExtInstNumbers.contains(inst.getOperand(3)) &amp;&amp;</span></span>
+<span id="L3433"><span class="lineNum">    3433</span>              :                     inst.getOperand(2) == spirvInstructionHelper.m_nonSemanticDebugInfoExtSetId)</span>
+<span id="L3434"><span class="lineNum">    3434</span>              :                 {</span>
+<span id="L3435"><span class="lineNum">    3435</span>              :                     return;</span>
+<span id="L3436"><span class="lineNum">    3436</span>              :                 }</span>
+<span id="L3437"><span class="lineNum">    3437</span>              :             }</span>
+<span id="L3438"><span class="lineNum">    3438</span>              :             // Otherwise this is a non-debug instruction and should be included.</span>
+<span id="L3439"><span class="lineNum">    3439</span> <span class="tlaGNC">           1 :             spirvWordsList.addRange(</span></span>
+<span id="L3440"><span class="lineNum">    3440</span>              :                 reinterpret_cast&lt;const uint8_t*&gt;(inst.word),</span>
+<span id="L3441"><span class="lineNum">    3441</span>              :                 inst.getWordCountForInst() * sizeof(SpvWord));</span>
+<span id="L3442"><span class="lineNum">    3442</span> <span class="tlaGNC">           1 :         });</span></span>
 <span id="L3443"><span class="lineNum">    3443</span>              : </span>
-<span id="L3444"><span class="lineNum">    3444</span>              :     // Set the name of the artifact to the debug build hash so it can be used</span>
-<span id="L3445"><span class="lineNum">    3445</span>              :     // as the filename for the debug spirv file.</span>
-<span id="L3446"><span class="lineNum">    3446</span> <span class="tlaGNC">           1 :     artifact-&gt;setName(debugBuildHash.getBuffer());</span></span>
-<span id="L3447"><span class="lineNum">    3447</span>              : </span>
-<span id="L3448"><span class="lineNum">    3448</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L3449"><span class="lineNum">    3449</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3444"><span class="lineNum">    3444</span>              :     // Create the stripped artifact using the above created instruction list.</span>
+<span id="L3445"><span class="lineNum">    3445</span> <span class="tlaGNC">           1 :     strippedArtifact-&gt;addRepresentationUnknown(ListBlob::moveCreate(spirvWordsList));</span></span>
+<span id="L3446"><span class="lineNum">    3446</span>              : </span>
+<span id="L3447"><span class="lineNum">    3447</span>              :     // Set the name of the artifact to the debug build hash so it can be used</span>
+<span id="L3448"><span class="lineNum">    3448</span>              :     // as the filename for the debug spirv file.</span>
+<span id="L3449"><span class="lineNum">    3449</span> <span class="tlaGNC">           1 :     artifact-&gt;setName(debugBuildHash.getBuffer());</span></span>
 <span id="L3450"><span class="lineNum">    3450</span>              : </span>
-<span id="L3451"><span class="lineNum">    3451</span>              : static bool shouldRunSPIRVValidation(CodeGenContext* codeGenContext)</span>
-<span id="L3452"><span class="lineNum">    3452</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3453"><span class="lineNum">    3453</span> <span class="tlaGNC">           1 :     auto&amp; optionSet = codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet();</span></span>
-<span id="L3454"><span class="lineNum">    3454</span>              : </span>
-<span id="L3455"><span class="lineNum">    3455</span>              :     // If the user requested to skip validation, or if we are generating an incomplete library</span>
-<span id="L3456"><span class="lineNum">    3456</span>              :     // containing linkage decorations (Vulkan validation rules doesn&#x27;t allow this), we skip</span>
-<span id="L3457"><span class="lineNum">    3457</span>              :     // validation.</span>
-<span id="L3458"><span class="lineNum">    3458</span> <span class="tlaGNC">           1 :     if (optionSet.getBoolOption(CompilerOptionName::SkipSPIRVValidation) ||</span></span>
-<span id="L3459"><span class="lineNum">    3459</span>              :         optionSet.getBoolOption(CompilerOptionName::IncompleteLibrary))</span>
-<span id="L3460"><span class="lineNum">    3460</span> <span class="tlaGNC">           1 :         return false;</span></span>
-<span id="L3461"><span class="lineNum">    3461</span>              : </span>
-<span id="L3462"><span class="lineNum">    3462</span>              :     // Also check the environment variable SLANG_RUN_SPIRV_VALIDATION.</span>
-<span id="L3463"><span class="lineNum">    3463</span>              :     // If it is set to &quot;1&quot;, we should run validation.</span>
-<span id="L3464"><span class="lineNum">    3464</span> <span class="tlaGNC">           1 :     StringBuilder runSpirvValEnvVar;</span></span>
-<span id="L3465"><span class="lineNum">    3465</span> <span class="tlaGNC">           1 :     PlatformUtil::getEnvironmentVariable(</span></span>
-<span id="L3466"><span class="lineNum">    3466</span>              :         UnownedStringSlice(&quot;SLANG_RUN_SPIRV_VALIDATION&quot;),</span>
-<span id="L3467"><span class="lineNum">    3467</span>              :         runSpirvValEnvVar);</span>
-<span id="L3468"><span class="lineNum">    3468</span> <span class="tlaGNC">           1 :     if (runSpirvValEnvVar.getUnownedSlice() == &quot;1&quot;)</span></span>
-<span id="L3469"><span class="lineNum">    3469</span>              :     {</span>
-<span id="L3470"><span class="lineNum">    3470</span>              :         return true;</span>
-<span id="L3471"><span class="lineNum">    3471</span>              :     }</span>
-<span id="L3472"><span class="lineNum">    3472</span>              : </span>
-<span id="L3473"><span class="lineNum">    3473</span> <span class="tlaGNC">           1 :     return false;</span></span>
-<span id="L3474"><span class="lineNum">    3474</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3451"><span class="lineNum">    3451</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L3452"><span class="lineNum">    3452</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3453"><span class="lineNum">    3453</span>              : </span>
+<span id="L3454"><span class="lineNum">    3454</span>              : static bool shouldRunSPIRVValidation(CodeGenContext* codeGenContext)</span>
+<span id="L3455"><span class="lineNum">    3455</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3456"><span class="lineNum">    3456</span> <span class="tlaGNC">           1 :     auto&amp; optionSet = codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet();</span></span>
+<span id="L3457"><span class="lineNum">    3457</span>              : </span>
+<span id="L3458"><span class="lineNum">    3458</span>              :     // If the user requested to skip validation, or if we are generating an incomplete library</span>
+<span id="L3459"><span class="lineNum">    3459</span>              :     // containing linkage decorations (Vulkan validation rules doesn&#x27;t allow this), we skip</span>
+<span id="L3460"><span class="lineNum">    3460</span>              :     // validation.</span>
+<span id="L3461"><span class="lineNum">    3461</span> <span class="tlaGNC">           1 :     if (optionSet.getBoolOption(CompilerOptionName::SkipSPIRVValidation) ||</span></span>
+<span id="L3462"><span class="lineNum">    3462</span>              :         optionSet.getBoolOption(CompilerOptionName::IncompleteLibrary))</span>
+<span id="L3463"><span class="lineNum">    3463</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L3464"><span class="lineNum">    3464</span>              : </span>
+<span id="L3465"><span class="lineNum">    3465</span>              :     // Also check the environment variable SLANG_RUN_SPIRV_VALIDATION.</span>
+<span id="L3466"><span class="lineNum">    3466</span>              :     // If it is set to &quot;1&quot;, we should run validation.</span>
+<span id="L3467"><span class="lineNum">    3467</span> <span class="tlaGNC">           1 :     StringBuilder runSpirvValEnvVar;</span></span>
+<span id="L3468"><span class="lineNum">    3468</span> <span class="tlaGNC">           1 :     PlatformUtil::getEnvironmentVariable(</span></span>
+<span id="L3469"><span class="lineNum">    3469</span>              :         UnownedStringSlice(&quot;SLANG_RUN_SPIRV_VALIDATION&quot;),</span>
+<span id="L3470"><span class="lineNum">    3470</span>              :         runSpirvValEnvVar);</span>
+<span id="L3471"><span class="lineNum">    3471</span> <span class="tlaGNC">           1 :     if (runSpirvValEnvVar.getUnownedSlice() == &quot;1&quot;)</span></span>
+<span id="L3472"><span class="lineNum">    3472</span>              :     {</span>
+<span id="L3473"><span class="lineNum">    3473</span>              :         return true;</span>
+<span id="L3474"><span class="lineNum">    3474</span>              :     }</span>
 <span id="L3475"><span class="lineNum">    3475</span>              : </span>
-<span id="L3476"><span class="lineNum">    3476</span>              : // Helper function to create an artifact from IR used internally by</span>
-<span id="L3477"><span class="lineNum">    3477</span>              : // emitSPIRVForEntryPointsDirectly.</span>
-<span id="L3478"><span class="lineNum">    3478</span>              : static SlangResult createArtifactFromIR(</span>
-<span id="L3479"><span class="lineNum">    3479</span>              :     CodeGenContext* codeGenContext,</span>
-<span id="L3480"><span class="lineNum">    3480</span>              :     IRModule* irModule,</span>
-<span id="L3481"><span class="lineNum">    3481</span>              :     List&lt;IRFunc*&gt; irEntryPoints,</span>
-<span id="L3482"><span class="lineNum">    3482</span>              :     ComPtr&lt;IArtifact&gt;&amp; artifact,</span>
-<span id="L3483"><span class="lineNum">    3483</span>              :     ComPtr&lt;IArtifact&gt;&amp; dbgArtifact)</span>
-<span id="L3484"><span class="lineNum">    3484</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3485"><span class="lineNum">    3485</span> <span class="tlaGNC">           1 :     List&lt;uint8_t&gt; spirv, outSpirv;</span></span>
-<span id="L3486"><span class="lineNum">    3486</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(emitSPIRVFromIR(codeGenContext, irModule, irEntryPoints, spirv));</span></span>
-<span id="L3487"><span class="lineNum">    3487</span>              : </span>
-<span id="L3488"><span class="lineNum">    3488</span>              :     // If SPIR-V emission reported any errors, do not continue with</span>
-<span id="L3489"><span class="lineNum">    3489</span>              :     // downstream linking/validation/optimization on partial output.</span>
-<span id="L3490"><span class="lineNum">    3490</span> <span class="tlaGNC">           1 :     if (codeGenContext-&gt;getSink()-&gt;getErrorCount() != 0)</span></span>
-<span id="L3491"><span class="lineNum">    3491</span>              :     {</span>
-<span id="L3492"><span class="lineNum">    3492</span>              :         return SLANG_FAIL;</span>
-<span id="L3493"><span class="lineNum">    3493</span>              :     }</span>
-<span id="L3494"><span class="lineNum">    3494</span>              : </span>
-<span id="L3495"><span class="lineNum">    3495</span> <span class="tlaGNC">           1 :     auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
-<span id="L3496"><span class="lineNum">    3496</span> <span class="tlaGNC">           1 :     auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
+<span id="L3476"><span class="lineNum">    3476</span> <span class="tlaGNC">           1 :     return false;</span></span>
+<span id="L3477"><span class="lineNum">    3477</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3478"><span class="lineNum">    3478</span>              : </span>
+<span id="L3479"><span class="lineNum">    3479</span>              : // Helper function to create an artifact from IR used internally by</span>
+<span id="L3480"><span class="lineNum">    3480</span>              : // emitSPIRVForEntryPointsDirectly.</span>
+<span id="L3481"><span class="lineNum">    3481</span>              : static SlangResult createArtifactFromIR(</span>
+<span id="L3482"><span class="lineNum">    3482</span>              :     CodeGenContext* codeGenContext,</span>
+<span id="L3483"><span class="lineNum">    3483</span>              :     IRModule* irModule,</span>
+<span id="L3484"><span class="lineNum">    3484</span>              :     List&lt;IRFunc*&gt; irEntryPoints,</span>
+<span id="L3485"><span class="lineNum">    3485</span>              :     ComPtr&lt;IArtifact&gt;&amp; artifact,</span>
+<span id="L3486"><span class="lineNum">    3486</span>              :     ComPtr&lt;IArtifact&gt;&amp; dbgArtifact)</span>
+<span id="L3487"><span class="lineNum">    3487</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3488"><span class="lineNum">    3488</span> <span class="tlaGNC">           1 :     List&lt;uint8_t&gt; spirv, outSpirv;</span></span>
+<span id="L3489"><span class="lineNum">    3489</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(emitSPIRVFromIR(codeGenContext, irModule, irEntryPoints, spirv));</span></span>
+<span id="L3490"><span class="lineNum">    3490</span>              : </span>
+<span id="L3491"><span class="lineNum">    3491</span>              :     // If SPIR-V emission reported any errors, do not continue with</span>
+<span id="L3492"><span class="lineNum">    3492</span>              :     // downstream linking/validation/optimization on partial output.</span>
+<span id="L3493"><span class="lineNum">    3493</span> <span class="tlaGNC">           1 :     if (codeGenContext-&gt;getSink()-&gt;getErrorCount() != 0)</span></span>
+<span id="L3494"><span class="lineNum">    3494</span>              :     {</span>
+<span id="L3495"><span class="lineNum">    3495</span>              :         return SLANG_FAIL;</span>
+<span id="L3496"><span class="lineNum">    3496</span>              :     }</span>
 <span id="L3497"><span class="lineNum">    3497</span>              : </span>
-<span id="L3498"><span class="lineNum">    3498</span>              : #if 0</span>
-<span id="L3499"><span class="lineNum">    3499</span>              :     String optErr;</span>
-<span id="L3500"><span class="lineNum">    3500</span>              :     if (SLANG_FAILED(optimizeSPIRV(spirv, optErr, outSpirv)))</span>
-<span id="L3501"><span class="lineNum">    3501</span>              :     {</span>
-<span id="L3502"><span class="lineNum">    3502</span>              :         codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::SpirvOptFailed{.error = optErr});</span>
-<span id="L3503"><span class="lineNum">    3503</span>              :         spirv = _Move(outSpirv);</span>
-<span id="L3504"><span class="lineNum">    3504</span>              :     }</span>
-<span id="L3505"><span class="lineNum">    3505</span>              : #endif</span>
-<span id="L3506"><span class="lineNum">    3506</span>              : </span>
-<span id="L3507"><span class="lineNum">    3507</span>              :     // Decide whether any downstream (slang-glslang / SPIRV-Tools) work is actually required</span>
-<span id="L3508"><span class="lineNum">    3508</span>              :     // for this artifact before paying the cost of loading the downstream compiler module.</span>
-<span id="L3509"><span class="lineNum">    3509</span>              :     //</span>
-<span id="L3510"><span class="lineNum">    3510</span>              :     // Slang emits and legalizes SPIR-V natively, so the natively emitted blob added above is</span>
-<span id="L3511"><span class="lineNum">    3511</span>              :     // already a complete, valid module. The downstream `slang-glslang` compiler is only needed</span>
-<span id="L3512"><span class="lineNum">    3512</span>              :     // to: (a) run the SPIRV-Tools optimizer when an optimization level above `None` is</span>
-<span id="L3513"><span class="lineNum">    3513</span>              :     // requested; (b) link multiple SPIR-V modules together when separately compiled / embedded</span>
-<span id="L3514"><span class="lineNum">    3514</span>              :     // downstream modules are present; (c) validate the result when SPIR-V validation is enabled;</span>
-<span id="L3515"><span class="lineNum">    3515</span>              :     // or (d) emit separate debug info, which is produced as a side effect of the downstream</span>
-<span id="L3516"><span class="lineNum">    3516</span>              :     // compile step. When none of these apply -- for example a single-module `-O0 -target spirv`</span>
-<span id="L3517"><span class="lineNum">    3517</span>              :     // compile -- the natively emitted SPIR-V is the final output, so we skip loading</span>
-<span id="L3518"><span class="lineNum">    3518</span>              :     // `slang-glslang` entirely and leave the artifact as-is. This keeps a default `-O0` SPIR-V</span>
-<span id="L3519"><span class="lineNum">    3519</span>              :     // compile free of any dependency on the `slang-glslang` module (issue #11662); without this</span>
-<span id="L3520"><span class="lineNum">    3520</span>              :     // gate the load was unconditional and a build without `slang-glslang` failed with E00100</span>
-<span id="L3521"><span class="lineNum">    3521</span>              :     // even though no downstream work was needed.</span>
-<span id="L3522"><span class="lineNum">    3522</span> <span class="tlaGNC">           1 :     bool isPrecompilation = codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L3523"><span class="lineNum">    3523</span>              :         CompilerOptionName::EmbedDownstreamIR);</span>
-<span id="L3524"><span class="lineNum">    3524</span>              : </span>
-<span id="L3525"><span class="lineNum">    3525</span>              :     // Collect the SPIR-V modules that would participate in a downstream link. This walks IR</span>
-<span id="L3526"><span class="lineNum">    3526</span>              :     // only (it does not need the downstream compiler), so it is safe to do before deciding</span>
-<span id="L3527"><span class="lineNum">    3527</span>              :     // whether to load that compiler, and we reuse the result for the link below.</span>
-<span id="L3528"><span class="lineNum">    3528</span> <span class="tlaGNC">           1 :     List&lt;uint32_t*&gt; spirvFiles;</span></span>
-<span id="L3529"><span class="lineNum">    3529</span> <span class="tlaGNC">           1 :     List&lt;uint32_t&gt; spirvSizes;</span></span>
-<span id="L3530"><span class="lineNum">    3530</span> <span class="tlaGNC">           1 :     const bool downstreamLinkingAllowed =</span></span>
-<span id="L3531"><span class="lineNum">    3531</span>              :         !isPrecompilation &amp;&amp; !codeGenContext-&gt;shouldSkipDownstreamLinking();</span>
-<span id="L3532"><span class="lineNum">    3532</span>              :     if (downstreamLinkingAllowed)</span>
-<span id="L3533"><span class="lineNum">    3533</span>              :     {</span>
-<span id="L3534"><span class="lineNum">    3534</span>              :         // Start with the SPIR-V we just generated.</span>
-<span id="L3535"><span class="lineNum">    3535</span>              :         // SPIRV-Tools-link expects the size in 32-bit words</span>
-<span id="L3536"><span class="lineNum">    3536</span>              :         // whereas the spirv blob size is in bytes.</span>
-<span id="L3537"><span class="lineNum">    3537</span> <span class="tlaGNC">           1 :         spirvFiles.add((uint32_t*)spirv.getBuffer());</span></span>
-<span id="L3538"><span class="lineNum">    3538</span> <span class="tlaGNC">           1 :         spirvSizes.add(int(spirv.getCount()) / 4);</span></span>
-<span id="L3539"><span class="lineNum">    3539</span>              : </span>
-<span id="L3540"><span class="lineNum">    3540</span>              :         // Iterate over all modules in the linkedIR. For each module, if it</span>
-<span id="L3541"><span class="lineNum">    3541</span>              :         // contains an embedded downstream ir instruction, add it to the list</span>
-<span id="L3542"><span class="lineNum">    3542</span>              :         // of spirv files.</span>
-<span id="L3543"><span class="lineNum">    3543</span> <span class="tlaGNC">           1 :         auto program = codeGenContext-&gt;getProgram();</span></span>
-<span id="L3544"><span class="lineNum">    3544</span>              : </span>
-<span id="L3545"><span class="lineNum">    3545</span> <span class="tlaGNC">           1 :         program-&gt;enumerateIRModules(</span></span>
-<span id="L3546"><span class="lineNum">    3546</span> <span class="tlaGNC">           1 :             [&amp;](IRModule* irModule)</span></span>
-<span id="L3547"><span class="lineNum">    3547</span> <span class="tlaGNC">           1 :             {</span></span>
-<span id="L3548"><span class="lineNum">    3548</span> <span class="tlaGNC">           1 :                 for (auto globalInst : irModule-&gt;getModuleInst()-&gt;getChildren())</span></span>
-<span id="L3549"><span class="lineNum">    3549</span>              :                 {</span>
-<span id="L3550"><span class="lineNum">    3550</span> <span class="tlaGNC">           1 :                     if (auto inst = as&lt;IREmbeddedDownstreamIR&gt;(globalInst))</span></span>
-<span id="L3551"><span class="lineNum">    3551</span>              :                     {</span>
-<span id="L3552"><span class="lineNum">    3552</span> <span class="tlaGNC">           1 :                         if (inst-&gt;getTarget() == CodeGenTarget::SPIRV)</span></span>
-<span id="L3553"><span class="lineNum">    3553</span>              :                         {</span>
-<span id="L3554"><span class="lineNum">    3554</span> <span class="tlaGNC">           1 :                             auto slice = inst-&gt;getBlob()-&gt;getStringSlice();</span></span>
-<span id="L3555"><span class="lineNum">    3555</span> <span class="tlaGNC">           1 :                             spirvFiles.add((uint32_t*)slice.begin());</span></span>
-<span id="L3556"><span class="lineNum">    3556</span> <span class="tlaGNC">           1 :                             spirvSizes.add(int(slice.getLength()) / 4);</span></span>
-<span id="L3557"><span class="lineNum">    3557</span>              :                         }</span>
-<span id="L3558"><span class="lineNum">    3558</span>              :                     }</span>
-<span id="L3559"><span class="lineNum">    3559</span>              :                 }</span>
-<span id="L3560"><span class="lineNum">    3560</span> <span class="tlaGNC">           1 :             });</span></span>
-<span id="L3561"><span class="lineNum">    3561</span>              : </span>
-<span id="L3562"><span class="lineNum">    3562</span>              :         SLANG_ASSERT(int(spirv.getCount()) % 4 == 0);</span>
-<span id="L3563"><span class="lineNum">    3563</span>              :         SLANG_ASSERT(spirvFiles.getCount() == spirvSizes.getCount());</span>
-<span id="L3564"><span class="lineNum">    3564</span>              :     }</span>
-<span id="L3565"><span class="lineNum">    3565</span>              : </span>
-<span id="L3566"><span class="lineNum">    3566</span> <span class="tlaGNC">           1 :     const bool needsLink = downstreamLinkingAllowed &amp;&amp; spirvFiles.getCount() &gt; 1;</span></span>
-<span id="L3567"><span class="lineNum">    3567</span>              :     // `-Xspirv-opt &lt;flag&gt;` selects individual optimizer passes explicitly, so it must run the</span>
-<span id="L3568"><span class="lineNum">    3568</span>              :     // optimizer even at `-O0` (where the preset is empty). Detecting them here also keeps a plain</span>
-<span id="L3569"><span class="lineNum">    3569</span>              :     // `-O0` compile -- with no such flags, and no link/validation/separate-debug-info -- from</span>
-<span id="L3570"><span class="lineNum">    3570</span>              :     // loading `slang-glslang` (issue #11662).</span>
-<span id="L3571"><span class="lineNum">    3571</span> <span class="tlaGNC">           1 :     List&lt;String&gt; spirvOptArgs =</span></span>
-<span id="L3572"><span class="lineNum">    3572</span>              :         codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getDownstreamArgs(&quot;spirv-opt&quot;);</span>
-<span id="L3573"><span class="lineNum">    3573</span> <span class="tlaGNC">           1 :     const bool needsOptimization =</span></span>
-<span id="L3574"><span class="lineNum">    3574</span>              :         codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getOptimizationLevel() !=</span>
-<span id="L3575"><span class="lineNum">    3575</span>              :             OptimizationLevel::None ||</span>
-<span id="L3576"><span class="lineNum">    3576</span>              :         spirvOptArgs.getCount() != 0;</span>
-<span id="L3577"><span class="lineNum">    3577</span> <span class="tlaGNC">           1 :     const bool needsValidation = shouldRunSPIRVValidation(codeGenContext);</span></span>
-<span id="L3578"><span class="lineNum">    3578</span> <span class="tlaGNC">           1 :     const bool needsSeparateDebugInfo = targetCompilerOptions.shouldEmitSeparateDebugInfo();</span></span>
-<span id="L3579"><span class="lineNum">    3579</span> <span class="tlaGNC">           1 :     const bool needsDownstreamCompiler =</span></span>
-<span id="L3580"><span class="lineNum">    3580</span>              :         needsLink || needsOptimization || needsValidation || needsSeparateDebugInfo;</span>
-<span id="L3581"><span class="lineNum">    3581</span>              : </span>
-<span id="L3582"><span class="lineNum">    3582</span> <span class="tlaGNC">           1 :     artifact-&gt;addRepresentationUnknown(</span></span>
-<span id="L3583"><span class="lineNum">    3583</span>              :         needsDownstreamCompiler ? ListBlob::create(spirv) : ListBlob::moveCreate(spirv));</span>
+<span id="L3498"><span class="lineNum">    3498</span> <span class="tlaGNC">           1 :     auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
+<span id="L3499"><span class="lineNum">    3499</span> <span class="tlaGNC">           1 :     auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
+<span id="L3500"><span class="lineNum">    3500</span>              : </span>
+<span id="L3501"><span class="lineNum">    3501</span>              : #if 0</span>
+<span id="L3502"><span class="lineNum">    3502</span>              :     String optErr;</span>
+<span id="L3503"><span class="lineNum">    3503</span>              :     if (SLANG_FAILED(optimizeSPIRV(spirv, optErr, outSpirv)))</span>
+<span id="L3504"><span class="lineNum">    3504</span>              :     {</span>
+<span id="L3505"><span class="lineNum">    3505</span>              :         codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::SpirvOptFailed{.error = optErr});</span>
+<span id="L3506"><span class="lineNum">    3506</span>              :         spirv = _Move(outSpirv);</span>
+<span id="L3507"><span class="lineNum">    3507</span>              :     }</span>
+<span id="L3508"><span class="lineNum">    3508</span>              : #endif</span>
+<span id="L3509"><span class="lineNum">    3509</span>              : </span>
+<span id="L3510"><span class="lineNum">    3510</span>              :     // Decide whether any downstream (slang-glslang / SPIRV-Tools) work is actually required</span>
+<span id="L3511"><span class="lineNum">    3511</span>              :     // for this artifact before paying the cost of loading the downstream compiler module.</span>
+<span id="L3512"><span class="lineNum">    3512</span>              :     //</span>
+<span id="L3513"><span class="lineNum">    3513</span>              :     // Slang emits and legalizes SPIR-V natively, so the natively emitted blob added above is</span>
+<span id="L3514"><span class="lineNum">    3514</span>              :     // already a complete, valid module. The downstream `slang-glslang` compiler is only needed</span>
+<span id="L3515"><span class="lineNum">    3515</span>              :     // to: (a) run the SPIRV-Tools optimizer when an optimization level above `None` is</span>
+<span id="L3516"><span class="lineNum">    3516</span>              :     // requested; (b) link multiple SPIR-V modules together when separately compiled / embedded</span>
+<span id="L3517"><span class="lineNum">    3517</span>              :     // downstream modules are present; (c) validate the result when SPIR-V validation is enabled;</span>
+<span id="L3518"><span class="lineNum">    3518</span>              :     // or (d) emit separate debug info, which is produced as a side effect of the downstream</span>
+<span id="L3519"><span class="lineNum">    3519</span>              :     // compile step. When none of these apply -- for example a single-module `-O0 -target spirv`</span>
+<span id="L3520"><span class="lineNum">    3520</span>              :     // compile -- the natively emitted SPIR-V is the final output, so we skip loading</span>
+<span id="L3521"><span class="lineNum">    3521</span>              :     // `slang-glslang` entirely and leave the artifact as-is. This keeps a default `-O0` SPIR-V</span>
+<span id="L3522"><span class="lineNum">    3522</span>              :     // compile free of any dependency on the `slang-glslang` module (issue #11662); without this</span>
+<span id="L3523"><span class="lineNum">    3523</span>              :     // gate the load was unconditional and a build without `slang-glslang` failed with E00100</span>
+<span id="L3524"><span class="lineNum">    3524</span>              :     // even though no downstream work was needed.</span>
+<span id="L3525"><span class="lineNum">    3525</span> <span class="tlaGNC">           1 :     bool isPrecompilation = codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L3526"><span class="lineNum">    3526</span>              :         CompilerOptionName::EmbedDownstreamIR);</span>
+<span id="L3527"><span class="lineNum">    3527</span>              : </span>
+<span id="L3528"><span class="lineNum">    3528</span>              :     // Collect the SPIR-V modules that would participate in a downstream link. This walks IR</span>
+<span id="L3529"><span class="lineNum">    3529</span>              :     // only (it does not need the downstream compiler), so it is safe to do before deciding</span>
+<span id="L3530"><span class="lineNum">    3530</span>              :     // whether to load that compiler, and we reuse the result for the link below.</span>
+<span id="L3531"><span class="lineNum">    3531</span> <span class="tlaGNC">           1 :     List&lt;uint32_t*&gt; spirvFiles;</span></span>
+<span id="L3532"><span class="lineNum">    3532</span> <span class="tlaGNC">           1 :     List&lt;uint32_t&gt; spirvSizes;</span></span>
+<span id="L3533"><span class="lineNum">    3533</span> <span class="tlaGNC">           1 :     const bool downstreamLinkingAllowed =</span></span>
+<span id="L3534"><span class="lineNum">    3534</span>              :         !isPrecompilation &amp;&amp; !codeGenContext-&gt;shouldSkipDownstreamLinking();</span>
+<span id="L3535"><span class="lineNum">    3535</span>              :     if (downstreamLinkingAllowed)</span>
+<span id="L3536"><span class="lineNum">    3536</span>              :     {</span>
+<span id="L3537"><span class="lineNum">    3537</span>              :         // Start with the SPIR-V we just generated.</span>
+<span id="L3538"><span class="lineNum">    3538</span>              :         // SPIRV-Tools-link expects the size in 32-bit words</span>
+<span id="L3539"><span class="lineNum">    3539</span>              :         // whereas the spirv blob size is in bytes.</span>
+<span id="L3540"><span class="lineNum">    3540</span> <span class="tlaGNC">           1 :         spirvFiles.add((uint32_t*)spirv.getBuffer());</span></span>
+<span id="L3541"><span class="lineNum">    3541</span> <span class="tlaGNC">           1 :         spirvSizes.add(int(spirv.getCount()) / 4);</span></span>
+<span id="L3542"><span class="lineNum">    3542</span>              : </span>
+<span id="L3543"><span class="lineNum">    3543</span>              :         // Iterate over all modules in the linkedIR. For each module, if it</span>
+<span id="L3544"><span class="lineNum">    3544</span>              :         // contains an embedded downstream ir instruction, add it to the list</span>
+<span id="L3545"><span class="lineNum">    3545</span>              :         // of spirv files.</span>
+<span id="L3546"><span class="lineNum">    3546</span> <span class="tlaGNC">           1 :         auto program = codeGenContext-&gt;getProgram();</span></span>
+<span id="L3547"><span class="lineNum">    3547</span>              : </span>
+<span id="L3548"><span class="lineNum">    3548</span> <span class="tlaGNC">           1 :         program-&gt;enumerateIRModules(</span></span>
+<span id="L3549"><span class="lineNum">    3549</span> <span class="tlaGNC">           1 :             [&amp;](IRModule* irModule)</span></span>
+<span id="L3550"><span class="lineNum">    3550</span> <span class="tlaGNC">           1 :             {</span></span>
+<span id="L3551"><span class="lineNum">    3551</span> <span class="tlaGNC">           1 :                 for (auto globalInst : irModule-&gt;getModuleInst()-&gt;getChildren())</span></span>
+<span id="L3552"><span class="lineNum">    3552</span>              :                 {</span>
+<span id="L3553"><span class="lineNum">    3553</span> <span class="tlaGNC">           1 :                     if (auto inst = as&lt;IREmbeddedDownstreamIR&gt;(globalInst))</span></span>
+<span id="L3554"><span class="lineNum">    3554</span>              :                     {</span>
+<span id="L3555"><span class="lineNum">    3555</span> <span class="tlaGNC">           1 :                         if (inst-&gt;getTarget() == CodeGenTarget::SPIRV)</span></span>
+<span id="L3556"><span class="lineNum">    3556</span>              :                         {</span>
+<span id="L3557"><span class="lineNum">    3557</span> <span class="tlaGNC">           1 :                             auto slice = inst-&gt;getBlob()-&gt;getStringSlice();</span></span>
+<span id="L3558"><span class="lineNum">    3558</span> <span class="tlaGNC">           1 :                             spirvFiles.add((uint32_t*)slice.begin());</span></span>
+<span id="L3559"><span class="lineNum">    3559</span> <span class="tlaGNC">           1 :                             spirvSizes.add(int(slice.getLength()) / 4);</span></span>
+<span id="L3560"><span class="lineNum">    3560</span>              :                         }</span>
+<span id="L3561"><span class="lineNum">    3561</span>              :                     }</span>
+<span id="L3562"><span class="lineNum">    3562</span>              :                 }</span>
+<span id="L3563"><span class="lineNum">    3563</span> <span class="tlaGNC">           1 :             });</span></span>
+<span id="L3564"><span class="lineNum">    3564</span>              : </span>
+<span id="L3565"><span class="lineNum">    3565</span>              :         SLANG_ASSERT(int(spirv.getCount()) % 4 == 0);</span>
+<span id="L3566"><span class="lineNum">    3566</span>              :         SLANG_ASSERT(spirvFiles.getCount() == spirvSizes.getCount());</span>
+<span id="L3567"><span class="lineNum">    3567</span>              :     }</span>
+<span id="L3568"><span class="lineNum">    3568</span>              : </span>
+<span id="L3569"><span class="lineNum">    3569</span> <span class="tlaGNC">           1 :     const bool needsLink = downstreamLinkingAllowed &amp;&amp; spirvFiles.getCount() &gt; 1;</span></span>
+<span id="L3570"><span class="lineNum">    3570</span>              :     // `-Xspirv-opt &lt;flag&gt;` selects individual optimizer passes explicitly, so it must run the</span>
+<span id="L3571"><span class="lineNum">    3571</span>              :     // optimizer even at `-O0` (where the preset is empty). Detecting them here also keeps a plain</span>
+<span id="L3572"><span class="lineNum">    3572</span>              :     // `-O0` compile -- with no such flags, and no link/validation/separate-debug-info -- from</span>
+<span id="L3573"><span class="lineNum">    3573</span>              :     // loading `slang-glslang` (issue #11662).</span>
+<span id="L3574"><span class="lineNum">    3574</span> <span class="tlaGNC">           1 :     List&lt;String&gt; spirvOptArgs =</span></span>
+<span id="L3575"><span class="lineNum">    3575</span>              :         codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getDownstreamArgs(&quot;spirv-opt&quot;);</span>
+<span id="L3576"><span class="lineNum">    3576</span> <span class="tlaGNC">           1 :     const bool needsOptimization =</span></span>
+<span id="L3577"><span class="lineNum">    3577</span>              :         codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getOptimizationLevel() !=</span>
+<span id="L3578"><span class="lineNum">    3578</span>              :             OptimizationLevel::None ||</span>
+<span id="L3579"><span class="lineNum">    3579</span>              :         spirvOptArgs.getCount() != 0;</span>
+<span id="L3580"><span class="lineNum">    3580</span> <span class="tlaGNC">           1 :     const bool needsValidation = shouldRunSPIRVValidation(codeGenContext);</span></span>
+<span id="L3581"><span class="lineNum">    3581</span> <span class="tlaGNC">           1 :     const bool needsSeparateDebugInfo = targetCompilerOptions.shouldEmitSeparateDebugInfo();</span></span>
+<span id="L3582"><span class="lineNum">    3582</span> <span class="tlaGNC">           1 :     const bool needsDownstreamCompiler =</span></span>
+<span id="L3583"><span class="lineNum">    3583</span>              :         needsLink || needsOptimization || needsValidation || needsSeparateDebugInfo;</span>
 <span id="L3584"><span class="lineNum">    3584</span>              : </span>
-<span id="L3585"><span class="lineNum">    3585</span> <span class="tlaGNC">           1 :     IDownstreamCompiler* compiler = needsDownstreamCompiler</span></span>
-<span id="L3586"><span class="lineNum">    3586</span>              :                                         ? codeGenContext-&gt;getSession()-&gt;getOrLoadDownstreamCompiler(</span>
-<span id="L3587"><span class="lineNum">    3587</span>              :                                               PassThroughMode::SpirvOpt,</span>
-<span id="L3588"><span class="lineNum">    3588</span>              :                                               codeGenContext-&gt;getSink())</span>
-<span id="L3589"><span class="lineNum">    3589</span>              :                                         : nullptr;</span>
-<span id="L3590"><span class="lineNum">    3590</span> <span class="tlaGNC">           1 :     if (compiler)</span></span>
-<span id="L3591"><span class="lineNum">    3591</span>              :     {</span>
-<span id="L3592"><span class="lineNum">    3592</span>              : #if 0</span>
-<span id="L3593"><span class="lineNum">    3593</span>              :         // Dump the unoptimized/unlinked SPIRV after lowering from slang IR -&gt; SPIRV</span>
-<span id="L3594"><span class="lineNum">    3594</span>              :         compiler-&gt;disassemble((uint32_t*)spirv.getBuffer(), int(spirv.getCount() / 4));</span>
-<span id="L3595"><span class="lineNum">    3595</span>              : #endif</span>
-<span id="L3596"><span class="lineNum">    3596</span>              : </span>
-<span id="L3597"><span class="lineNum">    3597</span> <span class="tlaGNC">           1 :         if (needsLink)</span></span>
-<span id="L3598"><span class="lineNum">    3598</span>              :         {</span>
-<span id="L3599"><span class="lineNum">    3599</span> <span class="tlaGNC">           1 :             ComPtr&lt;IArtifact&gt; linkedArtifact;</span></span>
-<span id="L3600"><span class="lineNum">    3600</span> <span class="tlaGNC">           1 :             SlangResult linkresult = compiler-&gt;link(</span></span>
-<span id="L3601"><span class="lineNum">    3601</span>              :                 (const uint32_t**)spirvFiles.getBuffer(),</span>
-<span id="L3602"><span class="lineNum">    3602</span>              :                 (const uint32_t*)spirvSizes.getBuffer(),</span>
-<span id="L3603"><span class="lineNum">    3603</span>              :                 (uint32_t)spirvFiles.getCount(),</span>
-<span id="L3604"><span class="lineNum">    3604</span>              :                 linkedArtifact.writeRef());</span>
-<span id="L3605"><span class="lineNum">    3605</span>              : </span>
-<span id="L3606"><span class="lineNum">    3606</span> <span class="tlaGNC">           1 :             if (linkresult == SLANG_E_NOT_AVAILABLE)</span></span>
-<span id="L3607"><span class="lineNum">    3607</span>              :             {</span>
-<span id="L3608"><span class="lineNum">    3608</span>              :                 // The linker never ran, so the compile fails for an environmental reason the user</span>
-<span id="L3609"><span class="lineNum">    3609</span>              :                 // cannot infer from a bare `SLANG_FAIL`.</span>
-<span id="L3610"><span class="lineNum">    3610</span> <span class="tlaGNC">           1 :                 codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::DownstreamLinkingUnavailable{});</span></span>
-<span id="L3611"><span class="lineNum">    3611</span>              :                 return SLANG_FAIL;</span>
-<span id="L3612"><span class="lineNum">    3612</span>              :             }</span>
-<span id="L3613"><span class="lineNum">    3613</span>              : </span>
-<span id="L3614"><span class="lineNum">    3614</span> <span class="tlaGNC">           1 :             if (linkresult != SLANG_OK)</span></span>
-<span id="L3615"><span class="lineNum">    3615</span>              :             {</span>
-<span id="L3616"><span class="lineNum">    3616</span>              :                 return SLANG_FAIL;</span>
-<span id="L3617"><span class="lineNum">    3617</span>              :             }</span>
-<span id="L3618"><span class="lineNum">    3618</span>              : </span>
-<span id="L3619"><span class="lineNum">    3619</span> <span class="tlaGNC">           1 :             ComPtr&lt;ISlangBlob&gt; blob;</span></span>
-<span id="L3620"><span class="lineNum">    3620</span> <span class="tlaGNC">           1 :             linkedArtifact-&gt;loadBlob(ArtifactKeep::No, blob.writeRef());</span></span>
-<span id="L3621"><span class="lineNum">    3621</span> <span class="tlaGNC">           1 :             artifact = _Move(linkedArtifact);</span></span>
-<span id="L3622"><span class="lineNum">    3622</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L3623"><span class="lineNum">    3623</span>              : </span>
-<span id="L3624"><span class="lineNum">    3624</span> <span class="tlaGNC">           1 :         if (needsValidation)</span></span>
-<span id="L3625"><span class="lineNum">    3625</span>              :         {</span>
-<span id="L3626"><span class="lineNum">    3626</span> <span class="tlaGNC">           1 :             const SlangResult validationResult =</span></span>
-<span id="L3627"><span class="lineNum">    3627</span>              :                 compiler-&gt;validate((uint32_t*)spirv.getBuffer(), int(spirv.getCount() / 4));</span>
-<span id="L3628"><span class="lineNum">    3628</span>              : </span>
-<span id="L3629"><span class="lineNum">    3629</span> <span class="tlaGNC">           1 :             if (validationResult == SLANG_E_NOT_AVAILABLE)</span></span>
-<span id="L3630"><span class="lineNum">    3630</span>              :             {</span>
-<span id="L3631"><span class="lineNum">    3631</span>              :                 // The validator never ran, so disassembling here would wrongly imply the SPIR-V was</span>
-<span id="L3632"><span class="lineNum">    3632</span>              :                 // found invalid. Fail the compile rather than falling through: validation was</span>
-<span id="L3633"><span class="lineNum">    3633</span>              :                 // requested, and publishing the artifact would hand a caller SPIR-V that nothing</span>
-<span id="L3634"><span class="lineNum">    3634</span>              :                 // checked. `error` severity alone does not stop this path -- only `Severity::Fatal`</span>
-<span id="L3635"><span class="lineNum">    3635</span>              :                 // and above abort a compile.</span>
-<span id="L3636"><span class="lineNum">    3636</span> <span class="tlaGNC">           1 :                 codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::SpirvValidationUnavailable{});</span></span>
-<span id="L3637"><span class="lineNum">    3637</span> <span class="tlaGNC">           1 :                 return SLANG_FAIL;</span></span>
-<span id="L3638"><span class="lineNum">    3638</span>              :             }</span>
-<span id="L3639"><span class="lineNum">    3639</span> <span class="tlaGNC">           1 :             else if (SLANG_FAILED(validationResult))</span></span>
-<span id="L3640"><span class="lineNum">    3640</span>              :             {</span>
-<span id="L3641"><span class="lineNum">    3641</span>              :                 // Disassemble the rejected SPIR-V into the diagnostic so the failure is legible,</span>
-<span id="L3642"><span class="lineNum">    3642</span>              :                 // then report it. `SpirvValidationFailed` is `internal` severity, so this</span>
-<span id="L3643"><span class="lineNum">    3643</span>              :                 // `diagnose()` aborts the compile by throwing; the abort unwinds to the</span>
-<span id="L3644"><span class="lineNum">    3644</span>              :                 // API-boundary guard that catches it. The `return SLANG_FAIL` below is reached</span>
-<span id="L3645"><span class="lineNum">    3645</span>              :                 // only if that severity is ever lowered below `Severity::Fatal`.</span>
-<span id="L3646"><span class="lineNum">    3646</span> <span class="tlaGNC">           1 :                 compiler-&gt;disassemble((uint32_t*)spirv.getBuffer(), int(spirv.getCount() / 4));</span></span>
-<span id="L3647"><span class="lineNum">    3647</span> <span class="tlaGNC">           1 :                 codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::SpirvValidationFailed{});</span></span>
-<span id="L3648"><span class="lineNum">    3648</span> <span class="tlaUNC">           0 :                 return SLANG_FAIL;</span></span>
-<span id="L3649"><span class="lineNum">    3649</span>              :             }</span>
-<span id="L3650"><span class="lineNum">    3650</span>              :         }</span>
-<span id="L3651"><span class="lineNum">    3651</span>              : </span>
-<span id="L3652"><span class="lineNum">    3652</span> <span class="tlaGNC">           1 :         ComPtr&lt;IArtifact&gt; optimizedArtifact;</span></span>
-<span id="L3653"><span class="lineNum">    3653</span> <span class="tlaGNC">           1 :         DownstreamCompileOptions downstreamOptions;</span></span>
-<span id="L3654"><span class="lineNum">    3654</span> <span class="tlaGNC">           1 :         downstreamOptions.sourceArtifacts = makeSlice(artifact.readRef(), 1);</span></span>
-<span id="L3655"><span class="lineNum">    3655</span> <span class="tlaGNC">           1 :         downstreamOptions.targetType = SLANG_SPIRV;</span></span>
-<span id="L3656"><span class="lineNum">    3656</span> <span class="tlaGNC">           1 :         downstreamOptions.sourceLanguage = SLANG_SOURCE_LANGUAGE_SPIRV;</span></span>
-<span id="L3657"><span class="lineNum">    3657</span>              : </span>
-<span id="L3658"><span class="lineNum">    3658</span>              :         // Forward the `-Xspirv-opt` args (collected above) to the downstream optimizer, where they</span>
-<span id="L3659"><span class="lineNum">    3659</span>              :         // register on top of the `-OX` preset -- or as the only passes at `-O0`, whose preset is</span>
-<span id="L3660"><span class="lineNum">    3660</span>              :         // empty. The allocator owns the copied arg strings and slice array, so it must outlive the</span>
-<span id="L3661"><span class="lineNum">    3661</span>              :         // compile() call below.</span>
-<span id="L3662"><span class="lineNum">    3662</span> <span class="tlaGNC">           1 :         SliceAllocator allocator;</span></span>
-<span id="L3663"><span class="lineNum">    3663</span> <span class="tlaGNC">           1 :         downstreamOptions.compilerSpecificArguments = allocator.allocate(spirvOptArgs);</span></span>
-<span id="L3664"><span class="lineNum">    3664</span> <span class="tlaGNC">           1 :         switch (codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getOptimizationLevel())</span></span>
-<span id="L3665"><span class="lineNum">    3665</span>              :         {</span>
-<span id="L3666"><span class="lineNum">    3666</span>              :         case OptimizationLevel::None:</span>
-<span id="L3667"><span class="lineNum">    3667</span> <span class="tlaGNC">           1 :             downstreamOptions.optimizationLevel = DownstreamCompileOptions::OptimizationLevel::None;</span></span>
-<span id="L3668"><span class="lineNum">    3668</span>              :             break;</span>
-<span id="L3669"><span class="lineNum">    3669</span>              :         case OptimizationLevel::Default:</span>
-<span id="L3670"><span class="lineNum">    3670</span> <span class="tlaGNC">           1 :             downstreamOptions.optimizationLevel =</span></span>
-<span id="L3671"><span class="lineNum">    3671</span>              :                 DownstreamCompileOptions::OptimizationLevel::Default;</span>
-<span id="L3672"><span class="lineNum">    3672</span> <span class="tlaGNC">           1 :             break;</span></span>
-<span id="L3673"><span class="lineNum">    3673</span>              :         case OptimizationLevel::High:</span>
-<span id="L3674"><span class="lineNum">    3674</span> <span class="tlaGNC">           1 :             downstreamOptions.optimizationLevel = DownstreamCompileOptions::OptimizationLevel::High;</span></span>
+<span id="L3585"><span class="lineNum">    3585</span> <span class="tlaGNC">           1 :     artifact-&gt;addRepresentationUnknown(</span></span>
+<span id="L3586"><span class="lineNum">    3586</span>              :         needsDownstreamCompiler ? ListBlob::create(spirv) : ListBlob::moveCreate(spirv));</span>
+<span id="L3587"><span class="lineNum">    3587</span>              : </span>
+<span id="L3588"><span class="lineNum">    3588</span> <span class="tlaGNC">           1 :     IDownstreamCompiler* compiler = needsDownstreamCompiler</span></span>
+<span id="L3589"><span class="lineNum">    3589</span>              :                                         ? codeGenContext-&gt;getSession()-&gt;getOrLoadDownstreamCompiler(</span>
+<span id="L3590"><span class="lineNum">    3590</span>              :                                               PassThroughMode::SpirvOpt,</span>
+<span id="L3591"><span class="lineNum">    3591</span>              :                                               codeGenContext-&gt;getSink())</span>
+<span id="L3592"><span class="lineNum">    3592</span>              :                                         : nullptr;</span>
+<span id="L3593"><span class="lineNum">    3593</span> <span class="tlaGNC">           1 :     if (compiler)</span></span>
+<span id="L3594"><span class="lineNum">    3594</span>              :     {</span>
+<span id="L3595"><span class="lineNum">    3595</span>              : #if 0</span>
+<span id="L3596"><span class="lineNum">    3596</span>              :         // Dump the unoptimized/unlinked SPIRV after lowering from slang IR -&gt; SPIRV</span>
+<span id="L3597"><span class="lineNum">    3597</span>              :         compiler-&gt;disassemble((uint32_t*)spirv.getBuffer(), int(spirv.getCount() / 4));</span>
+<span id="L3598"><span class="lineNum">    3598</span>              : #endif</span>
+<span id="L3599"><span class="lineNum">    3599</span>              : </span>
+<span id="L3600"><span class="lineNum">    3600</span> <span class="tlaGNC">           1 :         if (needsLink)</span></span>
+<span id="L3601"><span class="lineNum">    3601</span>              :         {</span>
+<span id="L3602"><span class="lineNum">    3602</span> <span class="tlaGNC">           1 :             ComPtr&lt;IArtifact&gt; linkedArtifact;</span></span>
+<span id="L3603"><span class="lineNum">    3603</span> <span class="tlaGNC">           1 :             SlangResult linkresult = compiler-&gt;link(</span></span>
+<span id="L3604"><span class="lineNum">    3604</span>              :                 (const uint32_t**)spirvFiles.getBuffer(),</span>
+<span id="L3605"><span class="lineNum">    3605</span>              :                 (const uint32_t*)spirvSizes.getBuffer(),</span>
+<span id="L3606"><span class="lineNum">    3606</span>              :                 (uint32_t)spirvFiles.getCount(),</span>
+<span id="L3607"><span class="lineNum">    3607</span>              :                 linkedArtifact.writeRef());</span>
+<span id="L3608"><span class="lineNum">    3608</span>              : </span>
+<span id="L3609"><span class="lineNum">    3609</span> <span class="tlaGNC">           1 :             if (linkresult == SLANG_E_NOT_AVAILABLE)</span></span>
+<span id="L3610"><span class="lineNum">    3610</span>              :             {</span>
+<span id="L3611"><span class="lineNum">    3611</span>              :                 // The linker never ran, so the compile fails for an environmental reason the user</span>
+<span id="L3612"><span class="lineNum">    3612</span>              :                 // cannot infer from a bare `SLANG_FAIL`.</span>
+<span id="L3613"><span class="lineNum">    3613</span> <span class="tlaGNC">           1 :                 codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::DownstreamLinkingUnavailable{});</span></span>
+<span id="L3614"><span class="lineNum">    3614</span>              :                 return SLANG_FAIL;</span>
+<span id="L3615"><span class="lineNum">    3615</span>              :             }</span>
+<span id="L3616"><span class="lineNum">    3616</span>              : </span>
+<span id="L3617"><span class="lineNum">    3617</span> <span class="tlaGNC">           1 :             if (linkresult != SLANG_OK)</span></span>
+<span id="L3618"><span class="lineNum">    3618</span>              :             {</span>
+<span id="L3619"><span class="lineNum">    3619</span>              :                 return SLANG_FAIL;</span>
+<span id="L3620"><span class="lineNum">    3620</span>              :             }</span>
+<span id="L3621"><span class="lineNum">    3621</span>              : </span>
+<span id="L3622"><span class="lineNum">    3622</span> <span class="tlaGNC">           1 :             ComPtr&lt;ISlangBlob&gt; blob;</span></span>
+<span id="L3623"><span class="lineNum">    3623</span> <span class="tlaGNC">           1 :             linkedArtifact-&gt;loadBlob(ArtifactKeep::No, blob.writeRef());</span></span>
+<span id="L3624"><span class="lineNum">    3624</span> <span class="tlaGNC">           1 :             artifact = _Move(linkedArtifact);</span></span>
+<span id="L3625"><span class="lineNum">    3625</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L3626"><span class="lineNum">    3626</span>              : </span>
+<span id="L3627"><span class="lineNum">    3627</span> <span class="tlaGNC">           1 :         if (needsValidation)</span></span>
+<span id="L3628"><span class="lineNum">    3628</span>              :         {</span>
+<span id="L3629"><span class="lineNum">    3629</span> <span class="tlaGNC">           1 :             const SlangResult validationResult =</span></span>
+<span id="L3630"><span class="lineNum">    3630</span>              :                 compiler-&gt;validate((uint32_t*)spirv.getBuffer(), int(spirv.getCount() / 4));</span>
+<span id="L3631"><span class="lineNum">    3631</span>              : </span>
+<span id="L3632"><span class="lineNum">    3632</span> <span class="tlaGNC">           1 :             if (validationResult == SLANG_E_NOT_AVAILABLE)</span></span>
+<span id="L3633"><span class="lineNum">    3633</span>              :             {</span>
+<span id="L3634"><span class="lineNum">    3634</span>              :                 // The validator never ran, so disassembling here would wrongly imply the SPIR-V was</span>
+<span id="L3635"><span class="lineNum">    3635</span>              :                 // found invalid. Fail the compile rather than falling through: validation was</span>
+<span id="L3636"><span class="lineNum">    3636</span>              :                 // requested, and publishing the artifact would hand a caller SPIR-V that nothing</span>
+<span id="L3637"><span class="lineNum">    3637</span>              :                 // checked. `error` severity alone does not stop this path -- only `Severity::Fatal`</span>
+<span id="L3638"><span class="lineNum">    3638</span>              :                 // and above abort a compile.</span>
+<span id="L3639"><span class="lineNum">    3639</span> <span class="tlaGNC">           1 :                 codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::SpirvValidationUnavailable{});</span></span>
+<span id="L3640"><span class="lineNum">    3640</span> <span class="tlaGNC">           1 :                 return SLANG_FAIL;</span></span>
+<span id="L3641"><span class="lineNum">    3641</span>              :             }</span>
+<span id="L3642"><span class="lineNum">    3642</span> <span class="tlaGNC">           1 :             else if (SLANG_FAILED(validationResult))</span></span>
+<span id="L3643"><span class="lineNum">    3643</span>              :             {</span>
+<span id="L3644"><span class="lineNum">    3644</span>              :                 // Disassemble the rejected SPIR-V into the diagnostic so the failure is legible,</span>
+<span id="L3645"><span class="lineNum">    3645</span>              :                 // then report it. `SpirvValidationFailed` is `internal` severity, so this</span>
+<span id="L3646"><span class="lineNum">    3646</span>              :                 // `diagnose()` aborts the compile by throwing; the abort unwinds to the</span>
+<span id="L3647"><span class="lineNum">    3647</span>              :                 // API-boundary guard that catches it. The `return SLANG_FAIL` below is reached</span>
+<span id="L3648"><span class="lineNum">    3648</span>              :                 // only if that severity is ever lowered below `Severity::Fatal`.</span>
+<span id="L3649"><span class="lineNum">    3649</span> <span class="tlaGNC">           1 :                 compiler-&gt;disassemble((uint32_t*)spirv.getBuffer(), int(spirv.getCount() / 4));</span></span>
+<span id="L3650"><span class="lineNum">    3650</span> <span class="tlaGNC">           1 :                 codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::SpirvValidationFailed{});</span></span>
+<span id="L3651"><span class="lineNum">    3651</span> <span class="tlaUNC">           0 :                 return SLANG_FAIL;</span></span>
+<span id="L3652"><span class="lineNum">    3652</span>              :             }</span>
+<span id="L3653"><span class="lineNum">    3653</span>              :         }</span>
+<span id="L3654"><span class="lineNum">    3654</span>              : </span>
+<span id="L3655"><span class="lineNum">    3655</span> <span class="tlaGNC">           1 :         ComPtr&lt;IArtifact&gt; optimizedArtifact;</span></span>
+<span id="L3656"><span class="lineNum">    3656</span> <span class="tlaGNC">           1 :         DownstreamCompileOptions downstreamOptions;</span></span>
+<span id="L3657"><span class="lineNum">    3657</span> <span class="tlaGNC">           1 :         downstreamOptions.sourceArtifacts = makeSlice(artifact.readRef(), 1);</span></span>
+<span id="L3658"><span class="lineNum">    3658</span> <span class="tlaGNC">           1 :         downstreamOptions.targetType = SLANG_SPIRV;</span></span>
+<span id="L3659"><span class="lineNum">    3659</span> <span class="tlaGNC">           1 :         downstreamOptions.sourceLanguage = SLANG_SOURCE_LANGUAGE_SPIRV;</span></span>
+<span id="L3660"><span class="lineNum">    3660</span>              : </span>
+<span id="L3661"><span class="lineNum">    3661</span>              :         // Forward the `-Xspirv-opt` args (collected above) to the downstream optimizer, where they</span>
+<span id="L3662"><span class="lineNum">    3662</span>              :         // register on top of the `-OX` preset -- or as the only passes at `-O0`, whose preset is</span>
+<span id="L3663"><span class="lineNum">    3663</span>              :         // empty. The allocator owns the copied arg strings and slice array, so it must outlive the</span>
+<span id="L3664"><span class="lineNum">    3664</span>              :         // compile() call below.</span>
+<span id="L3665"><span class="lineNum">    3665</span> <span class="tlaGNC">           1 :         SliceAllocator allocator;</span></span>
+<span id="L3666"><span class="lineNum">    3666</span> <span class="tlaGNC">           1 :         downstreamOptions.compilerSpecificArguments = allocator.allocate(spirvOptArgs);</span></span>
+<span id="L3667"><span class="lineNum">    3667</span> <span class="tlaGNC">           1 :         switch (codeGenContext-&gt;getTargetProgram()-&gt;getOptionSet().getOptimizationLevel())</span></span>
+<span id="L3668"><span class="lineNum">    3668</span>              :         {</span>
+<span id="L3669"><span class="lineNum">    3669</span>              :         case OptimizationLevel::None:</span>
+<span id="L3670"><span class="lineNum">    3670</span> <span class="tlaGNC">           1 :             downstreamOptions.optimizationLevel = DownstreamCompileOptions::OptimizationLevel::None;</span></span>
+<span id="L3671"><span class="lineNum">    3671</span>              :             break;</span>
+<span id="L3672"><span class="lineNum">    3672</span>              :         case OptimizationLevel::Default:</span>
+<span id="L3673"><span class="lineNum">    3673</span> <span class="tlaGNC">           1 :             downstreamOptions.optimizationLevel =</span></span>
+<span id="L3674"><span class="lineNum">    3674</span>              :                 DownstreamCompileOptions::OptimizationLevel::Default;</span>
 <span id="L3675"><span class="lineNum">    3675</span> <span class="tlaGNC">           1 :             break;</span></span>
-<span id="L3676"><span class="lineNum">    3676</span>              :         case OptimizationLevel::Maximal:</span>
-<span id="L3677"><span class="lineNum">    3677</span> <span class="tlaGNC">           1 :             downstreamOptions.optimizationLevel =</span></span>
-<span id="L3678"><span class="lineNum">    3678</span>              :                 DownstreamCompileOptions::OptimizationLevel::Maximal;</span>
-<span id="L3679"><span class="lineNum">    3679</span> <span class="tlaGNC">           1 :             break;</span></span>
-<span id="L3680"><span class="lineNum">    3680</span>              :         default:</span>
-<span id="L3681"><span class="lineNum">    3681</span>              :             SLANG_ASSERT(!&quot;Unhandled optimization level&quot;);</span>
-<span id="L3682"><span class="lineNum">    3682</span>              :             break;</span>
-<span id="L3683"><span class="lineNum">    3683</span>              :         }</span>
-<span id="L3684"><span class="lineNum">    3684</span> <span class="tlaGNC">           1 :         auto downstreamStartTime = std::chrono::high_resolution_clock::now();</span></span>
-<span id="L3685"><span class="lineNum">    3685</span> <span class="tlaGNC">           1 :         if (SLANG_SUCCEEDED(compiler-&gt;compile(downstreamOptions, optimizedArtifact.writeRef())))</span></span>
-<span id="L3686"><span class="lineNum">    3686</span>              :         {</span>
-<span id="L3687"><span class="lineNum">    3687</span>              :             // Check if we need to output a separate SPIRV file containing debug info. If so</span>
-<span id="L3688"><span class="lineNum">    3688</span>              :             // then strip all debug instructions from the artifact. The dbgArtifact will still</span>
-<span id="L3689"><span class="lineNum">    3689</span>              :             // contain all instructions.</span>
-<span id="L3690"><span class="lineNum">    3690</span> <span class="tlaGNC">           1 :             if (targetCompilerOptions.shouldEmitSeparateDebugInfo())</span></span>
-<span id="L3691"><span class="lineNum">    3691</span>              :             {</span>
-<span id="L3692"><span class="lineNum">    3692</span> <span class="tlaGNC">           1 :                 auto strippedArtifact = ArtifactUtil::createArtifactForCompileTarget(SLANG_SPIRV);</span></span>
-<span id="L3693"><span class="lineNum">    3693</span> <span class="tlaGNC">           1 :                 SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L3694"><span class="lineNum">    3694</span>              :                     stripDbgSpirvFromArtifact(optimizedArtifact, strippedArtifact));</span>
-<span id="L3695"><span class="lineNum">    3695</span> <span class="tlaGNC">           1 :                 artifact = _Move(strippedArtifact);</span></span>
-<span id="L3696"><span class="lineNum">    3696</span> <span class="tlaGNC">           1 :                 dbgArtifact = _Move(optimizedArtifact);</span></span>
-<span id="L3697"><span class="lineNum">    3697</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L3698"><span class="lineNum">    3698</span>              :             else</span>
-<span id="L3699"><span class="lineNum">    3699</span> <span class="tlaGNC">           1 :                 artifact = _Move(optimizedArtifact);</span></span>
-<span id="L3700"><span class="lineNum">    3700</span>              :         }</span>
-<span id="L3701"><span class="lineNum">    3701</span> <span class="tlaGNC">           1 :         auto downstreamElapsedTime =</span></span>
-<span id="L3702"><span class="lineNum">    3702</span>              :             (std::chrono::high_resolution_clock::now() - downstreamStartTime).count() * 0.000000001;</span>
-<span id="L3703"><span class="lineNum">    3703</span> <span class="tlaGNC">           1 :         codeGenContext-&gt;getSession()-&gt;addDownstreamCompileTime(downstreamElapsedTime);</span></span>
-<span id="L3704"><span class="lineNum">    3704</span>              : </span>
-<span id="L3705"><span class="lineNum">    3705</span> <span class="tlaGNC">           1 :         SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L3706"><span class="lineNum">    3706</span>              :             passthroughDownstreamDiagnostics(codeGenContext-&gt;getSink(), compiler, artifact));</span>
-<span id="L3707"><span class="lineNum">    3707</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L3708"><span class="lineNum">    3708</span>              : </span>
-<span id="L3709"><span class="lineNum">    3709</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L3710"><span class="lineNum">    3710</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3676"><span class="lineNum">    3676</span>              :         case OptimizationLevel::High:</span>
+<span id="L3677"><span class="lineNum">    3677</span> <span class="tlaGNC">           1 :             downstreamOptions.optimizationLevel = DownstreamCompileOptions::OptimizationLevel::High;</span></span>
+<span id="L3678"><span class="lineNum">    3678</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L3679"><span class="lineNum">    3679</span>              :         case OptimizationLevel::Maximal:</span>
+<span id="L3680"><span class="lineNum">    3680</span> <span class="tlaGNC">           1 :             downstreamOptions.optimizationLevel =</span></span>
+<span id="L3681"><span class="lineNum">    3681</span>              :                 DownstreamCompileOptions::OptimizationLevel::Maximal;</span>
+<span id="L3682"><span class="lineNum">    3682</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L3683"><span class="lineNum">    3683</span>              :         default:</span>
+<span id="L3684"><span class="lineNum">    3684</span>              :             SLANG_ASSERT(!&quot;Unhandled optimization level&quot;);</span>
+<span id="L3685"><span class="lineNum">    3685</span>              :             break;</span>
+<span id="L3686"><span class="lineNum">    3686</span>              :         }</span>
+<span id="L3687"><span class="lineNum">    3687</span> <span class="tlaGNC">           1 :         auto downstreamStartTime = std::chrono::high_resolution_clock::now();</span></span>
+<span id="L3688"><span class="lineNum">    3688</span> <span class="tlaGNC">           1 :         if (SLANG_SUCCEEDED(compiler-&gt;compile(downstreamOptions, optimizedArtifact.writeRef())))</span></span>
+<span id="L3689"><span class="lineNum">    3689</span>              :         {</span>
+<span id="L3690"><span class="lineNum">    3690</span>              :             // Check if we need to output a separate SPIRV file containing debug info. If so</span>
+<span id="L3691"><span class="lineNum">    3691</span>              :             // then strip all debug instructions from the artifact. The dbgArtifact will still</span>
+<span id="L3692"><span class="lineNum">    3692</span>              :             // contain all instructions.</span>
+<span id="L3693"><span class="lineNum">    3693</span> <span class="tlaGNC">           1 :             if (targetCompilerOptions.shouldEmitSeparateDebugInfo())</span></span>
+<span id="L3694"><span class="lineNum">    3694</span>              :             {</span>
+<span id="L3695"><span class="lineNum">    3695</span> <span class="tlaGNC">           1 :                 auto strippedArtifact = ArtifactUtil::createArtifactForCompileTarget(SLANG_SPIRV);</span></span>
+<span id="L3696"><span class="lineNum">    3696</span> <span class="tlaGNC">           1 :                 SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L3697"><span class="lineNum">    3697</span>              :                     stripDbgSpirvFromArtifact(optimizedArtifact, strippedArtifact));</span>
+<span id="L3698"><span class="lineNum">    3698</span> <span class="tlaGNC">           1 :                 artifact = _Move(strippedArtifact);</span></span>
+<span id="L3699"><span class="lineNum">    3699</span> <span class="tlaGNC">           1 :                 dbgArtifact = _Move(optimizedArtifact);</span></span>
+<span id="L3700"><span class="lineNum">    3700</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L3701"><span class="lineNum">    3701</span>              :             else</span>
+<span id="L3702"><span class="lineNum">    3702</span> <span class="tlaGNC">           1 :                 artifact = _Move(optimizedArtifact);</span></span>
+<span id="L3703"><span class="lineNum">    3703</span>              :         }</span>
+<span id="L3704"><span class="lineNum">    3704</span> <span class="tlaGNC">           1 :         auto downstreamElapsedTime =</span></span>
+<span id="L3705"><span class="lineNum">    3705</span>              :             (std::chrono::high_resolution_clock::now() - downstreamStartTime).count() * 0.000000001;</span>
+<span id="L3706"><span class="lineNum">    3706</span> <span class="tlaGNC">           1 :         codeGenContext-&gt;getSession()-&gt;addDownstreamCompileTime(downstreamElapsedTime);</span></span>
+<span id="L3707"><span class="lineNum">    3707</span>              : </span>
+<span id="L3708"><span class="lineNum">    3708</span> <span class="tlaGNC">           1 :         SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L3709"><span class="lineNum">    3709</span>              :             passthroughDownstreamDiagnostics(codeGenContext-&gt;getSink(), compiler, artifact));</span>
+<span id="L3710"><span class="lineNum">    3710</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L3711"><span class="lineNum">    3711</span>              : </span>
-<span id="L3712"><span class="lineNum">    3712</span>              : SlangResult emitSPIRVForEntryPointsDirectly(</span>
-<span id="L3713"><span class="lineNum">    3713</span>              :     CodeGenContext* codeGenContext,</span>
-<span id="L3714"><span class="lineNum">    3714</span>              :     ComPtr&lt;IArtifact&gt;&amp; outArtifact)</span>
-<span id="L3715"><span class="lineNum">    3715</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3716"><span class="lineNum">    3716</span>              :     // Outside because we want to keep IR in scope whilst we are processing emits</span>
-<span id="L3717"><span class="lineNum">    3717</span> <span class="tlaGNC">           1 :     LinkedIR linkedIR;</span></span>
-<span id="L3718"><span class="lineNum">    3718</span> <span class="tlaGNC">           1 :     LinkingAndOptimizationOptions linkingAndOptimizationOptions;</span></span>
-<span id="L3719"><span class="lineNum">    3719</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L3720"><span class="lineNum">    3720</span>              :         linkAndOptimizeIR(codeGenContext, linkingAndOptimizationOptions, linkedIR));</span>
-<span id="L3721"><span class="lineNum">    3721</span>              : </span>
-<span id="L3722"><span class="lineNum">    3722</span> <span class="tlaGNC">           1 :     auto irModule = linkedIR.module;</span></span>
-<span id="L3723"><span class="lineNum">    3723</span> <span class="tlaGNC">           1 :     auto irEntryPoints = linkedIR.entryPoints;</span></span>
+<span id="L3712"><span class="lineNum">    3712</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L3713"><span class="lineNum">    3713</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3714"><span class="lineNum">    3714</span>              : </span>
+<span id="L3715"><span class="lineNum">    3715</span>              : SlangResult emitSPIRVForEntryPointsDirectly(</span>
+<span id="L3716"><span class="lineNum">    3716</span>              :     CodeGenContext* codeGenContext,</span>
+<span id="L3717"><span class="lineNum">    3717</span>              :     ComPtr&lt;IArtifact&gt;&amp; outArtifact)</span>
+<span id="L3718"><span class="lineNum">    3718</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3719"><span class="lineNum">    3719</span>              :     // Outside because we want to keep IR in scope whilst we are processing emits</span>
+<span id="L3720"><span class="lineNum">    3720</span> <span class="tlaGNC">           1 :     LinkedIR linkedIR;</span></span>
+<span id="L3721"><span class="lineNum">    3721</span> <span class="tlaGNC">           1 :     LinkingAndOptimizationOptions linkingAndOptimizationOptions;</span></span>
+<span id="L3722"><span class="lineNum">    3722</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L3723"><span class="lineNum">    3723</span>              :         linkAndOptimizeIR(codeGenContext, linkingAndOptimizationOptions, linkedIR));</span>
 <span id="L3724"><span class="lineNum">    3724</span>              : </span>
-<span id="L3725"><span class="lineNum">    3725</span>              : </span>
-<span id="L3726"><span class="lineNum">    3726</span> <span class="tlaGNC">           1 :     auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
-<span id="L3727"><span class="lineNum">    3727</span> <span class="tlaGNC">           1 :     auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
+<span id="L3725"><span class="lineNum">    3725</span> <span class="tlaGNC">           1 :     auto irModule = linkedIR.module;</span></span>
+<span id="L3726"><span class="lineNum">    3726</span> <span class="tlaGNC">           1 :     auto irEntryPoints = linkedIR.entryPoints;</span></span>
+<span id="L3727"><span class="lineNum">    3727</span>              : </span>
 <span id="L3728"><span class="lineNum">    3728</span>              : </span>
-<span id="L3729"><span class="lineNum">    3729</span>              :     // Create the artifact containing the main SPIRV data, and the debug SPIRV</span>
-<span id="L3730"><span class="lineNum">    3730</span>              :     // data if requested by the command line arg -separate-debug-info.</span>
-<span id="L3731"><span class="lineNum">    3731</span> <span class="tlaGNC">           1 :     Slang::ComPtr&lt;Slang::IArtifact&gt; dbgArtifact;</span></span>
-<span id="L3732"><span class="lineNum">    3732</span> <span class="tlaGNC">           1 :     auto artifact =</span></span>
-<span id="L3733"><span class="lineNum">    3733</span>              :         ArtifactUtil::createArtifactForCompileTarget(asExternal(codeGenContext-&gt;getTargetFormat()));</span>
-<span id="L3734"><span class="lineNum">    3734</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L3735"><span class="lineNum">    3735</span>              :         createArtifactFromIR(codeGenContext, irModule, irEntryPoints, artifact, dbgArtifact));</span>
-<span id="L3736"><span class="lineNum">    3736</span> <span class="tlaGNC">           1 :     ArtifactUtil::addAssociated(artifact, linkedIR.metadata);</span></span>
-<span id="L3737"><span class="lineNum">    3737</span>              : </span>
-<span id="L3738"><span class="lineNum">    3738</span>              :     // Associate the debug artifact with the main artifact.</span>
-<span id="L3739"><span class="lineNum">    3739</span>              :     // EndToEndCompileRequest::generateOutput will read this data</span>
-<span id="L3740"><span class="lineNum">    3740</span>              :     // and produce a .dbg.spv file for this child artifact.</span>
-<span id="L3741"><span class="lineNum">    3741</span> <span class="tlaGNC">           1 :     if (targetCompilerOptions.shouldEmitSeparateDebugInfo())</span></span>
-<span id="L3742"><span class="lineNum">    3742</span>              :     {</span>
-<span id="L3743"><span class="lineNum">    3743</span> <span class="tlaGNC">           1 :         artifact-&gt;addAssociated(dbgArtifact);</span></span>
-<span id="L3744"><span class="lineNum">    3744</span>              : </span>
-<span id="L3745"><span class="lineNum">    3745</span> <span class="tlaGNC">           1 :         auto artifactPostEmitMetadata =</span></span>
-<span id="L3746"><span class="lineNum">    3746</span>              :             static_cast&lt;ArtifactPostEmitMetadata*&gt;(linkedIR.metadata.get());</span>
-<span id="L3747"><span class="lineNum">    3747</span> <span class="tlaGNC">           1 :         artifactPostEmitMetadata-&gt;addRef();</span></span>
-<span id="L3748"><span class="lineNum">    3748</span> <span class="tlaGNC">           1 :         artifactPostEmitMetadata-&gt;m_debugBuildIdentifier = dbgArtifact-&gt;getName();</span></span>
-<span id="L3749"><span class="lineNum">    3749</span>              :     }</span>
-<span id="L3750"><span class="lineNum">    3750</span>              : </span>
-<span id="L3751"><span class="lineNum">    3751</span> <span class="tlaGNC">           1 :     outArtifact.swap(artifact);</span></span>
-<span id="L3752"><span class="lineNum">    3752</span>              : </span>
-<span id="L3753"><span class="lineNum">    3753</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L3754"><span class="lineNum">    3754</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3729"><span class="lineNum">    3729</span> <span class="tlaGNC">           1 :     auto targetRequest = codeGenContext-&gt;getTargetReq();</span></span>
+<span id="L3730"><span class="lineNum">    3730</span> <span class="tlaGNC">           1 :     auto targetCompilerOptions = targetRequest-&gt;getOptionSet();</span></span>
+<span id="L3731"><span class="lineNum">    3731</span>              : </span>
+<span id="L3732"><span class="lineNum">    3732</span>              :     // Create the artifact containing the main SPIRV data, and the debug SPIRV</span>
+<span id="L3733"><span class="lineNum">    3733</span>              :     // data if requested by the command line arg -separate-debug-info.</span>
+<span id="L3734"><span class="lineNum">    3734</span> <span class="tlaGNC">           1 :     Slang::ComPtr&lt;Slang::IArtifact&gt; dbgArtifact;</span></span>
+<span id="L3735"><span class="lineNum">    3735</span> <span class="tlaGNC">           1 :     auto artifact =</span></span>
+<span id="L3736"><span class="lineNum">    3736</span>              :         ArtifactUtil::createArtifactForCompileTarget(asExternal(codeGenContext-&gt;getTargetFormat()));</span>
+<span id="L3737"><span class="lineNum">    3737</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L3738"><span class="lineNum">    3738</span>              :         createArtifactFromIR(codeGenContext, irModule, irEntryPoints, artifact, dbgArtifact));</span>
+<span id="L3739"><span class="lineNum">    3739</span> <span class="tlaGNC">           1 :     ArtifactUtil::addAssociated(artifact, linkedIR.metadata);</span></span>
+<span id="L3740"><span class="lineNum">    3740</span>              : </span>
+<span id="L3741"><span class="lineNum">    3741</span>              :     // Associate the debug artifact with the main artifact.</span>
+<span id="L3742"><span class="lineNum">    3742</span>              :     // EndToEndCompileRequest::generateOutput will read this data</span>
+<span id="L3743"><span class="lineNum">    3743</span>              :     // and produce a .dbg.spv file for this child artifact.</span>
+<span id="L3744"><span class="lineNum">    3744</span> <span class="tlaGNC">           1 :     if (targetCompilerOptions.shouldEmitSeparateDebugInfo())</span></span>
+<span id="L3745"><span class="lineNum">    3745</span>              :     {</span>
+<span id="L3746"><span class="lineNum">    3746</span> <span class="tlaGNC">           1 :         artifact-&gt;addAssociated(dbgArtifact);</span></span>
+<span id="L3747"><span class="lineNum">    3747</span>              : </span>
+<span id="L3748"><span class="lineNum">    3748</span> <span class="tlaGNC">           1 :         auto artifactPostEmitMetadata =</span></span>
+<span id="L3749"><span class="lineNum">    3749</span>              :             static_cast&lt;ArtifactPostEmitMetadata*&gt;(linkedIR.metadata.get());</span>
+<span id="L3750"><span class="lineNum">    3750</span> <span class="tlaGNC">           1 :         artifactPostEmitMetadata-&gt;addRef();</span></span>
+<span id="L3751"><span class="lineNum">    3751</span> <span class="tlaGNC">           1 :         artifactPostEmitMetadata-&gt;m_debugBuildIdentifier = dbgArtifact-&gt;getName();</span></span>
+<span id="L3752"><span class="lineNum">    3752</span>              :     }</span>
+<span id="L3753"><span class="lineNum">    3753</span>              : </span>
+<span id="L3754"><span class="lineNum">    3754</span> <span class="tlaGNC">           1 :     outArtifact.swap(artifact);</span></span>
 <span id="L3755"><span class="lineNum">    3755</span>              : </span>
-<span id="L3756"><span class="lineNum">    3756</span>              : SlangResult emitHostVMCode(CodeGenContext* codeGenContext, ComPtr&lt;IArtifact&gt;&amp; outArtifact)</span>
-<span id="L3757"><span class="lineNum">    3757</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3758"><span class="lineNum">    3758</span> <span class="tlaGNC">           1 :     LinkedIR linkedIR;</span></span>
-<span id="L3759"><span class="lineNum">    3759</span> <span class="tlaGNC">           1 :     LinkingAndOptimizationOptions linkingAndOptimizationOptions;</span></span>
-<span id="L3760"><span class="lineNum">    3760</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L3761"><span class="lineNum">    3761</span>              :         linkAndOptimizeIR(codeGenContext, linkingAndOptimizationOptions, linkedIR));</span>
-<span id="L3762"><span class="lineNum">    3762</span>              : </span>
-<span id="L3763"><span class="lineNum">    3763</span> <span class="tlaGNC">           1 :     VMByteCodeBuilder byteCode;</span></span>
-<span id="L3764"><span class="lineNum">    3764</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(emitVMByteCodeForEntryPoints(codeGenContext, linkedIR, byteCode));</span></span>
+<span id="L3756"><span class="lineNum">    3756</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L3757"><span class="lineNum">    3757</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3758"><span class="lineNum">    3758</span>              : </span>
+<span id="L3759"><span class="lineNum">    3759</span>              : SlangResult emitHostVMCode(CodeGenContext* codeGenContext, ComPtr&lt;IArtifact&gt;&amp; outArtifact)</span>
+<span id="L3760"><span class="lineNum">    3760</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3761"><span class="lineNum">    3761</span> <span class="tlaGNC">           1 :     LinkedIR linkedIR;</span></span>
+<span id="L3762"><span class="lineNum">    3762</span> <span class="tlaGNC">           1 :     LinkingAndOptimizationOptions linkingAndOptimizationOptions;</span></span>
+<span id="L3763"><span class="lineNum">    3763</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L3764"><span class="lineNum">    3764</span>              :         linkAndOptimizeIR(codeGenContext, linkingAndOptimizationOptions, linkedIR));</span>
 <span id="L3765"><span class="lineNum">    3765</span>              : </span>
-<span id="L3766"><span class="lineNum">    3766</span> <span class="tlaGNC">           1 :     String slangDeclaration;</span></span>
-<span id="L3767"><span class="lineNum">    3767</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L3768"><span class="lineNum">    3768</span>              :         emitSlangDeclarationsForEntryPoints(codeGenContext, linkedIR, slangDeclaration));</span>
-<span id="L3769"><span class="lineNum">    3769</span>              : </span>
-<span id="L3770"><span class="lineNum">    3770</span>              :     slang::SessionDesc sessionDesc = {};</span>
-<span id="L3771"><span class="lineNum">    3771</span> <span class="tlaGNC">           1 :     ComPtr&lt;slang::ISession&gt; slangSession;</span></span>
-<span id="L3772"><span class="lineNum">    3772</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L3773"><span class="lineNum">    3773</span>              :         codeGenContext-&gt;getSession()-&gt;createSession(sessionDesc, slangSession.writeRef()));</span>
-<span id="L3774"><span class="lineNum">    3774</span> <span class="tlaGNC">           1 :     auto linkage = static_cast&lt;Linkage*&gt;(slangSession.get());</span></span>
-<span id="L3775"><span class="lineNum">    3775</span>              : </span>
-<span id="L3776"><span class="lineNum">    3776</span> <span class="tlaGNC">           1 :     ComPtr&lt;ISlangBlob&gt; diagnostics;</span></span>
-<span id="L3777"><span class="lineNum">    3777</span> <span class="tlaGNC">           1 :     auto module = slangSession-&gt;loadModuleFromSource(</span></span>
-<span id="L3778"><span class="lineNum">    3778</span>              :         &quot;kernel&quot;,</span>
-<span id="L3779"><span class="lineNum">    3779</span>              :         &quot;kernel.slang&quot;,</span>
-<span id="L3780"><span class="lineNum">    3780</span>              :         StringBlob::create(slangDeclaration),</span>
-<span id="L3781"><span class="lineNum">    3781</span>              :         diagnostics.writeRef());</span>
-<span id="L3782"><span class="lineNum">    3782</span> <span class="tlaGNC">           1 :     if (!module)</span></span>
-<span id="L3783"><span class="lineNum">    3783</span>              :         return SLANG_FAIL;</span>
-<span id="L3784"><span class="lineNum">    3784</span> <span class="tlaGNC">           1 :     RefPtr&lt;Module&gt; newModule = new Module(linkage);</span></span>
-<span id="L3785"><span class="lineNum">    3785</span> <span class="tlaGNC">           1 :     newModule-&gt;setModuleDecl(static_cast&lt;Module*&gt;(module)-&gt;getModuleDecl());</span></span>
-<span id="L3786"><span class="lineNum">    3786</span> <span class="tlaGNC">           1 :     newModule-&gt;setIRModule(linkedIR.module);</span></span>
-<span id="L3787"><span class="lineNum">    3787</span> <span class="tlaGNC">           1 :     newModule-&gt;setName(&quot;kernels&quot;);</span></span>
-<span id="L3788"><span class="lineNum">    3788</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(newModule-&gt;serialize(byteCode.kernelBlob.writeRef()));</span></span>
-<span id="L3789"><span class="lineNum">    3789</span>              : </span>
-<span id="L3790"><span class="lineNum">    3790</span> <span class="tlaGNC">           1 :     ComPtr&lt;slang::IBlob&gt; byteCodeBlob;</span></span>
-<span id="L3791"><span class="lineNum">    3791</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(byteCode.serialize(byteCodeBlob.writeRef()));</span></span>
+<span id="L3766"><span class="lineNum">    3766</span> <span class="tlaGNC">           1 :     VMByteCodeBuilder byteCode;</span></span>
+<span id="L3767"><span class="lineNum">    3767</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(emitVMByteCodeForEntryPoints(codeGenContext, linkedIR, byteCode));</span></span>
+<span id="L3768"><span class="lineNum">    3768</span>              : </span>
+<span id="L3769"><span class="lineNum">    3769</span> <span class="tlaGNC">           1 :     String slangDeclaration;</span></span>
+<span id="L3770"><span class="lineNum">    3770</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L3771"><span class="lineNum">    3771</span>              :         emitSlangDeclarationsForEntryPoints(codeGenContext, linkedIR, slangDeclaration));</span>
+<span id="L3772"><span class="lineNum">    3772</span>              : </span>
+<span id="L3773"><span class="lineNum">    3773</span>              :     slang::SessionDesc sessionDesc = {};</span>
+<span id="L3774"><span class="lineNum">    3774</span> <span class="tlaGNC">           1 :     ComPtr&lt;slang::ISession&gt; slangSession;</span></span>
+<span id="L3775"><span class="lineNum">    3775</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L3776"><span class="lineNum">    3776</span>              :         codeGenContext-&gt;getSession()-&gt;createSession(sessionDesc, slangSession.writeRef()));</span>
+<span id="L3777"><span class="lineNum">    3777</span> <span class="tlaGNC">           1 :     auto linkage = static_cast&lt;Linkage*&gt;(slangSession.get());</span></span>
+<span id="L3778"><span class="lineNum">    3778</span>              : </span>
+<span id="L3779"><span class="lineNum">    3779</span> <span class="tlaGNC">           1 :     ComPtr&lt;ISlangBlob&gt; diagnostics;</span></span>
+<span id="L3780"><span class="lineNum">    3780</span> <span class="tlaGNC">           1 :     auto module = slangSession-&gt;loadModuleFromSource(</span></span>
+<span id="L3781"><span class="lineNum">    3781</span>              :         &quot;kernel&quot;,</span>
+<span id="L3782"><span class="lineNum">    3782</span>              :         &quot;kernel.slang&quot;,</span>
+<span id="L3783"><span class="lineNum">    3783</span>              :         StringBlob::create(slangDeclaration),</span>
+<span id="L3784"><span class="lineNum">    3784</span>              :         diagnostics.writeRef());</span>
+<span id="L3785"><span class="lineNum">    3785</span> <span class="tlaGNC">           1 :     if (!module)</span></span>
+<span id="L3786"><span class="lineNum">    3786</span>              :         return SLANG_FAIL;</span>
+<span id="L3787"><span class="lineNum">    3787</span> <span class="tlaGNC">           1 :     RefPtr&lt;Module&gt; newModule = new Module(linkage);</span></span>
+<span id="L3788"><span class="lineNum">    3788</span> <span class="tlaGNC">           1 :     newModule-&gt;setModuleDecl(static_cast&lt;Module*&gt;(module)-&gt;getModuleDecl());</span></span>
+<span id="L3789"><span class="lineNum">    3789</span> <span class="tlaGNC">           1 :     newModule-&gt;setIRModule(linkedIR.module);</span></span>
+<span id="L3790"><span class="lineNum">    3790</span> <span class="tlaGNC">           1 :     newModule-&gt;setName(&quot;kernels&quot;);</span></span>
+<span id="L3791"><span class="lineNum">    3791</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(newModule-&gt;serialize(byteCode.kernelBlob.writeRef()));</span></span>
 <span id="L3792"><span class="lineNum">    3792</span>              : </span>
-<span id="L3793"><span class="lineNum">    3793</span> <span class="tlaGNC">           1 :     outArtifact = ArtifactUtil::createArtifactForCompileTarget(SLANG_HOST_VM);</span></span>
-<span id="L3794"><span class="lineNum">    3794</span> <span class="tlaGNC">           1 :     outArtifact-&gt;addRepresentationUnknown(byteCodeBlob);</span></span>
+<span id="L3793"><span class="lineNum">    3793</span> <span class="tlaGNC">           1 :     ComPtr&lt;slang::IBlob&gt; byteCodeBlob;</span></span>
+<span id="L3794"><span class="lineNum">    3794</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(byteCode.serialize(byteCodeBlob.writeRef()));</span></span>
 <span id="L3795"><span class="lineNum">    3795</span>              : </span>
-<span id="L3796"><span class="lineNum">    3796</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L3797"><span class="lineNum">    3797</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3796"><span class="lineNum">    3796</span> <span class="tlaGNC">           1 :     outArtifact = ArtifactUtil::createArtifactForCompileTarget(SLANG_HOST_VM);</span></span>
+<span id="L3797"><span class="lineNum">    3797</span> <span class="tlaGNC">           1 :     outArtifact-&gt;addRepresentationUnknown(byteCodeBlob);</span></span>
 <span id="L3798"><span class="lineNum">    3798</span>              : </span>
-<span id="L3799"><span class="lineNum">    3799</span>              : SlangResult emitLLVMForEntryPoints(CodeGenContext* codeGenContext, ComPtr&lt;IArtifact&gt;&amp; outArtifact)</span>
-<span id="L3800"><span class="lineNum">    3800</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3801"><span class="lineNum">    3801</span> <span class="tlaGNC">           1 :     auto target = codeGenContext-&gt;getTargetFormat();</span></span>
-<span id="L3802"><span class="lineNum">    3802</span>              : </span>
-<span id="L3803"><span class="lineNum">    3803</span> <span class="tlaGNC">           1 :     ISlangSharedLibrary* library = codeGenContext-&gt;getSession()-&gt;getOrLoadSlangLLVM();</span></span>
-<span id="L3804"><span class="lineNum">    3804</span> <span class="tlaGNC">           1 :     if (!library)</span></span>
-<span id="L3805"><span class="lineNum">    3805</span>              :     {</span>
-<span id="L3806"><span class="lineNum">    3806</span> <span class="tlaUNC">           0 :         codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::UnableToGenerateCodeForTarget{</span></span>
-<span id="L3807"><span class="lineNum">    3807</span>              :             .target = TypeTextUtil::getCompileTargetName(SlangCompileTarget(target))});</span>
-<span id="L3808"><span class="lineNum">    3808</span> <span class="tlaUNC">           0 :         return SLANG_FAIL;</span></span>
-<span id="L3809"><span class="lineNum">    3809</span>              :     }</span>
-<span id="L3810"><span class="lineNum">    3810</span>              : </span>
-<span id="L3811"><span class="lineNum">    3811</span> <span class="tlaGNC">           1 :     LinkedIR linkedIR;</span></span>
-<span id="L3812"><span class="lineNum">    3812</span> <span class="tlaGNC">           1 :     LinkingAndOptimizationOptions linkingAndOptimizationOptions;</span></span>
-<span id="L3813"><span class="lineNum">    3813</span> <span class="tlaGNC">           1 :     linkingAndOptimizationOptions.shouldLegalizeExistentialAndResourceTypes = false;</span></span>
-<span id="L3814"><span class="lineNum">    3814</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L3815"><span class="lineNum">    3815</span>              :         linkAndOptimizeIR(codeGenContext, linkingAndOptimizationOptions, linkedIR));</span>
-<span id="L3816"><span class="lineNum">    3816</span>              : </span>
-<span id="L3817"><span class="lineNum">    3817</span> <span class="tlaGNC">           1 :     auto irModule = linkedIR.module;</span></span>
-<span id="L3818"><span class="lineNum">    3818</span>              : </span>
-<span id="L3819"><span class="lineNum">    3819</span> <span class="tlaGNC">           1 :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
-<span id="L3820"><span class="lineNum">    3820</span>              : </span>
-<span id="L3821"><span class="lineNum">    3821</span> <span class="tlaGNC">           1 :     switch (target)</span></span>
-<span id="L3822"><span class="lineNum">    3822</span>              :     {</span>
-<span id="L3823"><span class="lineNum">    3823</span>              :     // At this point there should be no difference between host style and shader</span>
-<span id="L3824"><span class="lineNum">    3824</span>              :     // style from LLVM&#x27;s perspective: the shader style has already been</span>
-<span id="L3825"><span class="lineNum">    3825</span>              :     // lowered/legalized into host style.</span>
-<span id="L3826"><span class="lineNum">    3826</span>              :     case CodeGenTarget::HostObjectCode:</span>
-<span id="L3827"><span class="lineNum">    3827</span>              :     case CodeGenTarget::ShaderObjectCode:</span>
-<span id="L3828"><span class="lineNum">    3828</span>              :         {</span>
-<span id="L3829"><span class="lineNum">    3829</span> <span class="tlaUNC">           0 :             IArtifact* artifact = nullptr;</span></span>
-<span id="L3830"><span class="lineNum">    3830</span> <span class="tlaUNC">           0 :             emitLLVMObjectFromIR(codeGenContext, irModule, &amp;artifact);</span></span>
-<span id="L3831"><span class="lineNum">    3831</span>              :             outArtifact = ComPtr&lt;IArtifact&gt;(artifact);</span>
-<span id="L3832"><span class="lineNum">    3832</span>              :         }</span>
-<span id="L3833"><span class="lineNum">    3833</span> <span class="tlaUNC">           0 :         break;</span></span>
-<span id="L3834"><span class="lineNum">    3834</span>              :     case CodeGenTarget::HostLLVMIR:</span>
-<span id="L3835"><span class="lineNum">    3835</span>              :     case CodeGenTarget::ShaderLLVMIR:</span>
-<span id="L3836"><span class="lineNum">    3836</span>              :         {</span>
-<span id="L3837"><span class="lineNum">    3837</span> <span class="tlaGNC">           1 :             IArtifact* artifact = nullptr;</span></span>
-<span id="L3838"><span class="lineNum">    3838</span> <span class="tlaGNC">           1 :             emitLLVMAssemblyFromIR(codeGenContext, irModule, &amp;artifact);</span></span>
-<span id="L3839"><span class="lineNum">    3839</span>              :             outArtifact = ComPtr&lt;IArtifact&gt;(artifact);</span>
-<span id="L3840"><span class="lineNum">    3840</span>              :         }</span>
-<span id="L3841"><span class="lineNum">    3841</span> <span class="tlaGNC">           1 :         break;</span></span>
-<span id="L3842"><span class="lineNum">    3842</span>              :     case CodeGenTarget::HostHostCallable:</span>
-<span id="L3843"><span class="lineNum">    3843</span>              :     case CodeGenTarget::ShaderHostCallable:</span>
-<span id="L3844"><span class="lineNum">    3844</span>              :         {</span>
-<span id="L3845"><span class="lineNum">    3845</span> <span class="tlaGNC">           1 :             IArtifact* artifact = nullptr;</span></span>
-<span id="L3846"><span class="lineNum">    3846</span> <span class="tlaGNC">           1 :             emitLLVMJITFromIR(codeGenContext, irModule, &amp;artifact);</span></span>
-<span id="L3847"><span class="lineNum">    3847</span>              :             outArtifact = ComPtr&lt;IArtifact&gt;(artifact);</span>
-<span id="L3848"><span class="lineNum">    3848</span>              :         }</span>
-<span id="L3849"><span class="lineNum">    3849</span>              :         break;</span>
-<span id="L3850"><span class="lineNum">    3850</span>              :     }</span>
-<span id="L3851"><span class="lineNum">    3851</span>              : </span>
-<span id="L3852"><span class="lineNum">    3852</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L3853"><span class="lineNum">    3853</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3799"><span class="lineNum">    3799</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L3800"><span class="lineNum">    3800</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3801"><span class="lineNum">    3801</span>              : </span>
+<span id="L3802"><span class="lineNum">    3802</span>              : SlangResult emitLLVMForEntryPoints(CodeGenContext* codeGenContext, ComPtr&lt;IArtifact&gt;&amp; outArtifact)</span>
+<span id="L3803"><span class="lineNum">    3803</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3804"><span class="lineNum">    3804</span> <span class="tlaGNC">           1 :     auto target = codeGenContext-&gt;getTargetFormat();</span></span>
+<span id="L3805"><span class="lineNum">    3805</span>              : </span>
+<span id="L3806"><span class="lineNum">    3806</span> <span class="tlaGNC">           1 :     ISlangSharedLibrary* library = codeGenContext-&gt;getSession()-&gt;getOrLoadSlangLLVM();</span></span>
+<span id="L3807"><span class="lineNum">    3807</span> <span class="tlaGNC">           1 :     if (!library)</span></span>
+<span id="L3808"><span class="lineNum">    3808</span>              :     {</span>
+<span id="L3809"><span class="lineNum">    3809</span> <span class="tlaUNC">           0 :         codeGenContext-&gt;getSink()-&gt;diagnose(Diagnostics::UnableToGenerateCodeForTarget{</span></span>
+<span id="L3810"><span class="lineNum">    3810</span>              :             .target = TypeTextUtil::getCompileTargetName(SlangCompileTarget(target))});</span>
+<span id="L3811"><span class="lineNum">    3811</span> <span class="tlaUNC">           0 :         return SLANG_FAIL;</span></span>
+<span id="L3812"><span class="lineNum">    3812</span>              :     }</span>
+<span id="L3813"><span class="lineNum">    3813</span>              : </span>
+<span id="L3814"><span class="lineNum">    3814</span> <span class="tlaGNC">           1 :     LinkedIR linkedIR;</span></span>
+<span id="L3815"><span class="lineNum">    3815</span> <span class="tlaGNC">           1 :     LinkingAndOptimizationOptions linkingAndOptimizationOptions;</span></span>
+<span id="L3816"><span class="lineNum">    3816</span> <span class="tlaGNC">           1 :     linkingAndOptimizationOptions.shouldLegalizeExistentialAndResourceTypes = false;</span></span>
+<span id="L3817"><span class="lineNum">    3817</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L3818"><span class="lineNum">    3818</span>              :         linkAndOptimizeIR(codeGenContext, linkingAndOptimizationOptions, linkedIR));</span>
+<span id="L3819"><span class="lineNum">    3819</span>              : </span>
+<span id="L3820"><span class="lineNum">    3820</span> <span class="tlaGNC">           1 :     auto irModule = linkedIR.module;</span></span>
+<span id="L3821"><span class="lineNum">    3821</span>              : </span>
+<span id="L3822"><span class="lineNum">    3822</span> <span class="tlaGNC">           1 :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
+<span id="L3823"><span class="lineNum">    3823</span>              : </span>
+<span id="L3824"><span class="lineNum">    3824</span> <span class="tlaGNC">           1 :     switch (target)</span></span>
+<span id="L3825"><span class="lineNum">    3825</span>              :     {</span>
+<span id="L3826"><span class="lineNum">    3826</span>              :     // At this point there should be no difference between host style and shader</span>
+<span id="L3827"><span class="lineNum">    3827</span>              :     // style from LLVM&#x27;s perspective: the shader style has already been</span>
+<span id="L3828"><span class="lineNum">    3828</span>              :     // lowered/legalized into host style.</span>
+<span id="L3829"><span class="lineNum">    3829</span>              :     case CodeGenTarget::HostObjectCode:</span>
+<span id="L3830"><span class="lineNum">    3830</span>              :     case CodeGenTarget::ShaderObjectCode:</span>
+<span id="L3831"><span class="lineNum">    3831</span>              :         {</span>
+<span id="L3832"><span class="lineNum">    3832</span> <span class="tlaUNC">           0 :             IArtifact* artifact = nullptr;</span></span>
+<span id="L3833"><span class="lineNum">    3833</span> <span class="tlaUNC">           0 :             emitLLVMObjectFromIR(codeGenContext, irModule, &amp;artifact);</span></span>
+<span id="L3834"><span class="lineNum">    3834</span>              :             outArtifact = ComPtr&lt;IArtifact&gt;(artifact);</span>
+<span id="L3835"><span class="lineNum">    3835</span>              :         }</span>
+<span id="L3836"><span class="lineNum">    3836</span> <span class="tlaUNC">           0 :         break;</span></span>
+<span id="L3837"><span class="lineNum">    3837</span>              :     case CodeGenTarget::HostLLVMIR:</span>
+<span id="L3838"><span class="lineNum">    3838</span>              :     case CodeGenTarget::ShaderLLVMIR:</span>
+<span id="L3839"><span class="lineNum">    3839</span>              :         {</span>
+<span id="L3840"><span class="lineNum">    3840</span> <span class="tlaGNC">           1 :             IArtifact* artifact = nullptr;</span></span>
+<span id="L3841"><span class="lineNum">    3841</span> <span class="tlaGNC">           1 :             emitLLVMAssemblyFromIR(codeGenContext, irModule, &amp;artifact);</span></span>
+<span id="L3842"><span class="lineNum">    3842</span>              :             outArtifact = ComPtr&lt;IArtifact&gt;(artifact);</span>
+<span id="L3843"><span class="lineNum">    3843</span>              :         }</span>
+<span id="L3844"><span class="lineNum">    3844</span> <span class="tlaGNC">           1 :         break;</span></span>
+<span id="L3845"><span class="lineNum">    3845</span>              :     case CodeGenTarget::HostHostCallable:</span>
+<span id="L3846"><span class="lineNum">    3846</span>              :     case CodeGenTarget::ShaderHostCallable:</span>
+<span id="L3847"><span class="lineNum">    3847</span>              :         {</span>
+<span id="L3848"><span class="lineNum">    3848</span> <span class="tlaGNC">           1 :             IArtifact* artifact = nullptr;</span></span>
+<span id="L3849"><span class="lineNum">    3849</span> <span class="tlaGNC">           1 :             emitLLVMJITFromIR(codeGenContext, irModule, &amp;artifact);</span></span>
+<span id="L3850"><span class="lineNum">    3850</span>              :             outArtifact = ComPtr&lt;IArtifact&gt;(artifact);</span>
+<span id="L3851"><span class="lineNum">    3851</span>              :         }</span>
+<span id="L3852"><span class="lineNum">    3852</span>              :         break;</span>
+<span id="L3853"><span class="lineNum">    3853</span>              :     }</span>
 <span id="L3854"><span class="lineNum">    3854</span>              : </span>
-<span id="L3855"><span class="lineNum">    3855</span>              : } // namespace Slang</span>
+<span id="L3855"><span class="lineNum">    3855</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L3856"><span class="lineNum">    3856</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3857"><span class="lineNum">    3857</span>              : </span>
+<span id="L3858"><span class="lineNum">    3858</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

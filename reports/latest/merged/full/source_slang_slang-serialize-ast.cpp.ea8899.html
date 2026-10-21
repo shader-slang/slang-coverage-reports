@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-20 05:14:47 UTC</td>
+      <td class="headerValue">2026-10-21 05:17:53 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -378,14 +378,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L87"><span class="lineNum">      87</span>                         : //</span>
 <span id="L88"><span class="lineNum">      88</span>                         : template&lt;typename S&gt;</span>
 <span id="L89"><span class="lineNum">      89</span>                         : void serialize(S const&amp;, RefObject&amp;)</span>
-<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">    40563446            : {</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">    40561374            : {</span></span>
 <span id="L91"><span class="lineNum">      91</span>                         :     // There&#x27;s actually no data stored in a `RefObject`, since it only exists</span>
 <span id="L92"><span class="lineNum">      92</span>                         :     // to make reference-counting possible for other types. This function is</span>
 <span id="L93"><span class="lineNum">      93</span>                         :     // primarily useful for cases where we might codegen logic to serialize</span>
 <span id="L94"><span class="lineNum">      94</span>                         :     // a type by serializing its base class (if it has one) and then its fields.</span>
 <span id="L95"><span class="lineNum">      95</span>                         :     // If the base class is `RefObject`, we want there to be an available</span>
 <span id="L96"><span class="lineNum">      96</span>                         :     // overload of `serialize()` to handle that case.</span>
-<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">    40563446            : }</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">    40561374            : }</span></span>
 <span id="L98"><span class="lineNum">      98</span>                         : </span>
 <span id="L99"><span class="lineNum">      99</span>                         : //</span>
 <span id="L100"><span class="lineNum">     100</span>                         : // In addition to using the general-purpose serialization system, we are</span>
@@ -506,7 +506,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L215"><span class="lineNum">     215</span>                         : //</span>
 <span id="L216"><span class="lineNum">     216</span>                         : template&lt;typename S&gt;</span>
 <span id="L217"><span class="lineNum">     217</span>                         : void serialize(S const&amp; serializer, SemanticVersion&amp; value)</span>
-<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       10996            : {</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       10974            : {</span></span>
 <span id="L219"><span class="lineNum">     219</span>                         :     // This function is doing something a little &quot;clever&quot;</span>
 <span id="L220"><span class="lineNum">     220</span>                         :     // handle the fact that it might be used to either</span>
 <span id="L221"><span class="lineNum">     221</span>                         :     // *write* a `SemanticVersion` to the serialized format,</span>
@@ -524,14 +524,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L233"><span class="lineNum">     233</span>                         :     // useful or even *valid* in the case where we are reading</span>
 <span id="L234"><span class="lineNum">     234</span>                         :     // (and thus expected to overwrite `value`).</span>
 <span id="L235"><span class="lineNum">     235</span>                         :     //</span>
-<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       10996            :     SemanticVersion::RawValue raw = value.getRawValue();</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       10974            :     SemanticVersion::RawValue raw = value.getRawValue();</span></span>
 <span id="L237"><span class="lineNum">     237</span>                         : </span>
 <span id="L238"><span class="lineNum">     238</span>                         :     // Depending on whether we are reading or writing, this next</span>
 <span id="L239"><span class="lineNum">     239</span>                         :     // line will either write out the value of `raw` that was</span>
 <span id="L240"><span class="lineNum">     240</span>                         :     // computed above, or it will read serialized data into `raw`,</span>
 <span id="L241"><span class="lineNum">     241</span>                         :     // and overwrite the useless value from before.</span>
 <span id="L242"><span class="lineNum">     242</span>                         :     //</span>
-<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">       10996            :     serialize(serializer, raw);</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">       10974            :     serialize(serializer, raw);</span></span>
 <span id="L244"><span class="lineNum">     244</span>                         : </span>
 <span id="L245"><span class="lineNum">     245</span>                         :     // Finally, we overwrite the `value` by converting `raw`</span>
 <span id="L246"><span class="lineNum">     246</span>                         :     // back to a `SemanticVersion`. If we are in reading mode,</span>
@@ -550,7 +550,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L259"><span class="lineNum">     259</span>                         :     //   temporarily sets the object into a state that shouldn&#x27;t be</span>
 <span id="L260"><span class="lineNum">     260</span>                         :     //   obeserved).</span>
 <span id="L261"><span class="lineNum">     261</span>                         :     //</span>
-<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       10996            :     value = SemanticVersion::fromRaw(raw);</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       10974            :     value = SemanticVersion::fromRaw(raw);</span></span>
 <span id="L263"><span class="lineNum">     263</span>                         : </span>
 <span id="L264"><span class="lineNum">     264</span>                         :     // In cases where a given type doesn&#x27;t satsify all the assumptions</span>
 <span id="L265"><span class="lineNum">     265</span>                         :     // being made above, it is relatively simple to just split the</span>
@@ -559,7 +559,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L268"><span class="lineNum">     268</span>                         :     // function call, so in cases where it can easily be avoided,</span>
 <span id="L269"><span class="lineNum">     269</span>                         :     // we prefer to do the redundant copy-in and copy-out on a local</span>
 <span id="L270"><span class="lineNum">     270</span>                         :     // variable, like in the code above.</span>
-<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">       10996            : }</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">       10974            : }</span></span>
 <span id="L272"><span class="lineNum">     272</span>                         : </span>
 <span id="L273"><span class="lineNum">     273</span>                         : //</span>
 <span id="L274"><span class="lineNum">     274</span>                         : // Given the definition of `serialize()` above, it is clear that the</span>
@@ -1035,7 +1035,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L744"><span class="lineNum">     744</span>                         :     void handleContainerDeclDirectMemberDecls(</span>
 <span id="L745"><span class="lineNum">     745</span>                         :         ASTSerializer const&amp; serializer,</span>
 <span id="L746"><span class="lineNum">     746</span>                         :         ContainerDeclDirectMemberDecls&amp; value);</span>
-<span id="L747"><span class="lineNum">     747</span> <span class="tlaGNC">    64648485            :     SerialSourceLocReader* getSourceLocReader() { return _sourceLocReader; }</span></span>
+<span id="L747"><span class="lineNum">     747</span> <span class="tlaGNC">    64635913            :     SerialSourceLocReader* getSourceLocReader() { return _sourceLocReader; }</span></span>
 <span id="L748"><span class="lineNum">     748</span>                         : </span>
 <span id="L749"><span class="lineNum">     749</span>                         : private:</span>
 <span id="L750"><span class="lineNum">     750</span>                         :     ModuleDecl* _readImportedModule(ASTSerializer const&amp; serializer);</span>
@@ -1065,9 +1065,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L774"><span class="lineNum">     774</span>                         : </span>
 <span id="L775"><span class="lineNum">     775</span>                         : template&lt;typename S&gt;</span>
 <span id="L776"><span class="lineNum">     776</span>                         : void serializeObject(S const&amp; serializer, Name*&amp; value, Name*)</span>
-<span id="L777"><span class="lineNum">     777</span> <span class="tlaGNC">     1450905            : {</span></span>
-<span id="L778"><span class="lineNum">     778</span> <span class="tlaGNC">     1450905            :     serializer.getContext()-&gt;handleName(serializer, value);</span></span>
-<span id="L779"><span class="lineNum">     779</span> <span class="tlaGNC">     1450905            : }</span></span>
+<span id="L777"><span class="lineNum">     777</span> <span class="tlaGNC">     1450515            : {</span></span>
+<span id="L778"><span class="lineNum">     778</span> <span class="tlaGNC">     1450515            :     serializer.getContext()-&gt;handleName(serializer, value);</span></span>
+<span id="L779"><span class="lineNum">     779</span> <span class="tlaGNC">     1450515            : }</span></span>
 <span id="L780"><span class="lineNum">     780</span>                         : </span>
 <span id="L781"><span class="lineNum">     781</span>                         : void ASTSerialWriteContext::handleName(ASTSerializer const&amp; serializer, Name*&amp; value)</span>
 <span id="L782"><span class="lineNum">     782</span> <span class="tlaGNC">        9621            : {</span></span>
@@ -1075,11 +1075,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L784"><span class="lineNum">     784</span> <span class="tlaGNC">        9621            : }</span></span>
 <span id="L785"><span class="lineNum">     785</span>                         : </span>
 <span id="L786"><span class="lineNum">     786</span>                         : void ASTSerialReadContext::handleName(ASTSerializer const&amp; serializer, Name*&amp; value)</span>
-<span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">     1441284            : {</span></span>
-<span id="L788"><span class="lineNum">     788</span> <span class="tlaGNC">     1441284            :     String text;</span></span>
-<span id="L789"><span class="lineNum">     789</span> <span class="tlaGNC">     1441284            :     serialize(serializer, text);</span></span>
-<span id="L790"><span class="lineNum">     790</span> <span class="tlaGNC">     1441284            :     value = _astBuilder-&gt;getNamePool()-&gt;getName(text);</span></span>
-<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">     1441284            : }</span></span>
+<span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">     1440894            : {</span></span>
+<span id="L788"><span class="lineNum">     788</span> <span class="tlaGNC">     1440894            :     String text;</span></span>
+<span id="L789"><span class="lineNum">     789</span> <span class="tlaGNC">     1440894            :     serialize(serializer, text);</span></span>
+<span id="L790"><span class="lineNum">     790</span> <span class="tlaGNC">     1440894            :     value = _astBuilder-&gt;getNamePool()-&gt;getName(text);</span></span>
+<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">     1440894            : }</span></span>
 <span id="L792"><span class="lineNum">     792</span>                         : </span>
 <span id="L793"><span class="lineNum">     793</span>                         : //</span>
 <span id="L794"><span class="lineNum">     794</span>                         : // A `Token` is *almost* an easy type to handle, and</span>
@@ -1180,7 +1180,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L889"><span class="lineNum">     889</span>                         : </span>
 <span id="L890"><span class="lineNum">     890</span>                         : template&lt;typename S, typename T&gt;</span>
 <span id="L891"><span class="lineNum">     891</span>                         : SLANG_FORCE_INLINE void serializeObject(S const&amp; serializer, T*&amp; value, NodeBase*)</span>
-<span id="L892"><span class="lineNum">     892</span> <span class="tlaGNC">   125030142            : {</span></span>
+<span id="L892"><span class="lineNum">     892</span> <span class="tlaGNC">   125015274            : {</span></span>
 <span id="L893"><span class="lineNum">     893</span>                         :     // The general-purpose serialization layer defines</span>
 <span id="L894"><span class="lineNum">     894</span>                         :     // a variant as akin to a struct, but where the</span>
 <span id="L895"><span class="lineNum">     895</span>                         :     // specific number and type of fields that get written</span>
@@ -1195,9 +1195,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L904"><span class="lineNum">     904</span>                         :     // class hierarchy, we treat all pointers to `NodeBase`-derived</span>
 <span id="L905"><span class="lineNum">     905</span>                         :     // types as variants for serialization purposes.</span>
 <span id="L906"><span class="lineNum">     906</span>                         :     //</span>
-<span id="L907"><span class="lineNum">     907</span> <span class="tlaGNC">   125030142            :     SLANG_SCOPED_SERIALIZER_VARIANT(serializer);</span></span>
-<span id="L908"><span class="lineNum">     908</span> <span class="tlaGNC">   125030142            :     serializer.getContext()-&gt;handleASTNode(serializer, reinterpret_cast&lt;NodeBase*&amp;&gt;(value));</span></span>
-<span id="L909"><span class="lineNum">     909</span> <span class="tlaGNC">   125030142            : }</span></span>
+<span id="L907"><span class="lineNum">     907</span> <span class="tlaGNC">   125015274            :     SLANG_SCOPED_SERIALIZER_VARIANT(serializer);</span></span>
+<span id="L908"><span class="lineNum">     908</span> <span class="tlaGNC">   125015274            :     serializer.getContext()-&gt;handleASTNode(serializer, reinterpret_cast&lt;NodeBase*&amp;&gt;(value));</span></span>
+<span id="L909"><span class="lineNum">     909</span> <span class="tlaGNC">   125015274            : }</span></span>
 <span id="L910"><span class="lineNum">     910</span>                         : </span>
 <span id="L911"><span class="lineNum">     911</span>                         : //</span>
 <span id="L912"><span class="lineNum">     912</span>                         : // We also intercept the `serializeObjectContents()` customization</span>
@@ -1209,9 +1209,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L918"><span class="lineNum">     918</span>                         : </span>
 <span id="L919"><span class="lineNum">     919</span>                         : template&lt;typename S&gt;</span>
 <span id="L920"><span class="lineNum">     920</span>                         : SLANG_FORCE_INLINE void serializeObjectContents(S const&amp; serializer, NodeBase* value, NodeBase*)</span>
-<span id="L921"><span class="lineNum">     921</span> <span class="tlaGNC">    41404592            : {</span></span>
-<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">    41404592            :     serializer.getContext()-&gt;handleASTNodeContents(serializer, value);</span></span>
-<span id="L923"><span class="lineNum">     923</span> <span class="tlaGNC">    41404592            : }</span></span>
+<span id="L921"><span class="lineNum">     921</span> <span class="tlaGNC">    41395458            : {</span></span>
+<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">    41395458            :     serializer.getContext()-&gt;handleASTNodeContents(serializer, value);</span></span>
+<span id="L923"><span class="lineNum">     923</span> <span class="tlaGNC">    41395458            : }</span></span>
 <span id="L924"><span class="lineNum">     924</span>                         : </span>
 <span id="L925"><span class="lineNum">     925</span>                         : //</span>
 <span id="L926"><span class="lineNum">     926</span>                         : // The handling of the members of a `ContainerDecl` is another</span>
@@ -1228,9 +1228,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L937"><span class="lineNum">     937</span>                         : </span>
 <span id="L938"><span class="lineNum">     938</span>                         : template&lt;typename S&gt;</span>
 <span id="L939"><span class="lineNum">     939</span>                         : SLANG_FORCE_INLINE void serialize(S const&amp; serializer, ContainerDeclDirectMemberDecls&amp; value)</span>
-<span id="L940"><span class="lineNum">     940</span> <span class="tlaGNC">    12148266            : {</span></span>
-<span id="L941"><span class="lineNum">     941</span> <span class="tlaGNC">    12148266            :     serializer.getContext()-&gt;handleContainerDeclDirectMemberDecls(serializer, value);</span></span>
-<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">    12148266            : }</span></span>
+<span id="L940"><span class="lineNum">     940</span> <span class="tlaGNC">    12146500            : {</span></span>
+<span id="L941"><span class="lineNum">     941</span> <span class="tlaGNC">    12146500            :     serializer.getContext()-&gt;handleContainerDeclDirectMemberDecls(serializer, value);</span></span>
+<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">    12146500            : }</span></span>
 <span id="L943"><span class="lineNum">     943</span>                         : </span>
 <span id="L944"><span class="lineNum">     944</span>                         : //</span>
 <span id="L945"><span class="lineNum">     945</span>                         : // Pointers to diagnostics (which can be referenced in attributes</span>
@@ -1264,9 +1264,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L973"><span class="lineNum">     973</span>                         : </span>
 <span id="L974"><span class="lineNum">     974</span>                         : template&lt;typename S, typename T&gt;</span>
 <span id="L975"><span class="lineNum">     975</span>                         : void serialize(S const&amp; serializer, DeclRef&lt;T&gt;&amp; value)</span>
-<span id="L976"><span class="lineNum">     976</span> <span class="tlaGNC">     3171419            : {</span></span>
-<span id="L977"><span class="lineNum">     977</span> <span class="tlaGNC">     3171419            :     serialize(serializer, value.declRefBase);</span></span>
-<span id="L978"><span class="lineNum">     978</span> <span class="tlaGNC">     3171419            : }</span></span>
+<span id="L976"><span class="lineNum">     976</span> <span class="tlaGNC">     3169949            : {</span></span>
+<span id="L977"><span class="lineNum">     977</span> <span class="tlaGNC">     3169949            :     serialize(serializer, value.declRefBase);</span></span>
+<span id="L978"><span class="lineNum">     978</span> <span class="tlaGNC">     3169949            : }</span></span>
 <span id="L979"><span class="lineNum">     979</span>                         : </span>
 <span id="L980"><span class="lineNum">     980</span>                         : template&lt;typename T&gt;</span>
 <span id="L981"><span class="lineNum">     981</span>                         : struct FossilizedTypeTraits&lt;DeclRef&lt;T&gt;&gt;</span>
@@ -1287,18 +1287,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L996"><span class="lineNum">     996</span>                         : </span>
 <span id="L997"><span class="lineNum">     997</span>                         : template&lt;typename S&gt;</span>
 <span id="L998"><span class="lineNum">     998</span>                         : void serialize(S const&amp; serializer, SyntaxClass&lt;NodeBase&gt;&amp; value)</span>
-<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">      273145            : {</span></span>
-<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">      273145            :     ASTNodeType raw = ASTNodeType(0);</span></span>
-<span id="L1001"><span class="lineNum">    1001</span> <span class="tlaGNC">      273145 <span class="branchPart" title="br0: 657; br1: 272488; br2: 657; br3: 0">(3/4)</span>      :     if (isWriting(serializer))</span></span>
+<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">      273131            : {</span></span>
+<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">      273131            :     ASTNodeType raw = ASTNodeType(0);</span></span>
+<span id="L1001"><span class="lineNum">    1001</span> <span class="tlaGNC">      273131 <span class="branchPart" title="br0: 657; br1: 272474; br2: 657; br3: 0">(3/4)</span>      :     if (isWriting(serializer))</span></span>
 <span id="L1002"><span class="lineNum">    1002</span> <span class="tlaGNC">         657            :     {</span></span>
 <span id="L1003"><span class="lineNum">    1003</span> <span class="tlaGNC">         657            :         raw = value.getTag();</span></span>
 <span id="L1004"><span class="lineNum">    1004</span> <span class="tlaGNC">         657            :     }</span></span>
-<span id="L1005"><span class="lineNum">    1005</span> <span class="tlaGNC">      273145            :     serialize(serializer, raw);</span></span>
-<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaGNC">      273145 <span class="branchPart" title="br0: 272488; br1: 657; br2: 0; br3: 657">(3/4)</span>      :     if (isReading(serializer))</span></span>
-<span id="L1007"><span class="lineNum">    1007</span> <span class="tlaGNC">      272488            :     {</span></span>
-<span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">      272488            :         value = SyntaxClass&lt;NodeBase&gt;(raw);</span></span>
-<span id="L1009"><span class="lineNum">    1009</span> <span class="tlaGNC">      272488            :     }</span></span>
-<span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">      273145            : }</span></span>
+<span id="L1005"><span class="lineNum">    1005</span> <span class="tlaGNC">      273131            :     serialize(serializer, raw);</span></span>
+<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaGNC">      273131 <span class="branchPart" title="br0: 272474; br1: 657; br2: 0; br3: 657">(3/4)</span>      :     if (isReading(serializer))</span></span>
+<span id="L1007"><span class="lineNum">    1007</span> <span class="tlaGNC">      272474            :     {</span></span>
+<span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">      272474            :         value = SyntaxClass&lt;NodeBase&gt;(raw);</span></span>
+<span id="L1009"><span class="lineNum">    1009</span> <span class="tlaGNC">      272474            :     }</span></span>
+<span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">      273131            : }</span></span>
 <span id="L1011"><span class="lineNum">    1011</span>                         : </span>
 <span id="L1012"><span class="lineNum">    1012</span>                         : //</span>
 <span id="L1013"><span class="lineNum">    1013</span>                         : // The `Modifiers` type is just a wrapper around the way</span>
@@ -1312,35 +1312,35 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1021"><span class="lineNum">    1021</span>                         : </span>
 <span id="L1022"><span class="lineNum">    1022</span>                         : template&lt;typename S&gt;</span>
 <span id="L1023"><span class="lineNum">    1023</span>                         : void serialize(S const&amp; serializer, Modifiers&amp; value)</span>
-<span id="L1024"><span class="lineNum">    1024</span> <span class="tlaGNC">    25996006            : {</span></span>
-<span id="L1025"><span class="lineNum">    1025</span> <span class="tlaGNC">    25996006            :     SLANG_SCOPED_SERIALIZER_ARRAY(serializer);</span></span>
+<span id="L1024"><span class="lineNum">    1024</span> <span class="tlaGNC">    25992568            : {</span></span>
+<span id="L1025"><span class="lineNum">    1025</span> <span class="tlaGNC">    25992568            :     SLANG_SCOPED_SERIALIZER_ARRAY(serializer);</span></span>
 <span id="L1026"><span class="lineNum">    1026</span>                         : </span>
 <span id="L1027"><span class="lineNum">    1027</span>                         :     // Because we are dealing with a list, rather</span>
 <span id="L1028"><span class="lineNum">    1028</span>                         :     // than a more mundane aggregate type list</span>
 <span id="L1029"><span class="lineNum">    1029</span>                         :     // a struct, we need our logic to distinguish</span>
 <span id="L1030"><span class="lineNum">    1030</span>                         :     // between the writing and reading cases.</span>
 <span id="L1031"><span class="lineNum">    1031</span>                         :     //</span>
-<span id="L1032"><span class="lineNum">    1032</span> <span class="tlaGNC">    25996006 <span class="branchPart" title="br0: 101886; br1: 25894120; br2: 101886; br3: 0">(3/4)</span>      :     if (isWriting(serializer))</span></span>
+<span id="L1032"><span class="lineNum">    1032</span> <span class="tlaGNC">    25992568 <span class="branchPart" title="br0: 101886; br1: 25890682; br2: 101886; br3: 0">(3/4)</span>      :     if (isWriting(serializer))</span></span>
 <span id="L1033"><span class="lineNum">    1033</span> <span class="tlaGNC">      101886            :     {</span></span>
 <span id="L1034"><span class="lineNum">    1034</span> <span class="tlaGNC">      101886 <span class="branchPart" title="br0: 67748; br1: 101886; br2: -; br3: -">(2/4)</span>      :         for (auto modifier : value)</span></span>
 <span id="L1035"><span class="lineNum">    1035</span> <span class="tlaGNC">       67748            :         {</span></span>
 <span id="L1036"><span class="lineNum">    1036</span> <span class="tlaGNC">       67748            :             serialize(serializer, modifier);</span></span>
 <span id="L1037"><span class="lineNum">    1037</span> <span class="tlaGNC">       67748            :         }</span></span>
 <span id="L1038"><span class="lineNum">    1038</span> <span class="tlaGNC">      101886            :     }</span></span>
-<span id="L1039"><span class="lineNum">    1039</span> <span class="tlaGNC">    25894120            :     else</span></span>
-<span id="L1040"><span class="lineNum">    1040</span> <span class="tlaGNC">    25894120            :     {</span></span>
-<span id="L1041"><span class="lineNum">    1041</span> <span class="tlaGNC">    25894120            :         Modifier** link = &amp;value.first;</span></span>
+<span id="L1039"><span class="lineNum">    1039</span> <span class="tlaGNC">    25890682            :     else</span></span>
+<span id="L1040"><span class="lineNum">    1040</span> <span class="tlaGNC">    25890682            :     {</span></span>
+<span id="L1041"><span class="lineNum">    1041</span> <span class="tlaGNC">    25890682            :         Modifier** link = &amp;value.first;</span></span>
 <span id="L1042"><span class="lineNum">    1042</span>                         : </span>
-<span id="L1043"><span class="lineNum">    1043</span> <span class="tlaGNC">    38940637 <span class="branchAll" title="br0: 13046517; br1: 25894120; br2: 13001248; br3: 25806106">(4/4)</span>      :         while (hasElements(serializer))</span></span>
-<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">    13046517            :         {</span></span>
-<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">    13046517            :             Modifier* modifier = nullptr;</span></span>
-<span id="L1046"><span class="lineNum">    1046</span> <span class="tlaGNC">    13046517            :             serialize(serializer, modifier);</span></span>
+<span id="L1043"><span class="lineNum">    1043</span> <span class="tlaGNC">    38932295 <span class="branchAll" title="br0: 13041613; br1: 25890682; br2: 12996344; br3: 25802668">(4/4)</span>      :         while (hasElements(serializer))</span></span>
+<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">    13041613            :         {</span></span>
+<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">    13041613            :             Modifier* modifier = nullptr;</span></span>
+<span id="L1046"><span class="lineNum">    1046</span> <span class="tlaGNC">    13041613            :             serialize(serializer, modifier);</span></span>
 <span id="L1047"><span class="lineNum">    1047</span>                         : </span>
-<span id="L1048"><span class="lineNum">    1048</span> <span class="tlaGNC">    13046517            :             *link = modifier;</span></span>
-<span id="L1049"><span class="lineNum">    1049</span> <span class="tlaGNC">    13046517            :             link = &amp;modifier-&gt;next;</span></span>
-<span id="L1050"><span class="lineNum">    1050</span> <span class="tlaGNC">    13046517            :         }</span></span>
-<span id="L1051"><span class="lineNum">    1051</span> <span class="tlaGNC">    25894120            :     }</span></span>
-<span id="L1052"><span class="lineNum">    1052</span> <span class="tlaGNC">    25996006            : }</span></span>
+<span id="L1048"><span class="lineNum">    1048</span> <span class="tlaGNC">    13041613            :             *link = modifier;</span></span>
+<span id="L1049"><span class="lineNum">    1049</span> <span class="tlaGNC">    13041613            :             link = &amp;modifier-&gt;next;</span></span>
+<span id="L1050"><span class="lineNum">    1050</span> <span class="tlaGNC">    13041613            :         }</span></span>
+<span id="L1051"><span class="lineNum">    1051</span> <span class="tlaGNC">    25890682            :     }</span></span>
+<span id="L1052"><span class="lineNum">    1052</span> <span class="tlaGNC">    25992568            : }</span></span>
 <span id="L1053"><span class="lineNum">    1053</span>                         : </span>
 <span id="L1054"><span class="lineNum">    1054</span>                         : //</span>
 <span id="L1055"><span class="lineNum">    1055</span>                         : // For the purposes of serialization, a `TypeExp` is just</span>
@@ -1361,9 +1361,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1070"><span class="lineNum">    1070</span>                         : </span>
 <span id="L1071"><span class="lineNum">    1071</span>                         : template&lt;typename S&gt;</span>
 <span id="L1072"><span class="lineNum">    1072</span>                         : void serialize(S const&amp; serializer, TypeExp&amp; value)</span>
-<span id="L1073"><span class="lineNum">    1073</span> <span class="tlaGNC">    33366793            : {</span></span>
-<span id="L1074"><span class="lineNum">    1074</span> <span class="tlaGNC">    33366793            :     serialize(serializer, value.type);</span></span>
-<span id="L1075"><span class="lineNum">    1075</span> <span class="tlaGNC">    33366793            : }</span></span>
+<span id="L1073"><span class="lineNum">    1073</span> <span class="tlaGNC">    33360459            : {</span></span>
+<span id="L1074"><span class="lineNum">    1074</span> <span class="tlaGNC">    33360459            :     serialize(serializer, value.type);</span></span>
+<span id="L1075"><span class="lineNum">    1075</span> <span class="tlaGNC">    33360459            : }</span></span>
 <span id="L1076"><span class="lineNum">    1076</span>                         : </span>
 <span id="L1077"><span class="lineNum">    1077</span>                         : //</span>
 <span id="L1078"><span class="lineNum">    1078</span>                         : // The `CandidateExtensionList` and `DeclAssociationList` types</span>
@@ -1407,27 +1407,27 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1116"><span class="lineNum">    1116</span>                         : </span>
 <span id="L1117"><span class="lineNum">    1117</span>                         : template&lt;typename S&gt;</span>
 <span id="L1118"><span class="lineNum">    1118</span>                         : void serialize(S const&amp; serializer, RequirementWitness&amp; value)</span>
-<span id="L1119"><span class="lineNum">    1119</span> <span class="tlaGNC">    46856663            : {</span></span>
-<span id="L1120"><span class="lineNum">    1120</span> <span class="tlaGNC">    46856663            :     SLANG_SCOPED_SERIALIZER_VARIANT(serializer);</span></span>
-<span id="L1121"><span class="lineNum">    1121</span> <span class="tlaGNC">    46856663            :     serialize(serializer, value.m_flavor);</span></span>
-<span id="L1122"><span class="lineNum">    1122</span> <span class="tlaGNC">    46856663 <span class="branchPart" title="br0: 46856663; br1: 86392; br2: 0; br3: 46646673">(3/4)</span>      :     switch (value.m_flavor)</span></span>
-<span id="L1123"><span class="lineNum">    1123</span> <span class="tlaGNC">    46856663            :     {</span></span>
-<span id="L1124"><span class="lineNum">    1124</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 46856663; br2: 0; br3: 46646673">(2/4)</span>      :     case RequirementWitness::Flavor::none:</span></span>
+<span id="L1119"><span class="lineNum">    1119</span> <span class="tlaGNC">    46853579            : {</span></span>
+<span id="L1120"><span class="lineNum">    1120</span> <span class="tlaGNC">    46853579            :     SLANG_SCOPED_SERIALIZER_VARIANT(serializer);</span></span>
+<span id="L1121"><span class="lineNum">    1121</span> <span class="tlaGNC">    46853579            :     serialize(serializer, value.m_flavor);</span></span>
+<span id="L1122"><span class="lineNum">    1122</span> <span class="tlaGNC">    46853579 <span class="branchPart" title="br0: 46853579; br1: 86392; br2: 0; br3: 46643589">(3/4)</span>      :     switch (value.m_flavor)</span></span>
+<span id="L1123"><span class="lineNum">    1123</span> <span class="tlaGNC">    46853579            :     {</span></span>
+<span id="L1124"><span class="lineNum">    1124</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 46853579; br2: 0; br3: 46643589">(2/4)</span>      :     case RequirementWitness::Flavor::none:</span></span>
 <span id="L1125"><span class="lineNum">    1125</span> <span class="tlaUNC">           0            :         break;</span></span>
 <span id="L1126"><span class="lineNum">    1126</span>                         : </span>
-<span id="L1127"><span class="lineNum">    1127</span> <span class="tlaGNC">     1175433 <span class="branchAll" title="br0: 1175433; br1: 45681230; br2: 1162338; br3: 45484335">(4/4)</span>      :     case RequirementWitness::Flavor::declRef:</span></span>
-<span id="L1128"><span class="lineNum">    1128</span> <span class="tlaGNC">     1175433            :         serialize(serializer, value.m_declRef);</span></span>
-<span id="L1129"><span class="lineNum">    1129</span> <span class="tlaGNC">     1175433            :         break;</span></span>
+<span id="L1127"><span class="lineNum">    1127</span> <span class="tlaGNC">     1174585 <span class="branchAll" title="br0: 1174585; br1: 45678994; br2: 1161490; br3: 45482099">(4/4)</span>      :     case RequirementWitness::Flavor::declRef:</span></span>
+<span id="L1128"><span class="lineNum">    1128</span> <span class="tlaGNC">     1174585            :         serialize(serializer, value.m_declRef);</span></span>
+<span id="L1129"><span class="lineNum">    1129</span> <span class="tlaGNC">     1174585            :         break;</span></span>
 <span id="L1130"><span class="lineNum">    1130</span>                         : </span>
-<span id="L1131"><span class="lineNum">    1131</span> <span class="tlaGNC">     9878182 <span class="branchAll" title="br0: 9878182; br1: 36978481; br2: 9833427; br3: 36813246">(4/4)</span>      :     case RequirementWitness::Flavor::val:</span></span>
-<span id="L1132"><span class="lineNum">    1132</span> <span class="tlaGNC">     9878182            :         serialize(serializer, value.m_val);</span></span>
-<span id="L1133"><span class="lineNum">    1133</span> <span class="tlaGNC">     9878182            :         break;</span></span>
+<span id="L1131"><span class="lineNum">    1131</span> <span class="tlaGNC">     9877542 <span class="branchAll" title="br0: 9877542; br1: 36976037; br2: 9832787; br3: 36810802">(4/4)</span>      :     case RequirementWitness::Flavor::val:</span></span>
+<span id="L1132"><span class="lineNum">    1132</span> <span class="tlaGNC">     9877542            :         serialize(serializer, value.m_val);</span></span>
+<span id="L1133"><span class="lineNum">    1133</span> <span class="tlaGNC">     9877542            :         break;</span></span>
 <span id="L1134"><span class="lineNum">    1134</span>                         : </span>
-<span id="L1135"><span class="lineNum">    1135</span> <span class="tlaGNC">    35803048 <span class="branchAll" title="br0: 35803048; br1: 11053615; br2: 35650908; br3: 10995765">(4/4)</span>      :     case RequirementWitness::Flavor::witnessTable:</span></span>
-<span id="L1136"><span class="lineNum">    1136</span> <span class="tlaGNC">    35803048            :         serialize(serializer, value.m_obj);</span></span>
-<span id="L1137"><span class="lineNum">    1137</span> <span class="tlaGNC">    35803048            :         break;</span></span>
-<span id="L1138"><span class="lineNum">    1138</span> <span class="tlaGNC">    46856663            :     }</span></span>
-<span id="L1139"><span class="lineNum">    1139</span> <span class="tlaGNC">    46856663            : }</span></span>
+<span id="L1135"><span class="lineNum">    1135</span> <span class="tlaGNC">    35801452 <span class="branchAll" title="br0: 35801452; br1: 11052127; br2: 35649312; br3: 10994277">(4/4)</span>      :     case RequirementWitness::Flavor::witnessTable:</span></span>
+<span id="L1136"><span class="lineNum">    1136</span> <span class="tlaGNC">    35801452            :         serialize(serializer, value.m_obj);</span></span>
+<span id="L1137"><span class="lineNum">    1137</span> <span class="tlaGNC">    35801452            :         break;</span></span>
+<span id="L1138"><span class="lineNum">    1138</span> <span class="tlaGNC">    46853579            :     }</span></span>
+<span id="L1139"><span class="lineNum">    1139</span> <span class="tlaGNC">    46853579            : }</span></span>
 <span id="L1140"><span class="lineNum">    1140</span>                         : </span>
 <span id="L1141"><span class="lineNum">    1141</span>                         : //</span>
 <span id="L1142"><span class="lineNum">    1142</span>                         : // The `ValNodeOperand` type, used to store the operands of</span>
@@ -1446,21 +1446,21 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1155"><span class="lineNum">    1155</span>                         : </span>
 <span id="L1156"><span class="lineNum">    1156</span>                         : template&lt;typename S&gt;</span>
 <span id="L1157"><span class="lineNum">    1157</span>                         : void serialize(S const&amp; serializer, ValNodeOperand&amp; value)</span>
-<span id="L1158"><span class="lineNum">    1158</span> <span class="tlaGNC">   206076983            : {</span></span>
-<span id="L1159"><span class="lineNum">    1159</span> <span class="tlaGNC">   206076983            :     SLANG_SCOPED_SERIALIZER_VARIANT(serializer);</span></span>
-<span id="L1160"><span class="lineNum">    1160</span> <span class="tlaGNC">   206076983            :     serialize(serializer, value.kind);</span></span>
-<span id="L1161"><span class="lineNum">    1161</span> <span class="tlaGNC">   206076983 <span class="branchPart" title="br0: 206076983; br1: 563066; br2: 0; br3: 204826454">(3/4)</span>      :     switch (value.kind)</span></span>
-<span id="L1162"><span class="lineNum">    1162</span> <span class="tlaGNC">   206076983            :     {</span></span>
-<span id="L1163"><span class="lineNum">    1163</span> <span class="tlaGNC">     1960435 <span class="branchAll" title="br0: 1960435; br1: 204116548; br2: 12542; br3: 550524">(4/4)</span>      :     case ValNodeOperandKind::ConstantValue:</span></span>
-<span id="L1164"><span class="lineNum">    1164</span> <span class="tlaGNC">     1960435            :         serialize(serializer, value.values.intOperand);</span></span>
-<span id="L1165"><span class="lineNum">    1165</span> <span class="tlaGNC">     1960435            :         break;</span></span>
+<span id="L1158"><span class="lineNum">    1158</span> <span class="tlaGNC">   206063715            : {</span></span>
+<span id="L1159"><span class="lineNum">    1159</span> <span class="tlaGNC">   206063715            :     SLANG_SCOPED_SERIALIZER_VARIANT(serializer);</span></span>
+<span id="L1160"><span class="lineNum">    1160</span> <span class="tlaGNC">   206063715            :     serialize(serializer, value.kind);</span></span>
+<span id="L1161"><span class="lineNum">    1161</span> <span class="tlaGNC">   206063715 <span class="branchPart" title="br0: 206063715; br1: 563066; br2: 0; br3: 204813190">(3/4)</span>      :     switch (value.kind)</span></span>
+<span id="L1162"><span class="lineNum">    1162</span> <span class="tlaGNC">   206063715            :     {</span></span>
+<span id="L1163"><span class="lineNum">    1163</span> <span class="tlaGNC">     1959769 <span class="branchAll" title="br0: 1959769; br1: 204103946; br2: 12542; br3: 550524">(4/4)</span>      :     case ValNodeOperandKind::ConstantValue:</span></span>
+<span id="L1164"><span class="lineNum">    1164</span> <span class="tlaGNC">     1959769            :         serialize(serializer, value.values.intOperand);</span></span>
+<span id="L1165"><span class="lineNum">    1165</span> <span class="tlaGNC">     1959769            :         break;</span></span>
 <span id="L1166"><span class="lineNum">    1166</span>                         : </span>
-<span id="L1167"><span class="lineNum">    1167</span> <span class="tlaGNC">   161940680 <span class="branchAll" title="br0: 161940680; br1: 44136303; br2: 443936; br3: 119130">(4/4)</span>      :     case ValNodeOperandKind::ValNode:</span></span>
-<span id="L1168"><span class="lineNum">    1168</span> <span class="tlaGNC">   204116548 <span class="branchAll" title="br0: 42175868; br1: 163901115; br2: 106588; br3: 456478">(4/4)</span>      :     case ValNodeOperandKind::ASTNode:</span></span>
-<span id="L1169"><span class="lineNum">    1169</span> <span class="tlaGNC">   204116548            :         serialize(serializer, value.values.nodeOperand);</span></span>
-<span id="L1170"><span class="lineNum">    1170</span> <span class="tlaGNC">   204116548            :         break;</span></span>
-<span id="L1171"><span class="lineNum">    1171</span> <span class="tlaGNC">   206076983            :     }</span></span>
-<span id="L1172"><span class="lineNum">    1172</span> <span class="tlaGNC">   206076983            : }</span></span>
+<span id="L1167"><span class="lineNum">    1167</span> <span class="tlaGNC">   161930876 <span class="branchAll" title="br0: 161930876; br1: 44132839; br2: 443936; br3: 119130">(4/4)</span>      :     case ValNodeOperandKind::ValNode:</span></span>
+<span id="L1168"><span class="lineNum">    1168</span> <span class="tlaGNC">   204103946 <span class="branchAll" title="br0: 42173070; br1: 163890645; br2: 106588; br3: 456478">(4/4)</span>      :     case ValNodeOperandKind::ASTNode:</span></span>
+<span id="L1169"><span class="lineNum">    1169</span> <span class="tlaGNC">   204103946            :         serialize(serializer, value.values.nodeOperand);</span></span>
+<span id="L1170"><span class="lineNum">    1170</span> <span class="tlaGNC">   204103946            :         break;</span></span>
+<span id="L1171"><span class="lineNum">    1171</span> <span class="tlaGNC">   206063715            :     }</span></span>
+<span id="L1172"><span class="lineNum">    1172</span> <span class="tlaGNC">   206063715            : }</span></span>
 <span id="L1173"><span class="lineNum">    1173</span>                         : </span>
 <span id="L1174"><span class="lineNum">    1174</span>                         : //</span>
 <span id="L1175"><span class="lineNum">    1175</span>                         : // Now that we&#x27;ve covered the types that required hand-writing their</span>
@@ -1593,11 +1593,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1302"><span class="lineNum">    1302</span>                         : </span>
 <span id="L1303"><span class="lineNum">    1303</span>                         : template&lt;typename S&gt;</span>
 <span id="L1304"><span class="lineNum">    1304</span>                         : void serializeASTNodeContents(S const&amp; serializer, NodeBase* node)</span>
-<span id="L1305"><span class="lineNum">    1305</span> <span class="tlaGNC">    41404592            : {</span></span>
-<span id="L1306"><span class="lineNum">    1306</span> <span class="tlaGNC">    41404592            :     ASTNodeDispatcher&lt;NodeBase, void&gt;::dispatch(</span></span>
-<span id="L1307"><span class="lineNum">    1307</span> <span class="tlaGNC">    41404592            :         node,</span></span>
-<span id="L1308"><span class="lineNum">    1308</span> <span class="tlaGNC">    41404592            :         [&amp;](auto n) { _serializeASTNodeContents(serializer, n); });</span></span>
-<span id="L1309"><span class="lineNum">    1309</span> <span class="tlaGNC">    41404592            : }</span></span>
+<span id="L1305"><span class="lineNum">    1305</span> <span class="tlaGNC">    41395458            : {</span></span>
+<span id="L1306"><span class="lineNum">    1306</span> <span class="tlaGNC">    41395458            :     ASTNodeDispatcher&lt;NodeBase, void&gt;::dispatch(</span></span>
+<span id="L1307"><span class="lineNum">    1307</span> <span class="tlaGNC">    41395458            :         node,</span></span>
+<span id="L1308"><span class="lineNum">    1308</span> <span class="tlaGNC">    41395458            :         [&amp;](auto n) { _serializeASTNodeContents(serializer, n); });</span></span>
+<span id="L1309"><span class="lineNum">    1309</span> <span class="tlaGNC">    41395458            : }</span></span>
 <span id="L1310"><span class="lineNum">    1310</span>                         : </span>
 <span id="L1311"><span class="lineNum">    1311</span>                         : //</span>
 <span id="L1312"><span class="lineNum">    1312</span>                         : // At this point we can get back to the handling of reading/writing actual AST nodes.</span>
@@ -1686,9 +1686,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1395"><span class="lineNum">    1395</span>                         : // negation of their value in the `PseudoASTNodeType` enumeration.</span>
 <span id="L1396"><span class="lineNum">    1396</span>                         : </span>
 <span id="L1397"><span class="lineNum">    1397</span>                         : static PseudoASTNodeType _getPseudoASTNodeType(ASTNodeType type)</span>
-<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaGNC">   124623047            : {</span></span>
-<span id="L1399"><span class="lineNum">    1399</span> <span class="tlaGNC">   124623047 <span class="branchAll" title="br0: 42135; br1: 124580912">(2/2)</span>      :     return Int32(type) &lt; 0 ? PseudoASTNodeType(~Int32(type)) : PseudoASTNodeType::None;</span></span>
-<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaGNC">   124623047            : }</span></span>
+<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaGNC">   124608179            : {</span></span>
+<span id="L1399"><span class="lineNum">    1399</span> <span class="tlaGNC">   124608179 <span class="branchAll" title="br0: 42135; br1: 124566044">(2/2)</span>      :     return Int32(type) &lt; 0 ? PseudoASTNodeType(~Int32(type)) : PseudoASTNodeType::None;</span></span>
+<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaGNC">   124608179            : }</span></span>
 <span id="L1401"><span class="lineNum">    1401</span>                         : </span>
 <span id="L1402"><span class="lineNum">    1402</span>                         : static ASTNodeType _getAsASTNodeType(PseudoASTNodeType type)</span>
 <span id="L1403"><span class="lineNum">    1403</span> <span class="tlaGNC">         899            : {</span></span>
@@ -1702,13 +1702,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1411"><span class="lineNum">    1411</span>                         : //</span>
 <span id="L1412"><span class="lineNum">    1412</span>                         : </span>
 <span id="L1413"><span class="lineNum">    1413</span>                         : void ASTSerialReadContext::handleASTNode(ASTSerializer const&amp; serializer, NodeBase*&amp; outNode)</span>
-<span id="L1414"><span class="lineNum">    1414</span> <span class="tlaGNC">   124623047            : {</span></span>
+<span id="L1414"><span class="lineNum">    1414</span> <span class="tlaGNC">   124608179            : {</span></span>
 <span id="L1415"><span class="lineNum">    1415</span>                         :     // We start by reading the `ASTNodeType`, because</span>
 <span id="L1416"><span class="lineNum">    1416</span>                         :     // we will dispatch differently based on what</span>
 <span id="L1417"><span class="lineNum">    1417</span>                         :     // value we see there.</span>
 <span id="L1418"><span class="lineNum">    1418</span>                         :     //</span>
-<span id="L1419"><span class="lineNum">    1419</span> <span class="tlaGNC">   124623047            :     ASTNodeType typeTag = ASTNodeType::NodeBase;</span></span>
-<span id="L1420"><span class="lineNum">    1420</span> <span class="tlaGNC">   124623047            :     serialize(serializer, typeTag);</span></span>
+<span id="L1419"><span class="lineNum">    1419</span> <span class="tlaGNC">   124608179            :     ASTNodeType typeTag = ASTNodeType::NodeBase;</span></span>
+<span id="L1420"><span class="lineNum">    1420</span> <span class="tlaGNC">   124608179            :     serialize(serializer, typeTag);</span></span>
 <span id="L1421"><span class="lineNum">    1421</span>                         : </span>
 <span id="L1422"><span class="lineNum">    1422</span>                         :     // In the case where the `ASTNodeType` is actually</span>
 <span id="L1423"><span class="lineNum">    1423</span>                         :     // smuggling in one of our `PseudoASTNodeType`</span>
@@ -1719,56 +1719,56 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1428"><span class="lineNum">    1428</span>                         :     // modules and declarations in</span>
 <span id="L1429"><span class="lineNum">    1429</span>                         :     // `ASTSerialWriter::handleASTNode()`.</span>
 <span id="L1430"><span class="lineNum">    1430</span>                         :     //</span>
-<span id="L1431"><span class="lineNum">    1431</span> <span class="tlaGNC">   124623047            :     switch (_getPseudoASTNodeType(typeTag))</span></span>
-<span id="L1432"><span class="lineNum">    1432</span> <span class="tlaGNC">   124623047            :     {</span></span>
-<span id="L1433"><span class="lineNum">    1433</span> <span class="tlaGNC">   124580912 <span class="branchAll" title="br0: 124580912; br1: 42135">(2/2)</span>      :     default:</span></span>
-<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaGNC">   124580912            :         break;</span></span>
+<span id="L1431"><span class="lineNum">    1431</span> <span class="tlaGNC">   124608179            :     switch (_getPseudoASTNodeType(typeTag))</span></span>
+<span id="L1432"><span class="lineNum">    1432</span> <span class="tlaGNC">   124608179            :     {</span></span>
+<span id="L1433"><span class="lineNum">    1433</span> <span class="tlaGNC">   124566044 <span class="branchAll" title="br0: 124566044; br1: 42135">(2/2)</span>      :     default:</span></span>
+<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaGNC">   124566044            :         break;</span></span>
 <span id="L1435"><span class="lineNum">    1435</span>                         : </span>
-<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaGNC">   124580912 <span class="branchAll" title="br0: 1217; br1: 124621830">(2/2)</span>      :     case PseudoASTNodeType::ImportedModule:</span></span>
+<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaGNC">   124566044 <span class="branchAll" title="br0: 1217; br1: 124606962">(2/2)</span>      :     case PseudoASTNodeType::ImportedModule:</span></span>
 <span id="L1437"><span class="lineNum">    1437</span> <span class="tlaGNC">        1217            :         outNode = _readImportedModule(serializer);</span></span>
 <span id="L1438"><span class="lineNum">    1438</span> <span class="tlaGNC">        1217            :         return;</span></span>
 <span id="L1439"><span class="lineNum">    1439</span>                         : </span>
-<span id="L1440"><span class="lineNum">    1440</span> <span class="tlaGNC">       40918 <span class="branchAll" title="br0: 40918; br1: 124582129">(2/2)</span>      :     case PseudoASTNodeType::ImportedDecl:</span></span>
+<span id="L1440"><span class="lineNum">    1440</span> <span class="tlaGNC">       40918 <span class="branchAll" title="br0: 40918; br1: 124567261">(2/2)</span>      :     case PseudoASTNodeType::ImportedDecl:</span></span>
 <span id="L1441"><span class="lineNum">    1441</span> <span class="tlaGNC">       40918            :         outNode = _readImportedDecl(serializer);</span></span>
 <span id="L1442"><span class="lineNum">    1442</span> <span class="tlaGNC">       40918            :         return;</span></span>
-<span id="L1443"><span class="lineNum">    1443</span> <span class="tlaGNC">   124623047            :     }</span></span>
+<span id="L1443"><span class="lineNum">    1443</span> <span class="tlaGNC">   124608179            :     }</span></span>
 <span id="L1444"><span class="lineNum">    1444</span>                         : </span>
 <span id="L1445"><span class="lineNum">    1445</span>                         :     // Next we check whether the `typeTag`</span>
 <span id="L1446"><span class="lineNum">    1446</span>                         :     // indicates that we are looking at a</span>
 <span id="L1447"><span class="lineNum">    1447</span>                         :     // subclass of `Val`, because we need</span>
 <span id="L1448"><span class="lineNum">    1448</span>                         :     // to handle those differently.</span>
 <span id="L1449"><span class="lineNum">    1449</span>                         :     //</span>
-<span id="L1450"><span class="lineNum">    1450</span> <span class="tlaGNC">   124580912            :     auto syntaxClass = SyntaxClass&lt;NodeBase&gt;(typeTag);</span></span>
-<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaGNC">   124580912 <span class="branchAll" title="br0: 83359514; br1: 41221398">(2/2)</span>      :     if (syntaxClass.isSubClassOf&lt;Val&gt;())</span></span>
-<span id="L1452"><span class="lineNum">    1452</span> <span class="tlaGNC">    83359514            :     {</span></span>
+<span id="L1450"><span class="lineNum">    1450</span> <span class="tlaGNC">   124566044            :     auto syntaxClass = SyntaxClass&lt;NodeBase&gt;(typeTag);</span></span>
+<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaGNC">   124566044 <span class="branchAll" title="br0: 83353780; br1: 41212264">(2/2)</span>      :     if (syntaxClass.isSubClassOf&lt;Val&gt;())</span></span>
+<span id="L1452"><span class="lineNum">    1452</span> <span class="tlaGNC">    83353780            :     {</span></span>
 <span id="L1453"><span class="lineNum">    1453</span>                         :         // Subclasses of `Val` are deduplicated as part</span>
 <span id="L1454"><span class="lineNum">    1454</span>                         :         // of creation, so we need to read in their</span>
 <span id="L1455"><span class="lineNum">    1455</span>                         :         // operands before we can create them, rather</span>
 <span id="L1456"><span class="lineNum">    1456</span>                         :         // than allocating the object up front and</span>
 <span id="L1457"><span class="lineNum">    1457</span>                         :         // then deserializing its content into it later.</span>
 <span id="L1458"><span class="lineNum">    1458</span>                         : </span>
-<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">    83359514            :         ValNodeDesc desc;</span></span>
-<span id="L1460"><span class="lineNum">    1460</span> <span class="tlaGNC">    83359514            :         desc.type = syntaxClass;</span></span>
-<span id="L1461"><span class="lineNum">    1461</span> <span class="tlaGNC">    83359514            :         serialize(serializer, desc.operands);</span></span>
+<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">    83353780            :         ValNodeDesc desc;</span></span>
+<span id="L1460"><span class="lineNum">    1460</span> <span class="tlaGNC">    83353780            :         desc.type = syntaxClass;</span></span>
+<span id="L1461"><span class="lineNum">    1461</span> <span class="tlaGNC">    83353780            :         serialize(serializer, desc.operands);</span></span>
 <span id="L1462"><span class="lineNum">    1462</span>                         : </span>
-<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaGNC">    83359514            :         desc.init();</span></span>
+<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaGNC">    83353780            :         desc.init();</span></span>
 <span id="L1464"><span class="lineNum">    1464</span>                         : </span>
-<span id="L1465"><span class="lineNum">    1465</span> <span class="tlaGNC">    83359514            :         auto node = _astBuilder-&gt;_getOrCreateImpl(std::move(desc));</span></span>
-<span id="L1466"><span class="lineNum">    1466</span> <span class="tlaGNC">    83359514            :         outNode = node;</span></span>
-<span id="L1467"><span class="lineNum">    1467</span> <span class="tlaGNC">    83359514            :     }</span></span>
-<span id="L1468"><span class="lineNum">    1468</span> <span class="tlaGNC">    41221398            :     else</span></span>
-<span id="L1469"><span class="lineNum">    1469</span> <span class="tlaGNC">    41221398            :     {</span></span>
+<span id="L1465"><span class="lineNum">    1465</span> <span class="tlaGNC">    83353780            :         auto node = _astBuilder-&gt;_getOrCreateImpl(std::move(desc));</span></span>
+<span id="L1466"><span class="lineNum">    1466</span> <span class="tlaGNC">    83353780            :         outNode = node;</span></span>
+<span id="L1467"><span class="lineNum">    1467</span> <span class="tlaGNC">    83353780            :     }</span></span>
+<span id="L1468"><span class="lineNum">    1468</span> <span class="tlaGNC">    41212264            :     else</span></span>
+<span id="L1469"><span class="lineNum">    1469</span> <span class="tlaGNC">    41212264            :     {</span></span>
 <span id="L1470"><span class="lineNum">    1470</span>                         :         // In the ordinary case, we can allocate an empty</span>
 <span id="L1471"><span class="lineNum">    1471</span>                         :         // shell of an AST node to represent the object,</span>
 <span id="L1472"><span class="lineNum">    1472</span>                         :         // and defer actually serializing the contents</span>
 <span id="L1473"><span class="lineNum">    1473</span>                         :         // of that object until later.</span>
 <span id="L1474"><span class="lineNum">    1474</span>                         : </span>
-<span id="L1475"><span class="lineNum">    1475</span> <span class="tlaGNC">    41221398            :         auto node = syntaxClass.createInstance(_astBuilder);</span></span>
-<span id="L1476"><span class="lineNum">    1476</span> <span class="tlaGNC">    41221398            :         outNode = node;</span></span>
+<span id="L1475"><span class="lineNum">    1475</span> <span class="tlaGNC">    41212264            :         auto node = syntaxClass.createInstance(_astBuilder);</span></span>
+<span id="L1476"><span class="lineNum">    1476</span> <span class="tlaGNC">    41212264            :         outNode = node;</span></span>
 <span id="L1477"><span class="lineNum">    1477</span>                         : </span>
-<span id="L1478"><span class="lineNum">    1478</span> <span class="tlaGNC">    41221398            :         deferSerializeObjectContents(serializer, node);</span></span>
-<span id="L1479"><span class="lineNum">    1479</span> <span class="tlaGNC">    41221398            :     }</span></span>
-<span id="L1480"><span class="lineNum">    1480</span> <span class="tlaGNC">   124580912            : }</span></span>
+<span id="L1478"><span class="lineNum">    1478</span> <span class="tlaGNC">    41212264            :         deferSerializeObjectContents(serializer, node);</span></span>
+<span id="L1479"><span class="lineNum">    1479</span> <span class="tlaGNC">    41212264            :     }</span></span>
+<span id="L1480"><span class="lineNum">    1480</span> <span class="tlaGNC">   124566044            : }</span></span>
 <span id="L1481"><span class="lineNum">    1481</span>                         : </span>
 <span id="L1482"><span class="lineNum">    1482</span>                         : //</span>
 <span id="L1483"><span class="lineNum">    1483</span>                         : // Imported modules are serialized using one of the</span>
@@ -1879,32 +1879,32 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1588"><span class="lineNum">    1588</span> <span class="tlaGNC">      183194            : }</span></span>
 <span id="L1589"><span class="lineNum">    1589</span>                         : </span>
 <span id="L1590"><span class="lineNum">    1590</span>                         : void ASTSerialReadContext::handleASTNodeContents(ASTSerializer const&amp; serializer, NodeBase* node)</span>
-<span id="L1591"><span class="lineNum">    1591</span> <span class="tlaGNC">    41221398            : {</span></span>
-<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaGNC">    41221398            :     serializeASTNodeContents(serializer, node);</span></span>
+<span id="L1591"><span class="lineNum">    1591</span> <span class="tlaGNC">    41212264            : {</span></span>
+<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaGNC">    41212264            :     serializeASTNodeContents(serializer, node);</span></span>
 <span id="L1593"><span class="lineNum">    1593</span>                         : </span>
-<span id="L1594"><span class="lineNum">    1594</span> <span class="tlaGNC">    41221398            :     _cleanUpASTNode(node);</span></span>
-<span id="L1595"><span class="lineNum">    1595</span> <span class="tlaGNC">    41221398            : }</span></span>
+<span id="L1594"><span class="lineNum">    1594</span> <span class="tlaGNC">    41212264            :     _cleanUpASTNode(node);</span></span>
+<span id="L1595"><span class="lineNum">    1595</span> <span class="tlaGNC">    41212264            : }</span></span>
 <span id="L1596"><span class="lineNum">    1596</span>                         : </span>
 <span id="L1597"><span class="lineNum">    1597</span>                         : void ASTSerialReadContext::_cleanUpASTNode(NodeBase* node)</span>
-<span id="L1598"><span class="lineNum">    1598</span> <span class="tlaGNC">    41221398            : {</span></span>
-<span id="L1599"><span class="lineNum">    1599</span> <span class="tlaGNC">    41221398 <span class="branchAll" title="br0: 2280343; br1: 38941055">(2/2)</span>      :     if (auto expr = as&lt;Expr&gt;(node))</span></span>
-<span id="L1600"><span class="lineNum">    1600</span> <span class="tlaGNC">     2280343            :     {</span></span>
-<span id="L1601"><span class="lineNum">    1601</span> <span class="tlaGNC">     2280343            :         expr-&gt;checked = true;</span></span>
-<span id="L1602"><span class="lineNum">    1602</span> <span class="tlaGNC">     2280343            :     }</span></span>
-<span id="L1603"><span class="lineNum">    1603</span> <span class="tlaGNC">    38941055 <span class="branchAll" title="br0: 25894120; br1: 13046935">(2/2)</span>      :     else if (auto decl = as&lt;Decl&gt;(node))</span></span>
-<span id="L1604"><span class="lineNum">    1604</span> <span class="tlaGNC">    25894120            :     {</span></span>
-<span id="L1605"><span class="lineNum">    1605</span> <span class="tlaGNC">    25894120            :         decl-&gt;checkState = DeclCheckState::CapabilityChecked;</span></span>
+<span id="L1598"><span class="lineNum">    1598</span> <span class="tlaGNC">    41212264            : {</span></span>
+<span id="L1599"><span class="lineNum">    1599</span> <span class="tlaGNC">    41212264 <span class="branchAll" title="br0: 2279551; br1: 38932713">(2/2)</span>      :     if (auto expr = as&lt;Expr&gt;(node))</span></span>
+<span id="L1600"><span class="lineNum">    1600</span> <span class="tlaGNC">     2279551            :     {</span></span>
+<span id="L1601"><span class="lineNum">    1601</span> <span class="tlaGNC">     2279551            :         expr-&gt;checked = true;</span></span>
+<span id="L1602"><span class="lineNum">    1602</span> <span class="tlaGNC">     2279551            :     }</span></span>
+<span id="L1603"><span class="lineNum">    1603</span> <span class="tlaGNC">    38932713 <span class="branchAll" title="br0: 25890682; br1: 13042031">(2/2)</span>      :     else if (auto decl = as&lt;Decl&gt;(node))</span></span>
+<span id="L1604"><span class="lineNum">    1604</span> <span class="tlaGNC">    25890682            :     {</span></span>
+<span id="L1605"><span class="lineNum">    1605</span> <span class="tlaGNC">    25890682            :         decl-&gt;checkState = DeclCheckState::CapabilityChecked;</span></span>
 <span id="L1606"><span class="lineNum">    1606</span>                         : </span>
-<span id="L1607"><span class="lineNum">    1607</span> <span class="tlaGNC">    25894120 <span class="branchAll" title="br0: 4597803; br1: 21296317">(2/2)</span>      :         if (auto genericDecl = as&lt;GenericDecl&gt;(node))</span></span>
-<span id="L1608"><span class="lineNum">    1608</span> <span class="tlaGNC">     4597803            :         {</span></span>
-<span id="L1609"><span class="lineNum">    1609</span> <span class="tlaGNC">     4597803            :             _assignGenericParameterIndices(genericDecl);</span></span>
-<span id="L1610"><span class="lineNum">    1610</span> <span class="tlaGNC">     4597803            :         }</span></span>
-<span id="L1611"><span class="lineNum">    1611</span> <span class="tlaGNC">    21296317 <span class="branchAll" title="br0: 315; br1: 21296002">(2/2)</span>      :         else if (auto syntaxDecl = as&lt;SyntaxDecl&gt;(node))</span></span>
-<span id="L1612"><span class="lineNum">    1612</span> <span class="tlaGNC">         315            :         {</span></span>
-<span id="L1613"><span class="lineNum">    1613</span> <span class="tlaGNC">         315            :             syntaxDecl-&gt;parseCallback = &amp;parseSimpleSyntax;</span></span>
-<span id="L1614"><span class="lineNum">    1614</span> <span class="tlaGNC">         315            :             syntaxDecl-&gt;parseUserData = (void*)syntaxDecl-&gt;syntaxClass.getInfo();</span></span>
-<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaGNC">         315            :         }</span></span>
-<span id="L1616"><span class="lineNum">    1616</span> <span class="tlaGNC">    21296002 <span class="branchAll" title="br0: 6319; br1: 21289683">(2/2)</span>      :         else if (auto namespaceLikeDecl = as&lt;NamespaceDeclBase&gt;(node))</span></span>
+<span id="L1607"><span class="lineNum">    1607</span> <span class="tlaGNC">    25890682 <span class="branchAll" title="br0: 4597557; br1: 21293125">(2/2)</span>      :         if (auto genericDecl = as&lt;GenericDecl&gt;(node))</span></span>
+<span id="L1608"><span class="lineNum">    1608</span> <span class="tlaGNC">     4597557            :         {</span></span>
+<span id="L1609"><span class="lineNum">    1609</span> <span class="tlaGNC">     4597557            :             _assignGenericParameterIndices(genericDecl);</span></span>
+<span id="L1610"><span class="lineNum">    1610</span> <span class="tlaGNC">     4597557            :         }</span></span>
+<span id="L1611"><span class="lineNum">    1611</span> <span class="tlaGNC">    21293125 <span class="branchAll" title="br0: 313; br1: 21292812">(2/2)</span>      :         else if (auto syntaxDecl = as&lt;SyntaxDecl&gt;(node))</span></span>
+<span id="L1612"><span class="lineNum">    1612</span> <span class="tlaGNC">         313            :         {</span></span>
+<span id="L1613"><span class="lineNum">    1613</span> <span class="tlaGNC">         313            :             syntaxDecl-&gt;parseCallback = &amp;parseSimpleSyntax;</span></span>
+<span id="L1614"><span class="lineNum">    1614</span> <span class="tlaGNC">         313            :             syntaxDecl-&gt;parseUserData = (void*)syntaxDecl-&gt;syntaxClass.getInfo();</span></span>
+<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaGNC">         313            :         }</span></span>
+<span id="L1616"><span class="lineNum">    1616</span> <span class="tlaGNC">    21292812 <span class="branchAll" title="br0: 6319; br1: 21286493">(2/2)</span>      :         else if (auto namespaceLikeDecl = as&lt;NamespaceDeclBase&gt;(node))</span></span>
 <span id="L1617"><span class="lineNum">    1617</span> <span class="tlaGNC">        6319            :         {</span></span>
 <span id="L1618"><span class="lineNum">    1618</span> <span class="tlaGNC">        6319            :             auto declScope = _astBuilder-&gt;create&lt;Scope&gt;();</span></span>
 <span id="L1619"><span class="lineNum">    1619</span> <span class="tlaGNC">        6319            :             declScope-&gt;containerDecl = namespaceLikeDecl;</span></span>
@@ -1941,28 +1941,28 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1650"><span class="lineNum">    1650</span>                         :             SLANG_UNUSED(directMemberDecls);</span>
 <span id="L1651"><span class="lineNum">    1651</span>                         :         }</span>
 <span id="L1652"><span class="lineNum">    1652</span>                         : #endif</span>
-<span id="L1653"><span class="lineNum">    1653</span> <span class="tlaGNC">    25894120            :     }</span></span>
-<span id="L1654"><span class="lineNum">    1654</span> <span class="tlaGNC">    41221398            : }</span></span>
+<span id="L1653"><span class="lineNum">    1653</span> <span class="tlaGNC">    25890682            :     }</span></span>
+<span id="L1654"><span class="lineNum">    1654</span> <span class="tlaGNC">    41212264            : }</span></span>
 <span id="L1655"><span class="lineNum">    1655</span>                         : </span>
 <span id="L1656"><span class="lineNum">    1656</span>                         : void ASTSerialReadContext::_assignGenericParameterIndices(GenericDecl* genericDecl)</span>
-<span id="L1657"><span class="lineNum">    1657</span> <span class="tlaGNC">     4597803            : {</span></span>
-<span id="L1658"><span class="lineNum">    1658</span> <span class="tlaGNC">     4597803            :     int parameterCounter = 0;</span></span>
-<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">     4597803 <span class="branchAll" title="br0: 12755720; br1: 4597803">(2/2)</span>      :     for (auto m : genericDecl-&gt;getDirectMemberDecls())</span></span>
-<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">    12755720            :     {</span></span>
-<span id="L1661"><span class="lineNum">    1661</span> <span class="tlaGNC">    12755720 <span class="branchAll" title="br0: 3907634; br1: 8848086">(2/2)</span>      :         if (auto typeParam = as&lt;GenericTypeParamDeclBase&gt;(m))</span></span>
-<span id="L1662"><span class="lineNum">    1662</span> <span class="tlaGNC">     3907634            :         {</span></span>
-<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaGNC">     3907634            :             typeParam-&gt;parameterIndex = parameterCounter++;</span></span>
-<span id="L1664"><span class="lineNum">    1664</span> <span class="tlaGNC">     3907634            :         }</span></span>
-<span id="L1665"><span class="lineNum">    1665</span> <span class="tlaGNC">     8848086 <span class="branchAll" title="br0: 889; br1: 8847197">(2/2)</span>      :         else if (auto valPackParam = as&lt;GenericValuePackParamDecl&gt;(m))</span></span>
+<span id="L1657"><span class="lineNum">    1657</span> <span class="tlaGNC">     4597557            : {</span></span>
+<span id="L1658"><span class="lineNum">    1658</span> <span class="tlaGNC">     4597557            :     int parameterCounter = 0;</span></span>
+<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">     4597557 <span class="branchAll" title="br0: 12754988; br1: 4597557">(2/2)</span>      :     for (auto m : genericDecl-&gt;getDirectMemberDecls())</span></span>
+<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">    12754988            :     {</span></span>
+<span id="L1661"><span class="lineNum">    1661</span> <span class="tlaGNC">    12754988 <span class="branchAll" title="br0: 3907330; br1: 8847658">(2/2)</span>      :         if (auto typeParam = as&lt;GenericTypeParamDeclBase&gt;(m))</span></span>
+<span id="L1662"><span class="lineNum">    1662</span> <span class="tlaGNC">     3907330            :         {</span></span>
+<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaGNC">     3907330            :             typeParam-&gt;parameterIndex = parameterCounter++;</span></span>
+<span id="L1664"><span class="lineNum">    1664</span> <span class="tlaGNC">     3907330            :         }</span></span>
+<span id="L1665"><span class="lineNum">    1665</span> <span class="tlaGNC">     8847658 <span class="branchAll" title="br0: 889; br1: 8846769">(2/2)</span>      :         else if (auto valPackParam = as&lt;GenericValuePackParamDecl&gt;(m))</span></span>
 <span id="L1666"><span class="lineNum">    1666</span> <span class="tlaGNC">         889            :         {</span></span>
 <span id="L1667"><span class="lineNum">    1667</span> <span class="tlaGNC">         889            :             valPackParam-&gt;parameterIndex = parameterCounter++;</span></span>
 <span id="L1668"><span class="lineNum">    1668</span> <span class="tlaGNC">         889            :         }</span></span>
-<span id="L1669"><span class="lineNum">    1669</span> <span class="tlaGNC">     8847197 <span class="branchAll" title="br0: 5032041; br1: 3815156">(2/2)</span>      :         else if (auto valParam = as&lt;GenericValueParamDecl&gt;(m))</span></span>
-<span id="L1670"><span class="lineNum">    1670</span> <span class="tlaGNC">     5032041            :         {</span></span>
-<span id="L1671"><span class="lineNum">    1671</span> <span class="tlaGNC">     5032041            :             valParam-&gt;parameterIndex = parameterCounter++;</span></span>
-<span id="L1672"><span class="lineNum">    1672</span> <span class="tlaGNC">     5032041            :         }</span></span>
-<span id="L1673"><span class="lineNum">    1673</span> <span class="tlaGNC">    12755720            :     }</span></span>
-<span id="L1674"><span class="lineNum">    1674</span> <span class="tlaGNC">     4597803            : }</span></span>
+<span id="L1669"><span class="lineNum">    1669</span> <span class="tlaGNC">     8846769 <span class="branchAll" title="br0: 5031847; br1: 3814922">(2/2)</span>      :         else if (auto valParam = as&lt;GenericValueParamDecl&gt;(m))</span></span>
+<span id="L1670"><span class="lineNum">    1670</span> <span class="tlaGNC">     5031847            :         {</span></span>
+<span id="L1671"><span class="lineNum">    1671</span> <span class="tlaGNC">     5031847            :             valParam-&gt;parameterIndex = parameterCounter++;</span></span>
+<span id="L1672"><span class="lineNum">    1672</span> <span class="tlaGNC">     5031847            :         }</span></span>
+<span id="L1673"><span class="lineNum">    1673</span> <span class="tlaGNC">    12754988            :     }</span></span>
+<span id="L1674"><span class="lineNum">    1674</span> <span class="tlaGNC">     4597557            : }</span></span>
 <span id="L1675"><span class="lineNum">    1675</span>                         : </span>
 <span id="L1676"><span class="lineNum">    1676</span>                         : </span>
 <span id="L1677"><span class="lineNum">    1677</span>                         : //</span>
@@ -2109,7 +2109,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1818"><span class="lineNum">    1818</span>                         : void ASTSerialReadContext::handleContainerDeclDirectMemberDecls(</span>
 <span id="L1819"><span class="lineNum">    1819</span>                         :     ASTSerializer const&amp; serializer,</span>
 <span id="L1820"><span class="lineNum">    1820</span>                         :     ContainerDeclDirectMemberDecls&amp; value)</span>
-<span id="L1821"><span class="lineNum">    1821</span> <span class="tlaGNC">    12114266            : {</span></span>
+<span id="L1821"><span class="lineNum">    1821</span> <span class="tlaGNC">    12112500            : {</span></span>
 <span id="L1822"><span class="lineNum">    1822</span>                         :     // In the reading direction, we will intentionally</span>
 <span id="L1823"><span class="lineNum">    1823</span>                         :     // *not* deserialize things the usual way, because</span>
 <span id="L1824"><span class="lineNum">    1824</span>                         :     // we want to support deserializing only a subset</span>
@@ -2126,18 +2126,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1835"><span class="lineNum">    1835</span>                         :     // `ISerializerImpl`, whereas we *know* it has a more</span>
 <span id="L1836"><span class="lineNum">    1836</span>                         :     // specific type, which we want to make use of.</span>
 <span id="L1837"><span class="lineNum">    1837</span>                         :     //</span>
-<span id="L1838"><span class="lineNum">    1838</span> <span class="tlaGNC">    12114266            :     auto readerImpl = serializer.getImpl();</span></span>
-<span id="L1839"><span class="lineNum">    1839</span> <span class="tlaGNC">    12114266            :     auto fossilReader = static_cast&lt;Fossil::SerialReader*&gt;(readerImpl);</span></span>
+<span id="L1838"><span class="lineNum">    1838</span> <span class="tlaGNC">    12112500            :     auto readerImpl = serializer.getImpl();</span></span>
+<span id="L1839"><span class="lineNum">    1839</span> <span class="tlaGNC">    12112500            :     auto fossilReader = static_cast&lt;Fossil::SerialReader*&gt;(readerImpl);</span></span>
 <span id="L1840"><span class="lineNum">    1840</span>                         :     //</span>
-<span id="L1841"><span class="lineNum">    1841</span> <span class="tlaGNC">    12114266            :     auto fossilizedInfo =</span></span>
-<span id="L1842"><span class="lineNum">    1842</span> <span class="tlaGNC">    12114266            :         (Fossilized&lt;ContainerDeclDirectMemberDeclsInfo&gt;*)fossilReader-&gt;readValPtr().get();</span></span>
+<span id="L1841"><span class="lineNum">    1841</span> <span class="tlaGNC">    12112500            :     auto fossilizedInfo =</span></span>
+<span id="L1842"><span class="lineNum">    1842</span> <span class="tlaGNC">    12112500            :         (Fossilized&lt;ContainerDeclDirectMemberDeclsInfo&gt;*)fossilReader-&gt;readValPtr().get();</span></span>
 <span id="L1843"><span class="lineNum">    1843</span>                         : </span>
 <span id="L1844"><span class="lineNum">    1844</span>                         :     // We can read specific fields out of the `fossilizedInfo`</span>
 <span id="L1845"><span class="lineNum">    1845</span>                         :     // without triggering full deserialization. At this point</span>
 <span id="L1846"><span class="lineNum">    1846</span>                         :     // we will do exactly that to read the number of direct</span>
 <span id="L1847"><span class="lineNum">    1847</span>                         :     // member declarations.</span>
 <span id="L1848"><span class="lineNum">    1848</span>                         :     //</span>
-<span id="L1849"><span class="lineNum">    1849</span> <span class="tlaGNC">    12114266            :     auto declCount = fossilizedInfo-&gt;decls.getElementCount();</span></span>
+<span id="L1849"><span class="lineNum">    1849</span> <span class="tlaGNC">    12112500            :     auto declCount = fossilizedInfo-&gt;decls.getElementCount();</span></span>
 <span id="L1850"><span class="lineNum">    1850</span>                         : </span>
 <span id="L1851"><span class="lineNum">    1851</span>                         :     // We will set up the `ContainerDeclDirectMemberDecls` to</span>
 <span id="L1852"><span class="lineNum">    1852</span>                         :     // be in on-demand deserialization mode, in which it will</span>
@@ -2146,8 +2146,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1855"><span class="lineNum">    1855</span>                         :     // fossilized information for this specific container&#x27;s</span>
 <span id="L1856"><span class="lineNum">    1856</span>                         :     // member declarations.</span>
 <span id="L1857"><span class="lineNum">    1857</span>                         :     //</span>
-<span id="L1858"><span class="lineNum">    1858</span> <span class="tlaGNC">    12114266            :     value._initForOnDemandDeserialization(this, fossilizedInfo, declCount);</span></span>
-<span id="L1859"><span class="lineNum">    1859</span> <span class="tlaGNC">    12114266            : }</span></span>
+<span id="L1858"><span class="lineNum">    1858</span> <span class="tlaGNC">    12112500            :     value._initForOnDemandDeserialization(this, fossilizedInfo, declCount);</span></span>
+<span id="L1859"><span class="lineNum">    1859</span> <span class="tlaGNC">    12112500            : }</span></span>
 <span id="L1860"><span class="lineNum">    1860</span>                         : </span>
 <span id="L1861"><span class="lineNum">    1861</span>                         : </span>
 <span id="L1862"><span class="lineNum">    1862</span>                         : //</span>
@@ -2371,14 +2371,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2080"><span class="lineNum">    2080</span>                         : //</span>
 <span id="L2081"><span class="lineNum">    2081</span>                         : </span>
 <span id="L2082"><span class="lineNum">    2082</span>                         : Decl* ASTSerialReadContext::readFossilizedDecl(Fossilized&lt;Decl&gt;* fossilizedDecl)</span>
-<span id="L2083"><span class="lineNum">    2083</span> <span class="tlaGNC">    14733936            : {</span></span>
+<span id="L2083"><span class="lineNum">    2083</span> <span class="tlaGNC">    14730636            : {</span></span>
 <span id="L2084"><span class="lineNum">    2084</span>                         :     // AST nodes are all fossilized as variants, which means that they</span>
 <span id="L2085"><span class="lineNum">    2085</span>                         :     // carrying their own layout information. We can exploit this fact</span>
 <span id="L2086"><span class="lineNum">    2086</span>                         :     // to get from the raw pointer that was passed in to a `Fossil::AnyValPtr`</span>
 <span id="L2087"><span class="lineNum">    2087</span>                         :     // that includes the layout information that a `Fossil::SerialReader`</span>
 <span id="L2088"><span class="lineNum">    2088</span>                         :     // needs.</span>
 <span id="L2089"><span class="lineNum">    2089</span>                         :     //</span>
-<span id="L2090"><span class="lineNum">    2090</span> <span class="tlaGNC">    14733936            :     Fossil::AnyValPtr contentValPtr = getVariantContentPtr(fossilizedDecl);</span></span>
+<span id="L2090"><span class="lineNum">    2090</span> <span class="tlaGNC">    14730636            :     Fossil::AnyValPtr contentValPtr = getVariantContentPtr(fossilizedDecl);</span></span>
 <span id="L2091"><span class="lineNum">    2091</span>                         : </span>
 <span id="L2092"><span class="lineNum">    2092</span>                         :     // One subtle issue is that when we call `serialize()` below to read</span>
 <span id="L2093"><span class="lineNum">    2093</span>                         :     // a `Decl*`, the `SerialReader` wants to *read* a pointer to the</span>
@@ -2389,16 +2389,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2098"><span class="lineNum">    2098</span>                         :     // tell it that it should treat our `contentValPtr` as if there was</span>
 <span id="L2099"><span class="lineNum">    2099</span>                         :     // an additional level of pointer indirection above it.</span>
 <span id="L2100"><span class="lineNum">    2100</span>                         :     //</span>
-<span id="L2101"><span class="lineNum">    2101</span> <span class="tlaGNC">    14733936            :     Fossil::SerialReader reader(</span></span>
-<span id="L2102"><span class="lineNum">    2102</span> <span class="tlaGNC">    14733936            :         _readContext,</span></span>
-<span id="L2103"><span class="lineNum">    2103</span> <span class="tlaGNC">    14733936            :         contentValPtr,</span></span>
-<span id="L2104"><span class="lineNum">    2104</span> <span class="tlaGNC">    14733936            :         Fossil::SerialReader::InitialStateType::PseudoPtr);</span></span>
-<span id="L2105"><span class="lineNum">    2105</span> <span class="tlaGNC">    14733936            :     ASTSerializer serializer(&amp;reader, this);</span></span>
+<span id="L2101"><span class="lineNum">    2101</span> <span class="tlaGNC">    14730636            :     Fossil::SerialReader reader(</span></span>
+<span id="L2102"><span class="lineNum">    2102</span> <span class="tlaGNC">    14730636            :         _readContext,</span></span>
+<span id="L2103"><span class="lineNum">    2103</span> <span class="tlaGNC">    14730636            :         contentValPtr,</span></span>
+<span id="L2104"><span class="lineNum">    2104</span> <span class="tlaGNC">    14730636            :         Fossil::SerialReader::InitialStateType::PseudoPtr);</span></span>
+<span id="L2105"><span class="lineNum">    2105</span> <span class="tlaGNC">    14730636            :     ASTSerializer serializer(&amp;reader, this);</span></span>
 <span id="L2106"><span class="lineNum">    2106</span>                         : </span>
-<span id="L2107"><span class="lineNum">    2107</span> <span class="tlaGNC">    14733936            :     Decl* decl = nullptr;</span></span>
-<span id="L2108"><span class="lineNum">    2108</span> <span class="tlaGNC">    14733936            :     serialize(serializer, decl);</span></span>
-<span id="L2109"><span class="lineNum">    2109</span> <span class="tlaGNC">    14733936            :     return decl;</span></span>
-<span id="L2110"><span class="lineNum">    2110</span> <span class="tlaGNC">    14733936            : }</span></span>
+<span id="L2107"><span class="lineNum">    2107</span> <span class="tlaGNC">    14730636            :     Decl* decl = nullptr;</span></span>
+<span id="L2108"><span class="lineNum">    2108</span> <span class="tlaGNC">    14730636            :     serialize(serializer, decl);</span></span>
+<span id="L2109"><span class="lineNum">    2109</span> <span class="tlaGNC">    14730636            :     return decl;</span></span>
+<span id="L2110"><span class="lineNum">    2110</span> <span class="tlaGNC">    14730636            : }</span></span>
 <span id="L2111"><span class="lineNum">    2111</span>                         : </span>
 <span id="L2112"><span class="lineNum">    2112</span>                         : //</span>
 <span id="L2113"><span class="lineNum">    2113</span>                         : // We now turn our attention to the various accessors on AST types</span>
@@ -2418,29 +2418,29 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2127"><span class="lineNum">    2127</span>                         : T const* _findEntryInFossilizedDictionaryWithSortedKeys(</span>
 <span id="L2128"><span class="lineNum">    2128</span>                         :     FossilizedDictionary&lt;FossilizedString, T&gt; const&amp; dictionary,</span>
 <span id="L2129"><span class="lineNum">    2129</span>                         :     UnownedStringSlice const&amp; key)</span>
-<span id="L2130"><span class="lineNum">    2130</span> <span class="tlaGNC">       57737            : {</span></span>
-<span id="L2131"><span class="lineNum">    2131</span> <span class="tlaGNC">       57737            :     Index lo = 0;</span></span>
-<span id="L2132"><span class="lineNum">    2132</span> <span class="tlaGNC">       57737            :     Index hi = dictionary.getElementCount() - 1;</span></span>
+<span id="L2130"><span class="lineNum">    2130</span> <span class="tlaGNC">       57645            : {</span></span>
+<span id="L2131"><span class="lineNum">    2131</span> <span class="tlaGNC">       57645            :     Index lo = 0;</span></span>
+<span id="L2132"><span class="lineNum">    2132</span> <span class="tlaGNC">       57645            :     Index hi = dictionary.getElementCount() - 1;</span></span>
 <span id="L2133"><span class="lineNum">    2133</span>                         : </span>
-<span id="L2134"><span class="lineNum">    2134</span> <span class="tlaGNC">       57737            :     auto elements = dictionary.getBuffer();</span></span>
+<span id="L2134"><span class="lineNum">    2134</span> <span class="tlaGNC">       57645            :     auto elements = dictionary.getBuffer();</span></span>
 <span id="L2135"><span class="lineNum">    2135</span>                         : </span>
-<span id="L2136"><span class="lineNum">    2136</span> <span class="tlaGNC">      736471 <span class="branchAll" title="br0: 728179; br1: 8292; br2: 160393; br3: 8276">(4/4)</span>      :     while (lo &lt;= hi)</span></span>
-<span id="L2137"><span class="lineNum">    2137</span> <span class="tlaGNC">      728179            :     {</span></span>
-<span id="L2138"><span class="lineNum">    2138</span> <span class="tlaGNC">      728179            :         Index mid = lo + ((hi - lo) &gt;&gt; 1);</span></span>
+<span id="L2136"><span class="lineNum">    2136</span> <span class="tlaGNC">      735797 <span class="branchAll" title="br0: 727571; br1: 8226; br2: 159785; br3: 8210">(4/4)</span>      :     while (lo &lt;= hi)</span></span>
+<span id="L2137"><span class="lineNum">    2137</span> <span class="tlaGNC">      727571            :     {</span></span>
+<span id="L2138"><span class="lineNum">    2138</span> <span class="tlaGNC">      727571            :         Index mid = lo + ((hi - lo) &gt;&gt; 1);</span></span>
 <span id="L2139"><span class="lineNum">    2139</span>                         : </span>
-<span id="L2140"><span class="lineNum">    2140</span> <span class="tlaGNC">      728179            :         auto element = elements + mid;</span></span>
-<span id="L2141"><span class="lineNum">    2141</span> <span class="tlaGNC">      728179            :         int cmp = compare(element-&gt;key, key);</span></span>
-<span id="L2142"><span class="lineNum">    2142</span> <span class="tlaGNC">      728179 <span class="branchAll" title="br0: 49445; br1: 678734; br2: 8451; br3: 151942">(4/4)</span>      :         if (cmp == 0)</span></span>
-<span id="L2143"><span class="lineNum">    2143</span> <span class="tlaGNC">       49445            :             return &amp;element-&gt;value;</span></span>
+<span id="L2140"><span class="lineNum">    2140</span> <span class="tlaGNC">      727571            :         auto element = elements + mid;</span></span>
+<span id="L2141"><span class="lineNum">    2141</span> <span class="tlaGNC">      727571            :         int cmp = compare(element-&gt;key, key);</span></span>
+<span id="L2142"><span class="lineNum">    2142</span> <span class="tlaGNC">      727571 <span class="branchAll" title="br0: 49419; br1: 678152; br2: 8425; br3: 151360">(4/4)</span>      :         if (cmp == 0)</span></span>
+<span id="L2143"><span class="lineNum">    2143</span> <span class="tlaGNC">       49419            :             return &amp;element-&gt;value;</span></span>
 <span id="L2144"><span class="lineNum">    2144</span>                         : </span>
-<span id="L2145"><span class="lineNum">    2145</span> <span class="tlaGNC">      678734 <span class="branchAll" title="br0: 299341; br1: 379393; br2: 88473; br3: 63469">(4/4)</span>      :         if (cmp &lt; 0)</span></span>
-<span id="L2146"><span class="lineNum">    2146</span> <span class="tlaGNC">      299341            :             lo = mid + 1;</span></span>
-<span id="L2147"><span class="lineNum">    2147</span> <span class="tlaGNC">      379393            :         else</span></span>
-<span id="L2148"><span class="lineNum">    2148</span> <span class="tlaGNC">      379393            :             hi = mid - 1;</span></span>
-<span id="L2149"><span class="lineNum">    2149</span> <span class="tlaGNC">      678734            :     }</span></span>
+<span id="L2145"><span class="lineNum">    2145</span> <span class="tlaGNC">      678152 <span class="branchAll" title="br0: 298989; br1: 379163; br2: 88121; br3: 63239">(4/4)</span>      :         if (cmp &lt; 0)</span></span>
+<span id="L2146"><span class="lineNum">    2146</span> <span class="tlaGNC">      298989            :             lo = mid + 1;</span></span>
+<span id="L2147"><span class="lineNum">    2147</span> <span class="tlaGNC">      379163            :         else</span></span>
+<span id="L2148"><span class="lineNum">    2148</span> <span class="tlaGNC">      379163            :             hi = mid - 1;</span></span>
+<span id="L2149"><span class="lineNum">    2149</span> <span class="tlaGNC">      678152            :     }</span></span>
 <span id="L2150"><span class="lineNum">    2150</span>                         : </span>
-<span id="L2151"><span class="lineNum">    2151</span> <span class="tlaGNC">        8292            :     return nullptr;</span></span>
-<span id="L2152"><span class="lineNum">    2152</span> <span class="tlaGNC">       57737            : }</span></span>
+<span id="L2151"><span class="lineNum">    2151</span> <span class="tlaGNC">        8226            :     return nullptr;</span></span>
+<span id="L2152"><span class="lineNum">    2152</span> <span class="tlaGNC">       57645            : }</span></span>
 <span id="L2153"><span class="lineNum">    2153</span>                         : </span>
 <span id="L2154"><span class="lineNum">    2154</span>                         : Decl* ModuleDecl::_findSerializedDeclByMangledExportName(UnownedStringSlice const&amp; mangledName)</span>
 <span id="L2155"><span class="lineNum">    2155</span> <span class="tlaGNC">       40912            : {</span></span>
@@ -2492,33 +2492,33 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2201"><span class="lineNum">    2201</span> <span class="tlaGNC">       40912            : }</span></span>
 <span id="L2202"><span class="lineNum">    2202</span>                         : </span>
 <span id="L2203"><span class="lineNum">    2203</span>                         : Decl* ContainerDeclDirectMemberDecls::_readSerializedDeclsOfName(Name* name) const</span>
-<span id="L2204"><span class="lineNum">    2204</span> <span class="tlaGNC">       16868            : {</span></span>
+<span id="L2204"><span class="lineNum">    2204</span> <span class="tlaGNC">       16776            : {</span></span>
 <span id="L2205"><span class="lineNum">    2205</span>                         :     // All of these accessors on `ContainerDeclDirectMemberDecls` start with</span>
 <span id="L2206"><span class="lineNum">    2206</span>                         :     // a similar pattern of asserting that they are only used when on-demand</span>
 <span id="L2207"><span class="lineNum">    2207</span>                         :     // deserialization is active, and then casting the `void*` that is stored</span>
 <span id="L2208"><span class="lineNum">    2208</span>                         :     // in the AST representation over to the correct fossilized type (a type</span>
 <span id="L2209"><span class="lineNum">    2209</span>                         :     // that is only used/visible within this file).</span>
 <span id="L2210"><span class="lineNum">    2210</span>                         :     //</span>
-<span id="L2211"><span class="lineNum">    2211</span> <span class="tlaGNC">       16868            :     SLANG_ASSERT(isUsingOnDemandDeserialization());</span></span>
-<span id="L2212"><span class="lineNum">    2212</span> <span class="tlaGNC">       16868            :     auto&amp; fossilizedInfo =</span></span>
-<span id="L2213"><span class="lineNum">    2213</span> <span class="tlaGNC">       16868            :         *(Fossilized&lt;ContainerDeclDirectMemberDeclsInfo&gt;*)onDemandDeserialization.data;</span></span>
+<span id="L2211"><span class="lineNum">    2211</span> <span class="tlaGNC">       16776            :     SLANG_ASSERT(isUsingOnDemandDeserialization());</span></span>
+<span id="L2212"><span class="lineNum">    2212</span> <span class="tlaGNC">       16776            :     auto&amp; fossilizedInfo =</span></span>
+<span id="L2213"><span class="lineNum">    2213</span> <span class="tlaGNC">       16776            :         *(Fossilized&lt;ContainerDeclDirectMemberDeclsInfo&gt;*)onDemandDeserialization.data;</span></span>
 <span id="L2214"><span class="lineNum">    2214</span>                         : </span>
 <span id="L2215"><span class="lineNum">    2215</span>                         :     // TODO: It isn&#x27;t clear why the compiler will sometimes perform by-name</span>
 <span id="L2216"><span class="lineNum">    2216</span>                         :     // lookup using a null name, but it happens and thus the code here</span>
 <span id="L2217"><span class="lineNum">    2217</span>                         :     // needs to be defensive against that scenario.</span>
 <span id="L2218"><span class="lineNum">    2218</span>                         :     //</span>
-<span id="L2219"><span class="lineNum">    2219</span> <span class="tlaGNC">       16868 <span class="branchAll" title="br0: 45; br1: 16825">(2/2)</span>      :     if (name == nullptr)</span></span>
+<span id="L2219"><span class="lineNum">    2219</span> <span class="tlaGNC">       16776 <span class="branchAll" title="br0: 45; br1: 16733">(2/2)</span>      :     if (name == nullptr)</span></span>
 <span id="L2220"><span class="lineNum">    2220</span> <span class="tlaGNC">          45            :         return nullptr;</span></span>
 <span id="L2221"><span class="lineNum">    2221</span>                         : </span>
 <span id="L2222"><span class="lineNum">    2222</span>                         :     // Once we are sure that `name` is valid, the overall logic here</span>
 <span id="L2223"><span class="lineNum">    2223</span>                         :     // is quite similar to `findExportedDeclByMangledName()` above:</span>
 <span id="L2224"><span class="lineNum">    2224</span>                         :     // we do a lookup in the serialized dictionary by binary search.</span>
 <span id="L2225"><span class="lineNum">    2225</span>                         :     //</span>
-<span id="L2226"><span class="lineNum">    2226</span> <span class="tlaGNC">       16825            :     auto found = _findEntryInFossilizedDictionaryWithSortedKeys(</span></span>
-<span id="L2227"><span class="lineNum">    2227</span> <span class="tlaGNC">       16825            :         fossilizedInfo.mapNameToDeclIndex,</span></span>
-<span id="L2228"><span class="lineNum">    2228</span> <span class="tlaGNC">       16825            :         name-&gt;text.getUnownedSlice());</span></span>
-<span id="L2229"><span class="lineNum">    2229</span> <span class="tlaGNC">       16825 <span class="branchAll" title="br0: 8290; br1: 8535">(2/2)</span>      :     if (!found)</span></span>
-<span id="L2230"><span class="lineNum">    2230</span> <span class="tlaGNC">        8290            :         return nullptr;</span></span>
+<span id="L2226"><span class="lineNum">    2226</span> <span class="tlaGNC">       16733            :     auto found = _findEntryInFossilizedDictionaryWithSortedKeys(</span></span>
+<span id="L2227"><span class="lineNum">    2227</span> <span class="tlaGNC">       16733            :         fossilizedInfo.mapNameToDeclIndex,</span></span>
+<span id="L2228"><span class="lineNum">    2228</span> <span class="tlaGNC">       16733            :         name-&gt;text.getUnownedSlice());</span></span>
+<span id="L2229"><span class="lineNum">    2229</span> <span class="tlaGNC">       16733 <span class="branchAll" title="br0: 8224; br1: 8509">(2/2)</span>      :     if (!found)</span></span>
+<span id="L2230"><span class="lineNum">    2230</span> <span class="tlaGNC">        8224            :         return nullptr;</span></span>
 <span id="L2231"><span class="lineNum">    2231</span>                         : </span>
 <span id="L2232"><span class="lineNum">    2232</span>                         :     // Unlike the case for `findExportedDeclByMangledName()`, the</span>
 <span id="L2233"><span class="lineNum">    2233</span>                         :     // dictionary stored on a container declaration only holds indices</span>
@@ -2544,15 +2544,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2253"><span class="lineNum">    2253</span>                         :     // representation; further complexity would need to be motivated by</span>
 <span id="L2254"><span class="lineNum">    2254</span>                         :     // profiling information showing there&#x27;s a problem to be solved.</span>
 <span id="L2255"><span class="lineNum">    2255</span>                         :     //</span>
-<span id="L2256"><span class="lineNum">    2256</span> <span class="tlaGNC">        8535            :     Index declIndex = *found;</span></span>
-<span id="L2257"><span class="lineNum">    2257</span> <span class="tlaGNC">        8535            :     return getDecl(declIndex);</span></span>
-<span id="L2258"><span class="lineNum">    2258</span> <span class="tlaGNC">       16825            : }</span></span>
+<span id="L2256"><span class="lineNum">    2256</span> <span class="tlaGNC">        8509            :     Index declIndex = *found;</span></span>
+<span id="L2257"><span class="lineNum">    2257</span> <span class="tlaGNC">        8509            :     return getDecl(declIndex);</span></span>
+<span id="L2258"><span class="lineNum">    2258</span> <span class="tlaGNC">       16733            : }</span></span>
 <span id="L2259"><span class="lineNum">    2259</span>                         : </span>
 <span id="L2260"><span class="lineNum">    2260</span>                         : void ContainerDeclDirectMemberDecls::_readSerializedTransparentDecls() const</span>
-<span id="L2261"><span class="lineNum">    2261</span> <span class="tlaGNC">      148781            : {</span></span>
-<span id="L2262"><span class="lineNum">    2262</span> <span class="tlaGNC">      148781            :     SLANG_ASSERT(isUsingOnDemandDeserialization());</span></span>
-<span id="L2263"><span class="lineNum">    2263</span> <span class="tlaGNC">      148781            :     auto&amp; fossilizedInfo =</span></span>
-<span id="L2264"><span class="lineNum">    2264</span> <span class="tlaGNC">      148781            :         *(Fossilized&lt;ContainerDeclDirectMemberDeclsInfo&gt;*)onDemandDeserialization.data;</span></span>
+<span id="L2261"><span class="lineNum">    2261</span> <span class="tlaGNC">      148667            : {</span></span>
+<span id="L2262"><span class="lineNum">    2262</span> <span class="tlaGNC">      148667            :     SLANG_ASSERT(isUsingOnDemandDeserialization());</span></span>
+<span id="L2263"><span class="lineNum">    2263</span> <span class="tlaGNC">      148667            :     auto&amp; fossilizedInfo =</span></span>
+<span id="L2264"><span class="lineNum">    2264</span> <span class="tlaGNC">      148667            :         *(Fossilized&lt;ContainerDeclDirectMemberDeclsInfo&gt;*)onDemandDeserialization.data;</span></span>
 <span id="L2265"><span class="lineNum">    2265</span>                         : </span>
 <span id="L2266"><span class="lineNum">    2266</span>                         :     // This particular function works by filling in the `filteredListOfTransparentDecls`</span>
 <span id="L2267"><span class="lineNum">    2267</span>                         :     // part of the lookup accelerators. If it has been called once and put anything</span>
@@ -2560,13 +2560,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2269"><span class="lineNum">    2269</span>                         :     // of calling this method again. We enforce this invariant in an attempt to</span>
 <span id="L2270"><span class="lineNum">    2270</span>                         :     // avoid overhead that might be associated with this method.</span>
 <span id="L2271"><span class="lineNum">    2271</span>                         :     //</span>
-<span id="L2272"><span class="lineNum">    2272</span> <span class="tlaGNC">      148781            :     SLANG_ASSERT(accelerators.filteredListOfTransparentDecls.getCount() == 0);</span></span>
+<span id="L2272"><span class="lineNum">    2272</span> <span class="tlaGNC">      148667            :     SLANG_ASSERT(accelerators.filteredListOfTransparentDecls.getCount() == 0);</span></span>
 <span id="L2273"><span class="lineNum">    2273</span>                         : </span>
 <span id="L2274"><span class="lineNum">    2274</span>                         :     // If this is the first time this method is being called (or, in the very common</span>
 <span id="L2275"><span class="lineNum">    2275</span>                         :     // corner case, when there are no transparent decls at all...) we loop over the</span>
 <span id="L2276"><span class="lineNum">    2276</span>                         :     // fossilized array holding the indices of the transparent members.</span>
 <span id="L2277"><span class="lineNum">    2277</span>                         :     //</span>
-<span id="L2278"><span class="lineNum">    2278</span> <span class="tlaGNC">      148781 <span class="branchPart" title="br0: 0; br1: 148781">(1/2)</span>      :     for (auto index : fossilizedInfo.transparentDeclIndices)</span></span>
+<span id="L2278"><span class="lineNum">    2278</span> <span class="tlaGNC">      148667 <span class="branchPart" title="br0: 0; br1: 148667">(1/2)</span>      :     for (auto index : fossilizedInfo.transparentDeclIndices)</span></span>
 <span id="L2279"><span class="lineNum">    2279</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L2280"><span class="lineNum">    2280</span>                         :         // For each index that is found, we do a by-index query for</span>
 <span id="L2281"><span class="lineNum">    2281</span>                         :         // the member and then add it to the list. This is another</span>
@@ -2576,13 +2576,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2285"><span class="lineNum">    2285</span> <span class="tlaUNC">           0            :         auto decl = getDecl(index);</span></span>
 <span id="L2286"><span class="lineNum">    2286</span> <span class="tlaUNC">           0            :         accelerators.filteredListOfTransparentDecls.add(decl);</span></span>
 <span id="L2287"><span class="lineNum">    2287</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L2288"><span class="lineNum">    2288</span> <span class="tlaGNC">      148781            : }</span></span>
+<span id="L2288"><span class="lineNum">    2288</span> <span class="tlaGNC">      148667            : }</span></span>
 <span id="L2289"><span class="lineNum">    2289</span>                         : </span>
 <span id="L2290"><span class="lineNum">    2290</span>                         : Decl* ContainerDeclDirectMemberDecls::_readSerializedDeclAtIndex(Index index) const</span>
-<span id="L2291"><span class="lineNum">    2291</span> <span class="tlaGNC">    14453564            : {</span></span>
-<span id="L2292"><span class="lineNum">    2292</span> <span class="tlaGNC">    14453564            :     SLANG_ASSERT(isUsingOnDemandDeserialization());</span></span>
-<span id="L2293"><span class="lineNum">    2293</span> <span class="tlaGNC">    14453564            :     auto&amp; fossilizedInfo =</span></span>
-<span id="L2294"><span class="lineNum">    2294</span> <span class="tlaGNC">    14453564            :         *(Fossilized&lt;ContainerDeclDirectMemberDeclsInfo&gt;*)onDemandDeserialization.data;</span></span>
+<span id="L2291"><span class="lineNum">    2291</span> <span class="tlaGNC">    14450264            : {</span></span>
+<span id="L2292"><span class="lineNum">    2292</span> <span class="tlaGNC">    14450264            :     SLANG_ASSERT(isUsingOnDemandDeserialization());</span></span>
+<span id="L2293"><span class="lineNum">    2293</span> <span class="tlaGNC">    14450264            :     auto&amp; fossilizedInfo =</span></span>
+<span id="L2294"><span class="lineNum">    2294</span> <span class="tlaGNC">    14450264            :         *(Fossilized&lt;ContainerDeclDirectMemberDeclsInfo&gt;*)onDemandDeserialization.data;</span></span>
 <span id="L2295"><span class="lineNum">    2295</span>                         : </span>
 <span id="L2296"><span class="lineNum">    2296</span>                         :     //</span>
 <span id="L2297"><span class="lineNum">    2297</span>                         :     // It isn&#x27;t visible here, but `ContainerDeclDirectMemberDecls::getDecl(index)`</span>
@@ -2606,7 +2606,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2315"><span class="lineNum">    2315</span>                         :     // fossilized pointer (rather than try to copy it), or to declare the variable</span>
 <span id="L2316"><span class="lineNum">    2316</span>                         :     // as an ordinary &quot;live&quot; pointer.</span>
 <span id="L2317"><span class="lineNum">    2317</span>                         :     //</span>
-<span id="L2318"><span class="lineNum">    2318</span> <span class="tlaGNC">    14453564            :     Fossilized&lt;Decl&gt;* fossilizedDecl = fossilizedInfo.decls[index];</span></span>
+<span id="L2318"><span class="lineNum">    2318</span> <span class="tlaGNC">    14450264            :     Fossilized&lt;Decl&gt;* fossilizedDecl = fossilizedInfo.decls[index];</span></span>
 <span id="L2319"><span class="lineNum">    2319</span>                         : </span>
 <span id="L2320"><span class="lineNum">    2320</span>                         :     // Once we have a pointer to the (fossilized) declaration that we want,</span>
 <span id="L2321"><span class="lineNum">    2321</span>                         :     // we can use the `ASTSerialReadContext` to read it on-demand. Because</span>
@@ -2614,10 +2614,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2323"><span class="lineNum">    2323</span>                         :     // (to avoid needing to expose `ASTSerialReadContext` outside this file),</span>
 <span id="L2324"><span class="lineNum">    2324</span>                         :     // we need to cast the pointer before we can perform the read.</span>
 <span id="L2325"><span class="lineNum">    2325</span>                         :     //</span>
-<span id="L2326"><span class="lineNum">    2326</span> <span class="tlaGNC">    14453564            :     auto sharedContext = as&lt;ASTSerialReadContext&gt;(onDemandDeserialization.context);</span></span>
-<span id="L2327"><span class="lineNum">    2327</span> <span class="tlaGNC">    14453564            :     auto decl = sharedContext-&gt;readFossilizedDecl(fossilizedDecl);</span></span>
-<span id="L2328"><span class="lineNum">    2328</span> <span class="tlaGNC">    14453564            :     return decl;</span></span>
-<span id="L2329"><span class="lineNum">    2329</span> <span class="tlaGNC">    14453564            : }</span></span>
+<span id="L2326"><span class="lineNum">    2326</span> <span class="tlaGNC">    14450264            :     auto sharedContext = as&lt;ASTSerialReadContext&gt;(onDemandDeserialization.context);</span></span>
+<span id="L2327"><span class="lineNum">    2327</span> <span class="tlaGNC">    14450264            :     auto decl = sharedContext-&gt;readFossilizedDecl(fossilizedDecl);</span></span>
+<span id="L2328"><span class="lineNum">    2328</span> <span class="tlaGNC">    14450264            :     return decl;</span></span>
+<span id="L2329"><span class="lineNum">    2329</span> <span class="tlaGNC">    14450264            : }</span></span>
 <span id="L2330"><span class="lineNum">    2330</span>                         : </span>
 <span id="L2331"><span class="lineNum">    2331</span>                         : } // namespace Slang</span>
 </pre>
