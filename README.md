@@ -30,3 +30,8 @@ This repository follows the same pattern as [slang-material-modules-benchmark](h
 - Historical data accumulation
 - GitHub Pages deployment for visualization
 - Minimal maintenance required
+
+## Pages publication
+
+See [the Pages staging policy](tools/PAGES.md) for published views, historical access,
+size limits, and local validation.

@@ -28,10 +28,20 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Test Pages staging
+        run: python3 -m unittest discover -s tools/tests -v
+
+      - name: Stage published reports
+        env:
+          REPORT_REVISION: ${{ github.sha }}
+          PAGES_DIRECTORY: ${{ runner.temp }}/coverage-pages
+        run: |
+          python3 tools/stage-pages.py --revision "$REPORT_REVISION" --output "$PAGES_DIRECTORY"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: ${{ runner.temp }}/coverage-pages
 
       - name: Deploy to GitHub Pages
         id: deployment
