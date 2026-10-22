@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-21 12:43:02 UTC</td>
+      <td class="headerValue">2026-10-22 03:58:35 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -325,32 +325,32 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L34"><span class="lineNum">      34</span>                         : /// We call slang_createGlobalSessionImpl directly to avoid re-recording,</span>
 <span id="L35"><span class="lineNum">      35</span>                         : /// then wrap the result to match what was recorded.</span>
 <span id="L36"><span class="lineNum">      36</span>                         : static void handle_slang_createGlobalSession2(ReplayContext&amp; ctx)</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          16            : {</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          20            : {</span></span>
 <span id="L38"><span class="lineNum">      38</span>                         :     // Read header</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">          16            :     const char* signature = nullptr;</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          16            :     uint64_t thisHandle = 0;</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">          16            :     ctx.record(RecordFlag::Input, signature);</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">          16            :     ctx.recordHandle(RecordFlag::Input, thisHandle);</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">          20            :     const char* signature = nullptr;</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">          20            :     uint64_t thisHandle = 0;</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">          20            :     ctx.record(RecordFlag::Input, signature);</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">          20            :     ctx.recordHandle(RecordFlag::Input, thisHandle);</span></span>
 <span id="L43"><span class="lineNum">      43</span>                         : </span>
 <span id="L44"><span class="lineNum">      44</span>                         :     // Read the input descriptor</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          16            :     SlangGlobalSessionDesc desc = {};</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">          16            :     ctx.record(RecordFlag::Input, desc);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          20            :     SlangGlobalSessionDesc desc = {};</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">          20            :     ctx.record(RecordFlag::Input, desc);</span></span>
 <span id="L47"><span class="lineNum">      47</span>                         : </span>
 <span id="L48"><span class="lineNum">      48</span>                         :     // Call the implementation directly (not slang_createGlobalSession2) to avoid re-recording</span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          16            :     Slang::GlobalSessionInternalDesc internalDesc = {};</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          16            :     slang::IGlobalSession* globalSession = nullptr;</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">          16            :     SlangResult result = slang_createGlobalSessionImpl(&amp;desc, &amp;internalDesc, &amp;globalSession);</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          20            :     Slang::GlobalSessionInternalDesc internalDesc = {};</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          20            :     slang::IGlobalSession* globalSession = nullptr;</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">          20            :     SlangResult result = slang_createGlobalSessionImpl(&amp;desc, &amp;internalDesc, &amp;globalSession);</span></span>
 <span id="L52"><span class="lineNum">      52</span>                         : </span>
 <span id="L53"><span class="lineNum">      53</span>                         :     // Wrap the session in a proxy (just like slang_createGlobalSession2 does during recording)</span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">          16 <span class="branchPart" title="br0: 16; br1: 0; br2: 16; br3: 0">(2/4)</span>      :     if (SLANG_SUCCEEDED(result) &amp;&amp; globalSession)</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">          16            :         globalSession = wrapObject(globalSession);</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">          20 <span class="branchPart" title="br0: 20; br1: 0; br2: 20; br3: 0">(2/4)</span>      :     if (SLANG_SUCCEEDED(result) &amp;&amp; globalSession)</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">          20            :         globalSession = wrapObject(globalSession);</span></span>
 <span id="L56"><span class="lineNum">      56</span>                         : </span>
 <span id="L57"><span class="lineNum">      57</span>                         :     // Read and verify the output (this will register the created session in the handle table)</span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">          16            :     ctx.record(RecordFlag::Output, globalSession);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">          20            :     ctx.record(RecordFlag::Output, globalSession);</span></span>
 <span id="L59"><span class="lineNum">      59</span>                         : </span>
 <span id="L60"><span class="lineNum">      60</span>                         :     // Read and verify the return value</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">          16            :     ctx.record(RecordFlag::ReturnValue, result);</span></span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">          16            : }</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">          20            :     ctx.record(RecordFlag::ReturnValue, result);</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">          20            : }</span></span>
 <span id="L63"><span class="lineNum">      63</span>                         : </span>
 <span id="L64"><span class="lineNum">      64</span>                         : /// Register all replay handlers.</span>
 <span id="L65"><span class="lineNum">      65</span>                         : /// Called during static initialization and by registerDefaultHandlers().</span>

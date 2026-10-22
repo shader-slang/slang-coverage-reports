@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-21 12:43:49 UTC</td>
+      <td class="headerValue">2026-10-22 03:59:16 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">92.3&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:92.3%;background-color:hsl(108, 70%, 50%)"></div></div>
-      <span class="metricCounts">191 / 207</span>
+      <span class="metricValue">92.4&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:92.4%;background-color:hsl(109, 70%, 50%)"></div></div>
+      <span class="metricCounts">194 / 210</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -884,439 +884,462 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L611"><span class="lineNum">     611</span> <span class="tlaGNC">           1 :         unregisterProxyImpl(proxyIdentity);</span></span>
 <span id="L612"><span class="lineNum">     612</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L613"><span class="lineNum">     613</span>              : </span>
-<span id="L614"><span class="lineNum">     614</span>              :     /// Registers `obj` in the handle registry and returns its handle, for tests.</span>
-<span id="L615"><span class="lineNum">     615</span>              :     ///</span>
-<span id="L616"><span class="lineNum">     616</span>              :     /// A production proxy is registered by wrapObject() as part of being</span>
-<span id="L617"><span class="lineNum">     617</span>              :     /// created; a test that needs a proxy the orphan bookkeeping will treat as</span>
-<span id="L618"><span class="lineNum">     618</span>              :     /// live has to register it explicitly, because</span>
-<span id="L619"><span class="lineNum">     619</span>              :     /// releaseOrphanedPlaybackProxies() skips anything absent from the registry.</span>
-<span id="L620"><span class="lineNum">     620</span>              :     template&lt;typename ProxyT&gt;</span>
-<span id="L621"><span class="lineNum">     621</span>              :     inline uint64_t testsOnlyRegisterProxy(ProxyT* obj)</span>
-<span id="L622"><span class="lineNum">     622</span>              :     {</span>
-<span id="L623"><span class="lineNum">     623</span>              :         ISlangUnknown* objUnknown = toSlangUnknown(obj);</span>
-<span id="L624"><span class="lineNum">     624</span>              :         return testOnlyRegisterProxyImpl(objUnknown);</span>
-<span id="L625"><span class="lineNum">     625</span>              :     }</span>
-<span id="L626"><span class="lineNum">     626</span>              : </span>
-<span id="L627"><span class="lineNum">     627</span>              :     /// Notes an orphaned playback reference for `proxy`, for tests.</span>
-<span id="L628"><span class="lineNum">     628</span>              :     ///</span>
-<span id="L629"><span class="lineNum">     629</span>              :     /// The production caller is the replay dispatcher, which a unit test cannot</span>
-<span id="L630"><span class="lineNum">     630</span>              :     /// drive, so without these wrappers the bookkeeping is only observable as a</span>
-<span id="L631"><span class="lineNum">     631</span>              :     /// sanitizer leak or double-free on a path no test reaches.</span>
-<span id="L632"><span class="lineNum">     632</span>              :     inline void testsOnlyNoteOrphanedProxy(ISlangUnknown* proxy)</span>
-<span id="L633"><span class="lineNum">     633</span>              :     {</span>
-<span id="L634"><span class="lineNum">     634</span>              :         notePlaybackOrphanedProxy(proxy);</span>
-<span id="L635"><span class="lineNum">     635</span>              :     }</span>
-<span id="L636"><span class="lineNum">     636</span>              : </span>
-<span id="L637"><span class="lineNum">     637</span>              :     /// Returns how many orphaned playback references are noted for `proxy`, for</span>
-<span id="L638"><span class="lineNum">     638</span>              :     /// tests. Zero when the proxy is not tracked at all.</span>
-<span id="L639"><span class="lineNum">     639</span>              :     inline uint32_t testsOnlyGetOrphanedRefCount(ISlangUnknown* proxy) const</span>
-<span id="L640"><span class="lineNum">     640</span>              :     {</span>
-<span id="L641"><span class="lineNum">     641</span>              :         return testOnlyGetOrphanedRefCountImpl(proxy);</span>
-<span id="L642"><span class="lineNum">     642</span>              :     }</span>
-<span id="L643"><span class="lineNum">     643</span>              : </span>
-<span id="L644"><span class="lineNum">     644</span>              :     /// Runs the playback-teardown sweep that releases every noted orphaned</span>
-<span id="L645"><span class="lineNum">     645</span>              :     /// reference, for tests. Production runs it from reset(), switchTo*(), and</span>
-<span id="L646"><span class="lineNum">     646</span>              :     /// destroySingleton().</span>
-<span id="L647"><span class="lineNum">     647</span>              :     inline void testsOnlyReleaseOrphanedProxies() { releaseOrphanedPlaybackProxies(); }</span>
-<span id="L648"><span class="lineNum">     648</span>              : </span>
-<span id="L649"><span class="lineNum">     649</span>              :     /// Get or create a proxy for an implementation.</span>
-<span id="L650"><span class="lineNum">     650</span>              :     /// If a proxy already exists, returns it. Otherwise returns nullptr.</span>
-<span id="L651"><span class="lineNum">     651</span>              :     template&lt;typename ImplT&gt;</span>
-<span id="L652"><span class="lineNum">     652</span>              :     inline ISlangUnknown* getProxy(ImplT* implementation)</span>
-<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">           1 :         if (implementation == nullptr)</span></span>
-<span id="L655"><span class="lineNum">     655</span> <span class="tlaUNC">           0 :             return nullptr;</span></span>
-<span id="L656"><span class="lineNum">     656</span> <span class="tlaGNC">           1 :         ISlangUnknown* implUnknown = toSlangUnknown(implementation);</span></span>
-<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">           1 :         return getProxyImpl(implUnknown);</span></span>
-<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L659"><span class="lineNum">     659</span>              : </span>
-<span id="L660"><span class="lineNum">     660</span>              :     /// Get the implementation</span>
-<span id="L661"><span class="lineNum">     661</span>              :     template&lt;typename ProxyT&gt;</span>
-<span id="L662"><span class="lineNum">     662</span>              :     inline ISlangUnknown* getImplementation(ProxyT* proxy)</span>
-<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">           1 :         if (proxy == nullptr)</span></span>
-<span id="L665"><span class="lineNum">     665</span> <span class="tlaUNC">           0 :             return nullptr;</span></span>
-<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">           1 :         ISlangUnknown* proxyUnknown = toSlangUnknown(proxy);</span></span>
-<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">           1 :         return getImplementationImpl(proxyUnknown);</span></span>
-<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L669"><span class="lineNum">     669</span>              : </span>
-<span id="L670"><span class="lineNum">     670</span>              :     /// Get the next handle value that will be assigned.</span>
-<span id="L671"><span class="lineNum">     671</span>              :     /// Useful for testing to know how many objects have been registered.</span>
-<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">           1 :     SLANG_API uint64_t getNextHandle() const { return m_nextHandle; }</span></span>
-<span id="L673"><span class="lineNum">     673</span>              : </span>
-<span id="L674"><span class="lineNum">     674</span>              :     /// Check if an object is registered.</span>
-<span id="L675"><span class="lineNum">     675</span>              :     template&lt;typename ProxyT&gt;</span>
-<span id="L676"><span class="lineNum">     676</span>              :     inline bool isInterfaceRegistered(ProxyT* obj) const</span>
-<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L678"><span class="lineNum">     678</span> <span class="tlaGNC">           1 :         ISlangUnknown* objUnknown = toSlangUnknown(obj);</span></span>
-<span id="L679"><span class="lineNum">     679</span> <span class="tlaGNC">           1 :         return isInterfaceRegisteredImpl(objUnknown);</span></span>
-<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L681"><span class="lineNum">     681</span>              : </span>
-<span id="L682"><span class="lineNum">     682</span>              :     /// Get handle for an object (throws if not registered).</span>
-<span id="L683"><span class="lineNum">     683</span>              :     template&lt;typename ProxyT&gt;</span>
-<span id="L684"><span class="lineNum">     684</span>              :     inline uint64_t getProxyHandle(ProxyT* obj) const</span>
-<span id="L685"><span class="lineNum">     685</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">           1 :         ISlangUnknown* objUnknown = toSlangUnknown(obj);</span></span>
-<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">           1 :         return getProxyHandleImpl(objUnknown);</span></span>
-<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L689"><span class="lineNum">     689</span>              : </span>
-<span id="L690"><span class="lineNum">     690</span>              :     /// Get object for a handle (returns nullptr if not found).</span>
-<span id="L691"><span class="lineNum">     691</span>              :     SLANG_API ISlangUnknown* getProxy(uint64_t handle) const;</span>
-<span id="L692"><span class="lineNum">     692</span>              : </span>
-<span id="L693"><span class="lineNum">     693</span>              :     // ==========================================================================</span>
-<span id="L694"><span class="lineNum">     694</span>              :     // Call Index Access</span>
-<span id="L695"><span class="lineNum">     695</span>              :     // ==========================================================================</span>
-<span id="L696"><span class="lineNum">     696</span>              : </span>
-<span id="L697"><span class="lineNum">     697</span>              :     /// Get the number of calls in the loaded index.</span>
-<span id="L698"><span class="lineNum">     698</span>              :     /// Returns 0 if no index is loaded.</span>
-<span id="L699"><span class="lineNum">     699</span>              :     SLANG_API size_t getCallCount() const;</span>
-<span id="L700"><span class="lineNum">     700</span>              : </span>
-<span id="L701"><span class="lineNum">     701</span>              :     /// Get an index entry by call number (0-based).</span>
-<span id="L702"><span class="lineNum">     702</span>              :     /// Returns nullptr if index is not loaded or callIndex is out of range.</span>
-<span id="L703"><span class="lineNum">     703</span>              :     SLANG_API const CallIndexEntry* getCallIndexEntry(size_t callIndex) const;</span>
-<span id="L704"><span class="lineNum">     704</span>              : </span>
-<span id="L705"><span class="lineNum">     705</span>              :     /// Seek the main stream to a specific call by index.</span>
-<span id="L706"><span class="lineNum">     706</span>              :     /// Returns SLANG_OK on success, SLANG_E_NOT_FOUND if index not loaded,</span>
-<span id="L707"><span class="lineNum">     707</span>              :     /// SLANG_E_INVALID_ARG if callIndex is out of range.</span>
-<span id="L708"><span class="lineNum">     708</span>              :     SLANG_API SlangResult seekToCall(size_t callIndex);</span>
+<span id="L614"><span class="lineNum">     614</span>              :     /// A replayed user release() of `proxy`; see unnotePlaybackOrphanedProxyImpl.</span>
+<span id="L615"><span class="lineNum">     615</span>              :     inline void unnotePlaybackOrphanedProxy(ISlangUnknown* proxy)</span>
+<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L617"><span class="lineNum">     617</span> <span class="tlaGNC">           1 :         unnotePlaybackOrphanedProxyImpl(proxy);</span></span>
+<span id="L618"><span class="lineNum">     618</span>              :     }</span>
+<span id="L619"><span class="lineNum">     619</span>              : </span>
+<span id="L620"><span class="lineNum">     620</span>              :     /// A replayed user addRef() of `proxy`; see playbackUserAddRefImpl.</span>
+<span id="L621"><span class="lineNum">     621</span> <span class="tlaGNC">           1 :     inline void playbackUserAddRef(ISlangUnknown* proxy) { playbackUserAddRefImpl(proxy); }</span></span>
+<span id="L622"><span class="lineNum">     622</span>              : </span>
+<span id="L623"><span class="lineNum">     623</span>              :     /// Registers `obj` in the handle registry and returns its handle, for tests.</span>
+<span id="L624"><span class="lineNum">     624</span>              :     ///</span>
+<span id="L625"><span class="lineNum">     625</span>              :     /// A production proxy is registered by wrapObject() as part of being</span>
+<span id="L626"><span class="lineNum">     626</span>              :     /// created; a test that needs a proxy the orphan bookkeeping will treat as</span>
+<span id="L627"><span class="lineNum">     627</span>              :     /// live has to register it explicitly, because</span>
+<span id="L628"><span class="lineNum">     628</span>              :     /// releaseOrphanedPlaybackProxies() skips anything absent from the registry.</span>
+<span id="L629"><span class="lineNum">     629</span>              :     template&lt;typename ProxyT&gt;</span>
+<span id="L630"><span class="lineNum">     630</span>              :     inline uint64_t testsOnlyRegisterProxy(ProxyT* obj)</span>
+<span id="L631"><span class="lineNum">     631</span>              :     {</span>
+<span id="L632"><span class="lineNum">     632</span>              :         ISlangUnknown* objUnknown = toSlangUnknown(obj);</span>
+<span id="L633"><span class="lineNum">     633</span>              :         return testOnlyRegisterProxyImpl(objUnknown);</span>
+<span id="L634"><span class="lineNum">     634</span>              :     }</span>
+<span id="L635"><span class="lineNum">     635</span>              : </span>
+<span id="L636"><span class="lineNum">     636</span>              :     /// Notes an orphaned playback reference for `proxy`, for tests.</span>
+<span id="L637"><span class="lineNum">     637</span>              :     ///</span>
+<span id="L638"><span class="lineNum">     638</span>              :     /// The production caller is the replay dispatcher, which a unit test cannot</span>
+<span id="L639"><span class="lineNum">     639</span>              :     /// drive, so without these wrappers the bookkeeping is only observable as a</span>
+<span id="L640"><span class="lineNum">     640</span>              :     /// sanitizer leak or double-free on a path no test reaches.</span>
+<span id="L641"><span class="lineNum">     641</span>              :     inline void testsOnlyNoteOrphanedProxy(ISlangUnknown* proxy)</span>
+<span id="L642"><span class="lineNum">     642</span>              :     {</span>
+<span id="L643"><span class="lineNum">     643</span>              :         notePlaybackOrphanedProxy(proxy);</span>
+<span id="L644"><span class="lineNum">     644</span>              :     }</span>
+<span id="L645"><span class="lineNum">     645</span>              : </span>
+<span id="L646"><span class="lineNum">     646</span>              :     /// Returns how many orphaned playback references are noted for `proxy`, for</span>
+<span id="L647"><span class="lineNum">     647</span>              :     /// tests. Zero when the proxy is not tracked at all.</span>
+<span id="L648"><span class="lineNum">     648</span>              :     inline uint32_t testsOnlyGetOrphanedRefCount(ISlangUnknown* proxy) const</span>
+<span id="L649"><span class="lineNum">     649</span>              :     {</span>
+<span id="L650"><span class="lineNum">     650</span>              :         return testOnlyGetOrphanedRefCountImpl(proxy);</span>
+<span id="L651"><span class="lineNum">     651</span>              :     }</span>
+<span id="L652"><span class="lineNum">     652</span>              : </span>
+<span id="L653"><span class="lineNum">     653</span>              :     /// Runs the playback-teardown sweep that releases every noted orphaned</span>
+<span id="L654"><span class="lineNum">     654</span>              :     /// reference, for tests. Production runs it from reset(), switchTo*(), and</span>
+<span id="L655"><span class="lineNum">     655</span>              :     /// destroySingleton().</span>
+<span id="L656"><span class="lineNum">     656</span>              :     inline void testsOnlyReleaseOrphanedProxies() { releaseOrphanedPlaybackProxies(); }</span>
+<span id="L657"><span class="lineNum">     657</span>              : </span>
+<span id="L658"><span class="lineNum">     658</span>              :     /// Get or create a proxy for an implementation.</span>
+<span id="L659"><span class="lineNum">     659</span>              :     /// If a proxy already exists, returns it. Otherwise returns nullptr.</span>
+<span id="L660"><span class="lineNum">     660</span>              :     template&lt;typename ImplT&gt;</span>
+<span id="L661"><span class="lineNum">     661</span>              :     inline ISlangUnknown* getProxy(ImplT* implementation)</span>
+<span id="L662"><span class="lineNum">     662</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">           1 :         if (implementation == nullptr)</span></span>
+<span id="L664"><span class="lineNum">     664</span> <span class="tlaUNC">           0 :             return nullptr;</span></span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">           1 :         ISlangUnknown* implUnknown = toSlangUnknown(implementation);</span></span>
+<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">           1 :         return getProxyImpl(implUnknown);</span></span>
+<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L668"><span class="lineNum">     668</span>              : </span>
+<span id="L669"><span class="lineNum">     669</span>              :     /// Get the implementation</span>
+<span id="L670"><span class="lineNum">     670</span>              :     template&lt;typename ProxyT&gt;</span>
+<span id="L671"><span class="lineNum">     671</span>              :     inline ISlangUnknown* getImplementation(ProxyT* proxy)</span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">           1 :         if (proxy == nullptr)</span></span>
+<span id="L674"><span class="lineNum">     674</span> <span class="tlaUNC">           0 :             return nullptr;</span></span>
+<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">           1 :         ISlangUnknown* proxyUnknown = toSlangUnknown(proxy);</span></span>
+<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">           1 :         return getImplementationImpl(proxyUnknown);</span></span>
+<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L678"><span class="lineNum">     678</span>              : </span>
+<span id="L679"><span class="lineNum">     679</span>              :     /// Get the next handle value that will be assigned.</span>
+<span id="L680"><span class="lineNum">     680</span>              :     /// Useful for testing to know how many objects have been registered.</span>
+<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">           1 :     SLANG_API uint64_t getNextHandle() const { return m_nextHandle; }</span></span>
+<span id="L682"><span class="lineNum">     682</span>              : </span>
+<span id="L683"><span class="lineNum">     683</span>              :     /// Check if an object is registered.</span>
+<span id="L684"><span class="lineNum">     684</span>              :     template&lt;typename ProxyT&gt;</span>
+<span id="L685"><span class="lineNum">     685</span>              :     inline bool isInterfaceRegistered(ProxyT* obj) const</span>
+<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">           1 :         ISlangUnknown* objUnknown = toSlangUnknown(obj);</span></span>
+<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">           1 :         return isInterfaceRegisteredImpl(objUnknown);</span></span>
+<span id="L689"><span class="lineNum">     689</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L690"><span class="lineNum">     690</span>              : </span>
+<span id="L691"><span class="lineNum">     691</span>              :     /// Get handle for an object (throws if not registered).</span>
+<span id="L692"><span class="lineNum">     692</span>              :     template&lt;typename ProxyT&gt;</span>
+<span id="L693"><span class="lineNum">     693</span>              :     inline uint64_t getProxyHandle(ProxyT* obj) const</span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L695"><span class="lineNum">     695</span> <span class="tlaGNC">           1 :         ISlangUnknown* objUnknown = toSlangUnknown(obj);</span></span>
+<span id="L696"><span class="lineNum">     696</span> <span class="tlaGNC">           1 :         return getProxyHandleImpl(objUnknown);</span></span>
+<span id="L697"><span class="lineNum">     697</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L698"><span class="lineNum">     698</span>              : </span>
+<span id="L699"><span class="lineNum">     699</span>              :     /// Get object for a handle (returns nullptr if not found).</span>
+<span id="L700"><span class="lineNum">     700</span>              :     SLANG_API ISlangUnknown* getProxy(uint64_t handle) const;</span>
+<span id="L701"><span class="lineNum">     701</span>              : </span>
+<span id="L702"><span class="lineNum">     702</span>              :     // ==========================================================================</span>
+<span id="L703"><span class="lineNum">     703</span>              :     // Call Index Access</span>
+<span id="L704"><span class="lineNum">     704</span>              :     // ==========================================================================</span>
+<span id="L705"><span class="lineNum">     705</span>              : </span>
+<span id="L706"><span class="lineNum">     706</span>              :     /// Get the number of calls in the loaded index.</span>
+<span id="L707"><span class="lineNum">     707</span>              :     /// Returns 0 if no index is loaded.</span>
+<span id="L708"><span class="lineNum">     708</span>              :     SLANG_API size_t getCallCount() const;</span>
 <span id="L709"><span class="lineNum">     709</span>              : </span>
-<span id="L710"><span class="lineNum">     710</span>              :     /// Check if the call index is loaded/available.</span>
-<span id="L711"><span class="lineNum">     711</span> <span class="tlaGNC">           1 :     SLANG_API bool hasCallIndex() const { return m_indexStream.getSize() &gt; 0; }</span></span>
-<span id="L712"><span class="lineNum">     712</span>              : </span>
-<span id="L713"><span class="lineNum">     713</span>              :     // ==========================================================================</span>
-<span id="L714"><span class="lineNum">     714</span>              :     // Playback Dispatcher</span>
-<span id="L715"><span class="lineNum">     715</span>              :     // ==========================================================================</span>
-<span id="L716"><span class="lineNum">     716</span>              : </span>
-<span id="L717"><span class="lineNum">     717</span>              :     /// Function type for registered playback handlers.</span>
-<span id="L718"><span class="lineNum">     718</span>              :     /// The handler is called in playback mode and should call the appropriate</span>
-<span id="L719"><span class="lineNum">     719</span>              :     /// record() methods to read arguments from the stream, then execute the call.</span>
-<span id="L720"><span class="lineNum">     720</span>              :     using PlaybackHandler = void (*)(ReplayContext&amp; ctx);</span>
+<span id="L710"><span class="lineNum">     710</span>              :     /// Get an index entry by call number (0-based).</span>
+<span id="L711"><span class="lineNum">     711</span>              :     /// Returns nullptr if index is not loaded or callIndex is out of range.</span>
+<span id="L712"><span class="lineNum">     712</span>              :     SLANG_API const CallIndexEntry* getCallIndexEntry(size_t callIndex) const;</span>
+<span id="L713"><span class="lineNum">     713</span>              : </span>
+<span id="L714"><span class="lineNum">     714</span>              :     /// Seek the main stream to a specific call by index.</span>
+<span id="L715"><span class="lineNum">     715</span>              :     /// Returns SLANG_OK on success, SLANG_E_NOT_FOUND if index not loaded,</span>
+<span id="L716"><span class="lineNum">     716</span>              :     /// SLANG_E_INVALID_ARG if callIndex is out of range.</span>
+<span id="L717"><span class="lineNum">     717</span>              :     SLANG_API SlangResult seekToCall(size_t callIndex);</span>
+<span id="L718"><span class="lineNum">     718</span>              : </span>
+<span id="L719"><span class="lineNum">     719</span>              :     /// Check if the call index is loaded/available.</span>
+<span id="L720"><span class="lineNum">     720</span> <span class="tlaGNC">           1 :     SLANG_API bool hasCallIndex() const { return m_indexStream.getSize() &gt; 0; }</span></span>
 <span id="L721"><span class="lineNum">     721</span>              : </span>
-<span id="L722"><span class="lineNum">     722</span>              :     /// Register a playback handler for a function signature.</span>
-<span id="L723"><span class="lineNum">     723</span>              :     /// The signature should match what __FUNCSIG__ or __PRETTY_FUNCTION__ produces.</span>
-<span id="L724"><span class="lineNum">     724</span>              :     SLANG_API void registerHandler(const char* signature, PlaybackHandler handler);</span>
+<span id="L722"><span class="lineNum">     722</span>              :     // ==========================================================================</span>
+<span id="L723"><span class="lineNum">     723</span>              :     // Playback Dispatcher</span>
+<span id="L724"><span class="lineNum">     724</span>              :     // ==========================================================================</span>
 <span id="L725"><span class="lineNum">     725</span>              : </span>
-<span id="L726"><span class="lineNum">     726</span>              :     /// Return the number of registered playback handlers.</span>
-<span id="L727"><span class="lineNum">     727</span>              :     SLANG_API size_t getHandlerCount() const;</span>
-<span id="L728"><span class="lineNum">     728</span>              : </span>
-<span id="L729"><span class="lineNum">     729</span>              :     /// Clear the handler dictionary and deallocate its backing storage.</span>
-<span id="L730"><span class="lineNum">     730</span>              :     /// Called from slang_shutdown() to free heap-allocated handler strings</span>
-<span id="L731"><span class="lineNum">     731</span>              :     /// before _CrtDumpMemoryLeaks() runs.</span>
-<span id="L732"><span class="lineNum">     732</span>              :     SLANG_API void resetHandlers();</span>
-<span id="L733"><span class="lineNum">     733</span>              : </span>
-<span id="L734"><span class="lineNum">     734</span>              :     /// Re-register the default set of playback handlers.</span>
-<span id="L735"><span class="lineNum">     735</span>              :     /// Call after resetHandlers() to restore replay functionality.</span>
-<span id="L736"><span class="lineNum">     736</span>              :     /// Normal initialization happens automatically via static HandlerRegistrar.</span>
-<span id="L737"><span class="lineNum">     737</span>              :     SLANG_API void registerDefaultHandlers();</span>
-<span id="L738"><span class="lineNum">     738</span>              : </span>
-<span id="L739"><span class="lineNum">     739</span>              :     /// Execute the next recorded call from the stream.</span>
-<span id="L740"><span class="lineNum">     740</span>              :     /// Reads the function signature, looks up the handler, and calls it.</span>
-<span id="L741"><span class="lineNum">     741</span>              :     /// Returns true if a call was executed, false if at end of stream.</span>
-<span id="L742"><span class="lineNum">     742</span>              :     SLANG_API bool executeNextCall();</span>
-<span id="L743"><span class="lineNum">     743</span>              : </span>
-<span id="L744"><span class="lineNum">     744</span>              :     /// Execute all recorded calls until end of stream.</span>
-<span id="L745"><span class="lineNum">     745</span>              :     SLANG_API void executeAll();</span>
-<span id="L746"><span class="lineNum">     746</span>              : </span>
-<span id="L747"><span class="lineNum">     747</span>              :     /// Check if there are more calls to execute.</span>
-<span id="L748"><span class="lineNum">     748</span> <span class="tlaGNC">           1 :     SLANG_API bool hasMoreCalls() const { return !m_stream.atEnd(); }</span></span>
-<span id="L749"><span class="lineNum">     749</span>              : </span>
-<span id="L750"><span class="lineNum">     750</span>              :     /// Get the &#x27;this&#x27; handle for the current call being executed.</span>
-<span id="L751"><span class="lineNum">     751</span>              :     /// Only valid within a playback handler.</span>
-<span id="L752"><span class="lineNum">     752</span> <span class="tlaGNC">           1 :     SLANG_API uint64_t getCurrentThisHandle() const { return m_currentThisHandle; }</span></span>
-<span id="L753"><span class="lineNum">     753</span>              : </span>
-<span id="L754"><span class="lineNum">     754</span>              :     /// Get the &#x27;this&#x27; pointer for the current call, cast to the given type.</span>
-<span id="L755"><span class="lineNum">     755</span>              :     /// Only valid within a playback handler.</span>
-<span id="L756"><span class="lineNum">     756</span>              :     /// Note: The handle table stores canonical ISlangUnknown* pointers (via</span>
-<span id="L757"><span class="lineNum">     757</span>              :     /// ProxyBase::toSlangUnknown), which go through TFirstInterface. Since</span>
-<span id="L758"><span class="lineNum">     758</span>              :     /// TFirstInterface is always the first base of the proxy, the pointer</span>
-<span id="L759"><span class="lineNum">     759</span>              :     /// value equals the proxy&#x27;s address, making this reinterpret_cast safe.</span>
-<span id="L760"><span class="lineNum">     760</span>              :     template&lt;typename T&gt;</span>
-<span id="L761"><span class="lineNum">     761</span>              :     T* getCurrentThis()</span>
-<span id="L762"><span class="lineNum">     762</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L763"><span class="lineNum">     763</span> <span class="tlaGNC">           1 :         if (m_currentThisHandle == kNullHandle)</span></span>
-<span id="L764"><span class="lineNum">     764</span> <span class="tlaUNC">           0 :             return nullptr;</span></span>
-<span id="L765"><span class="lineNum">     765</span> <span class="tlaGNC">           1 :         auto* unknown = getProxy(m_currentThisHandle);</span></span>
-<span id="L766"><span class="lineNum">     766</span>              :         return reinterpret_cast&lt;T*&gt;(unknown);</span>
-<span id="L767"><span class="lineNum">     767</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L768"><span class="lineNum">     768</span>              : </span>
-<span id="L769"><span class="lineNum">     769</span>              : private:</span>
-<span id="L770"><span class="lineNum">     770</span>              :     // Internal recording functions</span>
-<span id="L771"><span class="lineNum">     771</span>              :     SLANG_API void recordRaw(RecordFlag flags, void* data, size_t size);</span>
-<span id="L772"><span class="lineNum">     772</span>              :     SLANG_API void recordTypeId(TypeId id);</span>
-<span id="L773"><span class="lineNum">     773</span>              :     SLANG_API void writeTypeId(TypeId id);</span>
-<span id="L774"><span class="lineNum">     774</span>              :     SLANG_API TypeId readTypeId();</span>
-<span id="L775"><span class="lineNum">     775</span>              :     SLANG_API TypeId readTypeIdFromReference();</span>
-<span id="L776"><span class="lineNum">     776</span>              :     SLANG_API void expectTypeId(TypeId expected);</span>
-<span id="L777"><span class="lineNum">     777</span>              :     SLANG_API void writeIndexEntry();</span>
-<span id="L778"><span class="lineNum">     778</span>              : </span>
-<span id="L779"><span class="lineNum">     779</span>              :     // Internal registeration using canonical ISlangUnknown* identities</span>
-<span id="L780"><span class="lineNum">     780</span>              :     SLANG_API uint64_t registerProxyImpl(ISlangUnknown* proxy, ISlangUnknown* implementation);</span>
-<span id="L781"><span class="lineNum">     781</span>              :     SLANG_API void unregisterProxyImpl(ISlangUnknown* proxy);</span>
-<span id="L782"><span class="lineNum">     782</span>              : </span>
-<span id="L783"><span class="lineNum">     783</span>              :     /// Remember that the playback dispatcher created `proxy` for an output/return</span>
-<span id="L784"><span class="lineNum">     784</span>              :     /// value and dropped its owning creation reference into a discarded</span>
-<span id="L785"><span class="lineNum">     785</span>              :     /// temporary. Called only during playback; releaseOrphanedPlaybackProxies()</span>
-<span id="L786"><span class="lineNum">     786</span>              :     /// later releases the reference unless the replayed release stream already</span>
-<span id="L787"><span class="lineNum">     787</span>              :     /// destroyed the proxy first (issue #11936).</span>
-<span id="L788"><span class="lineNum">     788</span>              :     SLANG_API void notePlaybackOrphanedProxy(ISlangUnknown* proxy);</span>
-<span id="L789"><span class="lineNum">     789</span>              : </span>
-<span id="L790"><span class="lineNum">     790</span>              :     /// Release the still-live orphaned playback proxies recorded by</span>
-<span id="L791"><span class="lineNum">     791</span>              :     /// notePlaybackOrphanedProxy. Proxies whose recorded release stream already</span>
-<span id="L792"><span class="lineNum">     792</span>              :     /// balanced their creation reference destroyed themselves during replay and</span>
-<span id="L793"><span class="lineNum">     793</span>              :     /// were removed by unregisterProxyImpl, so only genuine leaks remain here.</span>
-<span id="L794"><span class="lineNum">     794</span>              :     /// Called at playback teardown (reset/switch/destroy).</span>
-<span id="L795"><span class="lineNum">     795</span>              :     SLANG_API void releaseOrphanedPlaybackProxies();</span>
-<span id="L796"><span class="lineNum">     796</span>              :     SLANG_API ISlangUnknown* getProxyImpl(ISlangUnknown* implementation);</span>
-<span id="L797"><span class="lineNum">     797</span>              :     SLANG_API ISlangUnknown* getImplementationImpl(ISlangUnknown* proxy);</span>
-<span id="L798"><span class="lineNum">     798</span>              :     SLANG_API uint64_t testOnlyRegisterProxyImpl(ISlangUnknown* obj);</span>
-<span id="L799"><span class="lineNum">     799</span>              : </span>
-<span id="L800"><span class="lineNum">     800</span>              :     /// Number of orphaned playback references currently tracked for `proxy`, or</span>
-<span id="L801"><span class="lineNum">     801</span>              :     /// 0 if none. Exists so a test can assert the note/unnote balancing</span>
-<span id="L802"><span class="lineNum">     802</span>              :     /// directly: the alternative is inferring it from a sanitizer leak or</span>
-<span id="L803"><span class="lineNum">     803</span>              :     /// double-free report, which only fires on a path some test happens to</span>
-<span id="L804"><span class="lineNum">     804</span>              :     /// drive, and the entry-point wrapping that motivates the `unnote` is not</span>
-<span id="L805"><span class="lineNum">     805</span>              :     /// driven by any of them.</span>
-<span id="L806"><span class="lineNum">     806</span>              :     SLANG_API uint32_t testOnlyGetOrphanedRefCountImpl(ISlangUnknown* proxy) const;</span>
-<span id="L807"><span class="lineNum">     807</span>              :     SLANG_API uint64_t getProxyHandleImpl(ISlangUnknown* obj) const;</span>
-<span id="L808"><span class="lineNum">     808</span>              :     SLANG_API bool isInterfaceRegisteredImpl(ISlangUnknown* obj) const;</span>
-<span id="L809"><span class="lineNum">     809</span>              : </span>
-<span id="L810"><span class="lineNum">     810</span>              :     // Initialization and logging</span>
-<span id="L811"><span class="lineNum">     811</span>              :     SLANG_API void ensureInitialized();</span>
-<span id="L812"><span class="lineNum">     812</span>              :     SLANG_API void logCall(const char* signature, void* thisPtr);</span>
-<span id="L813"><span class="lineNum">     813</span>              :     SLANG_API void setupRecordingMirror();</span>
-<span id="L814"><span class="lineNum">     814</span>              :     SLANG_API void closeRecordingMirror();</span>
-<span id="L815"><span class="lineNum">     815</span>              :     SLANG_API static String generateTimestampFolderName();</span>
-<span id="L816"><span class="lineNum">     816</span>              :     SLANG_API void requireReplayArenaAllocation(size_t offset, size_t size);</span>
-<span id="L817"><span class="lineNum">     817</span>              : </span>
-<span id="L818"><span class="lineNum">     818</span>              :     /// Record a COM interface pointer (internal implementation).</span>
-<span id="L819"><span class="lineNum">     819</span>              :     template&lt;typename T&gt;</span>
-<span id="L820"><span class="lineNum">     820</span>              :     void recordInterfaceImpl(RecordFlag flags, T*&amp; obj);</span>
-<span id="L821"><span class="lineNum">     821</span>              : </span>
-<span id="L822"><span class="lineNum">     822</span>              :     template&lt;typename T, typename CountT&gt;</span>
-<span id="L823"><span class="lineNum">     823</span>              :     T* readArrayInPlayback(RecordFlag flags, CountT&amp; count);</span>
-<span id="L824"><span class="lineNum">     824</span>              : </span>
-<span id="L825"><span class="lineNum">     825</span>              :     // Core streams + mutex</span>
-<span id="L826"><span class="lineNum">     826</span>              :     std::recursive_mutex m_mutex;</span>
-<span id="L827"><span class="lineNum">     827</span>              :     ReplayStream m_stream;          ///&lt; Main stream for record/playback</span>
-<span id="L828"><span class="lineNum">     828</span>              :     ReplayStream m_indexStream;     ///&lt; Index stream for call navigation (index.bin)</span>
-<span id="L829"><span class="lineNum">     829</span>              :     ReplayStream m_referenceStream; ///&lt; Reference stream for sync mode comparison</span>
-<span id="L830"><span class="lineNum">     830</span>              :     MemoryArena m_arena;</span>
-<span id="L831"><span class="lineNum">     831</span> <span class="tlaGNC">           1 :     size_t m_replayArenaAllocationSize = 0;</span></span>
-<span id="L832"><span class="lineNum">     832</span>              :     std::atomic&lt;Mode&gt; m_mode;</span>
-<span id="L833"><span class="lineNum">     833</span>              :     List&lt;uint8_t&gt; m_compareBuffer; ///&lt; Reusable buffer for sync comparisons</span>
-<span id="L834"><span class="lineNum">     834</span>              : </span>
-<span id="L835"><span class="lineNum">     835</span>              :     // Handle tracking: maps objects to handles and back</span>
-<span id="L836"><span class="lineNum">     836</span>              :     Dictionary&lt;ISlangUnknown*, uint64_t&gt; m_objectToHandle;</span>
-<span id="L837"><span class="lineNum">     837</span>              :     Dictionary&lt;uint64_t, ISlangUnknown*&gt; m_handleToObject;</span>
-<span id="L838"><span class="lineNum">     838</span> <span class="tlaGNC">           1 :     uint64_t m_nextHandle = kFirstValidHandle;</span></span>
-<span id="L839"><span class="lineNum">     839</span>              : </span>
-<span id="L840"><span class="lineNum">     840</span>              :     // Proxy tracking: maps proxies to implementations and back</span>
-<span id="L841"><span class="lineNum">     841</span>              :     Dictionary&lt;ISlangUnknown*, ISlangUnknown*&gt; m_proxyToImpl;</span>
-<span id="L842"><span class="lineNum">     842</span>              :     Dictionary&lt;ISlangUnknown*, ISlangUnknown*&gt; m_implToProxy;</span>
-<span id="L843"><span class="lineNum">     843</span>              : </span>
-<span id="L844"><span class="lineNum">     844</span>              :     // Proxies created by the playback dispatcher for an output/return value.</span>
-<span id="L845"><span class="lineNum">     845</span>              :     // During playback the wrapped object is handed back into a discarded</span>
-<span id="L846"><span class="lineNum">     846</span>              :     // temporary (callWithDefaults passes null outputs), so its owning creation</span>
-<span id="L847"><span class="lineNum">     847</span>              :     // reference has no owner. Keyed by canonical ISlangUnknown* identity -&gt; the</span>
-<span id="L848"><span class="lineNum">     848</span>              :     // number of such orphaned references. releaseOrphanedPlaybackProxies()</span>
-<span id="L849"><span class="lineNum">     849</span>              :     // releases any that the recorded addRef/release stream did not already</span>
-<span id="L850"><span class="lineNum">     850</span>              :     // balance, at playback teardown (issue #11936). Empty outside playback.</span>
-<span id="L851"><span class="lineNum">     851</span>              :     Dictionary&lt;ISlangUnknown*, uint32_t&gt; m_playbackOrphanedProxies;</span>
-<span id="L852"><span class="lineNum">     852</span>              : </span>
-<span id="L853"><span class="lineNum">     853</span>              :     // Replay directory management</span>
-<span id="L854"><span class="lineNum">     854</span> <span class="tlaGNC">           1 :     String m_replayDirectory = &quot;.slang-replays&quot;; ///&lt; Base directory for replays</span></span>
-<span id="L855"><span class="lineNum">     855</span>              :     String m_currentReplayPath;                  ///&lt; Current recording session folder</span>
-<span id="L856"><span class="lineNum">     856</span>              : </span>
-<span id="L857"><span class="lineNum">     857</span>              :     // TTY logging</span>
-<span id="L858"><span class="lineNum">     858</span>              :     bool m_ttyLogging = false; ///&lt; Whether to log calls to stderr</span>
-<span id="L859"><span class="lineNum">     859</span>              : </span>
-<span id="L860"><span class="lineNum">     860</span>              :     std::once_flag m_initFlag;</span>
-<span id="L861"><span class="lineNum">     861</span>              : </span>
-<span id="L862"><span class="lineNum">     862</span>              :     // Map from function signature to handler</span>
-<span id="L863"><span class="lineNum">     863</span>              :     Dictionary&lt;String, PlaybackHandler&gt; m_handlers;</span>
-<span id="L864"><span class="lineNum">     864</span>              : </span>
-<span id="L865"><span class="lineNum">     865</span>              :     // Current &#x27;this&#x27; handle during playback execution</span>
-<span id="L866"><span class="lineNum">     866</span> <span class="tlaGNC">           1 :     uint64_t m_currentThisHandle = kNullHandle;</span></span>
-<span id="L867"><span class="lineNum">     867</span>              : };</span>
-<span id="L868"><span class="lineNum">     868</span>              : </span>
-<span id="L869"><span class="lineNum">     869</span>              : // Template implementations</span>
-<span id="L870"><span class="lineNum">     870</span>              : </span>
-<span id="L871"><span class="lineNum">     871</span>              : template&lt;typename T, typename CountT&gt;</span>
-<span id="L872"><span class="lineNum">     872</span>              : T* ReplayContext::readArrayInPlayback(RecordFlag flags, CountT&amp; count)</span>
-<span id="L873"><span class="lineNum">     873</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L874"><span class="lineNum">     874</span> <span class="tlaGNC">           1 :     expectTypeId(TypeId::Array);</span></span>
-<span id="L875"><span class="lineNum">     875</span>              :     uint64_t arrayCount;</span>
-<span id="L876"><span class="lineNum">     876</span> <span class="tlaGNC">           1 :     record(flags, arrayCount);</span></span>
-<span id="L877"><span class="lineNum">     877</span> <span class="tlaGNC">           1 :     size_t countOffset = m_stream.getPosition() - sizeof(arrayCount);</span></span>
-<span id="L878"><span class="lineNum">     878</span> <span class="tlaGNC">           1 :     validateReplayArrayCount(</span></span>
-<span id="L879"><span class="lineNum">     879</span>              :         m_stream,</span>
-<span id="L880"><span class="lineNum">     880</span>              :         arrayCount,</span>
-<span id="L881"><span class="lineNum">     881</span>              :         uint64_t((std::numeric_limits&lt;CountT&gt;::max)()),</span>
-<span id="L882"><span class="lineNum">     882</span>              :         sizeof(T),</span>
-<span id="L883"><span class="lineNum">     883</span>              :         getReplayArrayMinStreamBytesPerElement&lt;T&gt;(),</span>
-<span id="L884"><span class="lineNum">     884</span>              :         countOffset);</span>
-<span id="L885"><span class="lineNum">     885</span> <span class="tlaGNC">           1 :     count = static_cast&lt;CountT&gt;(arrayCount);</span></span>
-<span id="L886"><span class="lineNum">     886</span> <span class="tlaGNC">           1 :     if (arrayCount == 0)</span></span>
-<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">           1 :         return nullptr;</span></span>
-<span id="L888"><span class="lineNum">     888</span>              : </span>
-<span id="L889"><span class="lineNum">     889</span> <span class="tlaUNC">           0 :     size_t sizeCount = static_cast&lt;size_t&gt;(arrayCount);</span></span>
-<span id="L890"><span class="lineNum">     890</span> <span class="tlaGNC">           1 :     size_t allocationSize = sizeCount * sizeof(T);</span></span>
-<span id="L891"><span class="lineNum">     891</span> <span class="tlaGNC">           1 :     requireReplayArenaAllocation(countOffset, allocationSize);</span></span>
-<span id="L892"><span class="lineNum">     892</span> <span class="tlaGNC">           1 :     T* buf = reinterpret_cast&lt;T*&gt;(allocateReplayArena(allocationSize, alignof(T)));</span></span>
-<span id="L893"><span class="lineNum">     893</span> <span class="tlaGNC">           1 :     for (size_t i = 0; i &lt; sizeCount; ++i)</span></span>
-<span id="L894"><span class="lineNum">     894</span>              :     {</span>
-<span id="L895"><span class="lineNum">     895</span> <span class="tlaGNC">           1 :         new (&amp;buf[i]) T{};</span></span>
-<span id="L896"><span class="lineNum">     896</span> <span class="tlaGNC">           1 :         record(flags, buf[i]);</span></span>
-<span id="L897"><span class="lineNum">     897</span>              :     }</span>
-<span id="L898"><span class="lineNum">     898</span> <span class="tlaGNC">           1 :     return buf;</span></span>
-<span id="L899"><span class="lineNum">     899</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L900"><span class="lineNum">     900</span>              : </span>
-<span id="L901"><span class="lineNum">     901</span>              : template&lt;typename T, typename CountT&gt;</span>
-<span id="L902"><span class="lineNum">     902</span>              : void ReplayContext::recordArray(RecordFlag flags, T*&amp; arr, CountT&amp; count)</span>
-<span id="L903"><span class="lineNum">     903</span>              : {</span>
-<span id="L904"><span class="lineNum">     904</span>              :     if (m_mode == Mode::Idle)</span>
-<span id="L905"><span class="lineNum">     905</span>              :         return;</span>
-<span id="L906"><span class="lineNum">     906</span>              :     if (isWriting())</span>
-<span id="L907"><span class="lineNum">     907</span>              :     {</span>
-<span id="L908"><span class="lineNum">     908</span>              :         recordTypeId(TypeId::Array);</span>
-<span id="L909"><span class="lineNum">     909</span>              :         uint64_t arrayCount = static_cast&lt;uint64_t&gt;(count);</span>
-<span id="L910"><span class="lineNum">     910</span>              :         record(flags, arrayCount);</span>
-<span id="L911"><span class="lineNum">     911</span>              :         for (uint64_t i = 0; i &lt; arrayCount; ++i)</span>
-<span id="L912"><span class="lineNum">     912</span>              :             record(flags, arr[i]);</span>
-<span id="L913"><span class="lineNum">     913</span>              :     }</span>
-<span id="L914"><span class="lineNum">     914</span>              :     else</span>
-<span id="L915"><span class="lineNum">     915</span>              :     {</span>
-<span id="L916"><span class="lineNum">     916</span>              :         arr = readArrayInPlayback&lt;T&gt;(flags, count);</span>
-<span id="L917"><span class="lineNum">     917</span>              :     }</span>
-<span id="L918"><span class="lineNum">     918</span>              : }</span>
-<span id="L919"><span class="lineNum">     919</span>              : </span>
-<span id="L920"><span class="lineNum">     920</span>              : template&lt;typename T, typename CountT&gt;</span>
-<span id="L921"><span class="lineNum">     921</span>              : void ReplayContext::recordArray(RecordFlag flags, const T*&amp; arr, CountT&amp; count)</span>
-<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L923"><span class="lineNum">     923</span> <span class="tlaGNC">           1 :     if (m_mode == Mode::Idle)</span></span>
-<span id="L924"><span class="lineNum">     924</span>              :         return;</span>
-<span id="L925"><span class="lineNum">     925</span> <span class="tlaGNC">           1 :     if (isWriting())</span></span>
-<span id="L926"><span class="lineNum">     926</span>              :     {</span>
-<span id="L927"><span class="lineNum">     927</span> <span class="tlaGNC">           1 :         recordTypeId(TypeId::Array);</span></span>
-<span id="L928"><span class="lineNum">     928</span> <span class="tlaGNC">           1 :         uint64_t arrayCount = static_cast&lt;uint64_t&gt;(count);</span></span>
-<span id="L929"><span class="lineNum">     929</span> <span class="tlaGNC">           1 :         record(flags, arrayCount);</span></span>
-<span id="L930"><span class="lineNum">     930</span> <span class="tlaGNC">           1 :         for (uint64_t i = 0; i &lt; arrayCount; ++i)</span></span>
-<span id="L931"><span class="lineNum">     931</span> <span class="tlaGNC">           1 :             record(flags, const_cast&lt;T&amp;&gt;(arr[i]));</span></span>
-<span id="L932"><span class="lineNum">     932</span>              :     }</span>
-<span id="L933"><span class="lineNum">     933</span>              :     else</span>
-<span id="L934"><span class="lineNum">     934</span>              :     {</span>
-<span id="L935"><span class="lineNum">     935</span> <span class="tlaGNC">           1 :         arr = readArrayInPlayback&lt;T&gt;(flags, count);</span></span>
+<span id="L726"><span class="lineNum">     726</span>              :     /// Function type for registered playback handlers.</span>
+<span id="L727"><span class="lineNum">     727</span>              :     /// The handler is called in playback mode and should call the appropriate</span>
+<span id="L728"><span class="lineNum">     728</span>              :     /// record() methods to read arguments from the stream, then execute the call.</span>
+<span id="L729"><span class="lineNum">     729</span>              :     using PlaybackHandler = void (*)(ReplayContext&amp; ctx);</span>
+<span id="L730"><span class="lineNum">     730</span>              : </span>
+<span id="L731"><span class="lineNum">     731</span>              :     /// Register a playback handler for a function signature.</span>
+<span id="L732"><span class="lineNum">     732</span>              :     /// The signature should match what __FUNCSIG__ or __PRETTY_FUNCTION__ produces.</span>
+<span id="L733"><span class="lineNum">     733</span>              :     SLANG_API void registerHandler(const char* signature, PlaybackHandler handler);</span>
+<span id="L734"><span class="lineNum">     734</span>              : </span>
+<span id="L735"><span class="lineNum">     735</span>              :     /// Return the number of registered playback handlers.</span>
+<span id="L736"><span class="lineNum">     736</span>              :     SLANG_API size_t getHandlerCount() const;</span>
+<span id="L737"><span class="lineNum">     737</span>              : </span>
+<span id="L738"><span class="lineNum">     738</span>              :     /// Clear the handler dictionary and deallocate its backing storage.</span>
+<span id="L739"><span class="lineNum">     739</span>              :     /// Called from slang_shutdown() to free heap-allocated handler strings</span>
+<span id="L740"><span class="lineNum">     740</span>              :     /// before _CrtDumpMemoryLeaks() runs.</span>
+<span id="L741"><span class="lineNum">     741</span>              :     SLANG_API void resetHandlers();</span>
+<span id="L742"><span class="lineNum">     742</span>              : </span>
+<span id="L743"><span class="lineNum">     743</span>              :     /// Re-register the default set of playback handlers.</span>
+<span id="L744"><span class="lineNum">     744</span>              :     /// Call after resetHandlers() to restore replay functionality.</span>
+<span id="L745"><span class="lineNum">     745</span>              :     /// Normal initialization happens automatically via static HandlerRegistrar.</span>
+<span id="L746"><span class="lineNum">     746</span>              :     SLANG_API void registerDefaultHandlers();</span>
+<span id="L747"><span class="lineNum">     747</span>              : </span>
+<span id="L748"><span class="lineNum">     748</span>              :     /// Execute the next recorded call from the stream.</span>
+<span id="L749"><span class="lineNum">     749</span>              :     /// Reads the function signature, looks up the handler, and calls it.</span>
+<span id="L750"><span class="lineNum">     750</span>              :     /// Returns true if a call was executed, false if at end of stream.</span>
+<span id="L751"><span class="lineNum">     751</span>              :     SLANG_API bool executeNextCall();</span>
+<span id="L752"><span class="lineNum">     752</span>              : </span>
+<span id="L753"><span class="lineNum">     753</span>              :     /// Execute all recorded calls until end of stream.</span>
+<span id="L754"><span class="lineNum">     754</span>              :     SLANG_API void executeAll();</span>
+<span id="L755"><span class="lineNum">     755</span>              : </span>
+<span id="L756"><span class="lineNum">     756</span>              :     /// Check if there are more calls to execute.</span>
+<span id="L757"><span class="lineNum">     757</span> <span class="tlaGNC">           1 :     SLANG_API bool hasMoreCalls() const { return !m_stream.atEnd(); }</span></span>
+<span id="L758"><span class="lineNum">     758</span>              : </span>
+<span id="L759"><span class="lineNum">     759</span>              :     /// Get the &#x27;this&#x27; handle for the current call being executed.</span>
+<span id="L760"><span class="lineNum">     760</span>              :     /// Only valid within a playback handler.</span>
+<span id="L761"><span class="lineNum">     761</span> <span class="tlaGNC">           1 :     SLANG_API uint64_t getCurrentThisHandle() const { return m_currentThisHandle; }</span></span>
+<span id="L762"><span class="lineNum">     762</span>              : </span>
+<span id="L763"><span class="lineNum">     763</span>              :     /// Get the &#x27;this&#x27; pointer for the current call, cast to the given type.</span>
+<span id="L764"><span class="lineNum">     764</span>              :     /// Only valid within a playback handler.</span>
+<span id="L765"><span class="lineNum">     765</span>              :     /// Note: The handle table stores canonical ISlangUnknown* pointers (via</span>
+<span id="L766"><span class="lineNum">     766</span>              :     /// ProxyBase::toSlangUnknown), which go through TFirstInterface. Since</span>
+<span id="L767"><span class="lineNum">     767</span>              :     /// TFirstInterface is always the first base of the proxy, the pointer</span>
+<span id="L768"><span class="lineNum">     768</span>              :     /// value equals the proxy&#x27;s address, making this reinterpret_cast safe.</span>
+<span id="L769"><span class="lineNum">     769</span>              :     template&lt;typename T&gt;</span>
+<span id="L770"><span class="lineNum">     770</span>              :     T* getCurrentThis()</span>
+<span id="L771"><span class="lineNum">     771</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L772"><span class="lineNum">     772</span> <span class="tlaGNC">           1 :         if (m_currentThisHandle == kNullHandle)</span></span>
+<span id="L773"><span class="lineNum">     773</span> <span class="tlaUNC">           0 :             return nullptr;</span></span>
+<span id="L774"><span class="lineNum">     774</span> <span class="tlaGNC">           1 :         auto* unknown = getProxy(m_currentThisHandle);</span></span>
+<span id="L775"><span class="lineNum">     775</span>              :         return reinterpret_cast&lt;T*&gt;(unknown);</span>
+<span id="L776"><span class="lineNum">     776</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L777"><span class="lineNum">     777</span>              : </span>
+<span id="L778"><span class="lineNum">     778</span>              : private:</span>
+<span id="L779"><span class="lineNum">     779</span>              :     // Internal recording functions</span>
+<span id="L780"><span class="lineNum">     780</span>              :     SLANG_API void recordRaw(RecordFlag flags, void* data, size_t size);</span>
+<span id="L781"><span class="lineNum">     781</span>              :     SLANG_API void recordTypeId(TypeId id);</span>
+<span id="L782"><span class="lineNum">     782</span>              :     SLANG_API void writeTypeId(TypeId id);</span>
+<span id="L783"><span class="lineNum">     783</span>              :     SLANG_API TypeId readTypeId();</span>
+<span id="L784"><span class="lineNum">     784</span>              :     SLANG_API TypeId readTypeIdFromReference();</span>
+<span id="L785"><span class="lineNum">     785</span>              :     SLANG_API void expectTypeId(TypeId expected);</span>
+<span id="L786"><span class="lineNum">     786</span>              :     SLANG_API void writeIndexEntry();</span>
+<span id="L787"><span class="lineNum">     787</span>              : </span>
+<span id="L788"><span class="lineNum">     788</span>              :     // Internal registeration using canonical ISlangUnknown* identities</span>
+<span id="L789"><span class="lineNum">     789</span>              :     SLANG_API uint64_t registerProxyImpl(ISlangUnknown* proxy, ISlangUnknown* implementation);</span>
+<span id="L790"><span class="lineNum">     790</span>              :     SLANG_API void unregisterProxyImpl(ISlangUnknown* proxy);</span>
+<span id="L791"><span class="lineNum">     791</span>              : </span>
+<span id="L792"><span class="lineNum">     792</span>              :     /// Remember that the playback dispatcher created `proxy` for an output/return</span>
+<span id="L793"><span class="lineNum">     793</span>              :     /// value and dropped its owning creation reference into a discarded</span>
+<span id="L794"><span class="lineNum">     794</span>              :     /// temporary. Called only during playback; releaseOrphanedPlaybackProxies()</span>
+<span id="L795"><span class="lineNum">     795</span>              :     /// later releases the reference unless the replayed release stream already</span>
+<span id="L796"><span class="lineNum">     796</span>              :     /// destroyed the proxy first (issue #11936).</span>
+<span id="L797"><span class="lineNum">     797</span>              :     SLANG_API void notePlaybackOrphanedProxy(ISlangUnknown* proxy);</span>
+<span id="L798"><span class="lineNum">     798</span>              : </span>
+<span id="L799"><span class="lineNum">     799</span>              :     /// A replayed user release() of `proxy` gives up one reference the user owned. If</span>
+<span id="L800"><span class="lineNum">     800</span>              :     /// `proxy` has outstanding orphaned references, that reference is one of them, because</span>
+<span id="L801"><span class="lineNum">     801</span>              :     /// on playback the creation reference stands in for the one the recorded user owned.</span>
+<span id="L802"><span class="lineNum">     802</span>              :     /// One note is therefore dropped, so releaseOrphanedPlaybackProxies() does not release</span>
+<span id="L803"><span class="lineNum">     803</span>              :     /// that reference a second time. A replayed user addRef() adds a reference of the same</span>
+<span id="L804"><span class="lineNum">     804</span>              :     /// kind and adds a note (see playbackUserAddRef), so only a release that is not matched</span>
+<span id="L805"><span class="lineNum">     805</span>              :     /// by an earlier user addRef consumes the creation reference.</span>
+<span id="L806"><span class="lineNum">     806</span>              :     SLANG_API void unnotePlaybackOrphanedProxyImpl(ISlangUnknown* proxy);</span>
+<span id="L807"><span class="lineNum">     807</span>              : </span>
+<span id="L808"><span class="lineNum">     808</span>              :     /// A replayed user addRef() of `proxy`. If `proxy` has outstanding orphaned references,</span>
+<span id="L809"><span class="lineNum">     809</span>              :     /// the new user reference counts as one more, so that a later replayed release balances</span>
+<span id="L810"><span class="lineNum">     810</span>              :     /// it instead of the creation reference.</span>
+<span id="L811"><span class="lineNum">     811</span>              :     SLANG_API void playbackUserAddRefImpl(ISlangUnknown* proxy);</span>
+<span id="L812"><span class="lineNum">     812</span>              : </span>
+<span id="L813"><span class="lineNum">     813</span>              :     /// Release the still-live orphaned playback proxies recorded by</span>
+<span id="L814"><span class="lineNum">     814</span>              :     /// notePlaybackOrphanedProxy. Proxies whose recorded release stream already</span>
+<span id="L815"><span class="lineNum">     815</span>              :     /// balanced their creation reference destroyed themselves during replay and</span>
+<span id="L816"><span class="lineNum">     816</span>              :     /// were removed by unregisterProxyImpl, so only genuine leaks remain here.</span>
+<span id="L817"><span class="lineNum">     817</span>              :     /// Called at playback teardown (reset/switch/destroy).</span>
+<span id="L818"><span class="lineNum">     818</span>              :     SLANG_API void releaseOrphanedPlaybackProxies();</span>
+<span id="L819"><span class="lineNum">     819</span>              :     SLANG_API ISlangUnknown* getProxyImpl(ISlangUnknown* implementation);</span>
+<span id="L820"><span class="lineNum">     820</span>              :     SLANG_API ISlangUnknown* getImplementationImpl(ISlangUnknown* proxy);</span>
+<span id="L821"><span class="lineNum">     821</span>              :     SLANG_API uint64_t testOnlyRegisterProxyImpl(ISlangUnknown* obj);</span>
+<span id="L822"><span class="lineNum">     822</span>              : </span>
+<span id="L823"><span class="lineNum">     823</span>              :     /// Number of orphaned playback references currently tracked for `proxy`, or</span>
+<span id="L824"><span class="lineNum">     824</span>              :     /// 0 if none. Exists so a test can assert the note/unnote balancing</span>
+<span id="L825"><span class="lineNum">     825</span>              :     /// directly: the alternative is inferring it from a sanitizer leak or</span>
+<span id="L826"><span class="lineNum">     826</span>              :     /// double-free report, which only fires on a path some test happens to</span>
+<span id="L827"><span class="lineNum">     827</span>              :     /// drive, and the entry-point wrapping that motivates the `unnote` is not</span>
+<span id="L828"><span class="lineNum">     828</span>              :     /// driven by any of them.</span>
+<span id="L829"><span class="lineNum">     829</span>              :     SLANG_API uint32_t testOnlyGetOrphanedRefCountImpl(ISlangUnknown* proxy) const;</span>
+<span id="L830"><span class="lineNum">     830</span>              :     SLANG_API uint64_t getProxyHandleImpl(ISlangUnknown* obj) const;</span>
+<span id="L831"><span class="lineNum">     831</span>              :     SLANG_API bool isInterfaceRegisteredImpl(ISlangUnknown* obj) const;</span>
+<span id="L832"><span class="lineNum">     832</span>              : </span>
+<span id="L833"><span class="lineNum">     833</span>              :     // Initialization and logging</span>
+<span id="L834"><span class="lineNum">     834</span>              :     SLANG_API void ensureInitialized();</span>
+<span id="L835"><span class="lineNum">     835</span>              :     SLANG_API void logCall(const char* signature, void* thisPtr);</span>
+<span id="L836"><span class="lineNum">     836</span>              :     SLANG_API void setupRecordingMirror();</span>
+<span id="L837"><span class="lineNum">     837</span>              :     SLANG_API void closeRecordingMirror();</span>
+<span id="L838"><span class="lineNum">     838</span>              :     SLANG_API static String generateTimestampFolderName();</span>
+<span id="L839"><span class="lineNum">     839</span>              :     SLANG_API void requireReplayArenaAllocation(size_t offset, size_t size);</span>
+<span id="L840"><span class="lineNum">     840</span>              : </span>
+<span id="L841"><span class="lineNum">     841</span>              :     /// Record a COM interface pointer (internal implementation).</span>
+<span id="L842"><span class="lineNum">     842</span>              :     template&lt;typename T&gt;</span>
+<span id="L843"><span class="lineNum">     843</span>              :     void recordInterfaceImpl(RecordFlag flags, T*&amp; obj);</span>
+<span id="L844"><span class="lineNum">     844</span>              : </span>
+<span id="L845"><span class="lineNum">     845</span>              :     template&lt;typename T, typename CountT&gt;</span>
+<span id="L846"><span class="lineNum">     846</span>              :     T* readArrayInPlayback(RecordFlag flags, CountT&amp; count);</span>
+<span id="L847"><span class="lineNum">     847</span>              : </span>
+<span id="L848"><span class="lineNum">     848</span>              :     // Core streams + mutex</span>
+<span id="L849"><span class="lineNum">     849</span>              :     std::recursive_mutex m_mutex;</span>
+<span id="L850"><span class="lineNum">     850</span>              :     ReplayStream m_stream;          ///&lt; Main stream for record/playback</span>
+<span id="L851"><span class="lineNum">     851</span>              :     ReplayStream m_indexStream;     ///&lt; Index stream for call navigation (index.bin)</span>
+<span id="L852"><span class="lineNum">     852</span>              :     ReplayStream m_referenceStream; ///&lt; Reference stream for sync mode comparison</span>
+<span id="L853"><span class="lineNum">     853</span>              :     MemoryArena m_arena;</span>
+<span id="L854"><span class="lineNum">     854</span> <span class="tlaGNC">           1 :     size_t m_replayArenaAllocationSize = 0;</span></span>
+<span id="L855"><span class="lineNum">     855</span>              :     std::atomic&lt;Mode&gt; m_mode;</span>
+<span id="L856"><span class="lineNum">     856</span>              :     List&lt;uint8_t&gt; m_compareBuffer; ///&lt; Reusable buffer for sync comparisons</span>
+<span id="L857"><span class="lineNum">     857</span>              : </span>
+<span id="L858"><span class="lineNum">     858</span>              :     // Handle tracking: maps objects to handles and back</span>
+<span id="L859"><span class="lineNum">     859</span>              :     Dictionary&lt;ISlangUnknown*, uint64_t&gt; m_objectToHandle;</span>
+<span id="L860"><span class="lineNum">     860</span>              :     Dictionary&lt;uint64_t, ISlangUnknown*&gt; m_handleToObject;</span>
+<span id="L861"><span class="lineNum">     861</span> <span class="tlaGNC">           1 :     uint64_t m_nextHandle = kFirstValidHandle;</span></span>
+<span id="L862"><span class="lineNum">     862</span>              : </span>
+<span id="L863"><span class="lineNum">     863</span>              :     // Proxy tracking: maps proxies to implementations and back</span>
+<span id="L864"><span class="lineNum">     864</span>              :     Dictionary&lt;ISlangUnknown*, ISlangUnknown*&gt; m_proxyToImpl;</span>
+<span id="L865"><span class="lineNum">     865</span>              :     Dictionary&lt;ISlangUnknown*, ISlangUnknown*&gt; m_implToProxy;</span>
+<span id="L866"><span class="lineNum">     866</span>              : </span>
+<span id="L867"><span class="lineNum">     867</span>              :     // Proxies created by the playback dispatcher for an output/return value.</span>
+<span id="L868"><span class="lineNum">     868</span>              :     // During playback the wrapped object is handed back into a discarded</span>
+<span id="L869"><span class="lineNum">     869</span>              :     // temporary (callWithDefaults passes null outputs), so its owning creation</span>
+<span id="L870"><span class="lineNum">     870</span>              :     // reference has no owner. Keyed by canonical ISlangUnknown* identity -&gt; the</span>
+<span id="L871"><span class="lineNum">     871</span>              :     // number of such orphaned references. releaseOrphanedPlaybackProxies()</span>
+<span id="L872"><span class="lineNum">     872</span>              :     // releases any that the recorded addRef/release stream did not already</span>
+<span id="L873"><span class="lineNum">     873</span>              :     // balance, at playback teardown (issue #11936). Empty outside playback.</span>
+<span id="L874"><span class="lineNum">     874</span>              :     Dictionary&lt;ISlangUnknown*, uint32_t&gt; m_playbackOrphanedProxies;</span>
+<span id="L875"><span class="lineNum">     875</span>              : </span>
+<span id="L876"><span class="lineNum">     876</span>              :     // Replay directory management</span>
+<span id="L877"><span class="lineNum">     877</span> <span class="tlaGNC">           1 :     String m_replayDirectory = &quot;.slang-replays&quot;; ///&lt; Base directory for replays</span></span>
+<span id="L878"><span class="lineNum">     878</span>              :     String m_currentReplayPath;                  ///&lt; Current recording session folder</span>
+<span id="L879"><span class="lineNum">     879</span>              : </span>
+<span id="L880"><span class="lineNum">     880</span>              :     // TTY logging</span>
+<span id="L881"><span class="lineNum">     881</span>              :     bool m_ttyLogging = false; ///&lt; Whether to log calls to stderr</span>
+<span id="L882"><span class="lineNum">     882</span>              : </span>
+<span id="L883"><span class="lineNum">     883</span>              :     std::once_flag m_initFlag;</span>
+<span id="L884"><span class="lineNum">     884</span>              : </span>
+<span id="L885"><span class="lineNum">     885</span>              :     // Map from function signature to handler</span>
+<span id="L886"><span class="lineNum">     886</span>              :     Dictionary&lt;String, PlaybackHandler&gt; m_handlers;</span>
+<span id="L887"><span class="lineNum">     887</span>              : </span>
+<span id="L888"><span class="lineNum">     888</span>              :     // Current &#x27;this&#x27; handle during playback execution</span>
+<span id="L889"><span class="lineNum">     889</span> <span class="tlaGNC">           1 :     uint64_t m_currentThisHandle = kNullHandle;</span></span>
+<span id="L890"><span class="lineNum">     890</span>              : };</span>
+<span id="L891"><span class="lineNum">     891</span>              : </span>
+<span id="L892"><span class="lineNum">     892</span>              : // Template implementations</span>
+<span id="L893"><span class="lineNum">     893</span>              : </span>
+<span id="L894"><span class="lineNum">     894</span>              : template&lt;typename T, typename CountT&gt;</span>
+<span id="L895"><span class="lineNum">     895</span>              : T* ReplayContext::readArrayInPlayback(RecordFlag flags, CountT&amp; count)</span>
+<span id="L896"><span class="lineNum">     896</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L897"><span class="lineNum">     897</span> <span class="tlaGNC">           1 :     expectTypeId(TypeId::Array);</span></span>
+<span id="L898"><span class="lineNum">     898</span>              :     uint64_t arrayCount;</span>
+<span id="L899"><span class="lineNum">     899</span> <span class="tlaGNC">           1 :     record(flags, arrayCount);</span></span>
+<span id="L900"><span class="lineNum">     900</span> <span class="tlaGNC">           1 :     size_t countOffset = m_stream.getPosition() - sizeof(arrayCount);</span></span>
+<span id="L901"><span class="lineNum">     901</span> <span class="tlaGNC">           1 :     validateReplayArrayCount(</span></span>
+<span id="L902"><span class="lineNum">     902</span>              :         m_stream,</span>
+<span id="L903"><span class="lineNum">     903</span>              :         arrayCount,</span>
+<span id="L904"><span class="lineNum">     904</span>              :         uint64_t((std::numeric_limits&lt;CountT&gt;::max)()),</span>
+<span id="L905"><span class="lineNum">     905</span>              :         sizeof(T),</span>
+<span id="L906"><span class="lineNum">     906</span>              :         getReplayArrayMinStreamBytesPerElement&lt;T&gt;(),</span>
+<span id="L907"><span class="lineNum">     907</span>              :         countOffset);</span>
+<span id="L908"><span class="lineNum">     908</span> <span class="tlaGNC">           1 :     count = static_cast&lt;CountT&gt;(arrayCount);</span></span>
+<span id="L909"><span class="lineNum">     909</span> <span class="tlaGNC">           1 :     if (arrayCount == 0)</span></span>
+<span id="L910"><span class="lineNum">     910</span> <span class="tlaGNC">           1 :         return nullptr;</span></span>
+<span id="L911"><span class="lineNum">     911</span>              : </span>
+<span id="L912"><span class="lineNum">     912</span> <span class="tlaUNC">           0 :     size_t sizeCount = static_cast&lt;size_t&gt;(arrayCount);</span></span>
+<span id="L913"><span class="lineNum">     913</span> <span class="tlaGNC">           1 :     size_t allocationSize = sizeCount * sizeof(T);</span></span>
+<span id="L914"><span class="lineNum">     914</span> <span class="tlaGNC">           1 :     requireReplayArenaAllocation(countOffset, allocationSize);</span></span>
+<span id="L915"><span class="lineNum">     915</span> <span class="tlaGNC">           1 :     T* buf = reinterpret_cast&lt;T*&gt;(allocateReplayArena(allocationSize, alignof(T)));</span></span>
+<span id="L916"><span class="lineNum">     916</span> <span class="tlaGNC">           1 :     for (size_t i = 0; i &lt; sizeCount; ++i)</span></span>
+<span id="L917"><span class="lineNum">     917</span>              :     {</span>
+<span id="L918"><span class="lineNum">     918</span> <span class="tlaGNC">           1 :         new (&amp;buf[i]) T{};</span></span>
+<span id="L919"><span class="lineNum">     919</span> <span class="tlaGNC">           1 :         record(flags, buf[i]);</span></span>
+<span id="L920"><span class="lineNum">     920</span>              :     }</span>
+<span id="L921"><span class="lineNum">     921</span> <span class="tlaGNC">           1 :     return buf;</span></span>
+<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L923"><span class="lineNum">     923</span>              : </span>
+<span id="L924"><span class="lineNum">     924</span>              : template&lt;typename T, typename CountT&gt;</span>
+<span id="L925"><span class="lineNum">     925</span>              : void ReplayContext::recordArray(RecordFlag flags, T*&amp; arr, CountT&amp; count)</span>
+<span id="L926"><span class="lineNum">     926</span>              : {</span>
+<span id="L927"><span class="lineNum">     927</span>              :     if (m_mode == Mode::Idle)</span>
+<span id="L928"><span class="lineNum">     928</span>              :         return;</span>
+<span id="L929"><span class="lineNum">     929</span>              :     if (isWriting())</span>
+<span id="L930"><span class="lineNum">     930</span>              :     {</span>
+<span id="L931"><span class="lineNum">     931</span>              :         recordTypeId(TypeId::Array);</span>
+<span id="L932"><span class="lineNum">     932</span>              :         uint64_t arrayCount = static_cast&lt;uint64_t&gt;(count);</span>
+<span id="L933"><span class="lineNum">     933</span>              :         record(flags, arrayCount);</span>
+<span id="L934"><span class="lineNum">     934</span>              :         for (uint64_t i = 0; i &lt; arrayCount; ++i)</span>
+<span id="L935"><span class="lineNum">     935</span>              :             record(flags, arr[i]);</span>
 <span id="L936"><span class="lineNum">     936</span>              :     }</span>
-<span id="L937"><span class="lineNum">     937</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L938"><span class="lineNum">     938</span>              : </span>
-<span id="L939"><span class="lineNum">     939</span>              : template&lt;typename EnumT&gt;</span>
-<span id="L940"><span class="lineNum">     940</span>              : void ReplayContext::recordEnum(RecordFlag flags, EnumT&amp; value)</span>
-<span id="L941"><span class="lineNum">     941</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">           1 :     if (m_mode == Mode::Idle)</span></span>
-<span id="L943"><span class="lineNum">     943</span>              :         return;</span>
-<span id="L944"><span class="lineNum">     944</span> <span class="tlaGNC">           1 :     int32_t v = static_cast&lt;int32_t&gt;(value);</span></span>
-<span id="L945"><span class="lineNum">     945</span> <span class="tlaGNC">           1 :     record(flags, v);</span></span>
-<span id="L946"><span class="lineNum">     946</span> <span class="tlaGNC">           1 :     if (isReading())</span></span>
-<span id="L947"><span class="lineNum">     947</span> <span class="tlaGNC">           1 :         value = static_cast&lt;EnumT&gt;(v);</span></span>
-<span id="L948"><span class="lineNum">     948</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L949"><span class="lineNum">     949</span>              : </span>
-<span id="L950"><span class="lineNum">     950</span>              : template&lt;typename T&gt;</span>
-<span id="L951"><span class="lineNum">     951</span>              : void ReplayContext::recordInterfaceImpl(RecordFlag flags, T*&amp; obj)</span>
-<span id="L952"><span class="lineNum">     952</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L953"><span class="lineNum">     953</span> <span class="tlaGNC">           1 :     if (m_mode == Mode::Idle)</span></span>
-<span id="L954"><span class="lineNum">     954</span>              :         return;</span>
-<span id="L955"><span class="lineNum">     955</span>              : </span>
-<span id="L956"><span class="lineNum">     956</span> <span class="tlaGNC">           1 :     bool isInput = hasFlag(flags, RecordFlag::Input) || hasFlag(flags, RecordFlag::ThisPtr);</span></span>
-<span id="L957"><span class="lineNum">     957</span> <span class="tlaGNC">           1 :     bool isOutput = hasFlag(flags, RecordFlag::Output) || hasFlag(flags, RecordFlag::ReturnValue);</span></span>
-<span id="L958"><span class="lineNum">     958</span>              : </span>
-<span id="L959"><span class="lineNum">     959</span> <span class="tlaGNC">           1 :     if (isWriting())</span></span>
-<span id="L960"><span class="lineNum">     960</span>              :     {</span>
-<span id="L961"><span class="lineNum">     961</span>              :         // Recording mode</span>
-<span id="L962"><span class="lineNum">     962</span> <span class="tlaGNC">           1 :         if (isInput)</span></span>
-<span id="L963"><span class="lineNum">     963</span>              :         {</span>
-<span id="L964"><span class="lineNum">     964</span>              :             // An input from the user to a function, should be a proxy they have previously been</span>
-<span id="L965"><span class="lineNum">     965</span>              :             // handed by a wrapping api. Needs unwrapping before returning to hand into main</span>
-<span id="L966"><span class="lineNum">     966</span>              :             // slang api.</span>
-<span id="L967"><span class="lineNum">     967</span>              : </span>
-<span id="L968"><span class="lineNum">     968</span>              :             // Handle null</span>
-<span id="L969"><span class="lineNum">     969</span> <span class="tlaGNC">           1 :             if (obj == nullptr)</span></span>
-<span id="L970"><span class="lineNum">     970</span>              :             {</span>
-<span id="L971"><span class="lineNum">     971</span> <span class="tlaUNC">           0 :                 uint64_t handle = kNullHandle;</span></span>
-<span id="L972"><span class="lineNum">     972</span> <span class="tlaUNC">           0 :                 recordHandle(flags, handle);</span></span>
-<span id="L973"><span class="lineNum">     973</span> <span class="tlaUNC">           0 :                 return;</span></span>
-<span id="L974"><span class="lineNum">     974</span>              :             }</span>
-<span id="L975"><span class="lineNum">     975</span>              : </span>
-<span id="L976"><span class="lineNum">     976</span>              :             // Normal case: look up handle for tracked object</span>
-<span id="L977"><span class="lineNum">     977</span> <span class="tlaGNC">           1 :             uint64_t handle = getProxyHandle(obj);</span></span>
-<span id="L978"><span class="lineNum">     978</span> <span class="tlaGNC">           1 :             recordHandle(flags, handle);</span></span>
-<span id="L979"><span class="lineNum">     979</span>              : </span>
-<span id="L980"><span class="lineNum">     980</span>              :             // Unwrap the proxy to get the underlying implementation</span>
-<span id="L981"><span class="lineNum">     981</span> <span class="tlaGNC">           1 :             obj = unwrapObject(obj);</span></span>
-<span id="L982"><span class="lineNum">     982</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L983"><span class="lineNum">     983</span> <span class="tlaGNC">           1 :         else if (isOutput)</span></span>
-<span id="L984"><span class="lineNum">     984</span>              :         {</span>
-<span id="L985"><span class="lineNum">     985</span>              :             // An output from a slang api to be handed back to user. Should be an implementation</span>
-<span id="L986"><span class="lineNum">     986</span>              :             // that needs to be wrapped (or the existing wrapped object needs retrieving) and</span>
-<span id="L987"><span class="lineNum">     987</span>              :             // returned.</span>
-<span id="L988"><span class="lineNum">     988</span>              : </span>
-<span id="L989"><span class="lineNum">     989</span>              :             // Wrap the implementation in a proxy</span>
-<span id="L990"><span class="lineNum">     990</span> <span class="tlaGNC">           1 :             obj = wrapObject(obj);</span></span>
-<span id="L991"><span class="lineNum">     991</span>              : </span>
-<span id="L992"><span class="lineNum">     992</span>              :             // Output: register object and record handle</span>
-<span id="L993"><span class="lineNum">     993</span> <span class="tlaGNC">           1 :             uint64_t handle = getProxyHandle(obj);</span></span>
-<span id="L994"><span class="lineNum">     994</span> <span class="tlaGNC">           1 :             recordHandle(flags, handle);</span></span>
-<span id="L995"><span class="lineNum">     995</span>              :         }</span>
-<span id="L996"><span class="lineNum">     996</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L997"><span class="lineNum">     997</span>              :     else</span>
-<span id="L998"><span class="lineNum">     998</span>              :     {</span>
-<span id="L999"><span class="lineNum">     999</span>              :         // Playback mode</span>
-<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">           1 :         if (isInput)</span></span>
-<span id="L1001"><span class="lineNum">    1001</span>              :         {</span>
-<span id="L1002"><span class="lineNum">    1002</span>              :             // An input from the user to a function, should be a proxy they have previously been</span>
-<span id="L1003"><span class="lineNum">    1003</span>              :             // handed by a wrapping api. Needs unwrapping before returning to hand into main</span>
-<span id="L1004"><span class="lineNum">    1004</span>              :             // slang api.</span>
-<span id="L1005"><span class="lineNum">    1005</span>              : </span>
-<span id="L1006"><span class="lineNum">    1006</span>              :             // Read handle</span>
-<span id="L1007"><span class="lineNum">    1007</span> <span class="tlaGNC">           1 :             uint64_t handle = kNullHandle;</span></span>
-<span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">           1 :             recordHandle(flags, handle);</span></span>
-<span id="L1009"><span class="lineNum">    1009</span>              : </span>
-<span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">           1 :             if (handle == kNullHandle)</span></span>
-<span id="L1011"><span class="lineNum">    1011</span>              :             {</span>
-<span id="L1012"><span class="lineNum">    1012</span>              :                 obj = nullptr;</span>
-<span id="L1013"><span class="lineNum">    1013</span>              :             }</span>
-<span id="L1014"><span class="lineNum">    1014</span>              :             else</span>
-<span id="L1015"><span class="lineNum">    1015</span>              :             {</span>
-<span id="L1016"><span class="lineNum">    1016</span> <span class="tlaGNC">           1 :                 ISlangUnknown* proxy = getProxy(handle);</span></span>
-<span id="L1017"><span class="lineNum">    1017</span> <span class="tlaGNC">           1 :                 obj = proxy ? toSlangInterface&lt;T&gt;(proxy) : nullptr;</span></span>
-<span id="L1018"><span class="lineNum">    1018</span>              :             }</span>
-<span id="L1019"><span class="lineNum">    1019</span>              : </span>
-<span id="L1020"><span class="lineNum">    1020</span>              :             // Unwrap the proxy to get the underlying implementation</span>
-<span id="L1021"><span class="lineNum">    1021</span> <span class="tlaGNC">           1 :             obj = unwrapObject(obj);</span></span>
-<span id="L1022"><span class="lineNum">    1022</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L1023"><span class="lineNum">    1023</span> <span class="tlaGNC">           1 :         else if (isOutput)</span></span>
+<span id="L937"><span class="lineNum">     937</span>              :     else</span>
+<span id="L938"><span class="lineNum">     938</span>              :     {</span>
+<span id="L939"><span class="lineNum">     939</span>              :         arr = readArrayInPlayback&lt;T&gt;(flags, count);</span>
+<span id="L940"><span class="lineNum">     940</span>              :     }</span>
+<span id="L941"><span class="lineNum">     941</span>              : }</span>
+<span id="L942"><span class="lineNum">     942</span>              : </span>
+<span id="L943"><span class="lineNum">     943</span>              : template&lt;typename T, typename CountT&gt;</span>
+<span id="L944"><span class="lineNum">     944</span>              : void ReplayContext::recordArray(RecordFlag flags, const T*&amp; arr, CountT&amp; count)</span>
+<span id="L945"><span class="lineNum">     945</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L946"><span class="lineNum">     946</span> <span class="tlaGNC">           1 :     if (m_mode == Mode::Idle)</span></span>
+<span id="L947"><span class="lineNum">     947</span>              :         return;</span>
+<span id="L948"><span class="lineNum">     948</span> <span class="tlaGNC">           1 :     if (isWriting())</span></span>
+<span id="L949"><span class="lineNum">     949</span>              :     {</span>
+<span id="L950"><span class="lineNum">     950</span> <span class="tlaGNC">           1 :         recordTypeId(TypeId::Array);</span></span>
+<span id="L951"><span class="lineNum">     951</span> <span class="tlaGNC">           1 :         uint64_t arrayCount = static_cast&lt;uint64_t&gt;(count);</span></span>
+<span id="L952"><span class="lineNum">     952</span> <span class="tlaGNC">           1 :         record(flags, arrayCount);</span></span>
+<span id="L953"><span class="lineNum">     953</span> <span class="tlaGNC">           1 :         for (uint64_t i = 0; i &lt; arrayCount; ++i)</span></span>
+<span id="L954"><span class="lineNum">     954</span> <span class="tlaGNC">           1 :             record(flags, const_cast&lt;T&amp;&gt;(arr[i]));</span></span>
+<span id="L955"><span class="lineNum">     955</span>              :     }</span>
+<span id="L956"><span class="lineNum">     956</span>              :     else</span>
+<span id="L957"><span class="lineNum">     957</span>              :     {</span>
+<span id="L958"><span class="lineNum">     958</span> <span class="tlaGNC">           1 :         arr = readArrayInPlayback&lt;T&gt;(flags, count);</span></span>
+<span id="L959"><span class="lineNum">     959</span>              :     }</span>
+<span id="L960"><span class="lineNum">     960</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L961"><span class="lineNum">     961</span>              : </span>
+<span id="L962"><span class="lineNum">     962</span>              : template&lt;typename EnumT&gt;</span>
+<span id="L963"><span class="lineNum">     963</span>              : void ReplayContext::recordEnum(RecordFlag flags, EnumT&amp; value)</span>
+<span id="L964"><span class="lineNum">     964</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L965"><span class="lineNum">     965</span> <span class="tlaGNC">           1 :     if (m_mode == Mode::Idle)</span></span>
+<span id="L966"><span class="lineNum">     966</span>              :         return;</span>
+<span id="L967"><span class="lineNum">     967</span> <span class="tlaGNC">           1 :     int32_t v = static_cast&lt;int32_t&gt;(value);</span></span>
+<span id="L968"><span class="lineNum">     968</span> <span class="tlaGNC">           1 :     record(flags, v);</span></span>
+<span id="L969"><span class="lineNum">     969</span> <span class="tlaGNC">           1 :     if (isReading())</span></span>
+<span id="L970"><span class="lineNum">     970</span> <span class="tlaGNC">           1 :         value = static_cast&lt;EnumT&gt;(v);</span></span>
+<span id="L971"><span class="lineNum">     971</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L972"><span class="lineNum">     972</span>              : </span>
+<span id="L973"><span class="lineNum">     973</span>              : template&lt;typename T&gt;</span>
+<span id="L974"><span class="lineNum">     974</span>              : void ReplayContext::recordInterfaceImpl(RecordFlag flags, T*&amp; obj)</span>
+<span id="L975"><span class="lineNum">     975</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L976"><span class="lineNum">     976</span> <span class="tlaGNC">           1 :     if (m_mode == Mode::Idle)</span></span>
+<span id="L977"><span class="lineNum">     977</span>              :         return;</span>
+<span id="L978"><span class="lineNum">     978</span>              : </span>
+<span id="L979"><span class="lineNum">     979</span> <span class="tlaGNC">           1 :     bool isInput = hasFlag(flags, RecordFlag::Input) || hasFlag(flags, RecordFlag::ThisPtr);</span></span>
+<span id="L980"><span class="lineNum">     980</span> <span class="tlaGNC">           1 :     bool isOutput = hasFlag(flags, RecordFlag::Output) || hasFlag(flags, RecordFlag::ReturnValue);</span></span>
+<span id="L981"><span class="lineNum">     981</span>              : </span>
+<span id="L982"><span class="lineNum">     982</span> <span class="tlaGNC">           1 :     if (isWriting())</span></span>
+<span id="L983"><span class="lineNum">     983</span>              :     {</span>
+<span id="L984"><span class="lineNum">     984</span>              :         // Recording mode</span>
+<span id="L985"><span class="lineNum">     985</span> <span class="tlaGNC">           1 :         if (isInput)</span></span>
+<span id="L986"><span class="lineNum">     986</span>              :         {</span>
+<span id="L987"><span class="lineNum">     987</span>              :             // An input from the user to a function, should be a proxy they have previously been</span>
+<span id="L988"><span class="lineNum">     988</span>              :             // handed by a wrapping api. Needs unwrapping before returning to hand into main</span>
+<span id="L989"><span class="lineNum">     989</span>              :             // slang api.</span>
+<span id="L990"><span class="lineNum">     990</span>              : </span>
+<span id="L991"><span class="lineNum">     991</span>              :             // Handle null</span>
+<span id="L992"><span class="lineNum">     992</span> <span class="tlaGNC">           1 :             if (obj == nullptr)</span></span>
+<span id="L993"><span class="lineNum">     993</span>              :             {</span>
+<span id="L994"><span class="lineNum">     994</span> <span class="tlaUNC">           0 :                 uint64_t handle = kNullHandle;</span></span>
+<span id="L995"><span class="lineNum">     995</span> <span class="tlaUNC">           0 :                 recordHandle(flags, handle);</span></span>
+<span id="L996"><span class="lineNum">     996</span> <span class="tlaUNC">           0 :                 return;</span></span>
+<span id="L997"><span class="lineNum">     997</span>              :             }</span>
+<span id="L998"><span class="lineNum">     998</span>              : </span>
+<span id="L999"><span class="lineNum">     999</span>              :             // Normal case: look up handle for tracked object</span>
+<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">           1 :             uint64_t handle = getProxyHandle(obj);</span></span>
+<span id="L1001"><span class="lineNum">    1001</span> <span class="tlaGNC">           1 :             recordHandle(flags, handle);</span></span>
+<span id="L1002"><span class="lineNum">    1002</span>              : </span>
+<span id="L1003"><span class="lineNum">    1003</span>              :             // Unwrap the proxy to get the underlying implementation</span>
+<span id="L1004"><span class="lineNum">    1004</span> <span class="tlaGNC">           1 :             obj = unwrapObject(obj);</span></span>
+<span id="L1005"><span class="lineNum">    1005</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaGNC">           1 :         else if (isOutput)</span></span>
+<span id="L1007"><span class="lineNum">    1007</span>              :         {</span>
+<span id="L1008"><span class="lineNum">    1008</span>              :             // An output from a slang api to be handed back to user. Should be an implementation</span>
+<span id="L1009"><span class="lineNum">    1009</span>              :             // that needs to be wrapped (or the existing wrapped object needs retrieving) and</span>
+<span id="L1010"><span class="lineNum">    1010</span>              :             // returned.</span>
+<span id="L1011"><span class="lineNum">    1011</span>              : </span>
+<span id="L1012"><span class="lineNum">    1012</span>              :             // Wrap the implementation in a proxy</span>
+<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">           1 :             obj = wrapObject(obj);</span></span>
+<span id="L1014"><span class="lineNum">    1014</span>              : </span>
+<span id="L1015"><span class="lineNum">    1015</span>              :             // Output: register object and record handle</span>
+<span id="L1016"><span class="lineNum">    1016</span> <span class="tlaGNC">           1 :             uint64_t handle = getProxyHandle(obj);</span></span>
+<span id="L1017"><span class="lineNum">    1017</span> <span class="tlaGNC">           1 :             recordHandle(flags, handle);</span></span>
+<span id="L1018"><span class="lineNum">    1018</span>              :         }</span>
+<span id="L1019"><span class="lineNum">    1019</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1020"><span class="lineNum">    1020</span>              :     else</span>
+<span id="L1021"><span class="lineNum">    1021</span>              :     {</span>
+<span id="L1022"><span class="lineNum">    1022</span>              :         // Playback mode</span>
+<span id="L1023"><span class="lineNum">    1023</span> <span class="tlaGNC">           1 :         if (isInput)</span></span>
 <span id="L1024"><span class="lineNum">    1024</span>              :         {</span>
-<span id="L1025"><span class="lineNum">    1025</span>              :             // An output from a slang api to be handed back to user. Should be an implementation</span>
-<span id="L1026"><span class="lineNum">    1026</span>              :             // that needs to be wrapped (or the existing wrapped object needs retrieving) and</span>
-<span id="L1027"><span class="lineNum">    1027</span>              :             // returned.</span>
+<span id="L1025"><span class="lineNum">    1025</span>              :             // An input from the user to a function, should be a proxy they have previously been</span>
+<span id="L1026"><span class="lineNum">    1026</span>              :             // handed by a wrapping api. Needs unwrapping before returning to hand into main</span>
+<span id="L1027"><span class="lineNum">    1027</span>              :             // slang api.</span>
 <span id="L1028"><span class="lineNum">    1028</span>              : </span>
-<span id="L1029"><span class="lineNum">    1029</span>              :             // Wrap the implementation in a proxy</span>
-<span id="L1030"><span class="lineNum">    1030</span> <span class="tlaGNC">           1 :             obj = wrapObject(obj);</span></span>
-<span id="L1031"><span class="lineNum">    1031</span>              : </span>
-<span id="L1032"><span class="lineNum">    1032</span>              :             // Output: register object and record handle</span>
-<span id="L1033"><span class="lineNum">    1033</span> <span class="tlaGNC">           1 :             uint64_t handle = getProxyHandle(obj);</span></span>
-<span id="L1034"><span class="lineNum">    1034</span> <span class="tlaGNC">           1 :             recordHandle(flags, handle);</span></span>
-<span id="L1035"><span class="lineNum">    1035</span>              : </span>
-<span id="L1036"><span class="lineNum">    1036</span>              :             // The wrapped proxy&#x27;s owning reference flows back into a discarded</span>
-<span id="L1037"><span class="lineNum">    1037</span>              :             // output temporary (callWithDefaults passes null outputs on replay),</span>
-<span id="L1038"><span class="lineNum">    1038</span>              :             // so nothing releases it. Remember it so playback teardown can</span>
-<span id="L1039"><span class="lineNum">    1039</span>              :             // release the reference if the recorded release stream did not</span>
-<span id="L1040"><span class="lineNum">    1040</span>              :             // already balance it (issue #11936).</span>
-<span id="L1041"><span class="lineNum">    1041</span> <span class="tlaGNC">           1 :             notePlaybackOrphanedProxy(toSlangUnknown(obj));</span></span>
-<span id="L1042"><span class="lineNum">    1042</span>              :         }</span>
-<span id="L1043"><span class="lineNum">    1043</span>              :     }</span>
-<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1045"><span class="lineNum">    1045</span>              : </span>
-<span id="L1046"><span class="lineNum">    1046</span>              : } // namespace SlangRecord</span>
+<span id="L1029"><span class="lineNum">    1029</span>              :             // Read handle</span>
+<span id="L1030"><span class="lineNum">    1030</span> <span class="tlaGNC">           1 :             uint64_t handle = kNullHandle;</span></span>
+<span id="L1031"><span class="lineNum">    1031</span> <span class="tlaGNC">           1 :             recordHandle(flags, handle);</span></span>
+<span id="L1032"><span class="lineNum">    1032</span>              : </span>
+<span id="L1033"><span class="lineNum">    1033</span> <span class="tlaGNC">           1 :             if (handle == kNullHandle)</span></span>
+<span id="L1034"><span class="lineNum">    1034</span>              :             {</span>
+<span id="L1035"><span class="lineNum">    1035</span>              :                 obj = nullptr;</span>
+<span id="L1036"><span class="lineNum">    1036</span>              :             }</span>
+<span id="L1037"><span class="lineNum">    1037</span>              :             else</span>
+<span id="L1038"><span class="lineNum">    1038</span>              :             {</span>
+<span id="L1039"><span class="lineNum">    1039</span> <span class="tlaGNC">           1 :                 ISlangUnknown* proxy = getProxy(handle);</span></span>
+<span id="L1040"><span class="lineNum">    1040</span> <span class="tlaGNC">           1 :                 obj = proxy ? toSlangInterface&lt;T&gt;(proxy) : nullptr;</span></span>
+<span id="L1041"><span class="lineNum">    1041</span>              :             }</span>
+<span id="L1042"><span class="lineNum">    1042</span>              : </span>
+<span id="L1043"><span class="lineNum">    1043</span>              :             // Unwrap the proxy to get the underlying implementation</span>
+<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">           1 :             obj = unwrapObject(obj);</span></span>
+<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L1046"><span class="lineNum">    1046</span> <span class="tlaGNC">           1 :         else if (isOutput)</span></span>
+<span id="L1047"><span class="lineNum">    1047</span>              :         {</span>
+<span id="L1048"><span class="lineNum">    1048</span>              :             // An output from a slang api to be handed back to user. Should be an implementation</span>
+<span id="L1049"><span class="lineNum">    1049</span>              :             // that needs to be wrapped (or the existing wrapped object needs retrieving) and</span>
+<span id="L1050"><span class="lineNum">    1050</span>              :             // returned.</span>
+<span id="L1051"><span class="lineNum">    1051</span>              : </span>
+<span id="L1052"><span class="lineNum">    1052</span>              :             // Wrap the implementation in a proxy</span>
+<span id="L1053"><span class="lineNum">    1053</span> <span class="tlaGNC">           1 :             obj = wrapObject(obj);</span></span>
+<span id="L1054"><span class="lineNum">    1054</span>              : </span>
+<span id="L1055"><span class="lineNum">    1055</span>              :             // Output: register object and record handle</span>
+<span id="L1056"><span class="lineNum">    1056</span> <span class="tlaGNC">           1 :             uint64_t handle = getProxyHandle(obj);</span></span>
+<span id="L1057"><span class="lineNum">    1057</span> <span class="tlaGNC">           1 :             recordHandle(flags, handle);</span></span>
+<span id="L1058"><span class="lineNum">    1058</span>              : </span>
+<span id="L1059"><span class="lineNum">    1059</span>              :             // The wrapped proxy&#x27;s owning reference flows back into a discarded</span>
+<span id="L1060"><span class="lineNum">    1060</span>              :             // output temporary (callWithDefaults passes null outputs on replay),</span>
+<span id="L1061"><span class="lineNum">    1061</span>              :             // so nothing releases it. Remember it so playback teardown can</span>
+<span id="L1062"><span class="lineNum">    1062</span>              :             // release the reference if the recorded release stream did not</span>
+<span id="L1063"><span class="lineNum">    1063</span>              :             // already balance it (issue #11936).</span>
+<span id="L1064"><span class="lineNum">    1064</span> <span class="tlaGNC">           1 :             notePlaybackOrphanedProxy(toSlangUnknown(obj));</span></span>
+<span id="L1065"><span class="lineNum">    1065</span>              :         }</span>
+<span id="L1066"><span class="lineNum">    1066</span>              :     }</span>
+<span id="L1067"><span class="lineNum">    1067</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1068"><span class="lineNum">    1068</span>              : </span>
+<span id="L1069"><span class="lineNum">    1069</span>              : } // namespace SlangRecord</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
