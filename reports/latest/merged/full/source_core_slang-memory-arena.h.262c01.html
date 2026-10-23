@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-22 03:58:35 UTC</td>
+      <td class="headerValue">2026-10-23 04:32:54 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -449,7 +449,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L158"><span class="lineNum">     158</span>                         :     /// Get the current allocation cursor (memory address where subsequent allocations will be</span>
 <span id="L159"><span class="lineNum">     159</span>                         :     /// placed if space within the current block) The address of an allocated block can be used as a</span>
 <span id="L160"><span class="lineNum">     160</span>                         :     /// cursor to rewind to, such that it and all subsequent allocations will be deallocated</span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">   269553863            :     void* getCursor() const { return m_current; }</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">   272438914            :     void* getCursor() const { return m_current; }</span></span>
 <span id="L162"><span class="lineNum">     162</span>                         :     /// Rewind (and effectively deallocate) all allocations *after* the cursor</span>
 <span id="L163"><span class="lineNum">     163</span>                         :     void rewindToCursor(const void* cursor);</span>
 <span id="L164"><span class="lineNum">     164</span>                         : </span>
@@ -546,74 +546,74 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L255"><span class="lineNum">     255</span>                         : </span>
 <span id="L256"><span class="lineNum">     256</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L257"><span class="lineNum">     257</span>                         : SLANG_FORCE_INLINE void* MemoryArena::allocateUnaligned(size_t sizeInBytes)</span>
-<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">     7735736            : {</span></span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">     7735736            :     SLANG_ASSERT(sizeInBytes &gt; 0);</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">     7756380            : {</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">     7756380            :     SLANG_ASSERT(sizeInBytes &gt; 0);</span></span>
 <span id="L260"><span class="lineNum">     260</span>                         : </span>
-<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">     7735736 <span class="branchAll" title="br0: 22261; br1: 7713475">(2/2)</span>      :     if (!m_current)</span></span>
-<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       22261            :     {</span></span>
-<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">       22261            :         return _allocateAlignedFromNewBlock(sizeInBytes, kMinAlignment);</span></span>
-<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">       22261            :     }</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">     7756380 <span class="branchAll" title="br0: 22400; br1: 7733980">(2/2)</span>      :     if (!m_current)</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       22400            :     {</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">       22400            :         return _allocateAlignedFromNewBlock(sizeInBytes, kMinAlignment);</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">       22400            :     }</span></span>
 <span id="L265"><span class="lineNum">     265</span>                         : </span>
 <span id="L266"><span class="lineNum">     266</span>                         :     // Align with the minimum alignment</span>
-<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">     7713475            :     uint8_t* mem = m_current;</span></span>
-<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">     7713475            :     uint8_t* end = mem + sizeInBytes;</span></span>
-<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">     7713475 <span class="branchAll" title="br0: 7626300; br1: 88171">(2/2)</span>      :     if (end &lt;= m_end)</span></span>
-<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">     7626300            :     {</span></span>
-<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">     7626300            :         m_current = end;</span></span>
-<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">     7626300            :         return mem;</span></span>
-<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">     7626300            :     }</span></span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">       88171            :     else</span></span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">       88171            :     {</span></span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">       88171            :         return _allocateAlignedFromNewBlock(sizeInBytes, kMinAlignment);</span></span>
-<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       88171            :     }</span></span>
-<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">     7713475            : }</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">     7733980            :     uint8_t* mem = m_current;</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">     7733980            :     uint8_t* end = mem + sizeInBytes;</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">     7733980 <span class="branchAll" title="br0: 7646480; br1: 88554">(2/2)</span>      :     if (end &lt;= m_end)</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">     7646480            :     {</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">     7646480            :         m_current = end;</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">     7646480            :         return mem;</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">     7646480            :     }</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">       88554            :     else</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">       88554            :     {</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">       88554            :         return _allocateAlignedFromNewBlock(sizeInBytes, kMinAlignment);</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       88554            :     }</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">     7733980            : }</span></span>
 <span id="L279"><span class="lineNum">     279</span>                         : </span>
 <span id="L280"><span class="lineNum">     280</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L281"><span class="lineNum">     281</span>                         : SLANG_FORCE_INLINE void* MemoryArena::allocateCurrentUnaligned(size_t sizeInBytes)</span>
-<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">    11991777            : {</span></span>
-<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">    11991777 <span class="branchPart" title="br0: 0; br1: 11991777">(1/2)</span>      :     if (!m_current)</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">    11995398            : {</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">    11995398 <span class="branchPart" title="br0: 0; br1: 11995398">(1/2)</span>      :     if (!m_current)</span></span>
 <span id="L284"><span class="lineNum">     284</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L285"><span class="lineNum">     285</span> <span class="tlaUNC">           0            :         return nullptr;</span></span>
 <span id="L286"><span class="lineNum">     286</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L287"><span class="lineNum">     287</span>                         : </span>
 <span id="L288"><span class="lineNum">     288</span>                         :     // Align with the minimum alignment</span>
-<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">    11991777            :     uint8_t* mem = m_current;</span></span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">    11991777            :     uint8_t* end = mem + sizeInBytes;</span></span>
-<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">    11991777 <span class="branchAll" title="br0: 11982599; br1: 9182">(2/2)</span>      :     if (end &lt;= m_end)</span></span>
-<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">    11982599            :     {</span></span>
-<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">    11982599            :         m_current = end;</span></span>
-<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">    11982599            :         return mem;</span></span>
-<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">    11982599            :     }</span></span>
-<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">        9182            :     else</span></span>
-<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">        9182            :     {</span></span>
-<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">        9182            :         return nullptr;</span></span>
-<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">        9182            :     }</span></span>
-<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">    11991777            : }</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">    11995398            :     uint8_t* mem = m_current;</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">    11995398            :     uint8_t* end = mem + sizeInBytes;</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">    11995398 <span class="branchAll" title="br0: 11986204; br1: 9204">(2/2)</span>      :     if (end &lt;= m_end)</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">    11986204            :     {</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">    11986204            :         m_current = end;</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">    11986204            :         return mem;</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">    11986204            :     }</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">        9204            :     else</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">        9204            :     {</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">        9204            :         return nullptr;</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">        9204            :     }</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">    11995398            : }</span></span>
 <span id="L301"><span class="lineNum">     301</span>                         : </span>
 <span id="L302"><span class="lineNum">     302</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L303"><span class="lineNum">     303</span>                         : SLANG_FORCE_INLINE void* MemoryArena::allocate(size_t sizeInBytes)</span>
-<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">   186976533            : {</span></span>
-<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">   186976533            :     SLANG_ASSERT(sizeInBytes &gt; 0);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">   188117514            : {</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">   188117514            :     SLANG_ASSERT(sizeInBytes &gt; 0);</span></span>
 <span id="L306"><span class="lineNum">     306</span>                         : </span>
-<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">   186976533 <span class="branchAll" title="br0: 33728; br1: 186942805">(2/2)</span>      :     if (!m_current)</span></span>
-<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">       33728            :     {</span></span>
-<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">       33728            :         return _allocateAlignedFromNewBlock(sizeInBytes, kMinAlignment);</span></span>
-<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">       33728            :     }</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">   188117514 <span class="branchAll" title="br0: 33907; br1: 188083607">(2/2)</span>      :     if (!m_current)</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">       33907            :     {</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">       33907            :         return _allocateAlignedFromNewBlock(sizeInBytes, kMinAlignment);</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">       33907            :     }</span></span>
 <span id="L311"><span class="lineNum">     311</span>                         : </span>
 <span id="L312"><span class="lineNum">     312</span>                         :     // Align with the minimum alignment</span>
-<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">   186942805            :     const size_t alignMask = kMinAlignment - 1;</span></span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">   186942805            :     uint8_t* mem = (uint8_t*)((size_t(m_current) + alignMask) &amp; ~alignMask);</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">   188083607            :     const size_t alignMask = kMinAlignment - 1;</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">   188083607            :     uint8_t* mem = (uint8_t*)((size_t(m_current) + alignMask) &amp; ~alignMask);</span></span>
 <span id="L315"><span class="lineNum">     315</span>                         : </span>
-<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">   186942805 <span class="branchAll" title="br0: 186570716; br1: 372089">(2/2)</span>      :     if (mem + sizeInBytes &lt;= m_end)</span></span>
-<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">   186570716            :     {</span></span>
-<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">   186570716            :         m_current = mem + sizeInBytes;</span></span>
-<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">   186570716            :         return mem;</span></span>
-<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">   186570716            :     }</span></span>
-<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">      372089            :     else</span></span>
-<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">      372089            :     {</span></span>
-<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">      372089            :         return _allocateAlignedFromNewBlock(sizeInBytes, kMinAlignment);</span></span>
-<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">      372089            :     }</span></span>
-<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">   186942805            : }</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">   188083607 <span class="branchAll" title="br0: 187711205; br1: 372402">(2/2)</span>      :     if (mem + sizeInBytes &lt;= m_end)</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">   187711205            :     {</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">   187711205            :         m_current = mem + sizeInBytes;</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">   187711205            :         return mem;</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">   187711205            :     }</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">      372402            :     else</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">      372402            :     {</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">      372402            :         return _allocateAlignedFromNewBlock(sizeInBytes, kMinAlignment);</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">      372402            :     }</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">   188083607            : }</span></span>
 <span id="L326"><span class="lineNum">     326</span>                         : </span>
 <span id="L327"><span class="lineNum">     327</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L328"><span class="lineNum">     328</span>                         : SLANG_FORCE_INLINE void* MemoryArena::allocateAndZero(size_t sizeInBytes)</span>
@@ -645,30 +645,30 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L354"><span class="lineNum">     354</span>                         : </span>
 <span id="L355"><span class="lineNum">     355</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L356"><span class="lineNum">     356</span>                         : SLANG_FORCE_INLINE void* MemoryArena::allocateAligned(size_t sizeInBytes, size_t alignment)</span>
-<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">     1317681            : {</span></span>
-<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">     1317681            :     SLANG_ASSERT(sizeInBytes &gt; 0);</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">     1322021            : {</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">     1322021            :     SLANG_ASSERT(sizeInBytes &gt; 0);</span></span>
 <span id="L359"><span class="lineNum">     359</span>                         :     // Alignment must be a power of 2</span>
-<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">     1317681            :     SLANG_ASSERT(((alignment - 1) &amp; alignment) == 0);</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">     1322021            :     SLANG_ASSERT(((alignment - 1) &amp; alignment) == 0);</span></span>
 <span id="L361"><span class="lineNum">     361</span>                         : </span>
-<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">     1317681 <span class="branchAll" title="br0: 1137; br1: 1316544">(2/2)</span>      :     if (!m_current)</span></span>
-<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">        1137            :     {</span></span>
-<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">        1137            :         return _allocateAlignedFromNewBlock(sizeInBytes, alignment);</span></span>
-<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">        1137            :     }</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">     1322021 <span class="branchAll" title="br0: 1169; br1: 1320852">(2/2)</span>      :     if (!m_current)</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">        1169            :     {</span></span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">        1169            :         return _allocateAlignedFromNewBlock(sizeInBytes, alignment);</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">        1169            :     }</span></span>
 <span id="L366"><span class="lineNum">     366</span>                         : </span>
 <span id="L367"><span class="lineNum">     367</span>                         :     // Align the pointer</span>
-<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">     1316544            :     const size_t alignMask = alignment - 1;</span></span>
-<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">     1316544            :     uint8_t* memory = (uint8_t*)((size_t(m_current) + alignMask) &amp; ~alignMask);</span></span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">     1320852            :     const size_t alignMask = alignment - 1;</span></span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">     1320852            :     uint8_t* memory = (uint8_t*)((size_t(m_current) + alignMask) &amp; ~alignMask);</span></span>
 <span id="L370"><span class="lineNum">     370</span>                         : </span>
-<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">     1316544 <span class="branchAll" title="br0: 1302865; br1: 13679">(2/2)</span>      :     if (memory + sizeInBytes &lt;= m_end)</span></span>
-<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">     1302865            :     {</span></span>
-<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">     1302865            :         m_current = memory + sizeInBytes;</span></span>
-<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">     1302865            :         return memory;</span></span>
-<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">     1302865            :     }</span></span>
-<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">       13679            :     else</span></span>
-<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">       13679            :     {</span></span>
-<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">       13679            :         return _allocateAlignedFromNewBlock(sizeInBytes, alignment);</span></span>
-<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">       13679            :     }</span></span>
-<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">     1316544            : }</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">     1320852 <span class="branchAll" title="br0: 1307136; br1: 13716">(2/2)</span>      :     if (memory + sizeInBytes &lt;= m_end)</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">     1307136            :     {</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">     1307136            :         m_current = memory + sizeInBytes;</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">     1307136            :         return memory;</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">     1307136            :     }</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">       13716            :     else</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">       13716            :     {</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">       13716            :         return _allocateAlignedFromNewBlock(sizeInBytes, alignment);</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">       13716            :     }</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">     1320852            : }</span></span>
 <span id="L381"><span class="lineNum">     381</span>                         : </span>
 <span id="L382"><span class="lineNum">     382</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L383"><span class="lineNum">     383</span>                         : SLANG_FORCE_INLINE const char* MemoryArena::allocateString(const char* str)</span>
@@ -685,18 +685,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L394"><span class="lineNum">     394</span>                         : </span>
 <span id="L395"><span class="lineNum">     395</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L396"><span class="lineNum">     396</span>                         : inline const char* MemoryArena::allocateString(const char* chars, size_t numChars)</span>
-<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">     3092333            : {</span></span>
-<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">     3092333 <span class="branchAll" title="br0: 2728; br1: 3089605">(2/2)</span>      :     if (numChars == 0)</span></span>
-<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">        2728            :     {</span></span>
-<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">        2728            :         return &quot;&quot;;</span></span>
-<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">        2728            :     }</span></span>
-<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">     3089605            :     char* dst = (char*)allocateUnaligned(numChars + 1);</span></span>
-<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">     3089605            :     ::memcpy(dst, chars, numChars);</span></span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">     3113386            : {</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">     3113386 <span class="branchAll" title="br0: 2757; br1: 3110629">(2/2)</span>      :     if (numChars == 0)</span></span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">        2757            :     {</span></span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">        2757            :         return &quot;&quot;;</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">        2757            :     }</span></span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">     3110629            :     char* dst = (char*)allocateUnaligned(numChars + 1);</span></span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">     3110629            :     ::memcpy(dst, chars, numChars);</span></span>
 <span id="L404"><span class="lineNum">     404</span>                         : </span>
 <span id="L405"><span class="lineNum">     405</span>                         :     // Add null-terminating zero</span>
-<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">     3089605            :     dst[numChars] = 0;</span></span>
-<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">     3089605            :     return dst;</span></span>
-<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">     3092333            : }</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">     3110629            :     dst[numChars] = 0;</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">     3110629            :     return dst;</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">     3113386            : }</span></span>
 <span id="L409"><span class="lineNum">     409</span>                         : </span>
 <span id="L410"><span class="lineNum">     410</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L411"><span class="lineNum">     411</span>                         : template&lt;typename T&gt;</span>
@@ -710,15 +710,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L419"><span class="lineNum">     419</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L420"><span class="lineNum">     420</span>                         : template&lt;typename T&gt;</span>
 <span id="L421"><span class="lineNum">     421</span>                         : SLANG_FORCE_INLINE T* MemoryArena::allocateArray(size_t numElems)</span>
-<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">          60            : {</span></span>
-<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">          60 <span class="branchPart" title="br0: 0; br1: 60">(1/2)</span>      :     if (numElems == 0)</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">          61            : {</span></span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">          61 <span class="branchPart" title="br0: 0; br1: 61">(1/2)</span>      :     if (numElems == 0)</span></span>
 <span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">           1            :         return nullptr;</span></span>
 <span id="L425"><span class="lineNum">     425</span>                         :     // Guard against sizeof(T) * numElems overflowing size_t, which would otherwise turn an</span>
 <span id="L426"><span class="lineNum">     426</span>                         :     // attacker-controlled element count (e.g. from deserialized data) into an undersized</span>
 <span id="L427"><span class="lineNum">     427</span>                         :     // allocation that callers then write numElems elements into.</span>
-<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">          60 <span class="branchPart" title="br0: 0; br1: 120">(1/2)</span>      :     SLANG_RELEASE_ASSERT(numElems &lt;= std::numeric_limits&lt;size_t&gt;::max() / sizeof(T));</span></span>
-<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">          60            :     return reinterpret_cast&lt;T*&gt;(allocateAligned(sizeof(T) * numElems, alignof(T)));</span></span>
-<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">          60            : }</span></span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">          61 <span class="branchPart" title="br0: 0; br1: 122">(1/2)</span>      :     SLANG_RELEASE_ASSERT(numElems &lt;= std::numeric_limits&lt;size_t&gt;::max() / sizeof(T));</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">          61            :     return reinterpret_cast&lt;T*&gt;(allocateAligned(sizeof(T) * numElems, alignof(T)));</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">          61            : }</span></span>
 <span id="L431"><span class="lineNum">     431</span>                         : </span>
 <span id="L432"><span class="lineNum">     432</span>                         : // --------------------------------------------------------------------------</span>
 <span id="L433"><span class="lineNum">     433</span>                         : template&lt;typename T&gt;</span>
@@ -788,9 +788,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L497"><span class="lineNum">     497</span>                         : } // namespace Slang</span>
 <span id="L498"><span class="lineNum">     498</span>                         : </span>
 <span id="L499"><span class="lineNum">     499</span>                         : SLANG_FORCE_INLINE void* operator new(size_t size, Slang::MemoryArena&amp; arena)</span>
-<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">    35815834            : {</span></span>
-<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">    35815834            :     return arena.allocate(size);</span></span>
-<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">    35815834            : }</span></span>
+<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">    35913394            : {</span></span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">    35913394            :     return arena.allocate(size);</span></span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">    35913394            : }</span></span>
 <span id="L503"><span class="lineNum">     503</span>                         : </span>
 <span id="L504"><span class="lineNum">     504</span>                         : SLANG_FORCE_INLINE void operator delete(void* memory, Slang::MemoryArena&amp; arena)</span>
 <span id="L505"><span class="lineNum">     505</span> <span class="tlaUNC">           0            : {</span></span>

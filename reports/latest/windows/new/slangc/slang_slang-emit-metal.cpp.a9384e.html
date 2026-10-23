@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-22 03:59:17 UTC</td>
+      <td class="headerValue">2026-10-23 04:33:24 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -1708,488 +1708,490 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1435"><span class="lineNum">    1435</span>              :     case kIROp_BorrowInParamType:</span>
 <span id="L1436"><span class="lineNum">    1436</span>              :         {</span>
 <span id="L1437"><span class="lineNum">    1437</span> <span class="tlaGNC">           1 :             auto ptrType = cast&lt;IRPtrTypeBase&gt;(type);</span></span>
-<span id="L1438"><span class="lineNum">    1438</span> <span class="tlaGNC">           1 :             if (type-&gt;getOp() == kIROp_BorrowInParamType)</span></span>
-<span id="L1439"><span class="lineNum">    1439</span>              :             {</span>
-<span id="L1440"><span class="lineNum">    1440</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot;const &quot;);</span></span>
-<span id="L1441"><span class="lineNum">    1441</span>              :             }</span>
-<span id="L1442"><span class="lineNum">    1442</span> <span class="tlaGNC">           1 :             emitType((IRType*)ptrType-&gt;getValueType());</span></span>
-<span id="L1443"><span class="lineNum">    1443</span> <span class="tlaGNC">           1 :             switch (ptrType-&gt;getAddressSpace())</span></span>
-<span id="L1444"><span class="lineNum">    1444</span>              :             {</span>
-<span id="L1445"><span class="lineNum">    1445</span>              :             case AddressSpace::Global:</span>
-<span id="L1446"><span class="lineNum">    1446</span>              :             case AddressSpace::UserPointer:</span>
-<span id="L1447"><span class="lineNum">    1447</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; device&quot;);</span></span>
-<span id="L1448"><span class="lineNum">    1448</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
-<span id="L1449"><span class="lineNum">    1449</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L1450"><span class="lineNum">    1450</span>              :             case AddressSpace::Uniform:</span>
-<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; constant&quot;);</span></span>
-<span id="L1452"><span class="lineNum">    1452</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
-<span id="L1453"><span class="lineNum">    1453</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L1454"><span class="lineNum">    1454</span>              :             case AddressSpace::ThreadLocal:</span>
-<span id="L1455"><span class="lineNum">    1455</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; thread&quot;);</span></span>
-<span id="L1456"><span class="lineNum">    1456</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
-<span id="L1457"><span class="lineNum">    1457</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L1458"><span class="lineNum">    1458</span>              :             case AddressSpace::GroupShared:</span>
-<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; threadgroup&quot;);</span></span>
-<span id="L1460"><span class="lineNum">    1460</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
-<span id="L1461"><span class="lineNum">    1461</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L1462"><span class="lineNum">    1462</span>              :             case AddressSpace::MetalObjectData:</span>
-<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; object_data&quot;);</span></span>
-<span id="L1464"><span class="lineNum">    1464</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
-<span id="L1465"><span class="lineNum">    1465</span>              :                 break;</span>
-<span id="L1466"><span class="lineNum">    1466</span>              :             default:</span>
-<span id="L1467"><span class="lineNum">    1467</span> <span class="tlaUNC">           0 :                 SLANG_UNEXPECTED(&quot;Unknown addressspace encountered.&quot;);</span></span>
-<span id="L1468"><span class="lineNum">    1468</span>              :                 break;</span>
-<span id="L1469"><span class="lineNum">    1469</span>              :             }</span>
-<span id="L1470"><span class="lineNum">    1470</span> <span class="tlaGNC">           1 :             return;</span></span>
-<span id="L1471"><span class="lineNum">    1471</span>              :         }</span>
-<span id="L1472"><span class="lineNum">    1472</span>              :     case kIROp_ArrayType:</span>
-<span id="L1473"><span class="lineNum">    1473</span>              :         {</span>
-<span id="L1474"><span class="lineNum">    1474</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;array&lt;&quot;);</span></span>
-<span id="L1475"><span class="lineNum">    1475</span> <span class="tlaGNC">           1 :             emitType((IRType*)type-&gt;getOperand(0));</span></span>
-<span id="L1476"><span class="lineNum">    1476</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1477"><span class="lineNum">    1477</span> <span class="tlaGNC">           1 :             emitVal(type-&gt;getOperand(1), getInfo(EmitOp::General));</span></span>
-<span id="L1478"><span class="lineNum">    1478</span>              :             m_writer-&gt;emit(&quot;&gt;&quot;);</span>
-<span id="L1479"><span class="lineNum">    1479</span>              :             return;</span>
-<span id="L1480"><span class="lineNum">    1480</span>              :         }</span>
-<span id="L1481"><span class="lineNum">    1481</span>              :     case kIROp_MetalMeshGridPropertiesType:</span>
-<span id="L1482"><span class="lineNum">    1482</span>              :         {</span>
-<span id="L1483"><span class="lineNum">    1483</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;mesh_grid_properties &quot;);</span></span>
-<span id="L1484"><span class="lineNum">    1484</span> <span class="tlaGNC">           1 :             return;</span></span>
-<span id="L1485"><span class="lineNum">    1485</span>              :         }</span>
-<span id="L1486"><span class="lineNum">    1486</span>              :     case kIROp_AtomicType:</span>
-<span id="L1487"><span class="lineNum">    1487</span>              :         {</span>
-<span id="L1488"><span class="lineNum">    1488</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;atomic&lt;&quot;);</span></span>
-<span id="L1489"><span class="lineNum">    1489</span> <span class="tlaGNC">           1 :             emitSimpleTypeImpl(cast&lt;IRAtomicType&gt;(type)-&gt;getElementType());</span></span>
-<span id="L1490"><span class="lineNum">    1490</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;&gt;&quot;);</span></span>
-<span id="L1491"><span class="lineNum">    1491</span> <span class="tlaGNC">           1 :             return;</span></span>
-<span id="L1492"><span class="lineNum">    1492</span>              :         }</span>
-<span id="L1493"><span class="lineNum">    1493</span>              :     case kIROp_CoopMatrixType:</span>
-<span id="L1494"><span class="lineNum">    1494</span>              :         {</span>
-<span id="L1495"><span class="lineNum">    1495</span> <span class="tlaGNC">           1 :             auto coopType = as&lt;IRCoopMatrixType&gt;(type);</span></span>
-<span id="L1496"><span class="lineNum">    1496</span> <span class="tlaGNC">           1 :             _validateCoopMatrixType(coopType);</span></span>
-<span id="L1497"><span class="lineNum">    1497</span>              :             // Metal&#x27;s simdgroup_matrix&lt;T, Cols, Rows&gt; uses Cols, Rows order</span>
-<span id="L1498"><span class="lineNum">    1498</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;simdgroup_matrix&lt;&quot;);</span></span>
-<span id="L1499"><span class="lineNum">    1499</span> <span class="tlaGNC">           1 :             emitType(coopType-&gt;getElementType());</span></span>
-<span id="L1500"><span class="lineNum">    1500</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1501"><span class="lineNum">    1501</span> <span class="tlaGNC">           1 :             emitVal(coopType-&gt;getColumnCount(), getInfo(EmitOp::General));</span></span>
+<span id="L1438"><span class="lineNum">    1438</span> <span class="tlaGNC">           1 :             if (type-&gt;getOp() == kIROp_BorrowInParamType ||</span></span>
+<span id="L1439"><span class="lineNum">    1439</span>              :                 (type-&gt;getOp() == kIROp_RefParamType &amp;&amp;</span>
+<span id="L1440"><span class="lineNum">    1440</span>              :                  ptrType-&gt;getAccessQualifier() == AccessQualifier::Read))</span>
+<span id="L1441"><span class="lineNum">    1441</span>              :             {</span>
+<span id="L1442"><span class="lineNum">    1442</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot;const &quot;);</span></span>
+<span id="L1443"><span class="lineNum">    1443</span>              :             }</span>
+<span id="L1444"><span class="lineNum">    1444</span> <span class="tlaGNC">           1 :             emitType((IRType*)ptrType-&gt;getValueType());</span></span>
+<span id="L1445"><span class="lineNum">    1445</span> <span class="tlaGNC">           1 :             switch (ptrType-&gt;getAddressSpace())</span></span>
+<span id="L1446"><span class="lineNum">    1446</span>              :             {</span>
+<span id="L1447"><span class="lineNum">    1447</span>              :             case AddressSpace::Global:</span>
+<span id="L1448"><span class="lineNum">    1448</span>              :             case AddressSpace::UserPointer:</span>
+<span id="L1449"><span class="lineNum">    1449</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; device&quot;);</span></span>
+<span id="L1450"><span class="lineNum">    1450</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
+<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L1452"><span class="lineNum">    1452</span>              :             case AddressSpace::Uniform:</span>
+<span id="L1453"><span class="lineNum">    1453</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; constant&quot;);</span></span>
+<span id="L1454"><span class="lineNum">    1454</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
+<span id="L1455"><span class="lineNum">    1455</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L1456"><span class="lineNum">    1456</span>              :             case AddressSpace::ThreadLocal:</span>
+<span id="L1457"><span class="lineNum">    1457</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; thread&quot;);</span></span>
+<span id="L1458"><span class="lineNum">    1458</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
+<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L1460"><span class="lineNum">    1460</span>              :             case AddressSpace::GroupShared:</span>
+<span id="L1461"><span class="lineNum">    1461</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; threadgroup&quot;);</span></span>
+<span id="L1462"><span class="lineNum">    1462</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
+<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L1464"><span class="lineNum">    1464</span>              :             case AddressSpace::MetalObjectData:</span>
+<span id="L1465"><span class="lineNum">    1465</span> <span class="tlaGNC">           1 :                 m_writer-&gt;emit(&quot; object_data&quot;);</span></span>
+<span id="L1466"><span class="lineNum">    1466</span>              :                 m_writer-&gt;emit(&quot;*&quot;);</span>
+<span id="L1467"><span class="lineNum">    1467</span>              :                 break;</span>
+<span id="L1468"><span class="lineNum">    1468</span>              :             default:</span>
+<span id="L1469"><span class="lineNum">    1469</span> <span class="tlaUNC">           0 :                 SLANG_UNEXPECTED(&quot;Unknown addressspace encountered.&quot;);</span></span>
+<span id="L1470"><span class="lineNum">    1470</span>              :                 break;</span>
+<span id="L1471"><span class="lineNum">    1471</span>              :             }</span>
+<span id="L1472"><span class="lineNum">    1472</span> <span class="tlaGNC">           1 :             return;</span></span>
+<span id="L1473"><span class="lineNum">    1473</span>              :         }</span>
+<span id="L1474"><span class="lineNum">    1474</span>              :     case kIROp_ArrayType:</span>
+<span id="L1475"><span class="lineNum">    1475</span>              :         {</span>
+<span id="L1476"><span class="lineNum">    1476</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;array&lt;&quot;);</span></span>
+<span id="L1477"><span class="lineNum">    1477</span> <span class="tlaGNC">           1 :             emitType((IRType*)type-&gt;getOperand(0));</span></span>
+<span id="L1478"><span class="lineNum">    1478</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
+<span id="L1479"><span class="lineNum">    1479</span> <span class="tlaGNC">           1 :             emitVal(type-&gt;getOperand(1), getInfo(EmitOp::General));</span></span>
+<span id="L1480"><span class="lineNum">    1480</span>              :             m_writer-&gt;emit(&quot;&gt;&quot;);</span>
+<span id="L1481"><span class="lineNum">    1481</span>              :             return;</span>
+<span id="L1482"><span class="lineNum">    1482</span>              :         }</span>
+<span id="L1483"><span class="lineNum">    1483</span>              :     case kIROp_MetalMeshGridPropertiesType:</span>
+<span id="L1484"><span class="lineNum">    1484</span>              :         {</span>
+<span id="L1485"><span class="lineNum">    1485</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;mesh_grid_properties &quot;);</span></span>
+<span id="L1486"><span class="lineNum">    1486</span> <span class="tlaGNC">           1 :             return;</span></span>
+<span id="L1487"><span class="lineNum">    1487</span>              :         }</span>
+<span id="L1488"><span class="lineNum">    1488</span>              :     case kIROp_AtomicType:</span>
+<span id="L1489"><span class="lineNum">    1489</span>              :         {</span>
+<span id="L1490"><span class="lineNum">    1490</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;atomic&lt;&quot;);</span></span>
+<span id="L1491"><span class="lineNum">    1491</span> <span class="tlaGNC">           1 :             emitSimpleTypeImpl(cast&lt;IRAtomicType&gt;(type)-&gt;getElementType());</span></span>
+<span id="L1492"><span class="lineNum">    1492</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;&gt;&quot;);</span></span>
+<span id="L1493"><span class="lineNum">    1493</span> <span class="tlaGNC">           1 :             return;</span></span>
+<span id="L1494"><span class="lineNum">    1494</span>              :         }</span>
+<span id="L1495"><span class="lineNum">    1495</span>              :     case kIROp_CoopMatrixType:</span>
+<span id="L1496"><span class="lineNum">    1496</span>              :         {</span>
+<span id="L1497"><span class="lineNum">    1497</span> <span class="tlaGNC">           1 :             auto coopType = as&lt;IRCoopMatrixType&gt;(type);</span></span>
+<span id="L1498"><span class="lineNum">    1498</span> <span class="tlaGNC">           1 :             _validateCoopMatrixType(coopType);</span></span>
+<span id="L1499"><span class="lineNum">    1499</span>              :             // Metal&#x27;s simdgroup_matrix&lt;T, Cols, Rows&gt; uses Cols, Rows order</span>
+<span id="L1500"><span class="lineNum">    1500</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;simdgroup_matrix&lt;&quot;);</span></span>
+<span id="L1501"><span class="lineNum">    1501</span> <span class="tlaGNC">           1 :             emitType(coopType-&gt;getElementType());</span></span>
 <span id="L1502"><span class="lineNum">    1502</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1503"><span class="lineNum">    1503</span> <span class="tlaGNC">           1 :             emitVal(coopType-&gt;getRowCount(), getInfo(EmitOp::General));</span></span>
-<span id="L1504"><span class="lineNum">    1504</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;&gt;&quot;);</span></span>
-<span id="L1505"><span class="lineNum">    1505</span> <span class="tlaGNC">           1 :             ensurePrelude(kMetalBuiltinPreludeSimdgroupMatrixOps);</span></span>
-<span id="L1506"><span class="lineNum">    1506</span> <span class="tlaGNC">           1 :             return;</span></span>
-<span id="L1507"><span class="lineNum">    1507</span>              :         }</span>
-<span id="L1508"><span class="lineNum">    1508</span>              :     case kIROp_SubpassInputType:</span>
-<span id="L1509"><span class="lineNum">    1509</span> <span class="tlaUNC">           0 :         SLANG_DIAGNOSE_UNEXPECTED(</span></span>
-<span id="L1510"><span class="lineNum">    1510</span>              :             getSink(),</span>
-<span id="L1511"><span class="lineNum">    1511</span>              :             type,</span>
-<span id="L1512"><span class="lineNum">    1512</span>              :             &quot;SubpassInputType should have been lowered before Metal emission&quot;);</span>
-<span id="L1513"><span class="lineNum">    1513</span> <span class="tlaUNC">           0 :         return;</span></span>
-<span id="L1514"><span class="lineNum">    1514</span>              :     default:</span>
-<span id="L1515"><span class="lineNum">    1515</span>              :         break;</span>
-<span id="L1516"><span class="lineNum">    1516</span>              :     }</span>
-<span id="L1517"><span class="lineNum">    1517</span>              : </span>
-<span id="L1518"><span class="lineNum">    1518</span> <span class="tlaGNC">           1 :     if (auto texType = as&lt;IRTextureType&gt;(type))</span></span>
-<span id="L1519"><span class="lineNum">    1519</span>              :     {</span>
-<span id="L1520"><span class="lineNum">    1520</span>              :         _emitHLSLTextureType(texType);</span>
-<span id="L1521"><span class="lineNum">    1521</span>              :         return;</span>
-<span id="L1522"><span class="lineNum">    1522</span>              :     }</span>
-<span id="L1523"><span class="lineNum">    1523</span> <span class="tlaGNC">           1 :     else if (as&lt;IRTextureBufferType&gt;(type))</span></span>
-<span id="L1524"><span class="lineNum">    1524</span>              :     {</span>
-<span id="L1525"><span class="lineNum">    1525</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;texture_buffer&lt;&quot;);</span></span>
-<span id="L1526"><span class="lineNum">    1526</span> <span class="tlaUNC">           0 :         emitVal(type-&gt;getOperand(0), getInfo(EmitOp::General));</span></span>
-<span id="L1527"><span class="lineNum">    1527</span>              :         m_writer-&gt;emit(&quot;&gt;&quot;);</span>
-<span id="L1528"><span class="lineNum">    1528</span> <span class="tlaUNC">           0 :         return;</span></span>
-<span id="L1529"><span class="lineNum">    1529</span>              :     }</span>
-<span id="L1530"><span class="lineNum">    1530</span> <span class="tlaGNC">           1 :     else if (auto imageType = as&lt;IRGLSLImageType&gt;(type))</span></span>
-<span id="L1531"><span class="lineNum">    1531</span>              :     {</span>
-<span id="L1532"><span class="lineNum">    1532</span>              :         _emitHLSLTextureType(imageType);</span>
-<span id="L1533"><span class="lineNum">    1533</span>              :         return;</span>
-<span id="L1534"><span class="lineNum">    1534</span>              :     }</span>
-<span id="L1535"><span class="lineNum">    1535</span> <span class="tlaGNC">           1 :     else if (auto structuredBufferType = as&lt;IRHLSLStructuredBufferTypeBase&gt;(type))</span></span>
-<span id="L1536"><span class="lineNum">    1536</span>              :     {</span>
-<span id="L1537"><span class="lineNum">    1537</span> <span class="tlaGNC">           1 :         emitType(structuredBufferType-&gt;getElementType());</span></span>
-<span id="L1538"><span class="lineNum">    1538</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; device*&quot;);</span></span>
-<span id="L1539"><span class="lineNum">    1539</span> <span class="tlaGNC">           1 :         return;</span></span>
-<span id="L1540"><span class="lineNum">    1540</span>              :     }</span>
-<span id="L1541"><span class="lineNum">    1541</span> <span class="tlaGNC">           1 :     else if (const auto untypedBufferType = as&lt;IRUntypedBufferResourceType&gt;(type);</span></span>
-<span id="L1542"><span class="lineNum">    1542</span> <span class="tlaGNC">           1 :              untypedBufferType)</span></span>
-<span id="L1543"><span class="lineNum">    1543</span>              :     {</span>
-<span id="L1544"><span class="lineNum">    1544</span> <span class="tlaGNC">           1 :         switch (type-&gt;getOp())</span></span>
-<span id="L1545"><span class="lineNum">    1545</span>              :         {</span>
-<span id="L1546"><span class="lineNum">    1546</span>              :         case kIROp_HLSLByteAddressBufferType:</span>
-<span id="L1547"><span class="lineNum">    1547</span>              :         case kIROp_HLSLRWByteAddressBufferType:</span>
-<span id="L1548"><span class="lineNum">    1548</span>              :         case kIROp_HLSLRasterizerOrderedByteAddressBufferType:</span>
-<span id="L1549"><span class="lineNum">    1549</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;uint32_t device*&quot;);</span></span>
-<span id="L1550"><span class="lineNum">    1550</span>              :             break;</span>
-<span id="L1551"><span class="lineNum">    1551</span>              :         case kIROp_RaytracingAccelerationStructureType:</span>
-<span id="L1552"><span class="lineNum">    1552</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(</span></span>
-<span id="L1553"><span class="lineNum">    1553</span>              :                 &quot;metal::raytracing::acceleration_structure&lt;metal::raytracing::instancing&gt;&quot;);</span>
-<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaGNC">           1 :             break;</span></span>
-<span id="L1555"><span class="lineNum">    1555</span>              :         default:</span>
-<span id="L1556"><span class="lineNum">    1556</span> <span class="tlaUNC">           0 :             SLANG_DIAGNOSE_UNEXPECTED(getSink(), SourceLoc(), &quot;unhandled buffer type&quot;);</span></span>
-<span id="L1557"><span class="lineNum">    1557</span>              :             break;</span>
-<span id="L1558"><span class="lineNum">    1558</span>              :         }</span>
-<span id="L1559"><span class="lineNum">    1559</span> <span class="tlaGNC">           1 :         return;</span></span>
-<span id="L1560"><span class="lineNum">    1560</span>              :     }</span>
-<span id="L1561"><span class="lineNum">    1561</span> <span class="tlaGNC">           1 :     else if (const auto meshType = as&lt;IRMetalMeshType&gt;(type))</span></span>
-<span id="L1562"><span class="lineNum">    1562</span>              :     {</span>
-<span id="L1563"><span class="lineNum">    1563</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;metal::mesh&lt;&quot;);</span></span>
-<span id="L1564"><span class="lineNum">    1564</span> <span class="tlaGNC">           1 :         emitType(meshType-&gt;getVerticesType());</span></span>
-<span id="L1565"><span class="lineNum">    1565</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1566"><span class="lineNum">    1566</span> <span class="tlaGNC">           1 :         emitType(meshType-&gt;getPrimitivesType());</span></span>
+<span id="L1503"><span class="lineNum">    1503</span> <span class="tlaGNC">           1 :             emitVal(coopType-&gt;getColumnCount(), getInfo(EmitOp::General));</span></span>
+<span id="L1504"><span class="lineNum">    1504</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;, &quot;);</span></span>
+<span id="L1505"><span class="lineNum">    1505</span> <span class="tlaGNC">           1 :             emitVal(coopType-&gt;getRowCount(), getInfo(EmitOp::General));</span></span>
+<span id="L1506"><span class="lineNum">    1506</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;&gt;&quot;);</span></span>
+<span id="L1507"><span class="lineNum">    1507</span> <span class="tlaGNC">           1 :             ensurePrelude(kMetalBuiltinPreludeSimdgroupMatrixOps);</span></span>
+<span id="L1508"><span class="lineNum">    1508</span> <span class="tlaGNC">           1 :             return;</span></span>
+<span id="L1509"><span class="lineNum">    1509</span>              :         }</span>
+<span id="L1510"><span class="lineNum">    1510</span>              :     case kIROp_SubpassInputType:</span>
+<span id="L1511"><span class="lineNum">    1511</span> <span class="tlaUNC">           0 :         SLANG_DIAGNOSE_UNEXPECTED(</span></span>
+<span id="L1512"><span class="lineNum">    1512</span>              :             getSink(),</span>
+<span id="L1513"><span class="lineNum">    1513</span>              :             type,</span>
+<span id="L1514"><span class="lineNum">    1514</span>              :             &quot;SubpassInputType should have been lowered before Metal emission&quot;);</span>
+<span id="L1515"><span class="lineNum">    1515</span> <span class="tlaUNC">           0 :         return;</span></span>
+<span id="L1516"><span class="lineNum">    1516</span>              :     default:</span>
+<span id="L1517"><span class="lineNum">    1517</span>              :         break;</span>
+<span id="L1518"><span class="lineNum">    1518</span>              :     }</span>
+<span id="L1519"><span class="lineNum">    1519</span>              : </span>
+<span id="L1520"><span class="lineNum">    1520</span> <span class="tlaGNC">           1 :     if (auto texType = as&lt;IRTextureType&gt;(type))</span></span>
+<span id="L1521"><span class="lineNum">    1521</span>              :     {</span>
+<span id="L1522"><span class="lineNum">    1522</span>              :         _emitHLSLTextureType(texType);</span>
+<span id="L1523"><span class="lineNum">    1523</span>              :         return;</span>
+<span id="L1524"><span class="lineNum">    1524</span>              :     }</span>
+<span id="L1525"><span class="lineNum">    1525</span> <span class="tlaGNC">           1 :     else if (as&lt;IRTextureBufferType&gt;(type))</span></span>
+<span id="L1526"><span class="lineNum">    1526</span>              :     {</span>
+<span id="L1527"><span class="lineNum">    1527</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;texture_buffer&lt;&quot;);</span></span>
+<span id="L1528"><span class="lineNum">    1528</span> <span class="tlaUNC">           0 :         emitVal(type-&gt;getOperand(0), getInfo(EmitOp::General));</span></span>
+<span id="L1529"><span class="lineNum">    1529</span>              :         m_writer-&gt;emit(&quot;&gt;&quot;);</span>
+<span id="L1530"><span class="lineNum">    1530</span> <span class="tlaUNC">           0 :         return;</span></span>
+<span id="L1531"><span class="lineNum">    1531</span>              :     }</span>
+<span id="L1532"><span class="lineNum">    1532</span> <span class="tlaGNC">           1 :     else if (auto imageType = as&lt;IRGLSLImageType&gt;(type))</span></span>
+<span id="L1533"><span class="lineNum">    1533</span>              :     {</span>
+<span id="L1534"><span class="lineNum">    1534</span>              :         _emitHLSLTextureType(imageType);</span>
+<span id="L1535"><span class="lineNum">    1535</span>              :         return;</span>
+<span id="L1536"><span class="lineNum">    1536</span>              :     }</span>
+<span id="L1537"><span class="lineNum">    1537</span> <span class="tlaGNC">           1 :     else if (auto structuredBufferType = as&lt;IRHLSLStructuredBufferTypeBase&gt;(type))</span></span>
+<span id="L1538"><span class="lineNum">    1538</span>              :     {</span>
+<span id="L1539"><span class="lineNum">    1539</span> <span class="tlaGNC">           1 :         emitType(structuredBufferType-&gt;getElementType());</span></span>
+<span id="L1540"><span class="lineNum">    1540</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; device*&quot;);</span></span>
+<span id="L1541"><span class="lineNum">    1541</span> <span class="tlaGNC">           1 :         return;</span></span>
+<span id="L1542"><span class="lineNum">    1542</span>              :     }</span>
+<span id="L1543"><span class="lineNum">    1543</span> <span class="tlaGNC">           1 :     else if (const auto untypedBufferType = as&lt;IRUntypedBufferResourceType&gt;(type);</span></span>
+<span id="L1544"><span class="lineNum">    1544</span> <span class="tlaGNC">           1 :              untypedBufferType)</span></span>
+<span id="L1545"><span class="lineNum">    1545</span>              :     {</span>
+<span id="L1546"><span class="lineNum">    1546</span> <span class="tlaGNC">           1 :         switch (type-&gt;getOp())</span></span>
+<span id="L1547"><span class="lineNum">    1547</span>              :         {</span>
+<span id="L1548"><span class="lineNum">    1548</span>              :         case kIROp_HLSLByteAddressBufferType:</span>
+<span id="L1549"><span class="lineNum">    1549</span>              :         case kIROp_HLSLRWByteAddressBufferType:</span>
+<span id="L1550"><span class="lineNum">    1550</span>              :         case kIROp_HLSLRasterizerOrderedByteAddressBufferType:</span>
+<span id="L1551"><span class="lineNum">    1551</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;uint32_t device*&quot;);</span></span>
+<span id="L1552"><span class="lineNum">    1552</span>              :             break;</span>
+<span id="L1553"><span class="lineNum">    1553</span>              :         case kIROp_RaytracingAccelerationStructureType:</span>
+<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(</span></span>
+<span id="L1555"><span class="lineNum">    1555</span>              :                 &quot;metal::raytracing::acceleration_structure&lt;metal::raytracing::instancing&gt;&quot;);</span>
+<span id="L1556"><span class="lineNum">    1556</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L1557"><span class="lineNum">    1557</span>              :         default:</span>
+<span id="L1558"><span class="lineNum">    1558</span> <span class="tlaUNC">           0 :             SLANG_DIAGNOSE_UNEXPECTED(getSink(), SourceLoc(), &quot;unhandled buffer type&quot;);</span></span>
+<span id="L1559"><span class="lineNum">    1559</span>              :             break;</span>
+<span id="L1560"><span class="lineNum">    1560</span>              :         }</span>
+<span id="L1561"><span class="lineNum">    1561</span> <span class="tlaGNC">           1 :         return;</span></span>
+<span id="L1562"><span class="lineNum">    1562</span>              :     }</span>
+<span id="L1563"><span class="lineNum">    1563</span> <span class="tlaGNC">           1 :     else if (const auto meshType = as&lt;IRMetalMeshType&gt;(type))</span></span>
+<span id="L1564"><span class="lineNum">    1564</span>              :     {</span>
+<span id="L1565"><span class="lineNum">    1565</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;metal::mesh&lt;&quot;);</span></span>
+<span id="L1566"><span class="lineNum">    1566</span> <span class="tlaGNC">           1 :         emitType(meshType-&gt;getVerticesType());</span></span>
 <span id="L1567"><span class="lineNum">    1567</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">           1 :         emitOperand(meshType-&gt;getNumVertices(), getInfo(EmitOp::General));</span></span>
+<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">           1 :         emitType(meshType-&gt;getPrimitivesType());</span></span>
 <span id="L1569"><span class="lineNum">    1569</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1570"><span class="lineNum">    1570</span> <span class="tlaGNC">           1 :         emitOperand(meshType-&gt;getNumPrimitives(), getInfo(EmitOp::General));</span></span>
-<span id="L1571"><span class="lineNum">    1571</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;, metal::topology::&quot;);</span></span>
-<span id="L1572"><span class="lineNum">    1572</span> <span class="tlaGNC">           1 :         switch (OutputTopologyType(meshType-&gt;getTopology()-&gt;getValue()))</span></span>
-<span id="L1573"><span class="lineNum">    1573</span>              :         {</span>
-<span id="L1574"><span class="lineNum">    1574</span>              :         case OutputTopologyType::Point:</span>
-<span id="L1575"><span class="lineNum">    1575</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;point&quot;);</span></span>
-<span id="L1576"><span class="lineNum">    1576</span>              :             break;</span>
-<span id="L1577"><span class="lineNum">    1577</span>              :         case OutputTopologyType::Line:</span>
-<span id="L1578"><span class="lineNum">    1578</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;line&quot;);</span></span>
-<span id="L1579"><span class="lineNum">    1579</span>              :             break;</span>
-<span id="L1580"><span class="lineNum">    1580</span>              :         case OutputTopologyType::Triangle:</span>
-<span id="L1581"><span class="lineNum">    1581</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;triangle&quot;);</span></span>
-<span id="L1582"><span class="lineNum">    1582</span>              :             break;</span>
-<span id="L1583"><span class="lineNum">    1583</span>              :         }</span>
-<span id="L1584"><span class="lineNum">    1584</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;&gt;&quot;);</span></span>
-<span id="L1585"><span class="lineNum">    1585</span>              :         return;</span>
-<span id="L1586"><span class="lineNum">    1586</span>              :     }</span>
-<span id="L1587"><span class="lineNum">    1587</span> <span class="tlaGNC">           1 :     else if (auto specializedType = as&lt;IRSpecialize&gt;(type))</span></span>
-<span id="L1588"><span class="lineNum">    1588</span>              :     {</span>
-<span id="L1589"><span class="lineNum">    1589</span>              :         // If a `specialize` instruction made it this far, then</span>
-<span id="L1590"><span class="lineNum">    1590</span>              :         // it represents an intrinsic generic type.</span>
-<span id="L1591"><span class="lineNum">    1591</span>              :         //</span>
-<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaUNC">           0 :         emitSimpleType((IRType*)getSpecializedValue(specializedType));</span></span>
-<span id="L1593"><span class="lineNum">    1593</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;&lt;&quot;);</span></span>
-<span id="L1594"><span class="lineNum">    1594</span> <span class="tlaUNC">           0 :         UInt argCount = specializedType-&gt;getArgCount();</span></span>
-<span id="L1595"><span class="lineNum">    1595</span> <span class="tlaUNC">           0 :         for (UInt ii = 0; ii &lt; argCount; ++ii)</span></span>
-<span id="L1596"><span class="lineNum">    1596</span>              :         {</span>
-<span id="L1597"><span class="lineNum">    1597</span> <span class="tlaUNC">           0 :             if (ii != 0)</span></span>
-<span id="L1598"><span class="lineNum">    1598</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1599"><span class="lineNum">    1599</span> <span class="tlaUNC">           0 :             emitVal(specializedType-&gt;getArg(ii), getInfo(EmitOp::General));</span></span>
-<span id="L1600"><span class="lineNum">    1600</span>              :         }</span>
-<span id="L1601"><span class="lineNum">    1601</span>              :         m_writer-&gt;emit(&quot; &gt;&quot;);</span>
-<span id="L1602"><span class="lineNum">    1602</span> <span class="tlaUNC">           0 :         return;</span></span>
-<span id="L1603"><span class="lineNum">    1603</span>              :     }</span>
-<span id="L1604"><span class="lineNum">    1604</span>              : </span>
-<span id="L1605"><span class="lineNum">    1605</span>              :     // HACK: As a fallback for HLSL targets, assume that the name of the</span>
-<span id="L1606"><span class="lineNum">    1606</span>              :     // instruction being used is the same as the name of the HLSL type.</span>
-<span id="L1607"><span class="lineNum">    1607</span>              :     {</span>
-<span id="L1608"><span class="lineNum">    1608</span> <span class="tlaGNC">           1 :         auto opInfo = getIROpInfo(type-&gt;getOp());</span></span>
-<span id="L1609"><span class="lineNum">    1609</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(opInfo.name);</span></span>
-<span id="L1610"><span class="lineNum">    1610</span> <span class="tlaGNC">           1 :         UInt operandCount = type-&gt;getOperandCount();</span></span>
-<span id="L1611"><span class="lineNum">    1611</span> <span class="tlaGNC">           1 :         if (operandCount)</span></span>
-<span id="L1612"><span class="lineNum">    1612</span>              :         {</span>
-<span id="L1613"><span class="lineNum">    1613</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;&lt;&quot;);</span></span>
-<span id="L1614"><span class="lineNum">    1614</span> <span class="tlaUNC">           0 :             for (UInt ii = 0; ii &lt; operandCount; ++ii)</span></span>
-<span id="L1615"><span class="lineNum">    1615</span>              :             {</span>
-<span id="L1616"><span class="lineNum">    1616</span> <span class="tlaUNC">           0 :                 if (ii != 0)</span></span>
-<span id="L1617"><span class="lineNum">    1617</span> <span class="tlaUNC">           0 :                     m_writer-&gt;emit(&quot;, &quot;);</span></span>
-<span id="L1618"><span class="lineNum">    1618</span> <span class="tlaUNC">           0 :                 emitVal(type-&gt;getOperand(ii), getInfo(EmitOp::General));</span></span>
-<span id="L1619"><span class="lineNum">    1619</span>              :             }</span>
-<span id="L1620"><span class="lineNum">    1620</span>              :             m_writer-&gt;emit(&quot; &gt;&quot;);</span>
-<span id="L1621"><span class="lineNum">    1621</span>              :         }</span>
-<span id="L1622"><span class="lineNum">    1622</span>              :     }</span>
-<span id="L1623"><span class="lineNum">    1623</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1624"><span class="lineNum">    1624</span>              : </span>
-<span id="L1625"><span class="lineNum">    1625</span>              : void MetalSourceEmitter::_emitType(IRType* type, DeclaratorInfo* declarator)</span>
-<span id="L1626"><span class="lineNum">    1626</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1627"><span class="lineNum">    1627</span> <span class="tlaGNC">           1 :     switch (type-&gt;getOp())</span></span>
-<span id="L1628"><span class="lineNum">    1628</span>              :     {</span>
-<span id="L1629"><span class="lineNum">    1629</span>              :     case kIROp_ArrayType:</span>
-<span id="L1630"><span class="lineNum">    1630</span> <span class="tlaGNC">           1 :         emitSimpleType(type);</span></span>
-<span id="L1631"><span class="lineNum">    1631</span> <span class="tlaGNC">           1 :         emitDeclarator(declarator);</span></span>
-<span id="L1632"><span class="lineNum">    1632</span>              :         break;</span>
-<span id="L1633"><span class="lineNum">    1633</span>              :     default:</span>
-<span id="L1634"><span class="lineNum">    1634</span> <span class="tlaGNC">           1 :         Super::_emitType(type, declarator);</span></span>
-<span id="L1635"><span class="lineNum">    1635</span>              :         break;</span>
-<span id="L1636"><span class="lineNum">    1636</span>              :     }</span>
-<span id="L1637"><span class="lineNum">    1637</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1638"><span class="lineNum">    1638</span>              : </span>
-<span id="L1639"><span class="lineNum">    1639</span>              : bool MetalSourceEmitter::maybeEmitSystemSemantic(IRInst* inst)</span>
-<span id="L1640"><span class="lineNum">    1640</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1641"><span class="lineNum">    1641</span> <span class="tlaGNC">           1 :     if (auto sysSemanticDecor = inst-&gt;findDecoration&lt;IRTargetSystemValueDecoration&gt;())</span></span>
-<span id="L1642"><span class="lineNum">    1642</span>              :     {</span>
-<span id="L1643"><span class="lineNum">    1643</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; [[&quot;);</span></span>
-<span id="L1644"><span class="lineNum">    1644</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(sysSemanticDecor-&gt;getSemantic());</span></span>
-<span id="L1645"><span class="lineNum">    1645</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;]]&quot;);</span></span>
-<span id="L1646"><span class="lineNum">    1646</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L1647"><span class="lineNum">    1647</span>              :     }</span>
-<span id="L1648"><span class="lineNum">    1648</span>              :     return false;</span>
-<span id="L1649"><span class="lineNum">    1649</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1650"><span class="lineNum">    1650</span>              : </span>
-<span id="L1651"><span class="lineNum">    1651</span>              : bool MetalSourceEmitter::_emitUserSemantic(</span>
-<span id="L1652"><span class="lineNum">    1652</span>              :     UnownedStringSlice semanticName,</span>
-<span id="L1653"><span class="lineNum">    1653</span>              :     IRIntegerValue semanticIndex)</span>
-<span id="L1654"><span class="lineNum">    1654</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1655"><span class="lineNum">    1655</span> <span class="tlaGNC">           1 :     if (!semanticName.startsWithCaseInsensitive(toSlice(&quot;SV_&quot;)))</span></span>
-<span id="L1656"><span class="lineNum">    1656</span>              :     {</span>
-<span id="L1657"><span class="lineNum">    1657</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; [[user(&quot;);</span></span>
-<span id="L1658"><span class="lineNum">    1658</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(String(semanticName).toUpper());</span></span>
-<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">           1 :         if (semanticIndex &gt; 0)</span></span>
-<span id="L1660"><span class="lineNum">    1660</span>              :         {</span>
-<span id="L1661"><span class="lineNum">    1661</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;_&quot;);</span></span>
-<span id="L1662"><span class="lineNum">    1662</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(semanticIndex);</span></span>
-<span id="L1663"><span class="lineNum">    1663</span>              :         }</span>
-<span id="L1664"><span class="lineNum">    1664</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;)]]&quot;);</span></span>
-<span id="L1665"><span class="lineNum">    1665</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L1666"><span class="lineNum">    1666</span>              :     }</span>
-<span id="L1667"><span class="lineNum">    1667</span> <span class="tlaGNC">           1 :     return false;</span></span>
-<span id="L1668"><span class="lineNum">    1668</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1669"><span class="lineNum">    1669</span>              : </span>
-<span id="L1670"><span class="lineNum">    1670</span>              : bool MetalSourceEmitter::tryEmitGlobalParamImpl(IRGlobalParam* varDecl, IRType* varType)</span>
-<span id="L1671"><span class="lineNum">    1671</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1672"><span class="lineNum">    1672</span> <span class="tlaGNC">           1 :     auto layout = getVarLayout(varDecl);</span></span>
-<span id="L1673"><span class="lineNum">    1673</span> <span class="tlaGNC">           1 :     if (!layout)</span></span>
-<span id="L1674"><span class="lineNum">    1674</span>              :         return false;</span>
-<span id="L1675"><span class="lineNum">    1675</span> <span class="tlaGNC">           1 :     if (auto specConstLayout = layout-&gt;findOffsetAttr(LayoutResourceKind::SpecializationConstant))</span></span>
-<span id="L1676"><span class="lineNum">    1676</span>              :     {</span>
-<span id="L1677"><span class="lineNum">    1677</span>              :         // Emit specialization constant.</span>
-<span id="L1678"><span class="lineNum">    1678</span> <span class="tlaGNC">           1 :         auto name = getName(varDecl);</span></span>
-<span id="L1679"><span class="lineNum">    1679</span> <span class="tlaGNC">           1 :         auto prefixName = &quot;fc_&quot; + name;</span></span>
-<span id="L1680"><span class="lineNum">    1680</span> <span class="tlaGNC">           1 :         auto defaultVal = varDecl-&gt;findDecoration&lt;IRDefaultValueDecoration&gt;();</span></span>
-<span id="L1681"><span class="lineNum">    1681</span>              : </span>
-<span id="L1682"><span class="lineNum">    1682</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;constant &quot;);</span></span>
-<span id="L1683"><span class="lineNum">    1683</span> <span class="tlaGNC">           1 :         emitType(varType, prefixName);</span></span>
-<span id="L1684"><span class="lineNum">    1684</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; &quot;);</span></span>
-<span id="L1685"><span class="lineNum">    1685</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;[[function_constant(&quot;);</span></span>
-<span id="L1686"><span class="lineNum">    1686</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(specConstLayout-&gt;getOffset());</span></span>
-<span id="L1687"><span class="lineNum">    1687</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;)]];\n&quot;);</span></span>
-<span id="L1688"><span class="lineNum">    1688</span>              : </span>
-<span id="L1689"><span class="lineNum">    1689</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;constant &quot;);</span></span>
-<span id="L1690"><span class="lineNum">    1690</span> <span class="tlaGNC">           1 :         emitType(varType, name);</span></span>
-<span id="L1691"><span class="lineNum">    1691</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; = &quot;);</span></span>
-<span id="L1692"><span class="lineNum">    1692</span> <span class="tlaGNC">           1 :         if (defaultVal)</span></span>
-<span id="L1693"><span class="lineNum">    1693</span>              :         {</span>
-<span id="L1694"><span class="lineNum">    1694</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;is_function_constant_defined(&quot;);</span></span>
-<span id="L1695"><span class="lineNum">    1695</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(prefixName);</span></span>
-<span id="L1696"><span class="lineNum">    1696</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;) ? &quot;);</span></span>
+<span id="L1570"><span class="lineNum">    1570</span> <span class="tlaGNC">           1 :         emitOperand(meshType-&gt;getNumVertices(), getInfo(EmitOp::General));</span></span>
+<span id="L1571"><span class="lineNum">    1571</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;, &quot;);</span></span>
+<span id="L1572"><span class="lineNum">    1572</span> <span class="tlaGNC">           1 :         emitOperand(meshType-&gt;getNumPrimitives(), getInfo(EmitOp::General));</span></span>
+<span id="L1573"><span class="lineNum">    1573</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;, metal::topology::&quot;);</span></span>
+<span id="L1574"><span class="lineNum">    1574</span> <span class="tlaGNC">           1 :         switch (OutputTopologyType(meshType-&gt;getTopology()-&gt;getValue()))</span></span>
+<span id="L1575"><span class="lineNum">    1575</span>              :         {</span>
+<span id="L1576"><span class="lineNum">    1576</span>              :         case OutputTopologyType::Point:</span>
+<span id="L1577"><span class="lineNum">    1577</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;point&quot;);</span></span>
+<span id="L1578"><span class="lineNum">    1578</span>              :             break;</span>
+<span id="L1579"><span class="lineNum">    1579</span>              :         case OutputTopologyType::Line:</span>
+<span id="L1580"><span class="lineNum">    1580</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;line&quot;);</span></span>
+<span id="L1581"><span class="lineNum">    1581</span>              :             break;</span>
+<span id="L1582"><span class="lineNum">    1582</span>              :         case OutputTopologyType::Triangle:</span>
+<span id="L1583"><span class="lineNum">    1583</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;triangle&quot;);</span></span>
+<span id="L1584"><span class="lineNum">    1584</span>              :             break;</span>
+<span id="L1585"><span class="lineNum">    1585</span>              :         }</span>
+<span id="L1586"><span class="lineNum">    1586</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;&gt;&quot;);</span></span>
+<span id="L1587"><span class="lineNum">    1587</span>              :         return;</span>
+<span id="L1588"><span class="lineNum">    1588</span>              :     }</span>
+<span id="L1589"><span class="lineNum">    1589</span> <span class="tlaGNC">           1 :     else if (auto specializedType = as&lt;IRSpecialize&gt;(type))</span></span>
+<span id="L1590"><span class="lineNum">    1590</span>              :     {</span>
+<span id="L1591"><span class="lineNum">    1591</span>              :         // If a `specialize` instruction made it this far, then</span>
+<span id="L1592"><span class="lineNum">    1592</span>              :         // it represents an intrinsic generic type.</span>
+<span id="L1593"><span class="lineNum">    1593</span>              :         //</span>
+<span id="L1594"><span class="lineNum">    1594</span> <span class="tlaUNC">           0 :         emitSimpleType((IRType*)getSpecializedValue(specializedType));</span></span>
+<span id="L1595"><span class="lineNum">    1595</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;&lt;&quot;);</span></span>
+<span id="L1596"><span class="lineNum">    1596</span> <span class="tlaUNC">           0 :         UInt argCount = specializedType-&gt;getArgCount();</span></span>
+<span id="L1597"><span class="lineNum">    1597</span> <span class="tlaUNC">           0 :         for (UInt ii = 0; ii &lt; argCount; ++ii)</span></span>
+<span id="L1598"><span class="lineNum">    1598</span>              :         {</span>
+<span id="L1599"><span class="lineNum">    1599</span> <span class="tlaUNC">           0 :             if (ii != 0)</span></span>
+<span id="L1600"><span class="lineNum">    1600</span> <span class="tlaUNC">           0 :                 m_writer-&gt;emit(&quot;, &quot;);</span></span>
+<span id="L1601"><span class="lineNum">    1601</span> <span class="tlaUNC">           0 :             emitVal(specializedType-&gt;getArg(ii), getInfo(EmitOp::General));</span></span>
+<span id="L1602"><span class="lineNum">    1602</span>              :         }</span>
+<span id="L1603"><span class="lineNum">    1603</span>              :         m_writer-&gt;emit(&quot; &gt;&quot;);</span>
+<span id="L1604"><span class="lineNum">    1604</span> <span class="tlaUNC">           0 :         return;</span></span>
+<span id="L1605"><span class="lineNum">    1605</span>              :     }</span>
+<span id="L1606"><span class="lineNum">    1606</span>              : </span>
+<span id="L1607"><span class="lineNum">    1607</span>              :     // HACK: As a fallback for HLSL targets, assume that the name of the</span>
+<span id="L1608"><span class="lineNum">    1608</span>              :     // instruction being used is the same as the name of the HLSL type.</span>
+<span id="L1609"><span class="lineNum">    1609</span>              :     {</span>
+<span id="L1610"><span class="lineNum">    1610</span> <span class="tlaGNC">           1 :         auto opInfo = getIROpInfo(type-&gt;getOp());</span></span>
+<span id="L1611"><span class="lineNum">    1611</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(opInfo.name);</span></span>
+<span id="L1612"><span class="lineNum">    1612</span> <span class="tlaGNC">           1 :         UInt operandCount = type-&gt;getOperandCount();</span></span>
+<span id="L1613"><span class="lineNum">    1613</span> <span class="tlaGNC">           1 :         if (operandCount)</span></span>
+<span id="L1614"><span class="lineNum">    1614</span>              :         {</span>
+<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(&quot;&lt;&quot;);</span></span>
+<span id="L1616"><span class="lineNum">    1616</span> <span class="tlaUNC">           0 :             for (UInt ii = 0; ii &lt; operandCount; ++ii)</span></span>
+<span id="L1617"><span class="lineNum">    1617</span>              :             {</span>
+<span id="L1618"><span class="lineNum">    1618</span> <span class="tlaUNC">           0 :                 if (ii != 0)</span></span>
+<span id="L1619"><span class="lineNum">    1619</span> <span class="tlaUNC">           0 :                     m_writer-&gt;emit(&quot;, &quot;);</span></span>
+<span id="L1620"><span class="lineNum">    1620</span> <span class="tlaUNC">           0 :                 emitVal(type-&gt;getOperand(ii), getInfo(EmitOp::General));</span></span>
+<span id="L1621"><span class="lineNum">    1621</span>              :             }</span>
+<span id="L1622"><span class="lineNum">    1622</span>              :             m_writer-&gt;emit(&quot; &gt;&quot;);</span>
+<span id="L1623"><span class="lineNum">    1623</span>              :         }</span>
+<span id="L1624"><span class="lineNum">    1624</span>              :     }</span>
+<span id="L1625"><span class="lineNum">    1625</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1626"><span class="lineNum">    1626</span>              : </span>
+<span id="L1627"><span class="lineNum">    1627</span>              : void MetalSourceEmitter::_emitType(IRType* type, DeclaratorInfo* declarator)</span>
+<span id="L1628"><span class="lineNum">    1628</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1629"><span class="lineNum">    1629</span> <span class="tlaGNC">           1 :     switch (type-&gt;getOp())</span></span>
+<span id="L1630"><span class="lineNum">    1630</span>              :     {</span>
+<span id="L1631"><span class="lineNum">    1631</span>              :     case kIROp_ArrayType:</span>
+<span id="L1632"><span class="lineNum">    1632</span> <span class="tlaGNC">           1 :         emitSimpleType(type);</span></span>
+<span id="L1633"><span class="lineNum">    1633</span> <span class="tlaGNC">           1 :         emitDeclarator(declarator);</span></span>
+<span id="L1634"><span class="lineNum">    1634</span>              :         break;</span>
+<span id="L1635"><span class="lineNum">    1635</span>              :     default:</span>
+<span id="L1636"><span class="lineNum">    1636</span> <span class="tlaGNC">           1 :         Super::_emitType(type, declarator);</span></span>
+<span id="L1637"><span class="lineNum">    1637</span>              :         break;</span>
+<span id="L1638"><span class="lineNum">    1638</span>              :     }</span>
+<span id="L1639"><span class="lineNum">    1639</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1640"><span class="lineNum">    1640</span>              : </span>
+<span id="L1641"><span class="lineNum">    1641</span>              : bool MetalSourceEmitter::maybeEmitSystemSemantic(IRInst* inst)</span>
+<span id="L1642"><span class="lineNum">    1642</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1643"><span class="lineNum">    1643</span> <span class="tlaGNC">           1 :     if (auto sysSemanticDecor = inst-&gt;findDecoration&lt;IRTargetSystemValueDecoration&gt;())</span></span>
+<span id="L1644"><span class="lineNum">    1644</span>              :     {</span>
+<span id="L1645"><span class="lineNum">    1645</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; [[&quot;);</span></span>
+<span id="L1646"><span class="lineNum">    1646</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(sysSemanticDecor-&gt;getSemantic());</span></span>
+<span id="L1647"><span class="lineNum">    1647</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;]]&quot;);</span></span>
+<span id="L1648"><span class="lineNum">    1648</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L1649"><span class="lineNum">    1649</span>              :     }</span>
+<span id="L1650"><span class="lineNum">    1650</span>              :     return false;</span>
+<span id="L1651"><span class="lineNum">    1651</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1652"><span class="lineNum">    1652</span>              : </span>
+<span id="L1653"><span class="lineNum">    1653</span>              : bool MetalSourceEmitter::_emitUserSemantic(</span>
+<span id="L1654"><span class="lineNum">    1654</span>              :     UnownedStringSlice semanticName,</span>
+<span id="L1655"><span class="lineNum">    1655</span>              :     IRIntegerValue semanticIndex)</span>
+<span id="L1656"><span class="lineNum">    1656</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1657"><span class="lineNum">    1657</span> <span class="tlaGNC">           1 :     if (!semanticName.startsWithCaseInsensitive(toSlice(&quot;SV_&quot;)))</span></span>
+<span id="L1658"><span class="lineNum">    1658</span>              :     {</span>
+<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; [[user(&quot;);</span></span>
+<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(String(semanticName).toUpper());</span></span>
+<span id="L1661"><span class="lineNum">    1661</span> <span class="tlaGNC">           1 :         if (semanticIndex &gt; 0)</span></span>
+<span id="L1662"><span class="lineNum">    1662</span>              :         {</span>
+<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;_&quot;);</span></span>
+<span id="L1664"><span class="lineNum">    1664</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(semanticIndex);</span></span>
+<span id="L1665"><span class="lineNum">    1665</span>              :         }</span>
+<span id="L1666"><span class="lineNum">    1666</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;)]]&quot;);</span></span>
+<span id="L1667"><span class="lineNum">    1667</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L1668"><span class="lineNum">    1668</span>              :     }</span>
+<span id="L1669"><span class="lineNum">    1669</span> <span class="tlaGNC">           1 :     return false;</span></span>
+<span id="L1670"><span class="lineNum">    1670</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1671"><span class="lineNum">    1671</span>              : </span>
+<span id="L1672"><span class="lineNum">    1672</span>              : bool MetalSourceEmitter::tryEmitGlobalParamImpl(IRGlobalParam* varDecl, IRType* varType)</span>
+<span id="L1673"><span class="lineNum">    1673</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1674"><span class="lineNum">    1674</span> <span class="tlaGNC">           1 :     auto layout = getVarLayout(varDecl);</span></span>
+<span id="L1675"><span class="lineNum">    1675</span> <span class="tlaGNC">           1 :     if (!layout)</span></span>
+<span id="L1676"><span class="lineNum">    1676</span>              :         return false;</span>
+<span id="L1677"><span class="lineNum">    1677</span> <span class="tlaGNC">           1 :     if (auto specConstLayout = layout-&gt;findOffsetAttr(LayoutResourceKind::SpecializationConstant))</span></span>
+<span id="L1678"><span class="lineNum">    1678</span>              :     {</span>
+<span id="L1679"><span class="lineNum">    1679</span>              :         // Emit specialization constant.</span>
+<span id="L1680"><span class="lineNum">    1680</span> <span class="tlaGNC">           1 :         auto name = getName(varDecl);</span></span>
+<span id="L1681"><span class="lineNum">    1681</span> <span class="tlaGNC">           1 :         auto prefixName = &quot;fc_&quot; + name;</span></span>
+<span id="L1682"><span class="lineNum">    1682</span> <span class="tlaGNC">           1 :         auto defaultVal = varDecl-&gt;findDecoration&lt;IRDefaultValueDecoration&gt;();</span></span>
+<span id="L1683"><span class="lineNum">    1683</span>              : </span>
+<span id="L1684"><span class="lineNum">    1684</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;constant &quot;);</span></span>
+<span id="L1685"><span class="lineNum">    1685</span> <span class="tlaGNC">           1 :         emitType(varType, prefixName);</span></span>
+<span id="L1686"><span class="lineNum">    1686</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; &quot;);</span></span>
+<span id="L1687"><span class="lineNum">    1687</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;[[function_constant(&quot;);</span></span>
+<span id="L1688"><span class="lineNum">    1688</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(specConstLayout-&gt;getOffset());</span></span>
+<span id="L1689"><span class="lineNum">    1689</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;)]];\n&quot;);</span></span>
+<span id="L1690"><span class="lineNum">    1690</span>              : </span>
+<span id="L1691"><span class="lineNum">    1691</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;constant &quot;);</span></span>
+<span id="L1692"><span class="lineNum">    1692</span> <span class="tlaGNC">           1 :         emitType(varType, name);</span></span>
+<span id="L1693"><span class="lineNum">    1693</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot; = &quot;);</span></span>
+<span id="L1694"><span class="lineNum">    1694</span> <span class="tlaGNC">           1 :         if (defaultVal)</span></span>
+<span id="L1695"><span class="lineNum">    1695</span>              :         {</span>
+<span id="L1696"><span class="lineNum">    1696</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;is_function_constant_defined(&quot;);</span></span>
 <span id="L1697"><span class="lineNum">    1697</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(prefixName);</span></span>
-<span id="L1698"><span class="lineNum">    1698</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot; : &quot;);</span></span>
-<span id="L1699"><span class="lineNum">    1699</span> <span class="tlaGNC">           1 :             emitVal(defaultVal-&gt;getOperand(0), getInfo(EmitOp::General));</span></span>
-<span id="L1700"><span class="lineNum">    1700</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L1701"><span class="lineNum">    1701</span>              :         else</span>
-<span id="L1702"><span class="lineNum">    1702</span>              :         {</span>
-<span id="L1703"><span class="lineNum">    1703</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(prefixName);</span></span>
-<span id="L1704"><span class="lineNum">    1704</span>              :         }</span>
-<span id="L1705"><span class="lineNum">    1705</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;;\n&quot;);</span></span>
-<span id="L1706"><span class="lineNum">    1706</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L1707"><span class="lineNum">    1707</span>              :     }</span>
-<span id="L1708"><span class="lineNum">    1708</span> <span class="tlaUNC">           0 :     return false;</span></span>
-<span id="L1709"><span class="lineNum">    1709</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1710"><span class="lineNum">    1710</span>              : </span>
-<span id="L1711"><span class="lineNum">    1711</span>              : void MetalSourceEmitter::emitSemanticsImpl(IRInst* inst, bool allowOffsets)</span>
-<span id="L1712"><span class="lineNum">    1712</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1713"><span class="lineNum">    1713</span>              :     SLANG_UNUSED(allowOffsets);</span>
-<span id="L1714"><span class="lineNum">    1714</span>              : </span>
-<span id="L1715"><span class="lineNum">    1715</span> <span class="tlaGNC">           1 :     auto varLayout = findVarLayout(inst);</span></span>
+<span id="L1698"><span class="lineNum">    1698</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot;) ? &quot;);</span></span>
+<span id="L1699"><span class="lineNum">    1699</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(prefixName);</span></span>
+<span id="L1700"><span class="lineNum">    1700</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(&quot; : &quot;);</span></span>
+<span id="L1701"><span class="lineNum">    1701</span> <span class="tlaGNC">           1 :             emitVal(defaultVal-&gt;getOperand(0), getInfo(EmitOp::General));</span></span>
+<span id="L1702"><span class="lineNum">    1702</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L1703"><span class="lineNum">    1703</span>              :         else</span>
+<span id="L1704"><span class="lineNum">    1704</span>              :         {</span>
+<span id="L1705"><span class="lineNum">    1705</span> <span class="tlaUNC">           0 :             m_writer-&gt;emit(prefixName);</span></span>
+<span id="L1706"><span class="lineNum">    1706</span>              :         }</span>
+<span id="L1707"><span class="lineNum">    1707</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;;\n&quot;);</span></span>
+<span id="L1708"><span class="lineNum">    1708</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L1709"><span class="lineNum">    1709</span>              :     }</span>
+<span id="L1710"><span class="lineNum">    1710</span> <span class="tlaUNC">           0 :     return false;</span></span>
+<span id="L1711"><span class="lineNum">    1711</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1712"><span class="lineNum">    1712</span>              : </span>
+<span id="L1713"><span class="lineNum">    1713</span>              : void MetalSourceEmitter::emitSemanticsImpl(IRInst* inst, bool allowOffsets)</span>
+<span id="L1714"><span class="lineNum">    1714</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1715"><span class="lineNum">    1715</span>              :     SLANG_UNUSED(allowOffsets);</span>
 <span id="L1716"><span class="lineNum">    1716</span>              : </span>
-<span id="L1717"><span class="lineNum">    1717</span> <span class="tlaGNC">           1 :     if (inst-&gt;getOp() == kIROp_StructKey)</span></span>
-<span id="L1718"><span class="lineNum">    1718</span>              :     {</span>
-<span id="L1719"><span class="lineNum">    1719</span>              :         // Only emit [[attribute(n)]] on struct keys.</span>
-<span id="L1720"><span class="lineNum">    1720</span>              : </span>
-<span id="L1721"><span class="lineNum">    1721</span> <span class="tlaGNC">           1 :         if (maybeEmitSystemSemantic(inst))</span></span>
-<span id="L1722"><span class="lineNum">    1722</span>              :             return;</span>
-<span id="L1723"><span class="lineNum">    1723</span>              : </span>
-<span id="L1724"><span class="lineNum">    1724</span> <span class="tlaGNC">           1 :         bool hasSemantic = false;</span></span>
+<span id="L1717"><span class="lineNum">    1717</span> <span class="tlaGNC">           1 :     auto varLayout = findVarLayout(inst);</span></span>
+<span id="L1718"><span class="lineNum">    1718</span>              : </span>
+<span id="L1719"><span class="lineNum">    1719</span> <span class="tlaGNC">           1 :     if (inst-&gt;getOp() == kIROp_StructKey)</span></span>
+<span id="L1720"><span class="lineNum">    1720</span>              :     {</span>
+<span id="L1721"><span class="lineNum">    1721</span>              :         // Only emit [[attribute(n)]] on struct keys.</span>
+<span id="L1722"><span class="lineNum">    1722</span>              : </span>
+<span id="L1723"><span class="lineNum">    1723</span> <span class="tlaGNC">           1 :         if (maybeEmitSystemSemantic(inst))</span></span>
+<span id="L1724"><span class="lineNum">    1724</span>              :             return;</span>
 <span id="L1725"><span class="lineNum">    1725</span>              : </span>
-<span id="L1726"><span class="lineNum">    1726</span> <span class="tlaGNC">           1 :         if (varLayout)</span></span>
-<span id="L1727"><span class="lineNum">    1727</span>              :         {</span>
-<span id="L1728"><span class="lineNum">    1728</span> <span class="tlaGNC">           1 :             for (auto attr : varLayout-&gt;getAllAttrs())</span></span>
-<span id="L1729"><span class="lineNum">    1729</span>              :             {</span>
-<span id="L1730"><span class="lineNum">    1730</span> <span class="tlaGNC">           1 :                 if (auto offsetAttr = as&lt;IRVarOffsetAttr&gt;(attr))</span></span>
-<span id="L1731"><span class="lineNum">    1731</span>              :                 {</span>
-<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">           1 :                     if (offsetAttr-&gt;getResourceKind() == LayoutResourceKind::MetalAttribute)</span></span>
-<span id="L1733"><span class="lineNum">    1733</span>              :                     {</span>
-<span id="L1734"><span class="lineNum">    1734</span> <span class="tlaGNC">           1 :                         m_writer-&gt;emit(&quot; [[attribute(&quot;);</span></span>
-<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">           1 :                         m_writer-&gt;emit(offsetAttr-&gt;getOffset());</span></span>
-<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaGNC">           1 :                         m_writer-&gt;emit(&quot;)]]&quot;);</span></span>
-<span id="L1737"><span class="lineNum">    1737</span>              :                         return;</span>
-<span id="L1738"><span class="lineNum">    1738</span>              :                     }</span>
-<span id="L1739"><span class="lineNum">    1739</span>              :                 }</span>
-<span id="L1740"><span class="lineNum">    1740</span>              :             }</span>
-<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaGNC">           1 :             for (auto attr : varLayout-&gt;getAllAttrs())</span></span>
-<span id="L1742"><span class="lineNum">    1742</span>              :             {</span>
-<span id="L1743"><span class="lineNum">    1743</span> <span class="tlaGNC">           1 :                 if (auto semanticAttr = as&lt;IRSemanticAttr&gt;(attr))</span></span>
-<span id="L1744"><span class="lineNum">    1744</span>              :                 {</span>
-<span id="L1745"><span class="lineNum">    1745</span> <span class="tlaGNC">           1 :                     auto semanticName = String(semanticAttr-&gt;getName()).toUpper();</span></span>
-<span id="L1746"><span class="lineNum">    1746</span> <span class="tlaGNC">           1 :                     hasSemantic =</span></span>
-<span id="L1747"><span class="lineNum">    1747</span>              :                         _emitUserSemantic(semanticAttr-&gt;getName(), semanticAttr-&gt;getIndex());</span>
-<span id="L1748"><span class="lineNum">    1748</span> <span class="tlaGNC">           1 :                 }</span></span>
-<span id="L1749"><span class="lineNum">    1749</span>              :             }</span>
-<span id="L1750"><span class="lineNum">    1750</span>              :         }</span>
-<span id="L1751"><span class="lineNum">    1751</span> <span class="tlaGNC">           1 :         if (!hasSemantic)</span></span>
-<span id="L1752"><span class="lineNum">    1752</span>              :         {</span>
-<span id="L1753"><span class="lineNum">    1753</span> <span class="tlaGNC">           1 :             if (auto semanticDecor = inst-&gt;findDecoration&lt;IRSemanticDecoration&gt;())</span></span>
-<span id="L1754"><span class="lineNum">    1754</span>              :             {</span>
-<span id="L1755"><span class="lineNum">    1755</span> <span class="tlaGNC">           1 :                 _emitUserSemantic(</span></span>
-<span id="L1756"><span class="lineNum">    1756</span>              :                     semanticDecor-&gt;getSemanticName(),</span>
-<span id="L1757"><span class="lineNum">    1757</span>              :                     semanticDecor-&gt;getSemanticIndex());</span>
-<span id="L1758"><span class="lineNum">    1758</span>              :             }</span>
-<span id="L1759"><span class="lineNum">    1759</span>              :         }</span>
-<span id="L1760"><span class="lineNum">    1760</span>              :         return;</span>
-<span id="L1761"><span class="lineNum">    1761</span>              :     }</span>
-<span id="L1762"><span class="lineNum">    1762</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1763"><span class="lineNum">    1763</span>              : </span>
-<span id="L1764"><span class="lineNum">    1764</span>              : void MetalSourceEmitter::_emitStageAccessSemantic(</span>
-<span id="L1765"><span class="lineNum">    1765</span>              :     IRStageAccessDecoration* decoration,</span>
-<span id="L1766"><span class="lineNum">    1766</span>              :     const char* name)</span>
-<span id="L1767"><span class="lineNum">    1767</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1768"><span class="lineNum">    1768</span>              :     SLANG_UNUSED(decoration);</span>
-<span id="L1769"><span class="lineNum">    1769</span>              :     SLANG_UNUSED(name);</span>
-<span id="L1770"><span class="lineNum">    1770</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1771"><span class="lineNum">    1771</span>              : </span>
-<span id="L1772"><span class="lineNum">    1772</span>              : void MetalSourceEmitter::emitSimpleFuncParamImpl(IRParam* param)</span>
-<span id="L1773"><span class="lineNum">    1773</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1774"><span class="lineNum">    1774</span> <span class="tlaGNC">           1 :     Super::emitSimpleFuncParamImpl(param);</span></span>
-<span id="L1775"><span class="lineNum">    1775</span> <span class="tlaGNC">           1 :     emitFuncParamLayoutImpl(param);</span></span>
-<span id="L1776"><span class="lineNum">    1776</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1777"><span class="lineNum">    1777</span>              : </span>
-<span id="L1778"><span class="lineNum">    1778</span>              : void MetalSourceEmitter::emitPostDeclarationAttributesForType(IRInst* type)</span>
-<span id="L1779"><span class="lineNum">    1779</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1780"><span class="lineNum">    1780</span>              :     Super::emitPostDeclarationAttributesForType(type);</span>
-<span id="L1781"><span class="lineNum">    1781</span> <span class="tlaGNC">           1 :     if (auto textureType = as&lt;IRTextureTypeBase&gt;(type))</span></span>
-<span id="L1782"><span class="lineNum">    1782</span>              :     {</span>
-<span id="L1783"><span class="lineNum">    1783</span> <span class="tlaGNC">           1 :         if (textureType-&gt;getAccess() == SLANG_RESOURCE_ACCESS_RASTER_ORDERED)</span></span>
-<span id="L1784"><span class="lineNum">    1784</span>              :         {</span>
-<span id="L1785"><span class="lineNum">    1785</span>              :             m_writer-&gt;emit(&quot; [[raster_order_group(0)]]&quot;);</span>
-<span id="L1786"><span class="lineNum">    1786</span>              :         }</span>
-<span id="L1787"><span class="lineNum">    1787</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1788"><span class="lineNum">    1788</span>              :     else if (</span>
-<span id="L1789"><span class="lineNum">    1789</span> <span class="tlaGNC">           1 :         as&lt;IRHLSLRasterizerOrderedByteAddressBufferType&gt;(type) ||</span></span>
-<span id="L1790"><span class="lineNum">    1790</span>              :         as&lt;IRHLSLRasterizerOrderedStructuredBufferType&gt;(type))</span>
-<span id="L1791"><span class="lineNum">    1791</span>              :     {</span>
-<span id="L1792"><span class="lineNum">    1792</span>              :         m_writer-&gt;emit(&quot; [[raster_order_group(0)]]&quot;);</span>
-<span id="L1793"><span class="lineNum">    1793</span>              :     }</span>
-<span id="L1794"><span class="lineNum">    1794</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1795"><span class="lineNum">    1795</span>              : </span>
-<span id="L1796"><span class="lineNum">    1796</span>              : static UnownedStringSlice _getInterpolationModifierText(IRInterpolationMode mode)</span>
-<span id="L1797"><span class="lineNum">    1797</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1798"><span class="lineNum">    1798</span> <span class="tlaGNC">           1 :     switch (mode)</span></span>
-<span id="L1799"><span class="lineNum">    1799</span>              :     {</span>
-<span id="L1800"><span class="lineNum">    1800</span>              :     case IRInterpolationMode::PerVertex:</span>
-<span id="L1801"><span class="lineNum">    1801</span>              :     case IRInterpolationMode::NoInterpolation:</span>
-<span id="L1802"><span class="lineNum">    1802</span> <span class="tlaGNC">           1 :         return UnownedStringSlice::fromLiteral(&quot;[[flat]]&quot;);</span></span>
-<span id="L1803"><span class="lineNum">    1803</span>              :     case IRInterpolationMode::NoPerspective:</span>
-<span id="L1804"><span class="lineNum">    1804</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[center_no_perspective]]&quot;);</span></span>
-<span id="L1805"><span class="lineNum">    1805</span>              :     case IRInterpolationMode::Linear:</span>
-<span id="L1806"><span class="lineNum">    1806</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[sample_no_perspective]]&quot;);</span></span>
-<span id="L1807"><span class="lineNum">    1807</span>              :     case IRInterpolationMode::Sample:</span>
-<span id="L1808"><span class="lineNum">    1808</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[sample_perspective]]&quot;);</span></span>
-<span id="L1809"><span class="lineNum">    1809</span>              :     case IRInterpolationMode::Centroid:</span>
-<span id="L1810"><span class="lineNum">    1810</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[center_perspective]]&quot;);</span></span>
-<span id="L1811"><span class="lineNum">    1811</span>              :     default:</span>
-<span id="L1812"><span class="lineNum">    1812</span> <span class="tlaUNC">           0 :         return UnownedStringSlice();</span></span>
-<span id="L1813"><span class="lineNum">    1813</span>              :     }</span>
-<span id="L1814"><span class="lineNum">    1814</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1815"><span class="lineNum">    1815</span>              : </span>
-<span id="L1816"><span class="lineNum">    1816</span>              : void MetalSourceEmitter::emitInterpolationModifiersImpl(</span>
-<span id="L1817"><span class="lineNum">    1817</span>              :     IRInst* varInst,</span>
-<span id="L1818"><span class="lineNum">    1818</span>              :     IRType* valueType,</span>
-<span id="L1819"><span class="lineNum">    1819</span>              :     IRVarLayout* layout)</span>
-<span id="L1820"><span class="lineNum">    1820</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1821"><span class="lineNum">    1821</span>              :     SLANG_UNUSED(layout);</span>
-<span id="L1822"><span class="lineNum">    1822</span>              :     SLANG_UNUSED(valueType);</span>
-<span id="L1823"><span class="lineNum">    1823</span>              : </span>
-<span id="L1824"><span class="lineNum">    1824</span> <span class="tlaGNC">           1 :     for (auto dd : varInst-&gt;getDecorations())</span></span>
-<span id="L1825"><span class="lineNum">    1825</span>              :     {</span>
-<span id="L1826"><span class="lineNum">    1826</span> <span class="tlaGNC">           1 :         if (dd-&gt;getOp() != kIROp_InterpolationModeDecoration)</span></span>
-<span id="L1827"><span class="lineNum">    1827</span>              :             continue;</span>
-<span id="L1828"><span class="lineNum">    1828</span>              : </span>
-<span id="L1829"><span class="lineNum">    1829</span>              :         auto decoration = (IRInterpolationModeDecoration*)dd;</span>
+<span id="L1726"><span class="lineNum">    1726</span> <span class="tlaGNC">           1 :         bool hasSemantic = false;</span></span>
+<span id="L1727"><span class="lineNum">    1727</span>              : </span>
+<span id="L1728"><span class="lineNum">    1728</span> <span class="tlaGNC">           1 :         if (varLayout)</span></span>
+<span id="L1729"><span class="lineNum">    1729</span>              :         {</span>
+<span id="L1730"><span class="lineNum">    1730</span> <span class="tlaGNC">           1 :             for (auto attr : varLayout-&gt;getAllAttrs())</span></span>
+<span id="L1731"><span class="lineNum">    1731</span>              :             {</span>
+<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">           1 :                 if (auto offsetAttr = as&lt;IRVarOffsetAttr&gt;(attr))</span></span>
+<span id="L1733"><span class="lineNum">    1733</span>              :                 {</span>
+<span id="L1734"><span class="lineNum">    1734</span> <span class="tlaGNC">           1 :                     if (offsetAttr-&gt;getResourceKind() == LayoutResourceKind::MetalAttribute)</span></span>
+<span id="L1735"><span class="lineNum">    1735</span>              :                     {</span>
+<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaGNC">           1 :                         m_writer-&gt;emit(&quot; [[attribute(&quot;);</span></span>
+<span id="L1737"><span class="lineNum">    1737</span> <span class="tlaGNC">           1 :                         m_writer-&gt;emit(offsetAttr-&gt;getOffset());</span></span>
+<span id="L1738"><span class="lineNum">    1738</span> <span class="tlaGNC">           1 :                         m_writer-&gt;emit(&quot;)]]&quot;);</span></span>
+<span id="L1739"><span class="lineNum">    1739</span>              :                         return;</span>
+<span id="L1740"><span class="lineNum">    1740</span>              :                     }</span>
+<span id="L1741"><span class="lineNum">    1741</span>              :                 }</span>
+<span id="L1742"><span class="lineNum">    1742</span>              :             }</span>
+<span id="L1743"><span class="lineNum">    1743</span> <span class="tlaGNC">           1 :             for (auto attr : varLayout-&gt;getAllAttrs())</span></span>
+<span id="L1744"><span class="lineNum">    1744</span>              :             {</span>
+<span id="L1745"><span class="lineNum">    1745</span> <span class="tlaGNC">           1 :                 if (auto semanticAttr = as&lt;IRSemanticAttr&gt;(attr))</span></span>
+<span id="L1746"><span class="lineNum">    1746</span>              :                 {</span>
+<span id="L1747"><span class="lineNum">    1747</span> <span class="tlaGNC">           1 :                     auto semanticName = String(semanticAttr-&gt;getName()).toUpper();</span></span>
+<span id="L1748"><span class="lineNum">    1748</span> <span class="tlaGNC">           1 :                     hasSemantic =</span></span>
+<span id="L1749"><span class="lineNum">    1749</span>              :                         _emitUserSemantic(semanticAttr-&gt;getName(), semanticAttr-&gt;getIndex());</span>
+<span id="L1750"><span class="lineNum">    1750</span> <span class="tlaGNC">           1 :                 }</span></span>
+<span id="L1751"><span class="lineNum">    1751</span>              :             }</span>
+<span id="L1752"><span class="lineNum">    1752</span>              :         }</span>
+<span id="L1753"><span class="lineNum">    1753</span> <span class="tlaGNC">           1 :         if (!hasSemantic)</span></span>
+<span id="L1754"><span class="lineNum">    1754</span>              :         {</span>
+<span id="L1755"><span class="lineNum">    1755</span> <span class="tlaGNC">           1 :             if (auto semanticDecor = inst-&gt;findDecoration&lt;IRSemanticDecoration&gt;())</span></span>
+<span id="L1756"><span class="lineNum">    1756</span>              :             {</span>
+<span id="L1757"><span class="lineNum">    1757</span> <span class="tlaGNC">           1 :                 _emitUserSemantic(</span></span>
+<span id="L1758"><span class="lineNum">    1758</span>              :                     semanticDecor-&gt;getSemanticName(),</span>
+<span id="L1759"><span class="lineNum">    1759</span>              :                     semanticDecor-&gt;getSemanticIndex());</span>
+<span id="L1760"><span class="lineNum">    1760</span>              :             }</span>
+<span id="L1761"><span class="lineNum">    1761</span>              :         }</span>
+<span id="L1762"><span class="lineNum">    1762</span>              :         return;</span>
+<span id="L1763"><span class="lineNum">    1763</span>              :     }</span>
+<span id="L1764"><span class="lineNum">    1764</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1765"><span class="lineNum">    1765</span>              : </span>
+<span id="L1766"><span class="lineNum">    1766</span>              : void MetalSourceEmitter::_emitStageAccessSemantic(</span>
+<span id="L1767"><span class="lineNum">    1767</span>              :     IRStageAccessDecoration* decoration,</span>
+<span id="L1768"><span class="lineNum">    1768</span>              :     const char* name)</span>
+<span id="L1769"><span class="lineNum">    1769</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1770"><span class="lineNum">    1770</span>              :     SLANG_UNUSED(decoration);</span>
+<span id="L1771"><span class="lineNum">    1771</span>              :     SLANG_UNUSED(name);</span>
+<span id="L1772"><span class="lineNum">    1772</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1773"><span class="lineNum">    1773</span>              : </span>
+<span id="L1774"><span class="lineNum">    1774</span>              : void MetalSourceEmitter::emitSimpleFuncParamImpl(IRParam* param)</span>
+<span id="L1775"><span class="lineNum">    1775</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1776"><span class="lineNum">    1776</span> <span class="tlaGNC">           1 :     Super::emitSimpleFuncParamImpl(param);</span></span>
+<span id="L1777"><span class="lineNum">    1777</span> <span class="tlaGNC">           1 :     emitFuncParamLayoutImpl(param);</span></span>
+<span id="L1778"><span class="lineNum">    1778</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1779"><span class="lineNum">    1779</span>              : </span>
+<span id="L1780"><span class="lineNum">    1780</span>              : void MetalSourceEmitter::emitPostDeclarationAttributesForType(IRInst* type)</span>
+<span id="L1781"><span class="lineNum">    1781</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1782"><span class="lineNum">    1782</span>              :     Super::emitPostDeclarationAttributesForType(type);</span>
+<span id="L1783"><span class="lineNum">    1783</span> <span class="tlaGNC">           1 :     if (auto textureType = as&lt;IRTextureTypeBase&gt;(type))</span></span>
+<span id="L1784"><span class="lineNum">    1784</span>              :     {</span>
+<span id="L1785"><span class="lineNum">    1785</span> <span class="tlaGNC">           1 :         if (textureType-&gt;getAccess() == SLANG_RESOURCE_ACCESS_RASTER_ORDERED)</span></span>
+<span id="L1786"><span class="lineNum">    1786</span>              :         {</span>
+<span id="L1787"><span class="lineNum">    1787</span>              :             m_writer-&gt;emit(&quot; [[raster_order_group(0)]]&quot;);</span>
+<span id="L1788"><span class="lineNum">    1788</span>              :         }</span>
+<span id="L1789"><span class="lineNum">    1789</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1790"><span class="lineNum">    1790</span>              :     else if (</span>
+<span id="L1791"><span class="lineNum">    1791</span> <span class="tlaGNC">           1 :         as&lt;IRHLSLRasterizerOrderedByteAddressBufferType&gt;(type) ||</span></span>
+<span id="L1792"><span class="lineNum">    1792</span>              :         as&lt;IRHLSLRasterizerOrderedStructuredBufferType&gt;(type))</span>
+<span id="L1793"><span class="lineNum">    1793</span>              :     {</span>
+<span id="L1794"><span class="lineNum">    1794</span>              :         m_writer-&gt;emit(&quot; [[raster_order_group(0)]]&quot;);</span>
+<span id="L1795"><span class="lineNum">    1795</span>              :     }</span>
+<span id="L1796"><span class="lineNum">    1796</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1797"><span class="lineNum">    1797</span>              : </span>
+<span id="L1798"><span class="lineNum">    1798</span>              : static UnownedStringSlice _getInterpolationModifierText(IRInterpolationMode mode)</span>
+<span id="L1799"><span class="lineNum">    1799</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1800"><span class="lineNum">    1800</span> <span class="tlaGNC">           1 :     switch (mode)</span></span>
+<span id="L1801"><span class="lineNum">    1801</span>              :     {</span>
+<span id="L1802"><span class="lineNum">    1802</span>              :     case IRInterpolationMode::PerVertex:</span>
+<span id="L1803"><span class="lineNum">    1803</span>              :     case IRInterpolationMode::NoInterpolation:</span>
+<span id="L1804"><span class="lineNum">    1804</span> <span class="tlaGNC">           1 :         return UnownedStringSlice::fromLiteral(&quot;[[flat]]&quot;);</span></span>
+<span id="L1805"><span class="lineNum">    1805</span>              :     case IRInterpolationMode::NoPerspective:</span>
+<span id="L1806"><span class="lineNum">    1806</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[center_no_perspective]]&quot;);</span></span>
+<span id="L1807"><span class="lineNum">    1807</span>              :     case IRInterpolationMode::Linear:</span>
+<span id="L1808"><span class="lineNum">    1808</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[sample_no_perspective]]&quot;);</span></span>
+<span id="L1809"><span class="lineNum">    1809</span>              :     case IRInterpolationMode::Sample:</span>
+<span id="L1810"><span class="lineNum">    1810</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[sample_perspective]]&quot;);</span></span>
+<span id="L1811"><span class="lineNum">    1811</span>              :     case IRInterpolationMode::Centroid:</span>
+<span id="L1812"><span class="lineNum">    1812</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[center_perspective]]&quot;);</span></span>
+<span id="L1813"><span class="lineNum">    1813</span>              :     default:</span>
+<span id="L1814"><span class="lineNum">    1814</span> <span class="tlaUNC">           0 :         return UnownedStringSlice();</span></span>
+<span id="L1815"><span class="lineNum">    1815</span>              :     }</span>
+<span id="L1816"><span class="lineNum">    1816</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1817"><span class="lineNum">    1817</span>              : </span>
+<span id="L1818"><span class="lineNum">    1818</span>              : void MetalSourceEmitter::emitInterpolationModifiersImpl(</span>
+<span id="L1819"><span class="lineNum">    1819</span>              :     IRInst* varInst,</span>
+<span id="L1820"><span class="lineNum">    1820</span>              :     IRType* valueType,</span>
+<span id="L1821"><span class="lineNum">    1821</span>              :     IRVarLayout* layout)</span>
+<span id="L1822"><span class="lineNum">    1822</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1823"><span class="lineNum">    1823</span>              :     SLANG_UNUSED(layout);</span>
+<span id="L1824"><span class="lineNum">    1824</span>              :     SLANG_UNUSED(valueType);</span>
+<span id="L1825"><span class="lineNum">    1825</span>              : </span>
+<span id="L1826"><span class="lineNum">    1826</span> <span class="tlaGNC">           1 :     for (auto dd : varInst-&gt;getDecorations())</span></span>
+<span id="L1827"><span class="lineNum">    1827</span>              :     {</span>
+<span id="L1828"><span class="lineNum">    1828</span> <span class="tlaGNC">           1 :         if (dd-&gt;getOp() != kIROp_InterpolationModeDecoration)</span></span>
+<span id="L1829"><span class="lineNum">    1829</span>              :             continue;</span>
 <span id="L1830"><span class="lineNum">    1830</span>              : </span>
-<span id="L1831"><span class="lineNum">    1831</span> <span class="tlaGNC">           1 :         UnownedStringSlice modeText = _getInterpolationModifierText(decoration-&gt;getMode());</span></span>
-<span id="L1832"><span class="lineNum">    1832</span> <span class="tlaGNC">           1 :         if (modeText.getLength() &gt; 0)</span></span>
-<span id="L1833"><span class="lineNum">    1833</span>              :         {</span>
-<span id="L1834"><span class="lineNum">    1834</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(modeText);</span></span>
-<span id="L1835"><span class="lineNum">    1835</span> <span class="tlaGNC">           1 :             m_writer-&gt;emitChar(&#x27; &#x27;);</span></span>
-<span id="L1836"><span class="lineNum">    1836</span>              :         }</span>
-<span id="L1837"><span class="lineNum">    1837</span>              :     }</span>
-<span id="L1838"><span class="lineNum">    1838</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1839"><span class="lineNum">    1839</span>              : </span>
-<span id="L1840"><span class="lineNum">    1840</span>              : void MetalSourceEmitter::emitPackOffsetModifier(</span>
-<span id="L1841"><span class="lineNum">    1841</span>              :     IRInst* varInst,</span>
-<span id="L1842"><span class="lineNum">    1842</span>              :     IRType* valueType,</span>
-<span id="L1843"><span class="lineNum">    1843</span>              :     IRPackOffsetDecoration* layout)</span>
-<span id="L1844"><span class="lineNum">    1844</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1845"><span class="lineNum">    1845</span>              :     SLANG_UNUSED(varInst);</span>
-<span id="L1846"><span class="lineNum">    1846</span>              :     SLANG_UNUSED(valueType);</span>
-<span id="L1847"><span class="lineNum">    1847</span>              :     SLANG_UNUSED(layout);</span>
-<span id="L1848"><span class="lineNum">    1848</span>              :     // We emit packoffset as a semantic in `emitSemantic`, so nothing to do here.</span>
-<span id="L1849"><span class="lineNum">    1849</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1850"><span class="lineNum">    1850</span>              : </span>
-<span id="L1851"><span class="lineNum">    1851</span>              : void MetalSourceEmitter::emitRateQualifiersAndAddressSpaceImpl(</span>
-<span id="L1852"><span class="lineNum">    1852</span>              :     IRRate* rate,</span>
-<span id="L1853"><span class="lineNum">    1853</span>              :     AddressSpace addressSpace)</span>
-<span id="L1854"><span class="lineNum">    1854</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1855"><span class="lineNum">    1855</span> <span class="tlaGNC">           1 :     if (as&lt;IRGroupSharedRate&gt;(rate))</span></span>
-<span id="L1856"><span class="lineNum">    1856</span>              :     {</span>
-<span id="L1857"><span class="lineNum">    1857</span>              :         m_writer-&gt;emit(&quot;threadgroup &quot;);</span>
-<span id="L1858"><span class="lineNum">    1858</span>              :         return;</span>
-<span id="L1859"><span class="lineNum">    1859</span>              :     }</span>
-<span id="L1860"><span class="lineNum">    1860</span>              : </span>
-<span id="L1861"><span class="lineNum">    1861</span> <span class="tlaGNC">           1 :     switch (addressSpace)</span></span>
-<span id="L1862"><span class="lineNum">    1862</span>              :     {</span>
-<span id="L1863"><span class="lineNum">    1863</span>              :     case AddressSpace::GroupShared:</span>
-<span id="L1864"><span class="lineNum">    1864</span>              :         m_writer-&gt;emit(&quot;threadgroup &quot;);</span>
-<span id="L1865"><span class="lineNum">    1865</span>              :         break;</span>
-<span id="L1866"><span class="lineNum">    1866</span>              :     case AddressSpace::Uniform:</span>
-<span id="L1867"><span class="lineNum">    1867</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;constant &quot;);</span></span>
-<span id="L1868"><span class="lineNum">    1868</span> <span class="tlaUNC">           0 :         break;</span></span>
-<span id="L1869"><span class="lineNum">    1869</span>              :     case AddressSpace::Global:</span>
-<span id="L1870"><span class="lineNum">    1870</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;device &quot;);</span></span>
-<span id="L1871"><span class="lineNum">    1871</span> <span class="tlaUNC">           0 :         break;</span></span>
-<span id="L1872"><span class="lineNum">    1872</span>              :     case AddressSpace::ThreadLocal:</span>
-<span id="L1873"><span class="lineNum">    1873</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;thread &quot;);</span></span>
-<span id="L1874"><span class="lineNum">    1874</span>              :         break;</span>
-<span id="L1875"><span class="lineNum">    1875</span>              :     case AddressSpace::MetalObjectData:</span>
-<span id="L1876"><span class="lineNum">    1876</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;object_data &quot;);</span></span>
-<span id="L1877"><span class="lineNum">    1877</span> <span class="tlaUNC">           0 :         break;</span></span>
-<span id="L1878"><span class="lineNum">    1878</span>              :     default:</span>
-<span id="L1879"><span class="lineNum">    1879</span>              :         break;</span>
-<span id="L1880"><span class="lineNum">    1880</span>              :     }</span>
-<span id="L1881"><span class="lineNum">    1881</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1882"><span class="lineNum">    1882</span>              : </span>
-<span id="L1883"><span class="lineNum">    1883</span>              : </span>
-<span id="L1884"><span class="lineNum">    1884</span>              : void MetalSourceEmitter::emitMeshShaderModifiersImpl(IRInst* varInst)</span>
-<span id="L1885"><span class="lineNum">    1885</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1886"><span class="lineNum">    1886</span>              :     SLANG_UNUSED(varInst);</span>
-<span id="L1887"><span class="lineNum">    1887</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1888"><span class="lineNum">    1888</span>              : </span>
-<span id="L1889"><span class="lineNum">    1889</span>              : void MetalSourceEmitter::emitVarDecorationsImpl(IRInst* varInst)</span>
-<span id="L1890"><span class="lineNum">    1890</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1891"><span class="lineNum">    1891</span>              :     SLANG_UNUSED(varInst);</span>
-<span id="L1892"><span class="lineNum">    1892</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1893"><span class="lineNum">    1893</span>              : </span>
-<span id="L1894"><span class="lineNum">    1894</span>              : void MetalSourceEmitter::emitMatrixLayoutModifiersImpl(IRType*)</span>
-<span id="L1895"><span class="lineNum">    1895</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1896"><span class="lineNum">    1896</span>              :     // Metal only supports column major layout, and we must have</span>
-<span id="L1897"><span class="lineNum">    1897</span>              :     // already translated all matrix ops to assume column-major</span>
-<span id="L1898"><span class="lineNum">    1898</span>              :     // at this stage.</span>
-<span id="L1899"><span class="lineNum">    1899</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1900"><span class="lineNum">    1900</span>              : </span>
-<span id="L1901"><span class="lineNum">    1901</span>              : void MetalSourceEmitter::handleRequiredCapabilitiesImpl(IRInst* inst)</span>
-<span id="L1902"><span class="lineNum">    1902</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1903"><span class="lineNum">    1903</span>              :     SLANG_UNUSED(inst);</span>
-<span id="L1904"><span class="lineNum">    1904</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1905"><span class="lineNum">    1905</span>              : </span>
-<span id="L1906"><span class="lineNum">    1906</span>              : void MetalSourceEmitter::emitFrontMatterImpl(TargetRequest*)</span>
-<span id="L1907"><span class="lineNum">    1907</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1908"><span class="lineNum">    1908</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_stdlib&gt;\n&quot;);</span></span>
-<span id="L1909"><span class="lineNum">    1909</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_math&gt;\n&quot;);</span></span>
-<span id="L1910"><span class="lineNum">    1910</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_texture&gt;\n&quot;);</span></span>
-<span id="L1911"><span class="lineNum">    1911</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;using namespace metal;\n&quot;);</span></span>
-<span id="L1912"><span class="lineNum">    1912</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1913"><span class="lineNum">    1913</span>              : </span>
-<span id="L1914"><span class="lineNum">    1914</span>              : void MetalSourceEmitter::emitGlobalInstImpl(IRInst* inst)</span>
-<span id="L1915"><span class="lineNum">    1915</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1916"><span class="lineNum">    1916</span> <span class="tlaGNC">           1 :     Super::emitGlobalInstImpl(inst);</span></span>
-<span id="L1917"><span class="lineNum">    1917</span>              : }</span>
-<span id="L1918"><span class="lineNum">    1918</span>              : </span>
-<span id="L1919"><span class="lineNum">    1919</span>              : } // namespace Slang</span>
+<span id="L1831"><span class="lineNum">    1831</span>              :         auto decoration = (IRInterpolationModeDecoration*)dd;</span>
+<span id="L1832"><span class="lineNum">    1832</span>              : </span>
+<span id="L1833"><span class="lineNum">    1833</span> <span class="tlaGNC">           1 :         UnownedStringSlice modeText = _getInterpolationModifierText(decoration-&gt;getMode());</span></span>
+<span id="L1834"><span class="lineNum">    1834</span> <span class="tlaGNC">           1 :         if (modeText.getLength() &gt; 0)</span></span>
+<span id="L1835"><span class="lineNum">    1835</span>              :         {</span>
+<span id="L1836"><span class="lineNum">    1836</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(modeText);</span></span>
+<span id="L1837"><span class="lineNum">    1837</span> <span class="tlaGNC">           1 :             m_writer-&gt;emitChar(&#x27; &#x27;);</span></span>
+<span id="L1838"><span class="lineNum">    1838</span>              :         }</span>
+<span id="L1839"><span class="lineNum">    1839</span>              :     }</span>
+<span id="L1840"><span class="lineNum">    1840</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1841"><span class="lineNum">    1841</span>              : </span>
+<span id="L1842"><span class="lineNum">    1842</span>              : void MetalSourceEmitter::emitPackOffsetModifier(</span>
+<span id="L1843"><span class="lineNum">    1843</span>              :     IRInst* varInst,</span>
+<span id="L1844"><span class="lineNum">    1844</span>              :     IRType* valueType,</span>
+<span id="L1845"><span class="lineNum">    1845</span>              :     IRPackOffsetDecoration* layout)</span>
+<span id="L1846"><span class="lineNum">    1846</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1847"><span class="lineNum">    1847</span>              :     SLANG_UNUSED(varInst);</span>
+<span id="L1848"><span class="lineNum">    1848</span>              :     SLANG_UNUSED(valueType);</span>
+<span id="L1849"><span class="lineNum">    1849</span>              :     SLANG_UNUSED(layout);</span>
+<span id="L1850"><span class="lineNum">    1850</span>              :     // We emit packoffset as a semantic in `emitSemantic`, so nothing to do here.</span>
+<span id="L1851"><span class="lineNum">    1851</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1852"><span class="lineNum">    1852</span>              : </span>
+<span id="L1853"><span class="lineNum">    1853</span>              : void MetalSourceEmitter::emitRateQualifiersAndAddressSpaceImpl(</span>
+<span id="L1854"><span class="lineNum">    1854</span>              :     IRRate* rate,</span>
+<span id="L1855"><span class="lineNum">    1855</span>              :     AddressSpace addressSpace)</span>
+<span id="L1856"><span class="lineNum">    1856</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1857"><span class="lineNum">    1857</span> <span class="tlaGNC">           1 :     if (as&lt;IRGroupSharedRate&gt;(rate))</span></span>
+<span id="L1858"><span class="lineNum">    1858</span>              :     {</span>
+<span id="L1859"><span class="lineNum">    1859</span>              :         m_writer-&gt;emit(&quot;threadgroup &quot;);</span>
+<span id="L1860"><span class="lineNum">    1860</span>              :         return;</span>
+<span id="L1861"><span class="lineNum">    1861</span>              :     }</span>
+<span id="L1862"><span class="lineNum">    1862</span>              : </span>
+<span id="L1863"><span class="lineNum">    1863</span> <span class="tlaGNC">           1 :     switch (addressSpace)</span></span>
+<span id="L1864"><span class="lineNum">    1864</span>              :     {</span>
+<span id="L1865"><span class="lineNum">    1865</span>              :     case AddressSpace::GroupShared:</span>
+<span id="L1866"><span class="lineNum">    1866</span>              :         m_writer-&gt;emit(&quot;threadgroup &quot;);</span>
+<span id="L1867"><span class="lineNum">    1867</span>              :         break;</span>
+<span id="L1868"><span class="lineNum">    1868</span>              :     case AddressSpace::Uniform:</span>
+<span id="L1869"><span class="lineNum">    1869</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;constant &quot;);</span></span>
+<span id="L1870"><span class="lineNum">    1870</span> <span class="tlaUNC">           0 :         break;</span></span>
+<span id="L1871"><span class="lineNum">    1871</span>              :     case AddressSpace::Global:</span>
+<span id="L1872"><span class="lineNum">    1872</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;device &quot;);</span></span>
+<span id="L1873"><span class="lineNum">    1873</span> <span class="tlaUNC">           0 :         break;</span></span>
+<span id="L1874"><span class="lineNum">    1874</span>              :     case AddressSpace::ThreadLocal:</span>
+<span id="L1875"><span class="lineNum">    1875</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;thread &quot;);</span></span>
+<span id="L1876"><span class="lineNum">    1876</span>              :         break;</span>
+<span id="L1877"><span class="lineNum">    1877</span>              :     case AddressSpace::MetalObjectData:</span>
+<span id="L1878"><span class="lineNum">    1878</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;object_data &quot;);</span></span>
+<span id="L1879"><span class="lineNum">    1879</span> <span class="tlaUNC">           0 :         break;</span></span>
+<span id="L1880"><span class="lineNum">    1880</span>              :     default:</span>
+<span id="L1881"><span class="lineNum">    1881</span>              :         break;</span>
+<span id="L1882"><span class="lineNum">    1882</span>              :     }</span>
+<span id="L1883"><span class="lineNum">    1883</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1884"><span class="lineNum">    1884</span>              : </span>
+<span id="L1885"><span class="lineNum">    1885</span>              : </span>
+<span id="L1886"><span class="lineNum">    1886</span>              : void MetalSourceEmitter::emitMeshShaderModifiersImpl(IRInst* varInst)</span>
+<span id="L1887"><span class="lineNum">    1887</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1888"><span class="lineNum">    1888</span>              :     SLANG_UNUSED(varInst);</span>
+<span id="L1889"><span class="lineNum">    1889</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1890"><span class="lineNum">    1890</span>              : </span>
+<span id="L1891"><span class="lineNum">    1891</span>              : void MetalSourceEmitter::emitVarDecorationsImpl(IRInst* varInst)</span>
+<span id="L1892"><span class="lineNum">    1892</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1893"><span class="lineNum">    1893</span>              :     SLANG_UNUSED(varInst);</span>
+<span id="L1894"><span class="lineNum">    1894</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1895"><span class="lineNum">    1895</span>              : </span>
+<span id="L1896"><span class="lineNum">    1896</span>              : void MetalSourceEmitter::emitMatrixLayoutModifiersImpl(IRType*)</span>
+<span id="L1897"><span class="lineNum">    1897</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1898"><span class="lineNum">    1898</span>              :     // Metal only supports column major layout, and we must have</span>
+<span id="L1899"><span class="lineNum">    1899</span>              :     // already translated all matrix ops to assume column-major</span>
+<span id="L1900"><span class="lineNum">    1900</span>              :     // at this stage.</span>
+<span id="L1901"><span class="lineNum">    1901</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1902"><span class="lineNum">    1902</span>              : </span>
+<span id="L1903"><span class="lineNum">    1903</span>              : void MetalSourceEmitter::handleRequiredCapabilitiesImpl(IRInst* inst)</span>
+<span id="L1904"><span class="lineNum">    1904</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1905"><span class="lineNum">    1905</span>              :     SLANG_UNUSED(inst);</span>
+<span id="L1906"><span class="lineNum">    1906</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1907"><span class="lineNum">    1907</span>              : </span>
+<span id="L1908"><span class="lineNum">    1908</span>              : void MetalSourceEmitter::emitFrontMatterImpl(TargetRequest*)</span>
+<span id="L1909"><span class="lineNum">    1909</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1910"><span class="lineNum">    1910</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_stdlib&gt;\n&quot;);</span></span>
+<span id="L1911"><span class="lineNum">    1911</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_math&gt;\n&quot;);</span></span>
+<span id="L1912"><span class="lineNum">    1912</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_texture&gt;\n&quot;);</span></span>
+<span id="L1913"><span class="lineNum">    1913</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;using namespace metal;\n&quot;);</span></span>
+<span id="L1914"><span class="lineNum">    1914</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1915"><span class="lineNum">    1915</span>              : </span>
+<span id="L1916"><span class="lineNum">    1916</span>              : void MetalSourceEmitter::emitGlobalInstImpl(IRInst* inst)</span>
+<span id="L1917"><span class="lineNum">    1917</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1918"><span class="lineNum">    1918</span> <span class="tlaGNC">           1 :     Super::emitGlobalInstImpl(inst);</span></span>
+<span id="L1919"><span class="lineNum">    1919</span>              : }</span>
+<span id="L1920"><span class="lineNum">    1920</span>              : </span>
+<span id="L1921"><span class="lineNum">    1921</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

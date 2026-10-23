@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-22 03:59:17 UTC</td>
+      <td class="headerValue">2026-10-23 04:33:24 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">38.0&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:38.0%;background-color:hsl(16, 70%, 50%)"></div></div>
-      <span class="metricCounts">328 / 863</span>
+      <span class="metricValue">38.1&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:38.1%;background-color:hsl(16, 70%, 50%)"></div></div>
+      <span class="metricCounts">325 / 854</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -1836,336 +1836,318 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1563"><span class="lineNum">    1563</span>              :                 {</span>
 <span id="L1564"><span class="lineNum">    1564</span> <span class="tlaGNC">           1 :                     ScopePart scopePart(this, Part::Type::ParamType);</span></span>
 <span id="L1565"><span class="lineNum">    1565</span>              : </span>
-<span id="L1566"><span class="lineNum">    1566</span>              :                     // Seems these apply to parameters/VarDeclBase and are not part of the &#x27;type&#x27;</span>
-<span id="L1567"><span class="lineNum">    1567</span>              :                     // but seems more appropriate to put in the Type Part</span>
-<span id="L1568"><span class="lineNum">    1568</span>              : </span>
-<span id="L1569"><span class="lineNum">    1569</span> <span class="tlaGNC">           1 :                     if (paramDecl-&gt;hasModifier&lt;InOutModifier&gt;())</span></span>
-<span id="L1570"><span class="lineNum">    1570</span>              :                     {</span>
-<span id="L1571"><span class="lineNum">    1571</span> <span class="tlaUNC">           0 :                         sb &lt;&lt; toSlice(&quot;inout &quot;);</span></span>
-<span id="L1572"><span class="lineNum">    1572</span> <span class="tlaUNC">           0 :                     }</span></span>
-<span id="L1573"><span class="lineNum">    1573</span> <span class="tlaGNC">           1 :                     else if (paramDecl-&gt;hasModifier&lt;OutModifier&gt;())</span></span>
-<span id="L1574"><span class="lineNum">    1574</span>              :                     {</span>
-<span id="L1575"><span class="lineNum">    1575</span> <span class="tlaUNC">           0 :                         sb &lt;&lt; toSlice(&quot;out &quot;);</span></span>
-<span id="L1576"><span class="lineNum">    1576</span> <span class="tlaUNC">           0 :                     }</span></span>
-<span id="L1577"><span class="lineNum">    1577</span> <span class="tlaGNC">           1 :                     else if (paramDecl-&gt;hasModifier&lt;InModifier&gt;())</span></span>
-<span id="L1578"><span class="lineNum">    1578</span>              :                     {</span>
-<span id="L1579"><span class="lineNum">    1579</span> <span class="tlaUNC">           0 :                         sb &lt;&lt; toSlice(&quot;in &quot;);</span></span>
-<span id="L1580"><span class="lineNum">    1580</span>              :                     }</span>
-<span id="L1581"><span class="lineNum">    1581</span>              : </span>
-<span id="L1582"><span class="lineNum">    1582</span>              :                     // And this to params/variables (not the type)</span>
-<span id="L1583"><span class="lineNum">    1583</span> <span class="tlaUNC">           0 :                     if (paramDecl-&gt;hasModifier&lt;ConstModifier&gt;())</span></span>
-<span id="L1584"><span class="lineNum">    1584</span>              :                     {</span>
-<span id="L1585"><span class="lineNum">    1585</span> <span class="tlaGNC">           1 :                         sb &lt;&lt; toSlice(&quot;const &quot;);</span></span>
-<span id="L1586"><span class="lineNum">    1586</span>              :                     }</span>
-<span id="L1587"><span class="lineNum">    1587</span>              : </span>
-<span id="L1588"><span class="lineNum">    1588</span> <span class="tlaGNC">           1 :                     addType(type);</span></span>
-<span id="L1589"><span class="lineNum">    1589</span> <span class="tlaGNC">           1 :                 }</span></span>
-<span id="L1590"><span class="lineNum">    1590</span>              : </span>
-<span id="L1591"><span class="lineNum">    1591</span>              :                 // Output the parameter name if there is one, and it&#x27;s enabled in the options</span>
-<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaGNC">           1 :                 if (m_optionFlags &amp; OptionFlag::ParamNames &amp;&amp; paramDecl-&gt;getName())</span></span>
-<span id="L1593"><span class="lineNum">    1593</span>              :                 {</span>
-<span id="L1594"><span class="lineNum">    1594</span> <span class="tlaGNC">           1 :                     sb &lt;&lt; &quot; &quot;;</span></span>
-<span id="L1595"><span class="lineNum">    1595</span>              :                     {</span>
-<span id="L1596"><span class="lineNum">    1596</span> <span class="tlaGNC">           1 :                         ScopePart scopePart(this, Part::Type::ParamName);</span></span>
-<span id="L1597"><span class="lineNum">    1597</span> <span class="tlaGNC">           1 :                         sb &lt;&lt; paramDecl-&gt;getName()-&gt;text;</span></span>
-<span id="L1598"><span class="lineNum">    1598</span> <span class="tlaGNC">           1 :                         if (elementIndex != -1)</span></span>
-<span id="L1599"><span class="lineNum">    1599</span> <span class="tlaUNC">           0 :                             sb &lt;&lt; &quot;_&quot; &lt;&lt; elementIndex;</span></span>
-<span id="L1600"><span class="lineNum">    1600</span> <span class="tlaGNC">           1 :                     }</span></span>
-<span id="L1601"><span class="lineNum">    1601</span>              :                 }</span>
-<span id="L1602"><span class="lineNum">    1602</span>              : </span>
-<span id="L1603"><span class="lineNum">    1603</span> <span class="tlaGNC">           1 :                 if (m_optionFlags &amp; OptionFlag::DefaultParamValues &amp;&amp; paramDecl-&gt;initExpr)</span></span>
-<span id="L1604"><span class="lineNum">    1604</span>              :                 {</span>
-<span id="L1605"><span class="lineNum">    1605</span> <span class="tlaGNC">           1 :                     sb &lt;&lt; &quot; = &quot;;</span></span>
-<span id="L1606"><span class="lineNum">    1606</span> <span class="tlaGNC">           1 :                     addExpr(paramDecl-&gt;initExpr);</span></span>
-<span id="L1607"><span class="lineNum">    1607</span>              :                 }</span>
-<span id="L1608"><span class="lineNum">    1608</span> <span class="tlaGNC">           1 :                 first = false;</span></span>
-<span id="L1609"><span class="lineNum">    1609</span> <span class="tlaGNC">           1 :             };</span></span>
-<span id="L1610"><span class="lineNum">    1610</span> <span class="tlaGNC">           1 :             if (auto typePack = as&lt;ConcreteTypePack&gt;(paramType))</span></span>
-<span id="L1611"><span class="lineNum">    1611</span>              :             {</span>
-<span id="L1612"><span class="lineNum">    1612</span> <span class="tlaGNC">           1 :                 for (Index elementIndex = 0; elementIndex &lt; typePack-&gt;getTypeCount();</span></span>
-<span id="L1613"><span class="lineNum">    1613</span>              :                      ++elementIndex)</span>
-<span id="L1614"><span class="lineNum">    1614</span>              :                 {</span>
-<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaGNC">           1 :                     addParamElement(typePack-&gt;getElementType(elementIndex), elementIndex);</span></span>
-<span id="L1616"><span class="lineNum">    1616</span>              :                 }</span>
-<span id="L1617"><span class="lineNum">    1617</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L1618"><span class="lineNum">    1618</span>              :             else</span>
-<span id="L1619"><span class="lineNum">    1619</span>              :             {</span>
-<span id="L1620"><span class="lineNum">    1620</span> <span class="tlaGNC">           1 :                 addParamElement(paramType, -1);</span></span>
-<span id="L1621"><span class="lineNum">    1621</span>              :             }</span>
-<span id="L1622"><span class="lineNum">    1622</span>              :         }</span>
-<span id="L1623"><span class="lineNum">    1623</span>              : </span>
-<span id="L1624"><span class="lineNum">    1624</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot;)&quot;;</span></span>
-<span id="L1625"><span class="lineNum">    1625</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1626"><span class="lineNum">    1626</span> <span class="tlaGNC">           1 :     else if (auto genericDeclRef = declRef.as&lt;GenericDecl&gt;())</span></span>
-<span id="L1627"><span class="lineNum">    1627</span>              :     {</span>
-<span id="L1628"><span class="lineNum">    1628</span> <span class="tlaGNC">           1 :         addGenericParams(genericDeclRef, outParamRange);</span></span>
-<span id="L1629"><span class="lineNum">    1629</span>              :     }</span>
-<span id="L1630"><span class="lineNum">    1630</span>              :     else</span>
-<span id="L1631"><span class="lineNum">    1631</span>              :     {</span>
-<span id="L1632"><span class="lineNum">    1632</span>              :     }</span>
-<span id="L1633"><span class="lineNum">    1633</span>              : </span>
-<span id="L1634"><span class="lineNum">    1634</span> <span class="tlaGNC">           1 :     if (maybeGetInner(declRef.getDecl())-&gt;hasModifier&lt;CppStyleTrailingReceiverParamConstModifier&gt;())</span></span>
-<span id="L1635"><span class="lineNum">    1635</span>              :     {</span>
-<span id="L1636"><span class="lineNum">    1636</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot; const&quot;;</span></span>
-<span id="L1637"><span class="lineNum">    1637</span>              :     }</span>
-<span id="L1638"><span class="lineNum">    1638</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1639"><span class="lineNum">    1639</span>              : </span>
-<span id="L1640"><span class="lineNum">    1640</span>              : void ASTPrinter::addDeclKindPrefix(Decl* decl)</span>
-<span id="L1641"><span class="lineNum">    1641</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1642"><span class="lineNum">    1642</span> <span class="tlaGNC">           1 :     if (auto genericDecl = as&lt;GenericDecl&gt;(decl))</span></span>
-<span id="L1643"><span class="lineNum">    1643</span>              :     {</span>
-<span id="L1644"><span class="lineNum">    1644</span> <span class="tlaGNC">           1 :         decl = genericDecl-&gt;inner;</span></span>
-<span id="L1645"><span class="lineNum">    1645</span>              :     }</span>
-<span id="L1646"><span class="lineNum">    1646</span> <span class="tlaGNC">           1 :     for (auto modifier : decl-&gt;modifiers)</span></span>
-<span id="L1647"><span class="lineNum">    1647</span>              :     {</span>
-<span id="L1648"><span class="lineNum">    1648</span>              :         // We omit trailing `const` because this loop prints prefix modifiers. For example,</span>
-<span id="L1649"><span class="lineNum">    1649</span>              :         // `int read() const` must not be displayed as `const func read() -&gt; int`.</span>
-<span id="L1650"><span class="lineNum">    1650</span> <span class="tlaGNC">           1 :         if (as&lt;CppStyleTrailingReceiverParamConstModifier&gt;(modifier))</span></span>
-<span id="L1651"><span class="lineNum">    1651</span>              :             continue;</span>
-<span id="L1652"><span class="lineNum">    1652</span>              : </span>
-<span id="L1653"><span class="lineNum">    1653</span> <span class="tlaGNC">           1 :         if (modifier-&gt;getKeywordName())</span></span>
-<span id="L1654"><span class="lineNum">    1654</span>              :         {</span>
-<span id="L1655"><span class="lineNum">    1655</span> <span class="tlaGNC">           1 :             if (m_optionFlags &amp; OptionFlag::NoInternalKeywords)</span></span>
-<span id="L1656"><span class="lineNum">    1656</span>              :             {</span>
-<span id="L1657"><span class="lineNum">    1657</span> <span class="tlaGNC">           1 :                 if (as&lt;TargetIntrinsicModifier&gt;(modifier))</span></span>
+<span id="L1566"><span class="lineNum">    1566</span>              :                     // The passing mode belongs to the parameter declaration rather than its type,</span>
+<span id="L1567"><span class="lineNum">    1567</span>              :                     // but we print it in the type part so that it stays next to the type.</span>
+<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">           1 :                     printParamPassingModePrefix(sb, getParamPassingMode(paramDecl));</span></span>
+<span id="L1569"><span class="lineNum">    1569</span>              : </span>
+<span id="L1570"><span class="lineNum">    1570</span> <span class="tlaGNC">           1 :                     addType(type);</span></span>
+<span id="L1571"><span class="lineNum">    1571</span> <span class="tlaGNC">           1 :                 }</span></span>
+<span id="L1572"><span class="lineNum">    1572</span>              : </span>
+<span id="L1573"><span class="lineNum">    1573</span>              :                 // Output the parameter name if there is one, and it&#x27;s enabled in the options</span>
+<span id="L1574"><span class="lineNum">    1574</span> <span class="tlaGNC">           1 :                 if (m_optionFlags &amp; OptionFlag::ParamNames &amp;&amp; paramDecl-&gt;getName())</span></span>
+<span id="L1575"><span class="lineNum">    1575</span>              :                 {</span>
+<span id="L1576"><span class="lineNum">    1576</span> <span class="tlaGNC">           1 :                     sb &lt;&lt; &quot; &quot;;</span></span>
+<span id="L1577"><span class="lineNum">    1577</span>              :                     {</span>
+<span id="L1578"><span class="lineNum">    1578</span> <span class="tlaGNC">           1 :                         ScopePart scopePart(this, Part::Type::ParamName);</span></span>
+<span id="L1579"><span class="lineNum">    1579</span> <span class="tlaGNC">           1 :                         sb &lt;&lt; paramDecl-&gt;getName()-&gt;text;</span></span>
+<span id="L1580"><span class="lineNum">    1580</span> <span class="tlaGNC">           1 :                         if (elementIndex != -1)</span></span>
+<span id="L1581"><span class="lineNum">    1581</span> <span class="tlaUNC">           0 :                             sb &lt;&lt; &quot;_&quot; &lt;&lt; elementIndex;</span></span>
+<span id="L1582"><span class="lineNum">    1582</span> <span class="tlaGNC">           1 :                     }</span></span>
+<span id="L1583"><span class="lineNum">    1583</span>              :                 }</span>
+<span id="L1584"><span class="lineNum">    1584</span>              : </span>
+<span id="L1585"><span class="lineNum">    1585</span> <span class="tlaGNC">           1 :                 if (m_optionFlags &amp; OptionFlag::DefaultParamValues &amp;&amp; paramDecl-&gt;initExpr)</span></span>
+<span id="L1586"><span class="lineNum">    1586</span>              :                 {</span>
+<span id="L1587"><span class="lineNum">    1587</span> <span class="tlaGNC">           1 :                     sb &lt;&lt; &quot; = &quot;;</span></span>
+<span id="L1588"><span class="lineNum">    1588</span> <span class="tlaGNC">           1 :                     addExpr(paramDecl-&gt;initExpr);</span></span>
+<span id="L1589"><span class="lineNum">    1589</span>              :                 }</span>
+<span id="L1590"><span class="lineNum">    1590</span> <span class="tlaGNC">           1 :                 first = false;</span></span>
+<span id="L1591"><span class="lineNum">    1591</span> <span class="tlaGNC">           1 :             };</span></span>
+<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaGNC">           1 :             if (auto typePack = as&lt;ConcreteTypePack&gt;(paramType))</span></span>
+<span id="L1593"><span class="lineNum">    1593</span>              :             {</span>
+<span id="L1594"><span class="lineNum">    1594</span> <span class="tlaGNC">           1 :                 for (Index elementIndex = 0; elementIndex &lt; typePack-&gt;getTypeCount();</span></span>
+<span id="L1595"><span class="lineNum">    1595</span>              :                      ++elementIndex)</span>
+<span id="L1596"><span class="lineNum">    1596</span>              :                 {</span>
+<span id="L1597"><span class="lineNum">    1597</span> <span class="tlaGNC">           1 :                     addParamElement(typePack-&gt;getElementType(elementIndex), elementIndex);</span></span>
+<span id="L1598"><span class="lineNum">    1598</span>              :                 }</span>
+<span id="L1599"><span class="lineNum">    1599</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L1600"><span class="lineNum">    1600</span>              :             else</span>
+<span id="L1601"><span class="lineNum">    1601</span>              :             {</span>
+<span id="L1602"><span class="lineNum">    1602</span> <span class="tlaGNC">           1 :                 addParamElement(paramType, -1);</span></span>
+<span id="L1603"><span class="lineNum">    1603</span>              :             }</span>
+<span id="L1604"><span class="lineNum">    1604</span>              :         }</span>
+<span id="L1605"><span class="lineNum">    1605</span>              : </span>
+<span id="L1606"><span class="lineNum">    1606</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot;)&quot;;</span></span>
+<span id="L1607"><span class="lineNum">    1607</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1608"><span class="lineNum">    1608</span> <span class="tlaGNC">           1 :     else if (auto genericDeclRef = declRef.as&lt;GenericDecl&gt;())</span></span>
+<span id="L1609"><span class="lineNum">    1609</span>              :     {</span>
+<span id="L1610"><span class="lineNum">    1610</span> <span class="tlaGNC">           1 :         addGenericParams(genericDeclRef, outParamRange);</span></span>
+<span id="L1611"><span class="lineNum">    1611</span>              :     }</span>
+<span id="L1612"><span class="lineNum">    1612</span>              :     else</span>
+<span id="L1613"><span class="lineNum">    1613</span>              :     {</span>
+<span id="L1614"><span class="lineNum">    1614</span>              :     }</span>
+<span id="L1615"><span class="lineNum">    1615</span>              : </span>
+<span id="L1616"><span class="lineNum">    1616</span> <span class="tlaGNC">           1 :     if (maybeGetInner(declRef.getDecl())-&gt;hasModifier&lt;CppStyleTrailingReceiverParamConstModifier&gt;())</span></span>
+<span id="L1617"><span class="lineNum">    1617</span>              :     {</span>
+<span id="L1618"><span class="lineNum">    1618</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot; const&quot;;</span></span>
+<span id="L1619"><span class="lineNum">    1619</span>              :     }</span>
+<span id="L1620"><span class="lineNum">    1620</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1621"><span class="lineNum">    1621</span>              : </span>
+<span id="L1622"><span class="lineNum">    1622</span>              : void ASTPrinter::addDeclKindPrefix(Decl* decl)</span>
+<span id="L1623"><span class="lineNum">    1623</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1624"><span class="lineNum">    1624</span> <span class="tlaGNC">           1 :     if (auto genericDecl = as&lt;GenericDecl&gt;(decl))</span></span>
+<span id="L1625"><span class="lineNum">    1625</span>              :     {</span>
+<span id="L1626"><span class="lineNum">    1626</span> <span class="tlaGNC">           1 :         decl = genericDecl-&gt;inner;</span></span>
+<span id="L1627"><span class="lineNum">    1627</span>              :     }</span>
+<span id="L1628"><span class="lineNum">    1628</span> <span class="tlaGNC">           1 :     for (auto modifier : decl-&gt;modifiers)</span></span>
+<span id="L1629"><span class="lineNum">    1629</span>              :     {</span>
+<span id="L1630"><span class="lineNum">    1630</span>              :         // We omit trailing `const` because this loop prints prefix modifiers. For example,</span>
+<span id="L1631"><span class="lineNum">    1631</span>              :         // `int read() const` must not be displayed as `const func read() -&gt; int`.</span>
+<span id="L1632"><span class="lineNum">    1632</span> <span class="tlaGNC">           1 :         if (as&lt;CppStyleTrailingReceiverParamConstModifier&gt;(modifier))</span></span>
+<span id="L1633"><span class="lineNum">    1633</span>              :             continue;</span>
+<span id="L1634"><span class="lineNum">    1634</span>              : </span>
+<span id="L1635"><span class="lineNum">    1635</span> <span class="tlaGNC">           1 :         if (modifier-&gt;getKeywordName())</span></span>
+<span id="L1636"><span class="lineNum">    1636</span>              :         {</span>
+<span id="L1637"><span class="lineNum">    1637</span> <span class="tlaGNC">           1 :             if (m_optionFlags &amp; OptionFlag::NoInternalKeywords)</span></span>
+<span id="L1638"><span class="lineNum">    1638</span>              :             {</span>
+<span id="L1639"><span class="lineNum">    1639</span> <span class="tlaGNC">           1 :                 if (as&lt;TargetIntrinsicModifier&gt;(modifier))</span></span>
+<span id="L1640"><span class="lineNum">    1640</span>              :                     continue;</span>
+<span id="L1641"><span class="lineNum">    1641</span> <span class="tlaGNC">           1 :                 if (as&lt;MagicTypeModifier&gt;(modifier))</span></span>
+<span id="L1642"><span class="lineNum">    1642</span>              :                     continue;</span>
+<span id="L1643"><span class="lineNum">    1643</span> <span class="tlaGNC">           1 :                 if (as&lt;IntrinsicOpModifier&gt;(modifier))</span></span>
+<span id="L1644"><span class="lineNum">    1644</span>              :                     continue;</span>
+<span id="L1645"><span class="lineNum">    1645</span> <span class="tlaGNC">           1 :                 if (as&lt;IntrinsicTypeModifier&gt;(modifier))</span></span>
+<span id="L1646"><span class="lineNum">    1646</span>              :                     continue;</span>
+<span id="L1647"><span class="lineNum">    1647</span> <span class="tlaGNC">           1 :                 if (as&lt;BuiltinModifier&gt;(modifier))</span></span>
+<span id="L1648"><span class="lineNum">    1648</span>              :                     continue;</span>
+<span id="L1649"><span class="lineNum">    1649</span> <span class="tlaGNC">           1 :                 if (as&lt;BuiltinRequirementModifier&gt;(modifier))</span></span>
+<span id="L1650"><span class="lineNum">    1650</span>              :                     continue;</span>
+<span id="L1651"><span class="lineNum">    1651</span> <span class="tlaGNC">           1 :                 if (as&lt;BuiltinTypeModifier&gt;(modifier))</span></span>
+<span id="L1652"><span class="lineNum">    1652</span>              :                     continue;</span>
+<span id="L1653"><span class="lineNum">    1653</span> <span class="tlaGNC">           1 :                 if (as&lt;SpecializedForTargetModifier&gt;(modifier))</span></span>
+<span id="L1654"><span class="lineNum">    1654</span>              :                     continue;</span>
+<span id="L1655"><span class="lineNum">    1655</span> <span class="tlaGNC">           1 :                 if (as&lt;AttributeTargetModifier&gt;(modifier))</span></span>
+<span id="L1656"><span class="lineNum">    1656</span>              :                     continue;</span>
+<span id="L1657"><span class="lineNum">    1657</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredCUDASMVersionModifier&gt;(modifier))</span></span>
 <span id="L1658"><span class="lineNum">    1658</span>              :                     continue;</span>
-<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">           1 :                 if (as&lt;MagicTypeModifier&gt;(modifier))</span></span>
+<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredSPIRVVersionModifier&gt;(modifier))</span></span>
 <span id="L1660"><span class="lineNum">    1660</span>              :                     continue;</span>
-<span id="L1661"><span class="lineNum">    1661</span> <span class="tlaGNC">           1 :                 if (as&lt;IntrinsicOpModifier&gt;(modifier))</span></span>
+<span id="L1661"><span class="lineNum">    1661</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredGLSLVersionModifier&gt;(modifier))</span></span>
 <span id="L1662"><span class="lineNum">    1662</span>              :                     continue;</span>
-<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaGNC">           1 :                 if (as&lt;IntrinsicTypeModifier&gt;(modifier))</span></span>
+<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredGLSLExtensionModifier&gt;(modifier))</span></span>
 <span id="L1664"><span class="lineNum">    1664</span>              :                     continue;</span>
-<span id="L1665"><span class="lineNum">    1665</span> <span class="tlaGNC">           1 :                 if (as&lt;BuiltinModifier&gt;(modifier))</span></span>
+<span id="L1665"><span class="lineNum">    1665</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredWGSLExtensionModifier&gt;(modifier))</span></span>
 <span id="L1666"><span class="lineNum">    1666</span>              :                     continue;</span>
-<span id="L1667"><span class="lineNum">    1667</span> <span class="tlaGNC">           1 :                 if (as&lt;BuiltinRequirementModifier&gt;(modifier))</span></span>
+<span id="L1667"><span class="lineNum">    1667</span> <span class="tlaGNC">           1 :                 if (as&lt;GLSLLayoutModifierGroupMarker&gt;(modifier))</span></span>
 <span id="L1668"><span class="lineNum">    1668</span>              :                     continue;</span>
-<span id="L1669"><span class="lineNum">    1669</span> <span class="tlaGNC">           1 :                 if (as&lt;BuiltinTypeModifier&gt;(modifier))</span></span>
+<span id="L1669"><span class="lineNum">    1669</span> <span class="tlaGNC">           1 :                 if (as&lt;HLSLLayoutSemantic&gt;(modifier))</span></span>
 <span id="L1670"><span class="lineNum">    1670</span>              :                     continue;</span>
-<span id="L1671"><span class="lineNum">    1671</span> <span class="tlaGNC">           1 :                 if (as&lt;SpecializedForTargetModifier&gt;(modifier))</span></span>
+<span id="L1671"><span class="lineNum">    1671</span> <span class="tlaGNC">           1 :                 if (as&lt;ImplicitConversionModifier&gt;(modifier))</span></span>
 <span id="L1672"><span class="lineNum">    1672</span>              :                     continue;</span>
-<span id="L1673"><span class="lineNum">    1673</span> <span class="tlaGNC">           1 :                 if (as&lt;AttributeTargetModifier&gt;(modifier))</span></span>
-<span id="L1674"><span class="lineNum">    1674</span>              :                     continue;</span>
-<span id="L1675"><span class="lineNum">    1675</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredCUDASMVersionModifier&gt;(modifier))</span></span>
-<span id="L1676"><span class="lineNum">    1676</span>              :                     continue;</span>
-<span id="L1677"><span class="lineNum">    1677</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredSPIRVVersionModifier&gt;(modifier))</span></span>
-<span id="L1678"><span class="lineNum">    1678</span>              :                     continue;</span>
-<span id="L1679"><span class="lineNum">    1679</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredGLSLVersionModifier&gt;(modifier))</span></span>
-<span id="L1680"><span class="lineNum">    1680</span>              :                     continue;</span>
-<span id="L1681"><span class="lineNum">    1681</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredGLSLExtensionModifier&gt;(modifier))</span></span>
-<span id="L1682"><span class="lineNum">    1682</span>              :                     continue;</span>
-<span id="L1683"><span class="lineNum">    1683</span> <span class="tlaGNC">           1 :                 if (as&lt;RequiredWGSLExtensionModifier&gt;(modifier))</span></span>
-<span id="L1684"><span class="lineNum">    1684</span>              :                     continue;</span>
-<span id="L1685"><span class="lineNum">    1685</span> <span class="tlaGNC">           1 :                 if (as&lt;GLSLLayoutModifierGroupMarker&gt;(modifier))</span></span>
-<span id="L1686"><span class="lineNum">    1686</span>              :                     continue;</span>
-<span id="L1687"><span class="lineNum">    1687</span> <span class="tlaGNC">           1 :                 if (as&lt;HLSLLayoutSemantic&gt;(modifier))</span></span>
-<span id="L1688"><span class="lineNum">    1688</span>              :                     continue;</span>
-<span id="L1689"><span class="lineNum">    1689</span> <span class="tlaGNC">           1 :                 if (as&lt;ImplicitConversionModifier&gt;(modifier))</span></span>
-<span id="L1690"><span class="lineNum">    1690</span>              :                     continue;</span>
-<span id="L1691"><span class="lineNum">    1691</span>              :             }</span>
-<span id="L1692"><span class="lineNum">    1692</span>              :             // Don&#x27;t print out attributes.</span>
-<span id="L1693"><span class="lineNum">    1693</span> <span class="tlaGNC">           1 :             if (as&lt;AttributeBase&gt;(modifier))</span></span>
-<span id="L1694"><span class="lineNum">    1694</span>              :                 continue;</span>
-<span id="L1695"><span class="lineNum">    1695</span> <span class="tlaGNC">           1 :             m_builder &lt;&lt; modifier-&gt;getKeywordName()-&gt;text &lt;&lt; &quot; &quot;;</span></span>
-<span id="L1696"><span class="lineNum">    1696</span>              :         }</span>
-<span id="L1697"><span class="lineNum">    1697</span>              :     }</span>
-<span id="L1698"><span class="lineNum">    1698</span> <span class="tlaGNC">           1 :     if (as&lt;FuncDecl&gt;(decl))</span></span>
-<span id="L1699"><span class="lineNum">    1699</span>              :     {</span>
-<span id="L1700"><span class="lineNum">    1700</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;func &quot;;</span></span>
-<span id="L1701"><span class="lineNum">    1701</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1702"><span class="lineNum">    1702</span> <span class="tlaGNC">           1 :     else if (as&lt;StructDecl&gt;(decl))</span></span>
-<span id="L1703"><span class="lineNum">    1703</span>              :     {</span>
-<span id="L1704"><span class="lineNum">    1704</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;struct &quot;;</span></span>
-<span id="L1705"><span class="lineNum">    1705</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1706"><span class="lineNum">    1706</span> <span class="tlaGNC">           1 :     else if (as&lt;InterfaceDecl&gt;(decl))</span></span>
-<span id="L1707"><span class="lineNum">    1707</span>              :     {</span>
-<span id="L1708"><span class="lineNum">    1708</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;interface &quot;;</span></span>
-<span id="L1709"><span class="lineNum">    1709</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1710"><span class="lineNum">    1710</span> <span class="tlaGNC">           1 :     else if (as&lt;ClassDecl&gt;(decl))</span></span>
-<span id="L1711"><span class="lineNum">    1711</span>              :     {</span>
-<span id="L1712"><span class="lineNum">    1712</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;class &quot;;</span></span>
-<span id="L1713"><span class="lineNum">    1713</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L1714"><span class="lineNum">    1714</span> <span class="tlaGNC">           1 :     else if (auto typedefDecl = as&lt;TypeDefDecl&gt;(decl))</span></span>
-<span id="L1715"><span class="lineNum">    1715</span>              :     {</span>
-<span id="L1716"><span class="lineNum">    1716</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;typedef &quot;;</span></span>
-<span id="L1717"><span class="lineNum">    1717</span> <span class="tlaGNC">           1 :         if (typedefDecl-&gt;type.type)</span></span>
-<span id="L1718"><span class="lineNum">    1718</span>              :         {</span>
-<span id="L1719"><span class="lineNum">    1719</span> <span class="tlaGNC">           1 :             addType(typedefDecl-&gt;type.type);</span></span>
-<span id="L1720"><span class="lineNum">    1720</span> <span class="tlaGNC">           1 :             m_builder &lt;&lt; &quot; &quot;;</span></span>
-<span id="L1721"><span class="lineNum">    1721</span>              :         }</span>
-<span id="L1722"><span class="lineNum">    1722</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1723"><span class="lineNum">    1723</span> <span class="tlaGNC">           1 :     else if (const auto propertyDecl = as&lt;PropertyDecl&gt;(decl); propertyDecl)</span></span>
-<span id="L1724"><span class="lineNum">    1724</span>              :     {</span>
-<span id="L1725"><span class="lineNum">    1725</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;property &quot;;</span></span>
-<span id="L1726"><span class="lineNum">    1726</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L1727"><span class="lineNum">    1727</span> <span class="tlaGNC">           1 :     else if (as&lt;NamespaceDecl&gt;(decl))</span></span>
-<span id="L1728"><span class="lineNum">    1728</span>              :     {</span>
-<span id="L1729"><span class="lineNum">    1729</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;namespace &quot;;</span></span>
-<span id="L1730"><span class="lineNum">    1730</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L1731"><span class="lineNum">    1731</span> <span class="tlaGNC">           1 :     else if (auto varDecl = as&lt;VarDeclBase&gt;(decl))</span></span>
-<span id="L1732"><span class="lineNum">    1732</span>              :     {</span>
-<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaGNC">           1 :         if (varDecl-&gt;getType())</span></span>
-<span id="L1734"><span class="lineNum">    1734</span>              :         {</span>
-<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">           1 :             addType(varDecl-&gt;getType());</span></span>
-<span id="L1736"><span class="lineNum">    1736</span>              :             m_builder &lt;&lt; &quot; &quot;;</span>
-<span id="L1737"><span class="lineNum">    1737</span>              :         }</span>
-<span id="L1738"><span class="lineNum">    1738</span>              :     }</span>
-<span id="L1739"><span class="lineNum">    1739</span> <span class="tlaGNC">           1 :     else if (as&lt;EnumDecl&gt;(decl))</span></span>
-<span id="L1740"><span class="lineNum">    1740</span>              :     {</span>
-<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;enum &quot;;</span></span>
-<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L1743"><span class="lineNum">    1743</span> <span class="tlaGNC">           1 :     else if (auto enumCase = as&lt;EnumCaseDecl&gt;(decl))</span></span>
-<span id="L1744"><span class="lineNum">    1744</span>              :     {</span>
-<span id="L1745"><span class="lineNum">    1745</span> <span class="tlaGNC">           1 :         if (enumCase-&gt;getType())</span></span>
-<span id="L1746"><span class="lineNum">    1746</span>              :         {</span>
-<span id="L1747"><span class="lineNum">    1747</span> <span class="tlaGNC">           1 :             addType(enumCase-&gt;getType());</span></span>
-<span id="L1748"><span class="lineNum">    1748</span>              :             m_builder &lt;&lt; &quot; &quot;;</span>
-<span id="L1749"><span class="lineNum">    1749</span>              :         }</span>
-<span id="L1750"><span class="lineNum">    1750</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1751"><span class="lineNum">    1751</span> <span class="tlaGNC">           1 :     else if (const auto assocType = as&lt;AssocTypeDecl&gt;(decl); assocType)</span></span>
-<span id="L1752"><span class="lineNum">    1752</span>              :     {</span>
-<span id="L1753"><span class="lineNum">    1753</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;associatedtype &quot;;</span></span>
-<span id="L1754"><span class="lineNum">    1754</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1755"><span class="lineNum">    1755</span> <span class="tlaGNC">           1 :     else if (const auto attribute = as&lt;AttributeDecl&gt;(decl); attribute)</span></span>
+<span id="L1673"><span class="lineNum">    1673</span>              :             }</span>
+<span id="L1674"><span class="lineNum">    1674</span>              :             // Don&#x27;t print out attributes.</span>
+<span id="L1675"><span class="lineNum">    1675</span> <span class="tlaGNC">           1 :             if (as&lt;AttributeBase&gt;(modifier))</span></span>
+<span id="L1676"><span class="lineNum">    1676</span>              :                 continue;</span>
+<span id="L1677"><span class="lineNum">    1677</span> <span class="tlaGNC">           1 :             m_builder &lt;&lt; modifier-&gt;getKeywordName()-&gt;text &lt;&lt; &quot; &quot;;</span></span>
+<span id="L1678"><span class="lineNum">    1678</span>              :         }</span>
+<span id="L1679"><span class="lineNum">    1679</span>              :     }</span>
+<span id="L1680"><span class="lineNum">    1680</span> <span class="tlaGNC">           1 :     if (as&lt;FuncDecl&gt;(decl))</span></span>
+<span id="L1681"><span class="lineNum">    1681</span>              :     {</span>
+<span id="L1682"><span class="lineNum">    1682</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;func &quot;;</span></span>
+<span id="L1683"><span class="lineNum">    1683</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1684"><span class="lineNum">    1684</span> <span class="tlaGNC">           1 :     else if (as&lt;StructDecl&gt;(decl))</span></span>
+<span id="L1685"><span class="lineNum">    1685</span>              :     {</span>
+<span id="L1686"><span class="lineNum">    1686</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;struct &quot;;</span></span>
+<span id="L1687"><span class="lineNum">    1687</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1688"><span class="lineNum">    1688</span> <span class="tlaGNC">           1 :     else if (as&lt;InterfaceDecl&gt;(decl))</span></span>
+<span id="L1689"><span class="lineNum">    1689</span>              :     {</span>
+<span id="L1690"><span class="lineNum">    1690</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;interface &quot;;</span></span>
+<span id="L1691"><span class="lineNum">    1691</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1692"><span class="lineNum">    1692</span> <span class="tlaGNC">           1 :     else if (as&lt;ClassDecl&gt;(decl))</span></span>
+<span id="L1693"><span class="lineNum">    1693</span>              :     {</span>
+<span id="L1694"><span class="lineNum">    1694</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;class &quot;;</span></span>
+<span id="L1695"><span class="lineNum">    1695</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L1696"><span class="lineNum">    1696</span> <span class="tlaGNC">           1 :     else if (auto typedefDecl = as&lt;TypeDefDecl&gt;(decl))</span></span>
+<span id="L1697"><span class="lineNum">    1697</span>              :     {</span>
+<span id="L1698"><span class="lineNum">    1698</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;typedef &quot;;</span></span>
+<span id="L1699"><span class="lineNum">    1699</span> <span class="tlaGNC">           1 :         if (typedefDecl-&gt;type.type)</span></span>
+<span id="L1700"><span class="lineNum">    1700</span>              :         {</span>
+<span id="L1701"><span class="lineNum">    1701</span> <span class="tlaGNC">           1 :             addType(typedefDecl-&gt;type.type);</span></span>
+<span id="L1702"><span class="lineNum">    1702</span> <span class="tlaGNC">           1 :             m_builder &lt;&lt; &quot; &quot;;</span></span>
+<span id="L1703"><span class="lineNum">    1703</span>              :         }</span>
+<span id="L1704"><span class="lineNum">    1704</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1705"><span class="lineNum">    1705</span> <span class="tlaGNC">           1 :     else if (const auto propertyDecl = as&lt;PropertyDecl&gt;(decl); propertyDecl)</span></span>
+<span id="L1706"><span class="lineNum">    1706</span>              :     {</span>
+<span id="L1707"><span class="lineNum">    1707</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;property &quot;;</span></span>
+<span id="L1708"><span class="lineNum">    1708</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L1709"><span class="lineNum">    1709</span> <span class="tlaGNC">           1 :     else if (as&lt;NamespaceDecl&gt;(decl))</span></span>
+<span id="L1710"><span class="lineNum">    1710</span>              :     {</span>
+<span id="L1711"><span class="lineNum">    1711</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;namespace &quot;;</span></span>
+<span id="L1712"><span class="lineNum">    1712</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L1713"><span class="lineNum">    1713</span> <span class="tlaGNC">           1 :     else if (auto varDecl = as&lt;VarDeclBase&gt;(decl))</span></span>
+<span id="L1714"><span class="lineNum">    1714</span>              :     {</span>
+<span id="L1715"><span class="lineNum">    1715</span> <span class="tlaGNC">           1 :         if (varDecl-&gt;getType())</span></span>
+<span id="L1716"><span class="lineNum">    1716</span>              :         {</span>
+<span id="L1717"><span class="lineNum">    1717</span> <span class="tlaGNC">           1 :             addType(varDecl-&gt;getType());</span></span>
+<span id="L1718"><span class="lineNum">    1718</span>              :             m_builder &lt;&lt; &quot; &quot;;</span>
+<span id="L1719"><span class="lineNum">    1719</span>              :         }</span>
+<span id="L1720"><span class="lineNum">    1720</span>              :     }</span>
+<span id="L1721"><span class="lineNum">    1721</span> <span class="tlaGNC">           1 :     else if (as&lt;EnumDecl&gt;(decl))</span></span>
+<span id="L1722"><span class="lineNum">    1722</span>              :     {</span>
+<span id="L1723"><span class="lineNum">    1723</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;enum &quot;;</span></span>
+<span id="L1724"><span class="lineNum">    1724</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L1725"><span class="lineNum">    1725</span> <span class="tlaGNC">           1 :     else if (auto enumCase = as&lt;EnumCaseDecl&gt;(decl))</span></span>
+<span id="L1726"><span class="lineNum">    1726</span>              :     {</span>
+<span id="L1727"><span class="lineNum">    1727</span> <span class="tlaGNC">           1 :         if (enumCase-&gt;getType())</span></span>
+<span id="L1728"><span class="lineNum">    1728</span>              :         {</span>
+<span id="L1729"><span class="lineNum">    1729</span> <span class="tlaGNC">           1 :             addType(enumCase-&gt;getType());</span></span>
+<span id="L1730"><span class="lineNum">    1730</span>              :             m_builder &lt;&lt; &quot; &quot;;</span>
+<span id="L1731"><span class="lineNum">    1731</span>              :         }</span>
+<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaGNC">           1 :     else if (const auto assocType = as&lt;AssocTypeDecl&gt;(decl); assocType)</span></span>
+<span id="L1734"><span class="lineNum">    1734</span>              :     {</span>
+<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot;associatedtype &quot;;</span></span>
+<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1737"><span class="lineNum">    1737</span> <span class="tlaGNC">           1 :     else if (const auto attribute = as&lt;AttributeDecl&gt;(decl); attribute)</span></span>
+<span id="L1738"><span class="lineNum">    1738</span>              :     {</span>
+<span id="L1739"><span class="lineNum">    1739</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;attribute &quot;;</span></span>
+<span id="L1740"><span class="lineNum">    1740</span>              :     }</span>
+<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1742"><span class="lineNum">    1742</span>              : </span>
+<span id="L1743"><span class="lineNum">    1743</span>              : void ASTPrinter::addDeclResultType(const DeclRef&lt;Decl&gt;&amp; inDeclRef)</span>
+<span id="L1744"><span class="lineNum">    1744</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1745"><span class="lineNum">    1745</span> <span class="tlaGNC">           1 :     DeclRef&lt;Decl&gt; declRef = inDeclRef;</span></span>
+<span id="L1746"><span class="lineNum">    1746</span> <span class="tlaGNC">           1 :     if (auto genericDeclRef = declRef.as&lt;GenericDecl&gt;())</span></span>
+<span id="L1747"><span class="lineNum">    1747</span>              :     {</span>
+<span id="L1748"><span class="lineNum">    1748</span> <span class="tlaGNC">           1 :         declRef =</span></span>
+<span id="L1749"><span class="lineNum">    1749</span>              :             m_astBuilder-&gt;getMemberDeclRef&lt;Decl&gt;(genericDeclRef, genericDeclRef.getDecl()-&gt;inner);</span>
+<span id="L1750"><span class="lineNum">    1750</span>              :     }</span>
+<span id="L1751"><span class="lineNum">    1751</span>              : </span>
+<span id="L1752"><span class="lineNum">    1752</span> <span class="tlaGNC">           1 :     if (declRef.as&lt;ConstructorDecl&gt;())</span></span>
+<span id="L1753"><span class="lineNum">    1753</span>              :     {</span>
+<span id="L1754"><span class="lineNum">    1754</span>              :     }</span>
+<span id="L1755"><span class="lineNum">    1755</span> <span class="tlaGNC">           1 :     else if (auto callableDeclRef = declRef.as&lt;CallableDecl&gt;())</span></span>
 <span id="L1756"><span class="lineNum">    1756</span>              :     {</span>
-<span id="L1757"><span class="lineNum">    1757</span> <span class="tlaUNC">           0 :         m_builder &lt;&lt; &quot;attribute &quot;;</span></span>
-<span id="L1758"><span class="lineNum">    1758</span>              :     }</span>
-<span id="L1759"><span class="lineNum">    1759</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1760"><span class="lineNum">    1760</span>              : </span>
-<span id="L1761"><span class="lineNum">    1761</span>              : void ASTPrinter::addDeclResultType(const DeclRef&lt;Decl&gt;&amp; inDeclRef)</span>
-<span id="L1762"><span class="lineNum">    1762</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1763"><span class="lineNum">    1763</span> <span class="tlaGNC">           1 :     DeclRef&lt;Decl&gt; declRef = inDeclRef;</span></span>
-<span id="L1764"><span class="lineNum">    1764</span> <span class="tlaGNC">           1 :     if (auto genericDeclRef = declRef.as&lt;GenericDecl&gt;())</span></span>
+<span id="L1757"><span class="lineNum">    1757</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot; -&gt; &quot;;</span></span>
+<span id="L1758"><span class="lineNum">    1758</span>              : </span>
+<span id="L1759"><span class="lineNum">    1759</span>              :         {</span>
+<span id="L1760"><span class="lineNum">    1760</span> <span class="tlaGNC">           1 :             ScopePart scopePart(this, Part::Type::ReturnType);</span></span>
+<span id="L1761"><span class="lineNum">    1761</span> <span class="tlaGNC">           1 :             addType(getResultType(m_astBuilder, callableDeclRef));</span></span>
+<span id="L1762"><span class="lineNum">    1762</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L1763"><span class="lineNum">    1763</span>              :     }</span>
+<span id="L1764"><span class="lineNum">    1764</span> <span class="tlaGNC">           1 :     else if (auto propertyDecl = declRef.as&lt;PropertyDecl&gt;())</span></span>
 <span id="L1765"><span class="lineNum">    1765</span>              :     {</span>
-<span id="L1766"><span class="lineNum">    1766</span> <span class="tlaGNC">           1 :         declRef =</span></span>
-<span id="L1767"><span class="lineNum">    1767</span>              :             m_astBuilder-&gt;getMemberDeclRef&lt;Decl&gt;(genericDeclRef, genericDeclRef.getDecl()-&gt;inner);</span>
-<span id="L1768"><span class="lineNum">    1768</span>              :     }</span>
-<span id="L1769"><span class="lineNum">    1769</span>              : </span>
-<span id="L1770"><span class="lineNum">    1770</span> <span class="tlaGNC">           1 :     if (declRef.as&lt;ConstructorDecl&gt;())</span></span>
-<span id="L1771"><span class="lineNum">    1771</span>              :     {</span>
-<span id="L1772"><span class="lineNum">    1772</span>              :     }</span>
-<span id="L1773"><span class="lineNum">    1773</span> <span class="tlaGNC">           1 :     else if (auto callableDeclRef = declRef.as&lt;CallableDecl&gt;())</span></span>
-<span id="L1774"><span class="lineNum">    1774</span>              :     {</span>
-<span id="L1775"><span class="lineNum">    1775</span> <span class="tlaGNC">           1 :         m_builder &lt;&lt; &quot; -&gt; &quot;;</span></span>
-<span id="L1776"><span class="lineNum">    1776</span>              : </span>
-<span id="L1777"><span class="lineNum">    1777</span>              :         {</span>
-<span id="L1778"><span class="lineNum">    1778</span> <span class="tlaGNC">           1 :             ScopePart scopePart(this, Part::Type::ReturnType);</span></span>
-<span id="L1779"><span class="lineNum">    1779</span> <span class="tlaGNC">           1 :             addType(getResultType(m_astBuilder, callableDeclRef));</span></span>
-<span id="L1780"><span class="lineNum">    1780</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L1781"><span class="lineNum">    1781</span>              :     }</span>
-<span id="L1782"><span class="lineNum">    1782</span> <span class="tlaGNC">           1 :     else if (auto propertyDecl = declRef.as&lt;PropertyDecl&gt;())</span></span>
-<span id="L1783"><span class="lineNum">    1783</span>              :     {</span>
-<span id="L1784"><span class="lineNum">    1784</span> <span class="tlaUNC">           0 :         if (propertyDecl.getDecl()-&gt;type.type)</span></span>
-<span id="L1785"><span class="lineNum">    1785</span>              :         {</span>
-<span id="L1786"><span class="lineNum">    1786</span> <span class="tlaUNC">           0 :             m_builder &lt;&lt; &quot; : &quot;;</span></span>
-<span id="L1787"><span class="lineNum">    1787</span> <span class="tlaUNC">           0 :             addType(declRef.substitute(m_astBuilder, propertyDecl.getDecl()-&gt;type.type));</span></span>
-<span id="L1788"><span class="lineNum">    1788</span>              :         }</span>
-<span id="L1789"><span class="lineNum">    1789</span>              :     }</span>
-<span id="L1790"><span class="lineNum">    1790</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1791"><span class="lineNum">    1791</span>              : </span>
-<span id="L1792"><span class="lineNum">    1792</span>              : /* static */ void ASTPrinter::addDeclSignature(const DeclRef&lt;Decl&gt;&amp; declRef)</span>
-<span id="L1793"><span class="lineNum">    1793</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1794"><span class="lineNum">    1794</span> <span class="tlaGNC">           1 :     addDeclKindPrefix(declRef.getDecl());</span></span>
-<span id="L1795"><span class="lineNum">    1795</span> <span class="tlaGNC">           1 :     addDeclPath(declRef);</span></span>
-<span id="L1796"><span class="lineNum">    1796</span> <span class="tlaGNC">           1 :     addDeclParams(declRef);</span></span>
-<span id="L1797"><span class="lineNum">    1797</span> <span class="tlaGNC">           1 :     addDeclResultType(declRef);</span></span>
+<span id="L1766"><span class="lineNum">    1766</span> <span class="tlaUNC">           0 :         if (propertyDecl.getDecl()-&gt;type.type)</span></span>
+<span id="L1767"><span class="lineNum">    1767</span>              :         {</span>
+<span id="L1768"><span class="lineNum">    1768</span> <span class="tlaUNC">           0 :             m_builder &lt;&lt; &quot; : &quot;;</span></span>
+<span id="L1769"><span class="lineNum">    1769</span> <span class="tlaUNC">           0 :             addType(declRef.substitute(m_astBuilder, propertyDecl.getDecl()-&gt;type.type));</span></span>
+<span id="L1770"><span class="lineNum">    1770</span>              :         }</span>
+<span id="L1771"><span class="lineNum">    1771</span>              :     }</span>
+<span id="L1772"><span class="lineNum">    1772</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1773"><span class="lineNum">    1773</span>              : </span>
+<span id="L1774"><span class="lineNum">    1774</span>              : /* static */ void ASTPrinter::addDeclSignature(const DeclRef&lt;Decl&gt;&amp; declRef)</span>
+<span id="L1775"><span class="lineNum">    1775</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1776"><span class="lineNum">    1776</span> <span class="tlaGNC">           1 :     addDeclKindPrefix(declRef.getDecl());</span></span>
+<span id="L1777"><span class="lineNum">    1777</span> <span class="tlaGNC">           1 :     addDeclPath(declRef);</span></span>
+<span id="L1778"><span class="lineNum">    1778</span> <span class="tlaGNC">           1 :     addDeclParams(declRef);</span></span>
+<span id="L1779"><span class="lineNum">    1779</span> <span class="tlaGNC">           1 :     addDeclResultType(declRef);</span></span>
+<span id="L1780"><span class="lineNum">    1780</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1781"><span class="lineNum">    1781</span>              : </span>
+<span id="L1782"><span class="lineNum">    1782</span>              : /* static */ String ASTPrinter::getDeclSignatureString(</span>
+<span id="L1783"><span class="lineNum">    1783</span>              :     DeclRef&lt;Decl&gt; declRef,</span>
+<span id="L1784"><span class="lineNum">    1784</span>              :     ASTBuilder* astBuilder)</span>
+<span id="L1785"><span class="lineNum">    1785</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1786"><span class="lineNum">    1786</span> <span class="tlaGNC">           1 :     ASTPrinter astPrinter(</span></span>
+<span id="L1787"><span class="lineNum">    1787</span>              :         astBuilder,</span>
+<span id="L1788"><span class="lineNum">    1788</span>              :         ASTPrinter::OptionFlag::NoInternalKeywords | ASTPrinter::OptionFlag::SimplifiedBuiltinType);</span>
+<span id="L1789"><span class="lineNum">    1789</span> <span class="tlaGNC">           1 :     astPrinter.addDeclSignature(declRef);</span></span>
+<span id="L1790"><span class="lineNum">    1790</span> <span class="tlaGNC">           1 :     return astPrinter.getString();</span></span>
+<span id="L1791"><span class="lineNum">    1791</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1792"><span class="lineNum">    1792</span>              : </span>
+<span id="L1793"><span class="lineNum">    1793</span>              : /* static */ String ASTPrinter::getDeclSignatureString(</span>
+<span id="L1794"><span class="lineNum">    1794</span>              :     const LookupResultItem&amp; item,</span>
+<span id="L1795"><span class="lineNum">    1795</span>              :     ASTBuilder* astBuilder)</span>
+<span id="L1796"><span class="lineNum">    1796</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1797"><span class="lineNum">    1797</span> <span class="tlaGNC">           1 :     return getDeclSignatureString(item.declRef, astBuilder);</span></span>
 <span id="L1798"><span class="lineNum">    1798</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1799"><span class="lineNum">    1799</span>              : </span>
-<span id="L1800"><span class="lineNum">    1800</span>              : /* static */ String ASTPrinter::getDeclSignatureString(</span>
-<span id="L1801"><span class="lineNum">    1801</span>              :     DeclRef&lt;Decl&gt; declRef,</span>
-<span id="L1802"><span class="lineNum">    1802</span>              :     ASTBuilder* astBuilder)</span>
-<span id="L1803"><span class="lineNum">    1803</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1804"><span class="lineNum">    1804</span> <span class="tlaGNC">           1 :     ASTPrinter astPrinter(</span></span>
-<span id="L1805"><span class="lineNum">    1805</span>              :         astBuilder,</span>
-<span id="L1806"><span class="lineNum">    1806</span>              :         ASTPrinter::OptionFlag::NoInternalKeywords | ASTPrinter::OptionFlag::SimplifiedBuiltinType);</span>
-<span id="L1807"><span class="lineNum">    1807</span> <span class="tlaGNC">           1 :     astPrinter.addDeclSignature(declRef);</span></span>
-<span id="L1808"><span class="lineNum">    1808</span> <span class="tlaGNC">           1 :     return astPrinter.getString();</span></span>
-<span id="L1809"><span class="lineNum">    1809</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1810"><span class="lineNum">    1810</span>              : </span>
-<span id="L1811"><span class="lineNum">    1811</span>              : /* static */ String ASTPrinter::getDeclSignatureString(</span>
-<span id="L1812"><span class="lineNum">    1812</span>              :     const LookupResultItem&amp; item,</span>
-<span id="L1813"><span class="lineNum">    1813</span>              :     ASTBuilder* astBuilder)</span>
-<span id="L1814"><span class="lineNum">    1814</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1815"><span class="lineNum">    1815</span> <span class="tlaGNC">           1 :     return getDeclSignatureString(item.declRef, astBuilder);</span></span>
-<span id="L1816"><span class="lineNum">    1816</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1817"><span class="lineNum">    1817</span>              : </span>
-<span id="L1818"><span class="lineNum">    1818</span>              : void ASTPrinter::addGenericConstraint(Decl* constraintDecl)</span>
-<span id="L1819"><span class="lineNum">    1819</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1820"><span class="lineNum">    1820</span>              :     StringBuilder&amp; sb = m_builder;</span>
-<span id="L1821"><span class="lineNum">    1821</span> <span class="tlaGNC">           1 :     if (auto typeConstraint = as&lt;GenericTypeConstraintDecl&gt;(constraintDecl))</span></span>
-<span id="L1822"><span class="lineNum">    1822</span>              :     {</span>
-<span id="L1823"><span class="lineNum">    1823</span> <span class="tlaGNC">           1 :         addType(typeConstraint-&gt;sub.type);</span></span>
-<span id="L1824"><span class="lineNum">    1824</span> <span class="tlaGNC">           1 :         sb &lt;&lt; (typeConstraint-&gt;isEqualityConstraint ? &quot; == &quot; : &quot; : &quot;);</span></span>
-<span id="L1825"><span class="lineNum">    1825</span> <span class="tlaGNC">           1 :         addType(typeConstraint-&gt;sup.type);</span></span>
-<span id="L1826"><span class="lineNum">    1826</span>              :     }</span>
-<span id="L1827"><span class="lineNum">    1827</span> <span class="tlaGNC">           1 :     else if (auto coercion = as&lt;TypeCoercionConstraintDecl&gt;(constraintDecl))</span></span>
-<span id="L1828"><span class="lineNum">    1828</span>              :     {</span>
-<span id="L1829"><span class="lineNum">    1829</span>              :         // A coercion constraint is written `where To(From)` in Slang, requiring</span>
-<span id="L1830"><span class="lineNum">    1830</span>              :         // `From` to be convertible to `To`; render it the same way so the</span>
-<span id="L1831"><span class="lineNum">    1831</span>              :         // diagnostic echoes the source syntax.</span>
-<span id="L1832"><span class="lineNum">    1832</span> <span class="tlaGNC">           1 :         addType(coercion-&gt;toType.type);</span></span>
-<span id="L1833"><span class="lineNum">    1833</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot;(&quot;;</span></span>
-<span id="L1834"><span class="lineNum">    1834</span>              :         addType(coercion-&gt;fromType.type);</span>
-<span id="L1835"><span class="lineNum">    1835</span>              :         sb &lt;&lt; &quot;)&quot;;</span>
-<span id="L1836"><span class="lineNum">    1836</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1837"><span class="lineNum">    1837</span> <span class="tlaGNC">           1 :     else if (auto nonEmpty = as&lt;NonEmptyPackConstraintDecl&gt;(constraintDecl))</span></span>
-<span id="L1838"><span class="lineNum">    1838</span>              :     {</span>
-<span id="L1839"><span class="lineNum">    1839</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot;nonempty(&quot;;</span></span>
-<span id="L1840"><span class="lineNum">    1840</span> <span class="tlaGNC">           1 :         if (auto packVar = as&lt;DeclRefExpr&gt;(nonEmpty-&gt;packExpr))</span></span>
-<span id="L1841"><span class="lineNum">    1841</span> <span class="tlaGNC">           1 :             sb &lt;&lt; getText(packVar-&gt;name);</span></span>
-<span id="L1842"><span class="lineNum">    1842</span>              :         sb &lt;&lt; &quot;)&quot;;</span>
-<span id="L1843"><span class="lineNum">    1843</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1844"><span class="lineNum">    1844</span> <span class="tlaGNC">           1 :     else if (auto packCount = as&lt;GenericVariadicPackCountConstraintDecl&gt;(constraintDecl))</span></span>
-<span id="L1845"><span class="lineNum">    1845</span>              :     {</span>
-<span id="L1846"><span class="lineNum">    1846</span>              :         // A variadic pack-count constraint is written `where countof(P) == N`,</span>
-<span id="L1847"><span class="lineNum">    1847</span>              :         // requiring the pack `P` to have exactly `N` elements; echo that form.</span>
-<span id="L1848"><span class="lineNum">    1848</span> <span class="tlaUNC">           0 :         sb &lt;&lt; &quot;countof(&quot;;</span></span>
-<span id="L1849"><span class="lineNum">    1849</span> <span class="tlaUNC">           0 :         addExpr(packCount-&gt;packExpr);</span></span>
-<span id="L1850"><span class="lineNum">    1850</span> <span class="tlaUNC">           0 :         sb &lt;&lt; &quot;) == &quot;;</span></span>
-<span id="L1851"><span class="lineNum">    1851</span> <span class="tlaUNC">           0 :         if (packCount-&gt;expectedCountExpr)</span></span>
-<span id="L1852"><span class="lineNum">    1852</span> <span class="tlaUNC">           0 :             addExpr(packCount-&gt;expectedCountExpr);</span></span>
-<span id="L1853"><span class="lineNum">    1853</span> <span class="tlaUNC">           0 :         else if (packCount-&gt;expectedCountVal)</span></span>
-<span id="L1854"><span class="lineNum">    1854</span> <span class="tlaUNC">           0 :             addVal(packCount-&gt;expectedCountVal);</span></span>
-<span id="L1855"><span class="lineNum">    1855</span>              :     }</span>
-<span id="L1856"><span class="lineNum">    1856</span> <span class="tlaGNC">           1 :     else if (auto hasDiffTypeInfo = as&lt;HasDiffTypeInfoConstraintDecl&gt;(constraintDecl))</span></span>
-<span id="L1857"><span class="lineNum">    1857</span>              :     {</span>
-<span id="L1858"><span class="lineNum">    1858</span>              :         // A differentiable-type-info constraint is written `where</span>
-<span id="L1859"><span class="lineNum">    1859</span>              :         // __hasDiffTypeInfo(T)`; echo that form.</span>
-<span id="L1860"><span class="lineNum">    1860</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot;__hasDiffTypeInfo(&quot;;</span></span>
-<span id="L1861"><span class="lineNum">    1861</span>              :         addType(hasDiffTypeInfo-&gt;type.type);</span>
-<span id="L1862"><span class="lineNum">    1862</span>              :         sb &lt;&lt; &quot;)&quot;;</span>
-<span id="L1863"><span class="lineNum">    1863</span>              :     }</span>
-<span id="L1864"><span class="lineNum">    1864</span> <span class="tlaUNC">           0 :     else if (constraintDecl &amp;&amp; constraintDecl-&gt;getName())</span></span>
-<span id="L1865"><span class="lineNum">    1865</span>              :     {</span>
-<span id="L1866"><span class="lineNum">    1866</span> <span class="tlaUNC">           0 :         sb &lt;&lt; getText(constraintDecl-&gt;getName());</span></span>
-<span id="L1867"><span class="lineNum">    1867</span>              :     }</span>
-<span id="L1868"><span class="lineNum">    1868</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1869"><span class="lineNum">    1869</span>              : </span>
-<span id="L1870"><span class="lineNum">    1870</span>              : /* static */ String ASTPrinter::getGenericConstraintString(</span>
-<span id="L1871"><span class="lineNum">    1871</span>              :     Decl* constraintDecl,</span>
-<span id="L1872"><span class="lineNum">    1872</span>              :     ASTBuilder* astBuilder)</span>
-<span id="L1873"><span class="lineNum">    1873</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1874"><span class="lineNum">    1874</span> <span class="tlaGNC">           1 :     ASTPrinter astPrinter(astBuilder);</span></span>
-<span id="L1875"><span class="lineNum">    1875</span> <span class="tlaGNC">           1 :     astPrinter.addGenericConstraint(constraintDecl);</span></span>
-<span id="L1876"><span class="lineNum">    1876</span> <span class="tlaGNC">           1 :     return astPrinter.getString();</span></span>
-<span id="L1877"><span class="lineNum">    1877</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1878"><span class="lineNum">    1878</span>              : </span>
-<span id="L1879"><span class="lineNum">    1879</span>              : /* static */ UnownedStringSlice ASTPrinter::getPart(</span>
-<span id="L1880"><span class="lineNum">    1880</span>              :     Part::Type partType,</span>
-<span id="L1881"><span class="lineNum">    1881</span>              :     const UnownedStringSlice&amp; slice,</span>
-<span id="L1882"><span class="lineNum">    1882</span>              :     const List&lt;Part&gt;&amp; parts)</span>
-<span id="L1883"><span class="lineNum">    1883</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1884"><span class="lineNum">    1884</span> <span class="tlaUNC">           0 :     const Index index =</span></span>
-<span id="L1885"><span class="lineNum">    1885</span> <span class="tlaUNC">           0 :         parts.findFirstIndex([&amp;](const Part&amp; part) -&gt; bool { return part.type == partType; });</span></span>
-<span id="L1886"><span class="lineNum">    1886</span> <span class="tlaUNC">           0 :     return index &gt;= 0 ? getPart(slice, parts[index]) : UnownedStringSlice();</span></span>
-<span id="L1887"><span class="lineNum">    1887</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1888"><span class="lineNum">    1888</span>              : </span>
-<span id="L1889"><span class="lineNum">    1889</span>              : UnownedStringSlice ASTPrinter::getPartSlice(Part::Type partType) const</span>
-<span id="L1890"><span class="lineNum">    1890</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1891"><span class="lineNum">    1891</span> <span class="tlaUNC">           0 :     return m_parts ? getPart(partType, getSlice(), *m_parts) : UnownedStringSlice();</span></span>
-<span id="L1892"><span class="lineNum">    1892</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1893"><span class="lineNum">    1893</span>              : </span>
-<span id="L1894"><span class="lineNum">    1894</span>              : </span>
-<span id="L1895"><span class="lineNum">    1895</span>              : } // namespace Slang</span>
+<span id="L1800"><span class="lineNum">    1800</span>              : void ASTPrinter::addGenericConstraint(Decl* constraintDecl)</span>
+<span id="L1801"><span class="lineNum">    1801</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1802"><span class="lineNum">    1802</span>              :     StringBuilder&amp; sb = m_builder;</span>
+<span id="L1803"><span class="lineNum">    1803</span> <span class="tlaGNC">           1 :     if (auto typeConstraint = as&lt;GenericTypeConstraintDecl&gt;(constraintDecl))</span></span>
+<span id="L1804"><span class="lineNum">    1804</span>              :     {</span>
+<span id="L1805"><span class="lineNum">    1805</span> <span class="tlaGNC">           1 :         addType(typeConstraint-&gt;sub.type);</span></span>
+<span id="L1806"><span class="lineNum">    1806</span> <span class="tlaGNC">           1 :         sb &lt;&lt; (typeConstraint-&gt;isEqualityConstraint ? &quot; == &quot; : &quot; : &quot;);</span></span>
+<span id="L1807"><span class="lineNum">    1807</span> <span class="tlaGNC">           1 :         addType(typeConstraint-&gt;sup.type);</span></span>
+<span id="L1808"><span class="lineNum">    1808</span>              :     }</span>
+<span id="L1809"><span class="lineNum">    1809</span> <span class="tlaGNC">           1 :     else if (auto coercion = as&lt;TypeCoercionConstraintDecl&gt;(constraintDecl))</span></span>
+<span id="L1810"><span class="lineNum">    1810</span>              :     {</span>
+<span id="L1811"><span class="lineNum">    1811</span>              :         // A coercion constraint is written `where To(From)` in Slang, requiring</span>
+<span id="L1812"><span class="lineNum">    1812</span>              :         // `From` to be convertible to `To`; render it the same way so the</span>
+<span id="L1813"><span class="lineNum">    1813</span>              :         // diagnostic echoes the source syntax.</span>
+<span id="L1814"><span class="lineNum">    1814</span> <span class="tlaGNC">           1 :         addType(coercion-&gt;toType.type);</span></span>
+<span id="L1815"><span class="lineNum">    1815</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot;(&quot;;</span></span>
+<span id="L1816"><span class="lineNum">    1816</span>              :         addType(coercion-&gt;fromType.type);</span>
+<span id="L1817"><span class="lineNum">    1817</span>              :         sb &lt;&lt; &quot;)&quot;;</span>
+<span id="L1818"><span class="lineNum">    1818</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1819"><span class="lineNum">    1819</span> <span class="tlaGNC">           1 :     else if (auto nonEmpty = as&lt;NonEmptyPackConstraintDecl&gt;(constraintDecl))</span></span>
+<span id="L1820"><span class="lineNum">    1820</span>              :     {</span>
+<span id="L1821"><span class="lineNum">    1821</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot;nonempty(&quot;;</span></span>
+<span id="L1822"><span class="lineNum">    1822</span> <span class="tlaGNC">           1 :         if (auto packVar = as&lt;DeclRefExpr&gt;(nonEmpty-&gt;packExpr))</span></span>
+<span id="L1823"><span class="lineNum">    1823</span> <span class="tlaGNC">           1 :             sb &lt;&lt; getText(packVar-&gt;name);</span></span>
+<span id="L1824"><span class="lineNum">    1824</span>              :         sb &lt;&lt; &quot;)&quot;;</span>
+<span id="L1825"><span class="lineNum">    1825</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1826"><span class="lineNum">    1826</span> <span class="tlaGNC">           1 :     else if (auto packCount = as&lt;GenericVariadicPackCountConstraintDecl&gt;(constraintDecl))</span></span>
+<span id="L1827"><span class="lineNum">    1827</span>              :     {</span>
+<span id="L1828"><span class="lineNum">    1828</span>              :         // A variadic pack-count constraint is written `where countof(P) == N`,</span>
+<span id="L1829"><span class="lineNum">    1829</span>              :         // requiring the pack `P` to have exactly `N` elements; echo that form.</span>
+<span id="L1830"><span class="lineNum">    1830</span> <span class="tlaUNC">           0 :         sb &lt;&lt; &quot;countof(&quot;;</span></span>
+<span id="L1831"><span class="lineNum">    1831</span> <span class="tlaUNC">           0 :         addExpr(packCount-&gt;packExpr);</span></span>
+<span id="L1832"><span class="lineNum">    1832</span> <span class="tlaUNC">           0 :         sb &lt;&lt; &quot;) == &quot;;</span></span>
+<span id="L1833"><span class="lineNum">    1833</span> <span class="tlaUNC">           0 :         if (packCount-&gt;expectedCountExpr)</span></span>
+<span id="L1834"><span class="lineNum">    1834</span> <span class="tlaUNC">           0 :             addExpr(packCount-&gt;expectedCountExpr);</span></span>
+<span id="L1835"><span class="lineNum">    1835</span> <span class="tlaUNC">           0 :         else if (packCount-&gt;expectedCountVal)</span></span>
+<span id="L1836"><span class="lineNum">    1836</span> <span class="tlaUNC">           0 :             addVal(packCount-&gt;expectedCountVal);</span></span>
+<span id="L1837"><span class="lineNum">    1837</span>              :     }</span>
+<span id="L1838"><span class="lineNum">    1838</span> <span class="tlaGNC">           1 :     else if (auto hasDiffTypeInfo = as&lt;HasDiffTypeInfoConstraintDecl&gt;(constraintDecl))</span></span>
+<span id="L1839"><span class="lineNum">    1839</span>              :     {</span>
+<span id="L1840"><span class="lineNum">    1840</span>              :         // A differentiable-type-info constraint is written `where</span>
+<span id="L1841"><span class="lineNum">    1841</span>              :         // __hasDiffTypeInfo(T)`; echo that form.</span>
+<span id="L1842"><span class="lineNum">    1842</span> <span class="tlaGNC">           1 :         sb &lt;&lt; &quot;__hasDiffTypeInfo(&quot;;</span></span>
+<span id="L1843"><span class="lineNum">    1843</span>              :         addType(hasDiffTypeInfo-&gt;type.type);</span>
+<span id="L1844"><span class="lineNum">    1844</span>              :         sb &lt;&lt; &quot;)&quot;;</span>
+<span id="L1845"><span class="lineNum">    1845</span>              :     }</span>
+<span id="L1846"><span class="lineNum">    1846</span> <span class="tlaUNC">           0 :     else if (constraintDecl &amp;&amp; constraintDecl-&gt;getName())</span></span>
+<span id="L1847"><span class="lineNum">    1847</span>              :     {</span>
+<span id="L1848"><span class="lineNum">    1848</span> <span class="tlaUNC">           0 :         sb &lt;&lt; getText(constraintDecl-&gt;getName());</span></span>
+<span id="L1849"><span class="lineNum">    1849</span>              :     }</span>
+<span id="L1850"><span class="lineNum">    1850</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1851"><span class="lineNum">    1851</span>              : </span>
+<span id="L1852"><span class="lineNum">    1852</span>              : /* static */ String ASTPrinter::getGenericConstraintString(</span>
+<span id="L1853"><span class="lineNum">    1853</span>              :     Decl* constraintDecl,</span>
+<span id="L1854"><span class="lineNum">    1854</span>              :     ASTBuilder* astBuilder)</span>
+<span id="L1855"><span class="lineNum">    1855</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1856"><span class="lineNum">    1856</span> <span class="tlaGNC">           1 :     ASTPrinter astPrinter(astBuilder);</span></span>
+<span id="L1857"><span class="lineNum">    1857</span> <span class="tlaGNC">           1 :     astPrinter.addGenericConstraint(constraintDecl);</span></span>
+<span id="L1858"><span class="lineNum">    1858</span> <span class="tlaGNC">           1 :     return astPrinter.getString();</span></span>
+<span id="L1859"><span class="lineNum">    1859</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1860"><span class="lineNum">    1860</span>              : </span>
+<span id="L1861"><span class="lineNum">    1861</span>              : /* static */ UnownedStringSlice ASTPrinter::getPart(</span>
+<span id="L1862"><span class="lineNum">    1862</span>              :     Part::Type partType,</span>
+<span id="L1863"><span class="lineNum">    1863</span>              :     const UnownedStringSlice&amp; slice,</span>
+<span id="L1864"><span class="lineNum">    1864</span>              :     const List&lt;Part&gt;&amp; parts)</span>
+<span id="L1865"><span class="lineNum">    1865</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1866"><span class="lineNum">    1866</span> <span class="tlaUNC">           0 :     const Index index =</span></span>
+<span id="L1867"><span class="lineNum">    1867</span> <span class="tlaUNC">           0 :         parts.findFirstIndex([&amp;](const Part&amp; part) -&gt; bool { return part.type == partType; });</span></span>
+<span id="L1868"><span class="lineNum">    1868</span> <span class="tlaUNC">           0 :     return index &gt;= 0 ? getPart(slice, parts[index]) : UnownedStringSlice();</span></span>
+<span id="L1869"><span class="lineNum">    1869</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1870"><span class="lineNum">    1870</span>              : </span>
+<span id="L1871"><span class="lineNum">    1871</span>              : UnownedStringSlice ASTPrinter::getPartSlice(Part::Type partType) const</span>
+<span id="L1872"><span class="lineNum">    1872</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1873"><span class="lineNum">    1873</span> <span class="tlaUNC">           0 :     return m_parts ? getPart(partType, getSlice(), *m_parts) : UnownedStringSlice();</span></span>
+<span id="L1874"><span class="lineNum">    1874</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1875"><span class="lineNum">    1875</span>              : </span>
+<span id="L1876"><span class="lineNum">    1876</span>              : </span>
+<span id="L1877"><span class="lineNum">    1877</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
