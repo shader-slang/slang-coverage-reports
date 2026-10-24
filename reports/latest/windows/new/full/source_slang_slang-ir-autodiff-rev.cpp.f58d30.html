@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-23 04:33:23 UTC</td>
+      <td class="headerValue">2026-10-24 05:12:38 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">98.0&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:98.0%;background-color:hsl(117, 70%, 50%)"></div></div>
-      <span class="metricCounts">394 / 402</span>
+      <span class="metricCounts">395 / 403</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -777,7 +777,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L504"><span class="lineNum">     504</span>              : </span>
 <span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">           1 :     auto rematCtxParam = rematFuncBuilder.emitParam(minimalContextType);</span></span>
 <span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">           1 :     rematFuncBuilder.addNameHintDecoration(rematCtxParam, UnownedStringSlice(&quot;minCtx&quot;));</span></span>
-<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">           1 :     auto rematContextVar = rematFuncBuilder.emitVar((IRType*)fullContextType);</span></span>
+<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; rematContextValues;</span></span>
 <span id="L508"><span class="lineNum">     508</span>              : </span>
 <span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">           1 :     IRBuilder contextTypeBuilder(builder.getModule());</span></span>
 <span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">           1 :     contextTypeBuilder.setInsertInto(builder.getModule());</span></span>
@@ -830,7 +830,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L557"><span class="lineNum">     557</span>              :         {</span>
 <span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">           1 :             auto key = contextTypeBuilder.createStructKey();</span></span>
 <span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">           1 :             auto structFieldType = applyForBwdParam-&gt;getDataType();</span></span>
-<span id="L560"><span class="lineNum">     560</span>              :             IRInst* rematContextValue = rematFuncParam;</span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">           1 :             IRInst* rematContextValue = rematFuncParam;</span></span>
 <span id="L561"><span class="lineNum">     561</span>              : </span>
 <span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">           1 :             if (auto inoutParamType = as&lt;IRBorrowInOutParamType&gt;(applyForBwdParam-&gt;getDataType()))</span></span>
 <span id="L563"><span class="lineNum">     563</span>              :             {</span>
@@ -841,137 +841,137 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L568"><span class="lineNum">     568</span>              :             }</span>
 <span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">           1 :             contextTypeBuilder.createStructField(fullContextType, key, structFieldType);</span></span>
 <span id="L570"><span class="lineNum">     570</span>              : </span>
-<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">           1 :             rematFuncBuilder.emitStore(</span></span>
-<span id="L572"><span class="lineNum">     572</span>              :                 rematFuncBuilder</span>
-<span id="L573"><span class="lineNum">     573</span>              :                     .emitFieldAddress(builder.getPtrType(structFieldType), rematContextVar, key),</span>
-<span id="L574"><span class="lineNum">     574</span>              :                 rematContextValue);</span>
-<span id="L575"><span class="lineNum">     575</span>              : </span>
-<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">           1 :             if (as&lt;IRVoidType&gt;(bwdPropParam-&gt;getDataType()))</span></span>
-<span id="L577"><span class="lineNum">     577</span>              :             {</span>
-<span id="L578"><span class="lineNum">     578</span>              :                 // Add just the primal part (there&#x27;s no differential part since its void).</span>
-<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">           1 :                 bwdDiffFuncArgs.add(</span></span>
-<span id="L580"><span class="lineNum">     580</span>              :                     bwdPropFuncBuilder.emitFieldExtract(structFieldType, contextInParam, key));</span>
-<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L582"><span class="lineNum">     582</span>              :             else</span>
-<span id="L583"><span class="lineNum">     583</span>              :             {</span>
-<span id="L584"><span class="lineNum">     584</span>              :                 // If this is not a void type, we need to construct a differential pair</span>
-<span id="L585"><span class="lineNum">     585</span>              :                 // var.</span>
-<span id="L586"><span class="lineNum">     586</span>              :                 //</span>
-<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">           1 :                 auto inOutPairType = cast&lt;IRBorrowInOutParamType&gt;(</span></span>
-<span id="L588"><span class="lineNum">     588</span>              :                     legacyBwdDiffFuncType-&gt;getParamType(bwdDiffFuncArgs.getCount()));</span>
-<span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">           1 :                 IRInst* pairVar = bwdPropFuncBuilder.emitVar(inOutPairType-&gt;getValueType());</span></span>
-<span id="L590"><span class="lineNum">     590</span>              : </span>
-<span id="L591"><span class="lineNum">     591</span>              :                 // Load the primal value from the context param and store it in here.</span>
-<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">           1 :                 bwdPropFuncBuilder.emitStore(</span></span>
-<span id="L593"><span class="lineNum">     593</span>              :                     bwdPropFuncBuilder.emitIntrinsicInst(</span>
-<span id="L594"><span class="lineNum">     594</span>              :                         builder.getPtrType(structFieldType),</span>
-<span id="L595"><span class="lineNum">     595</span>              :                         kIROp_DifferentialPairGetPrimal,</span>
-<span id="L596"><span class="lineNum">     596</span>              :                         1,</span>
-<span id="L597"><span class="lineNum">     597</span>              :                         &amp;pairVar),</span>
-<span id="L598"><span class="lineNum">     598</span>              :                     bwdPropFuncBuilder.emitFieldExtract(structFieldType, contextInParam, key));</span>
-<span id="L599"><span class="lineNum">     599</span>              : </span>
-<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">           1 :                 auto diffPtr = bwdPropFuncBuilder.emitIntrinsicInst(</span></span>
-<span id="L601"><span class="lineNum">     601</span>              :                     bwdPropFuncBuilder.getPtrType(</span>
-<span id="L602"><span class="lineNum">     602</span>              :                         as&lt;IROutParamTypeBase&gt;(bwdPropParam-&gt;getDataType())-&gt;getValueType()),</span>
-<span id="L603"><span class="lineNum">     603</span>              :                     kIROp_DifferentialPairGetDifferential,</span>
-<span id="L604"><span class="lineNum">     604</span>              :                     1,</span>
-<span id="L605"><span class="lineNum">     605</span>              :                     &amp;pairVar);</span>
-<span id="L606"><span class="lineNum">     606</span>              : </span>
-<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">           1 :                 if (as&lt;IRBorrowInOutParamType&gt;(bwdPropParam-&gt;getDataType()))</span></span>
-<span id="L608"><span class="lineNum">     608</span>              :                 {</span>
-<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">           1 :                     bwdPropFuncBuilder.emitStore(</span></span>
-<span id="L610"><span class="lineNum">     610</span>              :                         diffPtr,</span>
-<span id="L611"><span class="lineNum">     611</span>              :                         bwdPropFuncBuilder.emitLoad(bwdPropParam));</span>
-<span id="L612"><span class="lineNum">     612</span>              :                 }</span>
-<span id="L613"><span class="lineNum">     613</span>              : </span>
-<span id="L614"><span class="lineNum">     614</span>              :                 // After the bwdDiff call, load the differential value and put it in bwdPropParam.</span>
-<span id="L615"><span class="lineNum">     615</span> <span class="tlaGNC">           1 :                 bwdPropPostCallBuilder.emitStore(</span></span>
-<span id="L616"><span class="lineNum">     616</span>              :                     bwdPropParam,</span>
-<span id="L617"><span class="lineNum">     617</span>              :                     bwdPropPostCallBuilder.emitLoad(diffPtr));</span>
-<span id="L618"><span class="lineNum">     618</span>              : </span>
-<span id="L619"><span class="lineNum">     619</span> <span class="tlaGNC">           1 :                 bwdDiffFuncArgs.add(pairVar);</span></span>
-<span id="L620"><span class="lineNum">     620</span>              :             }</span>
-<span id="L621"><span class="lineNum">     621</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L622"><span class="lineNum">     622</span> <span class="tlaGNC">           1 :         else if (!as&lt;IRVoidType&gt;(bwdPropParam-&gt;getDataType()))</span></span>
-<span id="L623"><span class="lineNum">     623</span>              :         {</span>
-<span id="L624"><span class="lineNum">     624</span>              :             // Primal =&gt; Out param</span>
-<span id="L625"><span class="lineNum">     625</span>              :             // Diff =&gt; In diff param.</span>
-<span id="L626"><span class="lineNum">     626</span>              :             //</span>
-<span id="L627"><span class="lineNum">     627</span> <span class="tlaGNC">           1 :             bwdDiffFuncArgs.add(bwdPropParam);</span></span>
-<span id="L628"><span class="lineNum">     628</span>              :         }</span>
-<span id="L629"><span class="lineNum">     629</span>              :         else</span>
-<span id="L630"><span class="lineNum">     630</span>              :         {</span>
-<span id="L631"><span class="lineNum">     631</span>              :             // Primal =&gt; Out param</span>
-<span id="L632"><span class="lineNum">     632</span>              :             // Diff =&gt; Void.</span>
-<span id="L633"><span class="lineNum">     633</span>              : </span>
-<span id="L634"><span class="lineNum">     634</span>              :             // Nothing to do.</span>
-<span id="L635"><span class="lineNum">     635</span>              :         }</span>
-<span id="L636"><span class="lineNum">     636</span>              :     }</span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">           1 :             rematContextValues.add(rematContextValue);</span></span>
+<span id="L572"><span class="lineNum">     572</span>              : </span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">           1 :             if (as&lt;IRVoidType&gt;(bwdPropParam-&gt;getDataType()))</span></span>
+<span id="L574"><span class="lineNum">     574</span>              :             {</span>
+<span id="L575"><span class="lineNum">     575</span>              :                 // Add just the primal part (there&#x27;s no differential part since its void).</span>
+<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">           1 :                 bwdDiffFuncArgs.add(</span></span>
+<span id="L577"><span class="lineNum">     577</span>              :                     bwdPropFuncBuilder.emitFieldExtract(structFieldType, contextInParam, key));</span>
+<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L579"><span class="lineNum">     579</span>              :             else</span>
+<span id="L580"><span class="lineNum">     580</span>              :             {</span>
+<span id="L581"><span class="lineNum">     581</span>              :                 // If this is not a void type, we need to construct a differential pair</span>
+<span id="L582"><span class="lineNum">     582</span>              :                 // var.</span>
+<span id="L583"><span class="lineNum">     583</span>              :                 //</span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">           1 :                 auto inOutPairType = cast&lt;IRBorrowInOutParamType&gt;(</span></span>
+<span id="L585"><span class="lineNum">     585</span>              :                     legacyBwdDiffFuncType-&gt;getParamType(bwdDiffFuncArgs.getCount()));</span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">           1 :                 IRInst* pairVar = bwdPropFuncBuilder.emitVar(inOutPairType-&gt;getValueType());</span></span>
+<span id="L587"><span class="lineNum">     587</span>              : </span>
+<span id="L588"><span class="lineNum">     588</span>              :                 // Load the primal value from the context param and store it in here.</span>
+<span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">           1 :                 bwdPropFuncBuilder.emitStore(</span></span>
+<span id="L590"><span class="lineNum">     590</span>              :                     bwdPropFuncBuilder.emitIntrinsicInst(</span>
+<span id="L591"><span class="lineNum">     591</span>              :                         builder.getPtrType(structFieldType),</span>
+<span id="L592"><span class="lineNum">     592</span>              :                         kIROp_DifferentialPairGetPrimal,</span>
+<span id="L593"><span class="lineNum">     593</span>              :                         1,</span>
+<span id="L594"><span class="lineNum">     594</span>              :                         &amp;pairVar),</span>
+<span id="L595"><span class="lineNum">     595</span>              :                     bwdPropFuncBuilder.emitFieldExtract(structFieldType, contextInParam, key));</span>
+<span id="L596"><span class="lineNum">     596</span>              : </span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">           1 :                 auto diffPtr = bwdPropFuncBuilder.emitIntrinsicInst(</span></span>
+<span id="L598"><span class="lineNum">     598</span>              :                     bwdPropFuncBuilder.getPtrType(</span>
+<span id="L599"><span class="lineNum">     599</span>              :                         as&lt;IROutParamTypeBase&gt;(bwdPropParam-&gt;getDataType())-&gt;getValueType()),</span>
+<span id="L600"><span class="lineNum">     600</span>              :                     kIROp_DifferentialPairGetDifferential,</span>
+<span id="L601"><span class="lineNum">     601</span>              :                     1,</span>
+<span id="L602"><span class="lineNum">     602</span>              :                     &amp;pairVar);</span>
+<span id="L603"><span class="lineNum">     603</span>              : </span>
+<span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">           1 :                 if (as&lt;IRBorrowInOutParamType&gt;(bwdPropParam-&gt;getDataType()))</span></span>
+<span id="L605"><span class="lineNum">     605</span>              :                 {</span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">           1 :                     bwdPropFuncBuilder.emitStore(</span></span>
+<span id="L607"><span class="lineNum">     607</span>              :                         diffPtr,</span>
+<span id="L608"><span class="lineNum">     608</span>              :                         bwdPropFuncBuilder.emitLoad(bwdPropParam));</span>
+<span id="L609"><span class="lineNum">     609</span>              :                 }</span>
+<span id="L610"><span class="lineNum">     610</span>              : </span>
+<span id="L611"><span class="lineNum">     611</span>              :                 // After the bwdDiff call, load the differential value and put it in bwdPropParam.</span>
+<span id="L612"><span class="lineNum">     612</span> <span class="tlaGNC">           1 :                 bwdPropPostCallBuilder.emitStore(</span></span>
+<span id="L613"><span class="lineNum">     613</span>              :                     bwdPropParam,</span>
+<span id="L614"><span class="lineNum">     614</span>              :                     bwdPropPostCallBuilder.emitLoad(diffPtr));</span>
+<span id="L615"><span class="lineNum">     615</span>              : </span>
+<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">           1 :                 bwdDiffFuncArgs.add(pairVar);</span></span>
+<span id="L617"><span class="lineNum">     617</span>              :             }</span>
+<span id="L618"><span class="lineNum">     618</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L619"><span class="lineNum">     619</span> <span class="tlaGNC">           1 :         else if (!as&lt;IRVoidType&gt;(bwdPropParam-&gt;getDataType()))</span></span>
+<span id="L620"><span class="lineNum">     620</span>              :         {</span>
+<span id="L621"><span class="lineNum">     621</span>              :             // Primal =&gt; Out param</span>
+<span id="L622"><span class="lineNum">     622</span>              :             // Diff =&gt; In diff param.</span>
+<span id="L623"><span class="lineNum">     623</span>              :             //</span>
+<span id="L624"><span class="lineNum">     624</span> <span class="tlaGNC">           1 :             bwdDiffFuncArgs.add(bwdPropParam);</span></span>
+<span id="L625"><span class="lineNum">     625</span>              :         }</span>
+<span id="L626"><span class="lineNum">     626</span>              :         else</span>
+<span id="L627"><span class="lineNum">     627</span>              :         {</span>
+<span id="L628"><span class="lineNum">     628</span>              :             // Primal =&gt; Out param</span>
+<span id="L629"><span class="lineNum">     629</span>              :             // Diff =&gt; Void.</span>
+<span id="L630"><span class="lineNum">     630</span>              : </span>
+<span id="L631"><span class="lineNum">     631</span>              :             // Nothing to do.</span>
+<span id="L632"><span class="lineNum">     632</span>              :         }</span>
+<span id="L633"><span class="lineNum">     633</span>              :     }</span>
+<span id="L634"><span class="lineNum">     634</span>              : </span>
+<span id="L635"><span class="lineNum">     635</span>              :     // Now we need to emit the call to the primal function in the apply function</span>
+<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; primalFuncArgs;</span></span>
 <span id="L637"><span class="lineNum">     637</span>              : </span>
-<span id="L638"><span class="lineNum">     638</span>              :     // Now we need to emit the call to the primal function in the apply function</span>
-<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; primalFuncArgs;</span></span>
-<span id="L640"><span class="lineNum">     640</span>              : </span>
-<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">           1 :     List&lt;IRParam*&gt; applyFuncParams;</span></span>
-<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">           1 :     for (auto param : applyFunc-&gt;getParams())</span></span>
-<span id="L643"><span class="lineNum">     643</span>              :     {</span>
-<span id="L644"><span class="lineNum">     644</span> <span class="tlaGNC">           1 :         applyFuncParams.add(param);</span></span>
-<span id="L645"><span class="lineNum">     645</span>              :     }</span>
-<span id="L646"><span class="lineNum">     646</span>              : </span>
-<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">           1 :     for (UIndex ii = 0; ii &lt; applyForBwdFuncType-&gt;getParamCount(); ii++)</span></span>
-<span id="L648"><span class="lineNum">     648</span>              :     {</span>
-<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">           1 :         auto param = applyFuncParams[ii];</span></span>
-<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">           1 :         auto primalFuncParamType = primalFuncType-&gt;getParamType(ii);</span></span>
-<span id="L651"><span class="lineNum">     651</span>              : </span>
-<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">           1 :         if (!diffTypeContext.tryGetAssociationOfKind(</span></span>
-<span id="L653"><span class="lineNum">     653</span>              :                 primalFuncParamType,</span>
-<span id="L654"><span class="lineNum">     654</span>              :                 AnnotationKind::DifferentialPtrType))</span>
-<span id="L655"><span class="lineNum">     655</span>              :         {</span>
-<span id="L656"><span class="lineNum">     656</span>              :             // Simple case: just pass the param as-is.</span>
-<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">           1 :             primalFuncArgs.add(param);</span></span>
-<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L659"><span class="lineNum">     659</span>              :         else</span>
-<span id="L660"><span class="lineNum">     660</span>              :         {</span>
-<span id="L661"><span class="lineNum">     661</span>              :             // Our param is a ptr-like type that has a differential component, so the param</span>
-<span id="L662"><span class="lineNum">     662</span>              :             // represents a pair.</span>
-<span id="L663"><span class="lineNum">     663</span>              :             auto [paramPassingMode, paramBaseType] =</span>
-<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">           1 :                 splitParameterDirectionAndType(param-&gt;getDataType());</span></span>
+<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">           1 :     List&lt;IRParam*&gt; applyFuncParams;</span></span>
+<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">           1 :     for (auto param : applyFunc-&gt;getParams())</span></span>
+<span id="L640"><span class="lineNum">     640</span>              :     {</span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">           1 :         applyFuncParams.add(param);</span></span>
+<span id="L642"><span class="lineNum">     642</span>              :     }</span>
+<span id="L643"><span class="lineNum">     643</span>              : </span>
+<span id="L644"><span class="lineNum">     644</span> <span class="tlaGNC">           1 :     for (UIndex ii = 0; ii &lt; applyForBwdFuncType-&gt;getParamCount(); ii++)</span></span>
+<span id="L645"><span class="lineNum">     645</span>              :     {</span>
+<span id="L646"><span class="lineNum">     646</span> <span class="tlaGNC">           1 :         auto param = applyFuncParams[ii];</span></span>
+<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">           1 :         auto primalFuncParamType = primalFuncType-&gt;getParamType(ii);</span></span>
+<span id="L648"><span class="lineNum">     648</span>              : </span>
+<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">           1 :         if (!diffTypeContext.tryGetAssociationOfKind(</span></span>
+<span id="L650"><span class="lineNum">     650</span>              :                 primalFuncParamType,</span>
+<span id="L651"><span class="lineNum">     651</span>              :                 AnnotationKind::DifferentialPtrType))</span>
+<span id="L652"><span class="lineNum">     652</span>              :         {</span>
+<span id="L653"><span class="lineNum">     653</span>              :             // Simple case: just pass the param as-is.</span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">           1 :             primalFuncArgs.add(param);</span></span>
+<span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L656"><span class="lineNum">     656</span>              :         else</span>
+<span id="L657"><span class="lineNum">     657</span>              :         {</span>
+<span id="L658"><span class="lineNum">     658</span>              :             // Our param is a ptr-like type that has a differential component, so the param</span>
+<span id="L659"><span class="lineNum">     659</span>              :             // represents a pair.</span>
+<span id="L660"><span class="lineNum">     660</span>              :             auto [paramPassingMode, paramBaseType] =</span>
+<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">           1 :                 splitParameterDirectionAndType(param-&gt;getDataType());</span></span>
+<span id="L662"><span class="lineNum">     662</span>              : </span>
+<span id="L663"><span class="lineNum">     663</span>              :             // Handle the other modes later.</span>
+<span id="L664"><span class="lineNum">     664</span>              :             SLANG_ASSERT(paramPassingMode == ParameterDirectionInfo::Kind::In);</span>
 <span id="L665"><span class="lineNum">     665</span>              : </span>
-<span id="L666"><span class="lineNum">     666</span>              :             // Handle the other modes later.</span>
-<span id="L667"><span class="lineNum">     667</span>              :             SLANG_ASSERT(paramPassingMode == ParameterDirectionInfo::Kind::In);</span>
-<span id="L668"><span class="lineNum">     668</span>              : </span>
-<span id="L669"><span class="lineNum">     669</span>              :             // We need to extract the primal part of the pair and pass that.</span>
-<span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">           1 :             primalFuncArgs.add(</span></span>
-<span id="L671"><span class="lineNum">     671</span>              :                 applyFuncBuilder.emitDifferentialPtrPairGetPrimal(primalFuncParamType, param));</span>
-<span id="L672"><span class="lineNum">     672</span>              :         }</span>
-<span id="L673"><span class="lineNum">     673</span>              :     }</span>
-<span id="L674"><span class="lineNum">     674</span>              : </span>
-<span id="L675"><span class="lineNum">     675</span>              :     // Call the primal function and store the result in the context</span>
-<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">           1 :     auto primalResult = applyFuncBuilder.emitCallInst(</span></span>
-<span id="L677"><span class="lineNum">     677</span>              :         as&lt;IRFuncType&gt;(primalFunc-&gt;getDataType())-&gt;getResultType(),</span>
-<span id="L678"><span class="lineNum">     678</span>              :         primalFunc,</span>
-<span id="L679"><span class="lineNum">     679</span>              :         primalFuncArgs.getCount(),</span>
-<span id="L680"><span class="lineNum">     680</span>              :         primalFuncArgs.getBuffer());</span>
-<span id="L681"><span class="lineNum">     681</span>              : </span>
-<span id="L682"><span class="lineNum">     682</span>              : </span>
-<span id="L683"><span class="lineNum">     683</span>              :     //</span>
-<span id="L684"><span class="lineNum">     684</span>              :     // Finish up applyFunc &amp; bwdPropFunc.</span>
-<span id="L685"><span class="lineNum">     685</span>              :     //</span>
-<span id="L686"><span class="lineNum">     686</span>              : </span>
-<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">           1 :     if (!as&lt;IRVoidType&gt;(primalResult-&gt;getDataType()))</span></span>
-<span id="L688"><span class="lineNum">     688</span>              :     {</span>
-<span id="L689"><span class="lineNum">     689</span>              :         // Non-void: apply returns Tuple&lt;result, {}&gt;.</span>
-<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">           1 :         applyFuncBuilder.emitReturn(applyFuncBuilder.emitMakeTuple(</span></span>
-<span id="L691"><span class="lineNum">     691</span>              :             primalResult,</span>
-<span id="L692"><span class="lineNum">     692</span>              :             applyFuncBuilder.emitMakeStruct(minimalContextType, List&lt;IRInst*&gt;())));</span>
-<span id="L693"><span class="lineNum">     693</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L694"><span class="lineNum">     694</span>              :     else</span>
-<span id="L695"><span class="lineNum">     695</span>              :     {</span>
-<span id="L696"><span class="lineNum">     696</span>              :         // Else, return the empty context.</span>
-<span id="L697"><span class="lineNum">     697</span> <span class="tlaGNC">           1 :         applyFuncBuilder.emitReturn(</span></span>
-<span id="L698"><span class="lineNum">     698</span>              :             applyFuncBuilder.emitMakeStruct(minimalContextType, List&lt;IRInst*&gt;()));</span>
-<span id="L699"><span class="lineNum">     699</span>              :     }</span>
-<span id="L700"><span class="lineNum">     700</span>              : </span>
-<span id="L701"><span class="lineNum">     701</span> <span class="tlaGNC">           1 :     rematFuncBuilder.emitReturn(rematFuncBuilder.emitLoad(rematContextVar));</span></span>
+<span id="L666"><span class="lineNum">     666</span>              :             // We need to extract the primal part of the pair and pass that.</span>
+<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">           1 :             primalFuncArgs.add(</span></span>
+<span id="L668"><span class="lineNum">     668</span>              :                 applyFuncBuilder.emitDifferentialPtrPairGetPrimal(primalFuncParamType, param));</span>
+<span id="L669"><span class="lineNum">     669</span>              :         }</span>
+<span id="L670"><span class="lineNum">     670</span>              :     }</span>
+<span id="L671"><span class="lineNum">     671</span>              : </span>
+<span id="L672"><span class="lineNum">     672</span>              :     // Call the primal function and store the result in the context</span>
+<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">           1 :     auto primalResult = applyFuncBuilder.emitCallInst(</span></span>
+<span id="L674"><span class="lineNum">     674</span>              :         as&lt;IRFuncType&gt;(primalFunc-&gt;getDataType())-&gt;getResultType(),</span>
+<span id="L675"><span class="lineNum">     675</span>              :         primalFunc,</span>
+<span id="L676"><span class="lineNum">     676</span>              :         primalFuncArgs.getCount(),</span>
+<span id="L677"><span class="lineNum">     677</span>              :         primalFuncArgs.getBuffer());</span>
+<span id="L678"><span class="lineNum">     678</span>              : </span>
+<span id="L679"><span class="lineNum">     679</span>              : </span>
+<span id="L680"><span class="lineNum">     680</span>              :     //</span>
+<span id="L681"><span class="lineNum">     681</span>              :     // Finish up applyFunc &amp; bwdPropFunc.</span>
+<span id="L682"><span class="lineNum">     682</span>              :     //</span>
+<span id="L683"><span class="lineNum">     683</span>              : </span>
+<span id="L684"><span class="lineNum">     684</span> <span class="tlaGNC">           1 :     if (!as&lt;IRVoidType&gt;(primalResult-&gt;getDataType()))</span></span>
+<span id="L685"><span class="lineNum">     685</span>              :     {</span>
+<span id="L686"><span class="lineNum">     686</span>              :         // Non-void: apply returns Tuple&lt;result, {}&gt;.</span>
+<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">           1 :         applyFuncBuilder.emitReturn(applyFuncBuilder.emitMakeTuple(</span></span>
+<span id="L688"><span class="lineNum">     688</span>              :             primalResult,</span>
+<span id="L689"><span class="lineNum">     689</span>              :             applyFuncBuilder.emitMakeStruct(minimalContextType, List&lt;IRInst*&gt;())));</span>
+<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L691"><span class="lineNum">     691</span>              :     else</span>
+<span id="L692"><span class="lineNum">     692</span>              :     {</span>
+<span id="L693"><span class="lineNum">     693</span>              :         // Else, return the empty context.</span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">           1 :         applyFuncBuilder.emitReturn(</span></span>
+<span id="L695"><span class="lineNum">     695</span>              :             applyFuncBuilder.emitMakeStruct(minimalContextType, List&lt;IRInst*&gt;()));</span>
+<span id="L696"><span class="lineNum">     696</span>              :     }</span>
+<span id="L697"><span class="lineNum">     697</span>              : </span>
+<span id="L698"><span class="lineNum">     698</span>              :     // Preserve capture operands as SSA values, so expanding internal context</span>
+<span id="L699"><span class="lineNum">     699</span>              :     // arguments does not leave an unnecessary aggregate memory round trip.</span>
+<span id="L700"><span class="lineNum">     700</span> <span class="tlaGNC">           1 :     rematFuncBuilder.emitReturn(</span></span>
+<span id="L701"><span class="lineNum">     701</span>              :         rematFuncBuilder.emitMakeStruct(fullContextType, rematContextValues));</span>
 <span id="L702"><span class="lineNum">     702</span>              : </span>
 <span id="L703"><span class="lineNum">     703</span> <span class="tlaGNC">           1 :     if ((Index)legacyBwdDiffFuncType-&gt;getParamCount() &gt; bwdDiffFuncArgs.getCount())</span></span>
 <span id="L704"><span class="lineNum">     704</span>              :     {</span>

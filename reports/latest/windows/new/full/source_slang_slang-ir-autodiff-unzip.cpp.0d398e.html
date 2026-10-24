@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-23 04:33:23 UTC</td>
+      <td class="headerValue">2026-10-24 05:12:38 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">90.9&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:90.9%;background-color:hsl(106, 70%, 50%)"></div></div>
-      <span class="metricCounts">559 / 615</span>
+      <span class="metricValue">90.5&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:90.5%;background-color:hsl(106, 70%, 50%)"></div></div>
+      <span class="metricCounts">560 / 619</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -1247,610 +1247,617 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L974"><span class="lineNum">     974</span>              :         IRBuilder&amp; builder,</span>
 <span id="L975"><span class="lineNum">     975</span>              :         IRStructKey* baseKey,</span>
 <span id="L976"><span class="lineNum">     976</span>              :         IRInst* inst,</span>
-<span id="L977"><span class="lineNum">     977</span>              :         IRInst* intermediateOutput)</span>
-<span id="L978"><span class="lineNum">     978</span> <span class="tlaUNC">           0 :     {</span></span>
-<span id="L979"><span class="lineNum">     979</span> <span class="tlaUNC">           0 :         auto field = addIntermediateContextField(inst-&gt;getDataType(), intermediateOutput);</span></span>
-<span id="L980"><span class="lineNum">     980</span> <span class="tlaUNC">           0 :         field-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
-<span id="L981"><span class="lineNum">     981</span> <span class="tlaUNC">           0 :         auto key = field-&gt;getKey();</span></span>
-<span id="L982"><span class="lineNum">     982</span> <span class="tlaUNC">           0 :         if (auto nameHint = inst-&gt;findDecoration&lt;IRNameHintDecoration&gt;())</span></span>
-<span id="L983"><span class="lineNum">     983</span> <span class="tlaUNC">           0 :             cloneDecoration(nameHint, key);</span></span>
-<span id="L984"><span class="lineNum">     984</span> <span class="tlaUNC">           0 :         builder.addPrimalValueStructKeyDecoration(inst, baseKey, key);</span></span>
-<span id="L985"><span class="lineNum">     985</span> <span class="tlaUNC">           0 :         auto fieldAddr = builder.emitFieldAddress(</span></span>
-<span id="L986"><span class="lineNum">     986</span>              :             builder.getPtrType(inst-&gt;getFullType()),</span>
-<span id="L987"><span class="lineNum">     987</span>              :             intermediateOutput,</span>
-<span id="L988"><span class="lineNum">     988</span>              :             key);</span>
-<span id="L989"><span class="lineNum">     989</span> <span class="tlaUNC">           0 :         builder.emitStore(fieldAddr, inst);</span></span>
-<span id="L990"><span class="lineNum">     990</span>              : </span>
-<span id="L991"><span class="lineNum">     991</span> <span class="tlaUNC">           0 :         if (shouldReportCheckpoints &amp;&amp; originalFunc)</span></span>
-<span id="L992"><span class="lineNum">     992</span>              :         {</span>
-<span id="L993"><span class="lineNum">     993</span> <span class="tlaUNC">           0 :             auto reportInst =</span></span>
-<span id="L994"><span class="lineNum">     994</span>              :                 builder.emitReportCheckpointStore(inst-&gt;getDataType(), originalFunc, fieldAddr);</span>
-<span id="L995"><span class="lineNum">     995</span> <span class="tlaUNC">           0 :             reportInst-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
-<span id="L996"><span class="lineNum">     996</span>              :         }</span>
-<span id="L997"><span class="lineNum">     997</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L977"><span class="lineNum">     977</span>              :         IRInst* intermediateOutput,</span>
+<span id="L978"><span class="lineNum">     978</span>              :         List&lt;IRInst*&gt;* capturedValues = nullptr)</span>
+<span id="L979"><span class="lineNum">     979</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L980"><span class="lineNum">     980</span> <span class="tlaUNC">           0 :         auto field = addIntermediateContextField(inst-&gt;getDataType(), intermediateOutput);</span></span>
+<span id="L981"><span class="lineNum">     981</span> <span class="tlaUNC">           0 :         field-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
+<span id="L982"><span class="lineNum">     982</span> <span class="tlaUNC">           0 :         auto key = field-&gt;getKey();</span></span>
+<span id="L983"><span class="lineNum">     983</span> <span class="tlaUNC">           0 :         if (auto nameHint = inst-&gt;findDecoration&lt;IRNameHintDecoration&gt;())</span></span>
+<span id="L984"><span class="lineNum">     984</span> <span class="tlaUNC">           0 :             cloneDecoration(nameHint, key);</span></span>
+<span id="L985"><span class="lineNum">     985</span> <span class="tlaUNC">           0 :         builder.addPrimalValueStructKeyDecoration(inst, baseKey, key);</span></span>
+<span id="L986"><span class="lineNum">     986</span> <span class="tlaUNC">           0 :         if (capturedValues)</span></span>
+<span id="L987"><span class="lineNum">     987</span>              :         {</span>
+<span id="L988"><span class="lineNum">     988</span> <span class="tlaUNC">           0 :             capturedValues-&gt;add(inst);</span></span>
+<span id="L989"><span class="lineNum">     989</span>              :             // Checkpoint reporting needs an address; normal captures remain SSA values.</span>
+<span id="L990"><span class="lineNum">     990</span> <span class="tlaUNC">           0 :             if (!shouldReportCheckpoints || !originalFunc)</span></span>
+<span id="L991"><span class="lineNum">     991</span>              :                 return;</span>
+<span id="L992"><span class="lineNum">     992</span>              :         }</span>
+<span id="L993"><span class="lineNum">     993</span> <span class="tlaUNC">           0 :         auto fieldAddr = builder.emitFieldAddress(</span></span>
+<span id="L994"><span class="lineNum">     994</span>              :             builder.getPtrType(inst-&gt;getFullType()),</span>
+<span id="L995"><span class="lineNum">     995</span>              :             intermediateOutput,</span>
+<span id="L996"><span class="lineNum">     996</span>              :             key);</span>
+<span id="L997"><span class="lineNum">     997</span> <span class="tlaUNC">           0 :         builder.emitStore(fieldAddr, inst);</span></span>
 <span id="L998"><span class="lineNum">     998</span>              : </span>
-<span id="L999"><span class="lineNum">     999</span>              :     void setInsertOrdinaryInstIntoBlock(IRBuilder&amp; builder, IRBlock* block)</span>
-<span id="L1000"><span class="lineNum">    1000</span>              :     {</span>
-<span id="L1001"><span class="lineNum">    1001</span>              :         auto firstOrdinaryInst = block-&gt;getFirstOrdinaryInst();</span>
-<span id="L1002"><span class="lineNum">    1002</span>              :         if (firstOrdinaryInst)</span>
-<span id="L1003"><span class="lineNum">    1003</span>              :             builder.setInsertBefore(firstOrdinaryInst);</span>
-<span id="L1004"><span class="lineNum">    1004</span>              :         else</span>
-<span id="L1005"><span class="lineNum">    1005</span>              :             builder.setInsertInto(block);</span>
-<span id="L1006"><span class="lineNum">    1006</span>              :     }</span>
-<span id="L1007"><span class="lineNum">    1007</span>              : </span>
-<span id="L1008"><span class="lineNum">    1008</span>              :     IRFunc* turnUnzippedFuncIntoPrimalFunc(</span>
-<span id="L1009"><span class="lineNum">    1009</span>              :         IRFunc* unzippedFunc,</span>
-<span id="L1010"><span class="lineNum">    1010</span>              :         IRFunc* inOriginalFunc,</span>
-<span id="L1011"><span class="lineNum">    1011</span>              :         HoistedPrimalsInfo* primalsInfo,</span>
-<span id="L1012"><span class="lineNum">    1012</span>              :         IRInst*&amp; outFullContextType,</span>
-<span id="L1013"><span class="lineNum">    1013</span>              :         IRInst*&amp; outMinimalContextType,</span>
-<span id="L1014"><span class="lineNum">    1014</span>              :         IRInst*&amp; outParamsContextType,</span>
-<span id="L1015"><span class="lineNum">    1015</span>              :         IRFunc*&amp; rematFunc,</span>
-<span id="L1016"><span class="lineNum">    1016</span>              :         // TODO(sai): cleanup. temporary extra value</span>
-<span id="L1017"><span class="lineNum">    1017</span>              :         IRInst*&amp; outParamsContextKey,</span>
-<span id="L1018"><span class="lineNum">    1018</span>              :         IRInst*&amp; outMinimalContextKey)</span>
-<span id="L1019"><span class="lineNum">    1019</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1020"><span class="lineNum">    1020</span> <span class="tlaGNC">           1 :         IRBuilder builder(module);</span></span>
-<span id="L1021"><span class="lineNum">    1021</span>              : </span>
-<span id="L1022"><span class="lineNum">    1022</span>              :         // Store the original function for checkpoint reporting.</span>
-<span id="L1023"><span class="lineNum">    1023</span> <span class="tlaGNC">           1 :         originalFunc = inOriginalFunc;</span></span>
-<span id="L1024"><span class="lineNum">    1024</span>              : </span>
-<span id="L1025"><span class="lineNum">    1025</span>              :         IRFunc* func = unzippedFunc;</span>
-<span id="L1026"><span class="lineNum">    1026</span> <span class="tlaGNC">           1 :         IRInst* minimalContextType = nullptr;</span></span>
-<span id="L1027"><span class="lineNum">    1027</span> <span class="tlaGNC">           1 :         auto applyFuncType =</span></span>
-<span id="L1028"><span class="lineNum">    1028</span>              :             generatePrimalFuncType(unzippedFunc, inOriginalFunc, minimalContextType);</span>
-<span id="L1029"><span class="lineNum">    1029</span> <span class="tlaGNC">           1 :         outMinimalContextType = minimalContextType;</span></span>
-<span id="L1030"><span class="lineNum">    1030</span> <span class="tlaGNC">           1 :         func-&gt;setFullType((IRType*)applyFuncType);</span></span>
-<span id="L1031"><span class="lineNum">    1031</span>              : </span>
+<span id="L999"><span class="lineNum">     999</span> <span class="tlaUNC">           0 :         if (shouldReportCheckpoints &amp;&amp; originalFunc)</span></span>
+<span id="L1000"><span class="lineNum">    1000</span>              :         {</span>
+<span id="L1001"><span class="lineNum">    1001</span> <span class="tlaUNC">           0 :             auto reportInst =</span></span>
+<span id="L1002"><span class="lineNum">    1002</span>              :                 builder.emitReportCheckpointStore(inst-&gt;getDataType(), originalFunc, fieldAddr);</span>
+<span id="L1003"><span class="lineNum">    1003</span> <span class="tlaUNC">           0 :             reportInst-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
+<span id="L1004"><span class="lineNum">    1004</span>              :         }</span>
+<span id="L1005"><span class="lineNum">    1005</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L1006"><span class="lineNum">    1006</span>              : </span>
+<span id="L1007"><span class="lineNum">    1007</span>              :     void setInsertOrdinaryInstIntoBlock(IRBuilder&amp; builder, IRBlock* block)</span>
+<span id="L1008"><span class="lineNum">    1008</span>              :     {</span>
+<span id="L1009"><span class="lineNum">    1009</span>              :         auto firstOrdinaryInst = block-&gt;getFirstOrdinaryInst();</span>
+<span id="L1010"><span class="lineNum">    1010</span>              :         if (firstOrdinaryInst)</span>
+<span id="L1011"><span class="lineNum">    1011</span>              :             builder.setInsertBefore(firstOrdinaryInst);</span>
+<span id="L1012"><span class="lineNum">    1012</span>              :         else</span>
+<span id="L1013"><span class="lineNum">    1013</span>              :             builder.setInsertInto(block);</span>
+<span id="L1014"><span class="lineNum">    1014</span>              :     }</span>
+<span id="L1015"><span class="lineNum">    1015</span>              : </span>
+<span id="L1016"><span class="lineNum">    1016</span>              :     IRFunc* turnUnzippedFuncIntoPrimalFunc(</span>
+<span id="L1017"><span class="lineNum">    1017</span>              :         IRFunc* unzippedFunc,</span>
+<span id="L1018"><span class="lineNum">    1018</span>              :         IRFunc* inOriginalFunc,</span>
+<span id="L1019"><span class="lineNum">    1019</span>              :         HoistedPrimalsInfo* primalsInfo,</span>
+<span id="L1020"><span class="lineNum">    1020</span>              :         IRInst*&amp; outFullContextType,</span>
+<span id="L1021"><span class="lineNum">    1021</span>              :         IRInst*&amp; outMinimalContextType,</span>
+<span id="L1022"><span class="lineNum">    1022</span>              :         IRInst*&amp; outParamsContextType,</span>
+<span id="L1023"><span class="lineNum">    1023</span>              :         IRFunc*&amp; rematFunc,</span>
+<span id="L1024"><span class="lineNum">    1024</span>              :         // TODO(sai): cleanup. temporary extra value</span>
+<span id="L1025"><span class="lineNum">    1025</span>              :         IRInst*&amp; outParamsContextKey,</span>
+<span id="L1026"><span class="lineNum">    1026</span>              :         IRInst*&amp; outMinimalContextKey)</span>
+<span id="L1027"><span class="lineNum">    1027</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1028"><span class="lineNum">    1028</span> <span class="tlaGNC">           1 :         IRBuilder builder(module);</span></span>
+<span id="L1029"><span class="lineNum">    1029</span>              : </span>
+<span id="L1030"><span class="lineNum">    1030</span>              :         // Store the original function for checkpoint reporting.</span>
+<span id="L1031"><span class="lineNum">    1031</span> <span class="tlaGNC">           1 :         originalFunc = inOriginalFunc;</span></span>
 <span id="L1032"><span class="lineNum">    1032</span>              : </span>
-<span id="L1033"><span class="lineNum">    1033</span> <span class="tlaGNC">           1 :         IRBuilder rematFuncBuilder(module);</span></span>
-<span id="L1034"><span class="lineNum">    1034</span> <span class="tlaGNC">           1 :         rematFunc = rematFuncBuilder.createFunc();</span></span>
-<span id="L1035"><span class="lineNum">    1035</span> <span class="tlaGNC">           1 :         rematFuncBuilder.setInsertInto(rematFunc);</span></span>
-<span id="L1036"><span class="lineNum">    1036</span>              : </span>
-<span id="L1037"><span class="lineNum">    1037</span> <span class="tlaGNC">           1 :         IRInst* fullContextType = nullptr;</span></span>
-<span id="L1038"><span class="lineNum">    1038</span> <span class="tlaGNC">           1 :         auto rematFuncType = generateRematFuncType(</span></span>
-<span id="L1039"><span class="lineNum">    1039</span>              :             unzippedFunc,</span>
-<span id="L1040"><span class="lineNum">    1040</span>              :             inOriginalFunc,</span>
-<span id="L1041"><span class="lineNum">    1041</span>              :             minimalContextType,</span>
-<span id="L1042"><span class="lineNum">    1042</span>              :             fullContextType);</span>
-<span id="L1043"><span class="lineNum">    1043</span> <span class="tlaGNC">           1 :         outFullContextType = fullContextType;</span></span>
+<span id="L1033"><span class="lineNum">    1033</span>              :         IRFunc* func = unzippedFunc;</span>
+<span id="L1034"><span class="lineNum">    1034</span> <span class="tlaGNC">           1 :         IRInst* minimalContextType = nullptr;</span></span>
+<span id="L1035"><span class="lineNum">    1035</span> <span class="tlaGNC">           1 :         auto applyFuncType =</span></span>
+<span id="L1036"><span class="lineNum">    1036</span>              :             generatePrimalFuncType(unzippedFunc, inOriginalFunc, minimalContextType);</span>
+<span id="L1037"><span class="lineNum">    1037</span> <span class="tlaGNC">           1 :         outMinimalContextType = minimalContextType;</span></span>
+<span id="L1038"><span class="lineNum">    1038</span> <span class="tlaGNC">           1 :         func-&gt;setFullType((IRType*)applyFuncType);</span></span>
+<span id="L1039"><span class="lineNum">    1039</span>              : </span>
+<span id="L1040"><span class="lineNum">    1040</span>              : </span>
+<span id="L1041"><span class="lineNum">    1041</span> <span class="tlaGNC">           1 :         IRBuilder rematFuncBuilder(module);</span></span>
+<span id="L1042"><span class="lineNum">    1042</span> <span class="tlaGNC">           1 :         rematFunc = rematFuncBuilder.createFunc();</span></span>
+<span id="L1043"><span class="lineNum">    1043</span> <span class="tlaGNC">           1 :         rematFuncBuilder.setInsertInto(rematFunc);</span></span>
 <span id="L1044"><span class="lineNum">    1044</span>              : </span>
-<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">           1 :         IRStructType* paramsContextType = builder.createStructType();</span></span>
-<span id="L1046"><span class="lineNum">    1046</span> <span class="tlaGNC">           1 :         outParamsContextType = paramsContextType;</span></span>
-<span id="L1047"><span class="lineNum">    1047</span> <span class="tlaGNC">           1 :         IRStructKey* paramsContextKey = builder.createStructKey();</span></span>
-<span id="L1048"><span class="lineNum">    1048</span> <span class="tlaGNC">           1 :         outParamsContextKey = paramsContextKey;</span></span>
-<span id="L1049"><span class="lineNum">    1049</span> <span class="tlaGNC">           1 :         builder.createStructField(</span></span>
-<span id="L1050"><span class="lineNum">    1050</span>              :             cast&lt;IRStructType&gt;(fullContextType),</span>
-<span id="L1051"><span class="lineNum">    1051</span>              :             paramsContextKey,</span>
-<span id="L1052"><span class="lineNum">    1052</span>              :             (IRType*)paramsContextType);</span>
-<span id="L1053"><span class="lineNum">    1053</span>              : </span>
-<span id="L1054"><span class="lineNum">    1054</span> <span class="tlaGNC">           1 :         IRStructKey* minimalContextKey = builder.createStructKey();</span></span>
-<span id="L1055"><span class="lineNum">    1055</span> <span class="tlaGNC">           1 :         outMinimalContextKey = minimalContextKey;</span></span>
-<span id="L1056"><span class="lineNum">    1056</span> <span class="tlaGNC">           1 :         builder.createStructField(</span></span>
-<span id="L1057"><span class="lineNum">    1057</span>              :             cast&lt;IRStructType&gt;(fullContextType),</span>
-<span id="L1058"><span class="lineNum">    1058</span>              :             minimalContextKey,</span>
-<span id="L1059"><span class="lineNum">    1059</span>              :             (IRType*)minimalContextType);</span>
-<span id="L1060"><span class="lineNum">    1060</span>              : </span>
-<span id="L1061"><span class="lineNum">    1061</span> <span class="tlaGNC">           1 :         rematFunc-&gt;setFullType((IRType*)rematFuncType);</span></span>
-<span id="L1062"><span class="lineNum">    1062</span>              : </span>
-<span id="L1063"><span class="lineNum">    1063</span> <span class="tlaGNC">           1 :         auto paramBlock = func-&gt;getFirstBlock();</span></span>
-<span id="L1064"><span class="lineNum">    1064</span> <span class="tlaGNC">           1 :         builder.setInsertInto(paramBlock);</span></span>
-<span id="L1065"><span class="lineNum">    1065</span>              : </span>
-<span id="L1066"><span class="lineNum">    1066</span> <span class="tlaGNC">           1 :         IRCloneEnv primalToRematFuncMapping;</span></span>
-<span id="L1067"><span class="lineNum">    1067</span> <span class="tlaGNC">           1 :         primalToRematFuncMapping.squashChildrenMapping = true;</span></span>
-<span id="L1068"><span class="lineNum">    1068</span> <span class="tlaGNC">           1 :         cloneInst(&amp;primalToRematFuncMapping, &amp;rematFuncBuilder, paramBlock);</span></span>
-<span id="L1069"><span class="lineNum">    1069</span> <span class="tlaGNC">           1 :         rematFuncBuilder.setInsertInto(rematFunc-&gt;getFirstBlock());</span></span>
-<span id="L1070"><span class="lineNum">    1070</span> <span class="tlaGNC">           1 :         rematFunc-&gt;getFirstBlock()-&gt;getTerminator()-&gt;removeAndDeallocate();</span></span>
-<span id="L1071"><span class="lineNum">    1071</span> <span class="tlaGNC">           1 :         auto rematFuncMinimalContextParam = rematFuncBuilder.emitParam((IRType*)minimalContextType);</span></span>
-<span id="L1072"><span class="lineNum">    1072</span> <span class="tlaGNC">           1 :         if (auto rematFirstParam = rematFunc-&gt;getFirstParam())</span></span>
-<span id="L1073"><span class="lineNum">    1073</span> <span class="tlaGNC">           1 :             rematFuncMinimalContextParam-&gt;insertBefore(rematFirstParam);</span></span>
-<span id="L1074"><span class="lineNum">    1074</span>              :         else</span>
-<span id="L1075"><span class="lineNum">    1075</span> <span class="tlaUNC">           0 :             rematFuncMinimalContextParam-&gt;insertAtEnd(rematFunc-&gt;getFirstBlock());</span></span>
-<span id="L1076"><span class="lineNum">    1076</span>              : </span>
-<span id="L1077"><span class="lineNum">    1077</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(paramBlock-&gt;getFirstOrdinaryInst());</span></span>
-<span id="L1078"><span class="lineNum">    1078</span> <span class="tlaGNC">           1 :         auto outMinimalContextVar = builder.emitVar((IRType*)minimalContextType);</span></span>
-<span id="L1079"><span class="lineNum">    1079</span> <span class="tlaGNC">           1 :         auto outParamContextVar = rematFuncBuilder.emitVar((IRType*)paramsContextType);</span></span>
-<span id="L1080"><span class="lineNum">    1080</span>              : </span>
-<span id="L1081"><span class="lineNum">    1081</span> <span class="tlaGNC">           1 :         List&lt;IRBlock*&gt; primalBlocksList;</span></span>
-<span id="L1082"><span class="lineNum">    1082</span>              : </span>
-<span id="L1083"><span class="lineNum">    1083</span> <span class="tlaGNC">           1 :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L1084"><span class="lineNum">    1084</span>              :         {</span>
-<span id="L1085"><span class="lineNum">    1085</span> <span class="tlaGNC">           1 :             if (!(isDiffInst(block) || block-&gt;findDecoration&lt;IRRecomputeBlockDecoration&gt;()))</span></span>
-<span id="L1086"><span class="lineNum">    1086</span> <span class="tlaGNC">           1 :                 primalBlocksList.add(block);</span></span>
-<span id="L1087"><span class="lineNum">    1087</span>              :         }</span>
-<span id="L1088"><span class="lineNum">    1088</span>              : </span>
-<span id="L1089"><span class="lineNum">    1089</span>              :         // Go over primal blocks and store insts that have been classified as requiring storage.</span>
-<span id="L1090"><span class="lineNum">    1090</span> <span class="tlaGNC">           1 :         for (auto block : primalBlocksList)</span></span>
-<span id="L1091"><span class="lineNum">    1091</span>              :         {</span>
-<span id="L1092"><span class="lineNum">    1092</span> <span class="tlaGNC">           1 :             for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L1093"><span class="lineNum">    1093</span>              :             {</span>
-<span id="L1094"><span class="lineNum">    1094</span> <span class="tlaGNC">           1 :                 if (primalsInfo-&gt;storeSet.contains(inst))</span></span>
-<span id="L1095"><span class="lineNum">    1095</span>              :                 {</span>
-<span id="L1096"><span class="lineNum">    1096</span> <span class="tlaGNC">           1 :                     if (as&lt;IRVar&gt;(inst))</span></span>
-<span id="L1097"><span class="lineNum">    1097</span>              :                     {</span>
-<span id="L1098"><span class="lineNum">    1098</span> <span class="tlaGNC">           1 :                         if (inst-&gt;hasUses())</span></span>
-<span id="L1099"><span class="lineNum">    1099</span>              :                         {</span>
-<span id="L1100"><span class="lineNum">    1100</span> <span class="tlaGNC">           1 :                             if (auto paramContextDecoration =</span></span>
-<span id="L1101"><span class="lineNum">    1101</span>              :                                     inst-&gt;findDecoration&lt;IRParamsContextDecoration&gt;())</span>
-<span id="L1102"><span class="lineNum">    1102</span>              :                             {</span>
-<span id="L1103"><span class="lineNum">    1103</span>              :                                 // If we don&#x27;t find the val in this map, something&#x27;s wrong.</span>
-<span id="L1104"><span class="lineNum">    1104</span> <span class="tlaGNC">           1 :                                 auto valToStore =</span></span>
-<span id="L1105"><span class="lineNum">    1105</span>              :                                     primalToRematFuncMapping</span>
-<span id="L1106"><span class="lineNum">    1106</span>              :                                         .mapOldValToNew[paramContextDecoration-&gt;getValue()];</span>
-<span id="L1107"><span class="lineNum">    1107</span> <span class="tlaGNC">           1 :                                 auto field = addIntermediateContextField(</span></span>
-<span id="L1108"><span class="lineNum">    1108</span>              :                                     valToStore-&gt;getDataType(),</span>
-<span id="L1109"><span class="lineNum">    1109</span>              :                                     outParamContextVar);</span>
-<span id="L1110"><span class="lineNum">    1110</span> <span class="tlaGNC">           1 :                                 field-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
-<span id="L1111"><span class="lineNum">    1111</span>              : </span>
-<span id="L1112"><span class="lineNum">    1112</span> <span class="tlaGNC">           1 :                                 rematFuncBuilder.emitStore(</span></span>
-<span id="L1113"><span class="lineNum">    1113</span>              :                                     rematFuncBuilder.emitFieldAddress(</span>
-<span id="L1114"><span class="lineNum">    1114</span>              :                                         builder.getPtrType(valToStore-&gt;getFullType()),</span>
-<span id="L1115"><span class="lineNum">    1115</span>              :                                         outParamContextVar,</span>
-<span id="L1116"><span class="lineNum">    1116</span>              :                                         field-&gt;getKey()),</span>
-<span id="L1117"><span class="lineNum">    1117</span>              :                                     valToStore);</span>
-<span id="L1118"><span class="lineNum">    1118</span>              : </span>
-<span id="L1119"><span class="lineNum">    1119</span> <span class="tlaGNC">           1 :                                 rematFuncBuilder.addPrimalValueStructKeyDecoration(</span></span>
-<span id="L1120"><span class="lineNum">    1120</span>              :                                     inst,</span>
-<span id="L1121"><span class="lineNum">    1121</span>              :                                     paramsContextKey,</span>
-<span id="L1122"><span class="lineNum">    1122</span>              :                                     field-&gt;getKey());</span>
-<span id="L1123"><span class="lineNum">    1123</span> <span class="tlaGNC">           1 :                             }</span></span>
-<span id="L1124"><span class="lineNum">    1124</span>              :                             else</span>
-<span id="L1125"><span class="lineNum">    1125</span>              :                             {</span>
-<span id="L1126"><span class="lineNum">    1126</span> <span class="tlaGNC">           1 :                                 auto field = addIntermediateContextField(</span></span>
-<span id="L1127"><span class="lineNum">    1127</span>              :                                     cast&lt;IRPtrTypeBase&gt;(inst-&gt;getDataType())-&gt;getValueType(),</span>
-<span id="L1128"><span class="lineNum">    1128</span>              :                                     outMinimalContextVar);</span>
-<span id="L1129"><span class="lineNum">    1129</span> <span class="tlaGNC">           1 :                                 field-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
-<span id="L1130"><span class="lineNum">    1130</span> <span class="tlaGNC">           1 :                                 if (inst-&gt;findDecoration&lt;IRLoopCounterDecoration&gt;())</span></span>
-<span id="L1131"><span class="lineNum">    1131</span> <span class="tlaUNC">           0 :                                     builder.addLoopCounterDecoration(field);</span></span>
-<span id="L1132"><span class="lineNum">    1132</span>              : </span>
-<span id="L1133"><span class="lineNum">    1133</span> <span class="tlaGNC">           1 :                                 builder.setInsertBefore(inst);</span></span>
-<span id="L1134"><span class="lineNum">    1134</span> <span class="tlaGNC">           1 :                                 auto fieldAddr = builder.emitFieldAddress(</span></span>
-<span id="L1135"><span class="lineNum">    1135</span>              :                                     inst-&gt;getFullType(),</span>
-<span id="L1136"><span class="lineNum">    1136</span>              :                                     outMinimalContextVar,</span>
-<span id="L1137"><span class="lineNum">    1137</span>              :                                     field-&gt;getKey());</span>
-<span id="L1138"><span class="lineNum">    1138</span> <span class="tlaGNC">           1 :                                 inst-&gt;replaceUsesWith(fieldAddr);</span></span>
-<span id="L1139"><span class="lineNum">    1139</span> <span class="tlaGNC">           1 :                                 builder.addPrimalValueStructKeyDecoration(</span></span>
-<span id="L1140"><span class="lineNum">    1140</span>              :                                     inst,</span>
-<span id="L1141"><span class="lineNum">    1141</span>              :                                     minimalContextKey,</span>
-<span id="L1142"><span class="lineNum">    1142</span>              :                                     field-&gt;getKey());</span>
-<span id="L1143"><span class="lineNum">    1143</span>              : </span>
-<span id="L1144"><span class="lineNum">    1144</span> <span class="tlaGNC">           1 :                                 if (shouldReportCheckpoints &amp;&amp; originalFunc)</span></span>
-<span id="L1145"><span class="lineNum">    1145</span>              :                                 {</span>
-<span id="L1146"><span class="lineNum">    1146</span> <span class="tlaGNC">           1 :                                     auto reportInst = builder.emitReportCheckpointStore(</span></span>
-<span id="L1147"><span class="lineNum">    1147</span>              :                                         cast&lt;IRPtrTypeBase&gt;(inst-&gt;getDataType())-&gt;getValueType(),</span>
-<span id="L1148"><span class="lineNum">    1148</span>              :                                         originalFunc,</span>
-<span id="L1149"><span class="lineNum">    1149</span>              :                                         fieldAddr);</span>
-<span id="L1150"><span class="lineNum">    1150</span> <span class="tlaGNC">           1 :                                     reportInst-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
-<span id="L1151"><span class="lineNum">    1151</span>              :                                 }</span>
-<span id="L1152"><span class="lineNum">    1152</span>              :                             }</span>
-<span id="L1153"><span class="lineNum">    1153</span>              :                         }</span>
-<span id="L1154"><span class="lineNum">    1154</span>              :                     }</span>
-<span id="L1155"><span class="lineNum">    1155</span>              :                     else</span>
-<span id="L1156"><span class="lineNum">    1156</span>              :                     {</span>
-<span id="L1157"><span class="lineNum">    1157</span>              : </span>
-<span id="L1158"><span class="lineNum">    1158</span> <span class="tlaUNC">           0 :                         if (as&lt;IRParam, IRDynamicCastBehavior::NoUnwrap&gt;(inst))</span></span>
-<span id="L1159"><span class="lineNum">    1159</span> <span class="tlaUNC">           0 :                             builder.setInsertAfter(outMinimalContextVar);</span></span>
-<span id="L1160"><span class="lineNum">    1160</span>              :                         else</span>
-<span id="L1161"><span class="lineNum">    1161</span> <span class="tlaUNC">           0 :                             builder.setInsertAfter(inst);</span></span>
-<span id="L1162"><span class="lineNum">    1162</span>              : </span>
-<span id="L1163"><span class="lineNum">    1163</span> <span class="tlaUNC">           0 :                         if (as&lt;IRParam&gt;(inst) &amp;&amp; inst-&gt;getParent() == paramBlock)</span></span>
-<span id="L1164"><span class="lineNum">    1164</span>              :                         {</span>
-<span id="L1165"><span class="lineNum">    1165</span>              :                             // For parameters, store in separate params context.</span>
-<span id="L1166"><span class="lineNum">    1166</span> <span class="tlaUNC">           0 :                             storeInst(</span></span>
-<span id="L1167"><span class="lineNum">    1167</span>              :                                 rematFuncBuilder,</span>
-<span id="L1168"><span class="lineNum">    1168</span>              :                                 paramsContextKey,</span>
-<span id="L1169"><span class="lineNum">    1169</span>              :                                 primalToRematFuncMapping.mapOldValToNew[inst],</span>
-<span id="L1170"><span class="lineNum">    1170</span>              :                                 outParamContextVar);</span>
-<span id="L1171"><span class="lineNum">    1171</span> <span class="tlaUNC">           0 :                         }</span></span>
-<span id="L1172"><span class="lineNum">    1172</span>              :                         else</span>
-<span id="L1173"><span class="lineNum">    1173</span>              :                         {</span>
-<span id="L1174"><span class="lineNum">    1174</span>              :                             // Default case, store in minimal context.</span>
-<span id="L1175"><span class="lineNum">    1175</span> <span class="tlaUNC">           0 :                             storeInst(builder, minimalContextKey, inst, outMinimalContextVar);</span></span>
-<span id="L1176"><span class="lineNum">    1176</span>              :                         }</span>
-<span id="L1177"><span class="lineNum">    1177</span>              :                     }</span>
-<span id="L1178"><span class="lineNum">    1178</span>              :                 }</span>
-<span id="L1179"><span class="lineNum">    1179</span>              :             }</span>
-<span id="L1180"><span class="lineNum">    1180</span>              :         }</span>
-<span id="L1181"><span class="lineNum">    1181</span>              : </span>
-<span id="L1182"><span class="lineNum">    1182</span>              : </span>
-<span id="L1183"><span class="lineNum">    1183</span> <span class="tlaGNC">           1 :         for (auto block : primalBlocksList)</span></span>
-<span id="L1184"><span class="lineNum">    1184</span>              :         {</span>
-<span id="L1185"><span class="lineNum">    1185</span> <span class="tlaGNC">           1 :             auto term = block-&gt;getTerminator();</span></span>
-<span id="L1186"><span class="lineNum">    1186</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(term);</span></span>
-<span id="L1187"><span class="lineNum">    1187</span> <span class="tlaGNC">           1 :             if (auto decor = term-&gt;findDecoration&lt;IRBackwardDerivativePrimalReturnDecoration&gt;())</span></span>
-<span id="L1188"><span class="lineNum">    1188</span>              :             {</span>
-<span id="L1189"><span class="lineNum">    1189</span> <span class="tlaGNC">           1 :                 auto returnValue = decor-&gt;getBackwardDerivativePrimalReturnValue();</span></span>
-<span id="L1190"><span class="lineNum">    1190</span>              : </span>
-<span id="L1191"><span class="lineNum">    1191</span> <span class="tlaGNC">           1 :                 if (as&lt;IRVoidLit&gt;(returnValue))</span></span>
-<span id="L1192"><span class="lineNum">    1192</span>              :                 {</span>
-<span id="L1193"><span class="lineNum">    1193</span> <span class="tlaGNC">           1 :                     builder.emitReturn(builder.emitLoad(outMinimalContextVar));</span></span>
-<span id="L1194"><span class="lineNum">    1194</span> <span class="tlaGNC">           1 :                 }</span></span>
-<span id="L1195"><span class="lineNum">    1195</span>              :                 else</span>
-<span id="L1196"><span class="lineNum">    1196</span>              :                 {</span>
-<span id="L1197"><span class="lineNum">    1197</span> <span class="tlaGNC">           1 :                     auto retVar = builder.emitVar(builder.getTupleType(</span></span>
-<span id="L1198"><span class="lineNum">    1198</span>              :                         List&lt;IRType*&gt;({returnValue-&gt;getDataType(), (IRType*)minimalContextType})));</span>
-<span id="L1199"><span class="lineNum">    1199</span> <span class="tlaGNC">           1 :                     auto retValAddr = builder.emitGetElementPtr(</span></span>
-<span id="L1200"><span class="lineNum">    1200</span>              :                         builder.getPtrType(returnValue-&gt;getFullType()),</span>
-<span id="L1201"><span class="lineNum">    1201</span>              :                         retVar,</span>
-<span id="L1202"><span class="lineNum">    1202</span>              :                         0);</span>
-<span id="L1203"><span class="lineNum">    1203</span> <span class="tlaGNC">           1 :                     builder.emitStore(retValAddr, returnValue);</span></span>
-<span id="L1204"><span class="lineNum">    1204</span> <span class="tlaGNC">           1 :                     auto contextAddr = builder.emitGetElementPtr(</span></span>
-<span id="L1205"><span class="lineNum">    1205</span>              :                         builder.getPtrType((IRType*)minimalContextType),</span>
+<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">           1 :         IRInst* fullContextType = nullptr;</span></span>
+<span id="L1046"><span class="lineNum">    1046</span> <span class="tlaGNC">           1 :         auto rematFuncType = generateRematFuncType(</span></span>
+<span id="L1047"><span class="lineNum">    1047</span>              :             unzippedFunc,</span>
+<span id="L1048"><span class="lineNum">    1048</span>              :             inOriginalFunc,</span>
+<span id="L1049"><span class="lineNum">    1049</span>              :             minimalContextType,</span>
+<span id="L1050"><span class="lineNum">    1050</span>              :             fullContextType);</span>
+<span id="L1051"><span class="lineNum">    1051</span> <span class="tlaGNC">           1 :         outFullContextType = fullContextType;</span></span>
+<span id="L1052"><span class="lineNum">    1052</span>              : </span>
+<span id="L1053"><span class="lineNum">    1053</span> <span class="tlaGNC">           1 :         IRStructType* paramsContextType = builder.createStructType();</span></span>
+<span id="L1054"><span class="lineNum">    1054</span> <span class="tlaGNC">           1 :         outParamsContextType = paramsContextType;</span></span>
+<span id="L1055"><span class="lineNum">    1055</span> <span class="tlaGNC">           1 :         IRStructKey* paramsContextKey = builder.createStructKey();</span></span>
+<span id="L1056"><span class="lineNum">    1056</span> <span class="tlaGNC">           1 :         outParamsContextKey = paramsContextKey;</span></span>
+<span id="L1057"><span class="lineNum">    1057</span> <span class="tlaGNC">           1 :         builder.createStructField(</span></span>
+<span id="L1058"><span class="lineNum">    1058</span>              :             cast&lt;IRStructType&gt;(fullContextType),</span>
+<span id="L1059"><span class="lineNum">    1059</span>              :             paramsContextKey,</span>
+<span id="L1060"><span class="lineNum">    1060</span>              :             (IRType*)paramsContextType);</span>
+<span id="L1061"><span class="lineNum">    1061</span>              : </span>
+<span id="L1062"><span class="lineNum">    1062</span> <span class="tlaGNC">           1 :         IRStructKey* minimalContextKey = builder.createStructKey();</span></span>
+<span id="L1063"><span class="lineNum">    1063</span> <span class="tlaGNC">           1 :         outMinimalContextKey = minimalContextKey;</span></span>
+<span id="L1064"><span class="lineNum">    1064</span> <span class="tlaGNC">           1 :         builder.createStructField(</span></span>
+<span id="L1065"><span class="lineNum">    1065</span>              :             cast&lt;IRStructType&gt;(fullContextType),</span>
+<span id="L1066"><span class="lineNum">    1066</span>              :             minimalContextKey,</span>
+<span id="L1067"><span class="lineNum">    1067</span>              :             (IRType*)minimalContextType);</span>
+<span id="L1068"><span class="lineNum">    1068</span>              : </span>
+<span id="L1069"><span class="lineNum">    1069</span> <span class="tlaGNC">           1 :         rematFunc-&gt;setFullType((IRType*)rematFuncType);</span></span>
+<span id="L1070"><span class="lineNum">    1070</span>              : </span>
+<span id="L1071"><span class="lineNum">    1071</span> <span class="tlaGNC">           1 :         auto paramBlock = func-&gt;getFirstBlock();</span></span>
+<span id="L1072"><span class="lineNum">    1072</span> <span class="tlaGNC">           1 :         builder.setInsertInto(paramBlock);</span></span>
+<span id="L1073"><span class="lineNum">    1073</span>              : </span>
+<span id="L1074"><span class="lineNum">    1074</span> <span class="tlaGNC">           1 :         IRCloneEnv primalToRematFuncMapping;</span></span>
+<span id="L1075"><span class="lineNum">    1075</span> <span class="tlaGNC">           1 :         primalToRematFuncMapping.squashChildrenMapping = true;</span></span>
+<span id="L1076"><span class="lineNum">    1076</span> <span class="tlaGNC">           1 :         cloneInst(&amp;primalToRematFuncMapping, &amp;rematFuncBuilder, paramBlock);</span></span>
+<span id="L1077"><span class="lineNum">    1077</span> <span class="tlaGNC">           1 :         rematFuncBuilder.setInsertInto(rematFunc-&gt;getFirstBlock());</span></span>
+<span id="L1078"><span class="lineNum">    1078</span> <span class="tlaGNC">           1 :         rematFunc-&gt;getFirstBlock()-&gt;getTerminator()-&gt;removeAndDeallocate();</span></span>
+<span id="L1079"><span class="lineNum">    1079</span> <span class="tlaGNC">           1 :         auto rematFuncMinimalContextParam = rematFuncBuilder.emitParam((IRType*)minimalContextType);</span></span>
+<span id="L1080"><span class="lineNum">    1080</span> <span class="tlaGNC">           1 :         if (auto rematFirstParam = rematFunc-&gt;getFirstParam())</span></span>
+<span id="L1081"><span class="lineNum">    1081</span> <span class="tlaGNC">           1 :             rematFuncMinimalContextParam-&gt;insertBefore(rematFirstParam);</span></span>
+<span id="L1082"><span class="lineNum">    1082</span>              :         else</span>
+<span id="L1083"><span class="lineNum">    1083</span> <span class="tlaUNC">           0 :             rematFuncMinimalContextParam-&gt;insertAtEnd(rematFunc-&gt;getFirstBlock());</span></span>
+<span id="L1084"><span class="lineNum">    1084</span>              : </span>
+<span id="L1085"><span class="lineNum">    1085</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(paramBlock-&gt;getFirstOrdinaryInst());</span></span>
+<span id="L1086"><span class="lineNum">    1086</span> <span class="tlaGNC">           1 :         auto outMinimalContextVar = builder.emitVar((IRType*)minimalContextType);</span></span>
+<span id="L1087"><span class="lineNum">    1087</span> <span class="tlaGNC">           1 :         auto outParamContextVar = rematFuncBuilder.emitVar((IRType*)paramsContextType);</span></span>
+<span id="L1088"><span class="lineNum">    1088</span> <span class="tlaGNC">           1 :         List&lt;IRInst*&gt; capturedParameterValues;</span></span>
+<span id="L1089"><span class="lineNum">    1089</span>              : </span>
+<span id="L1090"><span class="lineNum">    1090</span> <span class="tlaGNC">           1 :         List&lt;IRBlock*&gt; primalBlocksList;</span></span>
+<span id="L1091"><span class="lineNum">    1091</span>              : </span>
+<span id="L1092"><span class="lineNum">    1092</span> <span class="tlaGNC">           1 :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L1093"><span class="lineNum">    1093</span>              :         {</span>
+<span id="L1094"><span class="lineNum">    1094</span> <span class="tlaGNC">           1 :             if (!(isDiffInst(block) || block-&gt;findDecoration&lt;IRRecomputeBlockDecoration&gt;()))</span></span>
+<span id="L1095"><span class="lineNum">    1095</span> <span class="tlaGNC">           1 :                 primalBlocksList.add(block);</span></span>
+<span id="L1096"><span class="lineNum">    1096</span>              :         }</span>
+<span id="L1097"><span class="lineNum">    1097</span>              : </span>
+<span id="L1098"><span class="lineNum">    1098</span>              :         // Go over primal blocks and store insts that have been classified as requiring storage.</span>
+<span id="L1099"><span class="lineNum">    1099</span> <span class="tlaGNC">           1 :         for (auto block : primalBlocksList)</span></span>
+<span id="L1100"><span class="lineNum">    1100</span>              :         {</span>
+<span id="L1101"><span class="lineNum">    1101</span> <span class="tlaGNC">           1 :             for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L1102"><span class="lineNum">    1102</span>              :             {</span>
+<span id="L1103"><span class="lineNum">    1103</span> <span class="tlaGNC">           1 :                 if (primalsInfo-&gt;storeSet.contains(inst))</span></span>
+<span id="L1104"><span class="lineNum">    1104</span>              :                 {</span>
+<span id="L1105"><span class="lineNum">    1105</span> <span class="tlaGNC">           1 :                     if (as&lt;IRVar&gt;(inst))</span></span>
+<span id="L1106"><span class="lineNum">    1106</span>              :                     {</span>
+<span id="L1107"><span class="lineNum">    1107</span> <span class="tlaGNC">           1 :                         if (inst-&gt;hasUses())</span></span>
+<span id="L1108"><span class="lineNum">    1108</span>              :                         {</span>
+<span id="L1109"><span class="lineNum">    1109</span> <span class="tlaGNC">           1 :                             if (auto paramContextDecoration =</span></span>
+<span id="L1110"><span class="lineNum">    1110</span>              :                                     inst-&gt;findDecoration&lt;IRParamsContextDecoration&gt;())</span>
+<span id="L1111"><span class="lineNum">    1111</span>              :                             {</span>
+<span id="L1112"><span class="lineNum">    1112</span>              :                                 // If we don&#x27;t find the val in this map, something&#x27;s wrong.</span>
+<span id="L1113"><span class="lineNum">    1113</span> <span class="tlaGNC">           1 :                                 auto valToStore =</span></span>
+<span id="L1114"><span class="lineNum">    1114</span>              :                                     primalToRematFuncMapping</span>
+<span id="L1115"><span class="lineNum">    1115</span>              :                                         .mapOldValToNew[paramContextDecoration-&gt;getValue()];</span>
+<span id="L1116"><span class="lineNum">    1116</span> <span class="tlaGNC">           1 :                                 auto field = addIntermediateContextField(</span></span>
+<span id="L1117"><span class="lineNum">    1117</span>              :                                     valToStore-&gt;getDataType(),</span>
+<span id="L1118"><span class="lineNum">    1118</span>              :                                     outParamContextVar);</span>
+<span id="L1119"><span class="lineNum">    1119</span> <span class="tlaGNC">           1 :                                 field-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
+<span id="L1120"><span class="lineNum">    1120</span>              : </span>
+<span id="L1121"><span class="lineNum">    1121</span> <span class="tlaGNC">           1 :                                 capturedParameterValues.add(valToStore);</span></span>
+<span id="L1122"><span class="lineNum">    1122</span>              : </span>
+<span id="L1123"><span class="lineNum">    1123</span> <span class="tlaGNC">           1 :                                 rematFuncBuilder.addPrimalValueStructKeyDecoration(</span></span>
+<span id="L1124"><span class="lineNum">    1124</span>              :                                     inst,</span>
+<span id="L1125"><span class="lineNum">    1125</span>              :                                     paramsContextKey,</span>
+<span id="L1126"><span class="lineNum">    1126</span>              :                                     field-&gt;getKey());</span>
+<span id="L1127"><span class="lineNum">    1127</span> <span class="tlaGNC">           1 :                             }</span></span>
+<span id="L1128"><span class="lineNum">    1128</span>              :                             else</span>
+<span id="L1129"><span class="lineNum">    1129</span>              :                             {</span>
+<span id="L1130"><span class="lineNum">    1130</span> <span class="tlaGNC">           1 :                                 auto field = addIntermediateContextField(</span></span>
+<span id="L1131"><span class="lineNum">    1131</span>              :                                     cast&lt;IRPtrTypeBase&gt;(inst-&gt;getDataType())-&gt;getValueType(),</span>
+<span id="L1132"><span class="lineNum">    1132</span>              :                                     outMinimalContextVar);</span>
+<span id="L1133"><span class="lineNum">    1133</span> <span class="tlaGNC">           1 :                                 field-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
+<span id="L1134"><span class="lineNum">    1134</span> <span class="tlaGNC">           1 :                                 if (inst-&gt;findDecoration&lt;IRLoopCounterDecoration&gt;())</span></span>
+<span id="L1135"><span class="lineNum">    1135</span> <span class="tlaUNC">           0 :                                     builder.addLoopCounterDecoration(field);</span></span>
+<span id="L1136"><span class="lineNum">    1136</span>              : </span>
+<span id="L1137"><span class="lineNum">    1137</span> <span class="tlaGNC">           1 :                                 builder.setInsertBefore(inst);</span></span>
+<span id="L1138"><span class="lineNum">    1138</span> <span class="tlaGNC">           1 :                                 auto fieldAddr = builder.emitFieldAddress(</span></span>
+<span id="L1139"><span class="lineNum">    1139</span>              :                                     inst-&gt;getFullType(),</span>
+<span id="L1140"><span class="lineNum">    1140</span>              :                                     outMinimalContextVar,</span>
+<span id="L1141"><span class="lineNum">    1141</span>              :                                     field-&gt;getKey());</span>
+<span id="L1142"><span class="lineNum">    1142</span> <span class="tlaGNC">           1 :                                 inst-&gt;replaceUsesWith(fieldAddr);</span></span>
+<span id="L1143"><span class="lineNum">    1143</span> <span class="tlaGNC">           1 :                                 builder.addPrimalValueStructKeyDecoration(</span></span>
+<span id="L1144"><span class="lineNum">    1144</span>              :                                     inst,</span>
+<span id="L1145"><span class="lineNum">    1145</span>              :                                     minimalContextKey,</span>
+<span id="L1146"><span class="lineNum">    1146</span>              :                                     field-&gt;getKey());</span>
+<span id="L1147"><span class="lineNum">    1147</span>              : </span>
+<span id="L1148"><span class="lineNum">    1148</span> <span class="tlaGNC">           1 :                                 if (shouldReportCheckpoints &amp;&amp; originalFunc)</span></span>
+<span id="L1149"><span class="lineNum">    1149</span>              :                                 {</span>
+<span id="L1150"><span class="lineNum">    1150</span> <span class="tlaGNC">           1 :                                     auto reportInst = builder.emitReportCheckpointStore(</span></span>
+<span id="L1151"><span class="lineNum">    1151</span>              :                                         cast&lt;IRPtrTypeBase&gt;(inst-&gt;getDataType())-&gt;getValueType(),</span>
+<span id="L1152"><span class="lineNum">    1152</span>              :                                         originalFunc,</span>
+<span id="L1153"><span class="lineNum">    1153</span>              :                                         fieldAddr);</span>
+<span id="L1154"><span class="lineNum">    1154</span> <span class="tlaGNC">           1 :                                     reportInst-&gt;sourceLoc = inst-&gt;sourceLoc;</span></span>
+<span id="L1155"><span class="lineNum">    1155</span>              :                                 }</span>
+<span id="L1156"><span class="lineNum">    1156</span>              :                             }</span>
+<span id="L1157"><span class="lineNum">    1157</span>              :                         }</span>
+<span id="L1158"><span class="lineNum">    1158</span>              :                     }</span>
+<span id="L1159"><span class="lineNum">    1159</span>              :                     else</span>
+<span id="L1160"><span class="lineNum">    1160</span>              :                     {</span>
+<span id="L1161"><span class="lineNum">    1161</span>              : </span>
+<span id="L1162"><span class="lineNum">    1162</span> <span class="tlaUNC">           0 :                         if (as&lt;IRParam, IRDynamicCastBehavior::NoUnwrap&gt;(inst))</span></span>
+<span id="L1163"><span class="lineNum">    1163</span> <span class="tlaUNC">           0 :                             builder.setInsertAfter(outMinimalContextVar);</span></span>
+<span id="L1164"><span class="lineNum">    1164</span>              :                         else</span>
+<span id="L1165"><span class="lineNum">    1165</span> <span class="tlaUNC">           0 :                             builder.setInsertAfter(inst);</span></span>
+<span id="L1166"><span class="lineNum">    1166</span>              : </span>
+<span id="L1167"><span class="lineNum">    1167</span> <span class="tlaUNC">           0 :                         if (as&lt;IRParam&gt;(inst) &amp;&amp; inst-&gt;getParent() == paramBlock)</span></span>
+<span id="L1168"><span class="lineNum">    1168</span>              :                         {</span>
+<span id="L1169"><span class="lineNum">    1169</span>              :                             // For parameters, store in separate params context.</span>
+<span id="L1170"><span class="lineNum">    1170</span> <span class="tlaUNC">           0 :                             storeInst(</span></span>
+<span id="L1171"><span class="lineNum">    1171</span>              :                                 rematFuncBuilder,</span>
+<span id="L1172"><span class="lineNum">    1172</span>              :                                 paramsContextKey,</span>
+<span id="L1173"><span class="lineNum">    1173</span>              :                                 primalToRematFuncMapping.mapOldValToNew[inst],</span>
+<span id="L1174"><span class="lineNum">    1174</span>              :                                 outParamContextVar,</span>
+<span id="L1175"><span class="lineNum">    1175</span>              :                                 &amp;capturedParameterValues);</span>
+<span id="L1176"><span class="lineNum">    1176</span> <span class="tlaUNC">           0 :                         }</span></span>
+<span id="L1177"><span class="lineNum">    1177</span>              :                         else</span>
+<span id="L1178"><span class="lineNum">    1178</span>              :                         {</span>
+<span id="L1179"><span class="lineNum">    1179</span>              :                             // Default case, store in minimal context.</span>
+<span id="L1180"><span class="lineNum">    1180</span> <span class="tlaUNC">           0 :                             storeInst(builder, minimalContextKey, inst, outMinimalContextVar);</span></span>
+<span id="L1181"><span class="lineNum">    1181</span>              :                         }</span>
+<span id="L1182"><span class="lineNum">    1182</span>              :                     }</span>
+<span id="L1183"><span class="lineNum">    1183</span>              :                 }</span>
+<span id="L1184"><span class="lineNum">    1184</span>              :             }</span>
+<span id="L1185"><span class="lineNum">    1185</span>              :         }</span>
+<span id="L1186"><span class="lineNum">    1186</span>              : </span>
+<span id="L1187"><span class="lineNum">    1187</span>              : </span>
+<span id="L1188"><span class="lineNum">    1188</span> <span class="tlaGNC">           1 :         for (auto block : primalBlocksList)</span></span>
+<span id="L1189"><span class="lineNum">    1189</span>              :         {</span>
+<span id="L1190"><span class="lineNum">    1190</span> <span class="tlaGNC">           1 :             auto term = block-&gt;getTerminator();</span></span>
+<span id="L1191"><span class="lineNum">    1191</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(term);</span></span>
+<span id="L1192"><span class="lineNum">    1192</span> <span class="tlaGNC">           1 :             if (auto decor = term-&gt;findDecoration&lt;IRBackwardDerivativePrimalReturnDecoration&gt;())</span></span>
+<span id="L1193"><span class="lineNum">    1193</span>              :             {</span>
+<span id="L1194"><span class="lineNum">    1194</span> <span class="tlaGNC">           1 :                 auto returnValue = decor-&gt;getBackwardDerivativePrimalReturnValue();</span></span>
+<span id="L1195"><span class="lineNum">    1195</span>              : </span>
+<span id="L1196"><span class="lineNum">    1196</span> <span class="tlaGNC">           1 :                 if (as&lt;IRVoidLit&gt;(returnValue))</span></span>
+<span id="L1197"><span class="lineNum">    1197</span>              :                 {</span>
+<span id="L1198"><span class="lineNum">    1198</span> <span class="tlaGNC">           1 :                     builder.emitReturn(builder.emitLoad(outMinimalContextVar));</span></span>
+<span id="L1199"><span class="lineNum">    1199</span> <span class="tlaGNC">           1 :                 }</span></span>
+<span id="L1200"><span class="lineNum">    1200</span>              :                 else</span>
+<span id="L1201"><span class="lineNum">    1201</span>              :                 {</span>
+<span id="L1202"><span class="lineNum">    1202</span> <span class="tlaGNC">           1 :                     auto retVar = builder.emitVar(builder.getTupleType(</span></span>
+<span id="L1203"><span class="lineNum">    1203</span>              :                         List&lt;IRType*&gt;({returnValue-&gt;getDataType(), (IRType*)minimalContextType})));</span>
+<span id="L1204"><span class="lineNum">    1204</span> <span class="tlaGNC">           1 :                     auto retValAddr = builder.emitGetElementPtr(</span></span>
+<span id="L1205"><span class="lineNum">    1205</span>              :                         builder.getPtrType(returnValue-&gt;getFullType()),</span>
 <span id="L1206"><span class="lineNum">    1206</span>              :                         retVar,</span>
-<span id="L1207"><span class="lineNum">    1207</span>              :                         1);</span>
-<span id="L1208"><span class="lineNum">    1208</span> <span class="tlaGNC">           1 :                     builder.emitStore(contextAddr, builder.emitLoad(outMinimalContextVar));</span></span>
-<span id="L1209"><span class="lineNum">    1209</span>              : </span>
-<span id="L1210"><span class="lineNum">    1210</span>              :                     builder.emitReturn(builder.emitLoad(retVar));</span>
-<span id="L1211"><span class="lineNum">    1211</span>              :                 }</span>
-<span id="L1212"><span class="lineNum">    1212</span> <span class="tlaGNC">           1 :                 term-&gt;removeAndDeallocate();</span></span>
-<span id="L1213"><span class="lineNum">    1213</span>              :             }</span>
-<span id="L1214"><span class="lineNum">    1214</span>              :         }</span>
-<span id="L1215"><span class="lineNum">    1215</span>              : </span>
-<span id="L1216"><span class="lineNum">    1216</span>              :         // Remove all Differential &amp; Recompute blocks from the apply func.</span>
-<span id="L1217"><span class="lineNum">    1217</span>              : </span>
-<span id="L1218"><span class="lineNum">    1218</span> <span class="tlaGNC">           1 :         List&lt;IRBlock*&gt; unusedBlocks;</span></span>
-<span id="L1219"><span class="lineNum">    1219</span> <span class="tlaGNC">           1 :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L1220"><span class="lineNum">    1220</span>              :         {</span>
-<span id="L1221"><span class="lineNum">    1221</span> <span class="tlaGNC">           1 :             if (isDiffInst(block) || block-&gt;findDecoration&lt;IRRecomputeBlockDecoration&gt;())</span></span>
-<span id="L1222"><span class="lineNum">    1222</span> <span class="tlaGNC">           1 :                 unusedBlocks.add(block);</span></span>
-<span id="L1223"><span class="lineNum">    1223</span>              :         }</span>
-<span id="L1224"><span class="lineNum">    1224</span> <span class="tlaGNC">           1 :         for (auto block : unusedBlocks)</span></span>
-<span id="L1225"><span class="lineNum">    1225</span> <span class="tlaGNC">           1 :             block-&gt;removeAndDeallocate();</span></span>
-<span id="L1226"><span class="lineNum">    1226</span>              : </span>
-<span id="L1227"><span class="lineNum">    1227</span> <span class="tlaGNC">           1 :         setInsertAfterOrdinaryInst(&amp;builder, outMinimalContextVar);</span></span>
-<span id="L1228"><span class="lineNum">    1228</span> <span class="tlaGNC">           1 :         auto defVal = builder.emitDefaultConstructRaw((IRType*)minimalContextType);</span></span>
-<span id="L1229"><span class="lineNum">    1229</span> <span class="tlaGNC">           1 :         builder.emitStore(outMinimalContextVar, defVal);</span></span>
-<span id="L1230"><span class="lineNum">    1230</span>              : </span>
-<span id="L1231"><span class="lineNum">    1231</span>              :         // Pack the params and minimal context into the full context and return it from the remat</span>
-<span id="L1232"><span class="lineNum">    1232</span>              :         // func.</span>
-<span id="L1233"><span class="lineNum">    1233</span>              :         //</span>
-<span id="L1234"><span class="lineNum">    1234</span> <span class="tlaGNC">           1 :         rematFuncBuilder.setInsertInto(rematFunc-&gt;getFirstBlock());</span></span>
-<span id="L1235"><span class="lineNum">    1235</span> <span class="tlaGNC">           1 :         rematFuncBuilder.emitReturn(rematFuncBuilder.emitMakeStruct(</span></span>
-<span id="L1236"><span class="lineNum">    1236</span>              :             (IRType*)fullContextType,</span>
-<span id="L1237"><span class="lineNum">    1237</span>              :             List&lt;IRInst*&gt;(</span>
-<span id="L1238"><span class="lineNum">    1238</span>              :                 rematFuncBuilder.emitLoad(outParamContextVar),</span>
-<span id="L1239"><span class="lineNum">    1239</span>              :                 rematFuncMinimalContextParam)));</span>
-<span id="L1240"><span class="lineNum">    1240</span>              : </span>
-<span id="L1241"><span class="lineNum">    1241</span> <span class="tlaGNC">           1 :         return unzippedFunc;</span></span>
-<span id="L1242"><span class="lineNum">    1242</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1243"><span class="lineNum">    1243</span>              : };</span>
-<span id="L1244"><span class="lineNum">    1244</span>              : </span>
-<span id="L1245"><span class="lineNum">    1245</span>              : bool isIntermediateContextType(IRInst* type)</span>
-<span id="L1246"><span class="lineNum">    1246</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1247"><span class="lineNum">    1247</span> <span class="tlaUNC">           0 :     switch (type-&gt;getOp())</span></span>
-<span id="L1248"><span class="lineNum">    1248</span>              :     {</span>
-<span id="L1249"><span class="lineNum">    1249</span>              :     case kIROp_BackwardDiffIntermediateContextType:</span>
-<span id="L1250"><span class="lineNum">    1250</span> <span class="tlaUNC">           0 :         return true;</span></span>
-<span id="L1251"><span class="lineNum">    1251</span>              :     case kIROp_AttributedType:</span>
-<span id="L1252"><span class="lineNum">    1252</span> <span class="tlaUNC">           0 :         return isIntermediateContextType(as&lt;IRAttributedType&gt;(type)-&gt;getBaseType());</span></span>
-<span id="L1253"><span class="lineNum">    1253</span>              :     case kIROp_Specialize:</span>
-<span id="L1254"><span class="lineNum">    1254</span> <span class="tlaUNC">           0 :         return isIntermediateContextType(as&lt;IRSpecialize&gt;(type)-&gt;getBase());</span></span>
-<span id="L1255"><span class="lineNum">    1255</span>              :     default:</span>
-<span id="L1256"><span class="lineNum">    1256</span> <span class="tlaUNC">           0 :         if (auto ptrType = asRelevantPtrType(type))</span></span>
-<span id="L1257"><span class="lineNum">    1257</span> <span class="tlaUNC">           0 :             return isIntermediateContextType(ptrType-&gt;getValueType());</span></span>
-<span id="L1258"><span class="lineNum">    1258</span>              :         return false;</span>
-<span id="L1259"><span class="lineNum">    1259</span>              :     }</span>
-<span id="L1260"><span class="lineNum">    1260</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1261"><span class="lineNum">    1261</span>              : </span>
-<span id="L1262"><span class="lineNum">    1262</span>              : void markNonContextParamsAsSideEffectFree(IRBuilder* builder, IRFunc* func)</span>
-<span id="L1263"><span class="lineNum">    1263</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1264"><span class="lineNum">    1264</span> <span class="tlaGNC">           1 :     for (auto param : func-&gt;getParams())</span></span>
-<span id="L1265"><span class="lineNum">    1265</span>              :     {</span>
-<span id="L1266"><span class="lineNum">    1266</span> <span class="tlaGNC">           1 :         if (!param-&gt;findDecorationImpl(kIROp_PrimalContextDecoration))</span></span>
-<span id="L1267"><span class="lineNum">    1267</span> <span class="tlaGNC">           1 :             builder-&gt;addDecoration(param, kIROp_IgnoreSideEffectsDecoration);</span></span>
-<span id="L1268"><span class="lineNum">    1268</span>              :     }</span>
-<span id="L1269"><span class="lineNum">    1269</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1270"><span class="lineNum">    1270</span>              : </span>
-<span id="L1271"><span class="lineNum">    1271</span>              : static void copyPrimalValueStructKeyDecorations(IRInst* inst, IRCloneEnv&amp; cloneEnv)</span>
-<span id="L1272"><span class="lineNum">    1272</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1273"><span class="lineNum">    1273</span> <span class="tlaGNC">           1 :     IRInst* newInst = nullptr;</span></span>
-<span id="L1274"><span class="lineNum">    1274</span> <span class="tlaGNC">           1 :     if (cloneEnv.mapOldValToNew.tryGetValue(inst, newInst))</span></span>
-<span id="L1275"><span class="lineNum">    1275</span>              :     {</span>
-<span id="L1276"><span class="lineNum">    1276</span> <span class="tlaGNC">           1 :         if (auto decor = newInst-&gt;findDecoration&lt;IRPrimalValueStructKeyDecoration&gt;())</span></span>
-<span id="L1277"><span class="lineNum">    1277</span>              :         {</span>
-<span id="L1278"><span class="lineNum">    1278</span> <span class="tlaGNC">           1 :             cloneDecoration(decor, inst);</span></span>
-<span id="L1279"><span class="lineNum">    1279</span>              :         }</span>
-<span id="L1280"><span class="lineNum">    1280</span>              :     }</span>
-<span id="L1281"><span class="lineNum">    1281</span>              : </span>
-<span id="L1282"><span class="lineNum">    1282</span> <span class="tlaGNC">           1 :     for (auto child : inst-&gt;getChildren())</span></span>
-<span id="L1283"><span class="lineNum">    1283</span>              :     {</span>
-<span id="L1284"><span class="lineNum">    1284</span> <span class="tlaGNC">           1 :         copyPrimalValueStructKeyDecorations(child, cloneEnv);</span></span>
-<span id="L1285"><span class="lineNum">    1285</span>              :     }</span>
-<span id="L1286"><span class="lineNum">    1286</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1287"><span class="lineNum">    1287</span>              : </span>
-<span id="L1288"><span class="lineNum">    1288</span>              : static IRBlock* getFirstRecomputeBlock(IRFunc* func)</span>
-<span id="L1289"><span class="lineNum">    1289</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1290"><span class="lineNum">    1290</span>              :     // This logic is a bit fragile.</span>
-<span id="L1291"><span class="lineNum">    1291</span>              :     // We shouldn&#x27;t necessarily make the</span>
-<span id="L1292"><span class="lineNum">    1292</span>              :     // assumption that the order in the list of blocks is related to the</span>
-<span id="L1293"><span class="lineNum">    1293</span>              :     // control-flow order, but it works with the current system.</span>
-<span id="L1294"><span class="lineNum">    1294</span>              :     //</span>
-<span id="L1295"><span class="lineNum">    1295</span> <span class="tlaGNC">           1 :     for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L1296"><span class="lineNum">    1296</span>              :     {</span>
-<span id="L1297"><span class="lineNum">    1297</span> <span class="tlaGNC">           1 :         if (block-&gt;findDecoration&lt;IRRecomputeBlockDecoration&gt;())</span></span>
-<span id="L1298"><span class="lineNum">    1298</span> <span class="tlaGNC">           1 :             return block;</span></span>
-<span id="L1299"><span class="lineNum">    1299</span>              :     }</span>
-<span id="L1300"><span class="lineNum">    1300</span> <span class="tlaUNC">           0 :     return nullptr;</span></span>
-<span id="L1301"><span class="lineNum">    1301</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1302"><span class="lineNum">    1302</span>              : </span>
-<span id="L1303"><span class="lineNum">    1303</span>              : void unzipDiffInsts(AutoDiffSharedContext* context, IRFunc* func)</span>
-<span id="L1304"><span class="lineNum">    1304</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1305"><span class="lineNum">    1305</span> <span class="tlaGNC">           1 :     UnzippingContext unzipContext(context);</span></span>
-<span id="L1306"><span class="lineNum">    1306</span> <span class="tlaGNC">           1 :     unzipContext.unzipFunc(func);</span></span>
-<span id="L1307"><span class="lineNum">    1307</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1308"><span class="lineNum">    1308</span>              : </span>
-<span id="L1309"><span class="lineNum">    1309</span>              : IRFunc* splitApplyAndPropFuncs(</span>
-<span id="L1310"><span class="lineNum">    1310</span>              :     AutoDiffSharedContext* autodiffContext,</span>
-<span id="L1311"><span class="lineNum">    1311</span>              :     IRFunc* func,</span>
-<span id="L1312"><span class="lineNum">    1312</span>              :     IRFunc* originalFunc,</span>
-<span id="L1313"><span class="lineNum">    1313</span>              :     HoistedPrimalsInfo* primalsInfo,</span>
-<span id="L1314"><span class="lineNum">    1314</span>              :     IRInst*&amp; fullContextType,</span>
-<span id="L1315"><span class="lineNum">    1315</span>              :     IRInst*&amp; minimalContextType,</span>
-<span id="L1316"><span class="lineNum">    1316</span>              :     IRFunc*&amp; rematFunc,</span>
-<span id="L1317"><span class="lineNum">    1317</span>              :     UnownedStringSlice intermediateTypeName)</span>
-<span id="L1318"><span class="lineNum">    1318</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1319"><span class="lineNum">    1319</span> <span class="tlaGNC">           1 :     IRBuilder builder(autodiffContext-&gt;moduleInst);</span></span>
-<span id="L1320"><span class="lineNum">    1320</span> <span class="tlaGNC">           1 :     builder.setInsertBefore(func);</span></span>
-<span id="L1321"><span class="lineNum">    1321</span>              : </span>
-<span id="L1322"><span class="lineNum">    1322</span> <span class="tlaGNC">           1 :     IRCloneEnv subEnv;</span></span>
-<span id="L1323"><span class="lineNum">    1323</span> <span class="tlaGNC">           1 :     subEnv.squashChildrenMapping = true;</span></span>
-<span id="L1324"><span class="lineNum">    1324</span>              :     // subEnv.parent = &amp;cloneEnv;</span>
-<span id="L1325"><span class="lineNum">    1325</span> <span class="tlaGNC">           1 :     auto clonedFunc = as&lt;IRFunc&gt;(cloneInst(&amp;subEnv, &amp;builder, func));</span></span>
-<span id="L1326"><span class="lineNum">    1326</span> <span class="tlaGNC">           1 :     auto clonedPrimalsInfo = primalsInfo-&gt;applyMap(&amp;subEnv);</span></span>
-<span id="L1327"><span class="lineNum">    1327</span>              : </span>
-<span id="L1328"><span class="lineNum">    1328</span>              :     // Remove [KeepAlive] decorations in clonedFunc.</span>
-<span id="L1329"><span class="lineNum">    1329</span> <span class="tlaGNC">           1 :     for (auto block : clonedFunc-&gt;getBlocks())</span></span>
-<span id="L1330"><span class="lineNum">    1330</span> <span class="tlaGNC">           1 :         for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L1331"><span class="lineNum">    1331</span> <span class="tlaGNC">           1 :             if (auto decor = inst-&gt;findDecoration&lt;IRKeepAliveDecoration&gt;())</span></span>
-<span id="L1332"><span class="lineNum">    1332</span> <span class="tlaUNC">           0 :                 decor-&gt;removeAndDeallocate();</span></span>
-<span id="L1333"><span class="lineNum">    1333</span>              : </span>
-<span id="L1334"><span class="lineNum">    1334</span> <span class="tlaGNC">           1 :     ExtractPrimalFuncContext context(autodiffContext-&gt;moduleInst-&gt;getModule(), autodiffContext);</span></span>
-<span id="L1335"><span class="lineNum">    1335</span>              : </span>
-<span id="L1336"><span class="lineNum">    1336</span> <span class="tlaGNC">           1 :     fullContextType = nullptr;</span></span>
-<span id="L1337"><span class="lineNum">    1337</span> <span class="tlaGNC">           1 :     minimalContextType = nullptr;</span></span>
-<span id="L1338"><span class="lineNum">    1338</span>              :     IRInst* paramsContextKey = nullptr;</span>
-<span id="L1339"><span class="lineNum">    1339</span>              :     IRInst* minimalContextKey = nullptr;</span>
-<span id="L1340"><span class="lineNum">    1340</span> <span class="tlaGNC">           1 :     IRInst* paramsContextType = nullptr;</span></span>
-<span id="L1341"><span class="lineNum">    1341</span> <span class="tlaGNC">           1 :     auto primalFunc = context.turnUnzippedFuncIntoPrimalFunc(</span></span>
-<span id="L1342"><span class="lineNum">    1342</span>              :         clonedFunc,</span>
-<span id="L1343"><span class="lineNum">    1343</span>              :         originalFunc,</span>
-<span id="L1344"><span class="lineNum">    1344</span>              :         clonedPrimalsInfo,</span>
-<span id="L1345"><span class="lineNum">    1345</span>              :         fullContextType,</span>
-<span id="L1346"><span class="lineNum">    1346</span>              :         minimalContextType,</span>
-<span id="L1347"><span class="lineNum">    1347</span>              :         paramsContextType,</span>
-<span id="L1348"><span class="lineNum">    1348</span>              :         rematFunc,</span>
-<span id="L1349"><span class="lineNum">    1349</span>              :         paramsContextKey,</span>
-<span id="L1350"><span class="lineNum">    1350</span>              :         minimalContextKey);</span>
-<span id="L1351"><span class="lineNum">    1351</span>              : </span>
-<span id="L1352"><span class="lineNum">    1352</span> <span class="tlaGNC">           1 :     if (auto nameHint = primalFunc-&gt;findDecoration&lt;IRNameHintDecoration&gt;())</span></span>
-<span id="L1353"><span class="lineNum">    1353</span>              :     {</span>
-<span id="L1354"><span class="lineNum">    1354</span> <span class="tlaUNC">           0 :         nameHint-&gt;removeAndDeallocate();</span></span>
-<span id="L1355"><span class="lineNum">    1355</span>              :     }</span>
-<span id="L1356"><span class="lineNum">    1356</span>              : </span>
-<span id="L1357"><span class="lineNum">    1357</span> <span class="tlaGNC">           1 :     builder.addDecoration(primalFunc, kIROp_IgnoreSideEffectsDecoration);</span></span>
-<span id="L1358"><span class="lineNum">    1358</span> <span class="tlaGNC">           1 :     markNonContextParamsAsSideEffectFree(&amp;builder, primalFunc);</span></span>
-<span id="L1359"><span class="lineNum">    1359</span>              : </span>
-<span id="L1360"><span class="lineNum">    1360</span>              :     // Copy PrimalValueStructKey decorations from primal func.</span>
-<span id="L1361"><span class="lineNum">    1361</span> <span class="tlaGNC">           1 :     copyPrimalValueStructKeyDecorations(func, subEnv);</span></span>
-<span id="L1362"><span class="lineNum">    1362</span>              : </span>
-<span id="L1363"><span class="lineNum">    1363</span> <span class="tlaGNC">           1 :     auto propParamBlock = getFirstRecomputeBlock(func);</span></span>
-<span id="L1364"><span class="lineNum">    1364</span>              :     SLANG_ASSERT(propParamBlock);</span>
-<span id="L1365"><span class="lineNum">    1365</span>              : </span>
-<span id="L1366"><span class="lineNum">    1366</span>              :     // Add intermediate context parameter to the front.</span>
-<span id="L1367"><span class="lineNum">    1367</span>              :     // The propagate function always takes the full context.</span>
-<span id="L1368"><span class="lineNum">    1368</span>              :     //</span>
-<span id="L1369"><span class="lineNum">    1369</span> <span class="tlaGNC">           1 :     auto intermediateParam = builder.createParam((IRType*)fullContextType);</span></span>
-<span id="L1370"><span class="lineNum">    1370</span> <span class="tlaGNC">           1 :     propParamBlock-&gt;insertParamAtHead(intermediateParam);</span></span>
-<span id="L1371"><span class="lineNum">    1371</span>              : </span>
-<span id="L1372"><span class="lineNum">    1372</span>              :     // Replace all insts that has intermediate results with a load of the intermediate.</span>
-<span id="L1373"><span class="lineNum">    1373</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; instsToRemove;</span></span>
-<span id="L1374"><span class="lineNum">    1374</span> <span class="tlaGNC">           1 :     for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L1375"><span class="lineNum">    1375</span>              :     {</span>
-<span id="L1376"><span class="lineNum">    1376</span> <span class="tlaGNC">           1 :         for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L1377"><span class="lineNum">    1377</span>              :         {</span>
-<span id="L1378"><span class="lineNum">    1378</span> <span class="tlaGNC">           1 :             if (auto structKeyDecor = inst-&gt;findDecoration&lt;IRPrimalValueStructKeyDecoration&gt;())</span></span>
-<span id="L1379"><span class="lineNum">    1379</span>              :             {</span>
-<span id="L1380"><span class="lineNum">    1380</span> <span class="tlaGNC">           1 :                 builder.setInsertBefore(inst);</span></span>
-<span id="L1381"><span class="lineNum">    1381</span> <span class="tlaGNC">           1 :                 if (inst-&gt;getOp() == kIROp_Var)</span></span>
-<span id="L1382"><span class="lineNum">    1382</span>              :                 {</span>
-<span id="L1383"><span class="lineNum">    1383</span>              :                     // This is a var for intermediate context.</span>
-<span id="L1384"><span class="lineNum">    1384</span>              :                     // Replace all loads of the var with a field extract.</span>
-<span id="L1385"><span class="lineNum">    1385</span>              :                     // Other type of uses will get a temp var that stores a copy of the field.</span>
-<span id="L1386"><span class="lineNum">    1386</span> <span class="tlaGNC">           1 :                     while (auto use = inst-&gt;firstUse)</span></span>
-<span id="L1387"><span class="lineNum">    1387</span>              :                     {</span>
-<span id="L1388"><span class="lineNum">    1388</span> <span class="tlaGNC">           1 :                         if (as&lt;IRDecoration&gt;(use-&gt;getUser()))</span></span>
-<span id="L1389"><span class="lineNum">    1389</span>              :                         {</span>
-<span id="L1390"><span class="lineNum">    1390</span> <span class="tlaUNC">           0 :                             use-&gt;set(builder.getVoidValue());</span></span>
-<span id="L1391"><span class="lineNum">    1391</span> <span class="tlaUNC">           0 :                             continue;</span></span>
-<span id="L1392"><span class="lineNum">    1392</span>              :                         }</span>
-<span id="L1393"><span class="lineNum">    1393</span>              : </span>
-<span id="L1394"><span class="lineNum">    1394</span> <span class="tlaGNC">           1 :                         IRBuilderSourceLocRAII sourceLocationScope(</span></span>
-<span id="L1395"><span class="lineNum">    1395</span>              :                             &amp;builder,</span>
-<span id="L1396"><span class="lineNum">    1396</span>              :                             use-&gt;getUser()-&gt;sourceLoc);</span>
-<span id="L1397"><span class="lineNum">    1397</span>              : </span>
-<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaGNC">           1 :                         builder.setInsertBefore(use-&gt;getUser());</span></span>
-<span id="L1399"><span class="lineNum">    1399</span> <span class="tlaGNC">           1 :                         auto valType = cast&lt;IRPtrTypeBase&gt;(inst-&gt;getFullType())-&gt;getValueType();</span></span>
-<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaGNC">           1 :                         auto val = builder.emitFieldExtract(</span></span>
-<span id="L1401"><span class="lineNum">    1401</span>              :                             builder.emitFieldExtract(</span>
-<span id="L1402"><span class="lineNum">    1402</span>              :                                 intermediateParam,</span>
-<span id="L1403"><span class="lineNum">    1403</span>              :                                 structKeyDecor-&gt;getFirstKey()),</span>
-<span id="L1404"><span class="lineNum">    1404</span>              :                             structKeyDecor-&gt;getSecondKey());</span>
-<span id="L1405"><span class="lineNum">    1405</span>              : </span>
-<span id="L1406"><span class="lineNum">    1406</span> <span class="tlaGNC">           1 :                         if (use-&gt;getUser()-&gt;getOp() == kIROp_Load)</span></span>
-<span id="L1407"><span class="lineNum">    1407</span>              :                         {</span>
-<span id="L1408"><span class="lineNum">    1408</span> <span class="tlaGNC">           1 :                             use-&gt;getUser()-&gt;replaceUsesWith(val);</span></span>
-<span id="L1409"><span class="lineNum">    1409</span> <span class="tlaGNC">           1 :                             use-&gt;getUser()-&gt;removeAndDeallocate();</span></span>
-<span id="L1410"><span class="lineNum">    1410</span> <span class="tlaGNC">           1 :                         }</span></span>
-<span id="L1411"><span class="lineNum">    1411</span>              :                         else</span>
-<span id="L1412"><span class="lineNum">    1412</span>              :                         {</span>
-<span id="L1413"><span class="lineNum">    1413</span> <span class="tlaGNC">           1 :                             auto tempVar = builder.emitVar(valType);</span></span>
-<span id="L1414"><span class="lineNum">    1414</span> <span class="tlaGNC">           1 :                             builder.emitStore(tempVar, val);</span></span>
-<span id="L1415"><span class="lineNum">    1415</span> <span class="tlaGNC">           1 :                             use-&gt;set(tempVar);</span></span>
-<span id="L1416"><span class="lineNum">    1416</span>              :                         }</span>
-<span id="L1417"><span class="lineNum">    1417</span> <span class="tlaGNC">           1 :                     }</span></span>
-<span id="L1418"><span class="lineNum">    1418</span> <span class="tlaGNC">           1 :                 }</span></span>
-<span id="L1419"><span class="lineNum">    1419</span>              :                 else</span>
-<span id="L1420"><span class="lineNum">    1420</span>              :                 {</span>
-<span id="L1421"><span class="lineNum">    1421</span>              :                     // Ordinary value.</span>
-<span id="L1422"><span class="lineNum">    1422</span>              :                     // We insert a fieldExtract at each use site instead of before `inst`,</span>
-<span id="L1423"><span class="lineNum">    1423</span>              :                     // since at this stage of autodiff pass, `inst` does not necessarily</span>
-<span id="L1424"><span class="lineNum">    1424</span>              :                     // dominate all the use sites if `inst` is defined in partial branch</span>
-<span id="L1425"><span class="lineNum">    1425</span>              :                     // in a primal block.</span>
-<span id="L1426"><span class="lineNum">    1426</span> <span class="tlaUNC">           0 :                     while (auto iuse = inst-&gt;firstUse)</span></span>
-<span id="L1427"><span class="lineNum">    1427</span>              :                     {</span>
-<span id="L1428"><span class="lineNum">    1428</span> <span class="tlaUNC">           0 :                         auto user = iuse-&gt;getUser();</span></span>
-<span id="L1429"><span class="lineNum">    1429</span> <span class="tlaUNC">           0 :                         if (as&lt;IRDecoration&gt;(user))</span></span>
-<span id="L1430"><span class="lineNum">    1430</span> <span class="tlaUNC">           0 :                             user = user-&gt;getParent();</span></span>
-<span id="L1431"><span class="lineNum">    1431</span> <span class="tlaUNC">           0 :                         if (!user)</span></span>
-<span id="L1432"><span class="lineNum">    1432</span>              :                             continue;</span>
-<span id="L1433"><span class="lineNum">    1433</span> <span class="tlaUNC">           0 :                         builder.setInsertBefore(user);</span></span>
-<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaUNC">           0 :                         auto val = builder.emitFieldExtract(</span></span>
-<span id="L1435"><span class="lineNum">    1435</span>              :                             builder.emitFieldExtract(</span>
-<span id="L1436"><span class="lineNum">    1436</span>              :                                 intermediateParam,</span>
-<span id="L1437"><span class="lineNum">    1437</span>              :                                 structKeyDecor-&gt;getFirstKey()),</span>
-<span id="L1438"><span class="lineNum">    1438</span>              :                             structKeyDecor-&gt;getSecondKey());</span>
-<span id="L1439"><span class="lineNum">    1439</span> <span class="tlaUNC">           0 :                         val-&gt;sourceLoc = user-&gt;sourceLoc;</span></span>
-<span id="L1440"><span class="lineNum">    1440</span> <span class="tlaUNC">           0 :                         builder.replaceOperand(iuse, val);</span></span>
-<span id="L1441"><span class="lineNum">    1441</span>              :                     }</span>
-<span id="L1442"><span class="lineNum">    1442</span>              :                 }</span>
-<span id="L1443"><span class="lineNum">    1443</span> <span class="tlaGNC">           1 :                 instsToRemove.add(inst);</span></span>
-<span id="L1444"><span class="lineNum">    1444</span>              :             }</span>
-<span id="L1445"><span class="lineNum">    1445</span>              :         }</span>
-<span id="L1446"><span class="lineNum">    1446</span>              :     }</span>
-<span id="L1447"><span class="lineNum">    1447</span>              : </span>
-<span id="L1448"><span class="lineNum">    1448</span> <span class="tlaGNC">           1 :     for (auto inst : instsToRemove)</span></span>
-<span id="L1449"><span class="lineNum">    1449</span>              :     {</span>
-<span id="L1450"><span class="lineNum">    1450</span> <span class="tlaGNC">           1 :         if (as&lt;IRParam, IRDynamicCastBehavior::NoUnwrap&gt;(inst))</span></span>
-<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaUNC">           0 :             removePhiArgs(inst);</span></span>
-<span id="L1452"><span class="lineNum">    1452</span> <span class="tlaGNC">           1 :         inst-&gt;removeAndDeallocate();</span></span>
+<span id="L1207"><span class="lineNum">    1207</span>              :                         0);</span>
+<span id="L1208"><span class="lineNum">    1208</span> <span class="tlaGNC">           1 :                     builder.emitStore(retValAddr, returnValue);</span></span>
+<span id="L1209"><span class="lineNum">    1209</span> <span class="tlaGNC">           1 :                     auto contextAddr = builder.emitGetElementPtr(</span></span>
+<span id="L1210"><span class="lineNum">    1210</span>              :                         builder.getPtrType((IRType*)minimalContextType),</span>
+<span id="L1211"><span class="lineNum">    1211</span>              :                         retVar,</span>
+<span id="L1212"><span class="lineNum">    1212</span>              :                         1);</span>
+<span id="L1213"><span class="lineNum">    1213</span> <span class="tlaGNC">           1 :                     builder.emitStore(contextAddr, builder.emitLoad(outMinimalContextVar));</span></span>
+<span id="L1214"><span class="lineNum">    1214</span>              : </span>
+<span id="L1215"><span class="lineNum">    1215</span>              :                     builder.emitReturn(builder.emitLoad(retVar));</span>
+<span id="L1216"><span class="lineNum">    1216</span>              :                 }</span>
+<span id="L1217"><span class="lineNum">    1217</span> <span class="tlaGNC">           1 :                 term-&gt;removeAndDeallocate();</span></span>
+<span id="L1218"><span class="lineNum">    1218</span>              :             }</span>
+<span id="L1219"><span class="lineNum">    1219</span>              :         }</span>
+<span id="L1220"><span class="lineNum">    1220</span>              : </span>
+<span id="L1221"><span class="lineNum">    1221</span>              :         // Remove all Differential &amp; Recompute blocks from the apply func.</span>
+<span id="L1222"><span class="lineNum">    1222</span>              : </span>
+<span id="L1223"><span class="lineNum">    1223</span> <span class="tlaGNC">           1 :         List&lt;IRBlock*&gt; unusedBlocks;</span></span>
+<span id="L1224"><span class="lineNum">    1224</span> <span class="tlaGNC">           1 :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L1225"><span class="lineNum">    1225</span>              :         {</span>
+<span id="L1226"><span class="lineNum">    1226</span> <span class="tlaGNC">           1 :             if (isDiffInst(block) || block-&gt;findDecoration&lt;IRRecomputeBlockDecoration&gt;())</span></span>
+<span id="L1227"><span class="lineNum">    1227</span> <span class="tlaGNC">           1 :                 unusedBlocks.add(block);</span></span>
+<span id="L1228"><span class="lineNum">    1228</span>              :         }</span>
+<span id="L1229"><span class="lineNum">    1229</span> <span class="tlaGNC">           1 :         for (auto block : unusedBlocks)</span></span>
+<span id="L1230"><span class="lineNum">    1230</span> <span class="tlaGNC">           1 :             block-&gt;removeAndDeallocate();</span></span>
+<span id="L1231"><span class="lineNum">    1231</span>              : </span>
+<span id="L1232"><span class="lineNum">    1232</span> <span class="tlaGNC">           1 :         setInsertAfterOrdinaryInst(&amp;builder, outMinimalContextVar);</span></span>
+<span id="L1233"><span class="lineNum">    1233</span> <span class="tlaGNC">           1 :         auto defVal = builder.emitDefaultConstructRaw((IRType*)minimalContextType);</span></span>
+<span id="L1234"><span class="lineNum">    1234</span> <span class="tlaGNC">           1 :         builder.emitStore(outMinimalContextVar, defVal);</span></span>
+<span id="L1235"><span class="lineNum">    1235</span>              : </span>
+<span id="L1236"><span class="lineNum">    1236</span>              :         // Pack the params and minimal context into the full context and return it from the remat</span>
+<span id="L1237"><span class="lineNum">    1237</span>              :         // func.</span>
+<span id="L1238"><span class="lineNum">    1238</span>              :         //</span>
+<span id="L1239"><span class="lineNum">    1239</span> <span class="tlaGNC">           1 :         rematFuncBuilder.setInsertInto(rematFunc-&gt;getFirstBlock());</span></span>
+<span id="L1240"><span class="lineNum">    1240</span> <span class="tlaGNC">           1 :         rematFuncBuilder.emitReturn(rematFuncBuilder.emitMakeStruct(</span></span>
+<span id="L1241"><span class="lineNum">    1241</span>              :             (IRType*)fullContextType,</span>
+<span id="L1242"><span class="lineNum">    1242</span>              :             List&lt;IRInst*&gt;(</span>
+<span id="L1243"><span class="lineNum">    1243</span>              :                 // Field stores prevent SSA promotion and hide the original arguments</span>
+<span id="L1244"><span class="lineNum">    1244</span>              :                 // from context expansion and aggregate parameter copy elision.</span>
+<span id="L1245"><span class="lineNum">    1245</span>              :                 rematFuncBuilder.emitMakeStruct(paramsContextType, capturedParameterValues),</span>
+<span id="L1246"><span class="lineNum">    1246</span>              :                 rematFuncMinimalContextParam)));</span>
+<span id="L1247"><span class="lineNum">    1247</span>              : </span>
+<span id="L1248"><span class="lineNum">    1248</span> <span class="tlaGNC">           1 :         return unzippedFunc;</span></span>
+<span id="L1249"><span class="lineNum">    1249</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1250"><span class="lineNum">    1250</span>              : };</span>
+<span id="L1251"><span class="lineNum">    1251</span>              : </span>
+<span id="L1252"><span class="lineNum">    1252</span>              : bool isIntermediateContextType(IRInst* type)</span>
+<span id="L1253"><span class="lineNum">    1253</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1254"><span class="lineNum">    1254</span> <span class="tlaUNC">           0 :     switch (type-&gt;getOp())</span></span>
+<span id="L1255"><span class="lineNum">    1255</span>              :     {</span>
+<span id="L1256"><span class="lineNum">    1256</span>              :     case kIROp_BackwardDiffIntermediateContextType:</span>
+<span id="L1257"><span class="lineNum">    1257</span> <span class="tlaUNC">           0 :         return true;</span></span>
+<span id="L1258"><span class="lineNum">    1258</span>              :     case kIROp_AttributedType:</span>
+<span id="L1259"><span class="lineNum">    1259</span> <span class="tlaUNC">           0 :         return isIntermediateContextType(as&lt;IRAttributedType&gt;(type)-&gt;getBaseType());</span></span>
+<span id="L1260"><span class="lineNum">    1260</span>              :     case kIROp_Specialize:</span>
+<span id="L1261"><span class="lineNum">    1261</span> <span class="tlaUNC">           0 :         return isIntermediateContextType(as&lt;IRSpecialize&gt;(type)-&gt;getBase());</span></span>
+<span id="L1262"><span class="lineNum">    1262</span>              :     default:</span>
+<span id="L1263"><span class="lineNum">    1263</span> <span class="tlaUNC">           0 :         if (auto ptrType = asRelevantPtrType(type))</span></span>
+<span id="L1264"><span class="lineNum">    1264</span> <span class="tlaUNC">           0 :             return isIntermediateContextType(ptrType-&gt;getValueType());</span></span>
+<span id="L1265"><span class="lineNum">    1265</span>              :         return false;</span>
+<span id="L1266"><span class="lineNum">    1266</span>              :     }</span>
+<span id="L1267"><span class="lineNum">    1267</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1268"><span class="lineNum">    1268</span>              : </span>
+<span id="L1269"><span class="lineNum">    1269</span>              : void markNonContextParamsAsSideEffectFree(IRBuilder* builder, IRFunc* func)</span>
+<span id="L1270"><span class="lineNum">    1270</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1271"><span class="lineNum">    1271</span> <span class="tlaGNC">           1 :     for (auto param : func-&gt;getParams())</span></span>
+<span id="L1272"><span class="lineNum">    1272</span>              :     {</span>
+<span id="L1273"><span class="lineNum">    1273</span> <span class="tlaGNC">           1 :         if (!param-&gt;findDecorationImpl(kIROp_PrimalContextDecoration))</span></span>
+<span id="L1274"><span class="lineNum">    1274</span> <span class="tlaGNC">           1 :             builder-&gt;addDecoration(param, kIROp_IgnoreSideEffectsDecoration);</span></span>
+<span id="L1275"><span class="lineNum">    1275</span>              :     }</span>
+<span id="L1276"><span class="lineNum">    1276</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1277"><span class="lineNum">    1277</span>              : </span>
+<span id="L1278"><span class="lineNum">    1278</span>              : static void copyPrimalValueStructKeyDecorations(IRInst* inst, IRCloneEnv&amp; cloneEnv)</span>
+<span id="L1279"><span class="lineNum">    1279</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1280"><span class="lineNum">    1280</span> <span class="tlaGNC">           1 :     IRInst* newInst = nullptr;</span></span>
+<span id="L1281"><span class="lineNum">    1281</span> <span class="tlaGNC">           1 :     if (cloneEnv.mapOldValToNew.tryGetValue(inst, newInst))</span></span>
+<span id="L1282"><span class="lineNum">    1282</span>              :     {</span>
+<span id="L1283"><span class="lineNum">    1283</span> <span class="tlaGNC">           1 :         if (auto decor = newInst-&gt;findDecoration&lt;IRPrimalValueStructKeyDecoration&gt;())</span></span>
+<span id="L1284"><span class="lineNum">    1284</span>              :         {</span>
+<span id="L1285"><span class="lineNum">    1285</span> <span class="tlaGNC">           1 :             cloneDecoration(decor, inst);</span></span>
+<span id="L1286"><span class="lineNum">    1286</span>              :         }</span>
+<span id="L1287"><span class="lineNum">    1287</span>              :     }</span>
+<span id="L1288"><span class="lineNum">    1288</span>              : </span>
+<span id="L1289"><span class="lineNum">    1289</span> <span class="tlaGNC">           1 :     for (auto child : inst-&gt;getChildren())</span></span>
+<span id="L1290"><span class="lineNum">    1290</span>              :     {</span>
+<span id="L1291"><span class="lineNum">    1291</span> <span class="tlaGNC">           1 :         copyPrimalValueStructKeyDecorations(child, cloneEnv);</span></span>
+<span id="L1292"><span class="lineNum">    1292</span>              :     }</span>
+<span id="L1293"><span class="lineNum">    1293</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1294"><span class="lineNum">    1294</span>              : </span>
+<span id="L1295"><span class="lineNum">    1295</span>              : static IRBlock* getFirstRecomputeBlock(IRFunc* func)</span>
+<span id="L1296"><span class="lineNum">    1296</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1297"><span class="lineNum">    1297</span>              :     // This logic is a bit fragile.</span>
+<span id="L1298"><span class="lineNum">    1298</span>              :     // We shouldn&#x27;t necessarily make the</span>
+<span id="L1299"><span class="lineNum">    1299</span>              :     // assumption that the order in the list of blocks is related to the</span>
+<span id="L1300"><span class="lineNum">    1300</span>              :     // control-flow order, but it works with the current system.</span>
+<span id="L1301"><span class="lineNum">    1301</span>              :     //</span>
+<span id="L1302"><span class="lineNum">    1302</span> <span class="tlaGNC">           1 :     for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L1303"><span class="lineNum">    1303</span>              :     {</span>
+<span id="L1304"><span class="lineNum">    1304</span> <span class="tlaGNC">           1 :         if (block-&gt;findDecoration&lt;IRRecomputeBlockDecoration&gt;())</span></span>
+<span id="L1305"><span class="lineNum">    1305</span> <span class="tlaGNC">           1 :             return block;</span></span>
+<span id="L1306"><span class="lineNum">    1306</span>              :     }</span>
+<span id="L1307"><span class="lineNum">    1307</span> <span class="tlaUNC">           0 :     return nullptr;</span></span>
+<span id="L1308"><span class="lineNum">    1308</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1309"><span class="lineNum">    1309</span>              : </span>
+<span id="L1310"><span class="lineNum">    1310</span>              : void unzipDiffInsts(AutoDiffSharedContext* context, IRFunc* func)</span>
+<span id="L1311"><span class="lineNum">    1311</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1312"><span class="lineNum">    1312</span> <span class="tlaGNC">           1 :     UnzippingContext unzipContext(context);</span></span>
+<span id="L1313"><span class="lineNum">    1313</span> <span class="tlaGNC">           1 :     unzipContext.unzipFunc(func);</span></span>
+<span id="L1314"><span class="lineNum">    1314</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1315"><span class="lineNum">    1315</span>              : </span>
+<span id="L1316"><span class="lineNum">    1316</span>              : IRFunc* splitApplyAndPropFuncs(</span>
+<span id="L1317"><span class="lineNum">    1317</span>              :     AutoDiffSharedContext* autodiffContext,</span>
+<span id="L1318"><span class="lineNum">    1318</span>              :     IRFunc* func,</span>
+<span id="L1319"><span class="lineNum">    1319</span>              :     IRFunc* originalFunc,</span>
+<span id="L1320"><span class="lineNum">    1320</span>              :     HoistedPrimalsInfo* primalsInfo,</span>
+<span id="L1321"><span class="lineNum">    1321</span>              :     IRInst*&amp; fullContextType,</span>
+<span id="L1322"><span class="lineNum">    1322</span>              :     IRInst*&amp; minimalContextType,</span>
+<span id="L1323"><span class="lineNum">    1323</span>              :     IRFunc*&amp; rematFunc,</span>
+<span id="L1324"><span class="lineNum">    1324</span>              :     UnownedStringSlice intermediateTypeName)</span>
+<span id="L1325"><span class="lineNum">    1325</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1326"><span class="lineNum">    1326</span> <span class="tlaGNC">           1 :     IRBuilder builder(autodiffContext-&gt;moduleInst);</span></span>
+<span id="L1327"><span class="lineNum">    1327</span> <span class="tlaGNC">           1 :     builder.setInsertBefore(func);</span></span>
+<span id="L1328"><span class="lineNum">    1328</span>              : </span>
+<span id="L1329"><span class="lineNum">    1329</span> <span class="tlaGNC">           1 :     IRCloneEnv subEnv;</span></span>
+<span id="L1330"><span class="lineNum">    1330</span> <span class="tlaGNC">           1 :     subEnv.squashChildrenMapping = true;</span></span>
+<span id="L1331"><span class="lineNum">    1331</span>              :     // subEnv.parent = &amp;cloneEnv;</span>
+<span id="L1332"><span class="lineNum">    1332</span> <span class="tlaGNC">           1 :     auto clonedFunc = as&lt;IRFunc&gt;(cloneInst(&amp;subEnv, &amp;builder, func));</span></span>
+<span id="L1333"><span class="lineNum">    1333</span> <span class="tlaGNC">           1 :     auto clonedPrimalsInfo = primalsInfo-&gt;applyMap(&amp;subEnv);</span></span>
+<span id="L1334"><span class="lineNum">    1334</span>              : </span>
+<span id="L1335"><span class="lineNum">    1335</span>              :     // Remove [KeepAlive] decorations in clonedFunc.</span>
+<span id="L1336"><span class="lineNum">    1336</span> <span class="tlaGNC">           1 :     for (auto block : clonedFunc-&gt;getBlocks())</span></span>
+<span id="L1337"><span class="lineNum">    1337</span> <span class="tlaGNC">           1 :         for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L1338"><span class="lineNum">    1338</span> <span class="tlaGNC">           1 :             if (auto decor = inst-&gt;findDecoration&lt;IRKeepAliveDecoration&gt;())</span></span>
+<span id="L1339"><span class="lineNum">    1339</span> <span class="tlaUNC">           0 :                 decor-&gt;removeAndDeallocate();</span></span>
+<span id="L1340"><span class="lineNum">    1340</span>              : </span>
+<span id="L1341"><span class="lineNum">    1341</span> <span class="tlaGNC">           1 :     ExtractPrimalFuncContext context(autodiffContext-&gt;moduleInst-&gt;getModule(), autodiffContext);</span></span>
+<span id="L1342"><span class="lineNum">    1342</span>              : </span>
+<span id="L1343"><span class="lineNum">    1343</span> <span class="tlaGNC">           1 :     fullContextType = nullptr;</span></span>
+<span id="L1344"><span class="lineNum">    1344</span> <span class="tlaGNC">           1 :     minimalContextType = nullptr;</span></span>
+<span id="L1345"><span class="lineNum">    1345</span>              :     IRInst* paramsContextKey = nullptr;</span>
+<span id="L1346"><span class="lineNum">    1346</span>              :     IRInst* minimalContextKey = nullptr;</span>
+<span id="L1347"><span class="lineNum">    1347</span> <span class="tlaGNC">           1 :     IRInst* paramsContextType = nullptr;</span></span>
+<span id="L1348"><span class="lineNum">    1348</span> <span class="tlaGNC">           1 :     auto primalFunc = context.turnUnzippedFuncIntoPrimalFunc(</span></span>
+<span id="L1349"><span class="lineNum">    1349</span>              :         clonedFunc,</span>
+<span id="L1350"><span class="lineNum">    1350</span>              :         originalFunc,</span>
+<span id="L1351"><span class="lineNum">    1351</span>              :         clonedPrimalsInfo,</span>
+<span id="L1352"><span class="lineNum">    1352</span>              :         fullContextType,</span>
+<span id="L1353"><span class="lineNum">    1353</span>              :         minimalContextType,</span>
+<span id="L1354"><span class="lineNum">    1354</span>              :         paramsContextType,</span>
+<span id="L1355"><span class="lineNum">    1355</span>              :         rematFunc,</span>
+<span id="L1356"><span class="lineNum">    1356</span>              :         paramsContextKey,</span>
+<span id="L1357"><span class="lineNum">    1357</span>              :         minimalContextKey);</span>
+<span id="L1358"><span class="lineNum">    1358</span>              : </span>
+<span id="L1359"><span class="lineNum">    1359</span> <span class="tlaGNC">           1 :     if (auto nameHint = primalFunc-&gt;findDecoration&lt;IRNameHintDecoration&gt;())</span></span>
+<span id="L1360"><span class="lineNum">    1360</span>              :     {</span>
+<span id="L1361"><span class="lineNum">    1361</span> <span class="tlaUNC">           0 :         nameHint-&gt;removeAndDeallocate();</span></span>
+<span id="L1362"><span class="lineNum">    1362</span>              :     }</span>
+<span id="L1363"><span class="lineNum">    1363</span>              : </span>
+<span id="L1364"><span class="lineNum">    1364</span> <span class="tlaGNC">           1 :     builder.addDecoration(primalFunc, kIROp_IgnoreSideEffectsDecoration);</span></span>
+<span id="L1365"><span class="lineNum">    1365</span> <span class="tlaGNC">           1 :     markNonContextParamsAsSideEffectFree(&amp;builder, primalFunc);</span></span>
+<span id="L1366"><span class="lineNum">    1366</span>              : </span>
+<span id="L1367"><span class="lineNum">    1367</span>              :     // Copy PrimalValueStructKey decorations from primal func.</span>
+<span id="L1368"><span class="lineNum">    1368</span> <span class="tlaGNC">           1 :     copyPrimalValueStructKeyDecorations(func, subEnv);</span></span>
+<span id="L1369"><span class="lineNum">    1369</span>              : </span>
+<span id="L1370"><span class="lineNum">    1370</span> <span class="tlaGNC">           1 :     auto propParamBlock = getFirstRecomputeBlock(func);</span></span>
+<span id="L1371"><span class="lineNum">    1371</span>              :     SLANG_ASSERT(propParamBlock);</span>
+<span id="L1372"><span class="lineNum">    1372</span>              : </span>
+<span id="L1373"><span class="lineNum">    1373</span>              :     // Add intermediate context parameter to the front.</span>
+<span id="L1374"><span class="lineNum">    1374</span>              :     // The propagate function always takes the full context.</span>
+<span id="L1375"><span class="lineNum">    1375</span>              :     //</span>
+<span id="L1376"><span class="lineNum">    1376</span> <span class="tlaGNC">           1 :     auto intermediateParam = builder.createParam((IRType*)fullContextType);</span></span>
+<span id="L1377"><span class="lineNum">    1377</span> <span class="tlaGNC">           1 :     propParamBlock-&gt;insertParamAtHead(intermediateParam);</span></span>
+<span id="L1378"><span class="lineNum">    1378</span>              : </span>
+<span id="L1379"><span class="lineNum">    1379</span>              :     // Replace all insts that has intermediate results with a load of the intermediate.</span>
+<span id="L1380"><span class="lineNum">    1380</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; instsToRemove;</span></span>
+<span id="L1381"><span class="lineNum">    1381</span> <span class="tlaGNC">           1 :     for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L1382"><span class="lineNum">    1382</span>              :     {</span>
+<span id="L1383"><span class="lineNum">    1383</span> <span class="tlaGNC">           1 :         for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L1384"><span class="lineNum">    1384</span>              :         {</span>
+<span id="L1385"><span class="lineNum">    1385</span> <span class="tlaGNC">           1 :             if (auto structKeyDecor = inst-&gt;findDecoration&lt;IRPrimalValueStructKeyDecoration&gt;())</span></span>
+<span id="L1386"><span class="lineNum">    1386</span>              :             {</span>
+<span id="L1387"><span class="lineNum">    1387</span> <span class="tlaGNC">           1 :                 builder.setInsertBefore(inst);</span></span>
+<span id="L1388"><span class="lineNum">    1388</span> <span class="tlaGNC">           1 :                 if (inst-&gt;getOp() == kIROp_Var)</span></span>
+<span id="L1389"><span class="lineNum">    1389</span>              :                 {</span>
+<span id="L1390"><span class="lineNum">    1390</span>              :                     // This is a var for intermediate context.</span>
+<span id="L1391"><span class="lineNum">    1391</span>              :                     // Replace all loads of the var with a field extract.</span>
+<span id="L1392"><span class="lineNum">    1392</span>              :                     // Other type of uses will get a temp var that stores a copy of the field.</span>
+<span id="L1393"><span class="lineNum">    1393</span> <span class="tlaGNC">           1 :                     while (auto use = inst-&gt;firstUse)</span></span>
+<span id="L1394"><span class="lineNum">    1394</span>              :                     {</span>
+<span id="L1395"><span class="lineNum">    1395</span> <span class="tlaGNC">           1 :                         if (as&lt;IRDecoration&gt;(use-&gt;getUser()))</span></span>
+<span id="L1396"><span class="lineNum">    1396</span>              :                         {</span>
+<span id="L1397"><span class="lineNum">    1397</span> <span class="tlaUNC">           0 :                             use-&gt;set(builder.getVoidValue());</span></span>
+<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaUNC">           0 :                             continue;</span></span>
+<span id="L1399"><span class="lineNum">    1399</span>              :                         }</span>
+<span id="L1400"><span class="lineNum">    1400</span>              : </span>
+<span id="L1401"><span class="lineNum">    1401</span> <span class="tlaGNC">           1 :                         IRBuilderSourceLocRAII sourceLocationScope(</span></span>
+<span id="L1402"><span class="lineNum">    1402</span>              :                             &amp;builder,</span>
+<span id="L1403"><span class="lineNum">    1403</span>              :                             use-&gt;getUser()-&gt;sourceLoc);</span>
+<span id="L1404"><span class="lineNum">    1404</span>              : </span>
+<span id="L1405"><span class="lineNum">    1405</span> <span class="tlaGNC">           1 :                         builder.setInsertBefore(use-&gt;getUser());</span></span>
+<span id="L1406"><span class="lineNum">    1406</span> <span class="tlaGNC">           1 :                         auto valType = cast&lt;IRPtrTypeBase&gt;(inst-&gt;getFullType())-&gt;getValueType();</span></span>
+<span id="L1407"><span class="lineNum">    1407</span> <span class="tlaGNC">           1 :                         auto val = builder.emitFieldExtract(</span></span>
+<span id="L1408"><span class="lineNum">    1408</span>              :                             builder.emitFieldExtract(</span>
+<span id="L1409"><span class="lineNum">    1409</span>              :                                 intermediateParam,</span>
+<span id="L1410"><span class="lineNum">    1410</span>              :                                 structKeyDecor-&gt;getFirstKey()),</span>
+<span id="L1411"><span class="lineNum">    1411</span>              :                             structKeyDecor-&gt;getSecondKey());</span>
+<span id="L1412"><span class="lineNum">    1412</span>              : </span>
+<span id="L1413"><span class="lineNum">    1413</span> <span class="tlaGNC">           1 :                         if (use-&gt;getUser()-&gt;getOp() == kIROp_Load)</span></span>
+<span id="L1414"><span class="lineNum">    1414</span>              :                         {</span>
+<span id="L1415"><span class="lineNum">    1415</span> <span class="tlaGNC">           1 :                             use-&gt;getUser()-&gt;replaceUsesWith(val);</span></span>
+<span id="L1416"><span class="lineNum">    1416</span> <span class="tlaGNC">           1 :                             use-&gt;getUser()-&gt;removeAndDeallocate();</span></span>
+<span id="L1417"><span class="lineNum">    1417</span> <span class="tlaGNC">           1 :                         }</span></span>
+<span id="L1418"><span class="lineNum">    1418</span>              :                         else</span>
+<span id="L1419"><span class="lineNum">    1419</span>              :                         {</span>
+<span id="L1420"><span class="lineNum">    1420</span> <span class="tlaGNC">           1 :                             auto tempVar = builder.emitVar(valType);</span></span>
+<span id="L1421"><span class="lineNum">    1421</span> <span class="tlaGNC">           1 :                             builder.emitStore(tempVar, val);</span></span>
+<span id="L1422"><span class="lineNum">    1422</span> <span class="tlaGNC">           1 :                             use-&gt;set(tempVar);</span></span>
+<span id="L1423"><span class="lineNum">    1423</span>              :                         }</span>
+<span id="L1424"><span class="lineNum">    1424</span> <span class="tlaGNC">           1 :                     }</span></span>
+<span id="L1425"><span class="lineNum">    1425</span> <span class="tlaGNC">           1 :                 }</span></span>
+<span id="L1426"><span class="lineNum">    1426</span>              :                 else</span>
+<span id="L1427"><span class="lineNum">    1427</span>              :                 {</span>
+<span id="L1428"><span class="lineNum">    1428</span>              :                     // Ordinary value.</span>
+<span id="L1429"><span class="lineNum">    1429</span>              :                     // We insert a fieldExtract at each use site instead of before `inst`,</span>
+<span id="L1430"><span class="lineNum">    1430</span>              :                     // since at this stage of autodiff pass, `inst` does not necessarily</span>
+<span id="L1431"><span class="lineNum">    1431</span>              :                     // dominate all the use sites if `inst` is defined in partial branch</span>
+<span id="L1432"><span class="lineNum">    1432</span>              :                     // in a primal block.</span>
+<span id="L1433"><span class="lineNum">    1433</span> <span class="tlaUNC">           0 :                     while (auto iuse = inst-&gt;firstUse)</span></span>
+<span id="L1434"><span class="lineNum">    1434</span>              :                     {</span>
+<span id="L1435"><span class="lineNum">    1435</span> <span class="tlaUNC">           0 :                         auto user = iuse-&gt;getUser();</span></span>
+<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaUNC">           0 :                         if (as&lt;IRDecoration&gt;(user))</span></span>
+<span id="L1437"><span class="lineNum">    1437</span> <span class="tlaUNC">           0 :                             user = user-&gt;getParent();</span></span>
+<span id="L1438"><span class="lineNum">    1438</span> <span class="tlaUNC">           0 :                         if (!user)</span></span>
+<span id="L1439"><span class="lineNum">    1439</span>              :                             continue;</span>
+<span id="L1440"><span class="lineNum">    1440</span> <span class="tlaUNC">           0 :                         builder.setInsertBefore(user);</span></span>
+<span id="L1441"><span class="lineNum">    1441</span> <span class="tlaUNC">           0 :                         auto val = builder.emitFieldExtract(</span></span>
+<span id="L1442"><span class="lineNum">    1442</span>              :                             builder.emitFieldExtract(</span>
+<span id="L1443"><span class="lineNum">    1443</span>              :                                 intermediateParam,</span>
+<span id="L1444"><span class="lineNum">    1444</span>              :                                 structKeyDecor-&gt;getFirstKey()),</span>
+<span id="L1445"><span class="lineNum">    1445</span>              :                             structKeyDecor-&gt;getSecondKey());</span>
+<span id="L1446"><span class="lineNum">    1446</span> <span class="tlaUNC">           0 :                         val-&gt;sourceLoc = user-&gt;sourceLoc;</span></span>
+<span id="L1447"><span class="lineNum">    1447</span> <span class="tlaUNC">           0 :                         builder.replaceOperand(iuse, val);</span></span>
+<span id="L1448"><span class="lineNum">    1448</span>              :                     }</span>
+<span id="L1449"><span class="lineNum">    1449</span>              :                 }</span>
+<span id="L1450"><span class="lineNum">    1450</span> <span class="tlaGNC">           1 :                 instsToRemove.add(inst);</span></span>
+<span id="L1451"><span class="lineNum">    1451</span>              :             }</span>
+<span id="L1452"><span class="lineNum">    1452</span>              :         }</span>
 <span id="L1453"><span class="lineNum">    1453</span>              :     }</span>
 <span id="L1454"><span class="lineNum">    1454</span>              : </span>
-<span id="L1455"><span class="lineNum">    1455</span>              :     // Erase all primal blocks (except for the param &amp; prelude blocks).</span>
-<span id="L1456"><span class="lineNum">    1456</span>              :     // TODO: Lots of ways to clean this up.</span>
-<span id="L1457"><span class="lineNum">    1457</span>              :     //</span>
-<span id="L1458"><span class="lineNum">    1458</span> <span class="tlaGNC">           1 :     List&lt;IRBlock*&gt; blocksToRemove;</span></span>
-<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">           1 :     for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L1460"><span class="lineNum">    1460</span>              :     {</span>
-<span id="L1461"><span class="lineNum">    1461</span> <span class="tlaGNC">           1 :         if (!block-&gt;findDecoration&lt;IRRecomputeBlockDecoration&gt;() &amp;&amp;</span></span>
-<span id="L1462"><span class="lineNum">    1462</span>              :             !block-&gt;findDecoration&lt;IRDifferentialInstDecoration&gt;())</span>
-<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaGNC">           1 :             blocksToRemove.add(block);</span></span>
-<span id="L1464"><span class="lineNum">    1464</span>              :     }</span>
-<span id="L1465"><span class="lineNum">    1465</span>              : </span>
-<span id="L1466"><span class="lineNum">    1466</span>              :     // Before erasing the blocks, go through and &#x27;re-hoist&#x27; any hoistable instructions (such as</span>
-<span id="L1467"><span class="lineNum">    1467</span>              :     // types) Any remaining valid instructions should be automatically moved to the recompute</span>
-<span id="L1468"><span class="lineNum">    1468</span>              :     // blocks. The rest can be removed.</span>
-<span id="L1469"><span class="lineNum">    1469</span>              :     //</span>
-<span id="L1470"><span class="lineNum">    1470</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; instsToReHoist;</span></span>
-<span id="L1471"><span class="lineNum">    1471</span> <span class="tlaGNC">           1 :     for (auto block : blocksToRemove)</span></span>
-<span id="L1472"><span class="lineNum">    1472</span> <span class="tlaGNC">           1 :         for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L1473"><span class="lineNum">    1473</span> <span class="tlaGNC">           1 :             if (getIROpInfo(inst-&gt;getOp()).flags &amp; kIROpFlag_Hoistable)</span></span>
-<span id="L1474"><span class="lineNum">    1474</span> <span class="tlaGNC">           1 :                 instsToReHoist.add(inst);</span></span>
-<span id="L1475"><span class="lineNum">    1475</span>              : </span>
-<span id="L1476"><span class="lineNum">    1476</span> <span class="tlaGNC">           1 :     for (auto inst : instsToReHoist)</span></span>
-<span id="L1477"><span class="lineNum">    1477</span>              :     {</span>
-<span id="L1478"><span class="lineNum">    1478</span> <span class="tlaGNC">           1 :         inst-&gt;removeFromParent();</span></span>
-<span id="L1479"><span class="lineNum">    1479</span> <span class="tlaGNC">           1 :         addHoistableInst(&amp;builder, inst);</span></span>
-<span id="L1480"><span class="lineNum">    1480</span>              :     }</span>
-<span id="L1481"><span class="lineNum">    1481</span>              : </span>
-<span id="L1482"><span class="lineNum">    1482</span> <span class="tlaGNC">           1 :     for (auto block : blocksToRemove)</span></span>
-<span id="L1483"><span class="lineNum">    1483</span> <span class="tlaGNC">           1 :         block-&gt;removeAndDeallocate();</span></span>
-<span id="L1484"><span class="lineNum">    1484</span>              : </span>
-<span id="L1485"><span class="lineNum">    1485</span>              :     // Helper lambda: convert a struct type to a tuple type, rewriting</span>
-<span id="L1486"><span class="lineNum">    1486</span>              :     // FieldAddress -&gt; GetElementPtr and FieldExtract -&gt; GetTupleElement.</span>
-<span id="L1487"><span class="lineNum">    1487</span>              :     //</span>
-<span id="L1488"><span class="lineNum">    1488</span> <span class="tlaGNC">           1 :     auto convertStructToNamedTuple = [&amp;](IRStructType* structType,</span></span>
-<span id="L1489"><span class="lineNum">    1489</span>              :                                          UnownedStringSlice nameSuffix,</span>
-<span id="L1490"><span class="lineNum">    1490</span>              :                                          bool isParameterContext = false) -&gt; IRInst*</span>
-<span id="L1491"><span class="lineNum">    1491</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1492"><span class="lineNum">    1492</span> <span class="tlaGNC">           1 :         List&lt;IRType*&gt; fieldTypes;</span></span>
-<span id="L1493"><span class="lineNum">    1493</span> <span class="tlaGNC">           1 :         Dictionary&lt;IRInst*, UInt&gt; keyToIndex;</span></span>
-<span id="L1494"><span class="lineNum">    1494</span> <span class="tlaGNC">           1 :         for (auto field : structType-&gt;getFields())</span></span>
-<span id="L1495"><span class="lineNum">    1495</span>              :         {</span>
-<span id="L1496"><span class="lineNum">    1496</span> <span class="tlaGNC">           1 :             keyToIndex[field-&gt;getKey()] = (UInt)fieldTypes.getCount();</span></span>
-<span id="L1497"><span class="lineNum">    1497</span> <span class="tlaGNC">           1 :             fieldTypes.add(field-&gt;getFieldType());</span></span>
-<span id="L1498"><span class="lineNum">    1498</span>              :         }</span>
-<span id="L1499"><span class="lineNum">    1499</span>              : </span>
-<span id="L1500"><span class="lineNum">    1500</span> <span class="tlaGNC">           1 :         auto tupleNameType = builder.getTupleNameType(builder.getStringValue(nameSuffix));</span></span>
-<span id="L1501"><span class="lineNum">    1501</span> <span class="tlaGNC">           1 :         builder.addDecoration(tupleNameType, kIROp_OptimizableTypeDecoration);</span></span>
-<span id="L1502"><span class="lineNum">    1502</span> <span class="tlaGNC">           1 :         if (isParameterContext)</span></span>
-<span id="L1503"><span class="lineNum">    1503</span> <span class="tlaGNC">           1 :             builder.addDecoration(tupleNameType, kIROp_AutodiffParameterContextTypeDecoration);</span></span>
-<span id="L1504"><span class="lineNum">    1504</span> <span class="tlaGNC">           1 :         fieldTypes.add((IRType*)tupleNameType);</span></span>
-<span id="L1505"><span class="lineNum">    1505</span>              : </span>
-<span id="L1506"><span class="lineNum">    1506</span> <span class="tlaGNC">           1 :         auto tupleType = builder.getTupleType(fieldTypes);</span></span>
-<span id="L1507"><span class="lineNum">    1507</span>              : </span>
-<span id="L1508"><span class="lineNum">    1508</span> <span class="tlaGNC">           1 :         for (auto&amp; [key, index] : keyToIndex)</span></span>
-<span id="L1509"><span class="lineNum">    1509</span>              :         {</span>
-<span id="L1510"><span class="lineNum">    1510</span> <span class="tlaGNC">           1 :             List&lt;IRUse*&gt; usesToProcess;</span></span>
-<span id="L1511"><span class="lineNum">    1511</span> <span class="tlaGNC">           1 :             for (auto use = key-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L1512"><span class="lineNum">    1512</span> <span class="tlaGNC">           1 :                 usesToProcess.add(use);</span></span>
-<span id="L1513"><span class="lineNum">    1513</span>              : </span>
-<span id="L1514"><span class="lineNum">    1514</span> <span class="tlaGNC">           1 :             for (auto use : usesToProcess)</span></span>
-<span id="L1515"><span class="lineNum">    1515</span>              :             {</span>
-<span id="L1516"><span class="lineNum">    1516</span> <span class="tlaGNC">           1 :                 auto user = use-&gt;getUser();</span></span>
-<span id="L1517"><span class="lineNum">    1517</span> <span class="tlaGNC">           1 :                 if (auto fieldAddr = as&lt;IRFieldAddress&gt;(user))</span></span>
-<span id="L1518"><span class="lineNum">    1518</span>              :                 {</span>
-<span id="L1519"><span class="lineNum">    1519</span> <span class="tlaGNC">           1 :                     builder.setInsertBefore(fieldAddr);</span></span>
-<span id="L1520"><span class="lineNum">    1520</span> <span class="tlaGNC">           1 :                     auto newInst = builder.emitGetElementPtr(</span></span>
-<span id="L1521"><span class="lineNum">    1521</span>              :                         fieldAddr-&gt;getFullType(),</span>
-<span id="L1522"><span class="lineNum">    1522</span>              :                         fieldAddr-&gt;getBase(),</span>
-<span id="L1523"><span class="lineNum">    1523</span>              :                         (IRIntegerValue)index);</span>
-<span id="L1524"><span class="lineNum">    1524</span>              :                     fieldAddr-&gt;replaceUsesWith(newInst);</span>
-<span id="L1525"><span class="lineNum">    1525</span>              :                     fieldAddr-&gt;removeAndDeallocate();</span>
-<span id="L1526"><span class="lineNum">    1526</span> <span class="tlaGNC">           1 :                 }</span></span>
-<span id="L1527"><span class="lineNum">    1527</span> <span class="tlaGNC">           1 :                 else if (auto fieldExtract = as&lt;IRFieldExtract&gt;(user))</span></span>
-<span id="L1528"><span class="lineNum">    1528</span>              :                 {</span>
-<span id="L1529"><span class="lineNum">    1529</span> <span class="tlaGNC">           1 :                     builder.setInsertBefore(fieldExtract);</span></span>
-<span id="L1530"><span class="lineNum">    1530</span> <span class="tlaGNC">           1 :                     auto newInst = builder.emitGetTupleElement(</span></span>
-<span id="L1531"><span class="lineNum">    1531</span>              :                         fieldExtract-&gt;getFullType(),</span>
-<span id="L1532"><span class="lineNum">    1532</span>              :                         fieldExtract-&gt;getBase(),</span>
-<span id="L1533"><span class="lineNum">    1533</span>              :                         (UInt)index);</span>
-<span id="L1534"><span class="lineNum">    1534</span>              :                     fieldExtract-&gt;replaceUsesWith(newInst);</span>
-<span id="L1535"><span class="lineNum">    1535</span>              :                     fieldExtract-&gt;removeAndDeallocate();</span>
-<span id="L1536"><span class="lineNum">    1536</span>              :                 }</span>
-<span id="L1537"><span class="lineNum">    1537</span>              :             }</span>
-<span id="L1538"><span class="lineNum">    1538</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L1539"><span class="lineNum">    1539</span>              : </span>
-<span id="L1540"><span class="lineNum">    1540</span> <span class="tlaGNC">           1 :         traverseUsers&lt;IRMakeStruct&gt;(</span></span>
-<span id="L1541"><span class="lineNum">    1541</span>              :             structType,</span>
-<span id="L1542"><span class="lineNum">    1542</span>              :             [&amp;](IRMakeStruct* makeStruct)</span>
-<span id="L1543"><span class="lineNum">    1543</span> <span class="tlaGNC">           1 :             {</span></span>
-<span id="L1544"><span class="lineNum">    1544</span> <span class="tlaGNC">           1 :                 builder.setInsertBefore(makeStruct);</span></span>
-<span id="L1545"><span class="lineNum">    1545</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; newOperands;</span></span>
-<span id="L1546"><span class="lineNum">    1546</span> <span class="tlaGNC">           1 :                 for (UIndex i = 0; i &lt; makeStruct-&gt;getOperandCount(); i++)</span></span>
-<span id="L1547"><span class="lineNum">    1547</span>              :                 {</span>
-<span id="L1548"><span class="lineNum">    1548</span> <span class="tlaGNC">           1 :                     auto operand = makeStruct-&gt;getOperand(i);</span></span>
-<span id="L1549"><span class="lineNum">    1549</span> <span class="tlaGNC">           1 :                     newOperands.add(operand);</span></span>
-<span id="L1550"><span class="lineNum">    1550</span>              :                 }</span>
-<span id="L1551"><span class="lineNum">    1551</span>              : </span>
-<span id="L1552"><span class="lineNum">    1552</span> <span class="tlaGNC">           1 :                 newOperands.add(</span></span>
-<span id="L1553"><span class="lineNum">    1553</span>              :                     builder.getPoison(tupleNameType)); // For the tuple name type operand.</span>
-<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaGNC">           1 :                 auto newMakeTuple = builder.emitMakeTuple(newOperands);</span></span>
-<span id="L1555"><span class="lineNum">    1555</span> <span class="tlaGNC">           1 :                 makeStruct-&gt;replaceUsesWith(newMakeTuple);</span></span>
-<span id="L1556"><span class="lineNum">    1556</span> <span class="tlaGNC">           1 :                 makeStruct-&gt;removeAndDeallocate();</span></span>
-<span id="L1557"><span class="lineNum">    1557</span> <span class="tlaGNC">           1 :             });</span></span>
+<span id="L1455"><span class="lineNum">    1455</span> <span class="tlaGNC">           1 :     for (auto inst : instsToRemove)</span></span>
+<span id="L1456"><span class="lineNum">    1456</span>              :     {</span>
+<span id="L1457"><span class="lineNum">    1457</span> <span class="tlaGNC">           1 :         if (as&lt;IRParam, IRDynamicCastBehavior::NoUnwrap&gt;(inst))</span></span>
+<span id="L1458"><span class="lineNum">    1458</span> <span class="tlaUNC">           0 :             removePhiArgs(inst);</span></span>
+<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">           1 :         inst-&gt;removeAndDeallocate();</span></span>
+<span id="L1460"><span class="lineNum">    1460</span>              :     }</span>
+<span id="L1461"><span class="lineNum">    1461</span>              : </span>
+<span id="L1462"><span class="lineNum">    1462</span>              :     // Erase all primal blocks (except for the param &amp; prelude blocks).</span>
+<span id="L1463"><span class="lineNum">    1463</span>              :     // TODO: Lots of ways to clean this up.</span>
+<span id="L1464"><span class="lineNum">    1464</span>              :     //</span>
+<span id="L1465"><span class="lineNum">    1465</span> <span class="tlaGNC">           1 :     List&lt;IRBlock*&gt; blocksToRemove;</span></span>
+<span id="L1466"><span class="lineNum">    1466</span> <span class="tlaGNC">           1 :     for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L1467"><span class="lineNum">    1467</span>              :     {</span>
+<span id="L1468"><span class="lineNum">    1468</span> <span class="tlaGNC">           1 :         if (!block-&gt;findDecoration&lt;IRRecomputeBlockDecoration&gt;() &amp;&amp;</span></span>
+<span id="L1469"><span class="lineNum">    1469</span>              :             !block-&gt;findDecoration&lt;IRDifferentialInstDecoration&gt;())</span>
+<span id="L1470"><span class="lineNum">    1470</span> <span class="tlaGNC">           1 :             blocksToRemove.add(block);</span></span>
+<span id="L1471"><span class="lineNum">    1471</span>              :     }</span>
+<span id="L1472"><span class="lineNum">    1472</span>              : </span>
+<span id="L1473"><span class="lineNum">    1473</span>              :     // Before erasing the blocks, go through and &#x27;re-hoist&#x27; any hoistable instructions (such as</span>
+<span id="L1474"><span class="lineNum">    1474</span>              :     // types) Any remaining valid instructions should be automatically moved to the recompute</span>
+<span id="L1475"><span class="lineNum">    1475</span>              :     // blocks. The rest can be removed.</span>
+<span id="L1476"><span class="lineNum">    1476</span>              :     //</span>
+<span id="L1477"><span class="lineNum">    1477</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; instsToReHoist;</span></span>
+<span id="L1478"><span class="lineNum">    1478</span> <span class="tlaGNC">           1 :     for (auto block : blocksToRemove)</span></span>
+<span id="L1479"><span class="lineNum">    1479</span> <span class="tlaGNC">           1 :         for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L1480"><span class="lineNum">    1480</span> <span class="tlaGNC">           1 :             if (getIROpInfo(inst-&gt;getOp()).flags &amp; kIROpFlag_Hoistable)</span></span>
+<span id="L1481"><span class="lineNum">    1481</span> <span class="tlaGNC">           1 :                 instsToReHoist.add(inst);</span></span>
+<span id="L1482"><span class="lineNum">    1482</span>              : </span>
+<span id="L1483"><span class="lineNum">    1483</span> <span class="tlaGNC">           1 :     for (auto inst : instsToReHoist)</span></span>
+<span id="L1484"><span class="lineNum">    1484</span>              :     {</span>
+<span id="L1485"><span class="lineNum">    1485</span> <span class="tlaGNC">           1 :         inst-&gt;removeFromParent();</span></span>
+<span id="L1486"><span class="lineNum">    1486</span> <span class="tlaGNC">           1 :         addHoistableInst(&amp;builder, inst);</span></span>
+<span id="L1487"><span class="lineNum">    1487</span>              :     }</span>
+<span id="L1488"><span class="lineNum">    1488</span>              : </span>
+<span id="L1489"><span class="lineNum">    1489</span> <span class="tlaGNC">           1 :     for (auto block : blocksToRemove)</span></span>
+<span id="L1490"><span class="lineNum">    1490</span> <span class="tlaGNC">           1 :         block-&gt;removeAndDeallocate();</span></span>
+<span id="L1491"><span class="lineNum">    1491</span>              : </span>
+<span id="L1492"><span class="lineNum">    1492</span>              :     // Helper lambda: convert a struct type to a tuple type, rewriting</span>
+<span id="L1493"><span class="lineNum">    1493</span>              :     // FieldAddress -&gt; GetElementPtr and FieldExtract -&gt; GetTupleElement.</span>
+<span id="L1494"><span class="lineNum">    1494</span>              :     //</span>
+<span id="L1495"><span class="lineNum">    1495</span> <span class="tlaGNC">           1 :     auto convertStructToNamedTuple = [&amp;](IRStructType* structType,</span></span>
+<span id="L1496"><span class="lineNum">    1496</span>              :                                          UnownedStringSlice nameSuffix,</span>
+<span id="L1497"><span class="lineNum">    1497</span>              :                                          bool isParameterContext = false) -&gt; IRInst*</span>
+<span id="L1498"><span class="lineNum">    1498</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1499"><span class="lineNum">    1499</span> <span class="tlaGNC">           1 :         List&lt;IRType*&gt; fieldTypes;</span></span>
+<span id="L1500"><span class="lineNum">    1500</span> <span class="tlaGNC">           1 :         Dictionary&lt;IRInst*, UInt&gt; keyToIndex;</span></span>
+<span id="L1501"><span class="lineNum">    1501</span> <span class="tlaGNC">           1 :         for (auto field : structType-&gt;getFields())</span></span>
+<span id="L1502"><span class="lineNum">    1502</span>              :         {</span>
+<span id="L1503"><span class="lineNum">    1503</span> <span class="tlaGNC">           1 :             keyToIndex[field-&gt;getKey()] = (UInt)fieldTypes.getCount();</span></span>
+<span id="L1504"><span class="lineNum">    1504</span> <span class="tlaGNC">           1 :             fieldTypes.add(field-&gt;getFieldType());</span></span>
+<span id="L1505"><span class="lineNum">    1505</span>              :         }</span>
+<span id="L1506"><span class="lineNum">    1506</span>              : </span>
+<span id="L1507"><span class="lineNum">    1507</span> <span class="tlaGNC">           1 :         auto tupleNameType = builder.getTupleNameType(builder.getStringValue(nameSuffix));</span></span>
+<span id="L1508"><span class="lineNum">    1508</span> <span class="tlaGNC">           1 :         builder.addDecoration(tupleNameType, kIROp_OptimizableTypeDecoration);</span></span>
+<span id="L1509"><span class="lineNum">    1509</span> <span class="tlaGNC">           1 :         if (isParameterContext)</span></span>
+<span id="L1510"><span class="lineNum">    1510</span> <span class="tlaGNC">           1 :             builder.addDecoration(tupleNameType, kIROp_AutodiffParameterContextTypeDecoration);</span></span>
+<span id="L1511"><span class="lineNum">    1511</span> <span class="tlaGNC">           1 :         fieldTypes.add((IRType*)tupleNameType);</span></span>
+<span id="L1512"><span class="lineNum">    1512</span>              : </span>
+<span id="L1513"><span class="lineNum">    1513</span> <span class="tlaGNC">           1 :         auto tupleType = builder.getTupleType(fieldTypes);</span></span>
+<span id="L1514"><span class="lineNum">    1514</span>              : </span>
+<span id="L1515"><span class="lineNum">    1515</span> <span class="tlaGNC">           1 :         for (auto&amp; [key, index] : keyToIndex)</span></span>
+<span id="L1516"><span class="lineNum">    1516</span>              :         {</span>
+<span id="L1517"><span class="lineNum">    1517</span> <span class="tlaGNC">           1 :             List&lt;IRUse*&gt; usesToProcess;</span></span>
+<span id="L1518"><span class="lineNum">    1518</span> <span class="tlaGNC">           1 :             for (auto use = key-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L1519"><span class="lineNum">    1519</span> <span class="tlaGNC">           1 :                 usesToProcess.add(use);</span></span>
+<span id="L1520"><span class="lineNum">    1520</span>              : </span>
+<span id="L1521"><span class="lineNum">    1521</span> <span class="tlaGNC">           1 :             for (auto use : usesToProcess)</span></span>
+<span id="L1522"><span class="lineNum">    1522</span>              :             {</span>
+<span id="L1523"><span class="lineNum">    1523</span> <span class="tlaGNC">           1 :                 auto user = use-&gt;getUser();</span></span>
+<span id="L1524"><span class="lineNum">    1524</span> <span class="tlaGNC">           1 :                 if (auto fieldAddr = as&lt;IRFieldAddress&gt;(user))</span></span>
+<span id="L1525"><span class="lineNum">    1525</span>              :                 {</span>
+<span id="L1526"><span class="lineNum">    1526</span> <span class="tlaGNC">           1 :                     builder.setInsertBefore(fieldAddr);</span></span>
+<span id="L1527"><span class="lineNum">    1527</span> <span class="tlaGNC">           1 :                     auto newInst = builder.emitGetElementPtr(</span></span>
+<span id="L1528"><span class="lineNum">    1528</span>              :                         fieldAddr-&gt;getFullType(),</span>
+<span id="L1529"><span class="lineNum">    1529</span>              :                         fieldAddr-&gt;getBase(),</span>
+<span id="L1530"><span class="lineNum">    1530</span>              :                         (IRIntegerValue)index);</span>
+<span id="L1531"><span class="lineNum">    1531</span>              :                     fieldAddr-&gt;replaceUsesWith(newInst);</span>
+<span id="L1532"><span class="lineNum">    1532</span>              :                     fieldAddr-&gt;removeAndDeallocate();</span>
+<span id="L1533"><span class="lineNum">    1533</span> <span class="tlaGNC">           1 :                 }</span></span>
+<span id="L1534"><span class="lineNum">    1534</span> <span class="tlaGNC">           1 :                 else if (auto fieldExtract = as&lt;IRFieldExtract&gt;(user))</span></span>
+<span id="L1535"><span class="lineNum">    1535</span>              :                 {</span>
+<span id="L1536"><span class="lineNum">    1536</span> <span class="tlaGNC">           1 :                     builder.setInsertBefore(fieldExtract);</span></span>
+<span id="L1537"><span class="lineNum">    1537</span> <span class="tlaGNC">           1 :                     auto newInst = builder.emitGetTupleElement(</span></span>
+<span id="L1538"><span class="lineNum">    1538</span>              :                         fieldExtract-&gt;getFullType(),</span>
+<span id="L1539"><span class="lineNum">    1539</span>              :                         fieldExtract-&gt;getBase(),</span>
+<span id="L1540"><span class="lineNum">    1540</span>              :                         (UInt)index);</span>
+<span id="L1541"><span class="lineNum">    1541</span>              :                     fieldExtract-&gt;replaceUsesWith(newInst);</span>
+<span id="L1542"><span class="lineNum">    1542</span>              :                     fieldExtract-&gt;removeAndDeallocate();</span>
+<span id="L1543"><span class="lineNum">    1543</span>              :                 }</span>
+<span id="L1544"><span class="lineNum">    1544</span>              :             }</span>
+<span id="L1545"><span class="lineNum">    1545</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L1546"><span class="lineNum">    1546</span>              : </span>
+<span id="L1547"><span class="lineNum">    1547</span> <span class="tlaGNC">           1 :         traverseUsers&lt;IRMakeStruct&gt;(</span></span>
+<span id="L1548"><span class="lineNum">    1548</span>              :             structType,</span>
+<span id="L1549"><span class="lineNum">    1549</span>              :             [&amp;](IRMakeStruct* makeStruct)</span>
+<span id="L1550"><span class="lineNum">    1550</span> <span class="tlaGNC">           1 :             {</span></span>
+<span id="L1551"><span class="lineNum">    1551</span> <span class="tlaGNC">           1 :                 builder.setInsertBefore(makeStruct);</span></span>
+<span id="L1552"><span class="lineNum">    1552</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; newOperands;</span></span>
+<span id="L1553"><span class="lineNum">    1553</span> <span class="tlaGNC">           1 :                 for (UIndex i = 0; i &lt; makeStruct-&gt;getOperandCount(); i++)</span></span>
+<span id="L1554"><span class="lineNum">    1554</span>              :                 {</span>
+<span id="L1555"><span class="lineNum">    1555</span> <span class="tlaGNC">           1 :                     auto operand = makeStruct-&gt;getOperand(i);</span></span>
+<span id="L1556"><span class="lineNum">    1556</span> <span class="tlaGNC">           1 :                     newOperands.add(operand);</span></span>
+<span id="L1557"><span class="lineNum">    1557</span>              :                 }</span>
 <span id="L1558"><span class="lineNum">    1558</span>              : </span>
-<span id="L1559"><span class="lineNum">    1559</span> <span class="tlaGNC">           1 :         structType-&gt;replaceUsesWith(tupleType);</span></span>
-<span id="L1560"><span class="lineNum">    1560</span> <span class="tlaGNC">           1 :         structType-&gt;removeAndDeallocate();</span></span>
-<span id="L1561"><span class="lineNum">    1561</span> <span class="tlaGNC">           1 :         return tupleType;</span></span>
-<span id="L1562"><span class="lineNum">    1562</span> <span class="tlaGNC">           1 :     };</span></span>
-<span id="L1563"><span class="lineNum">    1563</span>              : </span>
-<span id="L1564"><span class="lineNum">    1564</span> <span class="tlaGNC">           1 :     String minTypeName = String(&quot;s_minCtx_&quot;) + intermediateTypeName;</span></span>
-<span id="L1565"><span class="lineNum">    1565</span> <span class="tlaGNC">           1 :     minimalContextType = convertStructToNamedTuple(</span></span>
-<span id="L1566"><span class="lineNum">    1566</span>              :         cast&lt;IRStructType&gt;(minimalContextType),</span>
-<span id="L1567"><span class="lineNum">    1567</span>              :         minTypeName.getUnownedSlice());</span>
-<span id="L1568"><span class="lineNum">    1568</span>              : </span>
-<span id="L1569"><span class="lineNum">    1569</span> <span class="tlaGNC">           1 :     String paramTypeName = String(&quot;s_paramCtx_&quot;) + intermediateTypeName;</span></span>
-<span id="L1570"><span class="lineNum">    1570</span> <span class="tlaGNC">           1 :     paramsContextType = convertStructToNamedTuple(</span></span>
-<span id="L1571"><span class="lineNum">    1571</span>              :         cast&lt;IRStructType&gt;(paramsContextType),</span>
-<span id="L1572"><span class="lineNum">    1572</span>              :         paramTypeName.getUnownedSlice(),</span>
-<span id="L1573"><span class="lineNum">    1573</span>              :         true);</span>
-<span id="L1574"><span class="lineNum">    1574</span>              : </span>
-<span id="L1575"><span class="lineNum">    1575</span> <span class="tlaGNC">           1 :     fullContextType =</span></span>
-<span id="L1576"><span class="lineNum">    1576</span>              :         convertStructToNamedTuple(cast&lt;IRStructType&gt;(fullContextType), intermediateTypeName);</span>
-<span id="L1577"><span class="lineNum">    1577</span>              : </span>
-<span id="L1578"><span class="lineNum">    1578</span> <span class="tlaGNC">           1 :     return primalFunc;</span></span>
-<span id="L1579"><span class="lineNum">    1579</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1580"><span class="lineNum">    1580</span>              : } // namespace Slang</span>
+<span id="L1559"><span class="lineNum">    1559</span> <span class="tlaGNC">           1 :                 newOperands.add(</span></span>
+<span id="L1560"><span class="lineNum">    1560</span>              :                     builder.getPoison(tupleNameType)); // For the tuple name type operand.</span>
+<span id="L1561"><span class="lineNum">    1561</span> <span class="tlaGNC">           1 :                 auto newMakeTuple = builder.emitMakeTuple(newOperands);</span></span>
+<span id="L1562"><span class="lineNum">    1562</span> <span class="tlaGNC">           1 :                 makeStruct-&gt;replaceUsesWith(newMakeTuple);</span></span>
+<span id="L1563"><span class="lineNum">    1563</span> <span class="tlaGNC">           1 :                 makeStruct-&gt;removeAndDeallocate();</span></span>
+<span id="L1564"><span class="lineNum">    1564</span> <span class="tlaGNC">           1 :             });</span></span>
+<span id="L1565"><span class="lineNum">    1565</span>              : </span>
+<span id="L1566"><span class="lineNum">    1566</span> <span class="tlaGNC">           1 :         structType-&gt;replaceUsesWith(tupleType);</span></span>
+<span id="L1567"><span class="lineNum">    1567</span> <span class="tlaGNC">           1 :         structType-&gt;removeAndDeallocate();</span></span>
+<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">           1 :         return tupleType;</span></span>
+<span id="L1569"><span class="lineNum">    1569</span> <span class="tlaGNC">           1 :     };</span></span>
+<span id="L1570"><span class="lineNum">    1570</span>              : </span>
+<span id="L1571"><span class="lineNum">    1571</span> <span class="tlaGNC">           1 :     String minTypeName = String(&quot;s_minCtx_&quot;) + intermediateTypeName;</span></span>
+<span id="L1572"><span class="lineNum">    1572</span> <span class="tlaGNC">           1 :     minimalContextType = convertStructToNamedTuple(</span></span>
+<span id="L1573"><span class="lineNum">    1573</span>              :         cast&lt;IRStructType&gt;(minimalContextType),</span>
+<span id="L1574"><span class="lineNum">    1574</span>              :         minTypeName.getUnownedSlice());</span>
+<span id="L1575"><span class="lineNum">    1575</span>              : </span>
+<span id="L1576"><span class="lineNum">    1576</span> <span class="tlaGNC">           1 :     String paramTypeName = String(&quot;s_paramCtx_&quot;) + intermediateTypeName;</span></span>
+<span id="L1577"><span class="lineNum">    1577</span> <span class="tlaGNC">           1 :     paramsContextType = convertStructToNamedTuple(</span></span>
+<span id="L1578"><span class="lineNum">    1578</span>              :         cast&lt;IRStructType&gt;(paramsContextType),</span>
+<span id="L1579"><span class="lineNum">    1579</span>              :         paramTypeName.getUnownedSlice(),</span>
+<span id="L1580"><span class="lineNum">    1580</span>              :         true);</span>
+<span id="L1581"><span class="lineNum">    1581</span>              : </span>
+<span id="L1582"><span class="lineNum">    1582</span> <span class="tlaGNC">           1 :     fullContextType =</span></span>
+<span id="L1583"><span class="lineNum">    1583</span>              :         convertStructToNamedTuple(cast&lt;IRStructType&gt;(fullContextType), intermediateTypeName);</span>
+<span id="L1584"><span class="lineNum">    1584</span>              : </span>
+<span id="L1585"><span class="lineNum">    1585</span> <span class="tlaGNC">           1 :     return primalFunc;</span></span>
+<span id="L1586"><span class="lineNum">    1586</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1587"><span class="lineNum">    1587</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

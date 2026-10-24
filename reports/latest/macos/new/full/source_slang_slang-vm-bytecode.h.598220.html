@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-23 04:33:16 UTC</td>
+      <td class="headerValue">2026-10-24 05:12:26 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -408,8 +408,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L117"><span class="lineNum">     117</span>                         :     uint32_t type : 8; // type of the operand data.</span>
 <span id="L118"><span class="lineNum">     118</span>                         :     uint32_t size : 24;</span>
 <span id="L119"><span class="lineNum">     119</span>                         :     uint32_t offset;</span>
-<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">          71            :     slang::OperandDataType getType() const { return slang::OperandDataType(type); }</span></span>
-<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">       11020            :     void setType(slang::OperandDataType newType) { type = uint32_t(newType); }</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">          62            :     slang::OperandDataType getType() const { return slang::OperandDataType(type); }</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">       11018            :     void setType(slang::OperandDataType newType) { type = uint32_t(newType); }</span></span>
 <span id="L122"><span class="lineNum">     122</span>                         : };</span>
 <span id="L123"><span class="lineNum">     123</span>                         : </span>
 <span id="L124"><span class="lineNum">     124</span>                         : struct VMInstHeader</span>
@@ -419,7 +419,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L128"><span class="lineNum">     128</span>                         :                       // the opcode.</span>
 <span id="L129"><span class="lineNum">     129</span>                         :     uint32_t opcodeExtension;</span>
 <span id="L130"><span class="lineNum">     130</span>                         :     uint32_t operandCount;</span>
-<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       25738            :     VMOperand&amp; getOperand(Index index) const { return *((VMOperand*)(this + 1) + index); }</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       25554            :     VMOperand&amp; getOperand(Index index) const { return *((VMOperand*)(this + 1) + index); }</span></span>
 <span id="L132"><span class="lineNum">     132</span>                         : };</span>
 <span id="L133"><span class="lineNum">     133</span>                         : </span>
 <span id="L134"><span class="lineNum">     134</span>                         : struct VMFuncHeader</span>
@@ -452,24 +452,24 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L161"><span class="lineNum">     161</span>                         :     uint8_t* codePtr; // Pointer to the current instruction.</span>
 <span id="L162"><span class="lineNum">     162</span>                         : </span>
 <span id="L163"><span class="lineNum">     163</span>                         :     void moveNext()</span>
-<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       12712            :     {</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       12646            :     {</span></span>
 <span id="L165"><span class="lineNum">     165</span>                         :         // Read the instruction header</span>
-<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">       12712            :         TInstHeader header;</span></span>
-<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       12712            :         memcpy(&amp;header, codePtr, sizeof(header));</span></span>
-<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       12712            :         codePtr += sizeof(header);</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">       12646            :         TInstHeader header;</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       12646            :         memcpy(&amp;header, codePtr, sizeof(header));</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       12646            :         codePtr += sizeof(header);</span></span>
 <span id="L169"><span class="lineNum">     169</span>                         : </span>
 <span id="L170"><span class="lineNum">     170</span>                         :         // Calculate the size of operand list.</span>
-<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       12712            :         auto operandListSize = header.operandCount * sizeof(TOperand);</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       12646            :         auto operandListSize = header.operandCount * sizeof(TOperand);</span></span>
 <span id="L172"><span class="lineNum">     172</span>                         : </span>
 <span id="L173"><span class="lineNum">     173</span>                         :         // Advance the code pointer by the size of the header and operand list.</span>
-<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       12712            :         codePtr += operandListSize;</span></span>
-<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       12712            :     }</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       12646            :         codePtr += operandListSize;</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       12646            :     }</span></span>
 <span id="L176"><span class="lineNum">     176</span>                         : </span>
 <span id="L177"><span class="lineNum">     177</span>                         :     VMInstIterator&amp; operator++()</span>
-<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       12712            :     {</span></span>
-<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       12712            :         moveNext();</span></span>
-<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       12712            :         return *this;</span></span>
-<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       12712            :     }</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       12646            :     {</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       12646            :         moveNext();</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       12646            :         return *this;</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       12646            :     }</span></span>
 <span id="L182"><span class="lineNum">     182</span>                         :     VMInstIterator operator++(int)</span>
 <span id="L183"><span class="lineNum">     183</span>                         :     {</span>
 <span id="L184"><span class="lineNum">     184</span>                         :         VMInstIterator rs = *this;</span>
@@ -477,9 +477,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L186"><span class="lineNum">     186</span>                         :         return rs;</span>
 <span id="L187"><span class="lineNum">     187</span>                         :     }</span>
 <span id="L188"><span class="lineNum">     188</span>                         : </span>
-<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">       15293            :     bool operator!=(const VMInstIterator&amp; iter) const { return codePtr != iter.codePtr; }</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">       15227            :     bool operator!=(const VMInstIterator&amp; iter) const { return codePtr != iter.codePtr; }</span></span>
 <span id="L190"><span class="lineNum">     190</span>                         :     bool operator==(const VMInstIterator&amp; iter) const { return codePtr == iter.codePtr; }</span>
-<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">       12714            :     TInstHeader* operator*() const { return reinterpret_cast&lt;TInstHeader*&gt;(codePtr); }</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">       12648            :     TInstHeader* operator*() const { return reinterpret_cast&lt;TInstHeader*&gt;(codePtr); }</span></span>
 <span id="L192"><span class="lineNum">     192</span>                         : };</span>
 <span id="L193"><span class="lineNum">     193</span>                         : </span>
 <span id="L194"><span class="lineNum">     194</span>                         : struct VMModuleView;</span>
@@ -526,18 +526,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L235"><span class="lineNum">     235</span>                         : </span>
 <span id="L236"><span class="lineNum">     236</span>                         :     template&lt;typename T&gt;</span>
 <span id="L237"><span class="lineNum">     237</span>                         :     SlangResult getConstant(VMOperand operand, T&amp; outValue) const</span>
-<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">          40            :     {</span></span>
-<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">          40 <span class="branchPart" title="br0: 0; br1: 40">(1/2)</span>      :         if (operand.sectionId != kSlangByteCodeSectionConstants)</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">          39            :     {</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">          39 <span class="branchPart" title="br0: 0; br1: 39">(1/2)</span>      :         if (operand.sectionId != kSlangByteCodeSectionConstants)</span></span>
 <span id="L240"><span class="lineNum">     240</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L241"><span class="lineNum">     241</span> <span class="tlaUNC">           0            :             return SLANG_FAIL; // Invalid section</span></span>
 <span id="L242"><span class="lineNum">     242</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">          40 <span class="branchPart" title="br0: 0; br1: 40">(1/2)</span>      :         if (operand.offset + sizeof(T) &gt; constantBlobSize)</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">          39 <span class="branchPart" title="br0: 0; br1: 39">(1/2)</span>      :         if (operand.offset + sizeof(T) &gt; constantBlobSize)</span></span>
 <span id="L244"><span class="lineNum">     244</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L245"><span class="lineNum">     245</span> <span class="tlaUNC">           0            :             return SLANG_FAIL; // Out of bounds</span></span>
 <span id="L246"><span class="lineNum">     246</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">          40            :         memcpy(&amp;outValue, constants + operand.offset, sizeof(T));</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">          39            :         memcpy(&amp;outValue, constants + operand.offset, sizeof(T));</span></span>
 <span id="L248"><span class="lineNum">     248</span>                         :         return SLANG_OK;</span>
-<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">          40            :     }</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">          39            :     }</span></span>
 <span id="L250"><span class="lineNum">     250</span>                         : };</span>
 <span id="L251"><span class="lineNum">     251</span>                         : </span>
 <span id="L252"><span class="lineNum">     252</span>                         : SlangResult initVMModule(</span>
