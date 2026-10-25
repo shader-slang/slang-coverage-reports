@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-24 05:12:16 UTC</td>
+      <td class="headerValue">2026-10-25 03:54:46 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -1376,12 +1376,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1085"><span class="lineNum">    1085</span>                         : </span>
 <span id="L1086"><span class="lineNum">    1086</span>                         :     // The first associated artifact of kind ObjectCode and SPIRV payload should be the debug</span>
 <span id="L1087"><span class="lineNum">    1087</span>                         :     // artifact.</span>
-<span id="L1088"><span class="lineNum">    1088</span> <span class="tlaGNC">        9972 <span class="branchAll" title="br0: 10930; br1: 9878">(2/2)</span>      :     for (auto* associated : artifact-&gt;getAssociated())</span></span>
-<span id="L1089"><span class="lineNum">    1089</span> <span class="tlaGNC">       10930            :     {</span></span>
-<span id="L1090"><span class="lineNum">    1090</span> <span class="tlaGNC">       10930            :         auto desc = associated-&gt;getDesc();</span></span>
-<span id="L1091"><span class="lineNum">    1091</span> <span class="tlaGNC">       10930 <span class="branchPart" title="br0: 94; br1: 10836; br2: 94; br3: 0">(3/4)</span>      :         if (desc.kind == ArtifactKind::ObjectCode &amp;&amp; desc.payload == ArtifactPayload::SPIRV)</span></span>
+<span id="L1088"><span class="lineNum">    1088</span> <span class="tlaGNC">        9972 <span class="branchAll" title="br0: 10932; br1: 9878">(2/2)</span>      :     for (auto* associated : artifact-&gt;getAssociated())</span></span>
+<span id="L1089"><span class="lineNum">    1089</span> <span class="tlaGNC">       10932            :     {</span></span>
+<span id="L1090"><span class="lineNum">    1090</span> <span class="tlaGNC">       10932            :         auto desc = associated-&gt;getDesc();</span></span>
+<span id="L1091"><span class="lineNum">    1091</span> <span class="tlaGNC">       10932 <span class="branchPart" title="br0: 94; br1: 10838; br2: 94; br3: 0">(3/4)</span>      :         if (desc.kind == ArtifactKind::ObjectCode &amp;&amp; desc.payload == ArtifactPayload::SPIRV)</span></span>
 <span id="L1092"><span class="lineNum">    1092</span> <span class="tlaGNC">          94            :             return associated;</span></span>
-<span id="L1093"><span class="lineNum">    1093</span> <span class="tlaGNC">       10930            :     }</span></span>
+<span id="L1093"><span class="lineNum">    1093</span> <span class="tlaGNC">       10932            :     }</span></span>
 <span id="L1094"><span class="lineNum">    1094</span>                         : </span>
 <span id="L1095"><span class="lineNum">    1095</span> <span class="tlaGNC">        9878            :     return nullptr;</span></span>
 <span id="L1096"><span class="lineNum">    1096</span> <span class="tlaGNC">        9972            : }</span></span>
@@ -1419,25 +1419,25 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1128"><span class="lineNum">    1128</span> <span class="tlaGNC">        2468            :             auto debugArtifact = getSeparateDbgArtifact(intermediateArtifact);</span></span>
 <span id="L1129"><span class="lineNum">    1129</span> <span class="tlaGNC">        2468            :             auto coverageMetadata =</span></span>
 <span id="L1130"><span class="lineNum">    1130</span> <span class="tlaGNC">        2468            :                 findAssociatedRepresentation&lt;slang::ICoverageTracingMetadata&gt;(intermediateArtifact);</span></span>
-<span id="L1131"><span class="lineNum">    1131</span> <span class="tlaGNC">        2468 <span class="branchAll" title="br0: 17; br1: 2451; br2: 2438; br3: 13">(4/4)</span>      :             if (debugArtifact || coverageMetadata)</span></span>
-<span id="L1132"><span class="lineNum">    1132</span> <span class="tlaGNC">        2443            :             {</span></span>
+<span id="L1131"><span class="lineNum">    1131</span> <span class="tlaGNC">        2468 <span class="branchAll" title="br0: 16; br1: 2452; br2: 2439; br3: 13">(4/4)</span>      :             if (debugArtifact || coverageMetadata)</span></span>
+<span id="L1132"><span class="lineNum">    1132</span> <span class="tlaGNC">        2445            :             {</span></span>
 <span id="L1133"><span class="lineNum">    1133</span>                         :                 // Preserve metadata sidecars when disassembly output still needs</span>
 <span id="L1134"><span class="lineNum">    1134</span>                         :                 // them: separate debug info historically used this association,</span>
 <span id="L1135"><span class="lineNum">    1135</span>                         :                 // and coverage manifests need the coverage metadata on the</span>
 <span id="L1136"><span class="lineNum">    1136</span>                         :                 // final disassembly artifact. Keep separate-debug-only behavior</span>
 <span id="L1137"><span class="lineNum">    1137</span>                         :                 // to the historical first metadata artifact; copy all metadata</span>
 <span id="L1138"><span class="lineNum">    1138</span>                         :                 // only when coverage needs the coverage-specific association.</span>
-<span id="L1139"><span class="lineNum">    1139</span> <span class="tlaGNC">        2443 <span class="branchAll" title="br0: 3034; br1: 2443">(2/2)</span>      :                 for (auto associated : intermediateArtifact-&gt;getAssociated())</span></span>
-<span id="L1140"><span class="lineNum">    1140</span> <span class="tlaGNC">        3034            :                 {</span></span>
-<span id="L1141"><span class="lineNum">    1141</span> <span class="tlaGNC">        3034 <span class="branchAll" title="br0: 4294967295; br1: 3035; br2: 2445; br3: 589">(4/4)</span>      :                     if (associated-&gt;getDesc().payload == ArtifactPayload::Metadata ||</span></span>
-<span id="L1142"><span class="lineNum">    1142</span> <span class="tlaGNC">        3035 <span class="branchAll" title="br0: 2443; br1: 592">(2/2)</span>      :                         associated-&gt;getDesc().payload == ArtifactPayload::PostEmitMetadata)</span></span>
-<span id="L1143"><span class="lineNum">    1143</span> <span class="tlaGNC">        2445            :                     {</span></span>
-<span id="L1144"><span class="lineNum">    1144</span> <span class="tlaGNC">        2445            :                         disassemblyArtifact-&gt;addAssociated(associated);</span></span>
-<span id="L1145"><span class="lineNum">    1145</span> <span class="tlaGNC">        2445 <span class="branchPart" title="br0: 0; br1: 2445">(1/2)</span>      :                         if (!coverageMetadata)</span></span>
+<span id="L1139"><span class="lineNum">    1139</span> <span class="tlaGNC">        2445 <span class="branchAll" title="br0: 3037; br1: 2445">(2/2)</span>      :                 for (auto associated : intermediateArtifact-&gt;getAssociated())</span></span>
+<span id="L1140"><span class="lineNum">    1140</span> <span class="tlaGNC">        3037            :                 {</span></span>
+<span id="L1141"><span class="lineNum">    1141</span> <span class="tlaGNC">        3037 <span class="branchAll" title="br0: 1; br1: 3036; br2: 2444; br3: 593">(4/4)</span>      :                     if (associated-&gt;getDesc().payload == ArtifactPayload::Metadata ||</span></span>
+<span id="L1142"><span class="lineNum">    1142</span> <span class="tlaGNC">        3037 <span class="branchAll" title="br0: 2444; br1: 592">(2/2)</span>      :                         associated-&gt;getDesc().payload == ArtifactPayload::PostEmitMetadata)</span></span>
+<span id="L1143"><span class="lineNum">    1143</span> <span class="tlaGNC">        2444            :                     {</span></span>
+<span id="L1144"><span class="lineNum">    1144</span> <span class="tlaGNC">        2444            :                         disassemblyArtifact-&gt;addAssociated(associated);</span></span>
+<span id="L1145"><span class="lineNum">    1145</span> <span class="tlaGNC">        2444 <span class="branchPart" title="br0: 0; br1: 2444">(1/2)</span>      :                         if (!coverageMetadata)</span></span>
 <span id="L1146"><span class="lineNum">    1146</span> <span class="tlaUNC">           0            :                             break;</span></span>
-<span id="L1147"><span class="lineNum">    1147</span> <span class="tlaGNC">        2445            :                     }</span></span>
-<span id="L1148"><span class="lineNum">    1148</span> <span class="tlaGNC">        3034            :                 }</span></span>
-<span id="L1149"><span class="lineNum">    1149</span> <span class="tlaGNC">        2443            :             }</span></span>
+<span id="L1147"><span class="lineNum">    1147</span> <span class="tlaGNC">        2444            :                     }</span></span>
+<span id="L1148"><span class="lineNum">    1148</span> <span class="tlaGNC">        3037            :                 }</span></span>
+<span id="L1149"><span class="lineNum">    1149</span> <span class="tlaGNC">        2445            :             }</span></span>
 <span id="L1150"><span class="lineNum">    1150</span>                         : </span>
 <span id="L1151"><span class="lineNum">    1151</span>                         :             // Also disassemble the debug artifact if one exists.</span>
 <span id="L1152"><span class="lineNum">    1152</span> <span class="tlaGNC">        2468            :             ComPtr&lt;IArtifact&gt; disassemblyDebugArtifact;</span></span>
@@ -1658,12 +1658,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1367"><span class="lineNum">    1367</span>                         : </span>
 <span id="L1368"><span class="lineNum">    1368</span>                         : void CodeGenContext::maybeDumpIntermediate(IArtifact* artifact)</span>
 <span id="L1369"><span class="lineNum">    1369</span> <span class="tlaGNC">       20073            : {</span></span>
-<span id="L1370"><span class="lineNum">    1370</span> <span class="tlaGNC">       20073 <span class="branchAll" title="br0: 20071; br1: 2">(2/2)</span>      :     if (!shouldDumpIntermediates())</span></span>
-<span id="L1371"><span class="lineNum">    1371</span> <span class="tlaGNC">       20071            :         return;</span></span>
+<span id="L1370"><span class="lineNum">    1370</span> <span class="tlaGNC">       20073 <span class="branchAll" title="br0: 20074; br1: 4294967295">(2/2)</span>      :     if (!shouldDumpIntermediates())</span></span>
+<span id="L1371"><span class="lineNum">    1371</span> <span class="tlaGNC">       20074            :         return;</span></span>
 <span id="L1372"><span class="lineNum">    1372</span>                         : </span>
 <span id="L1373"><span class="lineNum">    1373</span>                         : </span>
-<span id="L1374"><span class="lineNum">    1374</span> <span class="tlaGNC">           2            :     _dumpIntermediateMaybeWithAssembly(artifact);</span></span>
-<span id="L1375"><span class="lineNum">    1375</span> <span class="tlaGNC">           2            : }</span></span>
+<span id="L1374"><span class="lineNum">    1374</span> <span class="tlaGNC">18446744073709551615            :     _dumpIntermediateMaybeWithAssembly(artifact);</span></span>
+<span id="L1375"><span class="lineNum">    1375</span> <span class="tlaGNC">18446744073709551615            : }</span></span>
 <span id="L1376"><span class="lineNum">    1376</span>                         : </span>
 <span id="L1377"><span class="lineNum">    1377</span>                         : IRDumpOptions CodeGenContext::getIRDumpOptions()</span>
 <span id="L1378"><span class="lineNum">    1378</span> <span class="tlaGNC">       77293            : {</span></span>
@@ -1675,9 +1675,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1384"><span class="lineNum">    1384</span> <span class="tlaGNC">       77293            : }</span></span>
 <span id="L1385"><span class="lineNum">    1385</span>                         : </span>
 <span id="L1386"><span class="lineNum">    1386</span>                         : bool CodeGenContext::shouldValidateIR()</span>
-<span id="L1387"><span class="lineNum">    1387</span> <span class="tlaGNC">      321820            : {</span></span>
-<span id="L1388"><span class="lineNum">    1388</span> <span class="tlaGNC">      321820            :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(CompilerOptionName::ValidateIr);</span></span>
-<span id="L1389"><span class="lineNum">    1389</span> <span class="tlaGNC">      321820            : }</span></span>
+<span id="L1387"><span class="lineNum">    1387</span> <span class="tlaGNC">      321823            : {</span></span>
+<span id="L1388"><span class="lineNum">    1388</span> <span class="tlaGNC">      321823            :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(CompilerOptionName::ValidateIr);</span></span>
+<span id="L1389"><span class="lineNum">    1389</span> <span class="tlaGNC">      321823            : }</span></span>
 <span id="L1390"><span class="lineNum">    1390</span>                         : </span>
 <span id="L1391"><span class="lineNum">    1391</span>                         : bool CodeGenContext::shouldSkipSPIRVValidation()</span>
 <span id="L1392"><span class="lineNum">    1392</span> <span class="tlaUNC">           0            : {</span></span>
@@ -1691,10 +1691,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1400"><span class="lineNum">    1400</span> <span class="tlaUNC">           0            : }</span></span>
 <span id="L1401"><span class="lineNum">    1401</span>                         : </span>
 <span id="L1402"><span class="lineNum">    1402</span>                         : bool CodeGenContext::shouldSkipDownstreamLinking()</span>
-<span id="L1403"><span class="lineNum">    1403</span> <span class="tlaGNC">        5016            : {</span></span>
-<span id="L1404"><span class="lineNum">    1404</span> <span class="tlaGNC">        5016            :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L1405"><span class="lineNum">    1405</span> <span class="tlaGNC">        5016            :         CompilerOptionName::SkipDownstreamLinking);</span></span>
-<span id="L1406"><span class="lineNum">    1406</span> <span class="tlaGNC">        5016            : }</span></span>
+<span id="L1403"><span class="lineNum">    1403</span> <span class="tlaGNC">        5017            : {</span></span>
+<span id="L1404"><span class="lineNum">    1404</span> <span class="tlaGNC">        5017            :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L1405"><span class="lineNum">    1405</span> <span class="tlaGNC">        5017            :         CompilerOptionName::SkipDownstreamLinking);</span></span>
+<span id="L1406"><span class="lineNum">    1406</span> <span class="tlaGNC">        5017            : }</span></span>
 <span id="L1407"><span class="lineNum">    1407</span>                         : </span>
 <span id="L1408"><span class="lineNum">    1408</span>                         : bool CodeGenContext::shouldReportCheckpointIntermediates()</span>
 <span id="L1409"><span class="lineNum">    1409</span> <span class="tlaGNC">       15515            : {</span></span>
@@ -1703,10 +1703,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1412"><span class="lineNum">    1412</span> <span class="tlaGNC">       15515            : }</span></span>
 <span id="L1413"><span class="lineNum">    1413</span>                         : </span>
 <span id="L1414"><span class="lineNum">    1414</span>                         : bool CodeGenContext::shouldReportDynamicDispatchSites()</span>
-<span id="L1415"><span class="lineNum">    1415</span> <span class="tlaGNC">       16780            : {</span></span>
-<span id="L1416"><span class="lineNum">    1416</span> <span class="tlaGNC">       16780            :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L1417"><span class="lineNum">    1417</span> <span class="tlaGNC">       16780            :         CompilerOptionName::ReportDynamicDispatchSites);</span></span>
-<span id="L1418"><span class="lineNum">    1418</span> <span class="tlaGNC">       16780            : }</span></span>
+<span id="L1415"><span class="lineNum">    1415</span> <span class="tlaGNC">       16781            : {</span></span>
+<span id="L1416"><span class="lineNum">    1416</span> <span class="tlaGNC">       16781            :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L1417"><span class="lineNum">    1417</span> <span class="tlaGNC">       16781            :         CompilerOptionName::ReportDynamicDispatchSites);</span></span>
+<span id="L1418"><span class="lineNum">    1418</span> <span class="tlaGNC">       16781            : }</span></span>
 <span id="L1419"><span class="lineNum">    1419</span>                         : </span>
 <span id="L1420"><span class="lineNum">    1420</span>                         : bool CodeGenContext::shouldTraceCoverage()</span>
 <span id="L1421"><span class="lineNum">    1421</span> <span class="tlaUNC">           0            : {</span></span>
@@ -1722,9 +1722,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1431"><span class="lineNum">    1431</span> <span class="tlaGNC">         416            : }</span></span>
 <span id="L1432"><span class="lineNum">    1432</span>                         : </span>
 <span id="L1433"><span class="lineNum">    1433</span>                         : bool CodeGenContext::shouldDumpIntermediates()</span>
-<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaGNC">       20072            : {</span></span>
-<span id="L1435"><span class="lineNum">    1435</span> <span class="tlaGNC">       20072            :     return getTargetProgram()-&gt;getOptionSet().shouldDumpIntermediates();</span></span>
-<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaGNC">       20072            : }</span></span>
+<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaGNC">       20074            : {</span></span>
+<span id="L1435"><span class="lineNum">    1435</span> <span class="tlaGNC">       20074            :     return getTargetProgram()-&gt;getOptionSet().shouldDumpIntermediates();</span></span>
+<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaGNC">       20074            : }</span></span>
 <span id="L1437"><span class="lineNum">    1437</span>                         : </span>
 <span id="L1438"><span class="lineNum">    1438</span>                         : bool CodeGenContext::shouldTrackLiveness()</span>
 <span id="L1439"><span class="lineNum">    1439</span> <span class="tlaGNC">       30900            : {</span></span>

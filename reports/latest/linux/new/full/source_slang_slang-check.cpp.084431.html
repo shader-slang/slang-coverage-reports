@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-24 05:12:08 UTC</td>
+      <td class="headerValue">2026-10-25 03:54:40 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -382,17 +382,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L91"><span class="lineNum">      91</span>                         : IDownstreamCompiler* Session::getOrLoadDownstreamCompiler(</span>
 <span id="L92"><span class="lineNum">      92</span>                         :     PassThroughMode type,</span>
 <span id="L93"><span class="lineNum">      93</span>                         :     DiagnosticSink* sink)</span>
-<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">       11713            : {</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">       11715            : {</span></span>
 <span id="L95"><span class="lineNum">      95</span>                         :     // Lazy downstream compiler loading mutates shared state, and GenericCCpp can re-enter</span>
 <span id="L96"><span class="lineNum">      96</span>                         :     // this routine while probing specific C/C++ compilers.</span>
-<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">       11713            :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_downstreamCompilerMutex);</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">       11715            :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_downstreamCompilerMutex);</span></span>
 <span id="L98"><span class="lineNum">      98</span>                         : </span>
-<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">       11713 <span class="branchAll" title="br0: 11032; br1: 681">(2/2)</span>      :     if (m_downstreamCompilerInitialized &amp; (1 &lt;&lt; int(type)))</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">       11715 <span class="branchAll" title="br0: 11032; br1: 683">(2/2)</span>      :     if (m_downstreamCompilerInitialized &amp; (1 &lt;&lt; int(type)))</span></span>
 <span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">       11032            :     {</span></span>
 <span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">       11032            :         return m_downstreamCompilers[int(type)];</span></span>
 <span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">       11032            :     }</span></span>
 <span id="L103"><span class="lineNum">     103</span>                         : </span>
-<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">         681 <span class="branchAll" title="br0: 18; br1: 663">(2/2)</span>      :     if (type == PassThroughMode::GenericCCpp)</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">         683 <span class="branchAll" title="br0: 18; br1: 665">(2/2)</span>      :     if (type == PassThroughMode::GenericCCpp)</span></span>
 <span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">          18            :     {</span></span>
 <span id="L106"><span class="lineNum">     106</span>                         :         // try testing for availability on all C/C++ compilers</span>
 <span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">          18            :         getOrLoadDownstreamCompiler(PassThroughMode::Clang, nullptr);</span></span>
@@ -402,12 +402,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">          18            :     }</span></span>
 <span id="L112"><span class="lineNum">     112</span>                         : </span>
 <span id="L113"><span class="lineNum">     113</span>                         :     // Mark that we have tried to load it</span>
-<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">         681            :     m_downstreamCompilerInitialized |= (1 &lt;&lt; int(type));</span></span>
-<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">         681            :     m_downstreamCompilers[int(type)].setNull();</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">         683            :     m_downstreamCompilerInitialized |= (1 &lt;&lt; int(type));</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">         683            :     m_downstreamCompilers[int(type)].setNull();</span></span>
 <span id="L116"><span class="lineNum">     116</span>                         : </span>
 <span id="L117"><span class="lineNum">     117</span>                         :     // Do we have a locator</span>
-<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">         681            :     auto locator = m_downstreamCompilerLocators[int(type)];</span></span>
-<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">         681 <span class="branchAll" title="br0: 639; br1: 42">(2/2)</span>      :     if (locator)</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">         683            :     auto locator = m_downstreamCompilerLocators[int(type)];</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">         683 <span class="branchAll" title="br0: 639; br1: 44">(2/2)</span>      :     if (locator)</span></span>
 <span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">         639            :     {</span></span>
 <span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">         639            :         m_downstreamCompilerSet-&gt;remove(SlangPassThrough(type));</span></span>
 <span id="L122"><span class="lineNum">     122</span>                         : </span>
@@ -450,24 +450,24 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">         639            :         DownstreamCompilerUtil::updateDefaults(m_downstreamCompilerSet);</span></span>
 <span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">         639            :     }</span></span>
 <span id="L161"><span class="lineNum">     161</span>                         : </span>
-<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">         681            :     IDownstreamCompiler* compiler = nullptr;</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">         683            :     IDownstreamCompiler* compiler = nullptr;</span></span>
 <span id="L163"><span class="lineNum">     163</span>                         : </span>
-<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">         681 <span class="branchAll" title="br0: 18; br1: 663">(2/2)</span>      :     if (type == PassThroughMode::GenericCCpp)</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">         683 <span class="branchAll" title="br0: 18; br1: 665">(2/2)</span>      :     if (type == PassThroughMode::GenericCCpp)</span></span>
 <span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">          18            :     {</span></span>
 <span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">          18            :         compiler = m_downstreamCompilerSet-&gt;getDefaultCompiler(SLANG_SOURCE_LANGUAGE_CPP);</span></span>
 <span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">          18            :     }</span></span>
-<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">         663            :     else</span></span>
-<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">         663            :     {</span></span>
-<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">         663            :         DownstreamCompilerDesc desc;</span></span>
-<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">         663            :         desc.type = SlangPassThrough(type);</span></span>
-<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">         663            :         compiler = DownstreamCompilerUtil::findCompiler(</span></span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">         663            :             m_downstreamCompilerSet,</span></span>
-<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">         663            :             DownstreamCompilerUtil::MatchType::Newest,</span></span>
-<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">         663            :             desc);</span></span>
-<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">         663            :     }</span></span>
-<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">         681            :     m_downstreamCompilers[int(type)] = compiler;</span></span>
-<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">         681            :     return compiler;</span></span>
-<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       11713            : }</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">         665            :     else</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">         665            :     {</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">         665            :         DownstreamCompilerDesc desc;</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">         665            :         desc.type = SlangPassThrough(type);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">         665            :         compiler = DownstreamCompilerUtil::findCompiler(</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">         665            :             m_downstreamCompilerSet,</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">         665            :             DownstreamCompilerUtil::MatchType::Newest,</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">         665            :             desc);</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">         665            :     }</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">         683            :     m_downstreamCompilers[int(type)] = compiler;</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">         683            :     return compiler;</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       11715            : }</span></span>
 <span id="L180"><span class="lineNum">     180</span>                         : </span>
 <span id="L181"><span class="lineNum">     181</span>                         : void checkTranslationUnit(</span>
 <span id="L182"><span class="lineNum">     182</span>                         :     TranslationUnitRequest* translationUnit,</span>
