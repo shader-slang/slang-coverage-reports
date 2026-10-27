@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-26 04:03:57 UTC</td>
+      <td class="headerValue">2026-10-27 04:57:18 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -1656,9 +1656,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1365"><span class="lineNum">    1365</span>                         :     // We need to rewrite extern-cpp names for functions that have an auto-bind decoration.</span>
 <span id="L1366"><span class="lineNum">    1366</span>                         :     // since the name needs to be used for the host function.</span>
 <span id="L1367"><span class="lineNum">    1367</span>                         :     //</span>
-<span id="L1368"><span class="lineNum">    1368</span> <span class="tlaGNC">        1736 <span class="branchAll" title="br0: 421132; br1: 1736">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L1369"><span class="lineNum">    1369</span> <span class="tlaGNC">      421132            :     {</span></span>
-<span id="L1370"><span class="lineNum">    1370</span> <span class="tlaGNC">      421132 <span class="branchAll" title="br0: 41; br1: 421091">(2/2)</span>      :         if (auto autobindDecor = globalInst-&gt;findDecoration&lt;IRAutoPyBindCudaDecoration&gt;())</span></span>
+<span id="L1368"><span class="lineNum">    1368</span> <span class="tlaGNC">        1736 <span class="branchAll" title="br0: 421098; br1: 1736">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L1369"><span class="lineNum">    1369</span> <span class="tlaGNC">      421098            :     {</span></span>
+<span id="L1370"><span class="lineNum">    1370</span> <span class="tlaGNC">      421098 <span class="branchAll" title="br0: 41; br1: 421057">(2/2)</span>      :         if (auto autobindDecor = globalInst-&gt;findDecoration&lt;IRAutoPyBindCudaDecoration&gt;())</span></span>
 <span id="L1371"><span class="lineNum">    1371</span> <span class="tlaGNC">          41            :         {</span></span>
 <span id="L1372"><span class="lineNum">    1372</span>                         :             // Find an extern decoration on the original function, and append a prefix to the name.</span>
 <span id="L1373"><span class="lineNum">    1373</span> <span class="tlaGNC">          41 <span class="branchPart" title="br0: 41; br1: 0">(1/2)</span>      :             if (auto externCppHint = globalInst-&gt;findDecoration&lt;IRExternCppDecoration&gt;())</span></span>
@@ -1674,30 +1674,30 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1383"><span class="lineNum">    1383</span>                         : </span>
 <span id="L1384"><span class="lineNum">    1384</span> <span class="tlaGNC">          41            :             autobindDecor-&gt;removeAndDeallocate();</span></span>
 <span id="L1385"><span class="lineNum">    1385</span> <span class="tlaGNC">          41            :         }</span></span>
-<span id="L1386"><span class="lineNum">    1386</span> <span class="tlaGNC">      421132            :     }</span></span>
+<span id="L1386"><span class="lineNum">    1386</span> <span class="tlaGNC">      421098            :     }</span></span>
 <span id="L1387"><span class="lineNum">    1387</span> <span class="tlaGNC">        1736            : }</span></span>
 <span id="L1388"><span class="lineNum">    1388</span>                         : </span>
 <span id="L1389"><span class="lineNum">    1389</span>                         : void removeTorchAndCUDAEntryPoints(IRModule* module)</span>
-<span id="L1390"><span class="lineNum">    1390</span> <span class="tlaGNC">       15322            : {</span></span>
+<span id="L1390"><span class="lineNum">    1390</span> <span class="tlaGNC">       15320            : {</span></span>
 <span id="L1391"><span class="lineNum">    1391</span>                         :     // Go through global insts, find cuda &amp; torch related entry points and remove the keep-alive</span>
 <span id="L1392"><span class="lineNum">    1392</span>                         :     // decoration.</span>
-<span id="L1393"><span class="lineNum">    1393</span> <span class="tlaGNC">       15322            :     IRBuilder builder(module);</span></span>
-<span id="L1394"><span class="lineNum">    1394</span> <span class="tlaGNC">       15322 <span class="branchAll" title="br0: 5067926; br1: 15322">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L1395"><span class="lineNum">    1395</span> <span class="tlaGNC">     5067926            :     {</span></span>
-<span id="L1396"><span class="lineNum">    1396</span> <span class="tlaGNC">     5067926 <span class="branchAll" title="br0: 81790; br1: 4986136">(2/2)</span>      :         if (auto func = as&lt;IRFunc&gt;(globalInst))</span></span>
-<span id="L1397"><span class="lineNum">    1397</span> <span class="tlaGNC">       81790            :         {</span></span>
-<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaGNC">       81790 <span class="branchAll" title="br0: 1; br1: 81789">(2/2)</span>      :             if (func-&gt;findDecoration&lt;IRAutoPyBindCudaDecoration&gt;() ||</span></span>
-<span id="L1399"><span class="lineNum">    1399</span> <span class="tlaGNC">       81790 <span class="branchPart" title="br0: 0; br1: 81789">(1/2)</span>      :                 func-&gt;findDecoration&lt;IRTorchEntryPointDecoration&gt;() ||</span></span>
-<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaGNC">       81790 <span class="branchPart" title="br0: 0; br1: 81789">(1/2)</span>      :                 func-&gt;findDecoration&lt;IRCudaKernelDecoration&gt;())</span></span>
+<span id="L1393"><span class="lineNum">    1393</span> <span class="tlaGNC">       15320            :     IRBuilder builder(module);</span></span>
+<span id="L1394"><span class="lineNum">    1394</span> <span class="tlaGNC">       15320 <span class="branchAll" title="br0: 5067752; br1: 15320">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L1395"><span class="lineNum">    1395</span> <span class="tlaGNC">     5067752            :     {</span></span>
+<span id="L1396"><span class="lineNum">    1396</span> <span class="tlaGNC">     5067752 <span class="branchAll" title="br0: 81788; br1: 4985964">(2/2)</span>      :         if (auto func = as&lt;IRFunc&gt;(globalInst))</span></span>
+<span id="L1397"><span class="lineNum">    1397</span> <span class="tlaGNC">       81788            :         {</span></span>
+<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaGNC">       81788 <span class="branchAll" title="br0: 1; br1: 81787">(2/2)</span>      :             if (func-&gt;findDecoration&lt;IRAutoPyBindCudaDecoration&gt;() ||</span></span>
+<span id="L1399"><span class="lineNum">    1399</span> <span class="tlaGNC">       81788 <span class="branchPart" title="br0: 0; br1: 81787">(1/2)</span>      :                 func-&gt;findDecoration&lt;IRTorchEntryPointDecoration&gt;() ||</span></span>
+<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaGNC">       81788 <span class="branchPart" title="br0: 0; br1: 81787">(1/2)</span>      :                 func-&gt;findDecoration&lt;IRCudaKernelDecoration&gt;())</span></span>
 <span id="L1401"><span class="lineNum">    1401</span> <span class="tlaGNC">           1            :             {</span></span>
 <span id="L1402"><span class="lineNum">    1402</span> <span class="tlaGNC">           1 <span class="branchPart" title="br0: 1; br1: 0">(1/2)</span>      :                 if (auto keepAlive = func-&gt;findDecoration&lt;IRKeepAliveDecoration&gt;())</span></span>
 <span id="L1403"><span class="lineNum">    1403</span> <span class="tlaGNC">           1            :                     keepAlive-&gt;removeAndDeallocate();</span></span>
 <span id="L1404"><span class="lineNum">    1404</span> <span class="tlaGNC">           1 <span class="branchPart" title="br0: 1; br1: 0">(1/2)</span>      :                 if (auto hlslExport = func-&gt;findDecoration&lt;IRHLSLExportDecoration&gt;())</span></span>
 <span id="L1405"><span class="lineNum">    1405</span> <span class="tlaGNC">           1            :                     hlslExport-&gt;removeAndDeallocate();</span></span>
 <span id="L1406"><span class="lineNum">    1406</span> <span class="tlaGNC">           1            :             }</span></span>
-<span id="L1407"><span class="lineNum">    1407</span> <span class="tlaGNC">       81790            :         }</span></span>
-<span id="L1408"><span class="lineNum">    1408</span> <span class="tlaGNC">     5067926            :     }</span></span>
-<span id="L1409"><span class="lineNum">    1409</span> <span class="tlaGNC">       15322            : }</span></span>
+<span id="L1407"><span class="lineNum">    1407</span> <span class="tlaGNC">       81788            :         }</span></span>
+<span id="L1408"><span class="lineNum">    1408</span> <span class="tlaGNC">     5067752            :     }</span></span>
+<span id="L1409"><span class="lineNum">    1409</span> <span class="tlaGNC">       15320            : }</span></span>
 <span id="L1410"><span class="lineNum">    1410</span>                         : </span>
 <span id="L1411"><span class="lineNum">    1411</span>                         : void generateDerivativeWrappers(IRModule* module, DiagnosticSink* sink)</span>
 <span id="L1412"><span class="lineNum">    1412</span> <span class="tlaGNC">          29            : {</span></span>

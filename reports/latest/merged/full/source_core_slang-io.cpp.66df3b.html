@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-26 04:03:30 UTC</td>
+      <td class="headerValue">2026-10-27 04:56:53 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -419,32 +419,32 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L128"><span class="lineNum">     128</span>                         : /* static */ SlangResult File::generateTemporary(</span>
 <span id="L129"><span class="lineNum">     129</span>                         :     const UnownedStringSlice&amp; inPrefix,</span>
 <span id="L130"><span class="lineNum">     130</span>                         :     Slang::String&amp; outFileName)</span>
-<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">         473            : {</span></span>
-<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">         473            :     StringBuilder builder;</span></span>
-<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">         473            :     builder &lt;&lt; &quot;/tmp/&quot; &lt;&lt; inPrefix &lt;&lt; &quot;-XXXXXX&quot;;</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">         469            : {</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">         469            :     StringBuilder builder;</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">         469            :     builder &lt;&lt; &quot;/tmp/&quot; &lt;&lt; inPrefix &lt;&lt; &quot;-XXXXXX&quot;;</span></span>
 <span id="L134"><span class="lineNum">     134</span>                         : </span>
-<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">         473            :     List&lt;char&gt; buffer;</span></span>
-<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">         473            :     auto copySize = builder.getLength();</span></span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">         473            :     buffer.setCount(copySize + 1);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">         469            :     List&lt;char&gt; buffer;</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">         469            :     auto copySize = builder.getLength();</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">         469            :     buffer.setCount(copySize + 1);</span></span>
 <span id="L138"><span class="lineNum">     138</span>                         :     // Satisfy GCC</span>
-<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">         473 <span class="branchPart" title="br0: 946; br1: 0">(1/2)</span>      :     SLANG_ASSUME(copySize &lt; PTRDIFF_MAX &amp;&amp; copySize &gt; 0);</span></span>
-<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">         473            :     ::memcpy(buffer.getBuffer(), builder.getBuffer(), copySize);</span></span>
-<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">         473            :     buffer[copySize] = 0;</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">         469 <span class="branchPart" title="br0: 938; br1: 0">(1/2)</span>      :     SLANG_ASSUME(copySize &lt; PTRDIFF_MAX &amp;&amp; copySize &gt; 0);</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">         469            :     ::memcpy(buffer.getBuffer(), builder.getBuffer(), copySize);</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">         469            :     buffer[copySize] = 0;</span></span>
 <span id="L142"><span class="lineNum">     142</span>                         : </span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">         473            :     int handle = mkstemp(buffer.getBuffer());</span></span>
-<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">         473 <span class="branchPart" title="br0: 0; br1: 473">(1/2)</span>      :     if (handle == -1)</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">         469            :     int handle = mkstemp(buffer.getBuffer());</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">         469 <span class="branchPart" title="br0: 0; br1: 469">(1/2)</span>      :     if (handle == -1)</span></span>
 <span id="L145"><span class="lineNum">     145</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L146"><span class="lineNum">     146</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
 <span id="L147"><span class="lineNum">     147</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L148"><span class="lineNum">     148</span>                         : </span>
 <span id="L149"><span class="lineNum">     149</span>                         :     // Close the handle..</span>
-<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">         473            :     close(handle);</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">         469            :     close(handle);</span></span>
 <span id="L151"><span class="lineNum">     151</span>                         : </span>
-<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">         473            :     outFileName = buffer.getBuffer();</span></span>
-<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">         473            :     SLANG_ASSERT(File::exists(outFileName));</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">         469            :     outFileName = buffer.getBuffer();</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">         469            :     SLANG_ASSERT(File::exists(outFileName));</span></span>
 <span id="L154"><span class="lineNum">     154</span>                         : </span>
-<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">         473            :     return SLANG_OK;</span></span>
-<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">         473            : }</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">         469            :     return SLANG_OK;</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">         469            : }</span></span>
 <span id="L157"><span class="lineNum">     157</span>                         : #endif</span>
 <span id="L158"><span class="lineNum">     158</span>                         : </span>
 <span id="L159"><span class="lineNum">     159</span>                         : /* static */ SlangResult File::makeExecutable(const String&amp; fileName)</span>
@@ -475,15 +475,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L184"><span class="lineNum">     184</span>                         : </span>
 <span id="L185"><span class="lineNum">     185</span>                         : </span>
 <span id="L186"><span class="lineNum">     186</span>                         : bool File::exists(const String&amp; fileName)</span>
-<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">       80261            : {</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">       80248            : {</span></span>
 <span id="L188"><span class="lineNum">     188</span>                         : #ifdef _WIN32</span>
 <span id="L189"><span class="lineNum">     189</span>                         :     struct _stat64 statVar;</span>
 <span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">           1            :     return ::_wstat64(((String)fileName).toWString(), &amp;statVar) != -1;</span></span>
 <span id="L191"><span class="lineNum">     191</span>                         : #else</span>
-<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       80261            :     struct stat statVar;</span></span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">       80261            :     return ::stat(fileName.getBuffer(), &amp;statVar) == 0;</span></span>
-<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">       80261            : #endif</span></span>
-<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">       80261            : }</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       80248            :     struct stat statVar;</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">       80248            :     return ::stat(fileName.getBuffer(), &amp;statVar) == 0;</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">       80248            : #endif</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">       80248            : }</span></span>
 <span id="L196"><span class="lineNum">     196</span>                         : </span>
 <span id="L197"><span class="lineNum">     197</span>                         : String Path::replaceExt(const String&amp; path, const char* newExt)</span>
 <span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">        8246            : {</span></span>
@@ -499,58 +499,58 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">        8246            : }</span></span>
 <span id="L209"><span class="lineNum">     209</span>                         : </span>
 <span id="L210"><span class="lineNum">     210</span>                         : /* static */ Index Path::findLastSeparatorIndex(UnownedStringSlice const&amp; path)</span>
-<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">      439854            : {</span></span>
-<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      439854            :     const char* chars = path.begin();</span></span>
-<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">    10251698 <span class="branchAll" title="br0: 10232357; br1: 20342">(2/2)</span>      :     for (Index i = path.getLength() - 1; i &gt;= 0; --i)</span></span>
-<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">    10232357            :     {</span></span>
-<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">    10232357            :         const char c = chars[i];</span></span>
-<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">    10232357 <span class="branchAll" title="br0: 420486; br1: 9811871; br2: 53; br3: 9811846">(4/4)</span>      :         if (c == &#x27;/&#x27; || c == &#x27;\\&#x27;)</span></span>
-<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      420513            :         {</span></span>
-<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">      420513            :             return i;</span></span>
-<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">      420513            :         }</span></span>
-<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">    10232357            :     }</span></span>
-<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">       20342            :     return -1;</span></span>
-<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">      439854            : }</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">      439830            : {</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      439830            :     const char* chars = path.begin();</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">    10251438 <span class="branchAll" title="br0: 10232114; br1: 20371">(2/2)</span>      :     for (Index i = path.getLength() - 1; i &gt;= 0; --i)</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">    10232114            :     {</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">    10232114            :         const char c = chars[i];</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">    10232114 <span class="branchAll" title="br0: 420478; br1: 9811636; br2: 35; br3: 9811608">(4/4)</span>      :         if (c == &#x27;/&#x27; || c == &#x27;\\&#x27;)</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      420506            :         {</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">      420506            :             return i;</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">      420506            :         }</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">    10232114            :     }</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">       20371            :     return -1;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">      439830            : }</span></span>
 <span id="L223"><span class="lineNum">     223</span>                         : </span>
 <span id="L224"><span class="lineNum">     224</span>                         : /* static */ Index Path::findExtIndex(UnownedStringSlice const&amp; path)</span>
-<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">       91812            : {</span></span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       91812            :     const Index sepIndex = findLastSeparatorIndex(path);</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">       91811            : {</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       91811            :     const Index sepIndex = findLastSeparatorIndex(path);</span></span>
 <span id="L227"><span class="lineNum">     227</span>                         : </span>
-<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">       91812            :     const Index dotIndex = path.lastIndexOf(&#x27;.&#x27;);</span></span>
-<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">       91812 <span class="branchAll" title="br0: 80466; br1: 11346">(2/2)</span>      :     if (sepIndex &gt;= 0)</span></span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       80466            :     {</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">       91811            :     const Index dotIndex = path.lastIndexOf(&#x27;.&#x27;);</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">       91811 <span class="branchAll" title="br0: 80464; br1: 11347">(2/2)</span>      :     if (sepIndex &gt;= 0)</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       80464            :     {</span></span>
 <span id="L231"><span class="lineNum">     231</span>                         :         // Index has to be in the last part of the path</span>
-<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">       80466 <span class="branchAll" title="br0: 29548; br1: 50918">(2/2)</span>      :         return (dotIndex &gt; sepIndex) ? dotIndex : -1;</span></span>
-<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       80466            :     }</span></span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       11346            :     else</span></span>
-<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       11346            :     {</span></span>
-<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       11346            :         return dotIndex;</span></span>
-<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">       11346            :     }</span></span>
-<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       91812            : }</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">       80464 <span class="branchAll" title="br0: 29546; br1: 50918">(2/2)</span>      :         return (dotIndex &gt; sepIndex) ? dotIndex : -1;</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       80464            :     }</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       11347            :     else</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       11347            :     {</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       11347            :         return dotIndex;</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">       11347            :     }</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       91811            : }</span></span>
 <span id="L239"><span class="lineNum">     239</span>                         : </span>
 <span id="L240"><span class="lineNum">     240</span>                         : String Path::getFileName(const String&amp; path)</span>
-<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">        5819            : {</span></span>
-<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">        5819            :     Index pos = findLastSeparatorIndex(path);</span></span>
-<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">        5819 <span class="branchAll" title="br0: 1308; br1: 4520">(2/2)</span>      :     if (pos &gt;= 0)</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">        5822            : {</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">        5822            :     Index pos = findLastSeparatorIndex(path);</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">        5822 <span class="branchAll" title="br0: 1308; br1: 4523">(2/2)</span>      :     if (pos &gt;= 0)</span></span>
 <span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">        1308            :     {</span></span>
 <span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">        1308            :         pos = pos + 1;</span></span>
 <span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">        1308            :         return path.subString(pos, path.getLength() - pos);</span></span>
 <span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">        1308            :     }</span></span>
-<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">        4520            :     else</span></span>
-<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">        4520            :     {</span></span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        4520            :         return path;</span></span>
-<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">        4520            :     }</span></span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        5819            : }</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">        4523            :     else</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">        4523            :     {</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        4523            :         return path;</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">        4523            :     }</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        5822            : }</span></span>
 <span id="L253"><span class="lineNum">     253</span>                         : </span>
 <span id="L254"><span class="lineNum">     254</span>                         : /* static */ String Path::getFileNameWithoutExt(const String&amp; path)</span>
-<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">       77942            : {</span></span>
-<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">       77942            :     Index sepIndex = findLastSeparatorIndex(path);</span></span>
-<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       77942 <span class="branchAll" title="br0: 1166; br1: 76776">(2/2)</span>      :     sepIndex = (sepIndex &lt; 0) ? 0 : (sepIndex + 1);</span></span>
-<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">       77942            :     Index dotIndex = findExtIndex(path);</span></span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       77942 <span class="branchAll" title="br0: 51361; br1: 26581">(2/2)</span>      :     dotIndex = (dotIndex &lt; 0) ? path.getLength() : dotIndex;</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">       77939            : {</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">       77939            :     Index sepIndex = findLastSeparatorIndex(path);</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       77939 <span class="branchAll" title="br0: 1165; br1: 76774">(2/2)</span>      :     sepIndex = (sepIndex &lt; 0) ? 0 : (sepIndex + 1);</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">       77939            :     Index dotIndex = findExtIndex(path);</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       77939 <span class="branchAll" title="br0: 51362; br1: 26577">(2/2)</span>      :     dotIndex = (dotIndex &lt; 0) ? path.getLength() : dotIndex;</span></span>
 <span id="L260"><span class="lineNum">     260</span>                         : </span>
-<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       77942            :     return path.subString(sepIndex, dotIndex - sepIndex);</span></span>
-<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       77942            : }</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       77939            :     return path.subString(sepIndex, dotIndex - sepIndex);</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       77939            : }</span></span>
 <span id="L263"><span class="lineNum">     263</span>                         : </span>
 <span id="L264"><span class="lineNum">     264</span>                         : /* static*/ String Path::getPathWithoutExt(const String&amp; path)</span>
 <span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">        4097            : {</span></span>
@@ -580,29 +580,29 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">        1529            : }</span></span>
 <span id="L290"><span class="lineNum">     290</span>                         : </span>
 <span id="L291"><span class="lineNum">     291</span>                         : String Path::getParentDirectory(const String&amp; path)</span>
-<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">      211767            : {</span></span>
-<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">      211767            :     Index pos = findLastSeparatorIndex(path);</span></span>
-<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">      211767 <span class="branchAll" title="br0: 209092; br1: 3107">(2/2)</span>      :     if (pos &gt;= 0)</span></span>
-<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">      209092            :         return path.subString(0, pos);</span></span>
-<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">        3107            :     else</span></span>
-<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">        3107            :         return &quot;&quot;;</span></span>
-<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">      211767            : }</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">      211768            : {</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">      211768            :     Index pos = findLastSeparatorIndex(path);</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">      211768 <span class="branchAll" title="br0: 209097; br1: 3106">(2/2)</span>      :     if (pos &gt;= 0)</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">      209097            :         return path.subString(0, pos);</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">        3106            :     else</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">        3106            :         return &quot;&quot;;</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">      211768            : }</span></span>
 <span id="L299"><span class="lineNum">     299</span>                         : </span>
 <span id="L300"><span class="lineNum">     300</span>                         : /* static */ void Path::append(StringBuilder&amp; ioBuilder, const UnownedStringSlice&amp; path)</span>
-<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">      565281            : {</span></span>
-<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">      565281 <span class="branchPart" title="br0: 0; br1: 565281">(1/2)</span>      :     if (ioBuilder.getLength() == 0)</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">      565254            : {</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">      565254 <span class="branchPart" title="br0: 0; br1: 565254">(1/2)</span>      :     if (ioBuilder.getLength() == 0)</span></span>
 <span id="L303"><span class="lineNum">     303</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L304"><span class="lineNum">     304</span> <span class="tlaUNC">           0            :         ioBuilder.append(path);</span></span>
 <span id="L305"><span class="lineNum">     305</span> <span class="tlaUNC">           0            :         return;</span></span>
 <span id="L306"><span class="lineNum">     306</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">      565281 <span class="branchAll" title="br0: 565256; br1: 26">(2/2)</span>      :     if (path.getLength() &gt; 0)</span></span>
-<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">      565256            :     {</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">      565254 <span class="branchAll" title="br0: 565231; br1: 26">(2/2)</span>      :     if (path.getLength() &gt; 0)</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">      565231            :     {</span></span>
 <span id="L309"><span class="lineNum">     309</span>                         :         // If ioBuilder doesn&#x27;t end in a delimiter, add one</span>
-<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">      565256 <span class="branchAll" title="br0: 561378; br1: 3878">(2/2)</span>      :         if (!isDelimiter(ioBuilder[ioBuilder.getLength() - 1]))</span></span>
-<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">      561378            :         {</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">      565231 <span class="branchAll" title="br0: 561354; br1: 3877">(2/2)</span>      :         if (!isDelimiter(ioBuilder[ioBuilder.getLength() - 1]))</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">      561354            :         {</span></span>
 <span id="L312"><span class="lineNum">     312</span>                         :             // Determine the preferred delimiter to use based on existing path.</span>
-<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">      561378            :             char preferedDelimiter = kOSCanonicalPathDelimiter;</span></span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">      561378 <span class="branchPart" title="br0: 0; br1: 561378">(1/2)</span>      :             if (kOSAlternativePathDelimiter != preferedDelimiter)</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">      561354            :             char preferedDelimiter = kOSCanonicalPathDelimiter;</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">      561354 <span class="branchPart" title="br0: 0; br1: 561354">(1/2)</span>      :             if (kOSAlternativePathDelimiter != preferedDelimiter)</span></span>
 <span id="L315"><span class="lineNum">     315</span> <span class="tlaUNC">           0            :             {</span></span>
 <span id="L316"><span class="lineNum">     316</span>                         :                 // If we found the existing path uses the alternative delimiter, we will</span>
 <span id="L317"><span class="lineNum">     317</span>                         :                 // use that instead of the canonical one.</span>
@@ -617,36 +617,36 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L326"><span class="lineNum">     326</span> <span class="tlaUNC">           0            :                     }</span></span>
 <span id="L327"><span class="lineNum">     327</span> <span class="tlaUNC">           0            :                 }</span></span>
 <span id="L328"><span class="lineNum">     328</span> <span class="tlaUNC">           0            :             }</span></span>
-<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">      561378            :             ioBuilder.append(preferedDelimiter);</span></span>
-<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">      561378            :         }</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">      561354            :             ioBuilder.append(preferedDelimiter);</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">      561354            :         }</span></span>
 <span id="L331"><span class="lineNum">     331</span>                         :         // Check that path doesn&#x27;t start with a path delimiter</span>
-<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">      565256            :         SLANG_ASSERT(!isDelimiter(path[0]));</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">      565231            :         SLANG_ASSERT(!isDelimiter(path[0]));</span></span>
 <span id="L333"><span class="lineNum">     333</span>                         :         // Append the path</span>
-<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">      565256            :         ioBuilder.append(path);</span></span>
-<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">      565256            :     }</span></span>
-<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">      565281            : }</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">      565231            :         ioBuilder.append(path);</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">      565231            :     }</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">      565254            : }</span></span>
 <span id="L337"><span class="lineNum">     337</span>                         : </span>
 <span id="L338"><span class="lineNum">     338</span>                         : /* static */ void Path::combineIntoBuilder(</span>
 <span id="L339"><span class="lineNum">     339</span>                         :     const UnownedStringSlice&amp; path1,</span>
 <span id="L340"><span class="lineNum">     340</span>                         :     const UnownedStringSlice&amp; path2,</span>
 <span id="L341"><span class="lineNum">     341</span>                         :     StringBuilder&amp; outBuilder)</span>
-<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">      565279            : {</span></span>
-<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">      565279            :     outBuilder.clear();</span></span>
-<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">      565279            :     outBuilder.append(path1);</span></span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">      565279            :     append(outBuilder, path2);</span></span>
-<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">      565279            : }</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">      565254            : {</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">      565254            :     outBuilder.clear();</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">      565254            :     outBuilder.append(path1);</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">      565254            :     append(outBuilder, path2);</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">      565254            : }</span></span>
 <span id="L347"><span class="lineNum">     347</span>                         : </span>
 <span id="L348"><span class="lineNum">     348</span>                         : String Path::combine(const String&amp; path1, const String&amp; path2)</span>
-<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">      254347            : {</span></span>
-<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">      254347 <span class="branchAll" title="br0: 740; br1: 253607">(2/2)</span>      :     if (path1.getLength() == 0)</span></span>
-<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">         740            :     {</span></span>
-<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">         740            :         return path2;</span></span>
-<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">         740            :     }</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">      254322            : {</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">      254322 <span class="branchAll" title="br0: 741; br1: 253581">(2/2)</span>      :     if (path1.getLength() == 0)</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">         741            :     {</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">         741            :         return path2;</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">         741            :     }</span></span>
 <span id="L354"><span class="lineNum">     354</span>                         : </span>
-<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">      253607            :     StringBuilder sb;</span></span>
-<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">      253607            :     combineIntoBuilder(path1.getUnownedSlice(), path2.getUnownedSlice(), sb);</span></span>
-<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">      253607            :     return sb.produceString();</span></span>
-<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">      254347            : }</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">      253581            :     StringBuilder sb;</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">      253581            :     combineIntoBuilder(path1.getUnownedSlice(), path2.getUnownedSlice(), sb);</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">      253581            :     return sb.produceString();</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">      254322            : }</span></span>
 <span id="L359"><span class="lineNum">     359</span>                         : String Path::combine(const String&amp; path1, const String&amp; path2, const String&amp; path3)</span>
 <span id="L360"><span class="lineNum">     360</span> <span class="tlaUNC">           0            : {</span></span>
 <span id="L361"><span class="lineNum">     361</span> <span class="tlaUNC">           0            :     StringBuilder sb;</span></span>
@@ -718,22 +718,22 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">        8019            :     const char* start = path.begin();</span></span>
 <span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">        8019            :     const char* end = path.end();</span></span>
 <span id="L429"><span class="lineNum">     429</span>                         : </span>
-<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">       23377 <span class="branchAll" title="br0: 15358; br1: 8019">(2/2)</span>      :     while (start &lt; end)</span></span>
-<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">       15358            :     {</span></span>
-<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">       15358            :         const char* cur = start;</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">       23376 <span class="branchAll" title="br0: 15361; br1: 8019">(2/2)</span>      :     while (start &lt; end)</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">       15361            :     {</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">       15361            :         const char* cur = start;</span></span>
 <span id="L433"><span class="lineNum">     433</span>                         :         // Find the split</span>
-<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">      168303 <span class="branchAll" title="br0: 160396; br1: 8052; br2: 152960; br3: 7436">(4/4)</span>      :         while (cur &lt; end &amp;&amp; !isDelimiter(*cur))</span></span>
-<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">      152945            :             cur++;</span></span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">      168536 <span class="branchAll" title="br0: 160599; br1: 7951; br2: 153166; br3: 7433">(4/4)</span>      :         while (cur &lt; end &amp;&amp; !isDelimiter(*cur))</span></span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">      153175            :             cur++;</span></span>
 <span id="L436"><span class="lineNum">     436</span>                         : </span>
-<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">       15358            :         splitOut.add(UnownedStringSlice(start, cur));</span></span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">       15361            :         splitOut.add(UnownedStringSlice(start, cur));</span></span>
 <span id="L438"><span class="lineNum">     438</span>                         : </span>
 <span id="L439"><span class="lineNum">     439</span>                         :         // Next</span>
-<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">       15358            :         start = cur + 1;</span></span>
-<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">       15358            :     }</span></span>
+<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">       15361            :         start = cur + 1;</span></span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">       15361            :     }</span></span>
 <span id="L442"><span class="lineNum">     442</span>                         : </span>
 <span id="L443"><span class="lineNum">     443</span>                         :     // Okay if the end is empty. And we aren&#x27;t with a spec like // or c:/ , then drop the final</span>
 <span id="L444"><span class="lineNum">     444</span>                         :     // slash</span>
-<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">        8019 <span class="branchPart" title="br0: 3398; br1: 4621; br2: 0; br3: 3398">(3/4)</span>      :     if (splitOut.getCount() &gt; 1 &amp;&amp; splitOut.getLast().getLength() == 0)</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">        8019 <span class="branchPart" title="br0: 3400; br1: 4622; br2: 0; br3: 3400">(3/4)</span>      :     if (splitOut.getCount() &gt; 1 &amp;&amp; splitOut.getLast().getLength() == 0)</span></span>
 <span id="L446"><span class="lineNum">     446</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L447"><span class="lineNum">     447</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         if (splitOut.getCount() == 2 &amp;&amp; isDriveSpecification(splitOut[0]))</span></span>
 <span id="L448"><span class="lineNum">     448</span> <span class="tlaUNC">           0            :         {</span></span>
@@ -763,22 +763,22 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L472"><span class="lineNum">     472</span>                         :     const UnownedStringSlice&amp; path,</span>
 <span id="L473"><span class="lineNum">     473</span>                         :     SimplifyStyle style,</span>
 <span id="L474"><span class="lineNum">     474</span>                         :     StringBuilder&amp; outPath)</span>
-<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">        6701            : {</span></span>
-<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">        6701 <span class="branchPart" title="br0: 0; br1: 6701">(1/2)</span>      :     if (path.getLength() == 0)</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">        6702            : {</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">        6702 <span class="branchPart" title="br0: 0; br1: 6702">(1/2)</span>      :     if (path.getLength() == 0)</span></span>
 <span id="L477"><span class="lineNum">     477</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L478"><span class="lineNum">     478</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
 <span id="L479"><span class="lineNum">     479</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L480"><span class="lineNum">     480</span>                         : </span>
-<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">        6701            :     List&lt;UnownedStringSlice&gt; splitPath;</span></span>
-<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">        6701            :     split(UnownedStringSlice(path), splitPath);</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">        6702            :     List&lt;UnownedStringSlice&gt; splitPath;</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">        6702            :     split(UnownedStringSlice(path), splitPath);</span></span>
 <span id="L483"><span class="lineNum">     483</span>                         : </span>
-<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">        6701            :     simplify(splitPath);</span></span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">        6702            :     simplify(splitPath);</span></span>
 <span id="L485"><span class="lineNum">     485</span>                         : </span>
-<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">        6701            :     const auto simplifyIntegral = SimplifyIntegral(style);</span></span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">        6702            :     const auto simplifyIntegral = SimplifyIntegral(style);</span></span>
 <span id="L487"><span class="lineNum">     487</span>                         : </span>
 <span id="L488"><span class="lineNum">     488</span>                         :     // If it has a relative part then it&#x27;s not absolute</span>
-<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">        6701 <span class="branchAll" title="br0: 6682; br1: 6720; br2: 4; br3: 6694">(4/4)</span>      :     if ((simplifyIntegral &amp; SimplifyFlag::AbsoluteOnly) &amp;&amp;</span></span>
-<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">        6701 <span class="branchAll" title="br0: 4; br1: 6674">(2/2)</span>      :         splitPath.indexOf(UnownedStringSlice::fromLiteral(&quot;..&quot;)) &gt;= 0)</span></span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">        6702 <span class="branchAll" title="br0: 6683; br1: 6715; br2: 4; br3: 6698">(4/4)</span>      :     if ((simplifyIntegral &amp; SimplifyFlag::AbsoluteOnly) &amp;&amp;</span></span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">        6702 <span class="branchAll" title="br0: 4; br1: 6679">(2/2)</span>      :         splitPath.indexOf(UnownedStringSlice::fromLiteral(&quot;..&quot;)) &gt;= 0)</span></span>
 <span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">           4            :     {</span></span>
 <span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">           4            :         return SLANG_E_NOT_FOUND;</span></span>
 <span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">           4            :     }</span></span>
@@ -791,34 +791,34 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L500"><span class="lineNum">     500</span>                         :     // If we want the path produced such that is *not* output with a root (ie SimplifyFlag::NoRoot)</span>
 <span id="L501"><span class="lineNum">     501</span>                         :     // we detect if we a rooted path (ie in effect starting with &quot;/&quot;) and so splitPath[0] == &quot;&quot;</span>
 <span id="L502"><span class="lineNum">     502</span>                         :     // and remove that part from when doing the join.</span>
-<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">        6697 <span class="branchAll" title="br0: 6695; br1: 10">(2/2)</span>      :     if ((simplifyIntegral &amp; SimplifyFlag::NoRoot) &amp;&amp;</span></span>
-<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">        6697 <span class="branchAll" title="br0: 6683; br1: 16; br2: 240; br3: 6443">(4/4)</span>      :         (splitPath.getCount() &amp;&amp; splitPath[0].getLength() == 0))</span></span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">        6698 <span class="branchAll" title="br0: 6697; br1: 1">(2/2)</span>      :     if ((simplifyIntegral &amp; SimplifyFlag::NoRoot) &amp;&amp;</span></span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">        6698 <span class="branchAll" title="br0: 6684; br1: 13; br2: 240; br3: 6444">(4/4)</span>      :         (splitPath.getCount() &amp;&amp; splitPath[0].getLength() == 0))</span></span>
 <span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">         240            :     {</span></span>
 <span id="L506"><span class="lineNum">     506</span>                         :         // If we allow without a root, we remove from the join</span>
 <span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">         240            :         Path::join(splitPath.getBuffer() + 1, splitPath.getCount() - 1, outPath);</span></span>
 <span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">         240            :     }</span></span>
-<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">        6457            :     else</span></span>
-<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">        6457            :     {</span></span>
-<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">        6457            :         Path::join(splitPath.getBuffer(), splitPath.getCount(), outPath);</span></span>
-<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">        6457            :     }</span></span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">        6458            :     else</span></span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">        6458            :     {</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">        6458            :         Path::join(splitPath.getBuffer(), splitPath.getCount(), outPath);</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">        6458            :     }</span></span>
 <span id="L513"><span class="lineNum">     513</span>                         : </span>
-<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">        6697            :     return SLANG_OK;</span></span>
-<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">        6701            : }</span></span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">        6698            :     return SLANG_OK;</span></span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">        6702            : }</span></span>
 <span id="L516"><span class="lineNum">     516</span>                         : </span>
 <span id="L517"><span class="lineNum">     517</span>                         : /* static */ void Path::simplify(List&lt;UnownedStringSlice&gt;&amp; ioSplit)</span>
-<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">        7917            : {</span></span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">        7916            : {</span></span>
 <span id="L519"><span class="lineNum">     519</span>                         :     // Strictly speaking we could do something about case on platforms like window, but here we</span>
 <span id="L520"><span class="lineNum">     520</span>                         :     // won&#x27;t worry about that</span>
-<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">       22718 <span class="branchAll" title="br0: 14801; br1: 7917">(2/2)</span>      :     for (Index i = 0; i &lt; ioSplit.getCount(); i++)</span></span>
-<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       14801            :     {</span></span>
-<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       14801            :         const UnownedStringSlice&amp; cur = ioSplit[i];</span></span>
-<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">       14801 <span class="branchAll" title="br0: 1028; br1: 13773; br2: 721; br3: 307">(4/4)</span>      :         if (cur == &quot;.&quot; &amp;&amp; ioSplit.getCount() &gt; 1)</span></span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">       22717 <span class="branchAll" title="br0: 14804; br1: 7916">(2/2)</span>      :     for (Index i = 0; i &lt; ioSplit.getCount(); i++)</span></span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       14804            :     {</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       14804            :         const UnownedStringSlice&amp; cur = ioSplit[i];</span></span>
+<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">       14804 <span class="branchAll" title="br0: 1029; br1: 13775; br2: 721; br3: 308">(4/4)</span>      :         if (cur == &quot;.&quot; &amp;&amp; ioSplit.getCount() &gt; 1)</span></span>
 <span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">         721            :         {</span></span>
 <span id="L526"><span class="lineNum">     526</span>                         :             // Just remove it</span>
 <span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">         721            :             ioSplit.removeAt(i);</span></span>
 <span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">         721            :             i--;</span></span>
 <span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">         721            :         }</span></span>
-<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">       14080 <span class="branchAll" title="br0: 210; br1: 13870; br2: 204; br3: 6">(4/4)</span>      :         else if (cur == &quot;..&quot; &amp;&amp; i &gt; 0)</span></span>
+<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">       14083 <span class="branchAll" title="br0: 210; br1: 13873; br2: 204; br3: 6">(4/4)</span>      :         else if (cur == &quot;..&quot; &amp;&amp; i &gt; 0)</span></span>
 <span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">         204            :         {</span></span>
 <span id="L532"><span class="lineNum">     532</span>                         :             // Can we remove this and the one before ?</span>
 <span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">         204            :             UnownedStringSlice&amp; before = ioSplit[i - 1];</span></span>
@@ -830,27 +830,27 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">         198            :             ioSplit.removeRange(i - 1, 2);</span></span>
 <span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">         198            :             i -= 2;</span></span>
 <span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">         198            :         }</span></span>
-<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">       14801            :     }</span></span>
-<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">        7917            : }</span></span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">       14804            :     }</span></span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">        7916            : }</span></span>
 <span id="L544"><span class="lineNum">     544</span>                         : </span>
 <span id="L545"><span class="lineNum">     545</span>                         : /* static */ void Path::join(const UnownedStringSlice* slices, Index count, StringBuilder&amp; out)</span>
-<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">        7907            : {</span></span>
-<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">        7907            :     out.clear();</span></span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">        7912            : {</span></span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">        7912            :     out.clear();</span></span>
 <span id="L548"><span class="lineNum">     548</span>                         : </span>
-<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">        7907 <span class="branchAll" title="br0: 87; br1: 7820">(2/2)</span>      :     if (count == 0)</span></span>
+<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">        7912 <span class="branchAll" title="br0: 87; br1: 7825">(2/2)</span>      :     if (count == 0)</span></span>
 <span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">          87            :     {</span></span>
 <span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">          87            :         out &lt;&lt; &quot;.&quot;;</span></span>
 <span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">          87            :     }</span></span>
-<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">        7820 <span class="branchPart" title="br0: 5035; br1: 2785; br2: 0; br3: 5035">(3/4)</span>      :     else if (count == 1 &amp;&amp; slices[0].getLength() == 0)</span></span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">        7825 <span class="branchPart" title="br0: 5036; br1: 2789; br2: 0; br3: 5036">(3/4)</span>      :     else if (count == 1 &amp;&amp; slices[0].getLength() == 0)</span></span>
 <span id="L554"><span class="lineNum">     554</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L555"><span class="lineNum">     555</span>                         :         // It&#x27;s the root</span>
 <span id="L556"><span class="lineNum">     556</span> <span class="tlaUNC">           0            :         out &lt;&lt; kPathDelimiter;</span></span>
 <span id="L557"><span class="lineNum">     557</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">        7820            :     else</span></span>
-<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">        7820            :     {</span></span>
-<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">        7820            :         StringUtil::join(slices, count, kPathDelimiter, out);</span></span>
-<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">        7820            :     }</span></span>
-<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">        7907            : }</span></span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">        7825            :     else</span></span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">        7825            :     {</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">        7825            :         StringUtil::join(slices, count, kPathDelimiter, out);</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">        7825            :     }</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">        7912            : }</span></span>
 <span id="L563"><span class="lineNum">     563</span>                         : </span>
 <span id="L564"><span class="lineNum">     564</span>                         : </span>
 <span id="L565"><span class="lineNum">     565</span>                         : /* static */ String Path::simplify(const UnownedStringSlice&amp; path)</span>
@@ -866,13 +866,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">        1216            : }</span></span>
 <span id="L576"><span class="lineNum">     576</span>                         : </span>
 <span id="L577"><span class="lineNum">     577</span>                         : bool Path::createDirectory(const String&amp; path)</span>
-<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">         202            : {</span></span>
+<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">         219            : {</span></span>
 <span id="L579"><span class="lineNum">     579</span>                         : #if defined(_WIN32)</span>
 <span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">           1            :     return _wmkdir(path.toWString()) == 0;</span></span>
 <span id="L581"><span class="lineNum">     581</span>                         : #else</span>
-<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">         202            :     return mkdir(path.getBuffer(), 0777) == 0;</span></span>
-<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">         202            : #endif</span></span>
-<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">         202            : }</span></span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">         219            :     return mkdir(path.getBuffer(), 0777) == 0;</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">         219            : #endif</span></span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">         219            : }</span></span>
 <span id="L585"><span class="lineNum">     585</span>                         : </span>
 <span id="L586"><span class="lineNum">     586</span>                         : bool Path::createDirectoryRecursive(const String&amp; path)</span>
 <span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">         346            : {</span></span>
@@ -888,36 +888,36 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L597"><span class="lineNum">     597</span>                         :     // not, we will create all the directories from back of the list.</span>
 <span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">         346            :     String parentDir = finalPath;</span></span>
 <span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">         346            :     for (;;)</span></span>
-<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">         531            :     {</span></span>
-<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">         531 <span class="branchAll" title="br0: 5; br1: 526; br2: 341; br3: 185">(4/4)</span>      :         if (parentDir.getLength() == 0 || File::exists(parentDir))</span></span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">         548            :     {</span></span>
+<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">         548 <span class="branchAll" title="br0: 5; br1: 543; br2: 341; br3: 202">(4/4)</span>      :         if (parentDir.getLength() == 0 || File::exists(parentDir))</span></span>
 <span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">         346            :         {</span></span>
 <span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">         346            :             break;</span></span>
 <span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">         346            :         }</span></span>
-<span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC">         185            :         else</span></span>
-<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">         185            :         {</span></span>
-<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">         185            :             pathList.add(parentDir);</span></span>
-<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">         185            :             parentDir = Path::getParentDirectory(parentDir);</span></span>
-<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">         185            :         }</span></span>
-<span id="L610"><span class="lineNum">     610</span> <span class="tlaGNC">         531            :     }</span></span>
+<span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC">         202            :         else</span></span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">         202            :         {</span></span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">         202            :             pathList.add(parentDir);</span></span>
+<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">         202            :             parentDir = Path::getParentDirectory(parentDir);</span></span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">         202            :         }</span></span>
+<span id="L610"><span class="lineNum">     610</span> <span class="tlaGNC">         548            :     }</span></span>
 <span id="L611"><span class="lineNum">     611</span>                         : </span>
 <span id="L612"><span class="lineNum">     612</span>                         :     // If there are no directories to create, then we are done</span>
-<span id="L613"><span class="lineNum">     613</span> <span class="tlaGNC">         346 <span class="branchAll" title="br0: 185; br1: 180">(2/2)</span>      :     if (pathList.getCount() == 0)</span></span>
-<span id="L614"><span class="lineNum">     614</span> <span class="tlaGNC">         185            :     {</span></span>
-<span id="L615"><span class="lineNum">     615</span> <span class="tlaGNC">         185            :         return true;</span></span>
-<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">         185            :     }</span></span>
+<span id="L613"><span class="lineNum">     613</span> <span class="tlaGNC">         346 <span class="branchAll" title="br0: 176; br1: 197">(2/2)</span>      :     if (pathList.getCount() == 0)</span></span>
+<span id="L614"><span class="lineNum">     614</span> <span class="tlaGNC">         176            :     {</span></span>
+<span id="L615"><span class="lineNum">     615</span> <span class="tlaGNC">         176            :         return true;</span></span>
+<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">         176            :     }</span></span>
 <span id="L617"><span class="lineNum">     617</span>                         : </span>
 <span id="L618"><span class="lineNum">     618</span>                         :     // Traverse from back of the list, because that is most outer directory.</span>
-<span id="L619"><span class="lineNum">     619</span> <span class="tlaGNC">         180            :     Int i = 0;</span></span>
-<span id="L620"><span class="lineNum">     620</span> <span class="tlaGNC">         365 <span class="branchAll" title="br0: 185; br1: 180">(2/2)</span>      :     for (i = pathList.getCount() - 1; i &gt;= 0; i--)</span></span>
-<span id="L621"><span class="lineNum">     621</span> <span class="tlaGNC">         185            :     {</span></span>
-<span id="L622"><span class="lineNum">     622</span> <span class="tlaGNC">         185 <span class="branchPart" title="br0: 0; br1: 185">(1/2)</span>      :         if (!createDirectory(pathList[i]))</span></span>
+<span id="L619"><span class="lineNum">     619</span> <span class="tlaGNC">         197            :     Int i = 0;</span></span>
+<span id="L620"><span class="lineNum">     620</span> <span class="tlaGNC">         399 <span class="branchAll" title="br0: 202; br1: 197">(2/2)</span>      :     for (i = pathList.getCount() - 1; i &gt;= 0; i--)</span></span>
+<span id="L621"><span class="lineNum">     621</span> <span class="tlaGNC">         202            :     {</span></span>
+<span id="L622"><span class="lineNum">     622</span> <span class="tlaGNC">         202 <span class="branchPart" title="br0: 0; br1: 202">(1/2)</span>      :         if (!createDirectory(pathList[i]))</span></span>
 <span id="L623"><span class="lineNum">     623</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L624"><span class="lineNum">     624</span> <span class="tlaUNC">           0            :             break;</span></span>
 <span id="L625"><span class="lineNum">     625</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">         185            :     }</span></span>
+<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">         202            :     }</span></span>
 <span id="L627"><span class="lineNum">     627</span>                         : </span>
 <span id="L628"><span class="lineNum">     628</span>                         :     // Something wrong when creating parent directories</span>
-<span id="L629"><span class="lineNum">     629</span> <span class="tlaGNC">         180 <span class="branchPart" title="br0: 0; br1: 180">(1/2)</span>      :     if (i &gt; 0)</span></span>
+<span id="L629"><span class="lineNum">     629</span> <span class="tlaGNC">         197 <span class="branchPart" title="br0: 0; br1: 197">(1/2)</span>      :     if (i &gt; 0)</span></span>
 <span id="L630"><span class="lineNum">     630</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L631"><span class="lineNum">     631</span>                         :         // Remove the directories if we&#x27;ve created</span>
 <span id="L632"><span class="lineNum">     632</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (i != pathList.getCount() - 1)</span></span>
@@ -926,11 +926,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L635"><span class="lineNum">     635</span> <span class="tlaUNC">           0            :         return false;</span></span>
 <span id="L636"><span class="lineNum">     636</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L637"><span class="lineNum">     637</span>                         : </span>
-<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">         180            :     return true;</span></span>
-<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">         180            : }</span></span>
+<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">         197            :     return true;</span></span>
+<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">         197            : }</span></span>
 <span id="L640"><span class="lineNum">     640</span>                         : </span>
 <span id="L641"><span class="lineNum">     641</span>                         : /* static */ SlangResult Path::getPathType(const String&amp; path, SlangPathType* pathTypeOut)</span>
-<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">       58275            : {</span></span>
+<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">       58241            : {</span></span>
 <span id="L643"><span class="lineNum">     643</span>                         : #ifdef _WIN32</span>
 <span id="L644"><span class="lineNum">     644</span>                         :     // https://msdn.microsoft.com/en-us/library/14h5k7ff.aspx</span>
 <span id="L645"><span class="lineNum">     645</span>                         :     struct _stat64 statVar;</span>
@@ -951,29 +951,29 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L660"><span class="lineNum">     660</span>                         : </span>
 <span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">           1            :     return SLANG_E_NOT_FOUND;</span></span>
 <span id="L662"><span class="lineNum">     662</span>                         : #else</span>
-<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">       58275            :     struct stat statVar;</span></span>
-<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">       58275 <span class="branchAll" title="br0: 58257; br1: 18">(2/2)</span>      :     if (::stat(path.getBuffer(), &amp;statVar) == 0)</span></span>
-<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">       58257            :     {</span></span>
-<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">       58257 <span class="branchAll" title="br0: 24; br1: 58233">(2/2)</span>      :         if (S_ISDIR(statVar.st_mode))</span></span>
+<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">       58241            :     struct stat statVar;</span></span>
+<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">       58241 <span class="branchAll" title="br0: 58223; br1: 18">(2/2)</span>      :     if (::stat(path.getBuffer(), &amp;statVar) == 0)</span></span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">       58223            :     {</span></span>
+<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">       58223 <span class="branchAll" title="br0: 24; br1: 58199">(2/2)</span>      :         if (S_ISDIR(statVar.st_mode))</span></span>
 <span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">          24            :         {</span></span>
 <span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">          24            :             *pathTypeOut = SLANG_PATH_TYPE_DIRECTORY;</span></span>
 <span id="L669"><span class="lineNum">     669</span> <span class="tlaGNC">          24            :             return SLANG_OK;</span></span>
 <span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">          24            :         }</span></span>
-<span id="L671"><span class="lineNum">     671</span> <span class="tlaGNC">       58233 <span class="branchPart" title="br0: 58233; br1: 0">(1/2)</span>      :         if (S_ISREG(statVar.st_mode))</span></span>
-<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">       58233            :         {</span></span>
-<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">       58233            :             *pathTypeOut = SLANG_PATH_TYPE_FILE;</span></span>
-<span id="L674"><span class="lineNum">     674</span> <span class="tlaGNC">       58233            :             return SLANG_OK;</span></span>
-<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">       58233            :         }</span></span>
+<span id="L671"><span class="lineNum">     671</span> <span class="tlaGNC">       58199 <span class="branchPart" title="br0: 58199; br1: 0">(1/2)</span>      :         if (S_ISREG(statVar.st_mode))</span></span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">       58199            :         {</span></span>
+<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">       58199            :             *pathTypeOut = SLANG_PATH_TYPE_FILE;</span></span>
+<span id="L674"><span class="lineNum">     674</span> <span class="tlaGNC">       58199            :             return SLANG_OK;</span></span>
+<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">       58199            :         }</span></span>
 <span id="L676"><span class="lineNum">     676</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
-<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">       58233            :     }</span></span>
+<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">       58199            :     }</span></span>
 <span id="L678"><span class="lineNum">     678</span>                         : </span>
 <span id="L679"><span class="lineNum">     679</span> <span class="tlaGNC">          18            :     return SLANG_E_NOT_FOUND;</span></span>
-<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">       58275            : #endif</span></span>
-<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">       58275            : }</span></span>
+<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">       58241            : #endif</span></span>
+<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">       58241            : }</span></span>
 <span id="L682"><span class="lineNum">     682</span>                         : </span>
 <span id="L683"><span class="lineNum">     683</span>                         : </span>
 <span id="L684"><span class="lineNum">     684</span>                         : /* static */ SlangResult Path::getCanonical(const String&amp; path, String&amp; canonicalPathOut)</span>
-<span id="L685"><span class="lineNum">     685</span> <span class="tlaGNC">       45129            : {</span></span>
+<span id="L685"><span class="lineNum">     685</span> <span class="tlaGNC">       45113            : {</span></span>
 <span id="L686"><span class="lineNum">     686</span>                         : #if defined(_WIN32)</span>
 <span id="L687"><span class="lineNum">     687</span>                         :     // https://msdn.microsoft.com/en-us/library/506720ff.aspx</span>
 <span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">           1            :     wchar_t* absPath = ::_wfullpath(nullptr, path.toWString(), 0);</span></span>
@@ -986,17 +986,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L695"><span class="lineNum">     695</span> <span class="tlaGNC">           1            :     ::free(absPath);</span></span>
 <span id="L696"><span class="lineNum">     696</span> <span class="tlaGNC">           1            :     return SLANG_OK;</span></span>
 <span id="L697"><span class="lineNum">     697</span>                         : #else</span>
-<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">       45129            : #if 1</span></span>
+<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">       45113            : #if 1</span></span>
 <span id="L699"><span class="lineNum">     699</span>                         : </span>
 <span id="L700"><span class="lineNum">     700</span>                         :     // http://man7.org/linux/man-pages/man3/realpath.3.html</span>
-<span id="L701"><span class="lineNum">     701</span> <span class="tlaGNC">       45129            :     char* canonicalPath = ::realpath(path.begin(), nullptr);</span></span>
-<span id="L702"><span class="lineNum">     702</span> <span class="tlaGNC">       45129 <span class="branchAll" title="br0: 35423; br1: 9706">(2/2)</span>      :     if (canonicalPath)</span></span>
-<span id="L703"><span class="lineNum">     703</span> <span class="tlaGNC">       35423            :     {</span></span>
-<span id="L704"><span class="lineNum">     704</span> <span class="tlaGNC">       35423            :         canonicalPathOut = canonicalPath;</span></span>
-<span id="L705"><span class="lineNum">     705</span> <span class="tlaGNC">       35423            :         ::free(canonicalPath);</span></span>
-<span id="L706"><span class="lineNum">     706</span> <span class="tlaGNC">       35423            :         return SLANG_OK;</span></span>
-<span id="L707"><span class="lineNum">     707</span> <span class="tlaGNC">       35423            :     }</span></span>
-<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">        9706            :     return SLANG_FAIL;</span></span>
+<span id="L701"><span class="lineNum">     701</span> <span class="tlaGNC">       45113            :     char* canonicalPath = ::realpath(path.begin(), nullptr);</span></span>
+<span id="L702"><span class="lineNum">     702</span> <span class="tlaGNC">       45113 <span class="branchAll" title="br0: 35411; br1: 9702">(2/2)</span>      :     if (canonicalPath)</span></span>
+<span id="L703"><span class="lineNum">     703</span> <span class="tlaGNC">       35411            :     {</span></span>
+<span id="L704"><span class="lineNum">     704</span> <span class="tlaGNC">       35411            :         canonicalPathOut = canonicalPath;</span></span>
+<span id="L705"><span class="lineNum">     705</span> <span class="tlaGNC">       35411            :         ::free(canonicalPath);</span></span>
+<span id="L706"><span class="lineNum">     706</span> <span class="tlaGNC">       35411            :         return SLANG_OK;</span></span>
+<span id="L707"><span class="lineNum">     707</span> <span class="tlaGNC">       35411            :     }</span></span>
+<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">        9702            :     return SLANG_FAIL;</span></span>
 <span id="L709"><span class="lineNum">     709</span>                         : #else</span>
 <span id="L710"><span class="lineNum">     710</span>                         :     // This is a mechanism to get an approximation of canonical path if we don&#x27;t have &#x27;realpath&#x27;</span>
 <span id="L711"><span class="lineNum">     711</span>                         :     // We only can get if the file exists. This checks that the ../. etc are really valid</span>
@@ -1025,8 +1025,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L734"><span class="lineNum">     734</span>                         :         return SLANG_OK;</span>
 <span id="L735"><span class="lineNum">     735</span>                         :     }</span>
 <span id="L736"><span class="lineNum">     736</span>                         : #endif</span>
-<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">       45129            : #endif</span></span>
-<span id="L738"><span class="lineNum">     738</span> <span class="tlaGNC">       45129            : }</span></span>
+<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">       45113            : #endif</span></span>
+<span id="L738"><span class="lineNum">     738</span> <span class="tlaGNC">       45113            : }</span></span>
 <span id="L739"><span class="lineNum">     739</span>                         : </span>
 <span id="L740"><span class="lineNum">     740</span>                         : String Path::getCurrentPath()</span>
 <span id="L741"><span class="lineNum">     741</span> <span class="tlaGNC">          54            : {</span></span>
@@ -1053,7 +1053,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L762"><span class="lineNum">     762</span> <span class="tlaGNC">         227            : }</span></span>
 <span id="L763"><span class="lineNum">     763</span>                         : </span>
 <span id="L764"><span class="lineNum">     764</span>                         : SlangResult Path::remove(const String&amp; path)</span>
-<span id="L765"><span class="lineNum">     765</span> <span class="tlaGNC">         762            : {</span></span>
+<span id="L765"><span class="lineNum">     765</span> <span class="tlaGNC">         754            : {</span></span>
 <span id="L766"><span class="lineNum">     766</span>                         : #ifdef _WIN32</span>
 <span id="L767"><span class="lineNum">     767</span>                         :     // Need to determine if its a file or directory</span>
 <span id="L768"><span class="lineNum">     768</span>                         : </span>
@@ -1088,13 +1088,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L797"><span class="lineNum">     797</span> <span class="tlaUNC">           0            :     return SLANG_FAIL;</span></span>
 <span id="L798"><span class="lineNum">     798</span>                         : #else</span>
 <span id="L799"><span class="lineNum">     799</span>                         :     // https://linux.die.net/man/3/remove</span>
-<span id="L800"><span class="lineNum">     800</span> <span class="tlaGNC">         762 <span class="branchAll" title="br0: 736; br1: 26">(2/2)</span>      :     if (::remove(path.getBuffer()) == 0)</span></span>
-<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">         736            :     {</span></span>
-<span id="L802"><span class="lineNum">     802</span> <span class="tlaGNC">         736            :         return SLANG_OK;</span></span>
-<span id="L803"><span class="lineNum">     803</span> <span class="tlaGNC">         736            :     }</span></span>
+<span id="L800"><span class="lineNum">     800</span> <span class="tlaGNC">         754 <span class="branchAll" title="br0: 728; br1: 26">(2/2)</span>      :     if (::remove(path.getBuffer()) == 0)</span></span>
+<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">         728            :     {</span></span>
+<span id="L802"><span class="lineNum">     802</span> <span class="tlaGNC">         728            :         return SLANG_OK;</span></span>
+<span id="L803"><span class="lineNum">     803</span> <span class="tlaGNC">         728            :     }</span></span>
 <span id="L804"><span class="lineNum">     804</span> <span class="tlaGNC">          26            :     return SLANG_FAIL;</span></span>
-<span id="L805"><span class="lineNum">     805</span> <span class="tlaGNC">         762            : #endif</span></span>
-<span id="L806"><span class="lineNum">     806</span> <span class="tlaGNC">         762            : }</span></span>
+<span id="L805"><span class="lineNum">     805</span> <span class="tlaGNC">         754            : #endif</span></span>
+<span id="L806"><span class="lineNum">     806</span> <span class="tlaGNC">         754            : }</span></span>
 <span id="L807"><span class="lineNum">     807</span>                         : </span>
 <span id="L808"><span class="lineNum">     808</span>                         : /* static */ SlangResult Path::removeNonEmpty(const String&amp; path)</span>
 <span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">          24            : {</span></span>
@@ -1204,48 +1204,48 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L913"><span class="lineNum">     913</span>                         : </span>
 <span id="L914"><span class="lineNum">     914</span> <span class="tlaGNC">       10362            :     StringBuilder builder;</span></span>
 <span id="L915"><span class="lineNum">     915</span> <span class="tlaGNC">       10362            :     for (;;)</span></span>
-<span id="L916"><span class="lineNum">     916</span> <span class="tlaGNC">      343636            :     {</span></span>
-<span id="L917"><span class="lineNum">     917</span> <span class="tlaGNC">      343636            :         dirent* entry = readdir(directory);</span></span>
-<span id="L918"><span class="lineNum">     918</span> <span class="tlaGNC">      343636 <span class="branchAll" title="br0: 10362; br1: 333274">(2/2)</span>      :         if (entry == nullptr)</span></span>
+<span id="L916"><span class="lineNum">     916</span> <span class="tlaGNC">      343635            :     {</span></span>
+<span id="L917"><span class="lineNum">     917</span> <span class="tlaGNC">      343635            :         dirent* entry = readdir(directory);</span></span>
+<span id="L918"><span class="lineNum">     918</span> <span class="tlaGNC">      343635 <span class="branchAll" title="br0: 10362; br1: 333273">(2/2)</span>      :         if (entry == nullptr)</span></span>
 <span id="L919"><span class="lineNum">     919</span> <span class="tlaGNC">       10362            :         {</span></span>
 <span id="L920"><span class="lineNum">     920</span> <span class="tlaGNC">       10362            :             break;</span></span>
 <span id="L921"><span class="lineNum">     921</span> <span class="tlaGNC">       10362            :         }</span></span>
 <span id="L922"><span class="lineNum">     922</span>                         : </span>
-<span id="L923"><span class="lineNum">     923</span> <span class="tlaGNC">      333274 <span class="branchAll" title="br0: 10362; br1: 322912; br2: 10362; br3: 312550">(4/4)</span>      :         if (strcmp(entry-&gt;d_name, &quot;.&quot;) == 0 || strcmp(entry-&gt;d_name, &quot;..&quot;) == 0)</span></span>
+<span id="L923"><span class="lineNum">     923</span> <span class="tlaGNC">      333273 <span class="branchAll" title="br0: 10362; br1: 322911; br2: 10362; br3: 312549">(4/4)</span>      :         if (strcmp(entry-&gt;d_name, &quot;.&quot;) == 0 || strcmp(entry-&gt;d_name, &quot;..&quot;) == 0)</span></span>
 <span id="L924"><span class="lineNum">     924</span> <span class="tlaGNC">       20724            :         {</span></span>
 <span id="L925"><span class="lineNum">     925</span> <span class="tlaGNC">       20724            :             continue;</span></span>
 <span id="L926"><span class="lineNum">     926</span> <span class="tlaGNC">       20724            :         }</span></span>
 <span id="L927"><span class="lineNum">     927</span>                         : </span>
 <span id="L928"><span class="lineNum">     928</span>                         :         // If there is a pattern, check if it matches, and if it doesn&#x27;t ignore it</span>
-<span id="L929"><span class="lineNum">     929</span> <span class="tlaGNC">      312550 <span class="branchAll" title="br0: 922; br1: 311628; br2: 920; br3: 2">(4/4)</span>      :         if (pattern &amp;&amp; fnmatch(pattern, entry-&gt;d_name, 0) != 0)</span></span>
+<span id="L929"><span class="lineNum">     929</span> <span class="tlaGNC">      312549 <span class="branchAll" title="br0: 922; br1: 311627; br2: 920; br3: 2">(4/4)</span>      :         if (pattern &amp;&amp; fnmatch(pattern, entry-&gt;d_name, 0) != 0)</span></span>
 <span id="L930"><span class="lineNum">     930</span> <span class="tlaGNC">         920            :         {</span></span>
 <span id="L931"><span class="lineNum">     931</span> <span class="tlaGNC">         920            :             continue;</span></span>
 <span id="L932"><span class="lineNum">     932</span> <span class="tlaGNC">         920            :         }</span></span>
 <span id="L933"><span class="lineNum">     933</span>                         : </span>
-<span id="L934"><span class="lineNum">     934</span> <span class="tlaGNC">      311630            :         const UnownedStringSlice filename(entry-&gt;d_name);</span></span>
+<span id="L934"><span class="lineNum">     934</span> <span class="tlaGNC">      311629            :         const UnownedStringSlice filename(entry-&gt;d_name);</span></span>
 <span id="L935"><span class="lineNum">     935</span>                         : </span>
 <span id="L936"><span class="lineNum">     936</span>                         :         // Produce the full path, to do stat</span>
-<span id="L937"><span class="lineNum">     937</span> <span class="tlaGNC">      311630            :         Path::combineIntoBuilder(directoryPath.getUnownedSlice(), filename, builder);</span></span>
+<span id="L937"><span class="lineNum">     937</span> <span class="tlaGNC">      311629            :         Path::combineIntoBuilder(directoryPath.getUnownedSlice(), filename, builder);</span></span>
 <span id="L938"><span class="lineNum">     938</span>                         : </span>
 <span id="L939"><span class="lineNum">     939</span>                         :         //    fprintf(stderr, &quot;stat(%s)\n&quot;, path.getBuffer());</span>
-<span id="L940"><span class="lineNum">     940</span> <span class="tlaGNC">      311630            :         struct stat fileInfo;</span></span>
-<span id="L941"><span class="lineNum">     941</span> <span class="tlaGNC">      311630 <span class="branchPart" title="br0: 0; br1: 311630">(1/2)</span>      :         if (stat(builder.getBuffer(), &amp;fileInfo) != 0)</span></span>
+<span id="L940"><span class="lineNum">     940</span> <span class="tlaGNC">      311629            :         struct stat fileInfo;</span></span>
+<span id="L941"><span class="lineNum">     941</span> <span class="tlaGNC">      311629 <span class="branchPart" title="br0: 0; br1: 311629">(1/2)</span>      :         if (stat(builder.getBuffer(), &amp;fileInfo) != 0)</span></span>
 <span id="L942"><span class="lineNum">     942</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L943"><span class="lineNum">     943</span> <span class="tlaUNC">           0            :             continue;</span></span>
 <span id="L944"><span class="lineNum">     944</span> <span class="tlaUNC">           0            :         }</span></span>
 <span id="L945"><span class="lineNum">     945</span>                         : </span>
-<span id="L946"><span class="lineNum">     946</span> <span class="tlaGNC">      311630            :         Type type = Type::Unknown;</span></span>
-<span id="L947"><span class="lineNum">     947</span> <span class="tlaGNC">      311630 <span class="branchAll" title="br0: 10218; br1: 301412">(2/2)</span>      :         if (S_ISDIR(fileInfo.st_mode))</span></span>
-<span id="L948"><span class="lineNum">     948</span> <span class="tlaGNC">       10218            :         {</span></span>
-<span id="L949"><span class="lineNum">     949</span> <span class="tlaGNC">       10218            :             type = Type::Directory;</span></span>
-<span id="L950"><span class="lineNum">     950</span> <span class="tlaGNC">       10218            :         }</span></span>
+<span id="L946"><span class="lineNum">     946</span> <span class="tlaGNC">      311629            :         Type type = Type::Unknown;</span></span>
+<span id="L947"><span class="lineNum">     947</span> <span class="tlaGNC">      311629 <span class="branchAll" title="br0: 10217; br1: 301412">(2/2)</span>      :         if (S_ISDIR(fileInfo.st_mode))</span></span>
+<span id="L948"><span class="lineNum">     948</span> <span class="tlaGNC">       10217            :         {</span></span>
+<span id="L949"><span class="lineNum">     949</span> <span class="tlaGNC">       10217            :             type = Type::Directory;</span></span>
+<span id="L950"><span class="lineNum">     950</span> <span class="tlaGNC">       10217            :         }</span></span>
 <span id="L951"><span class="lineNum">     951</span> <span class="tlaGNC">      301412 <span class="branchPart" title="br0: 301412; br1: 0">(1/2)</span>      :         else if (S_ISREG(fileInfo.st_mode))</span></span>
 <span id="L952"><span class="lineNum">     952</span> <span class="tlaGNC">      301412            :         {</span></span>
 <span id="L953"><span class="lineNum">     953</span> <span class="tlaGNC">      301412            :             type = Type::File;</span></span>
 <span id="L954"><span class="lineNum">     954</span> <span class="tlaGNC">      301412            :         }</span></span>
 <span id="L955"><span class="lineNum">     955</span>                         : </span>
-<span id="L956"><span class="lineNum">     956</span> <span class="tlaGNC">      311630            :         visitor-&gt;accept(type, filename);</span></span>
-<span id="L957"><span class="lineNum">     957</span> <span class="tlaGNC">      311630            :     }</span></span>
+<span id="L956"><span class="lineNum">     956</span> <span class="tlaGNC">      311629            :         visitor-&gt;accept(type, filename);</span></span>
+<span id="L957"><span class="lineNum">     957</span> <span class="tlaGNC">      311629            :     }</span></span>
 <span id="L958"><span class="lineNum">     958</span>                         : </span>
 <span id="L959"><span class="lineNum">     959</span> <span class="tlaGNC">       10362            :     closedir(directory);</span></span>
 <span id="L960"><span class="lineNum">     960</span> <span class="tlaGNC">       10362            :     return SLANG_OK;</span></span>
@@ -1446,46 +1446,46 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1155"><span class="lineNum">    1155</span> <span class="tlaGNC">          64            : }</span></span>
 <span id="L1156"><span class="lineNum">    1156</span>                         : </span>
 <span id="L1157"><span class="lineNum">    1157</span>                         : SlangResult File::readAllBytes(const String&amp; path, ScopedAllocation&amp; out)</span>
-<span id="L1158"><span class="lineNum">    1158</span> <span class="tlaGNC">       17998            : {</span></span>
-<span id="L1159"><span class="lineNum">    1159</span> <span class="tlaGNC">       17998            :     FileStream stream;</span></span>
-<span id="L1160"><span class="lineNum">    1160</span> <span class="tlaGNC">       17998 <span class="branchAll" title="br0: 14; br1: 17984">(2/2)</span>      :     SLANG_RETURN_ON_FAIL(stream.init(path, FileMode::Open, FileAccess::Read, FileShare::ReadWrite));</span></span>
+<span id="L1158"><span class="lineNum">    1158</span> <span class="tlaGNC">       17996            : {</span></span>
+<span id="L1159"><span class="lineNum">    1159</span> <span class="tlaGNC">       17996            :     FileStream stream;</span></span>
+<span id="L1160"><span class="lineNum">    1160</span> <span class="tlaGNC">       17996 <span class="branchAll" title="br0: 14; br1: 17982">(2/2)</span>      :     SLANG_RETURN_ON_FAIL(stream.init(path, FileMode::Open, FileAccess::Read, FileShare::ReadWrite));</span></span>
 <span id="L1161"><span class="lineNum">    1161</span>                         : </span>
-<span id="L1162"><span class="lineNum">    1162</span> <span class="tlaGNC">       17984            :     const Int64 start = stream.getPosition();</span></span>
-<span id="L1163"><span class="lineNum">    1163</span> <span class="tlaGNC">       17984            :     stream.seek(SeekOrigin::End, 0);</span></span>
-<span id="L1164"><span class="lineNum">    1164</span> <span class="tlaGNC">       17984            :     const Int64 end = stream.getPosition();</span></span>
-<span id="L1165"><span class="lineNum">    1165</span> <span class="tlaGNC">       17984            :     stream.seek(SeekOrigin::Start, start);</span></span>
+<span id="L1162"><span class="lineNum">    1162</span> <span class="tlaGNC">       17982            :     const Int64 start = stream.getPosition();</span></span>
+<span id="L1163"><span class="lineNum">    1163</span> <span class="tlaGNC">       17982            :     stream.seek(SeekOrigin::End, 0);</span></span>
+<span id="L1164"><span class="lineNum">    1164</span> <span class="tlaGNC">       17982            :     const Int64 end = stream.getPosition();</span></span>
+<span id="L1165"><span class="lineNum">    1165</span> <span class="tlaGNC">       17982            :     stream.seek(SeekOrigin::Start, start);</span></span>
 <span id="L1166"><span class="lineNum">    1166</span>                         : </span>
-<span id="L1167"><span class="lineNum">    1167</span> <span class="tlaGNC">       17984            :     const Int64 positionSizeInBytes = end - start;</span></span>
+<span id="L1167"><span class="lineNum">    1167</span> <span class="tlaGNC">       17982            :     const Int64 positionSizeInBytes = end - start;</span></span>
 <span id="L1168"><span class="lineNum">    1168</span>                         : </span>
-<span id="L1169"><span class="lineNum">    1169</span> <span class="tlaGNC">       17984 <span class="branchPart" title="br0: 0; br1: 17984">(1/2)</span>      :     if (UInt64(positionSizeInBytes) &gt; UInt64(~size_t(0)))</span></span>
+<span id="L1169"><span class="lineNum">    1169</span> <span class="tlaGNC">       17982 <span class="branchPart" title="br0: 0; br1: 17982">(1/2)</span>      :     if (UInt64(positionSizeInBytes) &gt; UInt64(~size_t(0)))</span></span>
 <span id="L1170"><span class="lineNum">    1170</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L1171"><span class="lineNum">    1171</span>                         :         // It&#x27;s too large to fit in memory.</span>
 <span id="L1172"><span class="lineNum">    1172</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
 <span id="L1173"><span class="lineNum">    1173</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L1174"><span class="lineNum">    1174</span>                         : </span>
-<span id="L1175"><span class="lineNum">    1175</span> <span class="tlaGNC">       17984            :     const size_t sizeInBytes = size_t(positionSizeInBytes);</span></span>
+<span id="L1175"><span class="lineNum">    1175</span> <span class="tlaGNC">       17982            :     const size_t sizeInBytes = size_t(positionSizeInBytes);</span></span>
 <span id="L1176"><span class="lineNum">    1176</span>                         : </span>
-<span id="L1177"><span class="lineNum">    1177</span> <span class="tlaGNC">       17984            :     void* data = out.allocateTerminated(sizeInBytes);</span></span>
-<span id="L1178"><span class="lineNum">    1178</span> <span class="tlaGNC">       17984 <span class="branchPart" title="br0: 0; br1: 17984">(1/2)</span>      :     if (!data)</span></span>
+<span id="L1177"><span class="lineNum">    1177</span> <span class="tlaGNC">       17982            :     void* data = out.allocateTerminated(sizeInBytes);</span></span>
+<span id="L1178"><span class="lineNum">    1178</span> <span class="tlaGNC">       17982 <span class="branchPart" title="br0: 0; br1: 17982">(1/2)</span>      :     if (!data)</span></span>
 <span id="L1179"><span class="lineNum">    1179</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L1180"><span class="lineNum">    1180</span> <span class="tlaUNC">           0            :         return SLANG_E_OUT_OF_MEMORY;</span></span>
 <span id="L1181"><span class="lineNum">    1181</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L1182"><span class="lineNum">    1182</span>                         : </span>
-<span id="L1183"><span class="lineNum">    1183</span> <span class="tlaGNC">       17984            :     size_t readSizeInBytes;</span></span>
-<span id="L1184"><span class="lineNum">    1184</span> <span class="tlaGNC">       17984 <span class="branchPart" title="br0: 0; br1: 17984">(1/2)</span>      :     SLANG_RETURN_ON_FAIL(stream.read(data, sizeInBytes, readSizeInBytes));</span></span>
+<span id="L1183"><span class="lineNum">    1183</span> <span class="tlaGNC">       17982            :     size_t readSizeInBytes;</span></span>
+<span id="L1184"><span class="lineNum">    1184</span> <span class="tlaGNC">       17982 <span class="branchPart" title="br0: 0; br1: 17982">(1/2)</span>      :     SLANG_RETURN_ON_FAIL(stream.read(data, sizeInBytes, readSizeInBytes));</span></span>
 <span id="L1185"><span class="lineNum">    1185</span>                         : </span>
 <span id="L1186"><span class="lineNum">    1186</span>                         :     // If not all read just return an error</span>
-<span id="L1187"><span class="lineNum">    1187</span> <span class="tlaGNC">       17984 <span class="branchPart" title="br0: 17984; br1: 0">(1/2)</span>      :     return (sizeInBytes == readSizeInBytes) ? SLANG_OK : SLANG_FAIL;</span></span>
-<span id="L1188"><span class="lineNum">    1188</span> <span class="tlaGNC">       17984            : }</span></span>
+<span id="L1187"><span class="lineNum">    1187</span> <span class="tlaGNC">       17982 <span class="branchPart" title="br0: 17982; br1: 0">(1/2)</span>      :     return (sizeInBytes == readSizeInBytes) ? SLANG_OK : SLANG_FAIL;</span></span>
+<span id="L1188"><span class="lineNum">    1188</span> <span class="tlaGNC">       17982            : }</span></span>
 <span id="L1189"><span class="lineNum">    1189</span>                         : </span>
 <span id="L1190"><span class="lineNum">    1190</span>                         : SlangResult File::writeAllBytes(const String&amp; path, const void* data, size_t size)</span>
-<span id="L1191"><span class="lineNum">    1191</span> <span class="tlaGNC">         442            : {</span></span>
-<span id="L1192"><span class="lineNum">    1192</span> <span class="tlaGNC">         442            :     FileStream stream;</span></span>
-<span id="L1193"><span class="lineNum">    1193</span> <span class="tlaGNC">         442 <span class="branchAll" title="br0: 2; br1: 440">(2/2)</span>      :     SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L1194"><span class="lineNum">    1194</span> <span class="tlaGNC">         442            :         stream.init(path, FileMode::Create, FileAccess::Write, FileShare::ReadWrite));</span></span>
-<span id="L1195"><span class="lineNum">    1195</span> <span class="tlaGNC">         440 <span class="branchPart" title="br0: 0; br1: 440">(1/2)</span>      :     SLANG_RETURN_ON_FAIL(stream.write(data, size));</span></span>
-<span id="L1196"><span class="lineNum">    1196</span> <span class="tlaGNC">         440            :     return SLANG_OK;</span></span>
-<span id="L1197"><span class="lineNum">    1197</span> <span class="tlaGNC">         440            : }</span></span>
+<span id="L1191"><span class="lineNum">    1191</span> <span class="tlaGNC">         440            : {</span></span>
+<span id="L1192"><span class="lineNum">    1192</span> <span class="tlaGNC">         440            :     FileStream stream;</span></span>
+<span id="L1193"><span class="lineNum">    1193</span> <span class="tlaGNC">         440 <span class="branchAll" title="br0: 2; br1: 438">(2/2)</span>      :     SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L1194"><span class="lineNum">    1194</span> <span class="tlaGNC">         440            :         stream.init(path, FileMode::Create, FileAccess::Write, FileShare::ReadWrite));</span></span>
+<span id="L1195"><span class="lineNum">    1195</span> <span class="tlaGNC">         438 <span class="branchPart" title="br0: 0; br1: 438">(1/2)</span>      :     SLANG_RETURN_ON_FAIL(stream.write(data, size));</span></span>
+<span id="L1196"><span class="lineNum">    1196</span> <span class="tlaGNC">         438            :     return SLANG_OK;</span></span>
+<span id="L1197"><span class="lineNum">    1197</span> <span class="tlaGNC">         438            : }</span></span>
 <span id="L1198"><span class="lineNum">    1198</span>                         : </span>
 <span id="L1199"><span class="lineNum">    1199</span>                         : SlangResult File::writeAllText(const Slang::String&amp; fileName, const Slang::String&amp; text)</span>
 <span id="L1200"><span class="lineNum">    1200</span> <span class="tlaGNC">        2115            : {</span></span>
