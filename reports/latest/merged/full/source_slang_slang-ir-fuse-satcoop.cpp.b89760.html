@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-27 04:56:53 UTC</td>
+      <td class="headerValue">2026-10-28 05:18:41 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -749,10 +749,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L458"><span class="lineNum">     458</span>                         : // Identify calls which we can fuse</span>
 <span id="L459"><span class="lineNum">     459</span>                         : //</span>
 <span id="L460"><span class="lineNum">     460</span>                         : IRCall* isKnownFunction(KnownBuiltinDeclName expectedNameEnum, IRInst* i)</span>
-<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">     7379225            : {</span></span>
-<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">     7379225            :     auto call = as&lt;IRCall&gt;(i);</span></span>
-<span id="L463"><span class="lineNum">     463</span> <span class="tlaGNC">     7379225 <span class="branchAll" title="br0: 7227307; br1: 151918">(2/2)</span>      :     if (!call)</span></span>
-<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">     7227307            :         return nullptr;</span></span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">     7379263            : {</span></span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">     7379263            :     auto call = as&lt;IRCall&gt;(i);</span></span>
+<span id="L463"><span class="lineNum">     463</span> <span class="tlaGNC">     7379263 <span class="branchAll" title="br0: 7227345; br1: 151918">(2/2)</span>      :     if (!call)</span></span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">     7227345            :         return nullptr;</span></span>
 <span id="L465"><span class="lineNum">     465</span>                         :     // saturated_cooperation is a generic function, so look for specializations thereof</span>
 <span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">      151918            :     auto spec = as&lt;IRSpecialize&gt;(call-&gt;getCallee());</span></span>
 <span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">      151918 <span class="branchAll" title="br0: 83956; br1: 67962">(2/2)</span>      :     if (!spec)</span></span>
@@ -769,9 +769,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">       61830 <span class="branchAll" title="br0: 61382; br1: 448">(2/2)</span>      :     if (!h)</span></span>
 <span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">       61382            :         return nullptr;</span></span>
 <span id="L480"><span class="lineNum">     480</span>                         : </span>
-<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">         448 <span class="branchAll" title="br0: 428; br1: 21">(2/2)</span>      :     if (h-&gt;getName() != expectedNameEnum)</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">         448 <span class="branchAll" title="br0: 428; br1: 22">(2/2)</span>      :     if (h-&gt;getName() != expectedNameEnum)</span></span>
 <span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">         428            :         return nullptr;</span></span>
-<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">          21            :     return call;</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">          22            :     return call;</span></span>
 <span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">         448            : }</span></span>
 <span id="L485"><span class="lineNum">     485</span>                         : </span>
 <span id="L486"><span class="lineNum">     486</span>                         : //</span>
@@ -804,20 +804,20 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L513"><span class="lineNum">     513</span>                         : // We use a fold here rather than accumulating everything at once as it&#x27;s</span>
 <span id="L514"><span class="lineNum">     514</span>                         : // easier to implement fusing for 2 functions than n</span>
 <span id="L515"><span class="lineNum">     515</span>                         : static void fuseCallsInBlock(IRBuilder&amp; builder, IRBlock* block)</span>
-<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">      352903            : {</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">      352905            : {</span></span>
 <span id="L517"><span class="lineNum">     517</span>                         :     // first, inline calls to saturated_cooperation to expose</span>
 <span id="L518"><span class="lineNum">     518</span>                         :     // saturated_cooperation_using which is simpler to fuse.</span>
 <span id="L519"><span class="lineNum">     519</span>                         :     // It is simpler to fuse because it makes explicit the inter-lane</span>
 <span id="L520"><span class="lineNum">     520</span>                         :     // communication functions, which we can use as buiding blocks in our</span>
 <span id="L521"><span class="lineNum">     521</span>                         :     // composition.</span>
 <span id="L522"><span class="lineNum">     522</span>                         : </span>
-<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">      352903            :     List&lt;IRCall*&gt; toInline;</span></span>
-<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">      352903 <span class="branchAll" title="br0: 3866057; br1: 352903">(2/2)</span>      :     for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">     3866057            :     {</span></span>
-<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">     3866057 <span class="branchAll" title="br0: 10; br1: 3866047">(2/2)</span>      :         if (auto sat_coop = isKnownFunction(KnownBuiltinDeclName::saturated_cooperation, inst))</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">      352905            :     List&lt;IRCall*&gt; toInline;</span></span>
+<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">      352905 <span class="branchAll" title="br0: 3866077; br1: 352905">(2/2)</span>      :     for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">     3866077            :     {</span></span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">     3866077 <span class="branchAll" title="br0: 10; br1: 3866067">(2/2)</span>      :         if (auto sat_coop = isKnownFunction(KnownBuiltinDeclName::saturated_cooperation, inst))</span></span>
 <span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">          10            :             toInline.add(sat_coop);</span></span>
-<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">     3866057            :     }</span></span>
-<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">      352903 <span class="branchAll" title="br0: 10; br1: 352903">(2/2)</span>      :     for (auto c : toInline)</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">     3866077            :     }</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">      352905 <span class="branchAll" title="br0: 10; br1: 352905">(2/2)</span>      :     for (auto c : toInline)</span></span>
 <span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">          10            :         inlineCall(c);</span></span>
 <span id="L531"><span class="lineNum">     531</span>                         : </span>
 <span id="L532"><span class="lineNum">     532</span>                         :     // Walk over the instructions in this block</span>
@@ -826,11 +826,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L535"><span class="lineNum">     535</span>                         :     // instructions with which our first call can&#x27;t be safely reordered</span>
 <span id="L536"><span class="lineNum">     536</span>                         :     // then we remove the first call and replace the second with a fused</span>
 <span id="L537"><span class="lineNum">     537</span>                         :     // call.</span>
-<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">      352903            :     IRCall* lastCall = nullptr;</span></span>
-<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">     3866071 <span class="branchAll" title="br0: 3513168; br1: 352903">(2/2)</span>      :     for (auto inst = block-&gt;getFirstInst(); inst != block-&gt;getTerminator();</span></span>
-<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">     3513168            :          inst = inst-&gt;getNextInst())</span></span>
-<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">     3513168            :     {</span></span>
-<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">     3513168 <span class="branchAll" title="br0: 10; br1: 3513158">(2/2)</span>      :         if (auto call = isKnownFunction(KnownBuiltinDeclName::saturated_cooperation_using, inst))</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">      352905            :     IRCall* lastCall = nullptr;</span></span>
+<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">     3866091 <span class="branchAll" title="br0: 3513186; br1: 352905">(2/2)</span>      :     for (auto inst = block-&gt;getFirstInst(); inst != block-&gt;getTerminator();</span></span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">     3513186            :          inst = inst-&gt;getNextInst())</span></span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">     3513186            :     {</span></span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">     3513186 <span class="branchAll" title="br0: 10; br1: 3513176">(2/2)</span>      :         if (auto call = isKnownFunction(KnownBuiltinDeclName::saturated_cooperation_using, inst))</span></span>
 <span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">          10            :         {</span></span>
 <span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">          10 <span class="branchAll" title="br0: 6; br1: 4">(2/2)</span>      :             if (lastCall)</span></span>
 <span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">           6            :             {</span></span>
@@ -850,14 +850,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">           4            :                 lastCall = call;</span></span>
 <span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">           4            :             }</span></span>
 <span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">          10            :         }</span></span>
-<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">     3513168            :     }</span></span>
-<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">      352903            : }</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">     3513186            :     }</span></span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">      352905            : }</span></span>
 <span id="L564"><span class="lineNum">     564</span>                         : </span>
 <span id="L565"><span class="lineNum">     565</span>                         : void fuseCallsToSaturatedCooperation(IRModule* module)</span>
-<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">       17052            : {</span></span>
-<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">       17052            :     IRBuilder builder(module);</span></span>
-<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">      352903            :     overAllBlocks(module, [&amp;](auto b) { fuseCallsInBlock(builder, b); });</span></span>
-<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">       17052            : }</span></span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">       17054            : {</span></span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">       17054            :     IRBuilder builder(module);</span></span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">      352905            :     overAllBlocks(module, [&amp;](auto b) { fuseCallsInBlock(builder, b); });</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">       17054            : }</span></span>
 <span id="L570"><span class="lineNum">     570</span>                         : </span>
 <span id="L571"><span class="lineNum">     571</span>                         : } // namespace Slang</span>
 </pre>
