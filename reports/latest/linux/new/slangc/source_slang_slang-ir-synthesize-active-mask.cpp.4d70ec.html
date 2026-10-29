@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-28 05:19:05 UTC</td>
+      <td class="headerValue">2026-10-29 04:28:53 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -399,7 +399,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L108"><span class="lineNum">     108</span>                         :     IRType* m_maskType;</span>
 <span id="L109"><span class="lineNum">     109</span>                         : </span>
 <span id="L110"><span class="lineNum">     110</span>                         :     void processModule()</span>
-<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">        1705            :     {</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">        1707            :     {</span></span>
 <span id="L112"><span class="lineNum">     112</span>                         :         // We use the plain 32-bit `uint` type masks we</span>
 <span id="L113"><span class="lineNum">     113</span>                         :         // generate here since it matches the current</span>
 <span id="L114"><span class="lineNum">     114</span>                         :         // definition of `WaveMask` in the core module.</span>
@@ -409,8 +409,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L118"><span class="lineNum">     118</span>                         :         // so that the pass is compatible with all targets that</span>
 <span id="L119"><span class="lineNum">     119</span>                         :         // support  a wave mask.</span>
 <span id="L120"><span class="lineNum">     120</span>                         :         //</span>
-<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">        1705            :         IRBuilder builder(m_module);</span></span>
-<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">        1705            :         m_maskType = builder.getBasicType(BaseType::UInt);</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">        1707            :         IRBuilder builder(m_module);</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">        1707            :         m_maskType = builder.getBasicType(BaseType::UInt);</span></span>
 <span id="L123"><span class="lineNum">     123</span>                         : </span>
 <span id="L124"><span class="lineNum">     124</span>                         :         // With the setup out of the way, the job of the module</span>
 <span id="L125"><span class="lineNum">     125</span>                         :         // level pass is simple to describe:</span>
@@ -418,14 +418,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L127"><span class="lineNum">     127</span>                         :         // First we want to identify and mark all of the functions</span>
 <span id="L128"><span class="lineNum">     128</span>                         :         // in the module that use the active mask.</span>
 <span id="L129"><span class="lineNum">     129</span>                         :         //</span>
-<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        1705            :         markFuncsUsingActiveMask();</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        1707            :         markFuncsUsingActiveMask();</span></span>
 <span id="L131"><span class="lineNum">     131</span>                         :         //</span>
 <span id="L132"><span class="lineNum">     132</span>                         :         // Then we want to transform all of those functions that</span>
 <span id="L133"><span class="lineNum">     133</span>                         :         // were marked so that they use an explicitly synthesized</span>
 <span id="L134"><span class="lineNum">     134</span>                         :         // value for the active mask.</span>
 <span id="L135"><span class="lineNum">     135</span>                         :         //</span>
-<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">        1705            :         transformFuncsUsingActiveMask();</span></span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">        1705            :     }</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">        1707            :         transformFuncsUsingActiveMask();</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">        1707            :     }</span></span>
 <span id="L138"><span class="lineNum">     138</span>                         : </span>
 <span id="L139"><span class="lineNum">     139</span>                         :     // During the marking process we will build up a list of functions</span>
 <span id="L140"><span class="lineNum">     140</span>                         :     // that need the active mask, and we will also maintain a set of</span>
@@ -483,7 +483,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">        1477            :     }</span></span>
 <span id="L193"><span class="lineNum">     193</span>                         : </span>
 <span id="L194"><span class="lineNum">     194</span>                         :     void markFuncsUsingActiveMask()</span>
-<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">        1705            :     {</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">        1707            :     {</span></span>
 <span id="L196"><span class="lineNum">     196</span>                         :         // We break down the task of identifying all functions</span>
 <span id="L197"><span class="lineNum">     197</span>                         :         // that use the active mask into two steps.</span>
 <span id="L198"><span class="lineNum">     198</span>                         :         //</span>
@@ -491,7 +491,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L200"><span class="lineNum">     200</span>                         :         // the active mask, by virtuae of having a `getActiveMask`</span>
 <span id="L201"><span class="lineNum">     201</span>                         :         // instruction in their body.</span>
 <span id="L202"><span class="lineNum">     202</span>                         :         //</span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        1705            :         markFuncsDirectlyUsingActiveMaskRec(m_module-&gt;getModuleInst());</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        1707            :         markFuncsDirectlyUsingActiveMaskRec(m_module-&gt;getModuleInst());</span></span>
 <span id="L204"><span class="lineNum">     204</span>                         : </span>
 <span id="L205"><span class="lineNum">     205</span>                         :         // Second, we identify any function that indirectly use</span>
 <span id="L206"><span class="lineNum">     206</span>                         :         // the active mask.</span>
@@ -511,7 +511,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L220"><span class="lineNum">     220</span>                         :         // of the loop, rather than querying it once and using a</span>
 <span id="L221"><span class="lineNum">     221</span>                         :         // variable (or using a range-based `for` loop).</span>
 <span id="L222"><span class="lineNum">     222</span>                         :         //</span>
-<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">        2610 <span class="branchAll" title="br0: 905; br1: 1705">(2/2)</span>      :         for (Index i = 0; i &lt; m_funcsUsingActiveMask.getCount(); ++i)</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">        2612 <span class="branchAll" title="br0: 905; br1: 1707">(2/2)</span>      :         for (Index i = 0; i &lt; m_funcsUsingActiveMask.getCount(); ++i)</span></span>
 <span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">         905            :         {</span></span>
 <span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">         905            :             markAndModifyFuncsIndirectlyUsingActiveMask(m_funcsUsingActiveMask[i]);</span></span>
 <span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         905            :         }</span></span>
@@ -538,26 +538,26 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L247"><span class="lineNum">     247</span>                         :         // its own trade-offs. This is a design question that we aren&#x27;t</span>
 <span id="L248"><span class="lineNum">     248</span>                         :         // really equipped to tackle right now, so the easiest solution</span>
 <span id="L249"><span class="lineNum">     249</span>                         :         // is to defer the decision until we actually need an answer.</span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        1705            :     }</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        1707            :     }</span></span>
 <span id="L251"><span class="lineNum">     251</span>                         : </span>
 <span id="L252"><span class="lineNum">     252</span>                         :     void markFuncsDirectlyUsingActiveMaskRec(IRInst* inst)</span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">     1162103            :     {</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">     1164800            :     {</span></span>
 <span id="L254"><span class="lineNum">     254</span>                         :         // Detecting functions that directly use the active</span>
 <span id="L255"><span class="lineNum">     255</span>                         :         // mask is fairly simple: we recursively walk the</span>
 <span id="L256"><span class="lineNum">     256</span>                         :         // IR module and look for instances of `waveGetActiveMask`</span>
 <span id="L257"><span class="lineNum">     257</span>                         :         // instructions. When we find one we mark the function</span>
 <span id="L258"><span class="lineNum">     258</span>                         :         // that contains it.</span>
 <span id="L259"><span class="lineNum">     259</span>                         : </span>
-<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">     1162103 <span class="branchAll" title="br0: 90; br1: 1162013">(2/2)</span>      :         if (inst-&gt;getOp() == kIROp_WaveGetActiveMask)</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">     1164800 <span class="branchAll" title="br0: 90; br1: 1164710">(2/2)</span>      :         if (inst-&gt;getOp() == kIROp_WaveGetActiveMask)</span></span>
 <span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">          90            :         {</span></span>
 <span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">          90            :             markInstUsingActiveMask(inst);</span></span>
 <span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">          90            :         }</span></span>
 <span id="L264"><span class="lineNum">     264</span>                         : </span>
-<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">     1162103 <span class="branchAll" title="br0: 1160395; br1: 1162103">(2/2)</span>      :         for (auto child : inst-&gt;getChildren())</span></span>
-<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">     1160395            :         {</span></span>
-<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">     1160395            :             markFuncsDirectlyUsingActiveMaskRec(child);</span></span>
-<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">     1160395            :         }</span></span>
-<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">     1162103            :     }</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">     1164800 <span class="branchAll" title="br0: 1163094; br1: 1164800">(2/2)</span>      :         for (auto child : inst-&gt;getChildren())</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">     1163094            :         {</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">     1163094            :             markFuncsDirectlyUsingActiveMaskRec(child);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">     1163094            :         }</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">     1164800            :     }</span></span>
 <span id="L270"><span class="lineNum">     270</span>                         : </span>
 <span id="L271"><span class="lineNum">     271</span>                         :     void markAndModifyFuncsIndirectlyUsingActiveMask(IRFunc* callee)</span>
 <span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">         905            :     {</span></span>
@@ -658,17 +658,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">         903            :     }</span></span>
 <span id="L368"><span class="lineNum">     368</span>                         : </span>
 <span id="L369"><span class="lineNum">     369</span>                         :     void transformFuncsUsingActiveMask()</span>
-<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">        1705            :     {</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">        1707            :     {</span></span>
 <span id="L371"><span class="lineNum">     371</span>                         :         // Once all the functions that need the active mask have</span>
 <span id="L372"><span class="lineNum">     372</span>                         :         // been marked (and all call sites to them have</span>
 <span id="L373"><span class="lineNum">     373</span>                         :         // been modified), we can transform each of the marked</span>
 <span id="L374"><span class="lineNum">     374</span>                         :         // functions one by one.</span>
 <span id="L375"><span class="lineNum">     375</span>                         :         //</span>
-<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">        1705 <span class="branchAll" title="br0: 905; br1: 1705">(2/2)</span>      :         for (auto func : m_funcsUsingActiveMask)</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">        1707 <span class="branchAll" title="br0: 905; br1: 1707">(2/2)</span>      :         for (auto func : m_funcsUsingActiveMask)</span></span>
 <span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">         905            :         {</span></span>
 <span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">         905            :             transformFuncUsingActiveMask(func);</span></span>
 <span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">         905            :         }</span></span>
-<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">        1705            :     }</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">        1707            :     }</span></span>
 <span id="L381"><span class="lineNum">     381</span>                         : </span>
 <span id="L382"><span class="lineNum">     382</span>                         :     // We will get to the details of how we transform each</span>
 <span id="L383"><span class="lineNum">     383</span>                         :     // function shortly, but for now we just forward-declare</span>
@@ -2374,12 +2374,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2083"><span class="lineNum">    2083</span>                         : // the context type for the module-level pass.</span>
 <span id="L2084"><span class="lineNum">    2084</span>                         : //</span>
 <span id="L2085"><span class="lineNum">    2085</span>                         : void synthesizeActiveMask(IRModule* module, DiagnosticSink* sink)</span>
-<span id="L2086"><span class="lineNum">    2086</span> <span class="tlaGNC">        1705            : {</span></span>
-<span id="L2087"><span class="lineNum">    2087</span> <span class="tlaGNC">        1705            :     SynthesizeActiveMaskForModuleContext context;</span></span>
-<span id="L2088"><span class="lineNum">    2088</span> <span class="tlaGNC">        1705            :     context.m_module = module;</span></span>
-<span id="L2089"><span class="lineNum">    2089</span> <span class="tlaGNC">        1705            :     context.m_sink = sink;</span></span>
-<span id="L2090"><span class="lineNum">    2090</span> <span class="tlaGNC">        1705            :     context.processModule();</span></span>
-<span id="L2091"><span class="lineNum">    2091</span> <span class="tlaGNC">        1705            : }</span></span>
+<span id="L2086"><span class="lineNum">    2086</span> <span class="tlaGNC">        1707            : {</span></span>
+<span id="L2087"><span class="lineNum">    2087</span> <span class="tlaGNC">        1707            :     SynthesizeActiveMaskForModuleContext context;</span></span>
+<span id="L2088"><span class="lineNum">    2088</span> <span class="tlaGNC">        1707            :     context.m_module = module;</span></span>
+<span id="L2089"><span class="lineNum">    2089</span> <span class="tlaGNC">        1707            :     context.m_sink = sink;</span></span>
+<span id="L2090"><span class="lineNum">    2090</span> <span class="tlaGNC">        1707            :     context.processModule();</span></span>
+<span id="L2091"><span class="lineNum">    2091</span> <span class="tlaGNC">        1707            : }</span></span>
 <span id="L2092"><span class="lineNum">    2092</span>                         : </span>
 <span id="L2093"><span class="lineNum">    2093</span>                         : } // namespace Slang</span>
 </pre>

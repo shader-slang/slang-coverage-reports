@@ -254,27 +254,27 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-28 05:18:51 UTC</td>
+      <td class="headerValue">2026-10-29 04:28:43 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">39.6&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:39.6%;background-color:hsl(17, 70%, 50%)"></div></div>
-      <span class="metricCounts">38 / 96</span>
+      <span class="metricValue">42.7&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:42.7%;background-color:hsl(18, 70%, 50%)"></div></div>
+      <span class="metricCounts">41 / 96</span>
     </div>
     <div class="metricCard">
       <span class="metricLabel">Functions</span>
-      <span class="metricValue">53.1&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:53.1%;background-color:hsl(23, 70%, 50%)"></div></div>
-      <span class="metricCounts">17 / 32</span>
+      <span class="metricValue">56.2&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:56.2%;background-color:hsl(24, 70%, 50%)"></div></div>
+      <span class="metricCounts">18 / 32</span>
     </div>
     <div class="metricCard">
       <span class="metricLabel">Regions</span>
-      <span class="metricValue">53.1&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:53.1%;background-color:hsl(23, 70%, 50%)"></div></div>
-      <span class="metricCounts">17 / 32</span>
+      <span class="metricValue">56.2&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:56.2%;background-color:hsl(24, 70%, 50%)"></div></div>
+      <span class="metricCounts">18 / 32</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -425,8 +425,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L140"><span class="lineNum">     140</span>              : </span>
 <span id="L141"><span class="lineNum">     141</span>              :     SLANG_NO_THROW SlangResult SLANG_MCALL</span>
 <span id="L142"><span class="lineNum">     142</span>              :     renameEntryPoint(const char* newName, slang::IComponentType** outEntryPoint) SLANG_OVERRIDE</span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaUNC">           0 :     {</span></span>
-<span id="L144"><span class="lineNum">     144</span> <span class="tlaUNC">           0 :         return Super::renameEntryPoint(newName, outEntryPoint);</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">           1 :         return Super::renameEntryPoint(newName, outEntryPoint);</span></span>
 <span id="L145"><span class="lineNum">     145</span> <span class="tlaUNC">           0 :     }</span></span>
 <span id="L146"><span class="lineNum">     146</span>              : </span>
 <span id="L147"><span class="lineNum">     147</span>              :     SLANG_NO_THROW SlangResult SLANG_MCALL</span>
@@ -501,11 +501,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L216"><span class="lineNum">     216</span>              :     /// Get the stage that the entry point is for.</span>
 <span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">           1 :     Stage getStage() { return m_profile.getStage(); }</span></span>
 <span id="L218"><span class="lineNum">     218</span>              : </span>
-<span id="L219"><span class="lineNum">     219</span>              :     /// Get the capability requirements inferred for this entry point as a whole. These can be more</span>
-<span id="L220"><span class="lineNum">     220</span>              :     /// demanding than the underlying `FuncDecl`&#x27;s own requirements, because they add contributions</span>
-<span id="L221"><span class="lineNum">     221</span>              :     /// that only make sense once the function is validated as an entry point for a concrete stage</span>
-<span id="L222"><span class="lineNum">     222</span>              :     /// (e.g. the capability an `SV_` semantic on a parameter requires). Null only for pass-through</span>
-<span id="L223"><span class="lineNum">     223</span>              :     /// / deserialized dummies that carry no `FuncDecl`.</span>
+<span id="L219"><span class="lineNum">     219</span>              :     /// Get the requirements for this entry-point selection, including generic arguments already</span>
+<span id="L220"><span class="lineNum">     220</span>              :     /// applied to its declaration reference and stage-dependent requirements such as semantics.</span>
+<span id="L221"><span class="lineNum">     221</span>              :     /// A later `specialize()` operation stores its requirements in EntryPointSpecializationInfo,</span>
+<span id="L222"><span class="lineNum">     222</span>              :     /// preserving this base entry point for other specializations. Null only for pass-through or</span>
+<span id="L223"><span class="lineNum">     223</span>              :     /// deserialized dummies that carry no FuncDecl.</span>
 <span id="L224"><span class="lineNum">     224</span>              :     CapabilitySetVal* getInferredCapabilityRequirements()</span>
 <span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">           1 :         return m_inferredCapabilityRequirements;</span></span>
@@ -585,66 +585,68 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L300"><span class="lineNum">     300</span>              :     {</span>
 <span id="L301"><span class="lineNum">     301</span>              :     public:</span>
 <span id="L302"><span class="lineNum">     302</span>              :         DeclRef&lt;FuncDecl&gt; specializedFuncDeclRef;</span>
-<span id="L303"><span class="lineNum">     303</span>              :         List&lt;ExpandedSpecializationArg&gt; existentialSpecializationArgs;</span>
-<span id="L304"><span class="lineNum">     304</span>              :     };</span>
-<span id="L305"><span class="lineNum">     305</span>              : </span>
-<span id="L306"><span class="lineNum">     306</span>              :     SLANG_NO_THROW slang::FunctionReflection* SLANG_MCALL getFunctionReflection() SLANG_OVERRIDE</span>
-<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">           1 :         return (slang::FunctionReflection*)m_funcDeclRef.declRefBase;</span></span>
-<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L310"><span class="lineNum">     310</span>              : </span>
-<span id="L311"><span class="lineNum">     311</span>              : protected:</span>
-<span id="L312"><span class="lineNum">     312</span>              :     void acceptVisitor(ComponentTypeVisitor* visitor, SpecializationInfo* specializationInfo)</span>
-<span id="L313"><span class="lineNum">     313</span>              :         SLANG_OVERRIDE;</span>
-<span id="L314"><span class="lineNum">     314</span>              : </span>
-<span id="L315"><span class="lineNum">     315</span>              :     RefPtr&lt;SpecializationInfo&gt; _validateSpecializationArgsImpl(</span>
-<span id="L316"><span class="lineNum">     316</span>              :         SpecializationArg const* args,</span>
-<span id="L317"><span class="lineNum">     317</span>              :         Index argCount,</span>
-<span id="L318"><span class="lineNum">     318</span>              :         Index&amp; outConsumedArgCount,</span>
-<span id="L319"><span class="lineNum">     319</span>              :         DiagnosticSink* sink) SLANG_OVERRIDE;</span>
-<span id="L320"><span class="lineNum">     320</span>              : </span>
-<span id="L321"><span class="lineNum">     321</span>              : private:</span>
-<span id="L322"><span class="lineNum">     322</span>              :     EntryPoint(Linkage* linkage, Name* name, Profile profile, DeclRef&lt;FuncDecl&gt; funcDeclRef);</span>
-<span id="L323"><span class="lineNum">     323</span>              : </span>
-<span id="L324"><span class="lineNum">     324</span>              :     void _collectGenericSpecializationParamsRec(Decl* decl);</span>
-<span id="L325"><span class="lineNum">     325</span>              :     void _collectShaderParams();</span>
-<span id="L326"><span class="lineNum">     326</span>              : </span>
-<span id="L327"><span class="lineNum">     327</span>              :     // The name of the entry point function (e.g., `main`)</span>
-<span id="L328"><span class="lineNum">     328</span>              :     //</span>
-<span id="L329"><span class="lineNum">     329</span>              :     Name* m_name = nullptr;</span>
-<span id="L330"><span class="lineNum">     330</span>              : </span>
-<span id="L331"><span class="lineNum">     331</span>              :     // The declaration of the entry-point function itself.</span>
-<span id="L332"><span class="lineNum">     332</span>              :     //</span>
-<span id="L333"><span class="lineNum">     333</span>              :     DeclRef&lt;FuncDecl&gt; m_funcDeclRef;</span>
-<span id="L334"><span class="lineNum">     334</span>              : </span>
-<span id="L335"><span class="lineNum">     335</span>              :     /// The mangled name of the entry point function</span>
-<span id="L336"><span class="lineNum">     336</span>              :     String m_mangledName;</span>
-<span id="L337"><span class="lineNum">     337</span>              : </span>
-<span id="L338"><span class="lineNum">     338</span>              :     SpecializationParams m_genericSpecializationParams;</span>
-<span id="L339"><span class="lineNum">     339</span>              :     SpecializationParams m_existentialSpecializationParams;</span>
-<span id="L340"><span class="lineNum">     340</span>              : </span>
-<span id="L341"><span class="lineNum">     341</span>              :     /// Information about entry-point parameters</span>
-<span id="L342"><span class="lineNum">     342</span>              :     List&lt;ShaderParamInfo&gt; m_shaderParams;</span>
-<span id="L343"><span class="lineNum">     343</span>              : </span>
-<span id="L344"><span class="lineNum">     344</span>              :     // The profile that the entry point will be compiled for</span>
-<span id="L345"><span class="lineNum">     345</span>              :     // (this is a combination of the target stage, and also</span>
-<span id="L346"><span class="lineNum">     346</span>              :     // a feature level that sets capabilities)</span>
-<span id="L347"><span class="lineNum">     347</span>              :     //</span>
-<span id="L348"><span class="lineNum">     348</span>              :     // Note: the profile-version part of this should probably</span>
-<span id="L349"><span class="lineNum">     349</span>              :     // be moving towards deprecation, in favor of the version</span>
-<span id="L350"><span class="lineNum">     350</span>              :     // information (e.g., &quot;Shader Model 5.1&quot;) always coming</span>
-<span id="L351"><span class="lineNum">     351</span>              :     // from the target, while the stage part is all that is</span>
-<span id="L352"><span class="lineNum">     352</span>              :     // intrinsic to the entry point.</span>
-<span id="L353"><span class="lineNum">     353</span>              :     //</span>
-<span id="L354"><span class="lineNum">     354</span>              :     Profile m_profile;</span>
-<span id="L355"><span class="lineNum">     355</span>              : </span>
-<span id="L356"><span class="lineNum">     356</span>              :     // The capability requirements inferred for the entry point as a whole (see</span>
-<span id="L357"><span class="lineNum">     357</span>              :     // `getInferredCapabilityRequirements`). Seeded from the function declaration&#x27;s own</span>
-<span id="L358"><span class="lineNum">     358</span>              :     // requirements and finalized during `validateEntryPoint`.</span>
-<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">           1 :     CapabilitySetVal* m_inferredCapabilityRequirements = nullptr;</span></span>
-<span id="L360"><span class="lineNum">     360</span>              : };</span>
-<span id="L361"><span class="lineNum">     361</span>              : </span>
-<span id="L362"><span class="lineNum">     362</span>              : } // namespace Slang</span>
+<span id="L303"><span class="lineNum">     303</span>              :         // Requirements for this selection, including those introduced by specialization.</span>
+<span id="L304"><span class="lineNum">     304</span>              :         CapabilitySetVal* inferredCapabilityRequirements = nullptr;</span>
+<span id="L305"><span class="lineNum">     305</span>              :         List&lt;ExpandedSpecializationArg&gt; existentialSpecializationArgs;</span>
+<span id="L306"><span class="lineNum">     306</span>              :     };</span>
+<span id="L307"><span class="lineNum">     307</span>              : </span>
+<span id="L308"><span class="lineNum">     308</span>              :     SLANG_NO_THROW slang::FunctionReflection* SLANG_MCALL getFunctionReflection() SLANG_OVERRIDE</span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">           1 :         return (slang::FunctionReflection*)m_funcDeclRef.declRefBase;</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L312"><span class="lineNum">     312</span>              : </span>
+<span id="L313"><span class="lineNum">     313</span>              : protected:</span>
+<span id="L314"><span class="lineNum">     314</span>              :     void acceptVisitor(ComponentTypeVisitor* visitor, SpecializationInfo* specializationInfo)</span>
+<span id="L315"><span class="lineNum">     315</span>              :         SLANG_OVERRIDE;</span>
+<span id="L316"><span class="lineNum">     316</span>              : </span>
+<span id="L317"><span class="lineNum">     317</span>              :     RefPtr&lt;SpecializationInfo&gt; _validateSpecializationArgsImpl(</span>
+<span id="L318"><span class="lineNum">     318</span>              :         SpecializationArg const* args,</span>
+<span id="L319"><span class="lineNum">     319</span>              :         Index argCount,</span>
+<span id="L320"><span class="lineNum">     320</span>              :         Index&amp; outConsumedArgCount,</span>
+<span id="L321"><span class="lineNum">     321</span>              :         DiagnosticSink* sink) SLANG_OVERRIDE;</span>
+<span id="L322"><span class="lineNum">     322</span>              : </span>
+<span id="L323"><span class="lineNum">     323</span>              : private:</span>
+<span id="L324"><span class="lineNum">     324</span>              :     EntryPoint(Linkage* linkage, Name* name, Profile profile, DeclRef&lt;FuncDecl&gt; funcDeclRef);</span>
+<span id="L325"><span class="lineNum">     325</span>              : </span>
+<span id="L326"><span class="lineNum">     326</span>              :     void _collectGenericSpecializationParamsRec(Decl* decl);</span>
+<span id="L327"><span class="lineNum">     327</span>              :     void _collectShaderParams();</span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span>              :     // The name of the entry point function (e.g., `main`)</span>
+<span id="L330"><span class="lineNum">     330</span>              :     //</span>
+<span id="L331"><span class="lineNum">     331</span>              :     Name* m_name = nullptr;</span>
+<span id="L332"><span class="lineNum">     332</span>              : </span>
+<span id="L333"><span class="lineNum">     333</span>              :     // The declaration of the entry-point function itself.</span>
+<span id="L334"><span class="lineNum">     334</span>              :     //</span>
+<span id="L335"><span class="lineNum">     335</span>              :     DeclRef&lt;FuncDecl&gt; m_funcDeclRef;</span>
+<span id="L336"><span class="lineNum">     336</span>              : </span>
+<span id="L337"><span class="lineNum">     337</span>              :     /// The mangled name of the entry point function</span>
+<span id="L338"><span class="lineNum">     338</span>              :     String m_mangledName;</span>
+<span id="L339"><span class="lineNum">     339</span>              : </span>
+<span id="L340"><span class="lineNum">     340</span>              :     SpecializationParams m_genericSpecializationParams;</span>
+<span id="L341"><span class="lineNum">     341</span>              :     SpecializationParams m_existentialSpecializationParams;</span>
+<span id="L342"><span class="lineNum">     342</span>              : </span>
+<span id="L343"><span class="lineNum">     343</span>              :     /// Information about entry-point parameters</span>
+<span id="L344"><span class="lineNum">     344</span>              :     List&lt;ShaderParamInfo&gt; m_shaderParams;</span>
+<span id="L345"><span class="lineNum">     345</span>              : </span>
+<span id="L346"><span class="lineNum">     346</span>              :     // The profile that the entry point will be compiled for</span>
+<span id="L347"><span class="lineNum">     347</span>              :     // (this is a combination of the target stage, and also</span>
+<span id="L348"><span class="lineNum">     348</span>              :     // a feature level that sets capabilities)</span>
+<span id="L349"><span class="lineNum">     349</span>              :     //</span>
+<span id="L350"><span class="lineNum">     350</span>              :     // Note: the profile-version part of this should probably</span>
+<span id="L351"><span class="lineNum">     351</span>              :     // be moving towards deprecation, in favor of the version</span>
+<span id="L352"><span class="lineNum">     352</span>              :     // information (e.g., &quot;Shader Model 5.1&quot;) always coming</span>
+<span id="L353"><span class="lineNum">     353</span>              :     // from the target, while the stage part is all that is</span>
+<span id="L354"><span class="lineNum">     354</span>              :     // intrinsic to the entry point.</span>
+<span id="L355"><span class="lineNum">     355</span>              :     //</span>
+<span id="L356"><span class="lineNum">     356</span>              :     Profile m_profile;</span>
+<span id="L357"><span class="lineNum">     357</span>              : </span>
+<span id="L358"><span class="lineNum">     358</span>              :     // The capability requirements inferred for the entry point as a whole (see</span>
+<span id="L359"><span class="lineNum">     359</span>              :     // `getInferredCapabilityRequirements`). Seeded from the function declaration&#x27;s own</span>
+<span id="L360"><span class="lineNum">     360</span>              :     // requirements and finalized during `validateEntryPoint`.</span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">           1 :     CapabilitySetVal* m_inferredCapabilityRequirements = nullptr;</span></span>
+<span id="L362"><span class="lineNum">     362</span>              : };</span>
+<span id="L363"><span class="lineNum">     363</span>              : </span>
+<span id="L364"><span class="lineNum">     364</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

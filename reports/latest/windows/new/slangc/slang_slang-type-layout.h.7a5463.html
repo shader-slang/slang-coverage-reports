@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-28 05:19:23 UTC</td>
+      <td class="headerValue">2026-10-29 04:29:06 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -1433,654 +1433,657 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1160"><span class="lineNum">    1160</span>              :     // The corresponding function declaration</span>
 <span id="L1161"><span class="lineNum">    1161</span>              :     DeclRef&lt;FuncDecl&gt; entryPoint;</span>
 <span id="L1162"><span class="lineNum">    1162</span>              : </span>
-<span id="L1163"><span class="lineNum">    1163</span>              :     ComponentType* program = nullptr;</span>
-<span id="L1164"><span class="lineNum">    1164</span>              : </span>
-<span id="L1165"><span class="lineNum">    1165</span>              :     DeclRef&lt;FuncDecl&gt; getFuncDeclRef() { return entryPoint; }</span>
-<span id="L1166"><span class="lineNum">    1166</span>              :     FuncDecl* getFuncDecl() { return entryPoint.getDecl(); }</span>
+<span id="L1163"><span class="lineNum">    1163</span>              :     // Requirements for this entry-point selection, including its specialization arguments.</span>
+<span id="L1164"><span class="lineNum">    1164</span>              :     CapabilitySetVal* inferredCapabilityRequirements = nullptr;</span>
+<span id="L1165"><span class="lineNum">    1165</span>              : </span>
+<span id="L1166"><span class="lineNum">    1166</span>              :     ComponentType* program = nullptr;</span>
 <span id="L1167"><span class="lineNum">    1167</span>              : </span>
-<span id="L1168"><span class="lineNum">    1168</span>              :     // The shader profile that was used to compile the entry point</span>
-<span id="L1169"><span class="lineNum">    1169</span>              :     Profile profile;</span>
+<span id="L1168"><span class="lineNum">    1168</span>              :     DeclRef&lt;FuncDecl&gt; getFuncDeclRef() { return entryPoint; }</span>
+<span id="L1169"><span class="lineNum">    1169</span>              :     FuncDecl* getFuncDecl() { return entryPoint.getDecl(); }</span>
 <span id="L1170"><span class="lineNum">    1170</span>              : </span>
-<span id="L1171"><span class="lineNum">    1171</span>              :     // The name of the entry point. Always available even if entryPoint is nullptr (for example when</span>
-<span id="L1172"><span class="lineNum">    1172</span>              :     // it came from a library)</span>
-<span id="L1173"><span class="lineNum">    1173</span>              :     Name* name = nullptr;</span>
-<span id="L1174"><span class="lineNum">    1174</span>              : </span>
-<span id="L1175"><span class="lineNum">    1175</span>              :     // The overrided name of the entry point.</span>
-<span id="L1176"><span class="lineNum">    1176</span>              :     String nameOverride;</span>
+<span id="L1171"><span class="lineNum">    1171</span>              :     // The shader profile that was used to compile the entry point</span>
+<span id="L1172"><span class="lineNum">    1172</span>              :     Profile profile;</span>
+<span id="L1173"><span class="lineNum">    1173</span>              : </span>
+<span id="L1174"><span class="lineNum">    1174</span>              :     // The name of the entry point. Always available even if entryPoint is nullptr (for example when</span>
+<span id="L1175"><span class="lineNum">    1175</span>              :     // it came from a library)</span>
+<span id="L1176"><span class="lineNum">    1176</span>              :     Name* name = nullptr;</span>
 <span id="L1177"><span class="lineNum">    1177</span>              : </span>
-<span id="L1178"><span class="lineNum">    1178</span>              :     // Layout for any results of the entry point</span>
-<span id="L1179"><span class="lineNum">    1179</span>              :     RefPtr&lt;VarLayout&gt; resultLayout;</span>
+<span id="L1178"><span class="lineNum">    1178</span>              :     // The overrided name of the entry point.</span>
+<span id="L1179"><span class="lineNum">    1179</span>              :     String nameOverride;</span>
 <span id="L1180"><span class="lineNum">    1180</span>              : </span>
-<span id="L1181"><span class="lineNum">    1181</span>              :     enum Flag : unsigned</span>
-<span id="L1182"><span class="lineNum">    1182</span>              :     {</span>
-<span id="L1183"><span class="lineNum">    1183</span>              :         usesAnySampleRateInput = 0x1,</span>
-<span id="L1184"><span class="lineNum">    1184</span>              :     };</span>
-<span id="L1185"><span class="lineNum">    1185</span>              :     unsigned flags = 0;</span>
-<span id="L1186"><span class="lineNum">    1186</span>              : </span>
-<span id="L1187"><span class="lineNum">    1187</span>              :     //    EntryPointLayout* getAbsoluteLayout(VarLayout* parentLayout);</span>
-<span id="L1188"><span class="lineNum">    1188</span>              : </span>
-<span id="L1189"><span class="lineNum">    1189</span>              :     //    RefPtr&lt;EntryPointLayout&gt; m_absoluteLayout;</span>
-<span id="L1190"><span class="lineNum">    1190</span>              : };</span>
+<span id="L1181"><span class="lineNum">    1181</span>              :     // Layout for any results of the entry point</span>
+<span id="L1182"><span class="lineNum">    1182</span>              :     RefPtr&lt;VarLayout&gt; resultLayout;</span>
+<span id="L1183"><span class="lineNum">    1183</span>              : </span>
+<span id="L1184"><span class="lineNum">    1184</span>              :     enum Flag : unsigned</span>
+<span id="L1185"><span class="lineNum">    1185</span>              :     {</span>
+<span id="L1186"><span class="lineNum">    1186</span>              :         usesAnySampleRateInput = 0x1,</span>
+<span id="L1187"><span class="lineNum">    1187</span>              :     };</span>
+<span id="L1188"><span class="lineNum">    1188</span>              :     unsigned flags = 0;</span>
+<span id="L1189"><span class="lineNum">    1189</span>              : </span>
+<span id="L1190"><span class="lineNum">    1190</span>              :     //    EntryPointLayout* getAbsoluteLayout(VarLayout* parentLayout);</span>
 <span id="L1191"><span class="lineNum">    1191</span>              : </span>
-<span id="L1192"><span class="lineNum">    1192</span>              : /// Reflection/layout information about a specialization parameter</span>
-<span id="L1193"><span class="lineNum">    1193</span>              : class SpecializationParamLayout : public Layout</span>
-<span id="L1194"><span class="lineNum">    1194</span>              : {</span>
-<span id="L1195"><span class="lineNum">    1195</span>              : public:</span>
-<span id="L1196"><span class="lineNum">    1196</span>              :     Index index;</span>
-<span id="L1197"><span class="lineNum">    1197</span>              : };</span>
-<span id="L1198"><span class="lineNum">    1198</span>              : </span>
-<span id="L1199"><span class="lineNum">    1199</span>              : /// Reflection/layout information about a generic specialization parameter</span>
-<span id="L1200"><span class="lineNum">    1200</span>              : class GenericSpecializationParamLayout : public SpecializationParamLayout</span>
-<span id="L1201"><span class="lineNum">    1201</span>              : {</span>
-<span id="L1202"><span class="lineNum">    1202</span>              : public:</span>
-<span id="L1203"><span class="lineNum">    1203</span>              :     /// The declaration of the generic parameter.</span>
-<span id="L1204"><span class="lineNum">    1204</span>              :     ///</span>
-<span id="L1205"><span class="lineNum">    1205</span>              :     /// Could be any subclass of `Decl` that represents a generic value or type parameter.</span>
-<span id="L1206"><span class="lineNum">    1206</span>              :     Decl* decl = nullptr;</span>
-<span id="L1207"><span class="lineNum">    1207</span>              : };</span>
-<span id="L1208"><span class="lineNum">    1208</span>              : </span>
-<span id="L1209"><span class="lineNum">    1209</span>              : /// Reflection/layout information about an existential/interface specialization parameter.</span>
-<span id="L1210"><span class="lineNum">    1210</span>              : class ExistentialSpecializationParamLayout : public SpecializationParamLayout</span>
-<span id="L1211"><span class="lineNum">    1211</span>              : {</span>
-<span id="L1212"><span class="lineNum">    1212</span>              : public:</span>
-<span id="L1213"><span class="lineNum">    1213</span>              :     /// The type that needs to be specialized.</span>
-<span id="L1214"><span class="lineNum">    1214</span>              :     ///</span>
-<span id="L1215"><span class="lineNum">    1215</span>              :     /// Currently, this will be an `interface` type that any concrete</span>
-<span id="L1216"><span class="lineNum">    1216</span>              :     /// type argument getting plugged in must conform to.</span>
+<span id="L1192"><span class="lineNum">    1192</span>              :     //    RefPtr&lt;EntryPointLayout&gt; m_absoluteLayout;</span>
+<span id="L1193"><span class="lineNum">    1193</span>              : };</span>
+<span id="L1194"><span class="lineNum">    1194</span>              : </span>
+<span id="L1195"><span class="lineNum">    1195</span>              : /// Reflection/layout information about a specialization parameter</span>
+<span id="L1196"><span class="lineNum">    1196</span>              : class SpecializationParamLayout : public Layout</span>
+<span id="L1197"><span class="lineNum">    1197</span>              : {</span>
+<span id="L1198"><span class="lineNum">    1198</span>              : public:</span>
+<span id="L1199"><span class="lineNum">    1199</span>              :     Index index;</span>
+<span id="L1200"><span class="lineNum">    1200</span>              : };</span>
+<span id="L1201"><span class="lineNum">    1201</span>              : </span>
+<span id="L1202"><span class="lineNum">    1202</span>              : /// Reflection/layout information about a generic specialization parameter</span>
+<span id="L1203"><span class="lineNum">    1203</span>              : class GenericSpecializationParamLayout : public SpecializationParamLayout</span>
+<span id="L1204"><span class="lineNum">    1204</span>              : {</span>
+<span id="L1205"><span class="lineNum">    1205</span>              : public:</span>
+<span id="L1206"><span class="lineNum">    1206</span>              :     /// The declaration of the generic parameter.</span>
+<span id="L1207"><span class="lineNum">    1207</span>              :     ///</span>
+<span id="L1208"><span class="lineNum">    1208</span>              :     /// Could be any subclass of `Decl` that represents a generic value or type parameter.</span>
+<span id="L1209"><span class="lineNum">    1209</span>              :     Decl* decl = nullptr;</span>
+<span id="L1210"><span class="lineNum">    1210</span>              : };</span>
+<span id="L1211"><span class="lineNum">    1211</span>              : </span>
+<span id="L1212"><span class="lineNum">    1212</span>              : /// Reflection/layout information about an existential/interface specialization parameter.</span>
+<span id="L1213"><span class="lineNum">    1213</span>              : class ExistentialSpecializationParamLayout : public SpecializationParamLayout</span>
+<span id="L1214"><span class="lineNum">    1214</span>              : {</span>
+<span id="L1215"><span class="lineNum">    1215</span>              : public:</span>
+<span id="L1216"><span class="lineNum">    1216</span>              :     /// The type that needs to be specialized.</span>
 <span id="L1217"><span class="lineNum">    1217</span>              :     ///</span>
-<span id="L1218"><span class="lineNum">    1218</span>              :     Type* type = nullptr;</span>
-<span id="L1219"><span class="lineNum">    1219</span>              : };</span>
-<span id="L1220"><span class="lineNum">    1220</span>              : </span>
-<span id="L1221"><span class="lineNum">    1221</span>              : // Layout information for the global scope of a program</span>
-<span id="L1222"><span class="lineNum">    1222</span>              : class ProgramLayout : public ScopeLayout</span>
-<span id="L1223"><span class="lineNum">    1223</span>              : {</span>
-<span id="L1224"><span class="lineNum">    1224</span>              : public:</span>
-<span id="L1225"><span class="lineNum">    1225</span>              :     /*</span>
-<span id="L1226"><span class="lineNum">    1226</span>              :     // We store a layout for the declarations at the global</span>
-<span id="L1227"><span class="lineNum">    1227</span>              :     // scope. Note that this will *either* be a single</span>
-<span id="L1228"><span class="lineNum">    1228</span>              :     // `StructTypeLayout` with the fields stored directly,</span>
-<span id="L1229"><span class="lineNum">    1229</span>              :     // or it will be a single `ParameterGroupTypeLayout`,</span>
-<span id="L1230"><span class="lineNum">    1230</span>              :     // where the global-scope fields are the members of</span>
-<span id="L1231"><span class="lineNum">    1231</span>              :     // that constant buffer.</span>
-<span id="L1232"><span class="lineNum">    1232</span>              :     //</span>
-<span id="L1233"><span class="lineNum">    1233</span>              :     // The `struct` case will be used if there are no</span>
-<span id="L1234"><span class="lineNum">    1234</span>              :     // &quot;naked&quot; global-scope uniform variables, and the</span>
-<span id="L1235"><span class="lineNum">    1235</span>              :     // constant-buffer case will be used if there are</span>
-<span id="L1236"><span class="lineNum">    1236</span>              :     // (since a constant buffer will have to be allocated</span>
-<span id="L1237"><span class="lineNum">    1237</span>              :     // to store them).</span>
-<span id="L1238"><span class="lineNum">    1238</span>              :     //</span>
-<span id="L1239"><span class="lineNum">    1239</span>              :     RefPtr&lt;VarLayout&gt; globalScopeLayout;</span>
-<span id="L1240"><span class="lineNum">    1240</span>              :     */</span>
-<span id="L1241"><span class="lineNum">    1241</span>              : </span>
-<span id="L1242"><span class="lineNum">    1242</span>              :     /// The target and program for which layout was computed</span>
-<span id="L1243"><span class="lineNum">    1243</span>              :     TargetProgram* targetProgram;</span>
+<span id="L1218"><span class="lineNum">    1218</span>              :     /// Currently, this will be an `interface` type that any concrete</span>
+<span id="L1219"><span class="lineNum">    1219</span>              :     /// type argument getting plugged in must conform to.</span>
+<span id="L1220"><span class="lineNum">    1220</span>              :     ///</span>
+<span id="L1221"><span class="lineNum">    1221</span>              :     Type* type = nullptr;</span>
+<span id="L1222"><span class="lineNum">    1222</span>              : };</span>
+<span id="L1223"><span class="lineNum">    1223</span>              : </span>
+<span id="L1224"><span class="lineNum">    1224</span>              : // Layout information for the global scope of a program</span>
+<span id="L1225"><span class="lineNum">    1225</span>              : class ProgramLayout : public ScopeLayout</span>
+<span id="L1226"><span class="lineNum">    1226</span>              : {</span>
+<span id="L1227"><span class="lineNum">    1227</span>              : public:</span>
+<span id="L1228"><span class="lineNum">    1228</span>              :     /*</span>
+<span id="L1229"><span class="lineNum">    1229</span>              :     // We store a layout for the declarations at the global</span>
+<span id="L1230"><span class="lineNum">    1230</span>              :     // scope. Note that this will *either* be a single</span>
+<span id="L1231"><span class="lineNum">    1231</span>              :     // `StructTypeLayout` with the fields stored directly,</span>
+<span id="L1232"><span class="lineNum">    1232</span>              :     // or it will be a single `ParameterGroupTypeLayout`,</span>
+<span id="L1233"><span class="lineNum">    1233</span>              :     // where the global-scope fields are the members of</span>
+<span id="L1234"><span class="lineNum">    1234</span>              :     // that constant buffer.</span>
+<span id="L1235"><span class="lineNum">    1235</span>              :     //</span>
+<span id="L1236"><span class="lineNum">    1236</span>              :     // The `struct` case will be used if there are no</span>
+<span id="L1237"><span class="lineNum">    1237</span>              :     // &quot;naked&quot; global-scope uniform variables, and the</span>
+<span id="L1238"><span class="lineNum">    1238</span>              :     // constant-buffer case will be used if there are</span>
+<span id="L1239"><span class="lineNum">    1239</span>              :     // (since a constant buffer will have to be allocated</span>
+<span id="L1240"><span class="lineNum">    1240</span>              :     // to store them).</span>
+<span id="L1241"><span class="lineNum">    1241</span>              :     //</span>
+<span id="L1242"><span class="lineNum">    1242</span>              :     RefPtr&lt;VarLayout&gt; globalScopeLayout;</span>
+<span id="L1243"><span class="lineNum">    1243</span>              :     */</span>
 <span id="L1244"><span class="lineNum">    1244</span>              : </span>
-<span id="L1245"><span class="lineNum">    1245</span> <span class="tlaUNC">           0 :     TargetProgram* getTargetProgram() { return targetProgram; }</span></span>
-<span id="L1246"><span class="lineNum">    1246</span> <span class="tlaGNC">           1 :     TargetRequest* getTargetReq() { return targetProgram-&gt;getTargetReq(); }</span></span>
-<span id="L1247"><span class="lineNum">    1247</span> <span class="tlaGNC">           1 :     ComponentType* getProgram() { return targetProgram-&gt;getProgram(); }</span></span>
-<span id="L1248"><span class="lineNum">    1248</span>              : </span>
-<span id="L1249"><span class="lineNum">    1249</span>              :     ProgramLayout()</span>
-<span id="L1250"><span class="lineNum">    1250</span> <span class="tlaGNC">           1 :         : hashedStringLiteralPool(StringSlicePool::Style::Empty)</span></span>
-<span id="L1251"><span class="lineNum">    1251</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1252"><span class="lineNum">    1252</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1253"><span class="lineNum">    1253</span>              : </span>
-<span id="L1254"><span class="lineNum">    1254</span>              :     // We catalog the requested entry points here,</span>
-<span id="L1255"><span class="lineNum">    1255</span>              :     // and any entry-point-specific parameter data</span>
-<span id="L1256"><span class="lineNum">    1256</span>              :     // will (eventually) belong there...</span>
-<span id="L1257"><span class="lineNum">    1257</span>              :     List&lt;RefPtr&lt;EntryPointLayout&gt;&gt; entryPoints;</span>
-<span id="L1258"><span class="lineNum">    1258</span>              : </span>
-<span id="L1259"><span class="lineNum">    1259</span>              :     /// Reflection information on (unspecialized) specialization parameters.</span>
-<span id="L1260"><span class="lineNum">    1260</span>              :     List&lt;RefPtr&lt;SpecializationParamLayout&gt;&gt; specializationParams;</span>
+<span id="L1245"><span class="lineNum">    1245</span>              :     /// The target and program for which layout was computed</span>
+<span id="L1246"><span class="lineNum">    1246</span>              :     TargetProgram* targetProgram;</span>
+<span id="L1247"><span class="lineNum">    1247</span>              : </span>
+<span id="L1248"><span class="lineNum">    1248</span> <span class="tlaUNC">           0 :     TargetProgram* getTargetProgram() { return targetProgram; }</span></span>
+<span id="L1249"><span class="lineNum">    1249</span> <span class="tlaGNC">           1 :     TargetRequest* getTargetReq() { return targetProgram-&gt;getTargetReq(); }</span></span>
+<span id="L1250"><span class="lineNum">    1250</span> <span class="tlaGNC">           1 :     ComponentType* getProgram() { return targetProgram-&gt;getProgram(); }</span></span>
+<span id="L1251"><span class="lineNum">    1251</span>              : </span>
+<span id="L1252"><span class="lineNum">    1252</span>              :     ProgramLayout()</span>
+<span id="L1253"><span class="lineNum">    1253</span> <span class="tlaGNC">           1 :         : hashedStringLiteralPool(StringSlicePool::Style::Empty)</span></span>
+<span id="L1254"><span class="lineNum">    1254</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1255"><span class="lineNum">    1255</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1256"><span class="lineNum">    1256</span>              : </span>
+<span id="L1257"><span class="lineNum">    1257</span>              :     // We catalog the requested entry points here,</span>
+<span id="L1258"><span class="lineNum">    1258</span>              :     // and any entry-point-specific parameter data</span>
+<span id="L1259"><span class="lineNum">    1259</span>              :     // will (eventually) belong there...</span>
+<span id="L1260"><span class="lineNum">    1260</span>              :     List&lt;RefPtr&lt;EntryPointLayout&gt;&gt; entryPoints;</span>
 <span id="L1261"><span class="lineNum">    1261</span>              : </span>
-<span id="L1262"><span class="lineNum">    1262</span>              :     /// Concrete argument values that were provided to specific global generic parameters.</span>
-<span id="L1263"><span class="lineNum">    1263</span>              :     ///</span>
-<span id="L1264"><span class="lineNum">    1264</span>              :     /// Not useful for reflection, but valuable for code generation.</span>
-<span id="L1265"><span class="lineNum">    1265</span>              :     ///</span>
-<span id="L1266"><span class="lineNum">    1266</span>              :     Dictionary&lt;GlobalGenericParamDecl*, Val*&gt; globalGenericArgs;</span>
-<span id="L1267"><span class="lineNum">    1267</span>              : </span>
-<span id="L1268"><span class="lineNum">    1268</span>              :     /// Holds all of the string literals that have been hashed</span>
-<span id="L1269"><span class="lineNum">    1269</span>              :     StringSlicePool hashedStringLiteralPool;</span>
+<span id="L1262"><span class="lineNum">    1262</span>              :     /// Reflection information on (unspecialized) specialization parameters.</span>
+<span id="L1263"><span class="lineNum">    1263</span>              :     List&lt;RefPtr&lt;SpecializationParamLayout&gt;&gt; specializationParams;</span>
+<span id="L1264"><span class="lineNum">    1264</span>              : </span>
+<span id="L1265"><span class="lineNum">    1265</span>              :     /// Concrete argument values that were provided to specific global generic parameters.</span>
+<span id="L1266"><span class="lineNum">    1266</span>              :     ///</span>
+<span id="L1267"><span class="lineNum">    1267</span>              :     /// Not useful for reflection, but valuable for code generation.</span>
+<span id="L1268"><span class="lineNum">    1268</span>              :     ///</span>
+<span id="L1269"><span class="lineNum">    1269</span>              :     Dictionary&lt;GlobalGenericParamDecl*, Val*&gt; globalGenericArgs;</span>
 <span id="L1270"><span class="lineNum">    1270</span>              : </span>
-<span id="L1271"><span class="lineNum">    1271</span>              :     /// The descriptor set/space index reserved for descriptor-handle-capable targets.</span>
-<span id="L1272"><span class="lineNum">    1272</span>              :     ///</span>
-<span id="L1273"><span class="lineNum">    1273</span>              :     /// -1 means no bindless space was reserved for this program and target.</span>
-<span id="L1274"><span class="lineNum">    1274</span>              :     /// &gt;= 0 means a stable space was allocated; it does not by itself prove post-lowering heap use.</span>
-<span id="L1275"><span class="lineNum">    1275</span> <span class="tlaGNC">           1 :     Int bindlessSpaceIndex = -1;</span></span>
-<span id="L1276"><span class="lineNum">    1276</span> <span class="tlaGNC">           1 : };</span></span>
-<span id="L1277"><span class="lineNum">    1277</span>              : </span>
-<span id="L1278"><span class="lineNum">    1278</span>              : StructTypeLayout* getGlobalStructLayout(ProgramLayout* programLayout);</span>
-<span id="L1279"><span class="lineNum">    1279</span>              : </span>
-<span id="L1280"><span class="lineNum">    1280</span>              : struct LayoutRulesFamilyImpl;</span>
-<span id="L1281"><span class="lineNum">    1281</span>              : </span>
-<span id="L1282"><span class="lineNum">    1282</span>              : // A delineation of shader parameter types into fine-grained</span>
-<span id="L1283"><span class="lineNum">    1283</span>              : // categories that can then be mapped down to actual resources</span>
-<span id="L1284"><span class="lineNum">    1284</span>              : // by a given set of rules.</span>
-<span id="L1285"><span class="lineNum">    1285</span>              : //</span>
-<span id="L1286"><span class="lineNum">    1286</span>              : // TODO(tfoley): `SlangParameterCategory` and `slang::ParameterCategory`</span>
-<span id="L1287"><span class="lineNum">    1287</span>              : // are badly named, and need to be revised so they can&#x27;t be confused</span>
-<span id="L1288"><span class="lineNum">    1288</span>              : // with this concept.</span>
-<span id="L1289"><span class="lineNum">    1289</span>              : enum class ShaderParameterKind</span>
-<span id="L1290"><span class="lineNum">    1290</span>              : {</span>
-<span id="L1291"><span class="lineNum">    1291</span>              :     ConstantBuffer,</span>
-<span id="L1292"><span class="lineNum">    1292</span>              :     TextureUniformBuffer,</span>
-<span id="L1293"><span class="lineNum">    1293</span>              :     ShaderStorageBuffer,</span>
-<span id="L1294"><span class="lineNum">    1294</span>              : </span>
-<span id="L1295"><span class="lineNum">    1295</span>              :     StructuredBuffer,</span>
-<span id="L1296"><span class="lineNum">    1296</span>              :     MutableStructuredBuffer,</span>
+<span id="L1271"><span class="lineNum">    1271</span>              :     /// Holds all of the string literals that have been hashed</span>
+<span id="L1272"><span class="lineNum">    1272</span>              :     StringSlicePool hashedStringLiteralPool;</span>
+<span id="L1273"><span class="lineNum">    1273</span>              : </span>
+<span id="L1274"><span class="lineNum">    1274</span>              :     /// The descriptor set/space index reserved for descriptor-handle-capable targets.</span>
+<span id="L1275"><span class="lineNum">    1275</span>              :     ///</span>
+<span id="L1276"><span class="lineNum">    1276</span>              :     /// -1 means no bindless space was reserved for this program and target.</span>
+<span id="L1277"><span class="lineNum">    1277</span>              :     /// &gt;= 0 means a stable space was allocated; it does not by itself prove post-lowering heap use.</span>
+<span id="L1278"><span class="lineNum">    1278</span> <span class="tlaGNC">           1 :     Int bindlessSpaceIndex = -1;</span></span>
+<span id="L1279"><span class="lineNum">    1279</span> <span class="tlaGNC">           1 : };</span></span>
+<span id="L1280"><span class="lineNum">    1280</span>              : </span>
+<span id="L1281"><span class="lineNum">    1281</span>              : StructTypeLayout* getGlobalStructLayout(ProgramLayout* programLayout);</span>
+<span id="L1282"><span class="lineNum">    1282</span>              : </span>
+<span id="L1283"><span class="lineNum">    1283</span>              : struct LayoutRulesFamilyImpl;</span>
+<span id="L1284"><span class="lineNum">    1284</span>              : </span>
+<span id="L1285"><span class="lineNum">    1285</span>              : // A delineation of shader parameter types into fine-grained</span>
+<span id="L1286"><span class="lineNum">    1286</span>              : // categories that can then be mapped down to actual resources</span>
+<span id="L1287"><span class="lineNum">    1287</span>              : // by a given set of rules.</span>
+<span id="L1288"><span class="lineNum">    1288</span>              : //</span>
+<span id="L1289"><span class="lineNum">    1289</span>              : // TODO(tfoley): `SlangParameterCategory` and `slang::ParameterCategory`</span>
+<span id="L1290"><span class="lineNum">    1290</span>              : // are badly named, and need to be revised so they can&#x27;t be confused</span>
+<span id="L1291"><span class="lineNum">    1291</span>              : // with this concept.</span>
+<span id="L1292"><span class="lineNum">    1292</span>              : enum class ShaderParameterKind</span>
+<span id="L1293"><span class="lineNum">    1293</span>              : {</span>
+<span id="L1294"><span class="lineNum">    1294</span>              :     ConstantBuffer,</span>
+<span id="L1295"><span class="lineNum">    1295</span>              :     TextureUniformBuffer,</span>
+<span id="L1296"><span class="lineNum">    1296</span>              :     ShaderStorageBuffer,</span>
 <span id="L1297"><span class="lineNum">    1297</span>              : </span>
-<span id="L1298"><span class="lineNum">    1298</span>              :     RawBuffer,</span>
-<span id="L1299"><span class="lineNum">    1299</span>              :     MutableRawBuffer,</span>
+<span id="L1298"><span class="lineNum">    1298</span>              :     StructuredBuffer,</span>
+<span id="L1299"><span class="lineNum">    1299</span>              :     MutableStructuredBuffer,</span>
 <span id="L1300"><span class="lineNum">    1300</span>              : </span>
-<span id="L1301"><span class="lineNum">    1301</span>              :     Buffer,</span>
-<span id="L1302"><span class="lineNum">    1302</span>              :     MutableBuffer,</span>
+<span id="L1301"><span class="lineNum">    1301</span>              :     RawBuffer,</span>
+<span id="L1302"><span class="lineNum">    1302</span>              :     MutableRawBuffer,</span>
 <span id="L1303"><span class="lineNum">    1303</span>              : </span>
-<span id="L1304"><span class="lineNum">    1304</span>              :     Texture,</span>
-<span id="L1305"><span class="lineNum">    1305</span>              :     MutableTexture,</span>
+<span id="L1304"><span class="lineNum">    1304</span>              :     Buffer,</span>
+<span id="L1305"><span class="lineNum">    1305</span>              :     MutableBuffer,</span>
 <span id="L1306"><span class="lineNum">    1306</span>              : </span>
-<span id="L1307"><span class="lineNum">    1307</span>              :     TextureSampler,</span>
-<span id="L1308"><span class="lineNum">    1308</span>              :     MutableTextureSampler,</span>
+<span id="L1307"><span class="lineNum">    1307</span>              :     Texture,</span>
+<span id="L1308"><span class="lineNum">    1308</span>              :     MutableTexture,</span>
 <span id="L1309"><span class="lineNum">    1309</span>              : </span>
-<span id="L1310"><span class="lineNum">    1310</span>              :     InputRenderTarget,</span>
-<span id="L1311"><span class="lineNum">    1311</span>              : </span>
-<span id="L1312"><span class="lineNum">    1312</span>              :     SamplerState,</span>
-<span id="L1313"><span class="lineNum">    1313</span>              : </span>
-<span id="L1314"><span class="lineNum">    1314</span>              :     Image,</span>
-<span id="L1315"><span class="lineNum">    1315</span>              :     MutableImage,</span>
+<span id="L1310"><span class="lineNum">    1310</span>              :     TextureSampler,</span>
+<span id="L1311"><span class="lineNum">    1311</span>              :     MutableTextureSampler,</span>
+<span id="L1312"><span class="lineNum">    1312</span>              : </span>
+<span id="L1313"><span class="lineNum">    1313</span>              :     InputRenderTarget,</span>
+<span id="L1314"><span class="lineNum">    1314</span>              : </span>
+<span id="L1315"><span class="lineNum">    1315</span>              :     SamplerState,</span>
 <span id="L1316"><span class="lineNum">    1316</span>              : </span>
-<span id="L1317"><span class="lineNum">    1317</span>              :     RegisterSpace,</span>
-<span id="L1318"><span class="lineNum">    1318</span>              : </span>
-<span id="L1319"><span class="lineNum">    1319</span>              :     AppendConsumeStructuredBuffer,</span>
-<span id="L1320"><span class="lineNum">    1320</span>              : </span>
-<span id="L1321"><span class="lineNum">    1321</span>              :     AtomicUint,</span>
-<span id="L1322"><span class="lineNum">    1322</span>              : </span>
-<span id="L1323"><span class="lineNum">    1323</span>              :     SubpassInput,</span>
-<span id="L1324"><span class="lineNum">    1324</span>              :     AccelerationStructure,</span>
-<span id="L1325"><span class="lineNum">    1325</span>              :     ParameterBlock,</span>
-<span id="L1326"><span class="lineNum">    1326</span>              : };</span>
-<span id="L1327"><span class="lineNum">    1327</span>              : </span>
-<span id="L1328"><span class="lineNum">    1328</span>              : struct SimpleLayoutRulesImpl</span>
-<span id="L1329"><span class="lineNum">    1329</span>              : {</span>
-<span id="L1330"><span class="lineNum">    1330</span>              :     // Get size and alignment for a single value of base type.</span>
-<span id="L1331"><span class="lineNum">    1331</span>              :     virtual SimpleLayoutInfo GetScalarLayout(</span>
-<span id="L1332"><span class="lineNum">    1332</span>              :         BaseType baseType,</span>
-<span id="L1333"><span class="lineNum">    1333</span>              :         const TypeLayoutContext&amp; context) = 0;</span>
-<span id="L1334"><span class="lineNum">    1334</span>              : </span>
-<span id="L1335"><span class="lineNum">    1335</span>              :     // Get size and alignment for an array of elements</span>
-<span id="L1336"><span class="lineNum">    1336</span>              :     virtual SimpleArrayLayoutInfo GetArrayLayout(</span>
-<span id="L1337"><span class="lineNum">    1337</span>              :         SimpleLayoutInfo elementInfo,</span>
-<span id="L1338"><span class="lineNum">    1338</span>              :         LayoutSize elementCount) = 0;</span>
-<span id="L1339"><span class="lineNum">    1339</span>              : </span>
-<span id="L1340"><span class="lineNum">    1340</span>              :     /// Get pointer layout, which can depend on the target.</span>
-<span id="L1341"><span class="lineNum">    1341</span>              :     virtual SimpleLayoutInfo GetPointerLayout(const TypeLayoutContext&amp; context) = 0;</span>
+<span id="L1317"><span class="lineNum">    1317</span>              :     Image,</span>
+<span id="L1318"><span class="lineNum">    1318</span>              :     MutableImage,</span>
+<span id="L1319"><span class="lineNum">    1319</span>              : </span>
+<span id="L1320"><span class="lineNum">    1320</span>              :     RegisterSpace,</span>
+<span id="L1321"><span class="lineNum">    1321</span>              : </span>
+<span id="L1322"><span class="lineNum">    1322</span>              :     AppendConsumeStructuredBuffer,</span>
+<span id="L1323"><span class="lineNum">    1323</span>              : </span>
+<span id="L1324"><span class="lineNum">    1324</span>              :     AtomicUint,</span>
+<span id="L1325"><span class="lineNum">    1325</span>              : </span>
+<span id="L1326"><span class="lineNum">    1326</span>              :     SubpassInput,</span>
+<span id="L1327"><span class="lineNum">    1327</span>              :     AccelerationStructure,</span>
+<span id="L1328"><span class="lineNum">    1328</span>              :     ParameterBlock,</span>
+<span id="L1329"><span class="lineNum">    1329</span>              : };</span>
+<span id="L1330"><span class="lineNum">    1330</span>              : </span>
+<span id="L1331"><span class="lineNum">    1331</span>              : struct SimpleLayoutRulesImpl</span>
+<span id="L1332"><span class="lineNum">    1332</span>              : {</span>
+<span id="L1333"><span class="lineNum">    1333</span>              :     // Get size and alignment for a single value of base type.</span>
+<span id="L1334"><span class="lineNum">    1334</span>              :     virtual SimpleLayoutInfo GetScalarLayout(</span>
+<span id="L1335"><span class="lineNum">    1335</span>              :         BaseType baseType,</span>
+<span id="L1336"><span class="lineNum">    1336</span>              :         const TypeLayoutContext&amp; context) = 0;</span>
+<span id="L1337"><span class="lineNum">    1337</span>              : </span>
+<span id="L1338"><span class="lineNum">    1338</span>              :     // Get size and alignment for an array of elements</span>
+<span id="L1339"><span class="lineNum">    1339</span>              :     virtual SimpleArrayLayoutInfo GetArrayLayout(</span>
+<span id="L1340"><span class="lineNum">    1340</span>              :         SimpleLayoutInfo elementInfo,</span>
+<span id="L1341"><span class="lineNum">    1341</span>              :         LayoutSize elementCount) = 0;</span>
 <span id="L1342"><span class="lineNum">    1342</span>              : </span>
-<span id="L1343"><span class="lineNum">    1343</span>              :     // Get layout for a vector or matrix type</span>
-<span id="L1344"><span class="lineNum">    1344</span>              :     virtual SimpleLayoutInfo GetVectorLayout(</span>
-<span id="L1345"><span class="lineNum">    1345</span>              :         BaseType elementType,</span>
-<span id="L1346"><span class="lineNum">    1346</span>              :         SimpleLayoutInfo elementInfo,</span>
-<span id="L1347"><span class="lineNum">    1347</span>              :         size_t elementCount) = 0;</span>
-<span id="L1348"><span class="lineNum">    1348</span>              :     virtual SimpleArrayLayoutInfo GetMatrixLayout(</span>
-<span id="L1349"><span class="lineNum">    1349</span>              :         BaseType elementType,</span>
-<span id="L1350"><span class="lineNum">    1350</span>              :         SimpleLayoutInfo elementInfo,</span>
-<span id="L1351"><span class="lineNum">    1351</span>              :         size_t rowCount,</span>
-<span id="L1352"><span class="lineNum">    1352</span>              :         size_t columnCount) = 0;</span>
-<span id="L1353"><span class="lineNum">    1353</span>              : </span>
-<span id="L1354"><span class="lineNum">    1354</span>              :     // Begin doing layout on a `struct` type</span>
-<span id="L1355"><span class="lineNum">    1355</span>              :     virtual UniformLayoutInfo BeginStructLayout() = 0;</span>
+<span id="L1343"><span class="lineNum">    1343</span>              :     /// Get pointer layout, which can depend on the target.</span>
+<span id="L1344"><span class="lineNum">    1344</span>              :     virtual SimpleLayoutInfo GetPointerLayout(const TypeLayoutContext&amp; context) = 0;</span>
+<span id="L1345"><span class="lineNum">    1345</span>              : </span>
+<span id="L1346"><span class="lineNum">    1346</span>              :     // Get layout for a vector or matrix type</span>
+<span id="L1347"><span class="lineNum">    1347</span>              :     virtual SimpleLayoutInfo GetVectorLayout(</span>
+<span id="L1348"><span class="lineNum">    1348</span>              :         BaseType elementType,</span>
+<span id="L1349"><span class="lineNum">    1349</span>              :         SimpleLayoutInfo elementInfo,</span>
+<span id="L1350"><span class="lineNum">    1350</span>              :         size_t elementCount) = 0;</span>
+<span id="L1351"><span class="lineNum">    1351</span>              :     virtual SimpleArrayLayoutInfo GetMatrixLayout(</span>
+<span id="L1352"><span class="lineNum">    1352</span>              :         BaseType elementType,</span>
+<span id="L1353"><span class="lineNum">    1353</span>              :         SimpleLayoutInfo elementInfo,</span>
+<span id="L1354"><span class="lineNum">    1354</span>              :         size_t rowCount,</span>
+<span id="L1355"><span class="lineNum">    1355</span>              :         size_t columnCount) = 0;</span>
 <span id="L1356"><span class="lineNum">    1356</span>              : </span>
-<span id="L1357"><span class="lineNum">    1357</span>              :     // Add a field to a `struct` type, and return the offset for the field</span>
-<span id="L1358"><span class="lineNum">    1358</span>              :     virtual LayoutSize AddStructField(</span>
-<span id="L1359"><span class="lineNum">    1359</span>              :         UniformLayoutInfo* ioStructInfo,</span>
-<span id="L1360"><span class="lineNum">    1360</span>              :         UniformLayoutInfo fieldInfo) = 0;</span>
-<span id="L1361"><span class="lineNum">    1361</span>              : </span>
-<span id="L1362"><span class="lineNum">    1362</span>              :     // End layout for a struct, and finalize its size/alignment.</span>
-<span id="L1363"><span class="lineNum">    1363</span>              :     virtual void EndStructLayout(UniformLayoutInfo* ioStructInfo) = 0;</span>
+<span id="L1357"><span class="lineNum">    1357</span>              :     // Begin doing layout on a `struct` type</span>
+<span id="L1358"><span class="lineNum">    1358</span>              :     virtual UniformLayoutInfo BeginStructLayout() = 0;</span>
+<span id="L1359"><span class="lineNum">    1359</span>              : </span>
+<span id="L1360"><span class="lineNum">    1360</span>              :     // Add a field to a `struct` type, and return the offset for the field</span>
+<span id="L1361"><span class="lineNum">    1361</span>              :     virtual LayoutSize AddStructField(</span>
+<span id="L1362"><span class="lineNum">    1362</span>              :         UniformLayoutInfo* ioStructInfo,</span>
+<span id="L1363"><span class="lineNum">    1363</span>              :         UniformLayoutInfo fieldInfo) = 0;</span>
 <span id="L1364"><span class="lineNum">    1364</span>              : </span>
-<span id="L1365"><span class="lineNum">    1365</span>              :     // Do structured buffers need a separate binding for the counter buffer?</span>
-<span id="L1366"><span class="lineNum">    1366</span>              :     // (DirectX is the exception in managing these together)</span>
-<span id="L1367"><span class="lineNum">    1367</span>              :     virtual bool DoStructuredBuffersNeedSeparateCounterBuffer() = 0;</span>
-<span id="L1368"><span class="lineNum">    1368</span>              : </span>
-<span id="L1369"><span class="lineNum">    1369</span>              :     // Get layout for DescriptorHandle&lt;T&gt;</span>
-<span id="L1370"><span class="lineNum">    1370</span>              :     virtual ObjectLayoutInfo GetDescriptorHandleLayout(</span>
-<span id="L1371"><span class="lineNum">    1371</span>              :         LayoutResourceKind kind,</span>
-<span id="L1372"><span class="lineNum">    1372</span>              :         Type* elementType,</span>
-<span id="L1373"><span class="lineNum">    1373</span>              :         const TypeLayoutContext&amp; context) = 0;</span>
-<span id="L1374"><span class="lineNum">    1374</span>              : };</span>
-<span id="L1375"><span class="lineNum">    1375</span>              : </span>
-<span id="L1376"><span class="lineNum">    1376</span>              : struct ObjectLayoutRulesImpl</span>
-<span id="L1377"><span class="lineNum">    1377</span>              : {</span>
-<span id="L1378"><span class="lineNum">    1378</span>              :     struct Options</span>
-<span id="L1379"><span class="lineNum">    1379</span>              :     {</span>
-<span id="L1380"><span class="lineNum">    1380</span>              :         HLSLToVulkanLayoutOptions::KindFlags hlslToVulkanKindFlags = 0;</span>
-<span id="L1381"><span class="lineNum">    1381</span>              :     };</span>
-<span id="L1382"><span class="lineNum">    1382</span>              : </span>
-<span id="L1383"><span class="lineNum">    1383</span>              :     // Compute layout info for an object type</span>
-<span id="L1384"><span class="lineNum">    1384</span>              :     virtual ObjectLayoutInfo GetObjectLayout(ShaderParameterKind kind, const Options&amp; options) = 0;</span>
-<span id="L1385"><span class="lineNum">    1385</span>              : };</span>
-<span id="L1386"><span class="lineNum">    1386</span>              : </span>
-<span id="L1387"><span class="lineNum">    1387</span>              : struct LayoutRulesImpl</span>
-<span id="L1388"><span class="lineNum">    1388</span>              : {</span>
-<span id="L1389"><span class="lineNum">    1389</span>              :     LayoutRulesFamilyImpl* family;</span>
-<span id="L1390"><span class="lineNum">    1390</span>              :     SimpleLayoutRulesImpl* simpleRules;</span>
-<span id="L1391"><span class="lineNum">    1391</span>              :     ObjectLayoutRulesImpl* objectRules;</span>
-<span id="L1392"><span class="lineNum">    1392</span>              : </span>
-<span id="L1393"><span class="lineNum">    1393</span>              :     // Forward `SimpleLayoutRulesImpl` interface</span>
-<span id="L1394"><span class="lineNum">    1394</span>              : </span>
-<span id="L1395"><span class="lineNum">    1395</span>              :     SimpleLayoutInfo GetScalarLayout(BaseType baseType, const TypeLayoutContext&amp; context)</span>
-<span id="L1396"><span class="lineNum">    1396</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1397"><span class="lineNum">    1397</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetScalarLayout(baseType, context);</span></span>
-<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1399"><span class="lineNum">    1399</span>              :     SimpleLayoutInfo GetPointerLayout(const TypeLayoutContext&amp; context)</span>
-<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1401"><span class="lineNum">    1401</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetPointerLayout(context);</span></span>
-<span id="L1402"><span class="lineNum">    1402</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1403"><span class="lineNum">    1403</span>              :     SimpleArrayLayoutInfo GetArrayLayout(SimpleLayoutInfo elementInfo, LayoutSize elementCount)</span>
-<span id="L1404"><span class="lineNum">    1404</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1405"><span class="lineNum">    1405</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetArrayLayout(elementInfo, elementCount);</span></span>
-<span id="L1406"><span class="lineNum">    1406</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1407"><span class="lineNum">    1407</span>              : </span>
-<span id="L1408"><span class="lineNum">    1408</span>              :     SimpleLayoutInfo GetVectorLayout(</span>
-<span id="L1409"><span class="lineNum">    1409</span>              :         BaseType elementType,</span>
-<span id="L1410"><span class="lineNum">    1410</span>              :         SimpleLayoutInfo elementInfo,</span>
-<span id="L1411"><span class="lineNum">    1411</span>              :         size_t elementCount)</span>
-<span id="L1412"><span class="lineNum">    1412</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1413"><span class="lineNum">    1413</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetVectorLayout(elementType, elementInfo, elementCount);</span></span>
-<span id="L1414"><span class="lineNum">    1414</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1415"><span class="lineNum">    1415</span>              : </span>
-<span id="L1416"><span class="lineNum">    1416</span>              :     SimpleArrayLayoutInfo GetMatrixLayout(</span>
-<span id="L1417"><span class="lineNum">    1417</span>              :         BaseType elementType,</span>
-<span id="L1418"><span class="lineNum">    1418</span>              :         SimpleLayoutInfo elementInfo,</span>
-<span id="L1419"><span class="lineNum">    1419</span>              :         size_t rowCount,</span>
-<span id="L1420"><span class="lineNum">    1420</span>              :         size_t columnCount)</span>
-<span id="L1421"><span class="lineNum">    1421</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1422"><span class="lineNum">    1422</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetMatrixLayout(elementType, elementInfo, rowCount, columnCount);</span></span>
-<span id="L1423"><span class="lineNum">    1423</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1424"><span class="lineNum">    1424</span>              : </span>
-<span id="L1425"><span class="lineNum">    1425</span>              :     UniformLayoutInfo BeginStructLayout()</span>
-<span id="L1426"><span class="lineNum">    1426</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1427"><span class="lineNum">    1427</span>              :         SLANG_ASSERT(simpleRules);</span>
-<span id="L1428"><span class="lineNum">    1428</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;BeginStructLayout();</span></span>
-<span id="L1429"><span class="lineNum">    1429</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1430"><span class="lineNum">    1430</span>              : </span>
-<span id="L1431"><span class="lineNum">    1431</span>              :     LayoutSize AddStructField(UniformLayoutInfo* ioStructInfo, UniformLayoutInfo fieldInfo)</span>
-<span id="L1432"><span class="lineNum">    1432</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1433"><span class="lineNum">    1433</span>              :         SLANG_ASSERT(simpleRules);</span>
-<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;AddStructField(ioStructInfo, fieldInfo);</span></span>
-<span id="L1435"><span class="lineNum">    1435</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1436"><span class="lineNum">    1436</span>              : </span>
-<span id="L1437"><span class="lineNum">    1437</span>              :     void EndStructLayout(UniformLayoutInfo* ioStructInfo)</span>
-<span id="L1438"><span class="lineNum">    1438</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1439"><span class="lineNum">    1439</span>              :         SLANG_ASSERT(simpleRules);</span>
-<span id="L1440"><span class="lineNum">    1440</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;EndStructLayout(ioStructInfo);</span></span>
-<span id="L1441"><span class="lineNum">    1441</span>              :     }</span>
-<span id="L1442"><span class="lineNum">    1442</span>              : </span>
-<span id="L1443"><span class="lineNum">    1443</span>              :     // Do structured buffers need a separate binding for the counter buffer?</span>
-<span id="L1444"><span class="lineNum">    1444</span>              :     // (DirectX is the exception in managing these together)</span>
-<span id="L1445"><span class="lineNum">    1445</span>              :     bool DoStructuredBuffersNeedSeparateCounterBuffer()</span>
-<span id="L1446"><span class="lineNum">    1446</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1447"><span class="lineNum">    1447</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;DoStructuredBuffersNeedSeparateCounterBuffer();</span></span>
-<span id="L1448"><span class="lineNum">    1448</span>              :     }</span>
-<span id="L1449"><span class="lineNum">    1449</span>              : </span>
-<span id="L1450"><span class="lineNum">    1450</span>              :     ObjectLayoutInfo GetDescriptorHandleLayout(</span>
-<span id="L1451"><span class="lineNum">    1451</span>              :         LayoutResourceKind kind,</span>
-<span id="L1452"><span class="lineNum">    1452</span>              :         Type* elementType,</span>
-<span id="L1453"><span class="lineNum">    1453</span>              :         const TypeLayoutContext&amp; context)</span>
-<span id="L1454"><span class="lineNum">    1454</span>              :     {</span>
-<span id="L1455"><span class="lineNum">    1455</span>              :         return simpleRules-&gt;GetDescriptorHandleLayout(kind, elementType, context);</span>
-<span id="L1456"><span class="lineNum">    1456</span>              :     }</span>
-<span id="L1457"><span class="lineNum">    1457</span>              : </span>
-<span id="L1458"><span class="lineNum">    1458</span>              :     // Forward `ObjectLayoutRulesImpl` interface</span>
-<span id="L1459"><span class="lineNum">    1459</span>              : </span>
-<span id="L1460"><span class="lineNum">    1460</span>              :     ObjectLayoutInfo GetObjectLayout(</span>
-<span id="L1461"><span class="lineNum">    1461</span>              :         ShaderParameterKind kind,</span>
-<span id="L1462"><span class="lineNum">    1462</span>              :         const ObjectLayoutRulesImpl::Options&amp; options)</span>
-<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1464"><span class="lineNum">    1464</span> <span class="tlaGNC">           1 :         return objectRules-&gt;GetObjectLayout(kind, options);</span></span>
-<span id="L1465"><span class="lineNum">    1465</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1466"><span class="lineNum">    1466</span>              : </span>
-<span id="L1467"><span class="lineNum">    1467</span>              :     //</span>
-<span id="L1468"><span class="lineNum">    1468</span>              : </span>
-<span id="L1469"><span class="lineNum">    1469</span> <span class="tlaGNC">           1 :     LayoutRulesFamilyImpl* getLayoutRulesFamily() { return family; }</span></span>
-<span id="L1470"><span class="lineNum">    1470</span>              : };</span>
+<span id="L1365"><span class="lineNum">    1365</span>              :     // End layout for a struct, and finalize its size/alignment.</span>
+<span id="L1366"><span class="lineNum">    1366</span>              :     virtual void EndStructLayout(UniformLayoutInfo* ioStructInfo) = 0;</span>
+<span id="L1367"><span class="lineNum">    1367</span>              : </span>
+<span id="L1368"><span class="lineNum">    1368</span>              :     // Do structured buffers need a separate binding for the counter buffer?</span>
+<span id="L1369"><span class="lineNum">    1369</span>              :     // (DirectX is the exception in managing these together)</span>
+<span id="L1370"><span class="lineNum">    1370</span>              :     virtual bool DoStructuredBuffersNeedSeparateCounterBuffer() = 0;</span>
+<span id="L1371"><span class="lineNum">    1371</span>              : </span>
+<span id="L1372"><span class="lineNum">    1372</span>              :     // Get layout for DescriptorHandle&lt;T&gt;</span>
+<span id="L1373"><span class="lineNum">    1373</span>              :     virtual ObjectLayoutInfo GetDescriptorHandleLayout(</span>
+<span id="L1374"><span class="lineNum">    1374</span>              :         LayoutResourceKind kind,</span>
+<span id="L1375"><span class="lineNum">    1375</span>              :         Type* elementType,</span>
+<span id="L1376"><span class="lineNum">    1376</span>              :         const TypeLayoutContext&amp; context) = 0;</span>
+<span id="L1377"><span class="lineNum">    1377</span>              : };</span>
+<span id="L1378"><span class="lineNum">    1378</span>              : </span>
+<span id="L1379"><span class="lineNum">    1379</span>              : struct ObjectLayoutRulesImpl</span>
+<span id="L1380"><span class="lineNum">    1380</span>              : {</span>
+<span id="L1381"><span class="lineNum">    1381</span>              :     struct Options</span>
+<span id="L1382"><span class="lineNum">    1382</span>              :     {</span>
+<span id="L1383"><span class="lineNum">    1383</span>              :         HLSLToVulkanLayoutOptions::KindFlags hlslToVulkanKindFlags = 0;</span>
+<span id="L1384"><span class="lineNum">    1384</span>              :     };</span>
+<span id="L1385"><span class="lineNum">    1385</span>              : </span>
+<span id="L1386"><span class="lineNum">    1386</span>              :     // Compute layout info for an object type</span>
+<span id="L1387"><span class="lineNum">    1387</span>              :     virtual ObjectLayoutInfo GetObjectLayout(ShaderParameterKind kind, const Options&amp; options) = 0;</span>
+<span id="L1388"><span class="lineNum">    1388</span>              : };</span>
+<span id="L1389"><span class="lineNum">    1389</span>              : </span>
+<span id="L1390"><span class="lineNum">    1390</span>              : struct LayoutRulesImpl</span>
+<span id="L1391"><span class="lineNum">    1391</span>              : {</span>
+<span id="L1392"><span class="lineNum">    1392</span>              :     LayoutRulesFamilyImpl* family;</span>
+<span id="L1393"><span class="lineNum">    1393</span>              :     SimpleLayoutRulesImpl* simpleRules;</span>
+<span id="L1394"><span class="lineNum">    1394</span>              :     ObjectLayoutRulesImpl* objectRules;</span>
+<span id="L1395"><span class="lineNum">    1395</span>              : </span>
+<span id="L1396"><span class="lineNum">    1396</span>              :     // Forward `SimpleLayoutRulesImpl` interface</span>
+<span id="L1397"><span class="lineNum">    1397</span>              : </span>
+<span id="L1398"><span class="lineNum">    1398</span>              :     SimpleLayoutInfo GetScalarLayout(BaseType baseType, const TypeLayoutContext&amp; context)</span>
+<span id="L1399"><span class="lineNum">    1399</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetScalarLayout(baseType, context);</span></span>
+<span id="L1401"><span class="lineNum">    1401</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1402"><span class="lineNum">    1402</span>              :     SimpleLayoutInfo GetPointerLayout(const TypeLayoutContext&amp; context)</span>
+<span id="L1403"><span class="lineNum">    1403</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1404"><span class="lineNum">    1404</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetPointerLayout(context);</span></span>
+<span id="L1405"><span class="lineNum">    1405</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1406"><span class="lineNum">    1406</span>              :     SimpleArrayLayoutInfo GetArrayLayout(SimpleLayoutInfo elementInfo, LayoutSize elementCount)</span>
+<span id="L1407"><span class="lineNum">    1407</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1408"><span class="lineNum">    1408</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetArrayLayout(elementInfo, elementCount);</span></span>
+<span id="L1409"><span class="lineNum">    1409</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1410"><span class="lineNum">    1410</span>              : </span>
+<span id="L1411"><span class="lineNum">    1411</span>              :     SimpleLayoutInfo GetVectorLayout(</span>
+<span id="L1412"><span class="lineNum">    1412</span>              :         BaseType elementType,</span>
+<span id="L1413"><span class="lineNum">    1413</span>              :         SimpleLayoutInfo elementInfo,</span>
+<span id="L1414"><span class="lineNum">    1414</span>              :         size_t elementCount)</span>
+<span id="L1415"><span class="lineNum">    1415</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1416"><span class="lineNum">    1416</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetVectorLayout(elementType, elementInfo, elementCount);</span></span>
+<span id="L1417"><span class="lineNum">    1417</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1418"><span class="lineNum">    1418</span>              : </span>
+<span id="L1419"><span class="lineNum">    1419</span>              :     SimpleArrayLayoutInfo GetMatrixLayout(</span>
+<span id="L1420"><span class="lineNum">    1420</span>              :         BaseType elementType,</span>
+<span id="L1421"><span class="lineNum">    1421</span>              :         SimpleLayoutInfo elementInfo,</span>
+<span id="L1422"><span class="lineNum">    1422</span>              :         size_t rowCount,</span>
+<span id="L1423"><span class="lineNum">    1423</span>              :         size_t columnCount)</span>
+<span id="L1424"><span class="lineNum">    1424</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1425"><span class="lineNum">    1425</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;GetMatrixLayout(elementType, elementInfo, rowCount, columnCount);</span></span>
+<span id="L1426"><span class="lineNum">    1426</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1427"><span class="lineNum">    1427</span>              : </span>
+<span id="L1428"><span class="lineNum">    1428</span>              :     UniformLayoutInfo BeginStructLayout()</span>
+<span id="L1429"><span class="lineNum">    1429</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1430"><span class="lineNum">    1430</span>              :         SLANG_ASSERT(simpleRules);</span>
+<span id="L1431"><span class="lineNum">    1431</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;BeginStructLayout();</span></span>
+<span id="L1432"><span class="lineNum">    1432</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1433"><span class="lineNum">    1433</span>              : </span>
+<span id="L1434"><span class="lineNum">    1434</span>              :     LayoutSize AddStructField(UniformLayoutInfo* ioStructInfo, UniformLayoutInfo fieldInfo)</span>
+<span id="L1435"><span class="lineNum">    1435</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1436"><span class="lineNum">    1436</span>              :         SLANG_ASSERT(simpleRules);</span>
+<span id="L1437"><span class="lineNum">    1437</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;AddStructField(ioStructInfo, fieldInfo);</span></span>
+<span id="L1438"><span class="lineNum">    1438</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1439"><span class="lineNum">    1439</span>              : </span>
+<span id="L1440"><span class="lineNum">    1440</span>              :     void EndStructLayout(UniformLayoutInfo* ioStructInfo)</span>
+<span id="L1441"><span class="lineNum">    1441</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1442"><span class="lineNum">    1442</span>              :         SLANG_ASSERT(simpleRules);</span>
+<span id="L1443"><span class="lineNum">    1443</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;EndStructLayout(ioStructInfo);</span></span>
+<span id="L1444"><span class="lineNum">    1444</span>              :     }</span>
+<span id="L1445"><span class="lineNum">    1445</span>              : </span>
+<span id="L1446"><span class="lineNum">    1446</span>              :     // Do structured buffers need a separate binding for the counter buffer?</span>
+<span id="L1447"><span class="lineNum">    1447</span>              :     // (DirectX is the exception in managing these together)</span>
+<span id="L1448"><span class="lineNum">    1448</span>              :     bool DoStructuredBuffersNeedSeparateCounterBuffer()</span>
+<span id="L1449"><span class="lineNum">    1449</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1450"><span class="lineNum">    1450</span> <span class="tlaGNC">           1 :         return simpleRules-&gt;DoStructuredBuffersNeedSeparateCounterBuffer();</span></span>
+<span id="L1451"><span class="lineNum">    1451</span>              :     }</span>
+<span id="L1452"><span class="lineNum">    1452</span>              : </span>
+<span id="L1453"><span class="lineNum">    1453</span>              :     ObjectLayoutInfo GetDescriptorHandleLayout(</span>
+<span id="L1454"><span class="lineNum">    1454</span>              :         LayoutResourceKind kind,</span>
+<span id="L1455"><span class="lineNum">    1455</span>              :         Type* elementType,</span>
+<span id="L1456"><span class="lineNum">    1456</span>              :         const TypeLayoutContext&amp; context)</span>
+<span id="L1457"><span class="lineNum">    1457</span>              :     {</span>
+<span id="L1458"><span class="lineNum">    1458</span>              :         return simpleRules-&gt;GetDescriptorHandleLayout(kind, elementType, context);</span>
+<span id="L1459"><span class="lineNum">    1459</span>              :     }</span>
+<span id="L1460"><span class="lineNum">    1460</span>              : </span>
+<span id="L1461"><span class="lineNum">    1461</span>              :     // Forward `ObjectLayoutRulesImpl` interface</span>
+<span id="L1462"><span class="lineNum">    1462</span>              : </span>
+<span id="L1463"><span class="lineNum">    1463</span>              :     ObjectLayoutInfo GetObjectLayout(</span>
+<span id="L1464"><span class="lineNum">    1464</span>              :         ShaderParameterKind kind,</span>
+<span id="L1465"><span class="lineNum">    1465</span>              :         const ObjectLayoutRulesImpl::Options&amp; options)</span>
+<span id="L1466"><span class="lineNum">    1466</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1467"><span class="lineNum">    1467</span> <span class="tlaGNC">           1 :         return objectRules-&gt;GetObjectLayout(kind, options);</span></span>
+<span id="L1468"><span class="lineNum">    1468</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1469"><span class="lineNum">    1469</span>              : </span>
+<span id="L1470"><span class="lineNum">    1470</span>              :     //</span>
 <span id="L1471"><span class="lineNum">    1471</span>              : </span>
-<span id="L1472"><span class="lineNum">    1472</span>              : struct LayoutRulesFamilyImpl</span>
-<span id="L1473"><span class="lineNum">    1473</span>              : {</span>
-<span id="L1474"><span class="lineNum">    1474</span>              :     virtual LayoutRulesImpl* getAnyValueRules() = 0;</span>
-<span id="L1475"><span class="lineNum">    1475</span>              :     virtual LayoutRulesImpl* getConstantBufferRules(</span>
-<span id="L1476"><span class="lineNum">    1476</span>              :         CompilerOptionSet&amp; compilerOptions,</span>
-<span id="L1477"><span class="lineNum">    1477</span>              :         Type* containerType) = 0;</span>
-<span id="L1478"><span class="lineNum">    1478</span>              :     virtual LayoutRulesImpl* getPushConstantBufferRules() = 0;</span>
-<span id="L1479"><span class="lineNum">    1479</span>              :     virtual LayoutRulesImpl* getTextureBufferRules(CompilerOptionSet&amp; compilerOptions) = 0;</span>
-<span id="L1480"><span class="lineNum">    1480</span>              :     virtual LayoutRulesImpl* getVaryingInputRules() = 0;</span>
-<span id="L1481"><span class="lineNum">    1481</span>              :     virtual LayoutRulesImpl* getVaryingOutputRules() = 0;</span>
-<span id="L1482"><span class="lineNum">    1482</span>              :     virtual LayoutRulesImpl* getSpecializationConstantRules() = 0;</span>
-<span id="L1483"><span class="lineNum">    1483</span>              :     virtual LayoutRulesImpl* getShaderStorageBufferRules(CompilerOptionSet&amp; compilerOptions) = 0;</span>
-<span id="L1484"><span class="lineNum">    1484</span>              :     virtual LayoutRulesImpl* getParameterBlockRules(CompilerOptionSet&amp; compilerOptions) = 0;</span>
-<span id="L1485"><span class="lineNum">    1485</span>              : </span>
-<span id="L1486"><span class="lineNum">    1486</span>              :     virtual LayoutRulesImpl* getRayPayloadParameterRules() = 0;</span>
-<span id="L1487"><span class="lineNum">    1487</span>              :     virtual LayoutRulesImpl* getCallablePayloadParameterRules() = 0;</span>
-<span id="L1488"><span class="lineNum">    1488</span>              :     virtual LayoutRulesImpl* getHitAttributesParameterRules() = 0;</span>
-<span id="L1489"><span class="lineNum">    1489</span>              : </span>
-<span id="L1490"><span class="lineNum">    1490</span>              :     virtual LayoutRulesImpl* getShaderRecordConstantBufferRules() = 0;</span>
-<span id="L1491"><span class="lineNum">    1491</span>              : </span>
-<span id="L1492"><span class="lineNum">    1492</span>              :     virtual LayoutRulesImpl* getEntryPointParameterRules() = 0;</span>
-<span id="L1493"><span class="lineNum">    1493</span>              : </span>
-<span id="L1494"><span class="lineNum">    1494</span>              :     virtual LayoutRulesImpl* getStructuredBufferRules(CompilerOptionSet&amp; compilerOptions) = 0;</span>
-<span id="L1495"><span class="lineNum">    1495</span>              : };</span>
+<span id="L1472"><span class="lineNum">    1472</span> <span class="tlaGNC">           1 :     LayoutRulesFamilyImpl* getLayoutRulesFamily() { return family; }</span></span>
+<span id="L1473"><span class="lineNum">    1473</span>              : };</span>
+<span id="L1474"><span class="lineNum">    1474</span>              : </span>
+<span id="L1475"><span class="lineNum">    1475</span>              : struct LayoutRulesFamilyImpl</span>
+<span id="L1476"><span class="lineNum">    1476</span>              : {</span>
+<span id="L1477"><span class="lineNum">    1477</span>              :     virtual LayoutRulesImpl* getAnyValueRules() = 0;</span>
+<span id="L1478"><span class="lineNum">    1478</span>              :     virtual LayoutRulesImpl* getConstantBufferRules(</span>
+<span id="L1479"><span class="lineNum">    1479</span>              :         CompilerOptionSet&amp; compilerOptions,</span>
+<span id="L1480"><span class="lineNum">    1480</span>              :         Type* containerType) = 0;</span>
+<span id="L1481"><span class="lineNum">    1481</span>              :     virtual LayoutRulesImpl* getPushConstantBufferRules() = 0;</span>
+<span id="L1482"><span class="lineNum">    1482</span>              :     virtual LayoutRulesImpl* getTextureBufferRules(CompilerOptionSet&amp; compilerOptions) = 0;</span>
+<span id="L1483"><span class="lineNum">    1483</span>              :     virtual LayoutRulesImpl* getVaryingInputRules() = 0;</span>
+<span id="L1484"><span class="lineNum">    1484</span>              :     virtual LayoutRulesImpl* getVaryingOutputRules() = 0;</span>
+<span id="L1485"><span class="lineNum">    1485</span>              :     virtual LayoutRulesImpl* getSpecializationConstantRules() = 0;</span>
+<span id="L1486"><span class="lineNum">    1486</span>              :     virtual LayoutRulesImpl* getShaderStorageBufferRules(CompilerOptionSet&amp; compilerOptions) = 0;</span>
+<span id="L1487"><span class="lineNum">    1487</span>              :     virtual LayoutRulesImpl* getParameterBlockRules(CompilerOptionSet&amp; compilerOptions) = 0;</span>
+<span id="L1488"><span class="lineNum">    1488</span>              : </span>
+<span id="L1489"><span class="lineNum">    1489</span>              :     virtual LayoutRulesImpl* getRayPayloadParameterRules() = 0;</span>
+<span id="L1490"><span class="lineNum">    1490</span>              :     virtual LayoutRulesImpl* getCallablePayloadParameterRules() = 0;</span>
+<span id="L1491"><span class="lineNum">    1491</span>              :     virtual LayoutRulesImpl* getHitAttributesParameterRules() = 0;</span>
+<span id="L1492"><span class="lineNum">    1492</span>              : </span>
+<span id="L1493"><span class="lineNum">    1493</span>              :     virtual LayoutRulesImpl* getShaderRecordConstantBufferRules() = 0;</span>
+<span id="L1494"><span class="lineNum">    1494</span>              : </span>
+<span id="L1495"><span class="lineNum">    1495</span>              :     virtual LayoutRulesImpl* getEntryPointParameterRules() = 0;</span>
 <span id="L1496"><span class="lineNum">    1496</span>              : </span>
-<span id="L1497"><span class="lineNum">    1497</span>              : /// A custom tuple to capture the outputs of type layout</span>
-<span id="L1498"><span class="lineNum">    1498</span>              : struct TypeLayoutResult</span>
-<span id="L1499"><span class="lineNum">    1499</span>              : {</span>
-<span id="L1500"><span class="lineNum">    1500</span>              :     /// The actual heap-allocated layout object with all the details</span>
-<span id="L1501"><span class="lineNum">    1501</span>              :     RefPtr&lt;TypeLayout&gt; layout;</span>
-<span id="L1502"><span class="lineNum">    1502</span>              : </span>
-<span id="L1503"><span class="lineNum">    1503</span>              :     /// A simplified representation of layout information.</span>
-<span id="L1504"><span class="lineNum">    1504</span>              :     ///</span>
-<span id="L1505"><span class="lineNum">    1505</span>              :     /// This information is suitable for the case where a type only</span>
-<span id="L1506"><span class="lineNum">    1506</span>              :     /// consumes a single resource.</span>
+<span id="L1497"><span class="lineNum">    1497</span>              :     virtual LayoutRulesImpl* getStructuredBufferRules(CompilerOptionSet&amp; compilerOptions) = 0;</span>
+<span id="L1498"><span class="lineNum">    1498</span>              : };</span>
+<span id="L1499"><span class="lineNum">    1499</span>              : </span>
+<span id="L1500"><span class="lineNum">    1500</span>              : /// A custom tuple to capture the outputs of type layout</span>
+<span id="L1501"><span class="lineNum">    1501</span>              : struct TypeLayoutResult</span>
+<span id="L1502"><span class="lineNum">    1502</span>              : {</span>
+<span id="L1503"><span class="lineNum">    1503</span>              :     /// The actual heap-allocated layout object with all the details</span>
+<span id="L1504"><span class="lineNum">    1504</span>              :     RefPtr&lt;TypeLayout&gt; layout;</span>
+<span id="L1505"><span class="lineNum">    1505</span>              : </span>
+<span id="L1506"><span class="lineNum">    1506</span>              :     /// A simplified representation of layout information.</span>
 <span id="L1507"><span class="lineNum">    1507</span>              :     ///</span>
-<span id="L1508"><span class="lineNum">    1508</span>              :     SimpleLayoutInfo info;</span>
-<span id="L1509"><span class="lineNum">    1509</span>              : </span>
-<span id="L1510"><span class="lineNum">    1510</span>              :     /// Default constructor.</span>
-<span id="L1511"><span class="lineNum">    1511</span> <span class="tlaGNC">           1 :     TypeLayoutResult() {}</span></span>
+<span id="L1508"><span class="lineNum">    1508</span>              :     /// This information is suitable for the case where a type only</span>
+<span id="L1509"><span class="lineNum">    1509</span>              :     /// consumes a single resource.</span>
+<span id="L1510"><span class="lineNum">    1510</span>              :     ///</span>
+<span id="L1511"><span class="lineNum">    1511</span>              :     SimpleLayoutInfo info;</span>
 <span id="L1512"><span class="lineNum">    1512</span>              : </span>
-<span id="L1513"><span class="lineNum">    1513</span>              :     /// Construct a result from the given layout object and simple layout info.</span>
-<span id="L1514"><span class="lineNum">    1514</span>              :     TypeLayoutResult(RefPtr&lt;TypeLayout&gt; inLayout, SimpleLayoutInfo const&amp; inInfo)</span>
-<span id="L1515"><span class="lineNum">    1515</span>              :         : layout(inLayout), info(inInfo)</span>
-<span id="L1516"><span class="lineNum">    1516</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1517"><span class="lineNum">    1517</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1518"><span class="lineNum">    1518</span>              : };</span>
-<span id="L1519"><span class="lineNum">    1519</span>              : </span>
-<span id="L1520"><span class="lineNum">    1520</span>              : struct TypeLayoutContext</span>
-<span id="L1521"><span class="lineNum">    1521</span>              : {</span>
-<span id="L1522"><span class="lineNum">    1522</span>              :     ASTBuilder* astBuilder;</span>
-<span id="L1523"><span class="lineNum">    1523</span>              : </span>
-<span id="L1524"><span class="lineNum">    1524</span>              :     // The layout rules to use (e.g., we compute</span>
-<span id="L1525"><span class="lineNum">    1525</span>              :     // layout differently in a `cbuffer` vs. the</span>
-<span id="L1526"><span class="lineNum">    1526</span>              :     // parameter list of a fragment shader).</span>
-<span id="L1527"><span class="lineNum">    1527</span>              :     LayoutRulesImpl* rules;</span>
-<span id="L1528"><span class="lineNum">    1528</span>              : </span>
-<span id="L1529"><span class="lineNum">    1529</span>              :     // The target request that is triggering layout</span>
-<span id="L1530"><span class="lineNum">    1530</span>              :     TargetRequest* targetReq;</span>
+<span id="L1513"><span class="lineNum">    1513</span>              :     /// Default constructor.</span>
+<span id="L1514"><span class="lineNum">    1514</span> <span class="tlaGNC">           1 :     TypeLayoutResult() {}</span></span>
+<span id="L1515"><span class="lineNum">    1515</span>              : </span>
+<span id="L1516"><span class="lineNum">    1516</span>              :     /// Construct a result from the given layout object and simple layout info.</span>
+<span id="L1517"><span class="lineNum">    1517</span>              :     TypeLayoutResult(RefPtr&lt;TypeLayout&gt; inLayout, SimpleLayoutInfo const&amp; inInfo)</span>
+<span id="L1518"><span class="lineNum">    1518</span>              :         : layout(inLayout), info(inInfo)</span>
+<span id="L1519"><span class="lineNum">    1519</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1520"><span class="lineNum">    1520</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1521"><span class="lineNum">    1521</span>              : };</span>
+<span id="L1522"><span class="lineNum">    1522</span>              : </span>
+<span id="L1523"><span class="lineNum">    1523</span>              : struct TypeLayoutContext</span>
+<span id="L1524"><span class="lineNum">    1524</span>              : {</span>
+<span id="L1525"><span class="lineNum">    1525</span>              :     ASTBuilder* astBuilder;</span>
+<span id="L1526"><span class="lineNum">    1526</span>              : </span>
+<span id="L1527"><span class="lineNum">    1527</span>              :     // The layout rules to use (e.g., we compute</span>
+<span id="L1528"><span class="lineNum">    1528</span>              :     // layout differently in a `cbuffer` vs. the</span>
+<span id="L1529"><span class="lineNum">    1529</span>              :     // parameter list of a fragment shader).</span>
+<span id="L1530"><span class="lineNum">    1530</span>              :     LayoutRulesImpl* rules;</span>
 <span id="L1531"><span class="lineNum">    1531</span>              : </span>
-<span id="L1532"><span class="lineNum">    1532</span>              :     // Optional sink for reporting layout-time diagnostics.</span>
-<span id="L1533"><span class="lineNum">    1533</span>              :     DiagnosticSink* sink = nullptr;</span>
+<span id="L1532"><span class="lineNum">    1532</span>              :     // The target request that is triggering layout</span>
+<span id="L1533"><span class="lineNum">    1533</span>              :     TargetRequest* targetReq;</span>
 <span id="L1534"><span class="lineNum">    1534</span>              : </span>
-<span id="L1535"><span class="lineNum">    1535</span>              :     // A parent program layout that will establish the ordering</span>
-<span id="L1536"><span class="lineNum">    1536</span>              :     // of all global generic type parameters.</span>
-<span id="L1537"><span class="lineNum">    1537</span>              :     //</span>
-<span id="L1538"><span class="lineNum">    1538</span>              :     ProgramLayout* programLayout;</span>
-<span id="L1539"><span class="lineNum">    1539</span>              : </span>
-<span id="L1540"><span class="lineNum">    1540</span>              :     // Whether to lay out matrices column-major</span>
-<span id="L1541"><span class="lineNum">    1541</span>              :     // or row-major.</span>
-<span id="L1542"><span class="lineNum">    1542</span>              :     MatrixLayoutMode matrixLayoutMode;</span>
-<span id="L1543"><span class="lineNum">    1543</span>              : </span>
-<span id="L1544"><span class="lineNum">    1544</span>              :     // The concrete types (if any) to plug into the currently in-scope</span>
-<span id="L1545"><span class="lineNum">    1545</span>              :     // specialization params.</span>
-<span id="L1546"><span class="lineNum">    1546</span>              :     //</span>
-<span id="L1547"><span class="lineNum">    1547</span>              :     Int specializationArgCount = 0;</span>
-<span id="L1548"><span class="lineNum">    1548</span>              :     ExpandedSpecializationArg const* specializationArgs = nullptr;</span>
-<span id="L1549"><span class="lineNum">    1549</span>              : </span>
-<span id="L1550"><span class="lineNum">    1550</span>              :     // Map types to their type layout</span>
-<span id="L1551"><span class="lineNum">    1551</span>              :     Dictionary&lt;Type*, TypeLayoutResult&gt; layoutMap;</span>
+<span id="L1535"><span class="lineNum">    1535</span>              :     // Optional sink for reporting layout-time diagnostics.</span>
+<span id="L1536"><span class="lineNum">    1536</span>              :     DiagnosticSink* sink = nullptr;</span>
+<span id="L1537"><span class="lineNum">    1537</span>              : </span>
+<span id="L1538"><span class="lineNum">    1538</span>              :     // A parent program layout that will establish the ordering</span>
+<span id="L1539"><span class="lineNum">    1539</span>              :     // of all global generic type parameters.</span>
+<span id="L1540"><span class="lineNum">    1540</span>              :     //</span>
+<span id="L1541"><span class="lineNum">    1541</span>              :     ProgramLayout* programLayout;</span>
+<span id="L1542"><span class="lineNum">    1542</span>              : </span>
+<span id="L1543"><span class="lineNum">    1543</span>              :     // Whether to lay out matrices column-major</span>
+<span id="L1544"><span class="lineNum">    1544</span>              :     // or row-major.</span>
+<span id="L1545"><span class="lineNum">    1545</span>              :     MatrixLayoutMode matrixLayoutMode;</span>
+<span id="L1546"><span class="lineNum">    1546</span>              : </span>
+<span id="L1547"><span class="lineNum">    1547</span>              :     // The concrete types (if any) to plug into the currently in-scope</span>
+<span id="L1548"><span class="lineNum">    1548</span>              :     // specialization params.</span>
+<span id="L1549"><span class="lineNum">    1549</span>              :     //</span>
+<span id="L1550"><span class="lineNum">    1550</span>              :     Int specializationArgCount = 0;</span>
+<span id="L1551"><span class="lineNum">    1551</span>              :     ExpandedSpecializationArg const* specializationArgs = nullptr;</span>
 <span id="L1552"><span class="lineNum">    1552</span>              : </span>
-<span id="L1553"><span class="lineNum">    1553</span>              :     // Recursion depth for type layout creation.</span>
-<span id="L1554"><span class="lineNum">    1554</span>              :     UInt recursionDepth = 0;</span>
+<span id="L1553"><span class="lineNum">    1553</span>              :     // Map types to their type layout</span>
+<span id="L1554"><span class="lineNum">    1554</span>              :     Dictionary&lt;Type*, TypeLayoutResult&gt; layoutMap;</span>
 <span id="L1555"><span class="lineNum">    1555</span>              : </span>
-<span id="L1556"><span class="lineNum">    1556</span>              :     // Optional declaration used as the source location anchor for layout diagnostics.</span>
-<span id="L1557"><span class="lineNum">    1557</span>              :     Decl* layoutDeclForDiagnostics = nullptr;</span>
+<span id="L1556"><span class="lineNum">    1556</span>              :     // Recursion depth for type layout creation.</span>
+<span id="L1557"><span class="lineNum">    1557</span>              :     UInt recursionDepth = 0;</span>
 <span id="L1558"><span class="lineNum">    1558</span>              : </span>
-<span id="L1559"><span class="lineNum">    1559</span>              :     // Options passed to object layout</span>
-<span id="L1560"><span class="lineNum">    1560</span>              :     ObjectLayoutRulesImpl::Options objectLayoutOptions;</span>
+<span id="L1559"><span class="lineNum">    1559</span>              :     // Optional declaration used as the source location anchor for layout diagnostics.</span>
+<span id="L1560"><span class="lineNum">    1560</span>              :     Decl* layoutDeclForDiagnostics = nullptr;</span>
 <span id="L1561"><span class="lineNum">    1561</span>              : </span>
-<span id="L1562"><span class="lineNum">    1562</span>              :     // Mangled names to Type, this is used to match up &#x27;extern&#x27; types to</span>
-<span id="L1563"><span class="lineNum">    1563</span>              :     // their linked in definitions during layout generation</span>
-<span id="L1564"><span class="lineNum">    1564</span>              :     std::optional&lt;Dictionary&lt;String, Type*&gt;&gt; externTypeMap;</span>
-<span id="L1565"><span class="lineNum">    1565</span>              : </span>
-<span id="L1566"><span class="lineNum">    1566</span>              :     Type* lookupExternDeclRefType(DeclRefType* declRefType);</span>
-<span id="L1567"><span class="lineNum">    1567</span>              :     void buildExternTypeMap();</span>
+<span id="L1562"><span class="lineNum">    1562</span>              :     // Options passed to object layout</span>
+<span id="L1563"><span class="lineNum">    1563</span>              :     ObjectLayoutRulesImpl::Options objectLayoutOptions;</span>
+<span id="L1564"><span class="lineNum">    1564</span>              : </span>
+<span id="L1565"><span class="lineNum">    1565</span>              :     // Mangled names to Type, this is used to match up &#x27;extern&#x27; types to</span>
+<span id="L1566"><span class="lineNum">    1566</span>              :     // their linked in definitions during layout generation</span>
+<span id="L1567"><span class="lineNum">    1567</span>              :     std::optional&lt;Dictionary&lt;String, Type*&gt;&gt; externTypeMap;</span>
 <span id="L1568"><span class="lineNum">    1568</span>              : </span>
-<span id="L1569"><span class="lineNum">    1569</span>              :     LayoutRulesImpl* getRules() { return rules; }</span>
-<span id="L1570"><span class="lineNum">    1570</span> <span class="tlaGNC">           1 :     LayoutRulesFamilyImpl* getRulesFamily() const { return rules-&gt;getLayoutRulesFamily(); }</span></span>
+<span id="L1569"><span class="lineNum">    1569</span>              :     Type* lookupExternDeclRefType(DeclRefType* declRefType);</span>
+<span id="L1570"><span class="lineNum">    1570</span>              :     void buildExternTypeMap();</span>
 <span id="L1571"><span class="lineNum">    1571</span>              : </span>
-<span id="L1572"><span class="lineNum">    1572</span>              :     TypeLayoutContext with(LayoutRulesImpl* inRules) const</span>
-<span id="L1573"><span class="lineNum">    1573</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1574"><span class="lineNum">    1574</span> <span class="tlaGNC">           1 :         TypeLayoutContext result = *this;</span></span>
-<span id="L1575"><span class="lineNum">    1575</span> <span class="tlaGNC">           1 :         result.rules = inRules;</span></span>
-<span id="L1576"><span class="lineNum">    1576</span> <span class="tlaGNC">           1 :         return result;</span></span>
-<span id="L1577"><span class="lineNum">    1577</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1578"><span class="lineNum">    1578</span>              : </span>
-<span id="L1579"><span class="lineNum">    1579</span>              :     TypeLayoutContext with(MatrixLayoutMode inMatrixLayoutMode) const</span>
-<span id="L1580"><span class="lineNum">    1580</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1581"><span class="lineNum">    1581</span> <span class="tlaGNC">           1 :         TypeLayoutContext result = *this;</span></span>
-<span id="L1582"><span class="lineNum">    1582</span> <span class="tlaGNC">           1 :         result.matrixLayoutMode = inMatrixLayoutMode;</span></span>
-<span id="L1583"><span class="lineNum">    1583</span> <span class="tlaGNC">           1 :         return result;</span></span>
-<span id="L1584"><span class="lineNum">    1584</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1585"><span class="lineNum">    1585</span>              : </span>
-<span id="L1586"><span class="lineNum">    1586</span>              :     TypeLayoutContext withSpecializationArgs(ExpandedSpecializationArg const* args, Int argCount)</span>
-<span id="L1587"><span class="lineNum">    1587</span>              :         const</span>
-<span id="L1588"><span class="lineNum">    1588</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1589"><span class="lineNum">    1589</span> <span class="tlaGNC">           1 :         TypeLayoutContext result = *this;</span></span>
-<span id="L1590"><span class="lineNum">    1590</span> <span class="tlaGNC">           1 :         result.specializationArgCount = argCount;</span></span>
-<span id="L1591"><span class="lineNum">    1591</span>              :         result.specializationArgs = args;</span>
-<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaGNC">           1 :         return result;</span></span>
-<span id="L1593"><span class="lineNum">    1593</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1594"><span class="lineNum">    1594</span>              : </span>
-<span id="L1595"><span class="lineNum">    1595</span>              :     TypeLayoutContext withSpecializationArgsOffsetBy(Int offset) const</span>
-<span id="L1596"><span class="lineNum">    1596</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1597"><span class="lineNum">    1597</span> <span class="tlaGNC">           1 :         TypeLayoutContext result = *this;</span></span>
-<span id="L1598"><span class="lineNum">    1598</span> <span class="tlaGNC">           1 :         if (offset &gt;= 0 &amp;&amp; offset &lt; specializationArgCount)</span></span>
-<span id="L1599"><span class="lineNum">    1599</span>              :         {</span>
-<span id="L1600"><span class="lineNum">    1600</span> <span class="tlaGNC">           1 :             result.specializationArgCount = specializationArgCount - offset;</span></span>
-<span id="L1601"><span class="lineNum">    1601</span> <span class="tlaGNC">           1 :             result.specializationArgs = specializationArgs + offset;</span></span>
-<span id="L1602"><span class="lineNum">    1602</span>              :         }</span>
-<span id="L1603"><span class="lineNum">    1603</span>              :         else</span>
-<span id="L1604"><span class="lineNum">    1604</span>              :         {</span>
-<span id="L1605"><span class="lineNum">    1605</span>              :             result.specializationArgCount = 0;</span>
-<span id="L1606"><span class="lineNum">    1606</span> <span class="tlaGNC">           1 :             result.specializationArgs = nullptr;</span></span>
-<span id="L1607"><span class="lineNum">    1607</span>              :         }</span>
-<span id="L1608"><span class="lineNum">    1608</span> <span class="tlaGNC">           1 :         return result;</span></span>
-<span id="L1609"><span class="lineNum">    1609</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1610"><span class="lineNum">    1610</span>              : </span>
-<span id="L1611"><span class="lineNum">    1611</span>              :     IntVal* tryResolveLinkTimeVal(IntVal* inVal) const</span>
-<span id="L1612"><span class="lineNum">    1612</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1613"><span class="lineNum">    1613</span> <span class="tlaGNC">           1 :         if (!programLayout)</span></span>
-<span id="L1614"><span class="lineNum">    1614</span>              :             return inVal;</span>
-<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaGNC">           1 :         auto constIntVal = programLayout-&gt;getProgram()-&gt;tryFoldIntVal(inVal);</span></span>
-<span id="L1616"><span class="lineNum">    1616</span> <span class="tlaGNC">           1 :         if (constIntVal)</span></span>
-<span id="L1617"><span class="lineNum">    1617</span>              :             return constIntVal;</span>
-<span id="L1618"><span class="lineNum">    1618</span>              :         return inVal;</span>
-<span id="L1619"><span class="lineNum">    1619</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1620"><span class="lineNum">    1620</span>              : };</span>
-<span id="L1621"><span class="lineNum">    1621</span>              : </span>
-<span id="L1622"><span class="lineNum">    1622</span>              : //</span>
-<span id="L1623"><span class="lineNum">    1623</span>              : </span>
+<span id="L1572"><span class="lineNum">    1572</span>              :     LayoutRulesImpl* getRules() { return rules; }</span>
+<span id="L1573"><span class="lineNum">    1573</span> <span class="tlaGNC">           1 :     LayoutRulesFamilyImpl* getRulesFamily() const { return rules-&gt;getLayoutRulesFamily(); }</span></span>
+<span id="L1574"><span class="lineNum">    1574</span>              : </span>
+<span id="L1575"><span class="lineNum">    1575</span>              :     TypeLayoutContext with(LayoutRulesImpl* inRules) const</span>
+<span id="L1576"><span class="lineNum">    1576</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1577"><span class="lineNum">    1577</span> <span class="tlaGNC">           1 :         TypeLayoutContext result = *this;</span></span>
+<span id="L1578"><span class="lineNum">    1578</span> <span class="tlaGNC">           1 :         result.rules = inRules;</span></span>
+<span id="L1579"><span class="lineNum">    1579</span> <span class="tlaGNC">           1 :         return result;</span></span>
+<span id="L1580"><span class="lineNum">    1580</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1581"><span class="lineNum">    1581</span>              : </span>
+<span id="L1582"><span class="lineNum">    1582</span>              :     TypeLayoutContext with(MatrixLayoutMode inMatrixLayoutMode) const</span>
+<span id="L1583"><span class="lineNum">    1583</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1584"><span class="lineNum">    1584</span> <span class="tlaGNC">           1 :         TypeLayoutContext result = *this;</span></span>
+<span id="L1585"><span class="lineNum">    1585</span> <span class="tlaGNC">           1 :         result.matrixLayoutMode = inMatrixLayoutMode;</span></span>
+<span id="L1586"><span class="lineNum">    1586</span> <span class="tlaGNC">           1 :         return result;</span></span>
+<span id="L1587"><span class="lineNum">    1587</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1588"><span class="lineNum">    1588</span>              : </span>
+<span id="L1589"><span class="lineNum">    1589</span>              :     TypeLayoutContext withSpecializationArgs(ExpandedSpecializationArg const* args, Int argCount)</span>
+<span id="L1590"><span class="lineNum">    1590</span>              :         const</span>
+<span id="L1591"><span class="lineNum">    1591</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaGNC">           1 :         TypeLayoutContext result = *this;</span></span>
+<span id="L1593"><span class="lineNum">    1593</span> <span class="tlaGNC">           1 :         result.specializationArgCount = argCount;</span></span>
+<span id="L1594"><span class="lineNum">    1594</span>              :         result.specializationArgs = args;</span>
+<span id="L1595"><span class="lineNum">    1595</span> <span class="tlaGNC">           1 :         return result;</span></span>
+<span id="L1596"><span class="lineNum">    1596</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1597"><span class="lineNum">    1597</span>              : </span>
+<span id="L1598"><span class="lineNum">    1598</span>              :     TypeLayoutContext withSpecializationArgsOffsetBy(Int offset) const</span>
+<span id="L1599"><span class="lineNum">    1599</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1600"><span class="lineNum">    1600</span> <span class="tlaGNC">           1 :         TypeLayoutContext result = *this;</span></span>
+<span id="L1601"><span class="lineNum">    1601</span> <span class="tlaGNC">           1 :         if (offset &gt;= 0 &amp;&amp; offset &lt; specializationArgCount)</span></span>
+<span id="L1602"><span class="lineNum">    1602</span>              :         {</span>
+<span id="L1603"><span class="lineNum">    1603</span> <span class="tlaGNC">           1 :             result.specializationArgCount = specializationArgCount - offset;</span></span>
+<span id="L1604"><span class="lineNum">    1604</span> <span class="tlaGNC">           1 :             result.specializationArgs = specializationArgs + offset;</span></span>
+<span id="L1605"><span class="lineNum">    1605</span>              :         }</span>
+<span id="L1606"><span class="lineNum">    1606</span>              :         else</span>
+<span id="L1607"><span class="lineNum">    1607</span>              :         {</span>
+<span id="L1608"><span class="lineNum">    1608</span>              :             result.specializationArgCount = 0;</span>
+<span id="L1609"><span class="lineNum">    1609</span> <span class="tlaGNC">           1 :             result.specializationArgs = nullptr;</span></span>
+<span id="L1610"><span class="lineNum">    1610</span>              :         }</span>
+<span id="L1611"><span class="lineNum">    1611</span> <span class="tlaGNC">           1 :         return result;</span></span>
+<span id="L1612"><span class="lineNum">    1612</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1613"><span class="lineNum">    1613</span>              : </span>
+<span id="L1614"><span class="lineNum">    1614</span>              :     IntVal* tryResolveLinkTimeVal(IntVal* inVal) const</span>
+<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1616"><span class="lineNum">    1616</span> <span class="tlaGNC">           1 :         if (!programLayout)</span></span>
+<span id="L1617"><span class="lineNum">    1617</span>              :             return inVal;</span>
+<span id="L1618"><span class="lineNum">    1618</span> <span class="tlaGNC">           1 :         auto constIntVal = programLayout-&gt;getProgram()-&gt;tryFoldIntVal(inVal);</span></span>
+<span id="L1619"><span class="lineNum">    1619</span> <span class="tlaGNC">           1 :         if (constIntVal)</span></span>
+<span id="L1620"><span class="lineNum">    1620</span>              :             return constIntVal;</span>
+<span id="L1621"><span class="lineNum">    1621</span>              :         return inVal;</span>
+<span id="L1622"><span class="lineNum">    1622</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1623"><span class="lineNum">    1623</span>              : };</span>
 <span id="L1624"><span class="lineNum">    1624</span>              : </span>
-<span id="L1625"><span class="lineNum">    1625</span>              : /// Helper type for building `struct` type layouts</span>
-<span id="L1626"><span class="lineNum">    1626</span>              : struct StructTypeLayoutBuilder</span>
-<span id="L1627"><span class="lineNum">    1627</span>              : {</span>
-<span id="L1628"><span class="lineNum">    1628</span>              : public:</span>
-<span id="L1629"><span class="lineNum">    1629</span>              :     /// Begin the layout process for `type`, using `rules`</span>
-<span id="L1630"><span class="lineNum">    1630</span>              :     void beginLayout(Type* type, LayoutRulesImpl* rules);</span>
-<span id="L1631"><span class="lineNum">    1631</span>              : </span>
-<span id="L1632"><span class="lineNum">    1632</span>              :     /// Begin the layout process for `type`, using `rules`, if it hasn&#x27;t already been begun.</span>
-<span id="L1633"><span class="lineNum">    1633</span>              :     ///</span>
-<span id="L1634"><span class="lineNum">    1634</span>              :     /// This functions allows for a `StructTypeLayoutBuilder` to be use lazily,</span>
-<span id="L1635"><span class="lineNum">    1635</span>              :     /// only allocating a type layout object if it is actaully needed.</span>
+<span id="L1625"><span class="lineNum">    1625</span>              : //</span>
+<span id="L1626"><span class="lineNum">    1626</span>              : </span>
+<span id="L1627"><span class="lineNum">    1627</span>              : </span>
+<span id="L1628"><span class="lineNum">    1628</span>              : /// Helper type for building `struct` type layouts</span>
+<span id="L1629"><span class="lineNum">    1629</span>              : struct StructTypeLayoutBuilder</span>
+<span id="L1630"><span class="lineNum">    1630</span>              : {</span>
+<span id="L1631"><span class="lineNum">    1631</span>              : public:</span>
+<span id="L1632"><span class="lineNum">    1632</span>              :     /// Begin the layout process for `type`, using `rules`</span>
+<span id="L1633"><span class="lineNum">    1633</span>              :     void beginLayout(Type* type, LayoutRulesImpl* rules);</span>
+<span id="L1634"><span class="lineNum">    1634</span>              : </span>
+<span id="L1635"><span class="lineNum">    1635</span>              :     /// Begin the layout process for `type`, using `rules`, if it hasn&#x27;t already been begun.</span>
 <span id="L1636"><span class="lineNum">    1636</span>              :     ///</span>
-<span id="L1637"><span class="lineNum">    1637</span>              :     void beginLayoutIfNeeded(Type* type, LayoutRulesImpl* rules);</span>
-<span id="L1638"><span class="lineNum">    1638</span>              : </span>
-<span id="L1639"><span class="lineNum">    1639</span>              :     /// Add a field to the struct type layout.</span>
-<span id="L1640"><span class="lineNum">    1640</span>              :     ///</span>
-<span id="L1641"><span class="lineNum">    1641</span>              :     /// One of the `beginLayout*()` functions must have been called previously.</span>
-<span id="L1642"><span class="lineNum">    1642</span>              :     ///</span>
-<span id="L1643"><span class="lineNum">    1643</span>              :     RefPtr&lt;VarLayout&gt; addField(DeclRef&lt;Decl&gt; field, TypeLayoutResult fieldResult);</span>
-<span id="L1644"><span class="lineNum">    1644</span>              : </span>
-<span id="L1645"><span class="lineNum">    1645</span>              :     RefPtr&lt;VarLayout&gt; addExplicitUniformField(</span>
-<span id="L1646"><span class="lineNum">    1646</span>              :         DeclRef&lt;VarDeclBase&gt; field,</span>
-<span id="L1647"><span class="lineNum">    1647</span>              :         TypeLayoutResult fieldResult);</span>
-<span id="L1648"><span class="lineNum">    1648</span>              : </span>
-<span id="L1649"><span class="lineNum">    1649</span>              :     /// Add a field to the struct type layout.</span>
-<span id="L1650"><span class="lineNum">    1650</span>              :     ///</span>
-<span id="L1651"><span class="lineNum">    1651</span>              :     /// One of the `beginLayout*()` functions must have been called previously.</span>
-<span id="L1652"><span class="lineNum">    1652</span>              :     ///</span>
-<span id="L1653"><span class="lineNum">    1653</span>              :     RefPtr&lt;VarLayout&gt; addField(DeclRef&lt;VarDeclBase&gt; field, RefPtr&lt;TypeLayout&gt; fieldTypeLayout);</span>
-<span id="L1654"><span class="lineNum">    1654</span>              : </span>
-<span id="L1655"><span class="lineNum">    1655</span>              :     /// Complete layout.</span>
-<span id="L1656"><span class="lineNum">    1656</span>              :     ///</span>
-<span id="L1657"><span class="lineNum">    1657</span>              :     /// If layout was begun, ensures that the result of `getTypeLayout()` is usable.</span>
-<span id="L1658"><span class="lineNum">    1658</span>              :     /// If layout was never begin, does nothing.</span>
+<span id="L1637"><span class="lineNum">    1637</span>              :     /// This functions allows for a `StructTypeLayoutBuilder` to be use lazily,</span>
+<span id="L1638"><span class="lineNum">    1638</span>              :     /// only allocating a type layout object if it is actaully needed.</span>
+<span id="L1639"><span class="lineNum">    1639</span>              :     ///</span>
+<span id="L1640"><span class="lineNum">    1640</span>              :     void beginLayoutIfNeeded(Type* type, LayoutRulesImpl* rules);</span>
+<span id="L1641"><span class="lineNum">    1641</span>              : </span>
+<span id="L1642"><span class="lineNum">    1642</span>              :     /// Add a field to the struct type layout.</span>
+<span id="L1643"><span class="lineNum">    1643</span>              :     ///</span>
+<span id="L1644"><span class="lineNum">    1644</span>              :     /// One of the `beginLayout*()` functions must have been called previously.</span>
+<span id="L1645"><span class="lineNum">    1645</span>              :     ///</span>
+<span id="L1646"><span class="lineNum">    1646</span>              :     RefPtr&lt;VarLayout&gt; addField(DeclRef&lt;Decl&gt; field, TypeLayoutResult fieldResult);</span>
+<span id="L1647"><span class="lineNum">    1647</span>              : </span>
+<span id="L1648"><span class="lineNum">    1648</span>              :     RefPtr&lt;VarLayout&gt; addExplicitUniformField(</span>
+<span id="L1649"><span class="lineNum">    1649</span>              :         DeclRef&lt;VarDeclBase&gt; field,</span>
+<span id="L1650"><span class="lineNum">    1650</span>              :         TypeLayoutResult fieldResult);</span>
+<span id="L1651"><span class="lineNum">    1651</span>              : </span>
+<span id="L1652"><span class="lineNum">    1652</span>              :     /// Add a field to the struct type layout.</span>
+<span id="L1653"><span class="lineNum">    1653</span>              :     ///</span>
+<span id="L1654"><span class="lineNum">    1654</span>              :     /// One of the `beginLayout*()` functions must have been called previously.</span>
+<span id="L1655"><span class="lineNum">    1655</span>              :     ///</span>
+<span id="L1656"><span class="lineNum">    1656</span>              :     RefPtr&lt;VarLayout&gt; addField(DeclRef&lt;VarDeclBase&gt; field, RefPtr&lt;TypeLayout&gt; fieldTypeLayout);</span>
+<span id="L1657"><span class="lineNum">    1657</span>              : </span>
+<span id="L1658"><span class="lineNum">    1658</span>              :     /// Complete layout.</span>
 <span id="L1659"><span class="lineNum">    1659</span>              :     ///</span>
-<span id="L1660"><span class="lineNum">    1660</span>              :     void endLayout();</span>
-<span id="L1661"><span class="lineNum">    1661</span>              : </span>
-<span id="L1662"><span class="lineNum">    1662</span>              :     /// Get the type layout.</span>
-<span id="L1663"><span class="lineNum">    1663</span>              :     ///</span>
-<span id="L1664"><span class="lineNum">    1664</span>              :     /// This can be called any time after `beginLayout*()`.</span>
-<span id="L1665"><span class="lineNum">    1665</span>              :     /// In particular, it can be called before `endLayout`.</span>
+<span id="L1660"><span class="lineNum">    1660</span>              :     /// If layout was begun, ensures that the result of `getTypeLayout()` is usable.</span>
+<span id="L1661"><span class="lineNum">    1661</span>              :     /// If layout was never begin, does nothing.</span>
+<span id="L1662"><span class="lineNum">    1662</span>              :     ///</span>
+<span id="L1663"><span class="lineNum">    1663</span>              :     void endLayout();</span>
+<span id="L1664"><span class="lineNum">    1664</span>              : </span>
+<span id="L1665"><span class="lineNum">    1665</span>              :     /// Get the type layout.</span>
 <span id="L1666"><span class="lineNum">    1666</span>              :     ///</span>
-<span id="L1667"><span class="lineNum">    1667</span>              :     RefPtr&lt;StructTypeLayout&gt; getTypeLayout();</span>
-<span id="L1668"><span class="lineNum">    1668</span>              : </span>
-<span id="L1669"><span class="lineNum">    1669</span>              :     /// The the type layout result.</span>
-<span id="L1670"><span class="lineNum">    1670</span>              :     ///</span>
-<span id="L1671"><span class="lineNum">    1671</span>              :     /// This is primarily useful for implementation code in `_createTypeLayout`.</span>
-<span id="L1672"><span class="lineNum">    1672</span>              :     ///</span>
-<span id="L1673"><span class="lineNum">    1673</span>              :     TypeLayoutResult getTypeLayoutResult();</span>
-<span id="L1674"><span class="lineNum">    1674</span>              : </span>
-<span id="L1675"><span class="lineNum">    1675</span>              :     UniformLayoutInfo* getStructLayoutInfo() { return &amp;m_info; }</span>
-<span id="L1676"><span class="lineNum">    1676</span>              : </span>
-<span id="L1677"><span class="lineNum">    1677</span>              : private:</span>
-<span id="L1678"><span class="lineNum">    1678</span>              :     /// The layout rules being used, if layout has begun.</span>
-<span id="L1679"><span class="lineNum">    1679</span>              :     LayoutRulesImpl* m_rules = nullptr;</span>
-<span id="L1680"><span class="lineNum">    1680</span>              : </span>
-<span id="L1681"><span class="lineNum">    1681</span>              :     /// The type layout being computed, if layout has begun.</span>
-<span id="L1682"><span class="lineNum">    1682</span>              :     RefPtr&lt;StructTypeLayout&gt; m_typeLayout;</span>
+<span id="L1667"><span class="lineNum">    1667</span>              :     /// This can be called any time after `beginLayout*()`.</span>
+<span id="L1668"><span class="lineNum">    1668</span>              :     /// In particular, it can be called before `endLayout`.</span>
+<span id="L1669"><span class="lineNum">    1669</span>              :     ///</span>
+<span id="L1670"><span class="lineNum">    1670</span>              :     RefPtr&lt;StructTypeLayout&gt; getTypeLayout();</span>
+<span id="L1671"><span class="lineNum">    1671</span>              : </span>
+<span id="L1672"><span class="lineNum">    1672</span>              :     /// The the type layout result.</span>
+<span id="L1673"><span class="lineNum">    1673</span>              :     ///</span>
+<span id="L1674"><span class="lineNum">    1674</span>              :     /// This is primarily useful for implementation code in `_createTypeLayout`.</span>
+<span id="L1675"><span class="lineNum">    1675</span>              :     ///</span>
+<span id="L1676"><span class="lineNum">    1676</span>              :     TypeLayoutResult getTypeLayoutResult();</span>
+<span id="L1677"><span class="lineNum">    1677</span>              : </span>
+<span id="L1678"><span class="lineNum">    1678</span>              :     UniformLayoutInfo* getStructLayoutInfo() { return &amp;m_info; }</span>
+<span id="L1679"><span class="lineNum">    1679</span>              : </span>
+<span id="L1680"><span class="lineNum">    1680</span>              : private:</span>
+<span id="L1681"><span class="lineNum">    1681</span>              :     /// The layout rules being used, if layout has begun.</span>
+<span id="L1682"><span class="lineNum">    1682</span>              :     LayoutRulesImpl* m_rules = nullptr;</span>
 <span id="L1683"><span class="lineNum">    1683</span>              : </span>
-<span id="L1684"><span class="lineNum">    1684</span>              :     /// Uniform offset/alignment statte used when computing offset for uniform fields.</span>
-<span id="L1685"><span class="lineNum">    1685</span>              :     UniformLayoutInfo m_info;</span>
-<span id="L1686"><span class="lineNum">    1686</span>              : };</span>
-<span id="L1687"><span class="lineNum">    1687</span>              : </span>
-<span id="L1688"><span class="lineNum">    1688</span>              : //</span>
-<span id="L1689"><span class="lineNum">    1689</span>              : </span>
-<span id="L1690"><span class="lineNum">    1690</span>              : // Get an appropriate set of layout rules (packaged up</span>
-<span id="L1691"><span class="lineNum">    1691</span>              : // as a `TypeLayoutContext`) to perform type layout</span>
-<span id="L1692"><span class="lineNum">    1692</span>              : // for the given target.</span>
-<span id="L1693"><span class="lineNum">    1693</span>              : //</span>
-<span id="L1694"><span class="lineNum">    1694</span>              : // The provided `programLayout` is used to establish</span>
-<span id="L1695"><span class="lineNum">    1695</span>              : // the ordering of all global generic type paramters.</span>
+<span id="L1684"><span class="lineNum">    1684</span>              :     /// The type layout being computed, if layout has begun.</span>
+<span id="L1685"><span class="lineNum">    1685</span>              :     RefPtr&lt;StructTypeLayout&gt; m_typeLayout;</span>
+<span id="L1686"><span class="lineNum">    1686</span>              : </span>
+<span id="L1687"><span class="lineNum">    1687</span>              :     /// Uniform offset/alignment statte used when computing offset for uniform fields.</span>
+<span id="L1688"><span class="lineNum">    1688</span>              :     UniformLayoutInfo m_info;</span>
+<span id="L1689"><span class="lineNum">    1689</span>              : };</span>
+<span id="L1690"><span class="lineNum">    1690</span>              : </span>
+<span id="L1691"><span class="lineNum">    1691</span>              : //</span>
+<span id="L1692"><span class="lineNum">    1692</span>              : </span>
+<span id="L1693"><span class="lineNum">    1693</span>              : // Get an appropriate set of layout rules (packaged up</span>
+<span id="L1694"><span class="lineNum">    1694</span>              : // as a `TypeLayoutContext`) to perform type layout</span>
+<span id="L1695"><span class="lineNum">    1695</span>              : // for the given target.</span>
 <span id="L1696"><span class="lineNum">    1696</span>              : //</span>
-<span id="L1697"><span class="lineNum">    1697</span>              : TypeLayoutContext getInitialLayoutContextForTarget(</span>
-<span id="L1698"><span class="lineNum">    1698</span>              :     TargetRequest* targetRequest,</span>
-<span id="L1699"><span class="lineNum">    1699</span>              :     ProgramLayout* programLayout,</span>
-<span id="L1700"><span class="lineNum">    1700</span>              :     slang::LayoutRules rules);</span>
-<span id="L1701"><span class="lineNum">    1701</span>              : </span>
-<span id="L1702"><span class="lineNum">    1702</span>              : /// Direction(s) of a varying shader parameter</span>
-<span id="L1703"><span class="lineNum">    1703</span>              : typedef unsigned int EntryPointParameterDirectionMask;</span>
-<span id="L1704"><span class="lineNum">    1704</span>              : enum</span>
-<span id="L1705"><span class="lineNum">    1705</span>              : {</span>
-<span id="L1706"><span class="lineNum">    1706</span>              :     kEntryPointParameterDirection_Input = 0x1,</span>
-<span id="L1707"><span class="lineNum">    1707</span>              :     kEntryPointParameterDirection_Output = 0x2,</span>
-<span id="L1708"><span class="lineNum">    1708</span>              : };</span>
-<span id="L1709"><span class="lineNum">    1709</span>              : </span>
-<span id="L1710"><span class="lineNum">    1710</span>              : </span>
-<span id="L1711"><span class="lineNum">    1711</span>              : void getMatrixLayoutAxisCounts(</span>
-<span id="L1712"><span class="lineNum">    1712</span>              :     size_t rowCount,</span>
-<span id="L1713"><span class="lineNum">    1713</span>              :     size_t columnCount,</span>
-<span id="L1714"><span class="lineNum">    1714</span>              :     MatrixLayoutMode matrixLayoutMode,</span>
-<span id="L1715"><span class="lineNum">    1715</span>              :     size_t&amp; outLayoutMajorCount,</span>
-<span id="L1716"><span class="lineNum">    1716</span>              :     size_t&amp; outLayoutMinorCount);</span>
-<span id="L1717"><span class="lineNum">    1717</span>              : </span>
-<span id="L1718"><span class="lineNum">    1718</span>              : /// Get layout information for a simple varying parameter type.</span>
-<span id="L1719"><span class="lineNum">    1719</span>              : ///</span>
-<span id="L1720"><span class="lineNum">    1720</span>              : /// A simple varying parameter is a scalar, vector, or matrix.</span>
-<span id="L1721"><span class="lineNum">    1721</span>              : ///</span>
-<span id="L1722"><span class="lineNum">    1722</span>              : RefPtr&lt;TypeLayout&gt; getSimpleVaryingParameterTypeLayout(</span>
-<span id="L1723"><span class="lineNum">    1723</span>              :     TypeLayoutContext const&amp; context,</span>
-<span id="L1724"><span class="lineNum">    1724</span>              :     Type* type,</span>
-<span id="L1725"><span class="lineNum">    1725</span>              :     EntryPointParameterDirectionMask directionMask);</span>
-<span id="L1726"><span class="lineNum">    1726</span>              : </span>
-<span id="L1727"><span class="lineNum">    1727</span>              : // Create a full type-layout object for a type,</span>
-<span id="L1728"><span class="lineNum">    1728</span>              : // according to the layout rules in `context`.</span>
-<span id="L1729"><span class="lineNum">    1729</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayout(TypeLayoutContext&amp; context, Type* type);</span>
-<span id="L1730"><span class="lineNum">    1730</span>              : </span>
-<span id="L1731"><span class="lineNum">    1731</span>              : // A wrapper for createTypeLayout which copies the context applying the</span>
-<span id="L1732"><span class="lineNum">    1732</span>              : // provided rules with TypeLayoutContext::with</span>
-<span id="L1733"><span class="lineNum">    1733</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayoutWith(</span>
-<span id="L1734"><span class="lineNum">    1734</span>              :     const TypeLayoutContext&amp; context,</span>
-<span id="L1735"><span class="lineNum">    1735</span>              :     LayoutRulesImpl* rules,</span>
-<span id="L1736"><span class="lineNum">    1736</span>              :     Type* type);</span>
-<span id="L1737"><span class="lineNum">    1737</span>              : </span>
-<span id="L1738"><span class="lineNum">    1738</span>              : //</span>
-<span id="L1739"><span class="lineNum">    1739</span>              : </span>
-<span id="L1740"><span class="lineNum">    1740</span>              : /// Create a layout for a parameter-group type (a `ConstantBuffer` or `ParameterBlock`).</span>
-<span id="L1741"><span class="lineNum">    1741</span>              : RefPtr&lt;TypeLayout&gt; createParameterGroupTypeLayout(</span>
-<span id="L1742"><span class="lineNum">    1742</span>              :     TypeLayoutContext const&amp; context,</span>
-<span id="L1743"><span class="lineNum">    1743</span>              :     ParameterGroupType* parameterGroupType);</span>
-<span id="L1744"><span class="lineNum">    1744</span>              : </span>
-<span id="L1745"><span class="lineNum">    1745</span>              : /// Create a wrapper constant buffer type layout, if needed.</span>
-<span id="L1746"><span class="lineNum">    1746</span>              : ///</span>
-<span id="L1747"><span class="lineNum">    1747</span>              : /// When dealing with entry-point `uniform` and global-scope parameters,</span>
-<span id="L1748"><span class="lineNum">    1748</span>              : /// we want to create a wrapper constant buffer for all the parameters</span>
-<span id="L1749"><span class="lineNum">    1749</span>              : /// if and only if there exist some parameters that use &quot;ordinary&quot; data</span>
-<span id="L1750"><span class="lineNum">    1750</span>              : /// (`LayoutResourceKind::Uniform`).</span>
-<span id="L1751"><span class="lineNum">    1751</span>              : ///</span>
-<span id="L1752"><span class="lineNum">    1752</span>              : /// This function determines whether such a wrapper is needed, based</span>
-<span id="L1753"><span class="lineNum">    1753</span>              : /// on the `elementTypeLayout` given, and either creates and returns</span>
-<span id="L1754"><span class="lineNum">    1754</span>              : /// the layout for the wrapper, or the unmodified `elementTypeLayout`.</span>
-<span id="L1755"><span class="lineNum">    1755</span>              : ///</span>
-<span id="L1756"><span class="lineNum">    1756</span>              : RefPtr&lt;TypeLayout&gt; createConstantBufferTypeLayoutIfNeeded(</span>
-<span id="L1757"><span class="lineNum">    1757</span>              :     TypeLayoutContext const&amp; context,</span>
-<span id="L1758"><span class="lineNum">    1758</span>              :     RefPtr&lt;TypeLayout&gt; elementTypeLayout);</span>
-<span id="L1759"><span class="lineNum">    1759</span>              : </span>
-<span id="L1760"><span class="lineNum">    1760</span>              : // Create a type layout for a structured buffer type.</span>
-<span id="L1761"><span class="lineNum">    1761</span>              : RefPtr&lt;StructuredBufferTypeLayout&gt; createStructuredBufferTypeLayout(</span>
-<span id="L1762"><span class="lineNum">    1762</span>              :     TypeLayoutContext const&amp; context,</span>
-<span id="L1763"><span class="lineNum">    1763</span>              :     ShaderParameterKind kind,</span>
-<span id="L1764"><span class="lineNum">    1764</span>              :     Type* structuredBufferType,</span>
-<span id="L1765"><span class="lineNum">    1765</span>              :     Type* elementType);</span>
-<span id="L1766"><span class="lineNum">    1766</span>              : </span>
-<span id="L1767"><span class="lineNum">    1767</span>              : RefPtr&lt;StructuredBufferTypeLayout&gt; createStructuredBufferTypeLayout(</span>
-<span id="L1768"><span class="lineNum">    1768</span>              :     TypeLayoutContext const&amp; context,</span>
-<span id="L1769"><span class="lineNum">    1769</span>              :     ShaderParameterKind kind,</span>
-<span id="L1770"><span class="lineNum">    1770</span>              :     Type* structuredBufferType,</span>
-<span id="L1771"><span class="lineNum">    1771</span>              :     RefPtr&lt;TypeLayout&gt; elementTypeLayout);</span>
-<span id="L1772"><span class="lineNum">    1772</span>              : </span>
-<span id="L1773"><span class="lineNum">    1773</span>              : /// Create a type layout for an unspecialized `globalGenericParamDecl`.</span>
-<span id="L1774"><span class="lineNum">    1774</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayoutForGlobalGenericTypeParam(</span>
-<span id="L1775"><span class="lineNum">    1775</span>              :     TypeLayoutContext const&amp; context,</span>
-<span id="L1776"><span class="lineNum">    1776</span>              :     Type* type,</span>
-<span id="L1777"><span class="lineNum">    1777</span>              :     GlobalGenericParamDecl* globalGenericParamDecl);</span>
-<span id="L1778"><span class="lineNum">    1778</span>              : </span>
-<span id="L1779"><span class="lineNum">    1779</span>              : /// Find the concrete type (if any) that was plugged in for the global generic type parameter</span>
-<span id="L1780"><span class="lineNum">    1780</span>              : /// `decl`.</span>
-<span id="L1781"><span class="lineNum">    1781</span>              : Type* findGlobalGenericSpecializationArg(</span>
-<span id="L1782"><span class="lineNum">    1782</span>              :     TypeLayoutContext const&amp; context,</span>
-<span id="L1783"><span class="lineNum">    1783</span>              :     GlobalGenericParamDecl* decl);</span>
-<span id="L1784"><span class="lineNum">    1784</span>              : </span>
-<span id="L1785"><span class="lineNum">    1785</span>              : // Given an existing type layout `oldTypeLayout`, apply offsets</span>
-<span id="L1786"><span class="lineNum">    1786</span>              : // to any contained fields based on the resource infos in `offsetVarLayout`.</span>
-<span id="L1787"><span class="lineNum">    1787</span>              : RefPtr&lt;TypeLayout&gt; applyOffsetToTypeLayout(</span>
-<span id="L1788"><span class="lineNum">    1788</span>              :     RefPtr&lt;TypeLayout&gt; oldTypeLayout,</span>
-<span id="L1789"><span class="lineNum">    1789</span>              :     RefPtr&lt;VarLayout&gt; offsetVarLayout);</span>
-<span id="L1790"><span class="lineNum">    1790</span>              : </span>
-<span id="L1791"><span class="lineNum">    1791</span>              : struct IRBuilder;</span>
-<span id="L1792"><span class="lineNum">    1792</span>              : struct IRTypeLayout;</span>
-<span id="L1793"><span class="lineNum">    1793</span>              : struct IRVarLayout;</span>
-<span id="L1794"><span class="lineNum">    1794</span>              : </span>
-<span id="L1795"><span class="lineNum">    1795</span>              : IRTypeLayout* applyOffsetToTypeLayout(</span>
-<span id="L1796"><span class="lineNum">    1796</span>              :     IRBuilder* irBuilder,</span>
-<span id="L1797"><span class="lineNum">    1797</span>              :     IRTypeLayout* oldTypeLayout,</span>
-<span id="L1798"><span class="lineNum">    1798</span>              :     IRVarLayout* offsetVarLayout);</span>
-<span id="L1799"><span class="lineNum">    1799</span>              : </span>
-<span id="L1800"><span class="lineNum">    1800</span>              : /// Create a layout like `baseLayout`, but offset by `offsetLayout`</span>
-<span id="L1801"><span class="lineNum">    1801</span>              : IRVarLayout* applyOffsetToVarLayout(</span>
-<span id="L1802"><span class="lineNum">    1802</span>              :     IRBuilder* irBuilder,</span>
-<span id="L1803"><span class="lineNum">    1803</span>              :     IRVarLayout* baseLayout,</span>
-<span id="L1804"><span class="lineNum">    1804</span>              :     IRVarLayout* offsetLayout);</span>
-<span id="L1805"><span class="lineNum">    1805</span>              : </span>
-<span id="L1806"><span class="lineNum">    1806</span>              : bool canTypeDirectlyUseRegisterSpace(TypeLayout* layout);</span>
-<span id="L1807"><span class="lineNum">    1807</span>              : </span>
-<span id="L1808"><span class="lineNum">    1808</span>              : } // namespace Slang</span>
-<span id="L1809"><span class="lineNum">    1809</span>              : </span>
-<span id="L1810"><span class="lineNum">    1810</span>              : #endif</span>
+<span id="L1697"><span class="lineNum">    1697</span>              : // The provided `programLayout` is used to establish</span>
+<span id="L1698"><span class="lineNum">    1698</span>              : // the ordering of all global generic type paramters.</span>
+<span id="L1699"><span class="lineNum">    1699</span>              : //</span>
+<span id="L1700"><span class="lineNum">    1700</span>              : TypeLayoutContext getInitialLayoutContextForTarget(</span>
+<span id="L1701"><span class="lineNum">    1701</span>              :     TargetRequest* targetRequest,</span>
+<span id="L1702"><span class="lineNum">    1702</span>              :     ProgramLayout* programLayout,</span>
+<span id="L1703"><span class="lineNum">    1703</span>              :     slang::LayoutRules rules);</span>
+<span id="L1704"><span class="lineNum">    1704</span>              : </span>
+<span id="L1705"><span class="lineNum">    1705</span>              : /// Direction(s) of a varying shader parameter</span>
+<span id="L1706"><span class="lineNum">    1706</span>              : typedef unsigned int EntryPointParameterDirectionMask;</span>
+<span id="L1707"><span class="lineNum">    1707</span>              : enum</span>
+<span id="L1708"><span class="lineNum">    1708</span>              : {</span>
+<span id="L1709"><span class="lineNum">    1709</span>              :     kEntryPointParameterDirection_Input = 0x1,</span>
+<span id="L1710"><span class="lineNum">    1710</span>              :     kEntryPointParameterDirection_Output = 0x2,</span>
+<span id="L1711"><span class="lineNum">    1711</span>              : };</span>
+<span id="L1712"><span class="lineNum">    1712</span>              : </span>
+<span id="L1713"><span class="lineNum">    1713</span>              : </span>
+<span id="L1714"><span class="lineNum">    1714</span>              : void getMatrixLayoutAxisCounts(</span>
+<span id="L1715"><span class="lineNum">    1715</span>              :     size_t rowCount,</span>
+<span id="L1716"><span class="lineNum">    1716</span>              :     size_t columnCount,</span>
+<span id="L1717"><span class="lineNum">    1717</span>              :     MatrixLayoutMode matrixLayoutMode,</span>
+<span id="L1718"><span class="lineNum">    1718</span>              :     size_t&amp; outLayoutMajorCount,</span>
+<span id="L1719"><span class="lineNum">    1719</span>              :     size_t&amp; outLayoutMinorCount);</span>
+<span id="L1720"><span class="lineNum">    1720</span>              : </span>
+<span id="L1721"><span class="lineNum">    1721</span>              : /// Get layout information for a simple varying parameter type.</span>
+<span id="L1722"><span class="lineNum">    1722</span>              : ///</span>
+<span id="L1723"><span class="lineNum">    1723</span>              : /// A simple varying parameter is a scalar, vector, or matrix.</span>
+<span id="L1724"><span class="lineNum">    1724</span>              : ///</span>
+<span id="L1725"><span class="lineNum">    1725</span>              : RefPtr&lt;TypeLayout&gt; getSimpleVaryingParameterTypeLayout(</span>
+<span id="L1726"><span class="lineNum">    1726</span>              :     TypeLayoutContext const&amp; context,</span>
+<span id="L1727"><span class="lineNum">    1727</span>              :     Type* type,</span>
+<span id="L1728"><span class="lineNum">    1728</span>              :     EntryPointParameterDirectionMask directionMask);</span>
+<span id="L1729"><span class="lineNum">    1729</span>              : </span>
+<span id="L1730"><span class="lineNum">    1730</span>              : // Create a full type-layout object for a type,</span>
+<span id="L1731"><span class="lineNum">    1731</span>              : // according to the layout rules in `context`.</span>
+<span id="L1732"><span class="lineNum">    1732</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayout(TypeLayoutContext&amp; context, Type* type);</span>
+<span id="L1733"><span class="lineNum">    1733</span>              : </span>
+<span id="L1734"><span class="lineNum">    1734</span>              : // A wrapper for createTypeLayout which copies the context applying the</span>
+<span id="L1735"><span class="lineNum">    1735</span>              : // provided rules with TypeLayoutContext::with</span>
+<span id="L1736"><span class="lineNum">    1736</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayoutWith(</span>
+<span id="L1737"><span class="lineNum">    1737</span>              :     const TypeLayoutContext&amp; context,</span>
+<span id="L1738"><span class="lineNum">    1738</span>              :     LayoutRulesImpl* rules,</span>
+<span id="L1739"><span class="lineNum">    1739</span>              :     Type* type);</span>
+<span id="L1740"><span class="lineNum">    1740</span>              : </span>
+<span id="L1741"><span class="lineNum">    1741</span>              : //</span>
+<span id="L1742"><span class="lineNum">    1742</span>              : </span>
+<span id="L1743"><span class="lineNum">    1743</span>              : /// Create a layout for a parameter-group type (a `ConstantBuffer` or `ParameterBlock`).</span>
+<span id="L1744"><span class="lineNum">    1744</span>              : RefPtr&lt;TypeLayout&gt; createParameterGroupTypeLayout(</span>
+<span id="L1745"><span class="lineNum">    1745</span>              :     TypeLayoutContext const&amp; context,</span>
+<span id="L1746"><span class="lineNum">    1746</span>              :     ParameterGroupType* parameterGroupType);</span>
+<span id="L1747"><span class="lineNum">    1747</span>              : </span>
+<span id="L1748"><span class="lineNum">    1748</span>              : /// Create a wrapper constant buffer type layout, if needed.</span>
+<span id="L1749"><span class="lineNum">    1749</span>              : ///</span>
+<span id="L1750"><span class="lineNum">    1750</span>              : /// When dealing with entry-point `uniform` and global-scope parameters,</span>
+<span id="L1751"><span class="lineNum">    1751</span>              : /// we want to create a wrapper constant buffer for all the parameters</span>
+<span id="L1752"><span class="lineNum">    1752</span>              : /// if and only if there exist some parameters that use &quot;ordinary&quot; data</span>
+<span id="L1753"><span class="lineNum">    1753</span>              : /// (`LayoutResourceKind::Uniform`).</span>
+<span id="L1754"><span class="lineNum">    1754</span>              : ///</span>
+<span id="L1755"><span class="lineNum">    1755</span>              : /// This function determines whether such a wrapper is needed, based</span>
+<span id="L1756"><span class="lineNum">    1756</span>              : /// on the `elementTypeLayout` given, and either creates and returns</span>
+<span id="L1757"><span class="lineNum">    1757</span>              : /// the layout for the wrapper, or the unmodified `elementTypeLayout`.</span>
+<span id="L1758"><span class="lineNum">    1758</span>              : ///</span>
+<span id="L1759"><span class="lineNum">    1759</span>              : RefPtr&lt;TypeLayout&gt; createConstantBufferTypeLayoutIfNeeded(</span>
+<span id="L1760"><span class="lineNum">    1760</span>              :     TypeLayoutContext const&amp; context,</span>
+<span id="L1761"><span class="lineNum">    1761</span>              :     RefPtr&lt;TypeLayout&gt; elementTypeLayout);</span>
+<span id="L1762"><span class="lineNum">    1762</span>              : </span>
+<span id="L1763"><span class="lineNum">    1763</span>              : // Create a type layout for a structured buffer type.</span>
+<span id="L1764"><span class="lineNum">    1764</span>              : RefPtr&lt;StructuredBufferTypeLayout&gt; createStructuredBufferTypeLayout(</span>
+<span id="L1765"><span class="lineNum">    1765</span>              :     TypeLayoutContext const&amp; context,</span>
+<span id="L1766"><span class="lineNum">    1766</span>              :     ShaderParameterKind kind,</span>
+<span id="L1767"><span class="lineNum">    1767</span>              :     Type* structuredBufferType,</span>
+<span id="L1768"><span class="lineNum">    1768</span>              :     Type* elementType);</span>
+<span id="L1769"><span class="lineNum">    1769</span>              : </span>
+<span id="L1770"><span class="lineNum">    1770</span>              : RefPtr&lt;StructuredBufferTypeLayout&gt; createStructuredBufferTypeLayout(</span>
+<span id="L1771"><span class="lineNum">    1771</span>              :     TypeLayoutContext const&amp; context,</span>
+<span id="L1772"><span class="lineNum">    1772</span>              :     ShaderParameterKind kind,</span>
+<span id="L1773"><span class="lineNum">    1773</span>              :     Type* structuredBufferType,</span>
+<span id="L1774"><span class="lineNum">    1774</span>              :     RefPtr&lt;TypeLayout&gt; elementTypeLayout);</span>
+<span id="L1775"><span class="lineNum">    1775</span>              : </span>
+<span id="L1776"><span class="lineNum">    1776</span>              : /// Create a type layout for an unspecialized `globalGenericParamDecl`.</span>
+<span id="L1777"><span class="lineNum">    1777</span>              : RefPtr&lt;TypeLayout&gt; createTypeLayoutForGlobalGenericTypeParam(</span>
+<span id="L1778"><span class="lineNum">    1778</span>              :     TypeLayoutContext const&amp; context,</span>
+<span id="L1779"><span class="lineNum">    1779</span>              :     Type* type,</span>
+<span id="L1780"><span class="lineNum">    1780</span>              :     GlobalGenericParamDecl* globalGenericParamDecl);</span>
+<span id="L1781"><span class="lineNum">    1781</span>              : </span>
+<span id="L1782"><span class="lineNum">    1782</span>              : /// Find the concrete type (if any) that was plugged in for the global generic type parameter</span>
+<span id="L1783"><span class="lineNum">    1783</span>              : /// `decl`.</span>
+<span id="L1784"><span class="lineNum">    1784</span>              : Type* findGlobalGenericSpecializationArg(</span>
+<span id="L1785"><span class="lineNum">    1785</span>              :     TypeLayoutContext const&amp; context,</span>
+<span id="L1786"><span class="lineNum">    1786</span>              :     GlobalGenericParamDecl* decl);</span>
+<span id="L1787"><span class="lineNum">    1787</span>              : </span>
+<span id="L1788"><span class="lineNum">    1788</span>              : // Given an existing type layout `oldTypeLayout`, apply offsets</span>
+<span id="L1789"><span class="lineNum">    1789</span>              : // to any contained fields based on the resource infos in `offsetVarLayout`.</span>
+<span id="L1790"><span class="lineNum">    1790</span>              : RefPtr&lt;TypeLayout&gt; applyOffsetToTypeLayout(</span>
+<span id="L1791"><span class="lineNum">    1791</span>              :     RefPtr&lt;TypeLayout&gt; oldTypeLayout,</span>
+<span id="L1792"><span class="lineNum">    1792</span>              :     RefPtr&lt;VarLayout&gt; offsetVarLayout);</span>
+<span id="L1793"><span class="lineNum">    1793</span>              : </span>
+<span id="L1794"><span class="lineNum">    1794</span>              : struct IRBuilder;</span>
+<span id="L1795"><span class="lineNum">    1795</span>              : struct IRTypeLayout;</span>
+<span id="L1796"><span class="lineNum">    1796</span>              : struct IRVarLayout;</span>
+<span id="L1797"><span class="lineNum">    1797</span>              : </span>
+<span id="L1798"><span class="lineNum">    1798</span>              : IRTypeLayout* applyOffsetToTypeLayout(</span>
+<span id="L1799"><span class="lineNum">    1799</span>              :     IRBuilder* irBuilder,</span>
+<span id="L1800"><span class="lineNum">    1800</span>              :     IRTypeLayout* oldTypeLayout,</span>
+<span id="L1801"><span class="lineNum">    1801</span>              :     IRVarLayout* offsetVarLayout);</span>
+<span id="L1802"><span class="lineNum">    1802</span>              : </span>
+<span id="L1803"><span class="lineNum">    1803</span>              : /// Create a layout like `baseLayout`, but offset by `offsetLayout`</span>
+<span id="L1804"><span class="lineNum">    1804</span>              : IRVarLayout* applyOffsetToVarLayout(</span>
+<span id="L1805"><span class="lineNum">    1805</span>              :     IRBuilder* irBuilder,</span>
+<span id="L1806"><span class="lineNum">    1806</span>              :     IRVarLayout* baseLayout,</span>
+<span id="L1807"><span class="lineNum">    1807</span>              :     IRVarLayout* offsetLayout);</span>
+<span id="L1808"><span class="lineNum">    1808</span>              : </span>
+<span id="L1809"><span class="lineNum">    1809</span>              : bool canTypeDirectlyUseRegisterSpace(TypeLayout* layout);</span>
+<span id="L1810"><span class="lineNum">    1810</span>              : </span>
+<span id="L1811"><span class="lineNum">    1811</span>              : } // namespace Slang</span>
+<span id="L1812"><span class="lineNum">    1812</span>              : </span>
+<span id="L1813"><span class="lineNum">    1813</span>              : #endif</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
