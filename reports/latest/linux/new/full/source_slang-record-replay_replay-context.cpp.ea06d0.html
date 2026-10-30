@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-29 04:28:49 UTC</td>
+      <td class="headerValue">2026-10-30 05:13:39 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -431,12 +431,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L140"><span class="lineNum">     140</span>                         : static ReplayContext* s_contextDraining = nullptr;</span>
 <span id="L141"><span class="lineNum">     141</span>                         : </span>
 <span id="L142"><span class="lineNum">     142</span>                         : ReplayContext&amp; ReplayContext::get()</span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">      147780            : {</span></span>
-<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      147780            :     std::lock_guard&lt;std::mutex&gt; lock(s_contextMutex);</span></span>
-<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      147780 <span class="branchAll" title="br0: 408; br1: 147372">(2/2)</span>      :     if (!s_contextInstance)</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">      147788            : {</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      147788            :     std::lock_guard&lt;std::mutex&gt; lock(s_contextMutex);</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      147788 <span class="branchAll" title="br0: 408; br1: 147380">(2/2)</span>      :     if (!s_contextInstance)</span></span>
 <span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">         408            :         s_contextInstance = new ReplayContext();</span></span>
-<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">      147780            :     return *s_contextInstance;</span></span>
-<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      147780            : }</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">      147788            :     return *s_contextInstance;</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      147788            : }</span></span>
 <span id="L149"><span class="lineNum">     149</span>                         : </span>
 <span id="L150"><span class="lineNum">     150</span>                         : ReplayContext* ReplayContext::tryGet()</span>
 <span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">         242            : {</span></span>
@@ -540,20 +540,20 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">         407            : }</span></span>
 <span id="L250"><span class="lineNum">     250</span>                         : </span>
 <span id="L251"><span class="lineNum">     251</span>                         : void ReplayContext::ensureInitialized()</span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        6079            : {</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        6087            : {</span></span>
 <span id="L253"><span class="lineNum">     253</span>                         :     // Deferred out of the constructor because CharEncoding (used by the file I/O</span>
 <span id="L254"><span class="lineNum">     254</span>                         :     // that setMode(Record) triggers) may not be initialized at static-init time.</span>
 <span id="L255"><span class="lineNum">     255</span>                         :     // call_once so the resolution is thread-safe on the mutex-free idle fast path.</span>
-<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">        6079            :     std::call_once(</span></span>
-<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">        6079            :         m_initFlag,</span></span>
-<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">        6079            :         [this]()</span></span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">        6079            :         {</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">        6087            :     std::call_once(</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">        6087            :         m_initFlag,</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">        6087            :         [this]()</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">        6087            :         {</span></span>
 <span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">         240 <span class="branchPart" title="br0: 240; br1: 0; br2: 5; br3: 235">(3/4)</span>      :             if (m_mode == Mode::Idle &amp;&amp; isRecordLayerRequested())</span></span>
 <span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">           5            :             {</span></span>
 <span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">           5            :                 setMode(Mode::Record);</span></span>
 <span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">           5            :             }</span></span>
 <span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">         240            :         });</span></span>
-<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">        6079            : }</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">        6087            : }</span></span>
 <span id="L266"><span class="lineNum">     266</span>                         : </span>
 <span id="L267"><span class="lineNum">     267</span>                         : void ReplayContext::reset()</span>
 <span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">         712            : {</span></span>
@@ -850,12 +850,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L559"><span class="lineNum">     559</span>                         :     List&lt;String&gt; directories;</span>
 <span id="L560"><span class="lineNum">     560</span>                         : </span>
 <span id="L561"><span class="lineNum">     561</span>                         :     void accept(Path::Type type, const Slang::UnownedStringSlice&amp; filename) override</span>
-<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">          16            :     {</span></span>
-<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">          16 <span class="branchPart" title="br0: 16; br1: 0">(1/2)</span>      :         if (type == Path::Type::Directory)</span></span>
-<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">          16            :         {</span></span>
-<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">          16            :             directories.add(String(filename));</span></span>
-<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">          16            :         }</span></span>
-<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">          16            :     }</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">          15            :     {</span></span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">          15 <span class="branchPart" title="br0: 15; br1: 0">(1/2)</span>      :         if (type == Path::Type::Directory)</span></span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">          15            :         {</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">          15            :             directories.add(String(filename));</span></span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">          15            :         }</span></span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">          15            :     }</span></span>
 <span id="L568"><span class="lineNum">     568</span>                         : };</span>
 <span id="L569"><span class="lineNum">     569</span>                         : </span>
 <span id="L570"><span class="lineNum">     570</span>                         : String ReplayContext::findLatestReplayFolder(const char* baseDir)</span>

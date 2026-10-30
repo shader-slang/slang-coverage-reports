@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-29 04:28:36 UTC</td>
+      <td class="headerValue">2026-10-30 05:13:15 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -758,24 +758,24 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L467"><span class="lineNum">     467</span>                         :         IRModule* inModule,</span>
 <span id="L468"><span class="lineNum">     468</span>                         :         CapabilitySet const&amp; inTargetCaps,</span>
 <span id="L469"><span class="lineNum">     469</span>                         :         bool inShouldDiagnoseUninitializedValues)</span>
-<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">       15744            :         : module(inModule)</span></span>
-<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">       15744            :         , targetCaps(inTargetCaps)</span></span>
-<span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">       15744            :         , shouldDiagnoseUninitializedValues(inShouldDiagnoseUninitializedValues)</span></span>
-<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">       15744            :     {</span></span>
-<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">       15744            :     }</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">       15791            :         : module(inModule)</span></span>
+<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">       15791            :         , targetCaps(inTargetCaps)</span></span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">       15791            :         , shouldDiagnoseUninitializedValues(inShouldDiagnoseUninitializedValues)</span></span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">       15791            :     {</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">       15791            :     }</span></span>
 <span id="L475"><span class="lineNum">     475</span>                         : </span>
 <span id="L476"><span class="lineNum">     476</span>                         :     /// Run the five phases described at the top of this file.</span>
 <span id="L477"><span class="lineNum">     477</span>                         :     void processModule(DiagnosticSink* sink)</span>
-<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">       15744            :     {</span></span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">       15791            :     {</span></span>
 <span id="L479"><span class="lineNum">     479</span>                         :         // In phase 1, we assign deterministic indices to functions, record resource globals in the</span>
 <span id="L480"><span class="lineNum">     480</span>                         :         // order that will determine generated parameter order, and record direct calls between</span>
 <span id="L481"><span class="lineNum">     481</span>                         :         // those functions. Later phases use these records instead of hash-table or use-list order.</span>
-<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">       15744            :         collectFunctionContexts();</span></span>
-<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">       15744            :         collectResourceGlobals();</span></span>
-<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">       15744            :         collectDirectCalls();</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">       15791            :         collectFunctionContexts();</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">       15791            :         collectResourceGlobals();</span></span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">       15791            :         collectDirectCalls();</span></span>
 <span id="L485"><span class="lineNum">     485</span>                         : </span>
-<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">       15744 <span class="branchAll" title="br0: 15619; br1: 125">(2/2)</span>      :         if (resourceGlobals.getCount() == 0)</span></span>
-<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">       15619            :             return;</span></span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">       15791 <span class="branchAll" title="br0: 15666; br1: 125">(2/2)</span>      :         if (resourceGlobals.getCount() == 0)</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">       15666            :             return;</span></span>
 <span id="L488"><span class="lineNum">     488</span>                         : </span>
 <span id="L489"><span class="lineNum">     489</span>                         :         // In phase 2, we reject cases in which replacing the global with per-function storage</span>
 <span id="L490"><span class="lineNum">     490</span>                         :         // cannot preserve behavior. Linkage or retention requirements may require the variable to</span>
@@ -852,118 +852,118 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L561"><span class="lineNum">     561</span>                         : </span>
 <span id="L562"><span class="lineNum">     562</span>                         :     /// Collect the context that later phases need for every function in module preorder.</span>
 <span id="L563"><span class="lineNum">     563</span>                         :     void collectFunctionContexts()</span>
-<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">       15744            :     {</span></span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">       15791            :     {</span></span>
 <span id="L565"><span class="lineNum">     565</span>                         :         // For each function, we record its stable index, entry-point status, insertion anchor, and</span>
 <span id="L566"><span class="lineNum">     566</span>                         :         // whether a non-entry-point invocation may lack a direct call that phase 4 can rewrite.</span>
 <span id="L567"><span class="lineNum">     567</span>                         :         // Most functions are direct children of the module, but an unspecialized generic contains</span>
 <span id="L568"><span class="lineNum">     568</span>                         :         // its function body inside an `IRGeneric`. We include those nested bodies so phase 3 can</span>
 <span id="L569"><span class="lineNum">     569</span>                         :         // reject an access that this pass cannot rewrite safely.</span>
-<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">       15744            :         collectFunctionContextsUnder(module-&gt;getModuleInst());</span></span>
-<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">       15744            :     }</span></span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">       15791            :         collectFunctionContextsUnder(module-&gt;getModuleInst());</span></span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">       15791            :     }</span></span>
 <span id="L572"><span class="lineNum">     572</span>                         : </span>
 <span id="L573"><span class="lineNum">     573</span>                         :     /// Collect context for every function contained by `parent` in module preorder.</span>
 <span id="L574"><span class="lineNum">     574</span>                         :     void collectFunctionContextsUnder(IRInst* parent)</span>
-<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">     2478371            :     {</span></span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">     2483309            :     {</span></span>
 <span id="L576"><span class="lineNum">     576</span>                         :         // A function nested under an `IRGeneric` can be instantiated after this pass. Its eventual</span>
 <span id="L577"><span class="lineNum">     577</span>                         :         // calls do not exist yet, so phase 4 cannot add a resource argument to them. We record that</span>
 <span id="L578"><span class="lineNum">     578</span>                         :         // limitation on every nested function. Entry-point specialization has already placed every</span>
 <span id="L579"><span class="lineNum">     579</span>                         :         // entry point directly under the module. If a limited nested function accesses a selected</span>
 <span id="L580"><span class="lineNum">     580</span>                         :         // resource, phase 3 diagnoses it before changing any signature.</span>
-<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">     2478371 <span class="branchAll" title="br0: 2555663; br1: 2478371">(2/2)</span>      :         for (auto inst : parent-&gt;getChildren())</span></span>
-<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">     2555663            :         {</span></span>
-<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">     2555663            :             auto func = as&lt;IRFunc&gt;(inst);</span></span>
-<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">     2555663 <span class="branchAll" title="br0: 2462627; br1: 93036">(2/2)</span>      :             if (!func)</span></span>
-<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">     2462627            :             {</span></span>
-<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">     2462627            :                 collectFunctionContextsUnder(inst);</span></span>
-<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">     2462627            :                 continue;</span></span>
-<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">     2462627            :             }</span></span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">     2483309 <span class="branchAll" title="br0: 2560706; br1: 2483309">(2/2)</span>      :         for (auto inst : parent-&gt;getChildren())</span></span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">     2560706            :         {</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">     2560706            :             auto func = as&lt;IRFunc&gt;(inst);</span></span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">     2560706 <span class="branchAll" title="br0: 2467518; br1: 93188">(2/2)</span>      :             if (!func)</span></span>
+<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">     2467518            :             {</span></span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">     2467518            :                 collectFunctionContextsUnder(inst);</span></span>
+<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">     2467518            :                 continue;</span></span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">     2467518            :             }</span></span>
 <span id="L589"><span class="lineNum">     589</span>                         : </span>
-<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">       93036            :             FunctionContext context;</span></span>
-<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">       93036            :             context.func = func;</span></span>
-<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">       93036            :             context.isEntryPoint = isShaderOrCudaKernelEntryPoint(func);</span></span>
-<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">       93036 <span class="branchAll" title="br0: 15937; br1: 77099">(2/2)</span>      :             if (context.isEntryPoint)</span></span>
-<span id="L594"><span class="lineNum">     594</span> <span class="tlaGNC">       93036 <span class="branchPart" title="br0: 0; br1: 31874">(1/2)</span>      :                 SLANG_RELEASE_ASSERT(func-&gt;getParent() == module-&gt;getModuleInst());</span></span>
-<span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">       93036 <span class="branchAll" title="br0: 77099; br1: 15937">(2/2)</span>      :             if (!context.isEntryPoint)</span></span>
-<span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">       77099            :             {</span></span>
-<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">       77099 <span class="branchAll" title="br0: 57; br1: 77042">(2/2)</span>      :                 if (func-&gt;getParent() != module-&gt;getModuleInst())</span></span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">       93188            :             FunctionContext context;</span></span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">       93188            :             context.func = func;</span></span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">       93188            :             context.isEntryPoint = isShaderOrCudaKernelEntryPoint(func);</span></span>
+<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">       93188 <span class="branchAll" title="br0: 15984; br1: 77204">(2/2)</span>      :             if (context.isEntryPoint)</span></span>
+<span id="L594"><span class="lineNum">     594</span> <span class="tlaGNC">       93188 <span class="branchPart" title="br0: 0; br1: 31968">(1/2)</span>      :                 SLANG_RELEASE_ASSERT(func-&gt;getParent() == module-&gt;getModuleInst());</span></span>
+<span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">       93188 <span class="branchAll" title="br0: 77205; br1: 15983">(2/2)</span>      :             if (!context.isEntryPoint)</span></span>
+<span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">       77205            :             {</span></span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">       77205 <span class="branchAll" title="br0: 57; br1: 77148">(2/2)</span>      :                 if (func-&gt;getParent() != module-&gt;getModuleInst())</span></span>
 <span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">          57            :                     context.lacksRewritableCallForSomeInvocation = true;</span></span>
-<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">       77042 <span class="branchAll" title="br0: 1079; br1: 75963">(2/2)</span>      :                 else if (mayBeInvokedWithoutRewritableCall(func))</span></span>
+<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">       77148 <span class="branchAll" title="br0: 1079; br1: 76069">(2/2)</span>      :                 else if (mayBeInvokedWithoutRewritableCall(func))</span></span>
 <span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">        1079            :                     context.lacksRewritableCallForSomeInvocation = true;</span></span>
-<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">       77099            :             }</span></span>
-<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">       93036 <span class="branchAll" title="br0: 92171; br1: 865">(2/2)</span>      :             if (auto firstBlock = func-&gt;getFirstBlock())</span></span>
-<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">       92171            :                 context.firstPreRewriteOrdinaryInst = firstBlock-&gt;getFirstOrdinaryInst();</span></span>
+<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">       77205            :             }</span></span>
+<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">       93188 <span class="branchAll" title="br0: 92323; br1: 865">(2/2)</span>      :             if (auto firstBlock = func-&gt;getFirstBlock())</span></span>
+<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">       92323            :                 context.firstPreRewriteOrdinaryInst = firstBlock-&gt;getFirstOrdinaryInst();</span></span>
 <span id="L604"><span class="lineNum">     604</span>                         : </span>
-<span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC">       93036            :             auto index = functions.getCount();</span></span>
-<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">       93036            :             functions.add(context);</span></span>
-<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">       93036            :             functionIndices.add(func, index);</span></span>
-<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">       93036            :         }</span></span>
-<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">     2478371            :     }</span></span>
+<span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC">       93188            :             auto index = functions.getCount();</span></span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">       93188            :             functions.add(context);</span></span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">       93188            :             functionIndices.add(func, index);</span></span>
+<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">       93188            :         }</span></span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">     2483309            :     }</span></span>
 <span id="L610"><span class="lineNum">     610</span>                         : </span>
 <span id="L611"><span class="lineNum">     611</span>                         :     /// Collect each mutable resource global that is a candidate for per-invocation replacement.</span>
 <span id="L612"><span class="lineNum">     612</span>                         :     ///</span>
 <span id="L613"><span class="lineNum">     613</span>                         :     /// The initializer mover has already removed each selected initializer body. Keeping these</span>
 <span id="L614"><span class="lineNum">     614</span>                         :     /// records in module order makes the order of generated parameters deterministic.</span>
 <span id="L615"><span class="lineNum">     615</span>                         :     void collectResourceGlobals()</span>
-<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">       15744            :     {</span></span>
+<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">       15791            :     {</span></span>
 <span id="L617"><span class="lineNum">     617</span>                         :         // `visitVarDecl` and `visitUniformParameterShadowVarDecl` attach</span>
 <span id="L618"><span class="lineNum">     618</span>                         :         // `IRFileOrNamespaceScopeMutableVarDecoration` to the two relevant source-language</span>
 <span id="L619"><span class="lineNum">     619</span>                         :         // declaration categories. The shared candidate predicate then rejects explicit rates and</span>
 <span id="L620"><span class="lineNum">     620</span>                         :         // value types that the pass cannot represent as one whole value in a local for each</span>
 <span id="L621"><span class="lineNum">     621</span>                         :         // affected function and, for a non-entry-point function with runtime access, in one</span>
 <span id="L622"><span class="lineNum">     622</span>                         :         // generated parameter.</span>
-<span id="L623"><span class="lineNum">     623</span> <span class="tlaGNC">       15744 <span class="branchAll" title="br0: 2490648; br1: 15744">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L624"><span class="lineNum">     624</span> <span class="tlaGNC">     2490648            :         {</span></span>
-<span id="L625"><span class="lineNum">     625</span> <span class="tlaGNC">     2490648            :             auto globalVar = as&lt;IRGlobalVar&gt;(inst);</span></span>
-<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">     2490648 <span class="branchAll" title="br0: 2489048; br1: 1600">(2/2)</span>      :             if (!globalVar)</span></span>
-<span id="L627"><span class="lineNum">     627</span> <span class="tlaGNC">     2489048            :                 continue;</span></span>
-<span id="L628"><span class="lineNum">     628</span> <span class="tlaGNC">        1600 <span class="branchAll" title="br0: 1424; br1: 194">(2/2)</span>      :             if (!isResourceGlobalCandidateForPerInvocationReplacement(globalVar))</span></span>
-<span id="L629"><span class="lineNum">     629</span> <span class="tlaGNC">        1424            :                 continue;</span></span>
+<span id="L623"><span class="lineNum">     623</span> <span class="tlaGNC">       15791 <span class="branchAll" title="br0: 2495598; br1: 15791">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L624"><span class="lineNum">     624</span> <span class="tlaGNC">     2495598            :         {</span></span>
+<span id="L625"><span class="lineNum">     625</span> <span class="tlaGNC">     2495598            :             auto globalVar = as&lt;IRGlobalVar&gt;(inst);</span></span>
+<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">     2495598 <span class="branchAll" title="br0: 2493996; br1: 1602">(2/2)</span>      :             if (!globalVar)</span></span>
+<span id="L627"><span class="lineNum">     627</span> <span class="tlaGNC">     2493996            :                 continue;</span></span>
+<span id="L628"><span class="lineNum">     628</span> <span class="tlaGNC">        1602 <span class="branchAll" title="br0: 1426; br1: 178">(2/2)</span>      :             if (!isResourceGlobalCandidateForPerInvocationReplacement(globalVar))</span></span>
+<span id="L629"><span class="lineNum">     629</span> <span class="tlaGNC">        1426            :                 continue;</span></span>
 <span id="L630"><span class="lineNum">     630</span>                         : </span>
 <span id="L631"><span class="lineNum">     631</span>                         :             // The shared accessor enforces the same concrete post-link pointer contract as the</span>
 <span id="L632"><span class="lineNum">     632</span>                         :             // candidate predicate, including pointer types wrapped in attributes.</span>
-<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">         194            :             auto valueType = getGlobalVarValueType(globalVar);</span></span>
-<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">         194 <span class="branchPart" title="br0: 0; br1: 352">(1/2)</span>      :             SLANG_RELEASE_ASSERT(!globalVar-&gt;getFirstBlock());</span></span>
+<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">         178            :             auto valueType = getGlobalVarValueType(globalVar);</span></span>
+<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">         178 <span class="branchPart" title="br0: 0; br1: 352">(1/2)</span>      :             SLANG_RELEASE_ASSERT(!globalVar-&gt;getFirstBlock());</span></span>
 <span id="L635"><span class="lineNum">     635</span>                         : </span>
-<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">         194            :             ResourceGlobalToRewrite resourceGlobal;</span></span>
-<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">         194            :             resourceGlobal.globalVar = globalVar;</span></span>
-<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">         194            :             resourceGlobal.valueType = valueType;</span></span>
-<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">        1066 <span class="branchAll" title="br0: 872; br1: 194">(2/2)</span>      :             for (Index i = 0; i &lt; functions.getCount(); ++i)</span></span>
+<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">         178            :             ResourceGlobalToRewrite resourceGlobal;</span></span>
+<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">         178            :             resourceGlobal.globalVar = globalVar;</span></span>
+<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">         178            :             resourceGlobal.valueType = valueType;</span></span>
+<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">        1050 <span class="branchAll" title="br0: 872; br1: 178">(2/2)</span>      :             for (Index i = 0; i &lt; functions.getCount(); ++i)</span></span>
 <span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">         872            :                 resourceGlobal.perFunctionInfo.add(FunctionResourceInfo());</span></span>
-<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">         194            :             resourceGlobals.add(_Move(resourceGlobal));</span></span>
-<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">         194            :         }</span></span>
-<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC">       15744            :     }</span></span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">         178            :             resourceGlobals.add(_Move(resourceGlobal));</span></span>
+<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">         178            :         }</span></span>
+<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC">       15791            :     }</span></span>
 <span id="L644"><span class="lineNum">     644</span>                         : </span>
 <span id="L645"><span class="lineNum">     645</span>                         :     /// Collect direct calls whose caller and callee both appear in `functions`.</span>
 <span id="L646"><span class="lineNum">     646</span>                         :     void collectDirectCalls()</span>
-<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">       15744            :     {</span></span>
+<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">       15791            :     {</span></span>
 <span id="L648"><span class="lineNum">     648</span>                         :         // We record these calls so phase 3 can propagate resource access from callees to callers.</span>
 <span id="L649"><span class="lineNum">     649</span>                         :         // Phase 4 uses the same records to append the generated resource arguments.</span>
-<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">      108780 <span class="branchAll" title="br0: 93036; br1: 15744">(2/2)</span>      :         for (Index callerIndex = 0; callerIndex &lt; functions.getCount(); ++callerIndex)</span></span>
-<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">       93036            :         {</span></span>
-<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">       93036            :             auto func = functions[callerIndex].func;</span></span>
-<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">       93036 <span class="branchAll" title="br0: 865; br1: 92171">(2/2)</span>      :             if (!func-&gt;getFirstBlock())</span></span>
-<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">         865            :                 continue;</span></span>
+<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">      108980 <span class="branchAll" title="br0: 93189; br1: 15791">(2/2)</span>      :         for (Index callerIndex = 0; callerIndex &lt; functions.getCount(); ++callerIndex)</span></span>
+<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">       93189            :         {</span></span>
+<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">       93189            :             auto func = functions[callerIndex].func;</span></span>
+<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">       93189 <span class="branchAll" title="br0: 866; br1: 92323">(2/2)</span>      :             if (!func-&gt;getFirstBlock())</span></span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">         866            :                 continue;</span></span>
 <span id="L655"><span class="lineNum">     655</span>                         : </span>
-<span id="L656"><span class="lineNum">     656</span> <span class="tlaGNC">       92171 <span class="branchAll" title="br0: 553536; br1: 92171">(2/2)</span>      :             for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">      553536            :             {</span></span>
-<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">      553536 <span class="branchAll" title="br0: 2497927; br1: 553536">(2/2)</span>      :                 for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">     2497927            :                 {</span></span>
-<span id="L660"><span class="lineNum">     660</span> <span class="tlaGNC">     2497927            :                     auto call = as&lt;IRCall&gt;(inst);</span></span>
-<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">     2497927 <span class="branchAll" title="br0: 2320924; br1: 177003">(2/2)</span>      :                     if (!call)</span></span>
-<span id="L662"><span class="lineNum">     662</span> <span class="tlaGNC">     2320924            :                         continue;</span></span>
+<span id="L656"><span class="lineNum">     656</span> <span class="tlaGNC">       92323 <span class="branchAll" title="br0: 553785; br1: 92323">(2/2)</span>      :             for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">      553785            :             {</span></span>
+<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">      553785 <span class="branchAll" title="br0: 2499559; br1: 553785">(2/2)</span>      :                 for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">     2499559            :                 {</span></span>
+<span id="L660"><span class="lineNum">     660</span> <span class="tlaGNC">     2499559            :                     auto call = as&lt;IRCall&gt;(inst);</span></span>
+<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">     2499559 <span class="branchAll" title="br0: 2322280; br1: 177279">(2/2)</span>      :                     if (!call)</span></span>
+<span id="L662"><span class="lineNum">     662</span> <span class="tlaGNC">     2322280            :                         continue;</span></span>
 <span id="L663"><span class="lineNum">     663</span>                         : </span>
-<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">      177003            :                     auto callee = as&lt;IRFunc&gt;(call-&gt;getCallee());</span></span>
-<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">      177003 <span class="branchAll" title="br0: 46; br1: 176957">(2/2)</span>      :                     if (!callee)</span></span>
+<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">      177279            :                     auto callee = as&lt;IRFunc&gt;(call-&gt;getCallee());</span></span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">      177279 <span class="branchAll" title="br0: 46; br1: 177233">(2/2)</span>      :                     if (!callee)</span></span>
 <span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">          46            :                         continue;</span></span>
-<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">      176957            :                     auto calleeIndex = functionIndices.tryGetValue(callee);</span></span>
-<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">      176957 <span class="branchPart" title="br0: 0; br1: 176957">(1/2)</span>      :                     if (!calleeIndex)</span></span>
+<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">      177233            :                     auto calleeIndex = functionIndices.tryGetValue(callee);</span></span>
+<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">      177233 <span class="branchPart" title="br0: 0; br1: 177233">(1/2)</span>      :                     if (!calleeIndex)</span></span>
 <span id="L669"><span class="lineNum">     669</span> <span class="tlaUNC">           0            :                         continue;</span></span>
 <span id="L670"><span class="lineNum">     670</span>                         : </span>
-<span id="L671"><span class="lineNum">     671</span> <span class="tlaGNC">      176957            :                     directCallEdges.add(DirectCallEdge{call, callerIndex, *calleeIndex});</span></span>
-<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">      176957            :                 }</span></span>
-<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">      553536            :             }</span></span>
-<span id="L674"><span class="lineNum">     674</span> <span class="tlaGNC">       92171            :         }</span></span>
-<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">       15744            :     }</span></span>
+<span id="L671"><span class="lineNum">     671</span> <span class="tlaGNC">      177233            :                     directCallEdges.add(DirectCallEdge{call, callerIndex, *calleeIndex});</span></span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">      177233            :                 }</span></span>
+<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">      553785            :             }</span></span>
+<span id="L674"><span class="lineNum">     674</span> <span class="tlaGNC">       92323            :         }</span></span>
+<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">       15791            :     }</span></span>
 <span id="L676"><span class="lineNum">     676</span>                         : </span>
 <span id="L677"><span class="lineNum">     677</span>                         :     // ## Phase 2: Cases that cannot use per-function storage</span>
 <span id="L678"><span class="lineNum">     678</span>                         : </span>
@@ -2868,7 +2868,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2577"><span class="lineNum">    2577</span> <span class="tlaGNC">           4            : }</span></span>
 <span id="L2578"><span class="lineNum">    2578</span>                         : </span>
 <span id="L2579"><span class="lineNum">    2579</span>                         : static bool hasFunctionUseThatCannotBeRewritten(IRFunc* func)</span>
-<span id="L2580"><span class="lineNum">    2580</span> <span class="tlaGNC">       76953            : {</span></span>
+<span id="L2580"><span class="lineNum">    2580</span> <span class="tlaGNC">       77059            : {</span></span>
 <span id="L2581"><span class="lineNum">    2581</span>                         :     // We can append resource arguments to a direct call inside a function. A call in a global</span>
 <span id="L2582"><span class="lineNum">    2582</span>                         :     // initializer has no function-local resource value to pass. A decoration such as</span>
 <span id="L2583"><span class="lineNum">    2583</span>                         :     // `IRPatchConstantFuncDecoration` can cause another invocation but provides no argument list.</span>
@@ -2877,19 +2877,19 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2586"><span class="lineNum">    2586</span>                         :     // local into the original entry-point body, and each launch executes that body with a distinct</span>
 <span id="L2587"><span class="lineNum">    2587</span>                         :     // dynamic instance of the local. No generated argument is needed. We accept only the kernel</span>
 <span id="L2588"><span class="lineNum">    2588</span>                         :     // operand of the two launch instructions and continue to reject every other runtime use.</span>
-<span id="L2589"><span class="lineNum">    2589</span> <span class="tlaGNC">       76953            :     const bool isEntryPoint = isShaderOrCudaKernelEntryPoint(func);</span></span>
-<span id="L2590"><span class="lineNum">    2590</span> <span class="tlaGNC">      253864 <span class="branchAll" title="br0: 177775; br1: 76089">(2/2)</span>      :     for (auto use = func-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L2591"><span class="lineNum">    2591</span> <span class="tlaGNC">      177775            :     {</span></span>
-<span id="L2592"><span class="lineNum">    2592</span> <span class="tlaGNC">      177775            :         auto user = use-&gt;getUser();</span></span>
-<span id="L2593"><span class="lineNum">    2593</span> <span class="tlaGNC">      177775 <span class="branchAll" title="br0: 176915; br1: 860">(2/2)</span>      :         if (auto call = as&lt;IRCall&gt;(user))</span></span>
-<span id="L2594"><span class="lineNum">    2594</span> <span class="tlaGNC">      176915            :         {</span></span>
-<span id="L2595"><span class="lineNum">    2595</span> <span class="tlaGNC">      176915 <span class="branchPart" title="br0: 176915; br1: 0">(1/2)</span>      :             if (call-&gt;getCalleeUse() == use)</span></span>
-<span id="L2596"><span class="lineNum">    2596</span> <span class="tlaGNC">      176915            :             {</span></span>
-<span id="L2597"><span class="lineNum">    2597</span> <span class="tlaGNC">      176915 <span class="branchAll" title="br0: 176908; br1: 7">(2/2)</span>      :                 if (getParentFunc(call))</span></span>
-<span id="L2598"><span class="lineNum">    2598</span> <span class="tlaGNC">      176908            :                     continue;</span></span>
+<span id="L2589"><span class="lineNum">    2589</span> <span class="tlaGNC">       77059            :     const bool isEntryPoint = isShaderOrCudaKernelEntryPoint(func);</span></span>
+<span id="L2590"><span class="lineNum">    2590</span> <span class="tlaGNC">      254246 <span class="branchAll" title="br0: 178051; br1: 76195">(2/2)</span>      :     for (auto use = func-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L2591"><span class="lineNum">    2591</span> <span class="tlaGNC">      178051            :     {</span></span>
+<span id="L2592"><span class="lineNum">    2592</span> <span class="tlaGNC">      178051            :         auto user = use-&gt;getUser();</span></span>
+<span id="L2593"><span class="lineNum">    2593</span> <span class="tlaGNC">      178051 <span class="branchAll" title="br0: 177191; br1: 860">(2/2)</span>      :         if (auto call = as&lt;IRCall&gt;(user))</span></span>
+<span id="L2594"><span class="lineNum">    2594</span> <span class="tlaGNC">      177191            :         {</span></span>
+<span id="L2595"><span class="lineNum">    2595</span> <span class="tlaGNC">      177191 <span class="branchPart" title="br0: 177191; br1: 0">(1/2)</span>      :             if (call-&gt;getCalleeUse() == use)</span></span>
+<span id="L2596"><span class="lineNum">    2596</span> <span class="tlaGNC">      177191            :             {</span></span>
+<span id="L2597"><span class="lineNum">    2597</span> <span class="tlaGNC">      177191 <span class="branchAll" title="br0: 177184; br1: 7">(2/2)</span>      :                 if (getParentFunc(call))</span></span>
+<span id="L2598"><span class="lineNum">    2598</span> <span class="tlaGNC">      177184            :                     continue;</span></span>
 <span id="L2599"><span class="lineNum">    2599</span> <span class="tlaGNC">           7            :                 return true;</span></span>
-<span id="L2600"><span class="lineNum">    2600</span> <span class="tlaGNC">      176915            :             }</span></span>
-<span id="L2601"><span class="lineNum">    2601</span> <span class="tlaGNC">      176915            :         }</span></span>
+<span id="L2600"><span class="lineNum">    2600</span> <span class="tlaGNC">      177191            :             }</span></span>
+<span id="L2601"><span class="lineNum">    2601</span> <span class="tlaGNC">      177191            :         }</span></span>
 <span id="L2602"><span class="lineNum">    2602</span>                         : </span>
 <span id="L2603"><span class="lineNum">    2603</span> <span class="tlaGNC">         860 <span class="branchAll" title="br0: 4; br1: 856; br2: 1; br3: 3">(4/4)</span>      :         if (isEntryPoint &amp;&amp; isEntryPointLaunchUse(use))</span></span>
 <span id="L2604"><span class="lineNum">    2604</span> <span class="tlaGNC">           1            :             continue;</span></span>
@@ -2901,34 +2901,34 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2610"><span class="lineNum">    2610</span> <span class="tlaUNC">           0            :             continue;</span></span>
 <span id="L2611"><span class="lineNum">    2611</span> <span class="tlaGNC">         819            :         return true;</span></span>
 <span id="L2612"><span class="lineNum">    2612</span> <span class="tlaGNC">         819            :     }</span></span>
-<span id="L2613"><span class="lineNum">    2613</span> <span class="tlaGNC">       76089            :     return false;</span></span>
-<span id="L2614"><span class="lineNum">    2614</span> <span class="tlaGNC">       76953            : }</span></span>
+<span id="L2613"><span class="lineNum">    2613</span> <span class="tlaGNC">       76195            :     return false;</span></span>
+<span id="L2614"><span class="lineNum">    2614</span> <span class="tlaGNC">       77059            : }</span></span>
 <span id="L2615"><span class="lineNum">    2615</span>                         : </span>
 <span id="L2616"><span class="lineNum">    2616</span>                         : static bool mayBeInvokedWithoutRewritableCall(IRFunc* func)</span>
-<span id="L2617"><span class="lineNum">    2617</span> <span class="tlaGNC">       77042            : {</span></span>
+<span id="L2617"><span class="lineNum">    2617</span> <span class="tlaGNC">       77148            : {</span></span>
 <span id="L2618"><span class="lineNum">    2618</span>                         :     // Each listed linkage or retention decoration prevents the module from proving that every</span>
 <span id="L2619"><span class="lineNum">    2619</span>                         :     // invocation appears as a direct call whose argument list we can extend.</span>
-<span id="L2620"><span class="lineNum">    2620</span> <span class="tlaGNC">       77042            :     static const IROp kInvocationExposureDecorations[] = {</span></span>
-<span id="L2621"><span class="lineNum">    2621</span> <span class="tlaGNC">       77042            :         kIROp_KeepAliveDecoration,</span></span>
-<span id="L2622"><span class="lineNum">    2622</span> <span class="tlaGNC">       77042            :         kIROp_PublicDecoration,</span></span>
-<span id="L2623"><span class="lineNum">    2623</span> <span class="tlaGNC">       77042            :         kIROp_HLSLExportDecoration,</span></span>
-<span id="L2624"><span class="lineNum">    2624</span> <span class="tlaGNC">       77042            :         kIROp_DllExportDecoration,</span></span>
-<span id="L2625"><span class="lineNum">    2625</span> <span class="tlaGNC">       77042            :         kIROp_ExternCDecoration,</span></span>
-<span id="L2626"><span class="lineNum">    2626</span> <span class="tlaGNC">       77042            :         kIROp_ExternCppDecoration,</span></span>
-<span id="L2627"><span class="lineNum">    2627</span> <span class="tlaGNC">       77042            :         kIROp_CudaDeviceExportDecoration,</span></span>
-<span id="L2628"><span class="lineNum">    2628</span> <span class="tlaGNC">       77042            :         kIROp_DownstreamModuleExportDecoration,</span></span>
-<span id="L2629"><span class="lineNum">    2629</span> <span class="tlaGNC">       77042            :         kIROp_DownstreamModuleImportDecoration,</span></span>
-<span id="L2630"><span class="lineNum">    2630</span> <span class="tlaGNC">       77042            :     };</span></span>
-<span id="L2631"><span class="lineNum">    2631</span> <span class="tlaGNC">       77042 <span class="branchAll" title="br0: 691710; br1: 76826">(2/2)</span>      :     for (auto op : kInvocationExposureDecorations)</span></span>
-<span id="L2632"><span class="lineNum">    2632</span> <span class="tlaGNC">      691710            :     {</span></span>
-<span id="L2633"><span class="lineNum">    2633</span> <span class="tlaGNC">      691710 <span class="branchAll" title="br0: 216; br1: 691494">(2/2)</span>      :         if (func-&gt;findDecorationImpl(op))</span></span>
+<span id="L2620"><span class="lineNum">    2620</span> <span class="tlaGNC">       77148            :     static const IROp kInvocationExposureDecorations[] = {</span></span>
+<span id="L2621"><span class="lineNum">    2621</span> <span class="tlaGNC">       77148            :         kIROp_KeepAliveDecoration,</span></span>
+<span id="L2622"><span class="lineNum">    2622</span> <span class="tlaGNC">       77148            :         kIROp_PublicDecoration,</span></span>
+<span id="L2623"><span class="lineNum">    2623</span> <span class="tlaGNC">       77148            :         kIROp_HLSLExportDecoration,</span></span>
+<span id="L2624"><span class="lineNum">    2624</span> <span class="tlaGNC">       77148            :         kIROp_DllExportDecoration,</span></span>
+<span id="L2625"><span class="lineNum">    2625</span> <span class="tlaGNC">       77148            :         kIROp_ExternCDecoration,</span></span>
+<span id="L2626"><span class="lineNum">    2626</span> <span class="tlaGNC">       77148            :         kIROp_ExternCppDecoration,</span></span>
+<span id="L2627"><span class="lineNum">    2627</span> <span class="tlaGNC">       77148            :         kIROp_CudaDeviceExportDecoration,</span></span>
+<span id="L2628"><span class="lineNum">    2628</span> <span class="tlaGNC">       77148            :         kIROp_DownstreamModuleExportDecoration,</span></span>
+<span id="L2629"><span class="lineNum">    2629</span> <span class="tlaGNC">       77148            :         kIROp_DownstreamModuleImportDecoration,</span></span>
+<span id="L2630"><span class="lineNum">    2630</span> <span class="tlaGNC">       77148            :     };</span></span>
+<span id="L2631"><span class="lineNum">    2631</span> <span class="tlaGNC">       77148 <span class="branchAll" title="br0: 692664; br1: 76932">(2/2)</span>      :     for (auto op : kInvocationExposureDecorations)</span></span>
+<span id="L2632"><span class="lineNum">    2632</span> <span class="tlaGNC">      692664            :     {</span></span>
+<span id="L2633"><span class="lineNum">    2633</span> <span class="tlaGNC">      692664 <span class="branchAll" title="br0: 216; br1: 692448">(2/2)</span>      :         if (func-&gt;findDecorationImpl(op))</span></span>
 <span id="L2634"><span class="lineNum">    2634</span> <span class="tlaGNC">         216            :             return true;</span></span>
-<span id="L2635"><span class="lineNum">    2635</span> <span class="tlaGNC">      691710            :     }</span></span>
+<span id="L2635"><span class="lineNum">    2635</span> <span class="tlaGNC">      692664            :     }</span></span>
 <span id="L2636"><span class="lineNum">    2636</span>                         : </span>
 <span id="L2637"><span class="lineNum">    2637</span>                         :     // A non-call use can pass the function as a value or name it in an invocation decoration such</span>
 <span id="L2638"><span class="lineNum">    2638</span>                         :     // as `IRPatchConstantFuncDecoration`.</span>
-<span id="L2639"><span class="lineNum">    2639</span> <span class="tlaGNC">       76826            :     return hasFunctionUseThatCannotBeRewritten(func);</span></span>
-<span id="L2640"><span class="lineNum">    2640</span> <span class="tlaGNC">       77042            : }</span></span>
+<span id="L2639"><span class="lineNum">    2639</span> <span class="tlaGNC">       76932            :     return hasFunctionUseThatCannotBeRewritten(func);</span></span>
+<span id="L2640"><span class="lineNum">    2640</span> <span class="tlaGNC">       77148            : }</span></span>
 <span id="L2641"><span class="lineNum">    2641</span>                         : </span>
 <span id="L2642"><span class="lineNum">    2642</span>                         : static bool requiresModuleScopeStorage(IRGlobalVar* globalVar)</span>
 <span id="L2643"><span class="lineNum">    2643</span> <span class="tlaGNC">         176            : {</span></span>
@@ -2965,12 +2965,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2674"><span class="lineNum">    2674</span>                         :     CapabilitySet const&amp; targetCaps,</span>
 <span id="L2675"><span class="lineNum">    2675</span>                         :     bool shouldDiagnoseUninitializedValues,</span>
 <span id="L2676"><span class="lineNum">    2676</span>                         :     DiagnosticSink* sink)</span>
-<span id="L2677"><span class="lineNum">    2677</span> <span class="tlaGNC">       15744            : {</span></span>
+<span id="L2677"><span class="lineNum">    2677</span> <span class="tlaGNC">       15791            : {</span></span>
 <span id="L2678"><span class="lineNum">    2678</span>                         :     // The caller has already extracted every selected initializer body. We can therefore replace</span>
 <span id="L2679"><span class="lineNum">    2679</span>                         :     // each selected storage declaration without losing initializer code.</span>
-<span id="L2680"><span class="lineNum">    2680</span> <span class="tlaGNC">       15744            :     LegalizeResourceGlobalVarsPass pass(module, targetCaps, shouldDiagnoseUninitializedValues);</span></span>
-<span id="L2681"><span class="lineNum">    2681</span> <span class="tlaGNC">       15744            :     pass.processModule(sink);</span></span>
-<span id="L2682"><span class="lineNum">    2682</span> <span class="tlaGNC">       15744            : }</span></span>
+<span id="L2680"><span class="lineNum">    2680</span> <span class="tlaGNC">       15791            :     LegalizeResourceGlobalVarsPass pass(module, targetCaps, shouldDiagnoseUninitializedValues);</span></span>
+<span id="L2681"><span class="lineNum">    2681</span> <span class="tlaGNC">       15791            :     pass.processModule(sink);</span></span>
+<span id="L2682"><span class="lineNum">    2682</span> <span class="tlaGNC">       15791            : }</span></span>
 <span id="L2683"><span class="lineNum">    2683</span>                         : </span>
 <span id="L2684"><span class="lineNum">    2684</span>                         : } // namespace Slang</span>
 </pre>

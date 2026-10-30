@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-29 04:28:36 UTC</td>
+      <td class="headerValue">2026-10-30 05:13:15 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -304,54 +304,54 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L13"><span class="lineNum">      13</span>                         :     CodeGenContext* context;</span>
 <span id="L14"><span class="lineNum">      14</span>                         : </span>
 <span id="L15"><span class="lineNum">      15</span>                         :     void processModule(IRModule* module)</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">        2548            :     {</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">        2548            :         Dictionary&lt;IRInst*, HashSet&lt;IRFunc*&gt;&gt; referencingEntryPoints;</span></span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">        2548            :         buildEntryPointReferenceGraph(referencingEntryPoints, module);</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">        2549            :     {</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">        2549            :         Dictionary&lt;IRInst*, HashSet&lt;IRFunc*&gt;&gt; referencingEntryPoints;</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">        2549            :         buildEntryPointReferenceGraph(referencingEntryPoints, module);</span></span>
 <span id="L19"><span class="lineNum">      19</span>                         : </span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">        2548            :         List&lt;IRInst*&gt; entryPoints;</span></span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">        2548            :         List&lt;IRInst*&gt; getWorkGroupSizeInsts;</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">        2549            :         List&lt;IRInst*&gt; entryPoints;</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">        2549            :         List&lt;IRInst*&gt; getWorkGroupSizeInsts;</span></span>
 <span id="L22"><span class="lineNum">      22</span>                         : </span>
 <span id="L23"><span class="lineNum">      23</span>                         :         // Traverse the module to find all entry points.</span>
 <span id="L24"><span class="lineNum">      24</span>                         :         // If we see a `GetWorkGroupSize` instruction, we will materialize it.</span>
 <span id="L25"><span class="lineNum">      25</span>                         :         //</span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">        2548 <span class="branchAll" title="br0: 704991; br1: 2548">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">      704991            :         {</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">      704991 <span class="branchAll" title="br0: 40977; br1: 664014; br2: 2674; br3: 38303">(4/4)</span>      :             if (inst-&gt;getOp() == kIROp_Func &amp;&amp; inst-&gt;findDecoration&lt;IREntryPointDecoration&gt;())</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">        2674            :                 entryPoints.add(inst);</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">      702317 <span class="branchAll" title="br0: 35; br1: 702282">(2/2)</span>      :             else if (inst-&gt;getOp() == kIROp_GetWorkGroupSize)</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">        2549 <span class="branchAll" title="br0: 705032; br1: 2549">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">      705032            :         {</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">      705032 <span class="branchAll" title="br0: 40984; br1: 664048; br2: 2675; br3: 38309">(4/4)</span>      :             if (inst-&gt;getOp() == kIROp_Func &amp;&amp; inst-&gt;findDecoration&lt;IREntryPointDecoration&gt;())</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">        2675            :                 entryPoints.add(inst);</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">      702357 <span class="branchAll" title="br0: 35; br1: 702322">(2/2)</span>      :             else if (inst-&gt;getOp() == kIROp_GetWorkGroupSize)</span></span>
 <span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">          35            :                 getWorkGroupSizeInsts.add(inst);</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">      704991            :         }</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">        2548 <span class="branchAll" title="br0: 35; br1: 2548">(2/2)</span>      :         for (auto inst : getWorkGroupSizeInsts)</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">      705032            :         }</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">        2549 <span class="branchAll" title="br0: 35; br1: 2549">(2/2)</span>      :         for (auto inst : getWorkGroupSizeInsts)</span></span>
 <span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">          35            :             materializeGetWorkGroupSize(module, referencingEntryPoints, inst);</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        2548            :         IRBuilder builder(module);</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        2549            :         IRBuilder builder(module);</span></span>
 <span id="L36"><span class="lineNum">      36</span>                         : </span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">        2548 <span class="branchAll" title="br0: 2674; br1: 2548">(2/2)</span>      :         for (auto entryPoint : entryPoints)</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        2674            :         {</span></span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">        2674            :             List&lt;IRInst*&gt; outputVars;</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        2674            :             List&lt;IRInst*&gt; inputVars;</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        2674 <span class="branchAll" title="br0: 730523; br1: 2674">(2/2)</span>      :             for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      730523            :             {</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">      730523 <span class="branchAll" title="br0: 46499; br1: 684024">(2/2)</span>      :                 if (auto referencingEntryPointSet = referencingEntryPoints.tryGetValue(inst))</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       46499            :                 {</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       46499 <span class="branchAll" title="br0: 45143; br1: 1356">(2/2)</span>      :                     if (referencingEntryPointSet-&gt;contains((IRFunc*)entryPoint))</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       45143            :                     {</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       45143 <span class="branchAll" title="br0: 95; br1: 45048">(2/2)</span>      :                         if (inst-&gt;findDecoration&lt;IRGlobalOutputDecoration&gt;())</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">        2549 <span class="branchAll" title="br0: 2675; br1: 2549">(2/2)</span>      :         for (auto entryPoint : entryPoints)</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        2675            :         {</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">        2675            :             List&lt;IRInst*&gt; outputVars;</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        2675            :             List&lt;IRInst*&gt; inputVars;</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        2675 <span class="branchAll" title="br0: 730564; br1: 2675">(2/2)</span>      :             for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      730564            :             {</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">      730564 <span class="branchAll" title="br0: 46506; br1: 684058">(2/2)</span>      :                 if (auto referencingEntryPointSet = referencingEntryPoints.tryGetValue(inst))</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       46506            :                 {</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       46506 <span class="branchAll" title="br0: 45150; br1: 1356">(2/2)</span>      :                     if (referencingEntryPointSet-&gt;contains((IRFunc*)entryPoint))</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       45150            :                     {</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       45150 <span class="branchAll" title="br0: 95; br1: 45055">(2/2)</span>      :                         if (inst-&gt;findDecoration&lt;IRGlobalOutputDecoration&gt;())</span></span>
 <span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          95            :                         {</span></span>
 <span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          95            :                             outputVars.add(inst);</span></span>
 <span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          95            :                         }</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       45143 <span class="branchAll" title="br0: 230; br1: 44913">(2/2)</span>      :                         if (inst-&gt;findDecoration&lt;IRGlobalInputDecoration&gt;())</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       45150 <span class="branchAll" title="br0: 230; br1: 44920">(2/2)</span>      :                         if (inst-&gt;findDecoration&lt;IRGlobalInputDecoration&gt;())</span></span>
 <span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         230            :                         {</span></span>
 <span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         230            :                             inputVars.add(inst);</span></span>
 <span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         230            :                         }</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       45143            :                     }</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       46499            :                 }</span></span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">      730523            :             }</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       45150            :                     }</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       46506            :                 }</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">      730564            :             }</span></span>
 <span id="L58"><span class="lineNum">      58</span>                         : </span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        2674            :             bool hasInput = inputVars.getCount() != 0;</span></span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        2674            :             bool hasOutput = outputVars.getCount() != 0;</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        2675            :             bool hasInput = inputVars.getCount() != 0;</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        2675            :             bool hasOutput = outputVars.getCount() != 0;</span></span>
 <span id="L61"><span class="lineNum">      61</span>                         : </span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        2674 <span class="branchAll" title="br0: 2520; br1: 154; br2: 2489; br3: 31">(4/4)</span>      :             if (!hasInput &amp;&amp; !hasOutput)</span></span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">        2489            :                 continue;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        2675 <span class="branchAll" title="br0: 2521; br1: 154; br2: 2490; br3: 31">(4/4)</span>      :             if (!hasInput &amp;&amp; !hasOutput)</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">        2490            :                 continue;</span></span>
 <span id="L64"><span class="lineNum">      64</span>                         : </span>
 <span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         185            :             auto entryPointFunc = as&lt;IRFunc&gt;(entryPoint);</span></span>
 <span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         185 <span class="branchPart" title="br0: 0; br1: 185">(1/2)</span>      :             if (!entryPointFunc)</span></span>
@@ -717,7 +717,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">         184            :             IRType* newFuncType = builder.getFuncType(paramTypes, resultType);</span></span>
 <span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">         184            :             entryPointFunc-&gt;setFullType(newFuncType);</span></span>
 <span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">         184            :         }</span></span>
-<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">        2548            :     }</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">        2549            :     }</span></span>
 <span id="L430"><span class="lineNum">     430</span>                         : </span>
 <span id="L431"><span class="lineNum">     431</span>                         :     // If we see a `GetWorkGroupSize` instruction, we should materialize it by replacing its uses</span>
 <span id="L432"><span class="lineNum">     432</span>                         :     // with a constant that represent the workgroup size of the calling entrypoint. This is trivial</span>
@@ -813,11 +813,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L522"><span class="lineNum">     522</span>                         : };</span>
 <span id="L523"><span class="lineNum">     523</span>                         : </span>
 <span id="L524"><span class="lineNum">     524</span>                         : void translateGlobalVaryingVar(IRModule* module, CodeGenContext* context)</span>
-<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">        2548            : {</span></span>
-<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">        2548            :     GlobalVarTranslationContext ctx;</span></span>
-<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">        2548            :     ctx.context = context;</span></span>
-<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">        2548            :     ctx.processModule(module);</span></span>
-<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">        2548            : }</span></span>
+<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">        2549            : {</span></span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">        2549            :     GlobalVarTranslationContext ctx;</span></span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">        2549            :     ctx.context = context;</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">        2549            :     ctx.processModule(module);</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">        2549            : }</span></span>
 <span id="L530"><span class="lineNum">     530</span>                         : } // namespace Slang</span>
 </pre>
   <br>

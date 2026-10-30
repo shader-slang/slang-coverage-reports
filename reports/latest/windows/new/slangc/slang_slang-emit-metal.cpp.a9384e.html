@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-29 04:29:06 UTC</td>
+      <td class="headerValue">2026-10-30 05:14:11 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">77.5&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:77.5%;background-color:hsl(75, 70%, 50%)"></div></div>
-      <span class="metricCounts">663 / 855</span>
+      <span class="metricValue">78.3&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:78.3%;background-color:hsl(80, 70%, 50%)"></div></div>
+      <span class="metricCounts">673 / 860</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -2068,130 +2068,149 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1795"><span class="lineNum">    1795</span>              :     }</span>
 <span id="L1796"><span class="lineNum">    1796</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1797"><span class="lineNum">    1797</span>              : </span>
-<span id="L1798"><span class="lineNum">    1798</span>              : static UnownedStringSlice _getInterpolationModifierText(IRInterpolationMode mode)</span>
-<span id="L1799"><span class="lineNum">    1799</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1800"><span class="lineNum">    1800</span> <span class="tlaGNC">           1 :     switch (mode)</span></span>
-<span id="L1801"><span class="lineNum">    1801</span>              :     {</span>
-<span id="L1802"><span class="lineNum">    1802</span>              :     case IRInterpolationMode::PerVertex:</span>
-<span id="L1803"><span class="lineNum">    1803</span>              :     case IRInterpolationMode::NoInterpolation:</span>
-<span id="L1804"><span class="lineNum">    1804</span> <span class="tlaGNC">           1 :         return UnownedStringSlice::fromLiteral(&quot;[[flat]]&quot;);</span></span>
-<span id="L1805"><span class="lineNum">    1805</span>              :     case IRInterpolationMode::NoPerspective:</span>
-<span id="L1806"><span class="lineNum">    1806</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[center_no_perspective]]&quot;);</span></span>
-<span id="L1807"><span class="lineNum">    1807</span>              :     case IRInterpolationMode::Linear:</span>
-<span id="L1808"><span class="lineNum">    1808</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[sample_no_perspective]]&quot;);</span></span>
-<span id="L1809"><span class="lineNum">    1809</span>              :     case IRInterpolationMode::Sample:</span>
-<span id="L1810"><span class="lineNum">    1810</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[sample_perspective]]&quot;);</span></span>
-<span id="L1811"><span class="lineNum">    1811</span>              :     case IRInterpolationMode::Centroid:</span>
-<span id="L1812"><span class="lineNum">    1812</span> <span class="tlaUNC">           0 :         return UnownedStringSlice::fromLiteral(&quot;[[center_perspective]]&quot;);</span></span>
-<span id="L1813"><span class="lineNum">    1813</span>              :     default:</span>
-<span id="L1814"><span class="lineNum">    1814</span> <span class="tlaUNC">           0 :         return UnownedStringSlice();</span></span>
-<span id="L1815"><span class="lineNum">    1815</span>              :     }</span>
-<span id="L1816"><span class="lineNum">    1816</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1817"><span class="lineNum">    1817</span>              : </span>
-<span id="L1818"><span class="lineNum">    1818</span>              : void MetalSourceEmitter::emitInterpolationModifiersImpl(</span>
-<span id="L1819"><span class="lineNum">    1819</span>              :     IRInst* varInst,</span>
-<span id="L1820"><span class="lineNum">    1820</span>              :     IRType* valueType,</span>
-<span id="L1821"><span class="lineNum">    1821</span>              :     IRVarLayout* layout)</span>
-<span id="L1822"><span class="lineNum">    1822</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1823"><span class="lineNum">    1823</span>              :     SLANG_UNUSED(layout);</span>
-<span id="L1824"><span class="lineNum">    1824</span>              :     SLANG_UNUSED(valueType);</span>
-<span id="L1825"><span class="lineNum">    1825</span>              : </span>
-<span id="L1826"><span class="lineNum">    1826</span> <span class="tlaGNC">           1 :     for (auto dd : varInst-&gt;getDecorations())</span></span>
-<span id="L1827"><span class="lineNum">    1827</span>              :     {</span>
-<span id="L1828"><span class="lineNum">    1828</span> <span class="tlaGNC">           1 :         if (dd-&gt;getOp() != kIROp_InterpolationModeDecoration)</span></span>
-<span id="L1829"><span class="lineNum">    1829</span>              :             continue;</span>
-<span id="L1830"><span class="lineNum">    1830</span>              : </span>
-<span id="L1831"><span class="lineNum">    1831</span>              :         auto decoration = (IRInterpolationModeDecoration*)dd;</span>
-<span id="L1832"><span class="lineNum">    1832</span>              : </span>
-<span id="L1833"><span class="lineNum">    1833</span> <span class="tlaGNC">           1 :         UnownedStringSlice modeText = _getInterpolationModifierText(decoration-&gt;getMode());</span></span>
-<span id="L1834"><span class="lineNum">    1834</span> <span class="tlaGNC">           1 :         if (modeText.getLength() &gt; 0)</span></span>
-<span id="L1835"><span class="lineNum">    1835</span>              :         {</span>
-<span id="L1836"><span class="lineNum">    1836</span> <span class="tlaGNC">           1 :             m_writer-&gt;emit(modeText);</span></span>
-<span id="L1837"><span class="lineNum">    1837</span> <span class="tlaGNC">           1 :             m_writer-&gt;emitChar(&#x27; &#x27;);</span></span>
-<span id="L1838"><span class="lineNum">    1838</span>              :         }</span>
-<span id="L1839"><span class="lineNum">    1839</span>              :     }</span>
-<span id="L1840"><span class="lineNum">    1840</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1841"><span class="lineNum">    1841</span>              : </span>
-<span id="L1842"><span class="lineNum">    1842</span>              : void MetalSourceEmitter::emitPackOffsetModifier(</span>
-<span id="L1843"><span class="lineNum">    1843</span>              :     IRInst* varInst,</span>
-<span id="L1844"><span class="lineNum">    1844</span>              :     IRType* valueType,</span>
-<span id="L1845"><span class="lineNum">    1845</span>              :     IRPackOffsetDecoration* layout)</span>
-<span id="L1846"><span class="lineNum">    1846</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1847"><span class="lineNum">    1847</span>              :     SLANG_UNUSED(varInst);</span>
-<span id="L1848"><span class="lineNum">    1848</span>              :     SLANG_UNUSED(valueType);</span>
-<span id="L1849"><span class="lineNum">    1849</span>              :     SLANG_UNUSED(layout);</span>
-<span id="L1850"><span class="lineNum">    1850</span>              :     // We emit packoffset as a semantic in `emitSemantic`, so nothing to do here.</span>
-<span id="L1851"><span class="lineNum">    1851</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1852"><span class="lineNum">    1852</span>              : </span>
-<span id="L1853"><span class="lineNum">    1853</span>              : void MetalSourceEmitter::emitRateQualifiersAndAddressSpaceImpl(</span>
-<span id="L1854"><span class="lineNum">    1854</span>              :     IRRate* rate,</span>
-<span id="L1855"><span class="lineNum">    1855</span>              :     AddressSpace addressSpace)</span>
-<span id="L1856"><span class="lineNum">    1856</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1857"><span class="lineNum">    1857</span> <span class="tlaGNC">           1 :     if (as&lt;IRGroupSharedRate&gt;(rate))</span></span>
-<span id="L1858"><span class="lineNum">    1858</span>              :     {</span>
-<span id="L1859"><span class="lineNum">    1859</span>              :         m_writer-&gt;emit(&quot;threadgroup &quot;);</span>
-<span id="L1860"><span class="lineNum">    1860</span>              :         return;</span>
-<span id="L1861"><span class="lineNum">    1861</span>              :     }</span>
-<span id="L1862"><span class="lineNum">    1862</span>              : </span>
-<span id="L1863"><span class="lineNum">    1863</span> <span class="tlaGNC">           1 :     switch (addressSpace)</span></span>
-<span id="L1864"><span class="lineNum">    1864</span>              :     {</span>
-<span id="L1865"><span class="lineNum">    1865</span>              :     case AddressSpace::GroupShared:</span>
-<span id="L1866"><span class="lineNum">    1866</span>              :         m_writer-&gt;emit(&quot;threadgroup &quot;);</span>
-<span id="L1867"><span class="lineNum">    1867</span>              :         break;</span>
-<span id="L1868"><span class="lineNum">    1868</span>              :     case AddressSpace::Uniform:</span>
-<span id="L1869"><span class="lineNum">    1869</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;constant &quot;);</span></span>
-<span id="L1870"><span class="lineNum">    1870</span> <span class="tlaUNC">           0 :         break;</span></span>
-<span id="L1871"><span class="lineNum">    1871</span>              :     case AddressSpace::Global:</span>
-<span id="L1872"><span class="lineNum">    1872</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;device &quot;);</span></span>
-<span id="L1873"><span class="lineNum">    1873</span> <span class="tlaUNC">           0 :         break;</span></span>
-<span id="L1874"><span class="lineNum">    1874</span>              :     case AddressSpace::ThreadLocal:</span>
-<span id="L1875"><span class="lineNum">    1875</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;thread &quot;);</span></span>
-<span id="L1876"><span class="lineNum">    1876</span>              :         break;</span>
-<span id="L1877"><span class="lineNum">    1877</span>              :     case AddressSpace::MetalObjectData:</span>
-<span id="L1878"><span class="lineNum">    1878</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;object_data &quot;);</span></span>
-<span id="L1879"><span class="lineNum">    1879</span> <span class="tlaUNC">           0 :         break;</span></span>
-<span id="L1880"><span class="lineNum">    1880</span>              :     default:</span>
-<span id="L1881"><span class="lineNum">    1881</span>              :         break;</span>
-<span id="L1882"><span class="lineNum">    1882</span>              :     }</span>
-<span id="L1883"><span class="lineNum">    1883</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1884"><span class="lineNum">    1884</span>              : </span>
-<span id="L1885"><span class="lineNum">    1885</span>              : </span>
-<span id="L1886"><span class="lineNum">    1886</span>              : void MetalSourceEmitter::emitMeshShaderModifiersImpl(IRInst* varInst)</span>
-<span id="L1887"><span class="lineNum">    1887</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1888"><span class="lineNum">    1888</span>              :     SLANG_UNUSED(varInst);</span>
-<span id="L1889"><span class="lineNum">    1889</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1890"><span class="lineNum">    1890</span>              : </span>
-<span id="L1891"><span class="lineNum">    1891</span>              : void MetalSourceEmitter::emitVarDecorationsImpl(IRInst* varInst)</span>
-<span id="L1892"><span class="lineNum">    1892</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1893"><span class="lineNum">    1893</span>              :     SLANG_UNUSED(varInst);</span>
-<span id="L1894"><span class="lineNum">    1894</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1895"><span class="lineNum">    1895</span>              : </span>
-<span id="L1896"><span class="lineNum">    1896</span>              : void MetalSourceEmitter::emitMatrixLayoutModifiersImpl(IRType*)</span>
-<span id="L1897"><span class="lineNum">    1897</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1898"><span class="lineNum">    1898</span>              :     // Metal only supports column major layout, and we must have</span>
-<span id="L1899"><span class="lineNum">    1899</span>              :     // already translated all matrix ops to assume column-major</span>
-<span id="L1900"><span class="lineNum">    1900</span>              :     // at this stage.</span>
-<span id="L1901"><span class="lineNum">    1901</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1902"><span class="lineNum">    1902</span>              : </span>
-<span id="L1903"><span class="lineNum">    1903</span>              : void MetalSourceEmitter::handleRequiredCapabilitiesImpl(IRInst* inst)</span>
-<span id="L1904"><span class="lineNum">    1904</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1905"><span class="lineNum">    1905</span>              :     SLANG_UNUSED(inst);</span>
-<span id="L1906"><span class="lineNum">    1906</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1907"><span class="lineNum">    1907</span>              : </span>
-<span id="L1908"><span class="lineNum">    1908</span>              : void MetalSourceEmitter::emitFrontMatterImpl(TargetRequest*)</span>
-<span id="L1909"><span class="lineNum">    1909</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1910"><span class="lineNum">    1910</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_stdlib&gt;\n&quot;);</span></span>
-<span id="L1911"><span class="lineNum">    1911</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_math&gt;\n&quot;);</span></span>
-<span id="L1912"><span class="lineNum">    1912</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_texture&gt;\n&quot;);</span></span>
-<span id="L1913"><span class="lineNum">    1913</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;using namespace metal;\n&quot;);</span></span>
-<span id="L1914"><span class="lineNum">    1914</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1915"><span class="lineNum">    1915</span>              : </span>
-<span id="L1916"><span class="lineNum">    1916</span>              : void MetalSourceEmitter::emitGlobalInstImpl(IRInst* inst)</span>
-<span id="L1917"><span class="lineNum">    1917</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1918"><span class="lineNum">    1918</span> <span class="tlaGNC">           1 :     Super::emitGlobalInstImpl(inst);</span></span>
-<span id="L1919"><span class="lineNum">    1919</span>              : }</span>
-<span id="L1920"><span class="lineNum">    1920</span>              : </span>
-<span id="L1921"><span class="lineNum">    1921</span>              : } // namespace Slang</span>
+<span id="L1798"><span class="lineNum">    1798</span>              : void MetalSourceEmitter::emitInterpolationModifiersImpl(</span>
+<span id="L1799"><span class="lineNum">    1799</span>              :     IRInst* varInst,</span>
+<span id="L1800"><span class="lineNum">    1800</span>              :     IRType* valueType,</span>
+<span id="L1801"><span class="lineNum">    1801</span>              :     IRVarLayout* layout)</span>
+<span id="L1802"><span class="lineNum">    1802</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1803"><span class="lineNum">    1803</span>              :     SLANG_UNUSED(layout);</span>
+<span id="L1804"><span class="lineNum">    1804</span>              :     SLANG_UNUSED(valueType);</span>
+<span id="L1805"><span class="lineNum">    1805</span>              : </span>
+<span id="L1806"><span class="lineNum">    1806</span>              :     // MSL takes one interpolation attribute that combines the sampling (center, centroid,</span>
+<span id="L1807"><span class="lineNum">    1807</span>              :     // sample) and the perspective correction: [[center_perspective]] (the default),</span>
+<span id="L1808"><span class="lineNum">    1808</span>              :     // [[centroid_no_perspective]], ..., or [[flat]]. HLSL `linear` is perspective-correct</span>
+<span id="L1809"><span class="lineNum">    1809</span>              :     // interpolation; HLSL `noperspective` is the no_perspective one.</span>
+<span id="L1810"><span class="lineNum">    1810</span>              :     bool isFlat = false;</span>
+<span id="L1811"><span class="lineNum">    1811</span>              :     bool hasInterpolation = false;</span>
+<span id="L1812"><span class="lineNum">    1812</span>              :     bool noPerspective = false;</span>
+<span id="L1813"><span class="lineNum">    1813</span> <span class="tlaGNC">           1 :     const char* sampling = &quot;center&quot;;</span></span>
+<span id="L1814"><span class="lineNum">    1814</span> <span class="tlaGNC">           1 :     for (auto dd : varInst-&gt;getDecorations())</span></span>
+<span id="L1815"><span class="lineNum">    1815</span>              :     {</span>
+<span id="L1816"><span class="lineNum">    1816</span> <span class="tlaGNC">           1 :         if (dd-&gt;getOp() != kIROp_InterpolationModeDecoration)</span></span>
+<span id="L1817"><span class="lineNum">    1817</span>              :             continue;</span>
+<span id="L1818"><span class="lineNum">    1818</span>              : </span>
+<span id="L1819"><span class="lineNum">    1819</span>              :         auto decoration = (IRInterpolationModeDecoration*)dd;</span>
+<span id="L1820"><span class="lineNum">    1820</span> <span class="tlaGNC">           1 :         switch (decoration-&gt;getMode())</span></span>
+<span id="L1821"><span class="lineNum">    1821</span>              :         {</span>
+<span id="L1822"><span class="lineNum">    1822</span>              :         case IRInterpolationMode::PerVertex:</span>
+<span id="L1823"><span class="lineNum">    1823</span>              :         case IRInterpolationMode::NoInterpolation:</span>
+<span id="L1824"><span class="lineNum">    1824</span> <span class="tlaGNC">           1 :             isFlat = true;</span></span>
+<span id="L1825"><span class="lineNum">    1825</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L1826"><span class="lineNum">    1826</span>              :         case IRInterpolationMode::NoPerspective:</span>
+<span id="L1827"><span class="lineNum">    1827</span> <span class="tlaGNC">           1 :             noPerspective = true;</span></span>
+<span id="L1828"><span class="lineNum">    1828</span> <span class="tlaGNC">           1 :             hasInterpolation = true;</span></span>
+<span id="L1829"><span class="lineNum">    1829</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L1830"><span class="lineNum">    1830</span>              :         case IRInterpolationMode::Linear:</span>
+<span id="L1831"><span class="lineNum">    1831</span>              :             hasInterpolation = true;</span>
+<span id="L1832"><span class="lineNum">    1832</span>              :             break;</span>
+<span id="L1833"><span class="lineNum">    1833</span>              :         case IRInterpolationMode::Sample:</span>
+<span id="L1834"><span class="lineNum">    1834</span> <span class="tlaGNC">           1 :             sampling = &quot;sample&quot;;</span></span>
+<span id="L1835"><span class="lineNum">    1835</span>              :             hasInterpolation = true;</span>
+<span id="L1836"><span class="lineNum">    1836</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L1837"><span class="lineNum">    1837</span>              :         case IRInterpolationMode::Centroid:</span>
+<span id="L1838"><span class="lineNum">    1838</span> <span class="tlaGNC">           1 :             sampling = &quot;centroid&quot;;</span></span>
+<span id="L1839"><span class="lineNum">    1839</span>              :             hasInterpolation = true;</span>
+<span id="L1840"><span class="lineNum">    1840</span>              :             break;</span>
+<span id="L1841"><span class="lineNum">    1841</span>              :         default:</span>
+<span id="L1842"><span class="lineNum">    1842</span>              :             break;</span>
+<span id="L1843"><span class="lineNum">    1843</span>              :         }</span>
+<span id="L1844"><span class="lineNum">    1844</span>              :     }</span>
+<span id="L1845"><span class="lineNum">    1845</span>              : </span>
+<span id="L1846"><span class="lineNum">    1846</span> <span class="tlaGNC">           1 :     if (isFlat)</span></span>
+<span id="L1847"><span class="lineNum">    1847</span>              :     {</span>
+<span id="L1848"><span class="lineNum">    1848</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;[[flat]] &quot;);</span></span>
+<span id="L1849"><span class="lineNum">    1849</span> <span class="tlaGNC">           1 :         return;</span></span>
+<span id="L1850"><span class="lineNum">    1850</span>              :     }</span>
+<span id="L1851"><span class="lineNum">    1851</span>              :     // Perspective-correct center interpolation is the default.</span>
+<span id="L1852"><span class="lineNum">    1852</span> <span class="tlaGNC">           1 :     if (!hasInterpolation || (!noPerspective &amp;&amp; strcmp(sampling, &quot;center&quot;) == 0))</span></span>
+<span id="L1853"><span class="lineNum">    1853</span>              :         return;</span>
+<span id="L1854"><span class="lineNum">    1854</span>              : </span>
+<span id="L1855"><span class="lineNum">    1855</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;[[&quot;);</span></span>
+<span id="L1856"><span class="lineNum">    1856</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(sampling);</span></span>
+<span id="L1857"><span class="lineNum">    1857</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(noPerspective ? &quot;_no_perspective&quot; : &quot;_perspective&quot;);</span></span>
+<span id="L1858"><span class="lineNum">    1858</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;]] &quot;);</span></span>
+<span id="L1859"><span class="lineNum">    1859</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1860"><span class="lineNum">    1860</span>              : </span>
+<span id="L1861"><span class="lineNum">    1861</span>              : void MetalSourceEmitter::emitPackOffsetModifier(</span>
+<span id="L1862"><span class="lineNum">    1862</span>              :     IRInst* varInst,</span>
+<span id="L1863"><span class="lineNum">    1863</span>              :     IRType* valueType,</span>
+<span id="L1864"><span class="lineNum">    1864</span>              :     IRPackOffsetDecoration* layout)</span>
+<span id="L1865"><span class="lineNum">    1865</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1866"><span class="lineNum">    1866</span>              :     SLANG_UNUSED(varInst);</span>
+<span id="L1867"><span class="lineNum">    1867</span>              :     SLANG_UNUSED(valueType);</span>
+<span id="L1868"><span class="lineNum">    1868</span>              :     SLANG_UNUSED(layout);</span>
+<span id="L1869"><span class="lineNum">    1869</span>              :     // We emit packoffset as a semantic in `emitSemantic`, so nothing to do here.</span>
+<span id="L1870"><span class="lineNum">    1870</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1871"><span class="lineNum">    1871</span>              : </span>
+<span id="L1872"><span class="lineNum">    1872</span>              : void MetalSourceEmitter::emitRateQualifiersAndAddressSpaceImpl(</span>
+<span id="L1873"><span class="lineNum">    1873</span>              :     IRRate* rate,</span>
+<span id="L1874"><span class="lineNum">    1874</span>              :     AddressSpace addressSpace)</span>
+<span id="L1875"><span class="lineNum">    1875</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1876"><span class="lineNum">    1876</span> <span class="tlaGNC">           1 :     if (as&lt;IRGroupSharedRate&gt;(rate))</span></span>
+<span id="L1877"><span class="lineNum">    1877</span>              :     {</span>
+<span id="L1878"><span class="lineNum">    1878</span>              :         m_writer-&gt;emit(&quot;threadgroup &quot;);</span>
+<span id="L1879"><span class="lineNum">    1879</span>              :         return;</span>
+<span id="L1880"><span class="lineNum">    1880</span>              :     }</span>
+<span id="L1881"><span class="lineNum">    1881</span>              : </span>
+<span id="L1882"><span class="lineNum">    1882</span> <span class="tlaGNC">           1 :     switch (addressSpace)</span></span>
+<span id="L1883"><span class="lineNum">    1883</span>              :     {</span>
+<span id="L1884"><span class="lineNum">    1884</span>              :     case AddressSpace::GroupShared:</span>
+<span id="L1885"><span class="lineNum">    1885</span>              :         m_writer-&gt;emit(&quot;threadgroup &quot;);</span>
+<span id="L1886"><span class="lineNum">    1886</span>              :         break;</span>
+<span id="L1887"><span class="lineNum">    1887</span>              :     case AddressSpace::Uniform:</span>
+<span id="L1888"><span class="lineNum">    1888</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;constant &quot;);</span></span>
+<span id="L1889"><span class="lineNum">    1889</span> <span class="tlaUNC">           0 :         break;</span></span>
+<span id="L1890"><span class="lineNum">    1890</span>              :     case AddressSpace::Global:</span>
+<span id="L1891"><span class="lineNum">    1891</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;device &quot;);</span></span>
+<span id="L1892"><span class="lineNum">    1892</span> <span class="tlaUNC">           0 :         break;</span></span>
+<span id="L1893"><span class="lineNum">    1893</span>              :     case AddressSpace::ThreadLocal:</span>
+<span id="L1894"><span class="lineNum">    1894</span> <span class="tlaGNC">           1 :         m_writer-&gt;emit(&quot;thread &quot;);</span></span>
+<span id="L1895"><span class="lineNum">    1895</span>              :         break;</span>
+<span id="L1896"><span class="lineNum">    1896</span>              :     case AddressSpace::MetalObjectData:</span>
+<span id="L1897"><span class="lineNum">    1897</span> <span class="tlaUNC">           0 :         m_writer-&gt;emit(&quot;object_data &quot;);</span></span>
+<span id="L1898"><span class="lineNum">    1898</span> <span class="tlaUNC">           0 :         break;</span></span>
+<span id="L1899"><span class="lineNum">    1899</span>              :     default:</span>
+<span id="L1900"><span class="lineNum">    1900</span>              :         break;</span>
+<span id="L1901"><span class="lineNum">    1901</span>              :     }</span>
+<span id="L1902"><span class="lineNum">    1902</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1903"><span class="lineNum">    1903</span>              : </span>
+<span id="L1904"><span class="lineNum">    1904</span>              : </span>
+<span id="L1905"><span class="lineNum">    1905</span>              : void MetalSourceEmitter::emitMeshShaderModifiersImpl(IRInst* varInst)</span>
+<span id="L1906"><span class="lineNum">    1906</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1907"><span class="lineNum">    1907</span>              :     SLANG_UNUSED(varInst);</span>
+<span id="L1908"><span class="lineNum">    1908</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1909"><span class="lineNum">    1909</span>              : </span>
+<span id="L1910"><span class="lineNum">    1910</span>              : void MetalSourceEmitter::emitVarDecorationsImpl(IRInst* varInst)</span>
+<span id="L1911"><span class="lineNum">    1911</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1912"><span class="lineNum">    1912</span>              :     SLANG_UNUSED(varInst);</span>
+<span id="L1913"><span class="lineNum">    1913</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1914"><span class="lineNum">    1914</span>              : </span>
+<span id="L1915"><span class="lineNum">    1915</span>              : void MetalSourceEmitter::emitMatrixLayoutModifiersImpl(IRType*)</span>
+<span id="L1916"><span class="lineNum">    1916</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1917"><span class="lineNum">    1917</span>              :     // Metal only supports column major layout, and we must have</span>
+<span id="L1918"><span class="lineNum">    1918</span>              :     // already translated all matrix ops to assume column-major</span>
+<span id="L1919"><span class="lineNum">    1919</span>              :     // at this stage.</span>
+<span id="L1920"><span class="lineNum">    1920</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1921"><span class="lineNum">    1921</span>              : </span>
+<span id="L1922"><span class="lineNum">    1922</span>              : void MetalSourceEmitter::handleRequiredCapabilitiesImpl(IRInst* inst)</span>
+<span id="L1923"><span class="lineNum">    1923</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1924"><span class="lineNum">    1924</span>              :     SLANG_UNUSED(inst);</span>
+<span id="L1925"><span class="lineNum">    1925</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1926"><span class="lineNum">    1926</span>              : </span>
+<span id="L1927"><span class="lineNum">    1927</span>              : void MetalSourceEmitter::emitFrontMatterImpl(TargetRequest*)</span>
+<span id="L1928"><span class="lineNum">    1928</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1929"><span class="lineNum">    1929</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_stdlib&gt;\n&quot;);</span></span>
+<span id="L1930"><span class="lineNum">    1930</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_math&gt;\n&quot;);</span></span>
+<span id="L1931"><span class="lineNum">    1931</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;#include &lt;metal_texture&gt;\n&quot;);</span></span>
+<span id="L1932"><span class="lineNum">    1932</span> <span class="tlaGNC">           1 :     m_writer-&gt;emit(&quot;using namespace metal;\n&quot;);</span></span>
+<span id="L1933"><span class="lineNum">    1933</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1934"><span class="lineNum">    1934</span>              : </span>
+<span id="L1935"><span class="lineNum">    1935</span>              : void MetalSourceEmitter::emitGlobalInstImpl(IRInst* inst)</span>
+<span id="L1936"><span class="lineNum">    1936</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1937"><span class="lineNum">    1937</span> <span class="tlaGNC">           1 :     Super::emitGlobalInstImpl(inst);</span></span>
+<span id="L1938"><span class="lineNum">    1938</span>              : }</span>
+<span id="L1939"><span class="lineNum">    1939</span>              : </span>
+<span id="L1940"><span class="lineNum">    1940</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
