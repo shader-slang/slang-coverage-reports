@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-30 05:13:39 UTC</td>
+      <td class="headerValue">2026-10-31 04:28:35 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -575,12 +575,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L284"><span class="lineNum">     284</span>                         : struct IRSerialReadContext : SourceLocSerialContext, RefObject</span>
 <span id="L285"><span class="lineNum">     285</span>                         : {</span>
 <span id="L286"><span class="lineNum">     286</span>                         :     IRSerialReadContext(Session* session, SerialSourceLocReader* sourceLocReader)</span>
-<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">        2984            :         : _session(session), _sourceLocReader(sourceLocReader)</span></span>
-<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">        2984            :     {</span></span>
-<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">        2984            :     }</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">        2988            :         : _session(session), _sourceLocReader(sourceLocReader)</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">        2988            :     {</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">        2988            :     }</span></span>
 <span id="L290"><span class="lineNum">     290</span>                         :     virtual void handleIRModule(IRReadSerializer const&amp; serializer, IRModule*&amp; value);</span>
 <span id="L291"><span class="lineNum">     291</span>                         :     virtual void handleName(IRReadSerializer const&amp; serializer, Name*&amp; value);</span>
-<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">   864087712            :     virtual SerialSourceLocReader* getSourceLocReader() override { return _sourceLocReader; }</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">   865839812            :     virtual SerialSourceLocReader* getSourceLocReader() override { return _sourceLocReader; }</span></span>
 <span id="L293"><span class="lineNum">     293</span>                         : </span>
 <span id="L294"><span class="lineNum">     294</span>                         :     // Used to allocate an IRModule</span>
 <span id="L295"><span class="lineNum">     295</span>                         :     Session* _session;</span>
@@ -607,23 +607,23 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L316"><span class="lineNum">     316</span>                         : </span>
 <span id="L317"><span class="lineNum">     317</span>                         : template&lt;typename S&gt;</span>
 <span id="L318"><span class="lineNum">     318</span>                         : void serialize(S const&amp; serializer, IROp&amp; value)</span>
-<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">   882651155            : {</span></span>
-<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">   882651155 <span class="branchPart" title="br0: 0; br1: 881580386; br2: 1070769; br3: 0">(2/4)</span>      :     auto stableName = isWriting(serializer) ? getOpcodeStableName(value) : kInvalidStableName;</span></span>
-<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">   882651155            :     serializeEnum(serializer, stableName);</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">   884403255            : {</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">   884403255 <span class="branchPart" title="br0: 0; br1: 883332486; br2: 1070769; br3: 0">(2/4)</span>      :     auto stableName = isWriting(serializer) ? getOpcodeStableName(value) : kInvalidStableName;</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">   884403255            :     serializeEnum(serializer, stableName);</span></span>
 <span id="L322"><span class="lineNum">     322</span>                         :     // if we&#x27;re reading</span>
 <span id="L323"><span class="lineNum">     323</span>                         :     if constexpr (std::is_same_v&lt;S, IRReadSerializer&gt;)</span>
-<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">   881580386            :     {</span></span>
-<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">   881580386            :         value = getStableNameOpcode(stableName);</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">   883332486            :     {</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">   883332486            :         value = getStableNameOpcode(stableName);</span></span>
 <span id="L326"><span class="lineNum">     326</span>                         :         // It&#x27;s possible we&#x27;re reading a module serialized by a future version of</span>
 <span id="L327"><span class="lineNum">     327</span>                         :         // Slang with as-yet unknown instructions.</span>
 <span id="L328"><span class="lineNum">     328</span>                         :         // if this is the case, return IRUnrecognized and we can handle it later</span>
-<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">   881580386 <span class="branchPart" title="br0: 0; br1: 881580386">(1/2)</span>      :         if (value == kIROp_Invalid)</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">   883332486 <span class="branchPart" title="br0: 0; br1: 883332486">(1/2)</span>      :         if (value == kIROp_Invalid)</span></span>
 <span id="L330"><span class="lineNum">     330</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L331"><span class="lineNum">     331</span> <span class="tlaUNC">           0            :             value = kIROp_Unrecognized;</span></span>
 <span id="L332"><span class="lineNum">     332</span> <span class="tlaUNC">           0            :             serializer.getContext()-&gt;_foundUnrecognizedInstructions = true;</span></span>
 <span id="L333"><span class="lineNum">     333</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">   881580386            :     }</span></span>
-<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">   882651155            : }</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">   883332486            :     }</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">   884403255            : }</span></span>
 <span id="L336"><span class="lineNum">     336</span>                         : </span>
 <span id="L337"><span class="lineNum">     337</span>                         : //</span>
 <span id="L338"><span class="lineNum">     338</span>                         : // Serialize Names via the name pool on the session, this is used just for the</span>
@@ -631,9 +631,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L340"><span class="lineNum">     340</span>                         : //</span>
 <span id="L341"><span class="lineNum">     341</span>                         : template&lt;typename S&gt;</span>
 <span id="L342"><span class="lineNum">     342</span>                         : void serializeObject(S const&amp; serializer, Name*&amp; value, Name*)</span>
-<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">        3119            : {</span></span>
-<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">        3119            :     serializer.getContext()-&gt;handleName(serializer, value);</span></span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">        3119            : }</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">        3123            : {</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">        3123            :     serializer.getContext()-&gt;handleName(serializer, value);</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">        3123            : }</span></span>
 <span id="L346"><span class="lineNum">     346</span>                         : </span>
 <span id="L347"><span class="lineNum">     347</span>                         : void IRSerialWriteContext::handleName(IRWriteSerializer const&amp; serializer, Name*&amp; value)</span>
 <span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">         135            : {</span></span>
@@ -641,11 +641,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">         135            : }</span></span>
 <span id="L351"><span class="lineNum">     351</span>                         : </span>
 <span id="L352"><span class="lineNum">     352</span>                         : void IRSerialReadContext::handleName(IRReadSerializer const&amp; serializer, Name*&amp; value)</span>
-<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">        2984            : {</span></span>
-<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">        2984            :     String text;</span></span>
-<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">        2984            :     serialize(serializer, text);</span></span>
-<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">        2984            :     value = _session-&gt;getNamePool()-&gt;getName(text);</span></span>
-<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">        2984            : }</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">        2988            : {</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">        2988            :     String text;</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">        2988            :     serialize(serializer, text);</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">        2988            :     value = _session-&gt;getNamePool()-&gt;getName(text);</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">        2988            : }</span></span>
 <span id="L358"><span class="lineNum">     358</span>                         : </span>
 <span id="L359"><span class="lineNum">     359</span>                         : //</span>
 <span id="L360"><span class="lineNum">     360</span>                         : // This splice handles any aggregate types, a similar splice is well documented</span>
@@ -741,9 +741,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L450"><span class="lineNum">     450</span>                         : //</span>
 <span id="L451"><span class="lineNum">     451</span>                         : template&lt;typename S&gt;</span>
 <span id="L452"><span class="lineNum">     452</span>                         : void serializeObject(S const&amp; serializer, IRModule*&amp; value, IRModule*)</span>
-<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">        4183            : {</span></span>
-<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">        4183            :     serializer.getContext()-&gt;handleIRModule(serializer, value);</span></span>
-<span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">        4183            : }</span></span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">        4187            : {</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">        4187            :     serializer.getContext()-&gt;handleIRModule(serializer, value);</span></span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">        4187            : }</span></span>
 <span id="L456"><span class="lineNum">     456</span>                         : </span>
 <span id="L457"><span class="lineNum">     457</span>                         : static void serializeAsFlatModule(const IRWriteSerializer&amp; serializer, IRModuleInst* moduleInst)</span>
 <span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">        1199            : {</span></span>
@@ -813,30 +813,30 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">        1199            : }</span></span>
 <span id="L523"><span class="lineNum">     523</span>                         : </span>
 <span id="L524"><span class="lineNum">     524</span>                         : static IRModuleInst* deserializeFromFlatModule(const IRReadSerializer&amp; serializer, IRModule* module)</span>
-<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">        2984            : {</span></span>
-<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">        2984            :     IRSerialReadContext&amp; readContext = *serializer.getContext();</span></span>
-<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">        2984            :     FlatInstTable flat;</span></span>
-<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">        2984            :     serialize(serializer, flat);</span></span>
-<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">        2984            :     const List&lt;SourceLoc&gt;&amp; sourceLocs = flat.sourceLocs;</span></span>
+<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">        2988            : {</span></span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">        2988            :     IRSerialReadContext&amp; readContext = *serializer.getContext();</span></span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">        2988            :     FlatInstTable flat;</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">        2988            :     serialize(serializer, flat);</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">        2988            :     const List&lt;SourceLoc&gt;&amp; sourceLocs = flat.sourceLocs;</span></span>
 <span id="L530"><span class="lineNum">     530</span>                         :     // dumpFlatInstTableStats(flat, &quot;deserializing&quot;);</span>
 <span id="L531"><span class="lineNum">     531</span>                         : </span>
-<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">        2984            :     Int64 stringLengthIndex = 0;</span></span>
-<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">        2984            :     List&lt;IRInst*&gt; instsList;</span></span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">        2988            :     Int64 stringLengthIndex = 0;</span></span>
+<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">        2988            :     List&lt;IRInst*&gt; instsList;</span></span>
 <span id="L534"><span class="lineNum">     534</span>                         : </span>
-<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">        2984            :     const auto numInsts = flat.instAllocInfo.getCount();</span></span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">        2988            :     const auto numInsts = flat.instAllocInfo.getCount();</span></span>
 <span id="L536"><span class="lineNum">     536</span>                         : </span>
-<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">        2984            :     const auto operandIndicesCount = flat.operandIndices.getCount();</span></span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">        2988            :     const auto operandIndicesCount = flat.operandIndices.getCount();</span></span>
 <span id="L538"><span class="lineNum">     538</span>                         : </span>
 <span id="L539"><span class="lineNum">     539</span>                         :     // These relationships are serialized IR invariants; stop before rebuilding pointers from</span>
 <span id="L540"><span class="lineNum">     540</span>                         :     // inconsistent flat tables.</span>
-<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">        2984            :     SLANG_RELEASE_ASSERT(flat.childCounts.getCount() == numInsts);</span></span>
-<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">        2984            :     SLANG_RELEASE_ASSERT(sourceLocs.getCount() == numInsts);</span></span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">        2988            :     SLANG_RELEASE_ASSERT(flat.childCounts.getCount() == numInsts);</span></span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">        2988            :     SLANG_RELEASE_ASSERT(sourceLocs.getCount() == numInsts);</span></span>
 <span id="L543"><span class="lineNum">     543</span>                         : </span>
-<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">        2984            :     instsList.setCount(numInsts + 1);</span></span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">        2988            :     instsList.setCount(numInsts + 1);</span></span>
 <span id="L545"><span class="lineNum">     545</span>                         :     // nullptr instructions are represented as `-1`. We can save ourselves a</span>
 <span id="L546"><span class="lineNum">     546</span>                         :     // branch by just making that index valid.</span>
-<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">        2984            :     IRInst** const insts = &amp;instsList[1];</span></span>
-<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">        2984            :     insts[-1] = nullptr;</span></span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">        2988            :     IRInst** const insts = &amp;instsList[1];</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">        2988            :     insts[-1] = nullptr;</span></span>
 <span id="L549"><span class="lineNum">     549</span>                         : </span>
 <span id="L550"><span class="lineNum">     550</span>                         :     // Each instruction consumes one entry of `operandIndices` for its result type, followed by</span>
 <span id="L551"><span class="lineNum">     551</span>                         :     // one entry per operand (see the traversal below), so the size of that table is an exact</span>
@@ -845,170 +845,170 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L554"><span class="lineNum">     554</span>                         :     // a tail-allocated operand array that the file has no data to fill, and on a 32-bit target</span>
 <span id="L555"><span class="lineNum">     555</span>                         :     // (including WebAssembly) `operandCount * sizeof(IRUse)` can wrap `size_t` and produce an</span>
 <span id="L556"><span class="lineNum">     556</span>                         :     // undersized allocation.</span>
-<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">        2984            :     Int64 usedOperandIndices = 0;</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">        2988            :     Int64 usedOperandIndices = 0;</span></span>
 <span id="L558"><span class="lineNum">     558</span>                         : </span>
-<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">   881583370 <span class="branchAll" title="br0: 881580386; br1: 2984">(2/2)</span>      :     for (Int64 instIndex = 0; instIndex &lt; numInsts; ++instIndex)</span></span>
-<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">   881580386            :     {</span></span>
-<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">   881580386            :         const auto&amp; a = flat.instAllocInfo[instIndex];</span></span>
-<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">   881580386            :         IROp op = a.op;</span></span>
-<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">   881580386 <span class="branchPart" title="br0: 0; br1: 881580386">(1/2)</span>      :         if (op == kIROp_Invalid) [[unlikely]]</span></span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">   883335474 <span class="branchAll" title="br0: 883332486; br1: 2988">(2/2)</span>      :     for (Int64 instIndex = 0; instIndex &lt; numInsts; ++instIndex)</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">   883332486            :     {</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">   883332486            :         const auto&amp; a = flat.instAllocInfo[instIndex];</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">   883332486            :         IROp op = a.op;</span></span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">   883332486 <span class="branchPart" title="br0: 0; br1: 883332486">(1/2)</span>      :         if (op == kIROp_Invalid) [[unlikely]]</span></span>
 <span id="L564"><span class="lineNum">     564</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L565"><span class="lineNum">     565</span> <span class="tlaUNC">           0            :             readContext._foundUnrecognizedInstructions = true;</span></span>
 <span id="L566"><span class="lineNum">     566</span> <span class="tlaUNC">           0            :             op = kIROp_Unrecognized;</span></span>
 <span id="L567"><span class="lineNum">     567</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">   881580386            :         size_t minSizeInBytes = 0;</span></span>
-<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">   881580386 <span class="branchAll" title="br0: 837221710; br1: 44358676">(2/2)</span>      :         switch (op)</span></span>
-<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">   881580386            :         {</span></span>
-<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">        2984 <span class="branchAll" title="br0: 2984; br1: 881577402">(2/2)</span>      :         [[unlikely]] case kIROp_ModuleInst:</span></span>
-<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">        2984            :             minSizeInBytes = offsetof(IRModuleInst, module) +</span></span>
-<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">        2984            :                              sizeof(IRModuleInst::module); // NOLINT(bugprone-sizeof-expression)</span></span>
-<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">        2984            :             break;</span></span>
-<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">        5409 <span class="branchAll" title="br0: 5409; br1: 881574977">(2/2)</span>      :         case kIROp_BoolLit:</span></span>
-<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">     1481971 <span class="branchAll" title="br0: 1476562; br1: 880103824">(2/2)</span>      :         case kIROp_IntLit:</span></span>
-<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">     1547942 <span class="branchAll" title="br0: 65971; br1: 881514415">(2/2)</span>      :         case kIROp_FloatLit:</span></span>
-<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">     1549869 <span class="branchAll" title="br0: 1927; br1: 881578459">(2/2)</span>      :         case kIROp_PtrLit:</span></span>
-<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">     1552751 <span class="branchAll" title="br0: 2882; br1: 881577504">(2/2)</span>      :         case kIROp_VoidLit:</span></span>
-<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">     1552751            :             minSizeInBytes = offsetof(IRConstant, value) + sizeof(IRConstant::value);</span></span>
-<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">     1552751            :             break;</span></span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">   883332486            :         size_t minSizeInBytes = 0;</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">   883332486 <span class="branchAll" title="br0: 838886578; br1: 44445908">(2/2)</span>      :         switch (op)</span></span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">   883332486            :         {</span></span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">        2988 <span class="branchAll" title="br0: 2988; br1: 883329498">(2/2)</span>      :         [[unlikely]] case kIROp_ModuleInst:</span></span>
+<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">        2988            :             minSizeInBytes = offsetof(IRModuleInst, module) +</span></span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">        2988            :                              sizeof(IRModuleInst::module); // NOLINT(bugprone-sizeof-expression)</span></span>
+<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">        2988            :             break;</span></span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">        5417 <span class="branchAll" title="br0: 5417; br1: 883327069">(2/2)</span>      :         case kIROp_BoolLit:</span></span>
+<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">     1484751 <span class="branchAll" title="br0: 1479334; br1: 881853152">(2/2)</span>      :         case kIROp_IntLit:</span></span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">     1550854 <span class="branchAll" title="br0: 66103; br1: 883266383">(2/2)</span>      :         case kIROp_FloatLit:</span></span>
+<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">     1552785 <span class="branchAll" title="br0: 1931; br1: 883330555">(2/2)</span>      :         case kIROp_PtrLit:</span></span>
+<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">     1555671 <span class="branchAll" title="br0: 2886; br1: 883329600">(2/2)</span>      :         case kIROp_VoidLit:</span></span>
+<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">     1555671            :             minSizeInBytes = offsetof(IRConstant, value) + sizeof(IRConstant::value);</span></span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">     1555671            :             break;</span></span>
 <span id="L582"><span class="lineNum">     582</span>                         :         // About 5% of instructions in the core module are strings!</span>
-<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">    42802937 <span class="branchAll" title="br0: 42802937; br1: 838777449">(2/2)</span>      :         case kIROp_StringLit:</span></span>
-<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">    42802941 <span class="branchAll" title="br0: 4; br1: 881580382">(2/2)</span>      :         case kIROp_BlobLit:</span></span>
-<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">    42802941            :             {</span></span>
-<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">    42802941            :                 SLANG_RELEASE_ASSERT(stringLengthIndex &lt; flat.stringLengths.getCount());</span></span>
-<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">    42802941            :                 const auto len = flat.stringLengths[stringLengthIndex++];</span></span>
-<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">    42802941            :                 SLANG_RELEASE_ASSERT(len &gt;= 0);</span></span>
-<span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">    42802941            :                 SLANG_RELEASE_ASSERT(uint64_t(len) &lt;= uint64_t(UINT32_MAX));</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">    42887245 <span class="branchAll" title="br0: 42887245; br1: 840445241">(2/2)</span>      :         case kIROp_StringLit:</span></span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">    42887249 <span class="branchAll" title="br0: 4; br1: 883332482">(2/2)</span>      :         case kIROp_BlobLit:</span></span>
+<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">    42887249            :             {</span></span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">    42887249            :                 SLANG_RELEASE_ASSERT(stringLengthIndex &lt; flat.stringLengths.getCount());</span></span>
+<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">    42887249            :                 const auto len = flat.stringLengths[stringLengthIndex++];</span></span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">    42887249            :                 SLANG_RELEASE_ASSERT(len &gt;= 0);</span></span>
+<span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">    42887249            :                 SLANG_RELEASE_ASSERT(uint64_t(len) &lt;= uint64_t(UINT32_MAX));</span></span>
 <span id="L590"><span class="lineNum">     590</span>                         : </span>
-<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">    42802941            :                 const size_t headerSize =</span></span>
-<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">    42802941            :                     offsetof(IRConstant, value) + offsetof(IRConstant::StringValue, chars);</span></span>
-<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">    42802941            :                 SLANG_RELEASE_ASSERT(size_t(len) &lt;= size_t(-1) - headerSize);</span></span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">    42887249            :                 const size_t headerSize =</span></span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">    42887249            :                     offsetof(IRConstant, value) + offsetof(IRConstant::StringValue, chars);</span></span>
+<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">    42887249            :                 SLANG_RELEASE_ASSERT(size_t(len) &lt;= size_t(-1) - headerSize);</span></span>
 <span id="L594"><span class="lineNum">     594</span>                         : </span>
-<span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">    42802941            :                 minSizeInBytes = headerSize + size_t(len);</span></span>
-<span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">    42802941            :                 break;</span></span>
-<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">    42802937            :             }</span></span>
-<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">   881580386            :         }</span></span>
-<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">   881580386            :         usedOperandIndices += Int64(a.operandCount) + 1;</span></span>
-<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">   881580386            :         SLANG_RELEASE_ASSERT(usedOperandIndices &lt;= operandIndicesCount);</span></span>
+<span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">    42887249            :                 minSizeInBytes = headerSize + size_t(len);</span></span>
+<span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">    42887249            :                 break;</span></span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">    42887245            :             }</span></span>
+<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">   883332486            :         }</span></span>
+<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">   883332486            :         usedOperandIndices += Int64(a.operandCount) + 1;</span></span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">   883332486            :         SLANG_RELEASE_ASSERT(usedOperandIndices &lt;= operandIndicesCount);</span></span>
 <span id="L601"><span class="lineNum">     601</span>                         : </span>
-<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">   881580386            :         insts[instIndex] = module-&gt;_allocateInst(op, a.operandCount, minSizeInBytes);</span></span>
-<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">   881580386            :     }</span></span>
+<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">   883332486            :         insts[instIndex] = module-&gt;_allocateInst(op, a.operandCount, minSizeInBytes);</span></span>
+<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">   883332486            :     }</span></span>
 <span id="L604"><span class="lineNum">     604</span>                         : </span>
-<span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC">        2984            :     Int64 litIndex = 0;</span></span>
-<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">        2984            :     Int64 operandIndex = 0;</span></span>
-<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">        2984            :     Int64 instIndex = 0;</span></span>
-<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">        2984            :     stringLengthIndex = 0;</span></span>
-<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">        2984            :     Int64 stringDataIndex = 0;</span></span>
-<span id="L610"><span class="lineNum">     610</span> <span class="tlaGNC">        2984            :     auto readInstRef = [&amp;]() -&gt; IRInst*</span></span>
-<span id="L611"><span class="lineNum">     611</span> <span class="tlaGNC">  2072840331            :     {</span></span>
-<span id="L612"><span class="lineNum">     612</span> <span class="tlaGNC">  2072840331            :         SLANG_RELEASE_ASSERT(operandIndex &lt; operandIndicesCount);</span></span>
-<span id="L613"><span class="lineNum">     613</span> <span class="tlaGNC">  2072840331            :         const auto index = flat.operandIndices[operandIndex++];</span></span>
-<span id="L614"><span class="lineNum">     614</span> <span class="tlaGNC">  2072840331            :         SLANG_RELEASE_ASSERT(index &gt;= -1 &amp;&amp; index &lt; numInsts);</span></span>
-<span id="L615"><span class="lineNum">     615</span> <span class="tlaGNC">  2072840331            :         return insts[index];</span></span>
-<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">  2072840331            :     };</span></span>
-<span id="L617"><span class="lineNum">     617</span> <span class="tlaGNC">        2984            :     const auto go = [&amp;](auto&amp; go, IRInst* parent, Int64 depth) -&gt; IRInst*</span></span>
-<span id="L618"><span class="lineNum">     618</span> <span class="tlaGNC">   881580386            :     {</span></span>
-<span id="L619"><span class="lineNum">     619</span> <span class="tlaGNC">   881580386            :         SLANG_RELEASE_ASSERT(depth &lt; kMaxIRSerializationDepth);</span></span>
-<span id="L620"><span class="lineNum">     620</span> <span class="tlaGNC">   881580386            :         SLANG_RELEASE_ASSERT(instIndex &lt; numInsts);</span></span>
+<span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC">        2988            :     Int64 litIndex = 0;</span></span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">        2988            :     Int64 operandIndex = 0;</span></span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">        2988            :     Int64 instIndex = 0;</span></span>
+<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">        2988            :     stringLengthIndex = 0;</span></span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">        2988            :     Int64 stringDataIndex = 0;</span></span>
+<span id="L610"><span class="lineNum">     610</span> <span class="tlaGNC">        2988            :     auto readInstRef = [&amp;]() -&gt; IRInst*</span></span>
+<span id="L611"><span class="lineNum">     611</span> <span class="tlaGNC">  2076975703            :     {</span></span>
+<span id="L612"><span class="lineNum">     612</span> <span class="tlaGNC">  2076975703            :         SLANG_RELEASE_ASSERT(operandIndex &lt; operandIndicesCount);</span></span>
+<span id="L613"><span class="lineNum">     613</span> <span class="tlaGNC">  2076975703            :         const auto index = flat.operandIndices[operandIndex++];</span></span>
+<span id="L614"><span class="lineNum">     614</span> <span class="tlaGNC">  2076975703            :         SLANG_RELEASE_ASSERT(index &gt;= -1 &amp;&amp; index &lt; numInsts);</span></span>
+<span id="L615"><span class="lineNum">     615</span> <span class="tlaGNC">  2076975703            :         return insts[index];</span></span>
+<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">  2076975703            :     };</span></span>
+<span id="L617"><span class="lineNum">     617</span> <span class="tlaGNC">        2988            :     const auto go = [&amp;](auto&amp; go, IRInst* parent, Int64 depth) -&gt; IRInst*</span></span>
+<span id="L618"><span class="lineNum">     618</span> <span class="tlaGNC">   883332486            :     {</span></span>
+<span id="L619"><span class="lineNum">     619</span> <span class="tlaGNC">   883332486            :         SLANG_RELEASE_ASSERT(depth &lt; kMaxIRSerializationDepth);</span></span>
+<span id="L620"><span class="lineNum">     620</span> <span class="tlaGNC">   883332486            :         SLANG_RELEASE_ASSERT(instIndex &lt; numInsts);</span></span>
 <span id="L621"><span class="lineNum">     621</span>                         : </span>
-<span id="L622"><span class="lineNum">     622</span> <span class="tlaGNC">   881580386            :         const auto thisInstIndex = instIndex++;</span></span>
-<span id="L623"><span class="lineNum">     623</span> <span class="tlaGNC">   881580386            :         IRInst* inst = insts[thisInstIndex];</span></span>
+<span id="L622"><span class="lineNum">     622</span> <span class="tlaGNC">   883332486            :         const auto thisInstIndex = instIndex++;</span></span>
+<span id="L623"><span class="lineNum">     623</span> <span class="tlaGNC">   883332486            :         IRInst* inst = insts[thisInstIndex];</span></span>
 <span id="L624"><span class="lineNum">     624</span>                         : </span>
 <span id="L625"><span class="lineNum">     625</span>                         :         // operands and sourcelocs</span>
-<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">   881580386            :         inst-&gt;sourceLoc = sourceLocs[thisInstIndex];</span></span>
-<span id="L627"><span class="lineNum">     627</span> <span class="tlaGNC">   881580386            :         inst-&gt;typeUse.init(inst, readInstRef());</span></span>
-<span id="L628"><span class="lineNum">     628</span> <span class="tlaGNC">  2072840331 <span class="branchAll" title="br0: 1191259945; br1: 881580386">(2/2)</span>      :         for (Int64 o = 0; o &lt; inst-&gt;operandCount; ++o)</span></span>
-<span id="L629"><span class="lineNum">     629</span> <span class="tlaGNC">  1191259945            :             inst-&gt;getOperands()[o].init(inst, readInstRef());</span></span>
+<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">   883332486            :         inst-&gt;sourceLoc = sourceLocs[thisInstIndex];</span></span>
+<span id="L627"><span class="lineNum">     627</span> <span class="tlaGNC">   883332486            :         inst-&gt;typeUse.init(inst, readInstRef());</span></span>
+<span id="L628"><span class="lineNum">     628</span> <span class="tlaGNC">  2076975703 <span class="branchAll" title="br0: 1193643217; br1: 883332486">(2/2)</span>      :         for (Int64 o = 0; o &lt; inst-&gt;operandCount; ++o)</span></span>
+<span id="L629"><span class="lineNum">     629</span> <span class="tlaGNC">  1193643217            :             inst-&gt;getOperands()[o].init(inst, readInstRef());</span></span>
 <span id="L630"><span class="lineNum">     630</span>                         : </span>
 <span id="L631"><span class="lineNum">     631</span>                         :         // Handle special instructions</span>
-<span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">   881580386 <span class="branchAll" title="br0: 837224592; br1: 44355794">(2/2)</span>      :         switch (inst-&gt;m_op)</span></span>
-<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">   881580386            :         {</span></span>
-<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">        2984 <span class="branchAll" title="br0: 2984; br1: 881577402">(2/2)</span>      :         [[unlikely]] case kIROp_ModuleInst:</span></span>
-<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">        2984            :             cast&lt;IRModuleInst&gt;(inst)-&gt;module = module;</span></span>
-<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">        2984            :             break;</span></span>
-<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">        5409 <span class="branchAll" title="br0: 5409; br1: 881574977">(2/2)</span>      :         case kIROp_BoolLit:</span></span>
-<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">     1481971 <span class="branchAll" title="br0: 1476562; br1: 880103824">(2/2)</span>      :         case kIROp_IntLit:</span></span>
-<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">     1481971            :             {</span></span>
-<span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">     1481971            :                 SLANG_RELEASE_ASSERT(litIndex &lt; flat.literals.getCount());</span></span>
-<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">     1481971            :                 const auto bits = flat.literals[litIndex++];</span></span>
-<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">     1481971            :                 cast&lt;IRConstant&gt;(inst)-&gt;value.intVal = bitCast&lt;IRIntegerValue&gt;(bits);</span></span>
-<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC">     1481971            :                 break;</span></span>
-<span id="L644"><span class="lineNum">     644</span> <span class="tlaGNC">        5409            :             }</span></span>
-<span id="L645"><span class="lineNum">     645</span> <span class="tlaGNC">       65971 <span class="branchAll" title="br0: 65971; br1: 881514415">(2/2)</span>      :         case kIROp_FloatLit:</span></span>
-<span id="L646"><span class="lineNum">     646</span> <span class="tlaGNC">       65971            :             {</span></span>
-<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">       65971            :                 SLANG_RELEASE_ASSERT(litIndex &lt; flat.literals.getCount());</span></span>
-<span id="L648"><span class="lineNum">     648</span> <span class="tlaGNC">       65971            :                 const auto bits = flat.literals[litIndex++];</span></span>
-<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">       65971            :                 cast&lt;IRConstant&gt;(inst)-&gt;value.floatVal = bitCast&lt;double&gt;(bits);</span></span>
-<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">       65971            :                 break;</span></span>
-<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">        5409            :             }</span></span>
-<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">        1927 <span class="branchAll" title="br0: 1927; br1: 881578459">(2/2)</span>      :         case kIROp_PtrLit:</span></span>
-<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">        1927            :             {</span></span>
-<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">        1927            :                 SLANG_RELEASE_ASSERT(litIndex &lt; flat.literals.getCount());</span></span>
-<span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">        1927            :                 const auto bits = flat.literals[litIndex++];</span></span>
+<span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">   883332486 <span class="branchAll" title="br0: 838889464; br1: 44443022">(2/2)</span>      :         switch (inst-&gt;m_op)</span></span>
+<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">   883332486            :         {</span></span>
+<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">        2988 <span class="branchAll" title="br0: 2988; br1: 883329498">(2/2)</span>      :         [[unlikely]] case kIROp_ModuleInst:</span></span>
+<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">        2988            :             cast&lt;IRModuleInst&gt;(inst)-&gt;module = module;</span></span>
+<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">        2988            :             break;</span></span>
+<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">        5417 <span class="branchAll" title="br0: 5417; br1: 883327069">(2/2)</span>      :         case kIROp_BoolLit:</span></span>
+<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">     1484751 <span class="branchAll" title="br0: 1479334; br1: 881853152">(2/2)</span>      :         case kIROp_IntLit:</span></span>
+<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">     1484751            :             {</span></span>
+<span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">     1484751            :                 SLANG_RELEASE_ASSERT(litIndex &lt; flat.literals.getCount());</span></span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">     1484751            :                 const auto bits = flat.literals[litIndex++];</span></span>
+<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">     1484751            :                 cast&lt;IRConstant&gt;(inst)-&gt;value.intVal = bitCast&lt;IRIntegerValue&gt;(bits);</span></span>
+<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC">     1484751            :                 break;</span></span>
+<span id="L644"><span class="lineNum">     644</span> <span class="tlaGNC">        5417            :             }</span></span>
+<span id="L645"><span class="lineNum">     645</span> <span class="tlaGNC">       66103 <span class="branchAll" title="br0: 66103; br1: 883266383">(2/2)</span>      :         case kIROp_FloatLit:</span></span>
+<span id="L646"><span class="lineNum">     646</span> <span class="tlaGNC">       66103            :             {</span></span>
+<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">       66103            :                 SLANG_RELEASE_ASSERT(litIndex &lt; flat.literals.getCount());</span></span>
+<span id="L648"><span class="lineNum">     648</span> <span class="tlaGNC">       66103            :                 const auto bits = flat.literals[litIndex++];</span></span>
+<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">       66103            :                 cast&lt;IRConstant&gt;(inst)-&gt;value.floatVal = bitCast&lt;double&gt;(bits);</span></span>
+<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">       66103            :                 break;</span></span>
+<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">        5417            :             }</span></span>
+<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">        1931 <span class="branchAll" title="br0: 1931; br1: 883330555">(2/2)</span>      :         case kIROp_PtrLit:</span></span>
+<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">        1931            :             {</span></span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">        1931            :                 SLANG_RELEASE_ASSERT(litIndex &lt; flat.literals.getCount());</span></span>
+<span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">        1931            :                 const auto bits = flat.literals[litIndex++];</span></span>
 <span id="L656"><span class="lineNum">     656</span>                         :                 // Keep the compiler happy on 32 bit builds</span>
-<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">        1927            :                 cast&lt;IRConstant&gt;(inst)-&gt;value.ptrVal = (void*)(uintptr_t(bits));</span></span>
-<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">        1927            :                 break;</span></span>
-<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">        5409            :             }</span></span>
-<span id="L660"><span class="lineNum">     660</span> <span class="tlaGNC">    42802937 <span class="branchAll" title="br0: 42802937; br1: 838777449">(2/2)</span>      :         case kIROp_StringLit:</span></span>
-<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">    42802941 <span class="branchAll" title="br0: 4; br1: 881580382">(2/2)</span>      :         case kIROp_BlobLit:</span></span>
-<span id="L662"><span class="lineNum">     662</span> <span class="tlaGNC">    42802941            :             {</span></span>
-<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">    42802941            :                 const auto c = cast&lt;IRConstant&gt;(inst);</span></span>
-<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">    42802941            :                 SLANG_RELEASE_ASSERT(stringLengthIndex &lt; flat.stringLengths.getCount());</span></span>
-<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">    42802941            :                 const auto len = flat.stringLengths[stringLengthIndex++];</span></span>
-<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">    42802941            :                 SLANG_RELEASE_ASSERT(len &gt;= 0);</span></span>
-<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">    42802941            :                 SLANG_RELEASE_ASSERT(uint64_t(len) &lt;= uint64_t(UINT32_MAX));</span></span>
+<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">        1931            :                 cast&lt;IRConstant&gt;(inst)-&gt;value.ptrVal = (void*)(uintptr_t(bits));</span></span>
+<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">        1931            :                 break;</span></span>
+<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">        5417            :             }</span></span>
+<span id="L660"><span class="lineNum">     660</span> <span class="tlaGNC">    42887245 <span class="branchAll" title="br0: 42887245; br1: 840445241">(2/2)</span>      :         case kIROp_StringLit:</span></span>
+<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">    42887249 <span class="branchAll" title="br0: 4; br1: 883332482">(2/2)</span>      :         case kIROp_BlobLit:</span></span>
+<span id="L662"><span class="lineNum">     662</span> <span class="tlaGNC">    42887249            :             {</span></span>
+<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">    42887249            :                 const auto c = cast&lt;IRConstant&gt;(inst);</span></span>
+<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">    42887249            :                 SLANG_RELEASE_ASSERT(stringLengthIndex &lt; flat.stringLengths.getCount());</span></span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">    42887249            :                 const auto len = flat.stringLengths[stringLengthIndex++];</span></span>
+<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">    42887249            :                 SLANG_RELEASE_ASSERT(len &gt;= 0);</span></span>
+<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">    42887249            :                 SLANG_RELEASE_ASSERT(uint64_t(len) &lt;= uint64_t(UINT32_MAX));</span></span>
 <span id="L668"><span class="lineNum">     668</span>                         : </span>
-<span id="L669"><span class="lineNum">     669</span> <span class="tlaGNC">    42802941            :                 const auto stringCharsCount = flat.stringChars.getCount();</span></span>
-<span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">    42802941            :                 SLANG_RELEASE_ASSERT(stringDataIndex &lt;= stringCharsCount);</span></span>
-<span id="L671"><span class="lineNum">     671</span> <span class="tlaGNC">    42802941            :                 SLANG_RELEASE_ASSERT(len &lt;= stringCharsCount - stringDataIndex);</span></span>
+<span id="L669"><span class="lineNum">     669</span> <span class="tlaGNC">    42887249            :                 const auto stringCharsCount = flat.stringChars.getCount();</span></span>
+<span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">    42887249            :                 SLANG_RELEASE_ASSERT(stringDataIndex &lt;= stringCharsCount);</span></span>
+<span id="L671"><span class="lineNum">     671</span> <span class="tlaGNC">    42887249            :                 SLANG_RELEASE_ASSERT(len &lt;= stringCharsCount - stringDataIndex);</span></span>
 <span id="L672"><span class="lineNum">     672</span>                         : </span>
-<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">    42802941            :                 char* const dstChars = c-&gt;value.stringVal.chars;</span></span>
-<span id="L674"><span class="lineNum">     674</span> <span class="tlaGNC">    42802941            :                 c-&gt;value.stringVal.numChars = uint32_t(len);</span></span>
-<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">    42802941 <span class="branchAll" title="br0: 42800590; br1: 2351">(2/2)</span>      :                 if (len != 0)</span></span>
-<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">    42800590            :                     memcpy(dstChars, flat.stringChars.begin() + stringDataIndex, size_t(len));</span></span>
-<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">    42802941            :                 stringDataIndex += len;</span></span>
-<span id="L678"><span class="lineNum">     678</span> <span class="tlaGNC">    42802941            :                 break;</span></span>
-<span id="L679"><span class="lineNum">     679</span> <span class="tlaGNC">    42802937            :             }</span></span>
-<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">   881580386            :         }</span></span>
+<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">    42887249            :                 char* const dstChars = c-&gt;value.stringVal.chars;</span></span>
+<span id="L674"><span class="lineNum">     674</span> <span class="tlaGNC">    42887249            :                 c-&gt;value.stringVal.numChars = uint32_t(len);</span></span>
+<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">    42887249 <span class="branchAll" title="br0: 42884894; br1: 2355">(2/2)</span>      :                 if (len != 0)</span></span>
+<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">    42884894            :                     memcpy(dstChars, flat.stringChars.begin() + stringDataIndex, size_t(len));</span></span>
+<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">    42887249            :                 stringDataIndex += len;</span></span>
+<span id="L678"><span class="lineNum">     678</span> <span class="tlaGNC">    42887249            :                 break;</span></span>
+<span id="L679"><span class="lineNum">     679</span> <span class="tlaGNC">    42887245            :             }</span></span>
+<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">   883332486            :         }</span></span>
 <span id="L681"><span class="lineNum">     681</span>                         : </span>
 <span id="L682"><span class="lineNum">     682</span>                         :         // Read in children, and fix up pointers</span>
-<span id="L683"><span class="lineNum">     683</span> <span class="tlaGNC">   881580386            :         inst-&gt;parent = parent;</span></span>
-<span id="L684"><span class="lineNum">     684</span> <span class="tlaGNC">   881580386            :         IRInst* prev = nullptr;</span></span>
-<span id="L685"><span class="lineNum">     685</span> <span class="tlaGNC">   881580386            :         IRInst* first = nullptr;</span></span>
-<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">   881580386            :         IRInst* last = nullptr;</span></span>
-<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">   881580386            :         const auto childCount = flat.childCounts[thisInstIndex];</span></span>
-<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">   881580386            :         SLANG_RELEASE_ASSERT(childCount &gt;= 0);</span></span>
-<span id="L689"><span class="lineNum">     689</span> <span class="tlaGNC">  1763157788 <span class="branchAll" title="br0: 881577402; br1: 881580386">(2/2)</span>      :         for (Int64 i = 0; i &lt; childCount; ++i)</span></span>
-<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">   881577402            :         {</span></span>
-<span id="L691"><span class="lineNum">     691</span> <span class="tlaGNC">   881577402            :             auto c = go(go, inst, depth + 1);</span></span>
-<span id="L692"><span class="lineNum">     692</span> <span class="tlaGNC">   881577402 <span class="branchAll" title="br0: 234613529; br1: 646963873">(2/2)</span>      :             if (i == 0)</span></span>
-<span id="L693"><span class="lineNum">     693</span> <span class="tlaGNC">   234613529            :                 first = c;</span></span>
-<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">   881577402            :             last = c;</span></span>
-<span id="L695"><span class="lineNum">     695</span> <span class="tlaGNC">   881577402            :             c-&gt;prev = prev;</span></span>
-<span id="L696"><span class="lineNum">     696</span> <span class="tlaGNC">   881577402 <span class="branchAll" title="br0: 646963873; br1: 234613529">(2/2)</span>      :             if (prev)</span></span>
-<span id="L697"><span class="lineNum">     697</span> <span class="tlaGNC">   646963873            :                 prev-&gt;next = c;</span></span>
-<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">   881577402            :             prev = c;</span></span>
-<span id="L699"><span class="lineNum">     699</span> <span class="tlaGNC">   881577402            :         }</span></span>
-<span id="L700"><span class="lineNum">     700</span> <span class="tlaGNC">   881580386 <span class="branchAll" title="br0: 234613529; br1: 646966857">(2/2)</span>      :         if (last)</span></span>
-<span id="L701"><span class="lineNum">     701</span> <span class="tlaGNC">   234613529            :             last-&gt;next = nullptr;</span></span>
-<span id="L702"><span class="lineNum">     702</span> <span class="tlaGNC">   881580386            :         inst-&gt;m_decorationsAndChildren.first = first;</span></span>
-<span id="L703"><span class="lineNum">     703</span> <span class="tlaGNC">   881580386            :         inst-&gt;m_decorationsAndChildren.last = last;</span></span>
+<span id="L683"><span class="lineNum">     683</span> <span class="tlaGNC">   883332486            :         inst-&gt;parent = parent;</span></span>
+<span id="L684"><span class="lineNum">     684</span> <span class="tlaGNC">   883332486            :         IRInst* prev = nullptr;</span></span>
+<span id="L685"><span class="lineNum">     685</span> <span class="tlaGNC">   883332486            :         IRInst* first = nullptr;</span></span>
+<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">   883332486            :         IRInst* last = nullptr;</span></span>
+<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">   883332486            :         const auto childCount = flat.childCounts[thisInstIndex];</span></span>
+<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">   883332486            :         SLANG_RELEASE_ASSERT(childCount &gt;= 0);</span></span>
+<span id="L689"><span class="lineNum">     689</span> <span class="tlaGNC">  1766661984 <span class="branchAll" title="br0: 883329498; br1: 883332486">(2/2)</span>      :         for (Int64 i = 0; i &lt; childCount; ++i)</span></span>
+<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">   883329498            :         {</span></span>
+<span id="L691"><span class="lineNum">     691</span> <span class="tlaGNC">   883329498            :             auto c = go(go, inst, depth + 1);</span></span>
+<span id="L692"><span class="lineNum">     692</span> <span class="tlaGNC">   883329498 <span class="branchAll" title="br0: 235079241; br1: 648250257">(2/2)</span>      :             if (i == 0)</span></span>
+<span id="L693"><span class="lineNum">     693</span> <span class="tlaGNC">   235079241            :                 first = c;</span></span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">   883329498            :             last = c;</span></span>
+<span id="L695"><span class="lineNum">     695</span> <span class="tlaGNC">   883329498            :             c-&gt;prev = prev;</span></span>
+<span id="L696"><span class="lineNum">     696</span> <span class="tlaGNC">   883329498 <span class="branchAll" title="br0: 648250257; br1: 235079241">(2/2)</span>      :             if (prev)</span></span>
+<span id="L697"><span class="lineNum">     697</span> <span class="tlaGNC">   648250257            :                 prev-&gt;next = c;</span></span>
+<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">   883329498            :             prev = c;</span></span>
+<span id="L699"><span class="lineNum">     699</span> <span class="tlaGNC">   883329498            :         }</span></span>
+<span id="L700"><span class="lineNum">     700</span> <span class="tlaGNC">   883332486 <span class="branchAll" title="br0: 235079241; br1: 648253245">(2/2)</span>      :         if (last)</span></span>
+<span id="L701"><span class="lineNum">     701</span> <span class="tlaGNC">   235079241            :             last-&gt;next = nullptr;</span></span>
+<span id="L702"><span class="lineNum">     702</span> <span class="tlaGNC">   883332486            :         inst-&gt;m_decorationsAndChildren.first = first;</span></span>
+<span id="L703"><span class="lineNum">     703</span> <span class="tlaGNC">   883332486            :         inst-&gt;m_decorationsAndChildren.last = last;</span></span>
 <span id="L704"><span class="lineNum">     704</span>                         : </span>
-<span id="L705"><span class="lineNum">     705</span> <span class="tlaGNC">   881580386            :         return inst;</span></span>
-<span id="L706"><span class="lineNum">     706</span> <span class="tlaGNC">   881580386            :     };</span></span>
-<span id="L707"><span class="lineNum">     707</span> <span class="tlaGNC">        2984            :     const auto moduleInst = go(go, nullptr, 0);</span></span>
-<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">        2984            :     SLANG_RELEASE_ASSERT(instIndex == numInsts);</span></span>
-<span id="L709"><span class="lineNum">     709</span> <span class="tlaGNC">        2984            :     SLANG_RELEASE_ASSERT(operandIndex == operandIndicesCount);</span></span>
+<span id="L705"><span class="lineNum">     705</span> <span class="tlaGNC">   883332486            :         return inst;</span></span>
+<span id="L706"><span class="lineNum">     706</span> <span class="tlaGNC">   883332486            :     };</span></span>
+<span id="L707"><span class="lineNum">     707</span> <span class="tlaGNC">        2988            :     const auto moduleInst = go(go, nullptr, 0);</span></span>
+<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">        2988            :     SLANG_RELEASE_ASSERT(instIndex == numInsts);</span></span>
+<span id="L709"><span class="lineNum">     709</span> <span class="tlaGNC">        2988            :     SLANG_RELEASE_ASSERT(operandIndex == operandIndicesCount);</span></span>
 <span id="L710"><span class="lineNum">     710</span>                         :     // Unknown future opcodes intentionally become a recoverable read failure later.</span>
 <span id="L711"><span class="lineNum">     711</span>                         :     // This reader cannot know whether those opcodes consume literal or string payloads.</span>
-<span id="L712"><span class="lineNum">     712</span> <span class="tlaGNC">        2984 <span class="branchPart" title="br0: 2984; br1: 0">(1/2)</span>      :     if (!readContext._foundUnrecognizedInstructions)</span></span>
-<span id="L713"><span class="lineNum">     713</span> <span class="tlaGNC">        2984            :     {</span></span>
-<span id="L714"><span class="lineNum">     714</span> <span class="tlaGNC">        2984            :         SLANG_RELEASE_ASSERT(litIndex == flat.literals.getCount());</span></span>
-<span id="L715"><span class="lineNum">     715</span> <span class="tlaGNC">        2984            :         SLANG_RELEASE_ASSERT(stringLengthIndex == flat.stringLengths.getCount());</span></span>
-<span id="L716"><span class="lineNum">     716</span> <span class="tlaGNC">        2984            :         SLANG_RELEASE_ASSERT(stringDataIndex == flat.stringChars.getCount());</span></span>
-<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">        2984            :     }</span></span>
-<span id="L718"><span class="lineNum">     718</span> <span class="tlaGNC">        2984            :     SLANG_RELEASE_ASSERT(as&lt;IRModuleInst&gt;(moduleInst));</span></span>
-<span id="L719"><span class="lineNum">     719</span> <span class="tlaGNC">        2984            :     return cast&lt;IRModuleInst&gt;(moduleInst);</span></span>
-<span id="L720"><span class="lineNum">     720</span> <span class="tlaGNC">        2984            : }</span></span>
+<span id="L712"><span class="lineNum">     712</span> <span class="tlaGNC">        2988 <span class="branchPart" title="br0: 2988; br1: 0">(1/2)</span>      :     if (!readContext._foundUnrecognizedInstructions)</span></span>
+<span id="L713"><span class="lineNum">     713</span> <span class="tlaGNC">        2988            :     {</span></span>
+<span id="L714"><span class="lineNum">     714</span> <span class="tlaGNC">        2988            :         SLANG_RELEASE_ASSERT(litIndex == flat.literals.getCount());</span></span>
+<span id="L715"><span class="lineNum">     715</span> <span class="tlaGNC">        2988            :         SLANG_RELEASE_ASSERT(stringLengthIndex == flat.stringLengths.getCount());</span></span>
+<span id="L716"><span class="lineNum">     716</span> <span class="tlaGNC">        2988            :         SLANG_RELEASE_ASSERT(stringDataIndex == flat.stringChars.getCount());</span></span>
+<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">        2988            :     }</span></span>
+<span id="L718"><span class="lineNum">     718</span> <span class="tlaGNC">        2988            :     SLANG_RELEASE_ASSERT(as&lt;IRModuleInst&gt;(moduleInst));</span></span>
+<span id="L719"><span class="lineNum">     719</span> <span class="tlaGNC">        2988            :     return cast&lt;IRModuleInst&gt;(moduleInst);</span></span>
+<span id="L720"><span class="lineNum">     720</span> <span class="tlaGNC">        2988            : }</span></span>
 <span id="L721"><span class="lineNum">     721</span>                         : </span>
 <span id="L722"><span class="lineNum">     722</span>                         : void IRSerialWriteContext::handleIRModule(IRWriteSerializer const&amp; serializer, IRModule*&amp; value)</span>
 <span id="L723"><span class="lineNum">     723</span> <span class="tlaGNC">        1199            : {</span></span>
@@ -1019,15 +1019,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L728"><span class="lineNum">     728</span> <span class="tlaGNC">        1199            : }</span></span>
 <span id="L729"><span class="lineNum">     729</span>                         : </span>
 <span id="L730"><span class="lineNum">     730</span>                         : void IRSerialReadContext::handleIRModule(IRReadSerializer const&amp; serializer, IRModule*&amp; value)</span>
-<span id="L731"><span class="lineNum">     731</span> <span class="tlaGNC">        2984            : {</span></span>
-<span id="L732"><span class="lineNum">     732</span> <span class="tlaGNC">        2984            :     SLANG_SCOPED_SERIALIZER_STRUCT(serializer);</span></span>
-<span id="L733"><span class="lineNum">     733</span> <span class="tlaGNC">        2984            :     value = new IRModule{_session};</span></span>
-<span id="L734"><span class="lineNum">     734</span> <span class="tlaGNC">        2984            :     SLANG_ASSERT(!_module);</span></span>
-<span id="L735"><span class="lineNum">     735</span> <span class="tlaGNC">        2984            :     _module = value;</span></span>
-<span id="L736"><span class="lineNum">     736</span> <span class="tlaGNC">        2984            :     serialize(serializer, value-&gt;m_name);</span></span>
-<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">        2984            :     serialize(serializer, value-&gt;m_version);</span></span>
-<span id="L738"><span class="lineNum">     738</span> <span class="tlaGNC">        2984            :     value-&gt;m_moduleInst = deserializeFromFlatModule(serializer, value);</span></span>
-<span id="L739"><span class="lineNum">     739</span> <span class="tlaGNC">        2984            : }</span></span>
+<span id="L731"><span class="lineNum">     731</span> <span class="tlaGNC">        2988            : {</span></span>
+<span id="L732"><span class="lineNum">     732</span> <span class="tlaGNC">        2988            :     SLANG_SCOPED_SERIALIZER_STRUCT(serializer);</span></span>
+<span id="L733"><span class="lineNum">     733</span> <span class="tlaGNC">        2988            :     value = new IRModule{_session};</span></span>
+<span id="L734"><span class="lineNum">     734</span> <span class="tlaGNC">        2988            :     SLANG_ASSERT(!_module);</span></span>
+<span id="L735"><span class="lineNum">     735</span> <span class="tlaGNC">        2988            :     _module = value;</span></span>
+<span id="L736"><span class="lineNum">     736</span> <span class="tlaGNC">        2988            :     serialize(serializer, value-&gt;m_name);</span></span>
+<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">        2988            :     serialize(serializer, value-&gt;m_version);</span></span>
+<span id="L738"><span class="lineNum">     738</span> <span class="tlaGNC">        2988            :     value-&gt;m_moduleInst = deserializeFromFlatModule(serializer, value);</span></span>
+<span id="L739"><span class="lineNum">     739</span> <span class="tlaGNC">        2988            : }</span></span>
 <span id="L740"><span class="lineNum">     740</span>                         : </span>
 <span id="L741"><span class="lineNum">     741</span>                         : //</span>
 <span id="L742"><span class="lineNum">     742</span>                         : // {write,read}SerializedModuleIR()</span>
@@ -1072,37 +1072,37 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L781"><span class="lineNum">     781</span>                         :     UInt64&amp; moduleVersion,</span>
 <span id="L782"><span class="lineNum">     782</span>                         :     String* name,</span>
 <span id="L783"><span class="lineNum">     783</span>                         :     UInt64* serializationVersion)</span>
-<span id="L784"><span class="lineNum">     784</span> <span class="tlaGNC">        2981            : {</span></span>
-<span id="L785"><span class="lineNum">     785</span> <span class="tlaGNC">        2981            :     auto dataChunk = as&lt;RIFF::DataChunk&gt;(chunk);</span></span>
-<span id="L786"><span class="lineNum">     786</span> <span class="tlaGNC">        2981 <span class="branchPart" title="br0: 0; br1: 2981">(1/2)</span>      :     if (!dataChunk)</span></span>
+<span id="L784"><span class="lineNum">     784</span> <span class="tlaGNC">        2985            : {</span></span>
+<span id="L785"><span class="lineNum">     785</span> <span class="tlaGNC">        2985            :     auto dataChunk = as&lt;RIFF::DataChunk&gt;(chunk);</span></span>
+<span id="L786"><span class="lineNum">     786</span> <span class="tlaGNC">        2985 <span class="branchPart" title="br0: 0; br1: 2985">(1/2)</span>      :     if (!dataChunk)</span></span>
 <span id="L787"><span class="lineNum">     787</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L788"><span class="lineNum">     788</span> <span class="tlaUNC">           0            :         SLANG_UNEXPECTED(&quot;invalid format for serialized module IR&quot;);</span></span>
 <span id="L789"><span class="lineNum">     789</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L790"><span class="lineNum">     790</span>                         : </span>
-<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">        2981            :     Fossil::AnyValPtr rootValPtr =</span></span>
-<span id="L792"><span class="lineNum">     792</span> <span class="tlaGNC">        2981            :         Fossil::getRootValue(dataChunk-&gt;getPayload(), dataChunk-&gt;getPayloadSize());</span></span>
-<span id="L793"><span class="lineNum">     793</span> <span class="tlaGNC">        2981 <span class="branchPart" title="br0: 0; br1: 2981">(1/2)</span>      :     if (!rootValPtr)</span></span>
+<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">        2985            :     Fossil::AnyValPtr rootValPtr =</span></span>
+<span id="L792"><span class="lineNum">     792</span> <span class="tlaGNC">        2985            :         Fossil::getRootValue(dataChunk-&gt;getPayload(), dataChunk-&gt;getPayloadSize());</span></span>
+<span id="L793"><span class="lineNum">     793</span> <span class="tlaGNC">        2985 <span class="branchPart" title="br0: 0; br1: 2985">(1/2)</span>      :     if (!rootValPtr)</span></span>
 <span id="L794"><span class="lineNum">     794</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L795"><span class="lineNum">     795</span> <span class="tlaUNC">           0            :         SLANG_UNEXPECTED(&quot;invalid format for serialized module IR&quot;);</span></span>
 <span id="L796"><span class="lineNum">     796</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L797"><span class="lineNum">     797</span>                         : </span>
-<span id="L798"><span class="lineNum">     798</span> <span class="tlaGNC">        2981            :     Fossilized&lt;IRModuleInfo&gt;* fossilizedModuleInfo = cast&lt;Fossilized&lt;IRModuleInfo&gt;&gt;(rootValPtr);</span></span>
-<span id="L799"><span class="lineNum">     799</span> <span class="tlaGNC">        2981 <span class="branchAll" title="br0: 646; br1: 2335">(2/2)</span>      :     if (serializationVersion)</span></span>
+<span id="L798"><span class="lineNum">     798</span> <span class="tlaGNC">        2985            :     Fossilized&lt;IRModuleInfo&gt;* fossilizedModuleInfo = cast&lt;Fossilized&lt;IRModuleInfo&gt;&gt;(rootValPtr);</span></span>
+<span id="L799"><span class="lineNum">     799</span> <span class="tlaGNC">        2985 <span class="branchAll" title="br0: 646; br1: 2339">(2/2)</span>      :     if (serializationVersion)</span></span>
 <span id="L800"><span class="lineNum">     800</span> <span class="tlaGNC">         646            :         *serializationVersion = fossilizedModuleInfo-&gt;serializationVersion;</span></span>
-<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">        2981 <span class="branchPart" title="br0: 0; br1: 2981">(1/2)</span>      :     if (fossilizedModuleInfo-&gt;serializationVersion != IRModuleInfo::kSupportedSerializationVersion)</span></span>
+<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">        2985 <span class="branchPart" title="br0: 0; br1: 2985">(1/2)</span>      :     if (fossilizedModuleInfo-&gt;serializationVersion != IRModuleInfo::kSupportedSerializationVersion)</span></span>
 <span id="L802"><span class="lineNum">     802</span> <span class="tlaUNC">           0            :         return SLANG_E_NOT_AVAILABLE;</span></span>
 <span id="L803"><span class="lineNum">     803</span>                         : </span>
-<span id="L804"><span class="lineNum">     804</span> <span class="tlaGNC">        2981            :     Fossilized&lt;IRModule&gt;* fossilizedModule = fossilizedModuleInfo-&gt;module;</span></span>
-<span id="L805"><span class="lineNum">     805</span> <span class="tlaGNC">        2981 <span class="branchPart" title="br0: 0; br1: 2981">(1/2)</span>      :     if (!fossilizedModule)</span></span>
+<span id="L804"><span class="lineNum">     804</span> <span class="tlaGNC">        2985            :     Fossilized&lt;IRModule&gt;* fossilizedModule = fossilizedModuleInfo-&gt;module;</span></span>
+<span id="L805"><span class="lineNum">     805</span> <span class="tlaGNC">        2985 <span class="branchPart" title="br0: 0; br1: 2985">(1/2)</span>      :     if (!fossilizedModule)</span></span>
 <span id="L806"><span class="lineNum">     806</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
 <span id="L807"><span class="lineNum">     807</span>                         : </span>
-<span id="L808"><span class="lineNum">     808</span> <span class="tlaGNC">        2981            :     moduleVersion = fossilizedModule-&gt;m_version;</span></span>
-<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">        2981 <span class="branchAll" title="br0: 4; br1: 2977">(2/2)</span>      :     if (compilerVersion)</span></span>
+<span id="L808"><span class="lineNum">     808</span> <span class="tlaGNC">        2985            :     moduleVersion = fossilizedModule-&gt;m_version;</span></span>
+<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">        2985 <span class="branchAll" title="br0: 4; br1: 2981">(2/2)</span>      :     if (compilerVersion)</span></span>
 <span id="L810"><span class="lineNum">     810</span> <span class="tlaGNC">           4            :         *compilerVersion = fossilizedModuleInfo-&gt;fullVersion.get();</span></span>
-<span id="L811"><span class="lineNum">     811</span> <span class="tlaGNC">        2981 <span class="branchAll" title="br0: 4; br1: 2977">(2/2)</span>      :     if (name)</span></span>
+<span id="L811"><span class="lineNum">     811</span> <span class="tlaGNC">        2985 <span class="branchAll" title="br0: 4; br1: 2981">(2/2)</span>      :     if (name)</span></span>
 <span id="L812"><span class="lineNum">     812</span> <span class="tlaGNC">           4            :         *name = fossilizedModule-&gt;m_name.get();</span></span>
-<span id="L813"><span class="lineNum">     813</span> <span class="tlaGNC">        2981            :     return SLANG_OK;</span></span>
-<span id="L814"><span class="lineNum">     814</span> <span class="tlaGNC">        2981            : }</span></span>
+<span id="L813"><span class="lineNum">     813</span> <span class="tlaGNC">        2985            :     return SLANG_OK;</span></span>
+<span id="L814"><span class="lineNum">     814</span> <span class="tlaGNC">        2985            : }</span></span>
 <span id="L815"><span class="lineNum">     815</span>                         : </span>
 <span id="L816"><span class="lineNum">     816</span>                         : // A helper to make profiling the actual deserialization work</span>
 <span id="L817"><span class="lineNum">     817</span>                         : // easier.</span>
@@ -1111,72 +1111,72 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L820"><span class="lineNum">     820</span>                         :     Session* session,</span>
 <span id="L821"><span class="lineNum">     821</span>                         :     SerialSourceLocReader* sourceLocReader,</span>
 <span id="L822"><span class="lineNum">     822</span>                         :     RefPtr&lt;IRModule&gt;&amp; outIRModule)</span>
-<span id="L823"><span class="lineNum">     823</span> <span class="tlaGNC">        2984            : {</span></span>
-<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">        2984            :     auto dataChunk = as&lt;RIFF::DataChunk&gt;(chunk);</span></span>
-<span id="L825"><span class="lineNum">     825</span> <span class="tlaGNC">        2984 <span class="branchPart" title="br0: 0; br1: 2984">(1/2)</span>      :     if (!dataChunk)</span></span>
+<span id="L823"><span class="lineNum">     823</span> <span class="tlaGNC">        2988            : {</span></span>
+<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">        2988            :     auto dataChunk = as&lt;RIFF::DataChunk&gt;(chunk);</span></span>
+<span id="L825"><span class="lineNum">     825</span> <span class="tlaGNC">        2988 <span class="branchPart" title="br0: 0; br1: 2988">(1/2)</span>      :     if (!dataChunk)</span></span>
 <span id="L826"><span class="lineNum">     826</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L827"><span class="lineNum">     827</span> <span class="tlaUNC">           0            :         SLANG_UNEXPECTED(&quot;invalid format for serialized module IR&quot;);</span></span>
 <span id="L828"><span class="lineNum">     828</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L829"><span class="lineNum">     829</span>                         : </span>
-<span id="L830"><span class="lineNum">     830</span> <span class="tlaGNC">        2984            :     Fossil::AnyValPtr rootValPtr =</span></span>
-<span id="L831"><span class="lineNum">     831</span> <span class="tlaGNC">        2984            :         Fossil::getRootValue(dataChunk-&gt;getPayload(), dataChunk-&gt;getPayloadSize());</span></span>
-<span id="L832"><span class="lineNum">     832</span> <span class="tlaGNC">        2984 <span class="branchPart" title="br0: 0; br1: 2984">(1/2)</span>      :     if (!rootValPtr)</span></span>
+<span id="L830"><span class="lineNum">     830</span> <span class="tlaGNC">        2988            :     Fossil::AnyValPtr rootValPtr =</span></span>
+<span id="L831"><span class="lineNum">     831</span> <span class="tlaGNC">        2988            :         Fossil::getRootValue(dataChunk-&gt;getPayload(), dataChunk-&gt;getPayloadSize());</span></span>
+<span id="L832"><span class="lineNum">     832</span> <span class="tlaGNC">        2988 <span class="branchPart" title="br0: 0; br1: 2988">(1/2)</span>      :     if (!rootValPtr)</span></span>
 <span id="L833"><span class="lineNum">     833</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L834"><span class="lineNum">     834</span> <span class="tlaUNC">           0            :         SLANG_UNEXPECTED(&quot;invalid format for serialized module IR&quot;);</span></span>
 <span id="L835"><span class="lineNum">     835</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L836"><span class="lineNum">     836</span>                         : </span>
-<span id="L837"><span class="lineNum">     837</span> <span class="tlaGNC">        2984            :     Fossilized&lt;IRModuleInfo&gt;* fossilizedModuleInfo = cast&lt;Fossilized&lt;IRModuleInfo&gt;&gt;(rootValPtr);</span></span>
+<span id="L837"><span class="lineNum">     837</span> <span class="tlaGNC">        2988            :     Fossilized&lt;IRModuleInfo&gt;* fossilizedModuleInfo = cast&lt;Fossilized&lt;IRModuleInfo&gt;&gt;(rootValPtr);</span></span>
 <span id="L838"><span class="lineNum">     838</span>                         : </span>
 <span id="L839"><span class="lineNum">     839</span>                         :     // Only one version supported so far, if we had multiple versions to</span>
 <span id="L840"><span class="lineNum">     840</span>                         :     // support this is where we might branch</span>
-<span id="L841"><span class="lineNum">     841</span> <span class="tlaGNC">        2984 <span class="branchPart" title="br0: 0; br1: 2984">(1/2)</span>      :     if (fossilizedModuleInfo-&gt;serializationVersion != IRModuleInfo::kSupportedSerializationVersion)</span></span>
+<span id="L841"><span class="lineNum">     841</span> <span class="tlaGNC">        2988 <span class="branchPart" title="br0: 0; br1: 2988">(1/2)</span>      :     if (fossilizedModuleInfo-&gt;serializationVersion != IRModuleInfo::kSupportedSerializationVersion)</span></span>
 <span id="L842"><span class="lineNum">     842</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
 <span id="L843"><span class="lineNum">     843</span>                         : </span>
-<span id="L844"><span class="lineNum">     844</span> <span class="tlaGNC">        2984            :     Fossilized&lt;IRModule&gt;* fossilizedModule = fossilizedModuleInfo-&gt;module;</span></span>
-<span id="L845"><span class="lineNum">     845</span> <span class="tlaGNC">        2984 <span class="branchPart" title="br0: 0; br1: 2984">(1/2)</span>      :     if (!fossilizedModule)</span></span>
+<span id="L844"><span class="lineNum">     844</span> <span class="tlaGNC">        2988            :     Fossilized&lt;IRModule&gt;* fossilizedModule = fossilizedModuleInfo-&gt;module;</span></span>
+<span id="L845"><span class="lineNum">     845</span> <span class="tlaGNC">        2988 <span class="branchPart" title="br0: 0; br1: 2988">(1/2)</span>      :     if (!fossilizedModule)</span></span>
 <span id="L846"><span class="lineNum">     846</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
 <span id="L847"><span class="lineNum">     847</span>                         : </span>
-<span id="L848"><span class="lineNum">     848</span> <span class="tlaGNC">        2984 <span class="branchPart" title="br0: 0; br1: 2984">(1/2)</span>      :     if (!IRModule::isModuleVersionSupported(fossilizedModule-&gt;m_version))</span></span>
+<span id="L848"><span class="lineNum">     848</span> <span class="tlaGNC">        2988 <span class="branchPart" title="br0: 0; br1: 2988">(1/2)</span>      :     if (!IRModule::isModuleVersionSupported(fossilizedModule-&gt;m_version))</span></span>
 <span id="L849"><span class="lineNum">     849</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
 <span id="L850"><span class="lineNum">     850</span>                         : </span>
-<span id="L851"><span class="lineNum">     851</span> <span class="tlaGNC">        2984            :     IRModuleInfo info;</span></span>
-<span id="L852"><span class="lineNum">     852</span> <span class="tlaGNC">        2984            :     auto sharedDecodingContext = RefPtr(new IRSerialReadContext(session, sourceLocReader));</span></span>
-<span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">        2984            :     {</span></span>
-<span id="L854"><span class="lineNum">     854</span> <span class="tlaGNC">        2984            :         Fossil::ReadContext readContext;</span></span>
-<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">        2984            :         Fossil::SerialReader reader(</span></span>
-<span id="L856"><span class="lineNum">     856</span> <span class="tlaGNC">        2984            :             readContext,</span></span>
-<span id="L857"><span class="lineNum">     857</span> <span class="tlaGNC">        2984            :             rootValPtr,</span></span>
-<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">        2984            :             Fossil::SerialReader::InitialStateType::Root);</span></span>
+<span id="L851"><span class="lineNum">     851</span> <span class="tlaGNC">        2988            :     IRModuleInfo info;</span></span>
+<span id="L852"><span class="lineNum">     852</span> <span class="tlaGNC">        2988            :     auto sharedDecodingContext = RefPtr(new IRSerialReadContext(session, sourceLocReader));</span></span>
+<span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">        2988            :     {</span></span>
+<span id="L854"><span class="lineNum">     854</span> <span class="tlaGNC">        2988            :         Fossil::ReadContext readContext;</span></span>
+<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">        2988            :         Fossil::SerialReader reader(</span></span>
+<span id="L856"><span class="lineNum">     856</span> <span class="tlaGNC">        2988            :             readContext,</span></span>
+<span id="L857"><span class="lineNum">     857</span> <span class="tlaGNC">        2988            :             rootValPtr,</span></span>
+<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">        2988            :             Fossil::SerialReader::InitialStateType::Root);</span></span>
 <span id="L859"><span class="lineNum">     859</span>                         : </span>
-<span id="L860"><span class="lineNum">     860</span> <span class="tlaGNC">        2984            :         IRReadSerializer serializer(&amp;reader, sharedDecodingContext);</span></span>
-<span id="L861"><span class="lineNum">     861</span> <span class="tlaGNC">        2984            :         serialize(serializer, info);</span></span>
-<span id="L862"><span class="lineNum">     862</span> <span class="tlaGNC">        2984            :     }</span></span>
-<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">        2984 <span class="branchPart" title="br0: 0; br1: 2984">(1/2)</span>      :     if (!info.module)</span></span>
+<span id="L860"><span class="lineNum">     860</span> <span class="tlaGNC">        2988            :         IRReadSerializer serializer(&amp;reader, sharedDecodingContext);</span></span>
+<span id="L861"><span class="lineNum">     861</span> <span class="tlaGNC">        2988            :         serialize(serializer, info);</span></span>
+<span id="L862"><span class="lineNum">     862</span> <span class="tlaGNC">        2988            :     }</span></span>
+<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">        2988 <span class="branchPart" title="br0: 0; br1: 2988">(1/2)</span>      :     if (!info.module)</span></span>
 <span id="L864"><span class="lineNum">     864</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
-<span id="L865"><span class="lineNum">     865</span> <span class="tlaGNC">        2984            :     outIRModule = info.module;</span></span>
-<span id="L866"><span class="lineNum">     866</span> <span class="tlaGNC">        2984 <span class="branchPart" title="br0: 0; br1: 2984">(1/2)</span>      :     if (sharedDecodingContext-&gt;_foundUnrecognizedInstructions)</span></span>
+<span id="L865"><span class="lineNum">     865</span> <span class="tlaGNC">        2988            :     outIRModule = info.module;</span></span>
+<span id="L866"><span class="lineNum">     866</span> <span class="tlaGNC">        2988 <span class="branchPart" title="br0: 0; br1: 2988">(1/2)</span>      :     if (sharedDecodingContext-&gt;_foundUnrecognizedInstructions)</span></span>
 <span id="L867"><span class="lineNum">     867</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
-<span id="L868"><span class="lineNum">     868</span> <span class="tlaGNC">        2984            :     return SLANG_OK;</span></span>
-<span id="L869"><span class="lineNum">     869</span> <span class="tlaGNC">        2984            : }</span></span>
+<span id="L868"><span class="lineNum">     868</span> <span class="tlaGNC">        2988            :     return SLANG_OK;</span></span>
+<span id="L869"><span class="lineNum">     869</span> <span class="tlaGNC">        2988            : }</span></span>
 <span id="L870"><span class="lineNum">     870</span>                         : </span>
 <span id="L871"><span class="lineNum">     871</span>                         : Result readSerializedModuleIR(</span>
 <span id="L872"><span class="lineNum">     872</span>                         :     RIFF::Chunk const* chunk,</span>
 <span id="L873"><span class="lineNum">     873</span>                         :     Session* session,</span>
 <span id="L874"><span class="lineNum">     874</span>                         :     SerialSourceLocReader* sourceLocReader,</span>
 <span id="L875"><span class="lineNum">     875</span>                         :     RefPtr&lt;IRModule&gt;&amp; outIRModule)</span>
-<span id="L876"><span class="lineNum">     876</span> <span class="tlaGNC">        2984            : {</span></span>
-<span id="L877"><span class="lineNum">     877</span> <span class="tlaGNC">        2984            :     SLANG_PROFILE;</span></span>
+<span id="L876"><span class="lineNum">     876</span> <span class="tlaGNC">        2988            : {</span></span>
+<span id="L877"><span class="lineNum">     877</span> <span class="tlaGNC">        2988            :     SLANG_PROFILE;</span></span>
 <span id="L878"><span class="lineNum">     878</span>                         : </span>
-<span id="L879"><span class="lineNum">     879</span> <span class="tlaGNC">        2984            :     SLANG_RETURN_ON_FAIL(readSerializedModuleIR_(chunk, session, sourceLocReader, outIRModule));</span></span>
+<span id="L879"><span class="lineNum">     879</span> <span class="tlaGNC">        2988            :     SLANG_RETURN_ON_FAIL(readSerializedModuleIR_(chunk, session, sourceLocReader, outIRModule));</span></span>
 <span id="L880"><span class="lineNum">     880</span>                         : </span>
 <span id="L881"><span class="lineNum">     881</span>                         :     //</span>
 <span id="L882"><span class="lineNum">     882</span>                         :     // Module is finally valid (or at least as much as it was going it) and</span>
 <span id="L883"><span class="lineNum">     883</span>                         :     // ready to be used</span>
 <span id="L884"><span class="lineNum">     884</span>                         :     //</span>
-<span id="L885"><span class="lineNum">     885</span> <span class="tlaGNC">        2984            :     outIRModule-&gt;buildMangledNameToGlobalInstMap();</span></span>
+<span id="L885"><span class="lineNum">     885</span> <span class="tlaGNC">        2988            :     outIRModule-&gt;buildMangledNameToGlobalInstMap();</span></span>
 <span id="L886"><span class="lineNum">     886</span>                         : </span>
-<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">        2984            :     return SLANG_OK;</span></span>
-<span id="L888"><span class="lineNum">     888</span> <span class="tlaGNC">        2984            : }</span></span>
+<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">        2988            :     return SLANG_OK;</span></span>
+<span id="L888"><span class="lineNum">     888</span> <span class="tlaGNC">        2988            : }</span></span>
 <span id="L889"><span class="lineNum">     889</span>                         : </span>
 <span id="L890"><span class="lineNum">     890</span>                         : </span>
 <span id="L891"><span class="lineNum">     891</span>                         : } // namespace Slang</span>

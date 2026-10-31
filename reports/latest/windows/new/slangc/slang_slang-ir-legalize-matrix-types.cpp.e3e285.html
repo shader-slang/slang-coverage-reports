@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-30 05:14:11 UTC</td>
+      <td class="headerValue">2026-10-31 04:29:07 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">99.2&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:99.2%;background-color:hsl(119, 70%, 50%)"></div></div>
-      <span class="metricCounts">257 / 259</span>
+      <span class="metricCounts">264 / 266</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -715,317 +715,334 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L442"><span class="lineNum">     442</span>              :         // when the float operands themselves do not need lowering. That is why</span>
 <span id="L443"><span class="lineNum">     443</span>              :         // this function -- unlike `legalizeBinaryOperation`, which treats the</span>
 <span id="L444"><span class="lineNum">     444</span>              :         // all-non-lowered case as `SLANG_UNREACHABLE` -- accepts matrix operands</span>
-<span id="L445"><span class="lineNum">     445</span>              :         // of any element type. We require only that both operands are matrices,</span>
-<span id="L446"><span class="lineNum">     446</span>              :         // and use `SLANG_RELEASE_ASSERT` so a non-matrix operand fails loudly in</span>
-<span id="L447"><span class="lineNum">     447</span>              :         // release builds rather than corrupting the row extraction below.</span>
-<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">           1 :         SLANG_RELEASE_ASSERT(</span></span>
-<span id="L449"><span class="lineNum">     449</span>              :             matrixTypeA &amp;&amp; matrixTypeB &amp;&amp; &quot;Only matrix-matrix comparisons are supported&quot;);</span>
-<span id="L450"><span class="lineNum">     450</span>              : </span>
-<span id="L451"><span class="lineNum">     451</span>              :         // Create IRBuilder at the top level</span>
-<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">           1 :         IRBuilder builder(inst);</span></span>
-<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(inst);</span></span>
+<span id="L445"><span class="lineNum">     445</span>              :         // of any element type. One operand may also be a scalar (`m &gt; 0.0`), which is</span>
+<span id="L446"><span class="lineNum">     446</span>              :         // compared with every element. We require at least one matrix operand, and</span>
+<span id="L447"><span class="lineNum">     447</span>              :         // use `SLANG_RELEASE_ASSERT` so anything else fails loudly in release builds</span>
+<span id="L448"><span class="lineNum">     448</span>              :         // rather than corrupting the row extraction below.</span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">           1 :         SLANG_RELEASE_ASSERT(</span></span>
+<span id="L450"><span class="lineNum">     450</span>              :             (matrixTypeA || matrixTypeB) &amp;&amp; &quot;A matrix comparison needs a matrix operand&quot;);</span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">           1 :         SLANG_RELEASE_ASSERT(</span></span>
+<span id="L452"><span class="lineNum">     452</span>              :             (matrixTypeA || as&lt;IRBasicType&gt;(typeA)) &amp;&amp; (matrixTypeB || as&lt;IRBasicType&gt;(typeB)) &amp;&amp;</span>
+<span id="L453"><span class="lineNum">     453</span>              :             &quot;A matrix can only be compared with a matrix or a scalar&quot;);</span>
 <span id="L454"><span class="lineNum">     454</span>              : </span>
-<span id="L455"><span class="lineNum">     455</span>              :         // Get legalized operands</span>
-<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">           1 :         IRInst* legalizedA = getReplacement(opdA);</span></span>
-<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">           1 :         IRInst* legalizedB = getReplacement(opdB);</span></span>
+<span id="L455"><span class="lineNum">     455</span>              :         // Create IRBuilder at the top level</span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">           1 :         IRBuilder builder(inst);</span></span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(inst);</span></span>
 <span id="L458"><span class="lineNum">     458</span>              : </span>
-<span id="L459"><span class="lineNum">     459</span>              :         // Derive the loop dimensions from the result type, mirroring</span>
-<span id="L460"><span class="lineNum">     460</span>              :         // `legalizeBinaryOperation`/`legalizeUnaryOperation`. With the weakened</span>
-<span id="L461"><span class="lineNum">     461</span>              :         // precondition above, `matrixTypeA` is only known to be &quot;some matrix&quot;, so</span>
-<span id="L462"><span class="lineNum">     462</span>              :         // the bool-matrix result -- not operand A -- is the source of truth for</span>
-<span id="L463"><span class="lineNum">     463</span>              :         // the row/column counts.</span>
-<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">           1 :         auto resultMatrixType = as&lt;IRMatrixType&gt;(inst-&gt;getDataType());</span></span>
-<span id="L465"><span class="lineNum">     465</span>              :         SLANG_ASSERT(resultMatrixType &amp;&amp; &quot;Comparison should have matrix result type&quot;);</span>
-<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">           1 :         auto rowCount = as&lt;IRIntLit&gt;(resultMatrixType-&gt;getRowCount());</span></span>
-<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">           1 :         auto columnCount = as&lt;IRIntLit&gt;(resultMatrixType-&gt;getColumnCount());</span></span>
-<span id="L468"><span class="lineNum">     468</span>              : </span>
-<span id="L469"><span class="lineNum">     469</span>              :         SLANG_ASSERT(</span>
-<span id="L470"><span class="lineNum">     470</span>              :             rowCount &amp;&amp; columnCount &amp;&amp;</span>
-<span id="L471"><span class="lineNum">     471</span>              :             &quot;Matrix dimensions must be compile-time constants for lowering&quot;);</span>
+<span id="L459"><span class="lineNum">     459</span>              :         // Get legalized operands</span>
+<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">           1 :         IRInst* legalizedA = getReplacement(opdA);</span></span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">           1 :         IRInst* legalizedB = getReplacement(opdB);</span></span>
+<span id="L462"><span class="lineNum">     462</span>              : </span>
+<span id="L463"><span class="lineNum">     463</span>              :         // Derive the loop dimensions from the result type, mirroring</span>
+<span id="L464"><span class="lineNum">     464</span>              :         // `legalizeBinaryOperation`/`legalizeUnaryOperation`. With the weakened</span>
+<span id="L465"><span class="lineNum">     465</span>              :         // precondition above, `matrixTypeA` is only known to be &quot;some matrix&quot;, so</span>
+<span id="L466"><span class="lineNum">     466</span>              :         // the bool-matrix result -- not operand A -- is the source of truth for</span>
+<span id="L467"><span class="lineNum">     467</span>              :         // the row/column counts.</span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">           1 :         auto resultMatrixType = as&lt;IRMatrixType&gt;(inst-&gt;getDataType());</span></span>
+<span id="L469"><span class="lineNum">     469</span>              :         SLANG_ASSERT(resultMatrixType &amp;&amp; &quot;Comparison should have matrix result type&quot;);</span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">           1 :         auto rowCount = as&lt;IRIntLit&gt;(resultMatrixType-&gt;getRowCount());</span></span>
+<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">           1 :         auto columnCount = as&lt;IRIntLit&gt;(resultMatrixType-&gt;getColumnCount());</span></span>
 <span id="L472"><span class="lineNum">     472</span>              : </span>
-<span id="L473"><span class="lineNum">     473</span>              :         // Create boolean vector type for rows: vector&lt;bool, C&gt;</span>
-<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">           1 :         auto boolType = builder.getBoolType();</span></span>
-<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">           1 :         auto boolVectorType = builder.getVectorType(boolType, columnCount);</span></span>
+<span id="L473"><span class="lineNum">     473</span>              :         SLANG_ASSERT(</span>
+<span id="L474"><span class="lineNum">     474</span>              :             rowCount &amp;&amp; columnCount &amp;&amp;</span>
+<span id="L475"><span class="lineNum">     475</span>              :             &quot;Matrix dimensions must be compile-time constants for lowering&quot;);</span>
 <span id="L476"><span class="lineNum">     476</span>              : </span>
-<span id="L477"><span class="lineNum">     477</span>              :         // Create array type: vector&lt;bool, C&gt;[R]</span>
-<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">           1 :         auto boolArrayType = builder.getArrayType(boolVectorType, rowCount);</span></span>
-<span id="L479"><span class="lineNum">     479</span>              : </span>
-<span id="L480"><span class="lineNum">     480</span>              :         // Extract vectors from both arrays and apply comparison operation</span>
-<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">           1 :         List&lt;IRInst*&gt; resultVectors;</span></span>
-<span id="L482"><span class="lineNum">     482</span>              : </span>
-<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">           1 :         for (IRIntegerValue row = 0; row &lt; rowCount-&gt;getValue(); row++)</span></span>
-<span id="L484"><span class="lineNum">     484</span>              :         {</span>
-<span id="L485"><span class="lineNum">     485</span>              :             // Extract the row vector from each operand array</span>
-<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">           1 :             auto rowIndexInst = builder.getIntValue(builder.getIntType(), row);</span></span>
-<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">           1 :             auto vectorA = builder.emitElementExtract(legalizedA, rowIndexInst);</span></span>
-<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">           1 :             auto vectorB = builder.emitElementExtract(legalizedB, rowIndexInst);</span></span>
-<span id="L489"><span class="lineNum">     489</span>              : </span>
-<span id="L490"><span class="lineNum">     490</span>              :             // Apply the comparison operation to the vectors</span>
-<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">           1 :             IRInst* args[] = {vectorA, vectorB};</span></span>
-<span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">           1 :             auto resultVector = builder.emitIntrinsicInst(boolVectorType, comparisonOp, 2, args);</span></span>
-<span id="L493"><span class="lineNum">     493</span>              : </span>
-<span id="L494"><span class="lineNum">     494</span> <span class="tlaGNC">           1 :             resultVectors.add(resultVector);</span></span>
-<span id="L495"><span class="lineNum">     495</span>              :         }</span>
-<span id="L496"><span class="lineNum">     496</span>              : </span>
-<span id="L497"><span class="lineNum">     497</span>              :         // Create the result array from the vectors</span>
-<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">           1 :         return builder.emitMakeArray(</span></span>
-<span id="L499"><span class="lineNum">     499</span>              :             boolArrayType,</span>
-<span id="L500"><span class="lineNum">     500</span>              :             resultVectors.getCount(),</span>
-<span id="L501"><span class="lineNum">     501</span>              :             resultVectors.getBuffer());</span>
-<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L503"><span class="lineNum">     503</span>              : </span>
-<span id="L504"><span class="lineNum">     504</span>              :     IRInst* legalizeUnaryOperation(IRInst* inst, IROp unaryOp, IRMatrixType* resultMatrixType)</span>
-<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">           1 :         IRInst* operand = inst-&gt;getOperand(0);</span></span>
-<span id="L507"><span class="lineNum">     507</span>              : </span>
-<span id="L508"><span class="lineNum">     508</span>              :         // Get the legalized operand (should be an array of vectors)</span>
-<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">           1 :         IRInst* legalizedOperand = getReplacement(operand);</span></span>
+<span id="L477"><span class="lineNum">     477</span>              :         // Create boolean vector type for rows: vector&lt;bool, C&gt;</span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">           1 :         auto boolType = builder.getBoolType();</span></span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">           1 :         auto boolVectorType = builder.getVectorType(boolType, columnCount);</span></span>
+<span id="L480"><span class="lineNum">     480</span>              : </span>
+<span id="L481"><span class="lineNum">     481</span>              :         // Create array type: vector&lt;bool, C&gt;[R]</span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">           1 :         auto boolArrayType = builder.getArrayType(boolVectorType, rowCount);</span></span>
+<span id="L483"><span class="lineNum">     483</span>              : </span>
+<span id="L484"><span class="lineNum">     484</span>              :         // A scalar operand is compared with every element of each row, so it is</span>
+<span id="L485"><span class="lineNum">     485</span>              :         // broadcast to a row vector once.</span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">           1 :         auto broadcastScalar = [&amp;](IRInst* scalar) -&gt; IRInst*</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">           1 :         {</span></span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">           1 :             return builder.emitMakeVectorFromScalar(</span></span>
+<span id="L489"><span class="lineNum">     489</span>              :                 builder.getVectorType(scalar-&gt;getDataType(), columnCount),</span>
+<span id="L490"><span class="lineNum">     490</span>              :                 scalar);</span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">           1 :         };</span></span>
+<span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">           1 :         IRInst* rowOfScalarA = matrixTypeA ? nullptr : broadcastScalar(legalizedA);</span></span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">           1 :         IRInst* rowOfScalarB = matrixTypeB ? nullptr : broadcastScalar(legalizedB);</span></span>
+<span id="L494"><span class="lineNum">     494</span>              : </span>
+<span id="L495"><span class="lineNum">     495</span>              :         // Extract vectors from both arrays and apply comparison operation</span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">           1 :         List&lt;IRInst*&gt; resultVectors;</span></span>
+<span id="L497"><span class="lineNum">     497</span>              : </span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">           1 :         for (IRIntegerValue row = 0; row &lt; rowCount-&gt;getValue(); row++)</span></span>
+<span id="L499"><span class="lineNum">     499</span>              :         {</span>
+<span id="L500"><span class="lineNum">     500</span>              :             // Extract the row vector from each matrix operand array</span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">           1 :             auto rowIndexInst = builder.getIntValue(builder.getIntType(), row);</span></span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">           1 :             auto vectorA =</span></span>
+<span id="L503"><span class="lineNum">     503</span>              :                 rowOfScalarA ? rowOfScalarA : builder.emitElementExtract(legalizedA, rowIndexInst);</span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">           1 :             auto vectorB =</span></span>
+<span id="L505"><span class="lineNum">     505</span>              :                 rowOfScalarB ? rowOfScalarB : builder.emitElementExtract(legalizedB, rowIndexInst);</span>
+<span id="L506"><span class="lineNum">     506</span>              : </span>
+<span id="L507"><span class="lineNum">     507</span>              :             // Apply the comparison operation to the vectors</span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">           1 :             IRInst* args[] = {vectorA, vectorB};</span></span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">           1 :             auto resultVector = builder.emitIntrinsicInst(boolVectorType, comparisonOp, 2, args);</span></span>
 <span id="L510"><span class="lineNum">     510</span>              : </span>
-<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">           1 :         auto elementType = resultMatrixType-&gt;getElementType();</span></span>
-<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">           1 :         auto rowCount = as&lt;IRIntLit&gt;(resultMatrixType-&gt;getRowCount());</span></span>
-<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">           1 :         auto columnCount = as&lt;IRIntLit&gt;(resultMatrixType-&gt;getColumnCount());</span></span>
-<span id="L514"><span class="lineNum">     514</span>              : </span>
-<span id="L515"><span class="lineNum">     515</span>              :         SLANG_ASSERT(</span>
-<span id="L516"><span class="lineNum">     516</span>              :             rowCount &amp;&amp; columnCount &amp;&amp;</span>
-<span id="L517"><span class="lineNum">     517</span>              :             &quot;Matrix dimensions must be compile-time constants for lowering&quot;);</span>
-<span id="L518"><span class="lineNum">     518</span>              : </span>
-<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">           1 :         IRBuilder builder(inst);</span></span>
-<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(inst);</span></span>
-<span id="L521"><span class="lineNum">     521</span>              : </span>
-<span id="L522"><span class="lineNum">     522</span>              :         // Create vector type for rows: vector&lt;T, C&gt;</span>
-<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">           1 :         auto vectorType = builder.getVectorType(elementType, columnCount);</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">           1 :             resultVectors.add(resultVector);</span></span>
+<span id="L512"><span class="lineNum">     512</span>              :         }</span>
+<span id="L513"><span class="lineNum">     513</span>              : </span>
+<span id="L514"><span class="lineNum">     514</span>              :         // Create the result array from the vectors</span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">           1 :         return builder.emitMakeArray(</span></span>
+<span id="L516"><span class="lineNum">     516</span>              :             boolArrayType,</span>
+<span id="L517"><span class="lineNum">     517</span>              :             resultVectors.getCount(),</span>
+<span id="L518"><span class="lineNum">     518</span>              :             resultVectors.getBuffer());</span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L520"><span class="lineNum">     520</span>              : </span>
+<span id="L521"><span class="lineNum">     521</span>              :     IRInst* legalizeUnaryOperation(IRInst* inst, IROp unaryOp, IRMatrixType* resultMatrixType)</span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">           1 :         IRInst* operand = inst-&gt;getOperand(0);</span></span>
 <span id="L524"><span class="lineNum">     524</span>              : </span>
-<span id="L525"><span class="lineNum">     525</span>              :         // Create array type: vector&lt;T, C&gt;[R]</span>
-<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">           1 :         auto arrayType = builder.getArrayType(vectorType, rowCount);</span></span>
+<span id="L525"><span class="lineNum">     525</span>              :         // Get the legalized operand (should be an array of vectors)</span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">           1 :         IRInst* legalizedOperand = getReplacement(operand);</span></span>
 <span id="L527"><span class="lineNum">     527</span>              : </span>
-<span id="L528"><span class="lineNum">     528</span>              :         // Extract vectors from array and apply unary operation</span>
-<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">           1 :         List&lt;IRInst*&gt; resultVectors;</span></span>
-<span id="L530"><span class="lineNum">     530</span>              : </span>
-<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">           1 :         for (IRIntegerValue row = 0; row &lt; rowCount-&gt;getValue(); row++)</span></span>
-<span id="L532"><span class="lineNum">     532</span>              :         {</span>
-<span id="L533"><span class="lineNum">     533</span>              :             // Extract the row vector from operand array</span>
-<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">           1 :             auto rowIndexInst = builder.getIntValue(builder.getIntType(), row);</span></span>
-<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">           1 :             auto vector = builder.emitElementExtract(legalizedOperand, rowIndexInst);</span></span>
-<span id="L536"><span class="lineNum">     536</span>              : </span>
-<span id="L537"><span class="lineNum">     537</span>              :             // Apply the unary operation to the vector</span>
-<span id="L538"><span class="lineNum">     538</span>              :             IRInst* args[] = {vector};</span>
-<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">           1 :             auto resultVector = builder.emitIntrinsicInst(vectorType, unaryOp, 1, args);</span></span>
-<span id="L540"><span class="lineNum">     540</span>              : </span>
-<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">           1 :             resultVectors.add(resultVector);</span></span>
-<span id="L542"><span class="lineNum">     542</span>              :         }</span>
-<span id="L543"><span class="lineNum">     543</span>              : </span>
-<span id="L544"><span class="lineNum">     544</span>              :         // Create the result array from the vectors if the result matrix type needs lowering,</span>
-<span id="L545"><span class="lineNum">     545</span>              :         // otherwise create the result matrix from the vectors</span>
-<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">           1 :         if (shouldLowerMatrixType(resultMatrixType))</span></span>
-<span id="L547"><span class="lineNum">     547</span>              :         {</span>
-<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">           1 :             return builder.emitMakeArray(</span></span>
-<span id="L549"><span class="lineNum">     549</span>              :                 arrayType,</span>
-<span id="L550"><span class="lineNum">     550</span>              :                 resultVectors.getCount(),</span>
-<span id="L551"><span class="lineNum">     551</span>              :                 resultVectors.getBuffer());</span>
-<span id="L552"><span class="lineNum">     552</span>              :         }</span>
-<span id="L553"><span class="lineNum">     553</span>              :         else</span>
-<span id="L554"><span class="lineNum">     554</span>              :         {</span>
-<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">           1 :             return builder.emitMakeMatrix(</span></span>
-<span id="L556"><span class="lineNum">     556</span>              :                 resultMatrixType,</span>
-<span id="L557"><span class="lineNum">     557</span>              :                 resultVectors.getCount(),</span>
-<span id="L558"><span class="lineNum">     558</span>              :                 resultVectors.getBuffer());</span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">           1 :         auto elementType = resultMatrixType-&gt;getElementType();</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">           1 :         auto rowCount = as&lt;IRIntLit&gt;(resultMatrixType-&gt;getRowCount());</span></span>
+<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">           1 :         auto columnCount = as&lt;IRIntLit&gt;(resultMatrixType-&gt;getColumnCount());</span></span>
+<span id="L531"><span class="lineNum">     531</span>              : </span>
+<span id="L532"><span class="lineNum">     532</span>              :         SLANG_ASSERT(</span>
+<span id="L533"><span class="lineNum">     533</span>              :             rowCount &amp;&amp; columnCount &amp;&amp;</span>
+<span id="L534"><span class="lineNum">     534</span>              :             &quot;Matrix dimensions must be compile-time constants for lowering&quot;);</span>
+<span id="L535"><span class="lineNum">     535</span>              : </span>
+<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">           1 :         IRBuilder builder(inst);</span></span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">           1 :         builder.setInsertBefore(inst);</span></span>
+<span id="L538"><span class="lineNum">     538</span>              : </span>
+<span id="L539"><span class="lineNum">     539</span>              :         // Create vector type for rows: vector&lt;T, C&gt;</span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">           1 :         auto vectorType = builder.getVectorType(elementType, columnCount);</span></span>
+<span id="L541"><span class="lineNum">     541</span>              : </span>
+<span id="L542"><span class="lineNum">     542</span>              :         // Create array type: vector&lt;T, C&gt;[R]</span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">           1 :         auto arrayType = builder.getArrayType(vectorType, rowCount);</span></span>
+<span id="L544"><span class="lineNum">     544</span>              : </span>
+<span id="L545"><span class="lineNum">     545</span>              :         // Extract vectors from array and apply unary operation</span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">           1 :         List&lt;IRInst*&gt; resultVectors;</span></span>
+<span id="L547"><span class="lineNum">     547</span>              : </span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">           1 :         for (IRIntegerValue row = 0; row &lt; rowCount-&gt;getValue(); row++)</span></span>
+<span id="L549"><span class="lineNum">     549</span>              :         {</span>
+<span id="L550"><span class="lineNum">     550</span>              :             // Extract the row vector from operand array</span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">           1 :             auto rowIndexInst = builder.getIntValue(builder.getIntType(), row);</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">           1 :             auto vector = builder.emitElementExtract(legalizedOperand, rowIndexInst);</span></span>
+<span id="L553"><span class="lineNum">     553</span>              : </span>
+<span id="L554"><span class="lineNum">     554</span>              :             // Apply the unary operation to the vector</span>
+<span id="L555"><span class="lineNum">     555</span>              :             IRInst* args[] = {vector};</span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">           1 :             auto resultVector = builder.emitIntrinsicInst(vectorType, unaryOp, 1, args);</span></span>
+<span id="L557"><span class="lineNum">     557</span>              : </span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">           1 :             resultVectors.add(resultVector);</span></span>
 <span id="L559"><span class="lineNum">     559</span>              :         }</span>
-<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L561"><span class="lineNum">     561</span>              : </span>
-<span id="L562"><span class="lineNum">     562</span>              :     IRInst* legalizeUnaryCastOperation(IRInst* inst, IROp unaryOp)</span>
-<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L564"><span class="lineNum">     564</span>              :         // Get the result matrix type to determine dimensions</span>
-<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">           1 :         auto resultMatrixType = as&lt;IRMatrixType&gt;(inst-&gt;getDataType());</span></span>
-<span id="L566"><span class="lineNum">     566</span>              :         SLANG_ASSERT(resultMatrixType &amp;&amp; &quot;Unary operation should have matrix result type&quot;);</span>
-<span id="L567"><span class="lineNum">     567</span>              : </span>
-<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">           1 :         return legalizeUnaryOperation(inst, unaryOp, resultMatrixType);</span></span>
-<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L570"><span class="lineNum">     570</span>              : </span>
-<span id="L571"><span class="lineNum">     571</span>              :     IRInst* legalizeUnaryLogicalOperation(IRInst* inst, IROp unaryOp)</span>
-<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L573"><span class="lineNum">     573</span>              :         // Get the result matrix type to determine dimensions</span>
-<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">           1 :         auto resultMatrixType = as&lt;IRMatrixType&gt;(inst-&gt;getDataType());</span></span>
-<span id="L575"><span class="lineNum">     575</span>              :         SLANG_ASSERT(resultMatrixType &amp;&amp; &quot;Unary operation should have matrix result type&quot;);</span>
-<span id="L576"><span class="lineNum">     576</span>              :         SLANG_ASSERT(</span>
-<span id="L577"><span class="lineNum">     577</span>              :             shouldLowerMatrixType(resultMatrixType) &amp;&amp;</span>
-<span id="L578"><span class="lineNum">     578</span>              :             &quot;Result matrix type should need legalization&quot;);</span>
-<span id="L579"><span class="lineNum">     579</span>              : </span>
-<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">           1 :         return legalizeUnaryOperation(inst, unaryOp, resultMatrixType);</span></span>
-<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L582"><span class="lineNum">     582</span>              : </span>
-<span id="L583"><span class="lineNum">     583</span>              :     IRInst* legalizeMatrixProducingInstruction(IRInst* inst)</span>
-<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">           1 :         switch (inst-&gt;getOp())</span></span>
-<span id="L586"><span class="lineNum">     586</span>              :         {</span>
-<span id="L587"><span class="lineNum">     587</span>              :         case kIROp_MakeMatrix:</span>
-<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">           1 :             return legalizeMakeMatrix(inst);</span></span>
-<span id="L589"><span class="lineNum">     589</span>              :         case kIROp_MakeMatrixFromScalar:</span>
-<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">           1 :             return legalizeMakeMatrixFromScalar(inst);</span></span>
-<span id="L591"><span class="lineNum">     591</span>              :         case kIROp_Add:</span>
-<span id="L592"><span class="lineNum">     592</span>              :         case kIROp_Sub:</span>
-<span id="L593"><span class="lineNum">     593</span>              :         case kIROp_Mul:</span>
-<span id="L594"><span class="lineNum">     594</span>              :         case kIROp_Div:</span>
-<span id="L595"><span class="lineNum">     595</span>              :         case kIROp_IRem:</span>
-<span id="L596"><span class="lineNum">     596</span>              :         case kIROp_FRem:</span>
-<span id="L597"><span class="lineNum">     597</span>              :         case kIROp_Lsh:</span>
-<span id="L598"><span class="lineNum">     598</span>              :         case kIROp_Rsh:</span>
-<span id="L599"><span class="lineNum">     599</span>              :         case kIROp_And:</span>
-<span id="L600"><span class="lineNum">     600</span>              :         case kIROp_Or:</span>
-<span id="L601"><span class="lineNum">     601</span>              :         case kIROp_BitAnd:</span>
-<span id="L602"><span class="lineNum">     602</span>              :         case kIROp_BitOr:</span>
-<span id="L603"><span class="lineNum">     603</span>              :         case kIROp_BitXor:</span>
-<span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">           1 :             return legalizeBinaryOperation(inst, inst-&gt;getOp());</span></span>
-<span id="L605"><span class="lineNum">     605</span>              :         case kIROp_Eql:</span>
-<span id="L606"><span class="lineNum">     606</span>              :         case kIROp_Neq:</span>
-<span id="L607"><span class="lineNum">     607</span>              :         case kIROp_Greater:</span>
-<span id="L608"><span class="lineNum">     608</span>              :         case kIROp_Less:</span>
-<span id="L609"><span class="lineNum">     609</span>              :         case kIROp_Geq:</span>
-<span id="L610"><span class="lineNum">     610</span>              :         case kIROp_Leq:</span>
-<span id="L611"><span class="lineNum">     611</span> <span class="tlaGNC">           1 :             return legalizeComparisonOperation(inst, inst-&gt;getOp());</span></span>
-<span id="L612"><span class="lineNum">     612</span>              :         case kIROp_Not:</span>
-<span id="L613"><span class="lineNum">     613</span>              :         case kIROp_BitNot:</span>
-<span id="L614"><span class="lineNum">     614</span>              :         case kIROp_Neg:</span>
-<span id="L615"><span class="lineNum">     615</span> <span class="tlaGNC">           1 :             return legalizeUnaryLogicalOperation(inst, inst-&gt;getOp());</span></span>
-<span id="L616"><span class="lineNum">     616</span>              :         case kIROp_IntCast:</span>
-<span id="L617"><span class="lineNum">     617</span>              :         case kIROp_FloatCast:</span>
-<span id="L618"><span class="lineNum">     618</span>              :         case kIROp_CastIntToFloat:</span>
-<span id="L619"><span class="lineNum">     619</span>              :         case kIROp_CastFloatToInt:</span>
-<span id="L620"><span class="lineNum">     620</span> <span class="tlaGNC">           1 :             return legalizeUnaryCastOperation(inst, inst-&gt;getOp());</span></span>
-<span id="L621"><span class="lineNum">     621</span>              :         default:</span>
-<span id="L622"><span class="lineNum">     622</span>              :             break;</span>
-<span id="L623"><span class="lineNum">     623</span>              :         }</span>
-<span id="L624"><span class="lineNum">     624</span>              : </span>
-<span id="L625"><span class="lineNum">     625</span> <span class="tlaGNC">           1 :         return inst;</span></span>
-<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L627"><span class="lineNum">     627</span>              : </span>
-<span id="L628"><span class="lineNum">     628</span>              :     IRInst* getReplacement(IRInst* inst)</span>
-<span id="L629"><span class="lineNum">     629</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L630"><span class="lineNum">     630</span> <span class="tlaGNC">           1 :         if (auto replacement = replacements.tryGetValue(inst))</span></span>
-<span id="L631"><span class="lineNum">     631</span> <span class="tlaGNC">           1 :             return *replacement;</span></span>
-<span id="L632"><span class="lineNum">     632</span>              : </span>
-<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">           1 :         IRInst* newInst = inst;</span></span>
-<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">           1 :         if (as&lt;IRMatrixType&gt;(inst))</span></span>
-<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">           1 :             newInst = legalizeMatrixTypeDeclaration(inst);</span></span>
-<span id="L636"><span class="lineNum">     636</span>              : </span>
-<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">           1 :         IRType* resultType = inst-&gt;getDataType();</span></span>
-<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">           1 :         if (auto matrixType = as&lt;IRMatrixType&gt;(resultType))</span></span>
-<span id="L639"><span class="lineNum">     639</span>              :         {</span>
-<span id="L640"><span class="lineNum">     640</span>              :             // On targets that require matrix lowering, some matrix result types (e.g. float4x4) do</span>
-<span id="L641"><span class="lineNum">     641</span>              :             // not need to be lowered, but can be cast from a matrix type that does need to be</span>
-<span id="L642"><span class="lineNum">     642</span>              :             // lowered (e.g. uint4x4), so we need to check if we should lower the operand even if we</span>
-<span id="L643"><span class="lineNum">     643</span>              :             // should not lower the result</span>
-<span id="L644"><span class="lineNum">     644</span>              :             bool shouldLowerOperandMatrixType = false;</span>
-<span id="L645"><span class="lineNum">     645</span> <span class="tlaGNC">           1 :             if (inst-&gt;getOperandCount() &gt; 0)</span></span>
-<span id="L646"><span class="lineNum">     646</span>              :             {</span>
-<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">           1 :                 auto operand = inst-&gt;getOperand(0);</span></span>
-<span id="L648"><span class="lineNum">     648</span> <span class="tlaGNC">           1 :                 IRType* operandType = nullptr;</span></span>
-<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">           1 :                 if (operand)</span></span>
-<span id="L650"><span class="lineNum">     650</span>              :                 {</span>
-<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">           1 :                     operandType = operand-&gt;getDataType();</span></span>
-<span id="L652"><span class="lineNum">     652</span>              :                 }</span>
-<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">           1 :                 if (auto operandMatrixType = as&lt;IRMatrixType&gt;(operandType))</span></span>
-<span id="L654"><span class="lineNum">     654</span>              :                 {</span>
-<span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">           1 :                     shouldLowerOperandMatrixType = shouldLowerMatrixType(operandMatrixType);</span></span>
-<span id="L656"><span class="lineNum">     656</span>              :                 }</span>
-<span id="L657"><span class="lineNum">     657</span>              :             }</span>
-<span id="L658"><span class="lineNum">     658</span>              : </span>
-<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">           1 :             if (shouldLowerMatrixType(matrixType) || shouldLowerOperandMatrixType)</span></span>
-<span id="L660"><span class="lineNum">     660</span> <span class="tlaGNC">           1 :                 newInst = legalizeMatrixProducingInstruction(inst);</span></span>
-<span id="L661"><span class="lineNum">     661</span>              :         }</span>
-<span id="L662"><span class="lineNum">     662</span>              : </span>
-<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">           1 :         replacements[inst] = newInst;</span></span>
-<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">           1 :         return newInst;</span></span>
-<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L666"><span class="lineNum">     666</span>              : </span>
-<span id="L667"><span class="lineNum">     667</span>              :     // Return true if the module declares any matrix type that this pass would lower. Used as an</span>
-<span id="L668"><span class="lineNum">     668</span>              :     // early-out: when no such type exists the pass is a pure no-op, so we can skip building and</span>
-<span id="L669"><span class="lineNum">     669</span>              :     // running the (mutating) worklist entirely.</span>
-<span id="L670"><span class="lineNum">     670</span>              :     //</span>
-<span id="L671"><span class="lineNum">     671</span>              :     // Scanning only the global insts is sound because matrix *types* (`IRMatrixType`) are hoisted</span>
-<span id="L672"><span class="lineNum">     672</span>              :     // and interned at module global scope, so every concrete matrix used anywhere in non-generic</span>
-<span id="L673"><span class="lineNum">     673</span>              :     // code appears as a direct child of the module inst. Consider `float4x4 y = (float4x4)x;` where</span>
-<span id="L674"><span class="lineNum">     674</span>              :     // `x` is a `uint4x4`: the result type `float4x4` does not need lowering, but the pass still</span>
-<span id="L675"><span class="lineNum">     675</span>              :     // rewrites the cast because its operand type `uint4x4` does. Both `float4x4` and `uint4x4` are</span>
-<span id="L676"><span class="lineNum">     676</span>              :     // hoisted global type insts, so the lowerable operand type is found by this scan without</span>
-<span id="L677"><span class="lineNum">     677</span>              :     // walking the cast instruction itself. More generally, if no global matrix type needs lowering,</span>
-<span id="L678"><span class="lineNum">     678</span>              :     // no instruction in the module can have a matrix result-or-operand type that needs lowering, so</span>
-<span id="L679"><span class="lineNum">     679</span>              :     // `processModule` would rewrite nothing.</span>
-<span id="L680"><span class="lineNum">     680</span>              :     //</span>
-<span id="L681"><span class="lineNum">     681</span>              :     // The &quot;non-generic code&quot; qualifier is the one subtlety: a matrix type that appears only inside</span>
-<span id="L682"><span class="lineNum">     682</span>              :     // an un-specialized generic need not be hoisted to module global scope, so this scan may not</span>
-<span id="L683"><span class="lineNum">     683</span>              :     // see it. That is safe because the pass ignores those matrices too — `addToWorkList` bails on</span>
-<span id="L684"><span class="lineNum">     684</span>              :     // any inst with an `IRGeneric` parent, so `processModule` never rewrites generic-nested insts.</span>
-<span id="L685"><span class="lineNum">     685</span>              :     // Scan and pass therefore have the same blind spot, so a false &quot;nothing to legalize&quot; here can</span>
-<span id="L686"><span class="lineNum">     686</span>              :     // only happen when the pass would also have done nothing.</span>
+<span id="L560"><span class="lineNum">     560</span>              : </span>
+<span id="L561"><span class="lineNum">     561</span>              :         // Create the result array from the vectors if the result matrix type needs lowering,</span>
+<span id="L562"><span class="lineNum">     562</span>              :         // otherwise create the result matrix from the vectors</span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">           1 :         if (shouldLowerMatrixType(resultMatrixType))</span></span>
+<span id="L564"><span class="lineNum">     564</span>              :         {</span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">           1 :             return builder.emitMakeArray(</span></span>
+<span id="L566"><span class="lineNum">     566</span>              :                 arrayType,</span>
+<span id="L567"><span class="lineNum">     567</span>              :                 resultVectors.getCount(),</span>
+<span id="L568"><span class="lineNum">     568</span>              :                 resultVectors.getBuffer());</span>
+<span id="L569"><span class="lineNum">     569</span>              :         }</span>
+<span id="L570"><span class="lineNum">     570</span>              :         else</span>
+<span id="L571"><span class="lineNum">     571</span>              :         {</span>
+<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">           1 :             return builder.emitMakeMatrix(</span></span>
+<span id="L573"><span class="lineNum">     573</span>              :                 resultMatrixType,</span>
+<span id="L574"><span class="lineNum">     574</span>              :                 resultVectors.getCount(),</span>
+<span id="L575"><span class="lineNum">     575</span>              :                 resultVectors.getBuffer());</span>
+<span id="L576"><span class="lineNum">     576</span>              :         }</span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L578"><span class="lineNum">     578</span>              : </span>
+<span id="L579"><span class="lineNum">     579</span>              :     IRInst* legalizeUnaryCastOperation(IRInst* inst, IROp unaryOp)</span>
+<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L581"><span class="lineNum">     581</span>              :         // Get the result matrix type to determine dimensions</span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">           1 :         auto resultMatrixType = as&lt;IRMatrixType&gt;(inst-&gt;getDataType());</span></span>
+<span id="L583"><span class="lineNum">     583</span>              :         SLANG_ASSERT(resultMatrixType &amp;&amp; &quot;Unary operation should have matrix result type&quot;);</span>
+<span id="L584"><span class="lineNum">     584</span>              : </span>
+<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">           1 :         return legalizeUnaryOperation(inst, unaryOp, resultMatrixType);</span></span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L587"><span class="lineNum">     587</span>              : </span>
+<span id="L588"><span class="lineNum">     588</span>              :     IRInst* legalizeUnaryLogicalOperation(IRInst* inst, IROp unaryOp)</span>
+<span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L590"><span class="lineNum">     590</span>              :         // Get the result matrix type to determine dimensions</span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">           1 :         auto resultMatrixType = as&lt;IRMatrixType&gt;(inst-&gt;getDataType());</span></span>
+<span id="L592"><span class="lineNum">     592</span>              :         SLANG_ASSERT(resultMatrixType &amp;&amp; &quot;Unary operation should have matrix result type&quot;);</span>
+<span id="L593"><span class="lineNum">     593</span>              :         SLANG_ASSERT(</span>
+<span id="L594"><span class="lineNum">     594</span>              :             shouldLowerMatrixType(resultMatrixType) &amp;&amp;</span>
+<span id="L595"><span class="lineNum">     595</span>              :             &quot;Result matrix type should need legalization&quot;);</span>
+<span id="L596"><span class="lineNum">     596</span>              : </span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">           1 :         return legalizeUnaryOperation(inst, unaryOp, resultMatrixType);</span></span>
+<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L599"><span class="lineNum">     599</span>              : </span>
+<span id="L600"><span class="lineNum">     600</span>              :     IRInst* legalizeMatrixProducingInstruction(IRInst* inst)</span>
+<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">           1 :         switch (inst-&gt;getOp())</span></span>
+<span id="L603"><span class="lineNum">     603</span>              :         {</span>
+<span id="L604"><span class="lineNum">     604</span>              :         case kIROp_MakeMatrix:</span>
+<span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC">           1 :             return legalizeMakeMatrix(inst);</span></span>
+<span id="L606"><span class="lineNum">     606</span>              :         case kIROp_MakeMatrixFromScalar:</span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">           1 :             return legalizeMakeMatrixFromScalar(inst);</span></span>
+<span id="L608"><span class="lineNum">     608</span>              :         case kIROp_Add:</span>
+<span id="L609"><span class="lineNum">     609</span>              :         case kIROp_Sub:</span>
+<span id="L610"><span class="lineNum">     610</span>              :         case kIROp_Mul:</span>
+<span id="L611"><span class="lineNum">     611</span>              :         case kIROp_Div:</span>
+<span id="L612"><span class="lineNum">     612</span>              :         case kIROp_IRem:</span>
+<span id="L613"><span class="lineNum">     613</span>              :         case kIROp_FRem:</span>
+<span id="L614"><span class="lineNum">     614</span>              :         case kIROp_Lsh:</span>
+<span id="L615"><span class="lineNum">     615</span>              :         case kIROp_Rsh:</span>
+<span id="L616"><span class="lineNum">     616</span>              :         case kIROp_And:</span>
+<span id="L617"><span class="lineNum">     617</span>              :         case kIROp_Or:</span>
+<span id="L618"><span class="lineNum">     618</span>              :         case kIROp_BitAnd:</span>
+<span id="L619"><span class="lineNum">     619</span>              :         case kIROp_BitOr:</span>
+<span id="L620"><span class="lineNum">     620</span>              :         case kIROp_BitXor:</span>
+<span id="L621"><span class="lineNum">     621</span> <span class="tlaGNC">           1 :             return legalizeBinaryOperation(inst, inst-&gt;getOp());</span></span>
+<span id="L622"><span class="lineNum">     622</span>              :         case kIROp_Eql:</span>
+<span id="L623"><span class="lineNum">     623</span>              :         case kIROp_Neq:</span>
+<span id="L624"><span class="lineNum">     624</span>              :         case kIROp_Greater:</span>
+<span id="L625"><span class="lineNum">     625</span>              :         case kIROp_Less:</span>
+<span id="L626"><span class="lineNum">     626</span>              :         case kIROp_Geq:</span>
+<span id="L627"><span class="lineNum">     627</span>              :         case kIROp_Leq:</span>
+<span id="L628"><span class="lineNum">     628</span> <span class="tlaGNC">           1 :             return legalizeComparisonOperation(inst, inst-&gt;getOp());</span></span>
+<span id="L629"><span class="lineNum">     629</span>              :         case kIROp_Not:</span>
+<span id="L630"><span class="lineNum">     630</span>              :         case kIROp_BitNot:</span>
+<span id="L631"><span class="lineNum">     631</span>              :         case kIROp_Neg:</span>
+<span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">           1 :             return legalizeUnaryLogicalOperation(inst, inst-&gt;getOp());</span></span>
+<span id="L633"><span class="lineNum">     633</span>              :         case kIROp_IntCast:</span>
+<span id="L634"><span class="lineNum">     634</span>              :         case kIROp_FloatCast:</span>
+<span id="L635"><span class="lineNum">     635</span>              :         case kIROp_CastIntToFloat:</span>
+<span id="L636"><span class="lineNum">     636</span>              :         case kIROp_CastFloatToInt:</span>
+<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">           1 :             return legalizeUnaryCastOperation(inst, inst-&gt;getOp());</span></span>
+<span id="L638"><span class="lineNum">     638</span>              :         default:</span>
+<span id="L639"><span class="lineNum">     639</span>              :             break;</span>
+<span id="L640"><span class="lineNum">     640</span>              :         }</span>
+<span id="L641"><span class="lineNum">     641</span>              : </span>
+<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">           1 :         return inst;</span></span>
+<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L644"><span class="lineNum">     644</span>              : </span>
+<span id="L645"><span class="lineNum">     645</span>              :     IRInst* getReplacement(IRInst* inst)</span>
+<span id="L646"><span class="lineNum">     646</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">           1 :         if (auto replacement = replacements.tryGetValue(inst))</span></span>
+<span id="L648"><span class="lineNum">     648</span> <span class="tlaGNC">           1 :             return *replacement;</span></span>
+<span id="L649"><span class="lineNum">     649</span>              : </span>
+<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">           1 :         IRInst* newInst = inst;</span></span>
+<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">           1 :         if (as&lt;IRMatrixType&gt;(inst))</span></span>
+<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">           1 :             newInst = legalizeMatrixTypeDeclaration(inst);</span></span>
+<span id="L653"><span class="lineNum">     653</span>              : </span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">           1 :         IRType* resultType = inst-&gt;getDataType();</span></span>
+<span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">           1 :         if (auto matrixType = as&lt;IRMatrixType&gt;(resultType))</span></span>
+<span id="L656"><span class="lineNum">     656</span>              :         {</span>
+<span id="L657"><span class="lineNum">     657</span>              :             // On targets that require matrix lowering, some matrix result types (e.g. float4x4) do</span>
+<span id="L658"><span class="lineNum">     658</span>              :             // not need to be lowered, but can be cast from a matrix type that does need to be</span>
+<span id="L659"><span class="lineNum">     659</span>              :             // lowered (e.g. uint4x4), so we need to check if we should lower the operand even if we</span>
+<span id="L660"><span class="lineNum">     660</span>              :             // should not lower the result</span>
+<span id="L661"><span class="lineNum">     661</span>              :             bool shouldLowerOperandMatrixType = false;</span>
+<span id="L662"><span class="lineNum">     662</span> <span class="tlaGNC">           1 :             if (inst-&gt;getOperandCount() &gt; 0)</span></span>
+<span id="L663"><span class="lineNum">     663</span>              :             {</span>
+<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">           1 :                 auto operand = inst-&gt;getOperand(0);</span></span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">           1 :                 IRType* operandType = nullptr;</span></span>
+<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">           1 :                 if (operand)</span></span>
+<span id="L667"><span class="lineNum">     667</span>              :                 {</span>
+<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">           1 :                     operandType = operand-&gt;getDataType();</span></span>
+<span id="L669"><span class="lineNum">     669</span>              :                 }</span>
+<span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">           1 :                 if (auto operandMatrixType = as&lt;IRMatrixType&gt;(operandType))</span></span>
+<span id="L671"><span class="lineNum">     671</span>              :                 {</span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">           1 :                     shouldLowerOperandMatrixType = shouldLowerMatrixType(operandMatrixType);</span></span>
+<span id="L673"><span class="lineNum">     673</span>              :                 }</span>
+<span id="L674"><span class="lineNum">     674</span>              :             }</span>
+<span id="L675"><span class="lineNum">     675</span>              : </span>
+<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">           1 :             if (shouldLowerMatrixType(matrixType) || shouldLowerOperandMatrixType)</span></span>
+<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :                 newInst = legalizeMatrixProducingInstruction(inst);</span></span>
+<span id="L678"><span class="lineNum">     678</span>              :         }</span>
+<span id="L679"><span class="lineNum">     679</span>              : </span>
+<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">           1 :         replacements[inst] = newInst;</span></span>
+<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">           1 :         return newInst;</span></span>
+<span id="L682"><span class="lineNum">     682</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L683"><span class="lineNum">     683</span>              : </span>
+<span id="L684"><span class="lineNum">     684</span>              :     // Return true if the module declares any matrix type that this pass would lower. Used as an</span>
+<span id="L685"><span class="lineNum">     685</span>              :     // early-out: when no such type exists the pass is a pure no-op, so we can skip building and</span>
+<span id="L686"><span class="lineNum">     686</span>              :     // running the (mutating) worklist entirely.</span>
 <span id="L687"><span class="lineNum">     687</span>              :     //</span>
-<span id="L688"><span class="lineNum">     688</span>              :     // This is O(#globals) rather than the O(#all-insts) full-tree walk `processModule` performs,</span>
-<span id="L689"><span class="lineNum">     689</span>              :     // which is the point of the early-out: the previous full-tree scan cost the same as the pass it</span>
-<span id="L690"><span class="lineNum">     690</span>              :     // was guarding, so it bought no saving.</span>
-<span id="L691"><span class="lineNum">     691</span>              :     bool hasAnyMatrixToLegalize()</span>
-<span id="L692"><span class="lineNum">     692</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L693"><span class="lineNum">     693</span> <span class="tlaGNC">           1 :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L694"><span class="lineNum">     694</span>              :         {</span>
-<span id="L695"><span class="lineNum">     695</span> <span class="tlaGNC">           1 :             if (auto matrixType = as&lt;IRMatrixType&gt;(inst))</span></span>
-<span id="L696"><span class="lineNum">     696</span>              :             {</span>
-<span id="L697"><span class="lineNum">     697</span> <span class="tlaGNC">           1 :                 if (shouldLowerMatrixType(matrixType))</span></span>
-<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">           1 :                     return true;</span></span>
-<span id="L699"><span class="lineNum">     699</span>              :             }</span>
-<span id="L700"><span class="lineNum">     700</span>              :         }</span>
-<span id="L701"><span class="lineNum">     701</span> <span class="tlaGNC">           1 :         return false;</span></span>
-<span id="L702"><span class="lineNum">     702</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L703"><span class="lineNum">     703</span>              : </span>
-<span id="L704"><span class="lineNum">     704</span>              :     void processModule()</span>
-<span id="L705"><span class="lineNum">     705</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L706"><span class="lineNum">     706</span> <span class="tlaGNC">           1 :         addToWorkList(module-&gt;getModuleInst());</span></span>
-<span id="L707"><span class="lineNum">     707</span>              : </span>
-<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">           1 :         while (workList.getCount() != 0)</span></span>
-<span id="L709"><span class="lineNum">     709</span>              :         {</span>
-<span id="L710"><span class="lineNum">     710</span> <span class="tlaGNC">           1 :             IRInst* inst = workList.getLast();</span></span>
-<span id="L711"><span class="lineNum">     711</span>              : </span>
-<span id="L712"><span class="lineNum">     712</span> <span class="tlaGNC">           1 :             workList.removeLast();</span></span>
-<span id="L713"><span class="lineNum">     713</span> <span class="tlaGNC">           1 :             workListSet.remove(inst);</span></span>
-<span id="L714"><span class="lineNum">     714</span>              : </span>
-<span id="L715"><span class="lineNum">     715</span>              :             // Run this inst through the replacer</span>
-<span id="L716"><span class="lineNum">     716</span> <span class="tlaGNC">           1 :             getReplacement(inst);</span></span>
-<span id="L717"><span class="lineNum">     717</span>              : </span>
-<span id="L718"><span class="lineNum">     718</span> <span class="tlaGNC">           1 :             for (auto child = inst-&gt;getLastChild(); child; child = child-&gt;getPrevInst())</span></span>
-<span id="L719"><span class="lineNum">     719</span>              :             {</span>
-<span id="L720"><span class="lineNum">     720</span> <span class="tlaGNC">           1 :                 addToWorkList(child);</span></span>
-<span id="L721"><span class="lineNum">     721</span>              :             }</span>
-<span id="L722"><span class="lineNum">     722</span>              :         }</span>
-<span id="L723"><span class="lineNum">     723</span>              : </span>
-<span id="L724"><span class="lineNum">     724</span>              :         // Apply all replacements</span>
-<span id="L725"><span class="lineNum">     725</span> <span class="tlaGNC">           1 :         for (const auto&amp; [old, replacement] : replacements)</span></span>
+<span id="L688"><span class="lineNum">     688</span>              :     // Scanning only the global insts is sound because matrix *types* (`IRMatrixType`) are hoisted</span>
+<span id="L689"><span class="lineNum">     689</span>              :     // and interned at module global scope, so every concrete matrix used anywhere in non-generic</span>
+<span id="L690"><span class="lineNum">     690</span>              :     // code appears as a direct child of the module inst. Consider `float4x4 y = (float4x4)x;` where</span>
+<span id="L691"><span class="lineNum">     691</span>              :     // `x` is a `uint4x4`: the result type `float4x4` does not need lowering, but the pass still</span>
+<span id="L692"><span class="lineNum">     692</span>              :     // rewrites the cast because its operand type `uint4x4` does. Both `float4x4` and `uint4x4` are</span>
+<span id="L693"><span class="lineNum">     693</span>              :     // hoisted global type insts, so the lowerable operand type is found by this scan without</span>
+<span id="L694"><span class="lineNum">     694</span>              :     // walking the cast instruction itself. More generally, if no global matrix type needs lowering,</span>
+<span id="L695"><span class="lineNum">     695</span>              :     // no instruction in the module can have a matrix result-or-operand type that needs lowering, so</span>
+<span id="L696"><span class="lineNum">     696</span>              :     // `processModule` would rewrite nothing.</span>
+<span id="L697"><span class="lineNum">     697</span>              :     //</span>
+<span id="L698"><span class="lineNum">     698</span>              :     // The &quot;non-generic code&quot; qualifier is the one subtlety: a matrix type that appears only inside</span>
+<span id="L699"><span class="lineNum">     699</span>              :     // an un-specialized generic need not be hoisted to module global scope, so this scan may not</span>
+<span id="L700"><span class="lineNum">     700</span>              :     // see it. That is safe because the pass ignores those matrices too — `addToWorkList` bails on</span>
+<span id="L701"><span class="lineNum">     701</span>              :     // any inst with an `IRGeneric` parent, so `processModule` never rewrites generic-nested insts.</span>
+<span id="L702"><span class="lineNum">     702</span>              :     // Scan and pass therefore have the same blind spot, so a false &quot;nothing to legalize&quot; here can</span>
+<span id="L703"><span class="lineNum">     703</span>              :     // only happen when the pass would also have done nothing.</span>
+<span id="L704"><span class="lineNum">     704</span>              :     //</span>
+<span id="L705"><span class="lineNum">     705</span>              :     // This is O(#globals) rather than the O(#all-insts) full-tree walk `processModule` performs,</span>
+<span id="L706"><span class="lineNum">     706</span>              :     // which is the point of the early-out: the previous full-tree scan cost the same as the pass it</span>
+<span id="L707"><span class="lineNum">     707</span>              :     // was guarding, so it bought no saving.</span>
+<span id="L708"><span class="lineNum">     708</span>              :     bool hasAnyMatrixToLegalize()</span>
+<span id="L709"><span class="lineNum">     709</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L710"><span class="lineNum">     710</span> <span class="tlaGNC">           1 :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L711"><span class="lineNum">     711</span>              :         {</span>
+<span id="L712"><span class="lineNum">     712</span> <span class="tlaGNC">           1 :             if (auto matrixType = as&lt;IRMatrixType&gt;(inst))</span></span>
+<span id="L713"><span class="lineNum">     713</span>              :             {</span>
+<span id="L714"><span class="lineNum">     714</span> <span class="tlaGNC">           1 :                 if (shouldLowerMatrixType(matrixType))</span></span>
+<span id="L715"><span class="lineNum">     715</span> <span class="tlaGNC">           1 :                     return true;</span></span>
+<span id="L716"><span class="lineNum">     716</span>              :             }</span>
+<span id="L717"><span class="lineNum">     717</span>              :         }</span>
+<span id="L718"><span class="lineNum">     718</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L719"><span class="lineNum">     719</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L720"><span class="lineNum">     720</span>              : </span>
+<span id="L721"><span class="lineNum">     721</span>              :     void processModule()</span>
+<span id="L722"><span class="lineNum">     722</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L723"><span class="lineNum">     723</span> <span class="tlaGNC">           1 :         addToWorkList(module-&gt;getModuleInst());</span></span>
+<span id="L724"><span class="lineNum">     724</span>              : </span>
+<span id="L725"><span class="lineNum">     725</span> <span class="tlaGNC">           1 :         while (workList.getCount() != 0)</span></span>
 <span id="L726"><span class="lineNum">     726</span>              :         {</span>
-<span id="L727"><span class="lineNum">     727</span> <span class="tlaGNC">           1 :             if (old != replacement)</span></span>
-<span id="L728"><span class="lineNum">     728</span>              :             {</span>
-<span id="L729"><span class="lineNum">     729</span> <span class="tlaGNC">           1 :                 old-&gt;replaceUsesWith(replacement);</span></span>
-<span id="L730"><span class="lineNum">     730</span> <span class="tlaGNC">           1 :                 old-&gt;removeAndDeallocate();</span></span>
-<span id="L731"><span class="lineNum">     731</span>              :             }</span>
-<span id="L732"><span class="lineNum">     732</span>              :         }</span>
-<span id="L733"><span class="lineNum">     733</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L734"><span class="lineNum">     734</span>              : };</span>
-<span id="L735"><span class="lineNum">     735</span>              : </span>
-<span id="L736"><span class="lineNum">     736</span>              : void legalizeMatrixTypes(IRModule* module, TargetProgram* targetProgram, DiagnosticSink* sink)</span>
-<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L738"><span class="lineNum">     738</span>              :     // Early-out #1 (O(1)): targets that never lower matrices (HLSL, DXIL, CUDA, C++/host, ...) make</span>
-<span id="L739"><span class="lineNum">     739</span>              :     // this whole pass a guaranteed no-op — skip without walking the module.</span>
-<span id="L740"><span class="lineNum">     740</span> <span class="tlaGNC">           1 :     if (!targetLegalizesMatrixTypes(targetProgram))</span></span>
-<span id="L741"><span class="lineNum">     741</span>              :         return;</span>
-<span id="L742"><span class="lineNum">     742</span>              : </span>
-<span id="L743"><span class="lineNum">     743</span> <span class="tlaGNC">           1 :     MatrixTypeLoweringContext context(targetProgram, module);</span></span>
-<span id="L744"><span class="lineNum">     744</span> <span class="tlaGNC">           1 :     context.sink = sink;</span></span>
-<span id="L745"><span class="lineNum">     745</span>              : </span>
-<span id="L746"><span class="lineNum">     746</span>              :     // Early-out #2: on a lowering target, if the module contains no matrix that actually needs</span>
-<span id="L747"><span class="lineNum">     747</span>              :     // legalizing, the mutating worklist walk would be a no-op — skip it after a single read-only</span>
-<span id="L748"><span class="lineNum">     748</span>              :     // scan.</span>
-<span id="L749"><span class="lineNum">     749</span> <span class="tlaGNC">           1 :     if (!context.hasAnyMatrixToLegalize())</span></span>
-<span id="L750"><span class="lineNum">     750</span>              :         return;</span>
-<span id="L751"><span class="lineNum">     751</span>              : </span>
-<span id="L752"><span class="lineNum">     752</span> <span class="tlaGNC">           1 :     context.processModule();</span></span>
-<span id="L753"><span class="lineNum">     753</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L754"><span class="lineNum">     754</span>              : </span>
-<span id="L755"><span class="lineNum">     755</span>              : } // namespace Slang</span>
+<span id="L727"><span class="lineNum">     727</span> <span class="tlaGNC">           1 :             IRInst* inst = workList.getLast();</span></span>
+<span id="L728"><span class="lineNum">     728</span>              : </span>
+<span id="L729"><span class="lineNum">     729</span> <span class="tlaGNC">           1 :             workList.removeLast();</span></span>
+<span id="L730"><span class="lineNum">     730</span> <span class="tlaGNC">           1 :             workListSet.remove(inst);</span></span>
+<span id="L731"><span class="lineNum">     731</span>              : </span>
+<span id="L732"><span class="lineNum">     732</span>              :             // Run this inst through the replacer</span>
+<span id="L733"><span class="lineNum">     733</span> <span class="tlaGNC">           1 :             getReplacement(inst);</span></span>
+<span id="L734"><span class="lineNum">     734</span>              : </span>
+<span id="L735"><span class="lineNum">     735</span> <span class="tlaGNC">           1 :             for (auto child = inst-&gt;getLastChild(); child; child = child-&gt;getPrevInst())</span></span>
+<span id="L736"><span class="lineNum">     736</span>              :             {</span>
+<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">           1 :                 addToWorkList(child);</span></span>
+<span id="L738"><span class="lineNum">     738</span>              :             }</span>
+<span id="L739"><span class="lineNum">     739</span>              :         }</span>
+<span id="L740"><span class="lineNum">     740</span>              : </span>
+<span id="L741"><span class="lineNum">     741</span>              :         // Apply all replacements</span>
+<span id="L742"><span class="lineNum">     742</span> <span class="tlaGNC">           1 :         for (const auto&amp; [old, replacement] : replacements)</span></span>
+<span id="L743"><span class="lineNum">     743</span>              :         {</span>
+<span id="L744"><span class="lineNum">     744</span> <span class="tlaGNC">           1 :             if (old != replacement)</span></span>
+<span id="L745"><span class="lineNum">     745</span>              :             {</span>
+<span id="L746"><span class="lineNum">     746</span> <span class="tlaGNC">           1 :                 old-&gt;replaceUsesWith(replacement);</span></span>
+<span id="L747"><span class="lineNum">     747</span> <span class="tlaGNC">           1 :                 old-&gt;removeAndDeallocate();</span></span>
+<span id="L748"><span class="lineNum">     748</span>              :             }</span>
+<span id="L749"><span class="lineNum">     749</span>              :         }</span>
+<span id="L750"><span class="lineNum">     750</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L751"><span class="lineNum">     751</span>              : };</span>
+<span id="L752"><span class="lineNum">     752</span>              : </span>
+<span id="L753"><span class="lineNum">     753</span>              : void legalizeMatrixTypes(IRModule* module, TargetProgram* targetProgram, DiagnosticSink* sink)</span>
+<span id="L754"><span class="lineNum">     754</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L755"><span class="lineNum">     755</span>              :     // Early-out #1 (O(1)): targets that never lower matrices (HLSL, DXIL, CUDA, C++/host, ...) make</span>
+<span id="L756"><span class="lineNum">     756</span>              :     // this whole pass a guaranteed no-op — skip without walking the module.</span>
+<span id="L757"><span class="lineNum">     757</span> <span class="tlaGNC">           1 :     if (!targetLegalizesMatrixTypes(targetProgram))</span></span>
+<span id="L758"><span class="lineNum">     758</span>              :         return;</span>
+<span id="L759"><span class="lineNum">     759</span>              : </span>
+<span id="L760"><span class="lineNum">     760</span> <span class="tlaGNC">           1 :     MatrixTypeLoweringContext context(targetProgram, module);</span></span>
+<span id="L761"><span class="lineNum">     761</span> <span class="tlaGNC">           1 :     context.sink = sink;</span></span>
+<span id="L762"><span class="lineNum">     762</span>              : </span>
+<span id="L763"><span class="lineNum">     763</span>              :     // Early-out #2: on a lowering target, if the module contains no matrix that actually needs</span>
+<span id="L764"><span class="lineNum">     764</span>              :     // legalizing, the mutating worklist walk would be a no-op — skip it after a single read-only</span>
+<span id="L765"><span class="lineNum">     765</span>              :     // scan.</span>
+<span id="L766"><span class="lineNum">     766</span> <span class="tlaGNC">           1 :     if (!context.hasAnyMatrixToLegalize())</span></span>
+<span id="L767"><span class="lineNum">     767</span>              :         return;</span>
+<span id="L768"><span class="lineNum">     768</span>              : </span>
+<span id="L769"><span class="lineNum">     769</span> <span class="tlaGNC">           1 :     context.processModule();</span></span>
+<span id="L770"><span class="lineNum">     770</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L771"><span class="lineNum">     771</span>              : </span>
+<span id="L772"><span class="lineNum">     772</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

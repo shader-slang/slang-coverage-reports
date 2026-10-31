@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-10-30 05:13:28 UTC</td>
+      <td class="headerValue">2026-10-31 04:28:24 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -455,18 +455,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L164"><span class="lineNum">     164</span>                         : </span>
 <span id="L165"><span class="lineNum">     165</span>                         : SLANG_API SlangResult</span>
 <span id="L166"><span class="lineNum">     166</span>                         : slang_createGlobalSession(SlangInt apiVersion, slang::IGlobalSession** outGlobalSession)</span>
-<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">        1465            : {</span></span>
-<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">        1465            :     SlangGlobalSessionDesc desc = {};</span></span>
-<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">        1465            :     desc.apiVersion = (uint32_t)apiVersion;</span></span>
-<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">        1465            :     return slang_createGlobalSession2(&amp;desc, outGlobalSession);</span></span>
-<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">        1465            : }</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">        1469            : {</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">        1469            :     SlangGlobalSessionDesc desc = {};</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">        1469            :     desc.apiVersion = (uint32_t)apiVersion;</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">        1469            :     return slang_createGlobalSession2(&amp;desc, outGlobalSession);</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">        1469            : }</span></span>
 <span id="L172"><span class="lineNum">     172</span>                         : </span>
 <span id="L173"><span class="lineNum">     173</span>                         : SLANG_API SlangResult slang_createGlobalSessionImpl(</span>
 <span id="L174"><span class="lineNum">     174</span>                         :     const SlangGlobalSessionDesc* desc,</span>
 <span id="L175"><span class="lineNum">     175</span>                         :     const Slang::GlobalSessionInternalDesc* internalDesc,</span>
 <span id="L176"><span class="lineNum">     176</span>                         :     slang::IGlobalSession** outGlobalSession)</span>
-<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">        1928            : {</span></span>
-<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">        1928            :     Slang::ComPtr&lt;slang::IGlobalSession&gt; globalSession;</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">        1932            : {</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">        1932            :     Slang::ComPtr&lt;slang::IGlobalSession&gt; globalSession;</span></span>
 <span id="L179"><span class="lineNum">     179</span>                         : </span>
 <span id="L180"><span class="lineNum">     180</span>                         : #ifdef SLANG_ENABLE_IR_BREAK_ALLOC</span>
 <span id="L181"><span class="lineNum">     181</span>                         :     // Set inst debug alloc counter to 0 so IRInsts for core module always starts from a large</span>
@@ -474,17 +474,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L183"><span class="lineNum">     183</span>                         :     Slang::_debugGetIRAllocCounter() = 0x80000000;</span>
 <span id="L184"><span class="lineNum">     184</span>                         : #endif</span>
 <span id="L185"><span class="lineNum">     185</span>                         : </span>
-<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">        1928 <span class="branchPart" title="br0: 0; br1: 1928">(1/2)</span>      :     SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">        1928            :         slang_createGlobalSessionWithoutCoreModule(desc-&gt;apiVersion, globalSession.writeRef()));</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">        1932 <span class="branchPart" title="br0: 0; br1: 1932">(1/2)</span>      :     SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">        1932            :         slang_createGlobalSessionWithoutCoreModule(desc-&gt;apiVersion, globalSession.writeRef()));</span></span>
 <span id="L188"><span class="lineNum">     188</span>                         : </span>
 <span id="L189"><span class="lineNum">     189</span>                         :     // If we have the embedded core module, load from that, else compile it</span>
-<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">        1928            :     ISlangBlob* coreModuleBlob = slang_getEmbeddedCoreModule();</span></span>
-<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        1928 <span class="branchPart" title="br0: 1928; br1: 0">(1/2)</span>      :     if (coreModuleBlob)</span></span>
-<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">        1928            :     {</span></span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        1928 <span class="branchPart" title="br0: 0; br1: 1928">(1/2)</span>      :         SLANG_RETURN_ON_FAIL(globalSession-&gt;loadCoreModule(</span></span>
-<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">        1928            :             coreModuleBlob-&gt;getBufferPointer(),</span></span>
-<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">        1928            :             coreModuleBlob-&gt;getBufferSize()));</span></span>
-<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">        1928            :     }</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">        1932            :     ISlangBlob* coreModuleBlob = slang_getEmbeddedCoreModule();</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        1932 <span class="branchPart" title="br0: 1932; br1: 0">(1/2)</span>      :     if (coreModuleBlob)</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">        1932            :     {</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        1932 <span class="branchPart" title="br0: 0; br1: 1932">(1/2)</span>      :         SLANG_RETURN_ON_FAIL(globalSession-&gt;loadCoreModule(</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">        1932            :             coreModuleBlob-&gt;getBufferPointer(),</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">        1932            :             coreModuleBlob-&gt;getBufferSize()));</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">        1932            :     }</span></span>
 <span id="L197"><span class="lineNum">     197</span> <span class="tlaUNC">           0            :     else</span></span>
 <span id="L198"><span class="lineNum">     198</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L199"><span class="lineNum">     199</span> <span class="tlaUNC">           0            :         Slang::String cacheFilename;</span></span>
@@ -512,7 +512,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L221"><span class="lineNum">     221</span> <span class="tlaUNC">           0            :         }</span></span>
 <span id="L222"><span class="lineNum">     222</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L223"><span class="lineNum">     223</span>                         : </span>
-<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">        1928 <span class="branchAll" title="br0: 404; br1: 1524">(2/2)</span>      :     if (desc-&gt;enableGLSL)</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">        1932 <span class="branchAll" title="br0: 404; br1: 1528">(2/2)</span>      :     if (desc-&gt;enableGLSL)</span></span>
 <span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">         404            :     {</span></span>
 <span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         404            :         Slang::String cacheFilename;</span></span>
 <span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">         404            :         uint64_t dllTimestamp = 0;</span></span>
@@ -544,43 +544,43 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L253"><span class="lineNum">     253</span> <span class="tlaUNC">           0            :         }</span></span>
 <span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">         404            :     }</span></span>
 <span id="L255"><span class="lineNum">     255</span>                         : </span>
-<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">        1928            :     *outGlobalSession = globalSession.detach();</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">        1932            :     *outGlobalSession = globalSession.detach();</span></span>
 <span id="L257"><span class="lineNum">     257</span>                         : </span>
 <span id="L258"><span class="lineNum">     258</span>                         : #ifdef SLANG_ENABLE_IR_BREAK_ALLOC</span>
 <span id="L259"><span class="lineNum">     259</span>                         :     // Reset inst debug alloc counter to 0 so IRInsts for user code always starts from 0.</span>
 <span id="L260"><span class="lineNum">     260</span>                         :     Slang::_debugGetIRAllocCounter() = 0;</span>
 <span id="L261"><span class="lineNum">     261</span>                         : #endif</span>
 <span id="L262"><span class="lineNum">     262</span>                         : </span>
-<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">        1928            :     return SLANG_OK;</span></span>
-<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">        1928            : }</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">        1932            :     return SLANG_OK;</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">        1932            : }</span></span>
 <span id="L265"><span class="lineNum">     265</span>                         : </span>
 <span id="L266"><span class="lineNum">     266</span>                         : SLANG_API SlangResult slang_createGlobalSession2(</span>
 <span id="L267"><span class="lineNum">     267</span>                         :     const SlangGlobalSessionDesc* desc,</span>
 <span id="L268"><span class="lineNum">     268</span>                         :     slang::IGlobalSession** outGlobalSession)</span>
-<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        1739            : {</span></span>
-<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">        1739            : #if SLANG_ENABLE_RECORD_REPLAY</span></span>
-<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">        1739            :     using namespace SlangRecord;</span></span>
-<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">        1739            :     RECORD_STATIC_CALL();</span></span>
-<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">        1739            :     RECORD_INPUT(*desc);</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        1743            : {</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">        1743            : #if SLANG_ENABLE_RECORD_REPLAY</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">        1743            :     using namespace SlangRecord;</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">        1743            :     RECORD_STATIC_CALL();</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">        1743            :     RECORD_INPUT(*desc);</span></span>
 <span id="L274"><span class="lineNum">     274</span>                         : </span>
 <span id="L275"><span class="lineNum">     275</span>                         :     // Main internal call (regardless of replay state)</span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">        1739            :     Slang::GlobalSessionInternalDesc internalDesc = {};</span></span>
-<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">        1739            :     SlangResult result = slang_createGlobalSessionImpl(desc, &amp;internalDesc, outGlobalSession);</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">        1743            :     Slang::GlobalSessionInternalDesc internalDesc = {};</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">        1743            :     SlangResult result = slang_createGlobalSessionImpl(desc, &amp;internalDesc, outGlobalSession);</span></span>
 <span id="L278"><span class="lineNum">     278</span>                         : </span>
 <span id="L279"><span class="lineNum">     279</span>                         :     // If replay system active, wrap output and record it</span>
-<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">        1739            :     auto* wrapped = wrapObject(*outGlobalSession);</span></span>
-<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">        1739            :     *outGlobalSession = static_cast&lt;slang::IGlobalSession*&gt;(wrapped);</span></span>
-<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">        1739            :     _ctx.record(RecordFlag::Output, *outGlobalSession);</span></span>
-<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">        1739            :     _ctx.record(RecordFlag::ReturnValue, result);</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">        1743            :     auto* wrapped = wrapObject(*outGlobalSession);</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">        1743            :     *outGlobalSession = static_cast&lt;slang::IGlobalSession*&gt;(wrapped);</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">        1743            :     _ctx.record(RecordFlag::Output, *outGlobalSession);</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">        1743            :     _ctx.record(RecordFlag::ReturnValue, result);</span></span>
 <span id="L284"><span class="lineNum">     284</span>                         : </span>
-<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        1739            :     return result;</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        1743            :     return result;</span></span>
 <span id="L286"><span class="lineNum">     286</span>                         : #else</span>
 <span id="L287"><span class="lineNum">     287</span>                         :     // Record-replay compiled out: there is no proxy to wrap the session in, so return the raw</span>
 <span id="L288"><span class="lineNum">     288</span>                         :     // internal session directly.</span>
 <span id="L289"><span class="lineNum">     289</span>                         :     Slang::GlobalSessionInternalDesc internalDesc = {};</span>
 <span id="L290"><span class="lineNum">     290</span>                         :     return slang_createGlobalSessionImpl(desc, &amp;internalDesc, outGlobalSession);</span>
 <span id="L291"><span class="lineNum">     291</span>                         : #endif</span>
-<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">        1739            : }</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">        1743            : }</span></span>
 <span id="L293"><span class="lineNum">     293</span>                         : </span>
 <span id="L294"><span class="lineNum">     294</span>                         : SLANG_API void slang_shutdown()</span>
 <span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">         401            : {</span></span>
@@ -634,9 +634,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L343"><span class="lineNum">     343</span> <span class="tlaUNC">           0            : }</span></span>
 <span id="L344"><span class="lineNum">     344</span>                         : </span>
 <span id="L345"><span class="lineNum">     345</span>                         : SLANG_API void slang_replayMarker(const char* label)</span>
-<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">        1579            : {</span></span>
-<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">        1579            :     SlangRecord::ReplayContext::get().marker(label);</span></span>
-<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">        1579            : }</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">        1583            : {</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">        1583            :     SlangRecord::ReplayContext::get().marker(label);</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">        1583            : }</span></span>
 <span id="L349"><span class="lineNum">     349</span>                         : </span>
 <span id="L350"><span class="lineNum">     350</span>                         : #else</span>
 <span id="L351"><span class="lineNum">     351</span>                         : </span>
@@ -682,21 +682,21 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L391"><span class="lineNum">     391</span>                         : SLANG_API SlangResult slang_createGlobalSessionWithoutCoreModule(</span>
 <span id="L392"><span class="lineNum">     392</span>                         :     SlangInt apiVersion,</span>
 <span id="L393"><span class="lineNum">     393</span>                         :     slang::IGlobalSession** outGlobalSession)</span>
-<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">        1930            : {</span></span>
-<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">        1930 <span class="branchPart" title="br0: 0; br1: 1930">(1/2)</span>      :     if (apiVersion != 0)</span></span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">        1934            : {</span></span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">        1934 <span class="branchPart" title="br0: 0; br1: 1934">(1/2)</span>      :     if (apiVersion != 0)</span></span>
 <span id="L396"><span class="lineNum">     396</span> <span class="tlaUNC">           0            :         return SLANG_E_NOT_IMPLEMENTED;</span></span>
 <span id="L397"><span class="lineNum">     397</span>                         : </span>
 <span id="L398"><span class="lineNum">     398</span>                         :     // Create the session</span>
-<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">        1930            :     Slang::Session* globalSession = new Slang::Session();</span></span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">        1934            :     Slang::Session* globalSession = new Slang::Session();</span></span>
 <span id="L400"><span class="lineNum">     400</span>                         :     // Put an interface ref on it</span>
-<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">        1930            :     Slang::ComPtr&lt;slang::IGlobalSession&gt; result(globalSession);</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">        1934            :     Slang::ComPtr&lt;slang::IGlobalSession&gt; result(globalSession);</span></span>
 <span id="L402"><span class="lineNum">     402</span>                         : </span>
 <span id="L403"><span class="lineNum">     403</span>                         :     // Initialize it</span>
-<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">        1930            :     globalSession-&gt;init();</span></span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">        1934            :     globalSession-&gt;init();</span></span>
 <span id="L405"><span class="lineNum">     405</span>                         : </span>
-<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">        1930            :     *outGlobalSession = result.detach();</span></span>
-<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">        1930            :     return SLANG_OK;</span></span>
-<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">        1930            : }</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">        1934            :     *outGlobalSession = result.detach();</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">        1934            :     return SLANG_OK;</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">        1934            : }</span></span>
 <span id="L409"><span class="lineNum">     409</span>                         : </span>
 <span id="L410"><span class="lineNum">     410</span>                         : SLANG_API const char* slang_getLastInternalErrorMessage()</span>
 <span id="L411"><span class="lineNum">     411</span> <span class="tlaUNC">           0            : {</span></span>
