@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-02 03:18:28 UTC</td>
+      <td class="headerValue">2026-11-03 05:14:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -322,10 +322,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L37"><span class="lineNum">      37</span>              :     TargetProgram(ComponentType* componentType, TargetRequest* targetReq);</span>
 <span id="L38"><span class="lineNum">      38</span>              : </span>
 <span id="L39"><span class="lineNum">      39</span>              :     /// Get the underlying program</span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0 :     ComponentType* getProgram() { return m_program; }</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">           1 :     ComponentType* getProgram() { return m_program; }</span></span>
 <span id="L41"><span class="lineNum">      41</span>              : </span>
 <span id="L42"><span class="lineNum">      42</span>              :     /// Get the underlying target</span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaUNC">           0 :     TargetRequest* getTargetReq() { return m_targetReq; }</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">           1 :     TargetRequest* getTargetReq() { return m_targetReq; }</span></span>
 <span id="L44"><span class="lineNum">      44</span>              : </span>
 <span id="L45"><span class="lineNum">      45</span>              :     /// Get the layout for the program on the target.</span>
 <span id="L46"><span class="lineNum">      46</span>              :     ///</span>
@@ -338,7 +338,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L53"><span class="lineNum">      53</span>              : </span>
 <span id="L54"><span class="lineNum">      54</span>              :     /// Get the existing layout for the program on the target, if already created.</span>
 <span id="L55"><span class="lineNum">      55</span>              :     ///</span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaUNC">           0 :     ProgramLayout* getExistingLayout() { return m_layout; }</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">           1 :     ProgramLayout* getExistingLayout() { return m_layout; }</span></span>
 <span id="L57"><span class="lineNum">      57</span>              : </span>
 <span id="L58"><span class="lineNum">      58</span>              :     /// Get the compiled code for an entry point on the target.</span>
 <span id="L59"><span class="lineNum">      59</span>              :     ///</span>
@@ -350,24 +350,24 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L65"><span class="lineNum">      65</span>              :     IArtifact* getOrCreateWholeProgramResult(DiagnosticSink* sink);</span>
 <span id="L66"><span class="lineNum">      66</span>              : </span>
 <span id="L67"><span class="lineNum">      67</span>              :     IArtifact* getExistingWholeProgramResult()</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L69"><span class="lineNum">      69</span> <span class="tlaUNC">           0 :         // These accessors can race a worker thread publishing the cached whole-program result.</span></span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaUNC">           0 :         std::lock_guard&lt;std::mutex&gt; lock(m_resultCacheMutex);</span></span>
-<span id="L71"><span class="lineNum">      71</span> <span class="tlaUNC">           0 :         return m_wholeProgramResult;</span></span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           1 :         std::lock_guard&lt;std::mutex&gt; lock(m_resultCacheMutex);</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">           1 :         return m_wholeProgramResult;</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L73"><span class="lineNum">      73</span>              :     /// Get the compiled code for an entry point on the target.</span>
 <span id="L74"><span class="lineNum">      74</span>              :     ///</span>
 <span id="L75"><span class="lineNum">      75</span>              :     /// This routine assumes that `getOrCreateEntryPointResult`</span>
 <span id="L76"><span class="lineNum">      76</span>              :     /// has already been called previously.</span>
 <span id="L77"><span class="lineNum">      77</span>              :     ///</span>
 <span id="L78"><span class="lineNum">      78</span>              :     IArtifact* getExistingEntryPointResult(Int entryPointIndex)</span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L80"><span class="lineNum">      80</span> <span class="tlaUNC">           0 :         // Guard both the cache read and the bounds check because the array is resized lazily.</span></span>
-<span id="L81"><span class="lineNum">      81</span> <span class="tlaUNC">           0 :         std::lock_guard&lt;std::mutex&gt; lock(m_resultCacheMutex);</span></span>
-<span id="L82"><span class="lineNum">      82</span> <span class="tlaUNC">           0 :         if (entryPointIndex &lt; 0 || entryPointIndex &gt;= m_entryPointResults.getCount())</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">           1 :         std::lock_guard&lt;std::mutex&gt; lock(m_resultCacheMutex);</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">           1 :         if (entryPointIndex &lt; 0 || entryPointIndex &gt;= m_entryPointResults.getCount())</span></span>
 <span id="L83"><span class="lineNum">      83</span> <span class="tlaUNC">           0 :             return nullptr;</span></span>
-<span id="L84"><span class="lineNum">      84</span> <span class="tlaUNC">           0 :         return m_entryPointResults[entryPointIndex];</span></span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">           1 :         return m_entryPointResults[entryPointIndex];</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L86"><span class="lineNum">      86</span>              : </span>
 <span id="L87"><span class="lineNum">      87</span>              :     IArtifact* _createWholeProgramResult(</span>
 <span id="L88"><span class="lineNum">      88</span>              :         DiagnosticSink* sink,</span>
@@ -387,19 +387,19 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L102"><span class="lineNum">     102</span>              : </span>
 <span id="L103"><span class="lineNum">     103</span>              :     RefPtr&lt;IRModule&gt; getOrCreateIRModuleForLayout(DiagnosticSink* sink);</span>
 <span id="L104"><span class="lineNum">     104</span>              : </span>
-<span id="L105"><span class="lineNum">     105</span> <span class="tlaUNC">           0 :     RefPtr&lt;IRModule&gt; getExistingIRModuleForLayout() { return m_irModuleForLayout; }</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">           1 :     RefPtr&lt;IRModule&gt; getExistingIRModuleForLayout() { return m_irModuleForLayout; }</span></span>
 <span id="L106"><span class="lineNum">     106</span>              : </span>
-<span id="L107"><span class="lineNum">     107</span> <span class="tlaUNC">           0 :     CompilerOptionSet&amp; getOptionSet() { return m_optionSet; }</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">           1 :     CompilerOptionSet&amp; getOptionSet() { return m_optionSet; }</span></span>
 <span id="L108"><span class="lineNum">     108</span>              : </span>
 <span id="L109"><span class="lineNum">     109</span>              :     HLSLToVulkanLayoutOptions* getHLSLToVulkanLayoutOptions()</span>
-<span id="L110"><span class="lineNum">     110</span> <span class="tlaUNC">           0 :     {</span></span>
-<span id="L111"><span class="lineNum">     111</span> <span class="tlaUNC">           0 :         return m_targetReq-&gt;getHLSLToVulkanLayoutOptions();</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">           1 :         return m_targetReq-&gt;getHLSLToVulkanLayoutOptions();</span></span>
 <span id="L112"><span class="lineNum">     112</span> <span class="tlaUNC">           0 :     }</span></span>
 <span id="L113"><span class="lineNum">     113</span>              : </span>
 <span id="L114"><span class="lineNum">     114</span>              :     bool shouldEmitSPIRVDirectly()</span>
-<span id="L115"><span class="lineNum">     115</span> <span class="tlaUNC">           0 :     {</span></span>
-<span id="L116"><span class="lineNum">     116</span> <span class="tlaUNC">           0 :         return isSPIRV(m_targetReq-&gt;getTarget()) &amp;&amp; getOptionSet().shouldEmitSPIRVDirectly();</span></span>
-<span id="L117"><span class="lineNum">     117</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">           1 :         return isSPIRV(m_targetReq-&gt;getTarget()) &amp;&amp; getOptionSet().shouldEmitSPIRVDirectly();</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L118"><span class="lineNum">     118</span>              : </span>
 <span id="L119"><span class="lineNum">     119</span>              : private:</span>
 <span id="L120"><span class="lineNum">     120</span>              :     RefPtr&lt;IRModule&gt; createIRModuleForLayout(DiagnosticSink* sink);</span>
@@ -421,7 +421,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L136"><span class="lineNum">     136</span>              :     RefPtr&lt;ProgramLayout&gt; m_layout;</span>
 <span id="L137"><span class="lineNum">     137</span>              : </span>
 <span id="L138"><span class="lineNum">     138</span>              :     // Whether generating `m_layout` reported errors</span>
-<span id="L139"><span class="lineNum">     139</span>              :     bool m_layoutHasErrors = false;</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">           1 :     bool m_layoutHasErrors = false;</span></span>
 <span id="L140"><span class="lineNum">     140</span>              : </span>
 <span id="L141"><span class="lineNum">     141</span>              :     CompilerOptionSet m_optionSet;</span>
 <span id="L142"><span class="lineNum">     142</span>              :     // Parallel backend emission shares these lazy result caches across threads.</span>

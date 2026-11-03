@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-02 03:18:28 UTC</td>
+      <td class="headerValue">2026-11-03 05:14:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -313,22 +313,22 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L22"><span class="lineNum">      22</span>                         : </span>
 <span id="L23"><span class="lineNum">      23</span>                         : public:</span>
 <span id="L24"><span class="lineNum">      24</span>                         :     RefObject()</span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">   311297122            :         : referenceCount(0)</span></span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">   311297122            :     {</span></span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">   311297122            :     }</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">   311414668            :         : referenceCount(0)</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">   311414668            :     {</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">   311414668            :     }</span></span>
 <span id="L28"><span class="lineNum">      28</span>                         : </span>
 <span id="L29"><span class="lineNum">      29</span>                         :     RefObject(const RefObject&amp;)</span>
 <span id="L30"><span class="lineNum">      30</span>                         :         : referenceCount(0)</span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           1            :     {</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L33"><span class="lineNum">      33</span>                         : </span>
 <span id="L34"><span class="lineNum">      34</span> <span class="tlaUNC">           0            :     RefObject&amp; operator=(const RefObject&amp;) { return *this; }</span></span>
 <span id="L35"><span class="lineNum">      35</span>                         : </span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">   310675212            :     virtual ~RefObject() {}</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">   310793069            :     virtual ~RefObject() {}</span></span>
 <span id="L37"><span class="lineNum">      37</span>                         : </span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">  1459370600            :     UInt addReference() { return referenceCount.fetch_add(1, std::memory_order_relaxed) + 1; }</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">  1460065798            :     UInt addReference() { return referenceCount.fetch_add(1, std::memory_order_relaxed) + 1; }</span></span>
 <span id="L39"><span class="lineNum">      39</span>                         : </span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0            :     UInt decreaseReference() { return referenceCount.fetch_sub(1, std::memory_order_acq_rel) - 1; }</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">           1            :     UInt decreaseReference() { return referenceCount.fetch_sub(1, std::memory_order_acq_rel) - 1; }</span></span>
 <span id="L41"><span class="lineNum">      41</span>                         : </span>
 <span id="L42"><span class="lineNum">      42</span>                         :     // Marked SLANG_NO_INLINE: GCC 13&#x27;s IPA inlines the atomic fetch_sub through</span>
 <span id="L43"><span class="lineNum">      43</span>                         :     // ~RefPtr() into callers and then misidentifies the result as a write to</span>
@@ -339,23 +339,23 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L48"><span class="lineNum">      48</span>                         : #else</span>
 <span id="L49"><span class="lineNum">      49</span>                         :     UInt releaseReference()</span>
 <span id="L50"><span class="lineNum">      50</span>                         : #endif</span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">  1458368417            :     {</span></span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">  1458368417            :         UInt oldCount = referenceCount.fetch_sub(1, std::memory_order_acq_rel);</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">  1458368417            :         SLANG_ASSERT(oldCount != 0);</span></span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">  1458368417 <span class="branchAll" title="br0: 308154188; br1: 1150214229">(2/2)</span>      :         if (oldCount == 1)</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">   308154188            :         {</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">   308154188            :             delete this;</span></span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">   308154188            :             return 0;</span></span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">   308154188            :         }</span></span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">  1150214229            :         return oldCount - 1;</span></span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">  1458368417            :     }</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">  1459062544            :     {</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">  1459062544            :         UInt oldCount = referenceCount.fetch_sub(1, std::memory_order_acq_rel);</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">  1459062544            :         SLANG_ASSERT(oldCount != 0);</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">  1459062544 <span class="branchAll" title="br0: 308269745; br1: 1150792799">(2/2)</span>      :         if (oldCount == 1)</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">   308269745            :         {</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">   308269745            :             delete this;</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">   308269745            :             return 0;</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">   308269745            :         }</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">  1150792799            :         return oldCount - 1;</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">  1459062544            :     }</span></span>
 <span id="L61"><span class="lineNum">      61</span>                         : </span>
 <span id="L62"><span class="lineNum">      62</span>                         :     bool isUniquelyReferenced()</span>
-<span id="L63"><span class="lineNum">      63</span>                         :     {</span>
-<span id="L64"><span class="lineNum">      64</span>                         :         UInt count = referenceCount.load(std::memory_order_acquire);</span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">           1            :     {</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">           1            :         UInt count = referenceCount.load(std::memory_order_acquire);</span></span>
 <span id="L65"><span class="lineNum">      65</span>                         :         SLANG_ASSERT(count != 0);</span>
-<span id="L66"><span class="lineNum">      66</span>                         :         return count == 1;</span>
-<span id="L67"><span class="lineNum">      67</span>                         :     }</span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">           1            :         return count == 1;</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L68"><span class="lineNum">      68</span>                         : </span>
 <span id="L69"><span class="lineNum">      69</span> <span class="tlaUNC">           0            :     UInt debugGetReferenceCount() { return referenceCount.load(std::memory_order_relaxed); }</span></span>
 <span id="L70"><span class="lineNum">      70</span>                         : };</span>
@@ -364,24 +364,24 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L73"><span class="lineNum">      73</span>                         : #endif</span>
 <span id="L74"><span class="lineNum">      74</span>                         : </span>
 <span id="L75"><span class="lineNum">      75</span>                         : SLANG_FORCE_INLINE void addReference(RefObject* obj)</span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">  1723673765            : {</span></span>
-<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">  1723673765 <span class="branchAll" title="br0: 1458775344; br1: 264898421">(2/2)</span>      :     if (obj)</span></span>
-<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">  1458775344            :         obj-&gt;addReference();</span></span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">  1723673765            : }</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">  1725016231            : {</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">  1725016231 <span class="branchAll" title="br0: 1459468687; br1: 265547544">(2/2)</span>      :     if (obj)</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">  1459468687            :         obj-&gt;addReference();</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">  1725016231            : }</span></span>
 <span id="L80"><span class="lineNum">      80</span>                         : </span>
 <span id="L81"><span class="lineNum">      81</span>                         : SLANG_FORCE_INLINE void releaseReference(RefObject* obj)</span>
-<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">  5132821676            : {</span></span>
-<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">  5132821676 <span class="branchAll" title="br0: 1458195563; br1: 3674626113">(2/2)</span>      :     if (obj)</span></span>
-<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">  1458195563            :         obj-&gt;releaseReference();</span></span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">  5132821676            : }</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">  5141910221            : {</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">  5141910221 <span class="branchAll" title="br0: 1458889228; br1: 3683020993">(2/2)</span>      :     if (obj)</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">  1458889228            :         obj-&gt;releaseReference();</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">  5141910221            : }</span></span>
 <span id="L86"><span class="lineNum">      86</span>                         : </span>
 <span id="L87"><span class="lineNum">      87</span>                         : // For straight dynamic cast.</span>
 <span id="L88"><span class="lineNum">      88</span>                         : // Use instead of dynamic_cast as it allows for replacement without using Rtti in the future</span>
 <span id="L89"><span class="lineNum">      89</span>                         : template&lt;typename T&gt;</span>
 <span id="L90"><span class="lineNum">      90</span>                         : SLANG_FORCE_INLINE T* dynamicCast(RefObject* obj)</span>
-<span id="L91"><span class="lineNum">      91</span>                         : {</span>
-<span id="L92"><span class="lineNum">      92</span>                         :     return dynamic_cast&lt;T*&gt;(obj);</span>
-<span id="L93"><span class="lineNum">      93</span>                         : }</span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">           1            : {</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">           1            :     return dynamic_cast&lt;T*&gt;(obj);</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">           1            : }</span></span>
 <span id="L94"><span class="lineNum">      94</span>                         : template&lt;typename T&gt;</span>
 <span id="L95"><span class="lineNum">      95</span>                         : SLANG_FORCE_INLINE const T* dynamicCast(const RefObject* obj)</span>
 <span id="L96"><span class="lineNum">      96</span>                         : {</span>
@@ -392,8 +392,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L101"><span class="lineNum">     101</span>                         : // it</span>
 <span id="L102"><span class="lineNum">     102</span>                         : template&lt;typename T&gt;</span>
 <span id="L103"><span class="lineNum">     103</span>                         : SLANG_FORCE_INLINE T* as(RefObject* obj)</span>
-<span id="L104"><span class="lineNum">     104</span>                         : {</span>
-<span id="L105"><span class="lineNum">     105</span>                         :     return dynamicCast&lt;T&gt;(obj);</span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">           1            : {</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">           1            :     return dynamicCast&lt;T&gt;(obj);</span></span>
 <span id="L106"><span class="lineNum">     106</span>                         : }</span>
 <span id="L107"><span class="lineNum">     107</span>                         : template&lt;typename T&gt;</span>
 <span id="L108"><span class="lineNum">     108</span>                         : SLANG_FORCE_INLINE const T* as(const RefObject* obj)</span>
@@ -406,9 +406,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L115"><span class="lineNum">     115</span>                         : struct SLANG_RT_API RefPtr</span>
 <span id="L116"><span class="lineNum">     116</span>                         : {</span>
 <span id="L117"><span class="lineNum">     117</span>                         :     RefPtr()</span>
-<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">  1234008741            :         : pointer(nullptr)</span></span>
-<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">  1234008741            :     {</span></span>
-<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">  1234008741            :     }</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">  1236947334            :         : pointer(nullptr)</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">  1236947334            :     {</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">  1236947334            :     }</span></span>
 <span id="L121"><span class="lineNum">     121</span>                         : </span>
 <span id="L122"><span class="lineNum">     122</span>                         :     RefPtr(T* p)</span>
 <span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">         803            :         : pointer(p)</span></span>
@@ -417,23 +417,23 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">         803            :     }</span></span>
 <span id="L127"><span class="lineNum">     127</span>                         : </span>
 <span id="L128"><span class="lineNum">     128</span>                         :     RefPtr(RefPtr&lt;T&gt; const&amp; p)</span>
-<span id="L129"><span class="lineNum">     129</span>                         :         : pointer(p.pointer)</span>
-<span id="L130"><span class="lineNum">     130</span>                         :     {</span>
-<span id="L131"><span class="lineNum">     131</span>                         :         addReference(p.pointer);</span>
-<span id="L132"><span class="lineNum">     132</span>                         :     }</span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">           1            :         : pointer(p.pointer)</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">           1            :     {</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">           1            :         addReference(p.pointer);</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L133"><span class="lineNum">     133</span>                         : </span>
 <span id="L134"><span class="lineNum">     134</span>                         :     RefPtr(RefPtr&lt;T&gt;&amp;&amp; p)</span>
-<span id="L135"><span class="lineNum">     135</span>                         :         : pointer(p.pointer)</span>
-<span id="L136"><span class="lineNum">     136</span>                         :     {</span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">           1            :         : pointer(p.pointer)</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">           1            :     {</span></span>
 <span id="L137"><span class="lineNum">     137</span>                         :         p.pointer = nullptr;</span>
-<span id="L138"><span class="lineNum">     138</span>                         :     }</span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L139"><span class="lineNum">     139</span>                         : </span>
 <span id="L140"><span class="lineNum">     140</span>                         :     template&lt;typename U&gt;</span>
 <span id="L141"><span class="lineNum">     141</span>                         :     RefPtr(RefPtr&lt;U&gt; const&amp; p, typename EnableIf&lt;IsConvertible&lt;T*, U*&gt;::Value, void&gt;::type* = 0)</span>
-<span id="L142"><span class="lineNum">     142</span>                         :         : pointer(static_cast&lt;U*&gt;(p))</span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">           1            :         : pointer(static_cast&lt;U*&gt;(p))</span></span>
 <span id="L143"><span class="lineNum">     143</span>                         :     {</span>
-<span id="L144"><span class="lineNum">     144</span>                         :         addReference(static_cast&lt;U*&gt;(p));</span>
-<span id="L145"><span class="lineNum">     145</span>                         :     }</span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">           1            :         addReference(static_cast&lt;U*&gt;(p));</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L146"><span class="lineNum">     146</span>                         : </span>
 <span id="L147"><span class="lineNum">     147</span>                         : #if 0</span>
 <span id="L148"><span class="lineNum">     148</span>                         :         void operator=(T* p)</span>
@@ -446,19 +446,19 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L155"><span class="lineNum">     155</span>                         : #endif</span>
 <span id="L156"><span class="lineNum">     156</span>                         : </span>
 <span id="L157"><span class="lineNum">     157</span>                         :     void operator=(RefPtr&lt;T&gt; const&amp; p)</span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">   211513440            :     {</span></span>
-<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">   211513440            :         T* old = pointer;</span></span>
-<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">   211513440            :         addReference(p.pointer);</span></span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">   211513440            :         pointer = p.pointer;</span></span>
-<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">   211513440            :         releaseReference(old);</span></span>
-<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">   211513440            :     }</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">   211829728            :     {</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">   211829728            :         T* old = pointer;</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">   211829728            :         addReference(p.pointer);</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">   211829728            :         pointer = p.pointer;</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">   211829728            :         releaseReference(old);</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">   211829728            :     }</span></span>
 <span id="L164"><span class="lineNum">     164</span>                         : </span>
 <span id="L165"><span class="lineNum">     165</span>                         :     void operator=(RefPtr&lt;T&gt;&amp;&amp; p)</span>
-<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">   102447321            :     {</span></span>
-<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">   102447321            :         T* old = pointer;</span></span>
-<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">   102447321            :         pointer = p.pointer;</span></span>
-<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">   102447321            :         p.pointer = old;</span></span>
-<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">   102447321            :     }</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">   102530057            :     {</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">   102530057            :         T* old = pointer;</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">   102530057            :         pointer = p.pointer;</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">   102530057            :         p.pointer = old;</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">   102530057            :     }</span></span>
 <span id="L171"><span class="lineNum">     171</span>                         : </span>
 <span id="L172"><span class="lineNum">     172</span>                         :     template&lt;typename U&gt;</span>
 <span id="L173"><span class="lineNum">     173</span>                         :     typename EnableIf&lt;IsConvertible&lt;T*, U*&gt;::value, void&gt;::type operator=(RefPtr&lt;U&gt; const&amp; p)</span>
@@ -470,21 +470,21 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L179"><span class="lineNum">     179</span>                         :     }</span>
 <span id="L180"><span class="lineNum">     180</span>                         : </span>
 <span id="L181"><span class="lineNum">     181</span>                         :     HashCode getHashCode() const</span>
-<span id="L182"><span class="lineNum">     182</span>                         :     {</span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">           1            :     {</span></span>
 <span id="L183"><span class="lineNum">     183</span>                         :         // Note: We need a `RefPtr&lt;T&gt;` to hash the same as a `T*`,</span>
 <span id="L184"><span class="lineNum">     184</span>                         :         // so that a `T*` can be used as a key in a dictionary with</span>
 <span id="L185"><span class="lineNum">     185</span>                         :         // `RefPtr&lt;T&gt;` keys, and vice versa.</span>
 <span id="L186"><span class="lineNum">     186</span>                         :         //</span>
-<span id="L187"><span class="lineNum">     187</span>                         :         return Slang::getHashCode(pointer);</span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">           1            :         return Slang::getHashCode(pointer);</span></span>
 <span id="L188"><span class="lineNum">     188</span>                         :     }</span>
 <span id="L189"><span class="lineNum">     189</span>                         : </span>
-<span id="L190"><span class="lineNum">     190</span> <span class="tlaUNC">           0            :     bool operator==(const T* ptr) const { return pointer == ptr; }</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">           1            :     bool operator==(const T* ptr) const { return pointer == ptr; }</span></span>
 <span id="L191"><span class="lineNum">     191</span>                         : </span>
-<span id="L192"><span class="lineNum">     192</span>                         :     bool operator!=(const T* ptr) const { return pointer != ptr; }</span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">           1            :     bool operator!=(const T* ptr) const { return pointer != ptr; }</span></span>
 <span id="L193"><span class="lineNum">     193</span>                         : </span>
-<span id="L194"><span class="lineNum">     194</span>                         :     bool operator==(RefPtr&lt;T&gt; const&amp; ptr) const { return pointer == ptr.pointer; }</span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">           1            :     bool operator==(RefPtr&lt;T&gt; const&amp; ptr) const { return pointer == ptr.pointer; }</span></span>
 <span id="L195"><span class="lineNum">     195</span>                         : </span>
-<span id="L196"><span class="lineNum">     196</span>                         :     bool operator!=(RefPtr&lt;T&gt; const&amp; ptr) const { return pointer != ptr.pointer; }</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">           1            :     bool operator!=(RefPtr&lt;T&gt; const&amp; ptr) const { return pointer != ptr.pointer; }</span></span>
 <span id="L197"><span class="lineNum">     197</span>                         : </span>
 <span id="L198"><span class="lineNum">     198</span>                         :     template&lt;typename U&gt;</span>
 <span id="L199"><span class="lineNum">     199</span>                         :     RefPtr&lt;U&gt; dynamicCast() const</span>
@@ -494,9 +494,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L203"><span class="lineNum">     203</span>                         : </span>
 <span id="L204"><span class="lineNum">     204</span>                         :     template&lt;typename U&gt;</span>
 <span id="L205"><span class="lineNum">     205</span>                         :     RefPtr&lt;U&gt; as() const</span>
-<span id="L206"><span class="lineNum">     206</span>                         :     {</span>
-<span id="L207"><span class="lineNum">     207</span>                         :         return RefPtr&lt;U&gt;(Slang::as&lt;U&gt;(pointer));</span>
-<span id="L208"><span class="lineNum">     208</span>                         :     }</span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">           1            :     {</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">           1            :         return RefPtr&lt;U&gt;(Slang::as&lt;U&gt;(pointer));</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L209"><span class="lineNum">     209</span>                         : </span>
 <span id="L210"><span class="lineNum">     210</span>                         :     template&lt;typename U&gt;</span>
 <span id="L211"><span class="lineNum">     211</span>                         :     bool is() const</span>
@@ -504,17 +504,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L213"><span class="lineNum">     213</span>                         :         return Slang::as&lt;U&gt;(pointer) != nullptr;</span>
 <span id="L214"><span class="lineNum">     214</span>                         :     }</span>
 <span id="L215"><span class="lineNum">     215</span>                         : </span>
-<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">  1303481227            :     ~RefPtr() { releaseReference(static_cast&lt;Slang::RefObject*&gt;(pointer)); }</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">  1306463053            :     ~RefPtr() { releaseReference(static_cast&lt;Slang::RefObject*&gt;(pointer)); }</span></span>
 <span id="L217"><span class="lineNum">     217</span>                         : </span>
-<span id="L218"><span class="lineNum">     218</span> <span class="tlaUNC">           0            :     T&amp; operator*() const { return *pointer; }</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">           1            :     T&amp; operator*() const { return *pointer; }</span></span>
 <span id="L219"><span class="lineNum">     219</span>                         : </span>
-<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">  1839180838            :     T* operator-&gt;() const { return pointer; }</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">  1840589498            :     T* operator-&gt;() const { return pointer; }</span></span>
 <span id="L221"><span class="lineNum">     221</span>                         : </span>
-<span id="L222"><span class="lineNum">     222</span> <span class="tlaUNC">           0            :     T* Ptr() const { return pointer; }</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">           1            :     T* Ptr() const { return pointer; }</span></span>
 <span id="L223"><span class="lineNum">     223</span>                         : </span>
-<span id="L224"><span class="lineNum">     224</span>                         :     T* get() const { return pointer; }</span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">           1            :     T* get() const { return pointer; }</span></span>
 <span id="L225"><span class="lineNum">     225</span>                         : </span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">  1181622862            :     operator T*() const { return pointer; }</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">  1182567497            :     operator T*() const { return pointer; }</span></span>
 <span id="L227"><span class="lineNum">     227</span>                         : </span>
 <span id="L228"><span class="lineNum">     228</span>                         :     void attach(T* p)</span>
 <span id="L229"><span class="lineNum">     229</span>                         :     {</span>
@@ -524,11 +524,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L233"><span class="lineNum">     233</span>                         :     }</span>
 <span id="L234"><span class="lineNum">     234</span>                         : </span>
 <span id="L235"><span class="lineNum">     235</span>                         :     T* detach()</span>
-<span id="L236"><span class="lineNum">     236</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L237"><span class="lineNum">     237</span> <span class="tlaUNC">           0            :         auto rs = pointer;</span></span>
-<span id="L238"><span class="lineNum">     238</span> <span class="tlaUNC">           0            :         pointer = nullptr;</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">           1            :     {</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">           1            :         auto rs = pointer;</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">           1            :         pointer = nullptr;</span></span>
 <span id="L239"><span class="lineNum">     239</span> <span class="tlaUNC">           0            :         return rs;</span></span>
-<span id="L240"><span class="lineNum">     240</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L241"><span class="lineNum">     241</span>                         : </span>
 <span id="L242"><span class="lineNum">     242</span>                         :     void swapWith(RefPtr&lt;T&gt;&amp; rhs)</span>
 <span id="L243"><span class="lineNum">     243</span> <span class="tlaUNC">           0            :     {</span></span>
@@ -538,10 +538,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L247"><span class="lineNum">     247</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L248"><span class="lineNum">     248</span>                         : </span>
 <span id="L249"><span class="lineNum">     249</span>                         :     SLANG_FORCE_INLINE void setNull()</span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">  1234399430            :     {</span></span>
-<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">  1234399430            :         releaseReference(pointer);</span></span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">  1234399430            :         pointer = nullptr;</span></span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">  1234399430            :     }</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">  1237487236            :     {</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">  1237487236            :         releaseReference(pointer);</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">  1237487236            :         pointer = nullptr;</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">  1237487236            :     }</span></span>
 <span id="L254"><span class="lineNum">     254</span>                         : </span>
 <span id="L255"><span class="lineNum">     255</span>                         :     /// Get ready for writing (nulls contents)</span>
 <span id="L256"><span class="lineNum">     256</span>                         :     SLANG_FORCE_INLINE T** writeRef()</span>
@@ -551,7 +551,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L260"><span class="lineNum">     260</span>                         :     }</span>
 <span id="L261"><span class="lineNum">     261</span>                         : </span>
 <span id="L262"><span class="lineNum">     262</span>                         :     /// Get for read access</span>
-<span id="L263"><span class="lineNum">     263</span>                         :     SLANG_FORCE_INLINE T* const* readRef() const { return &amp;pointer; }</span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">           1            :     SLANG_FORCE_INLINE T* const* readRef() const { return &amp;pointer; }</span></span>
 <span id="L264"><span class="lineNum">     264</span>                         : </span>
 <span id="L265"><span class="lineNum">     265</span>                         : private:</span>
 <span id="L266"><span class="lineNum">     266</span>                         :     T* pointer;</span>
@@ -582,44 +582,44 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L291"><span class="lineNum">     291</span>                         : class TransformablePtr</span>
 <span id="L292"><span class="lineNum">     292</span>                         : {</span>
 <span id="L293"><span class="lineNum">     293</span>                         : private:</span>
-<span id="L294"><span class="lineNum">     294</span>                         :     T* m_weakPtr = nullptr;</span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">           1            :     T* m_weakPtr = nullptr;</span></span>
 <span id="L295"><span class="lineNum">     295</span>                         :     RefPtr&lt;T&gt; m_strongPtr;</span>
 <span id="L296"><span class="lineNum">     296</span>                         : </span>
 <span id="L297"><span class="lineNum">     297</span>                         : public:</span>
-<span id="L298"><span class="lineNum">     298</span>                         :     TransformablePtr() = default;</span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">           1            :     TransformablePtr() = default;</span></span>
 <span id="L299"><span class="lineNum">     299</span>                         :     TransformablePtr(T* ptr) { *this = ptr; }</span>
 <span id="L300"><span class="lineNum">     300</span>                         :     TransformablePtr(RefPtr&lt;T&gt; ptr) { *this = ptr; }</span>
-<span id="L301"><span class="lineNum">     301</span>                         :     TransformablePtr(const TransformablePtr&lt;T&gt;&amp; ptr) = default;</span>
-<span id="L302"><span class="lineNum">     302</span>                         :     TransformablePtr&lt;T&gt;&amp; operator=(const TransformablePtr&lt;T&gt;&amp; ptr) = default;</span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">           1            :     TransformablePtr(const TransformablePtr&lt;T&gt;&amp; ptr) = default;</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">           1            :     TransformablePtr&lt;T&gt;&amp; operator=(const TransformablePtr&lt;T&gt;&amp; ptr) = default;</span></span>
 <span id="L303"><span class="lineNum">     303</span>                         : </span>
 <span id="L304"><span class="lineNum">     304</span>                         :     void promoteToStrongReference() { m_strongPtr = m_weakPtr; }</span>
-<span id="L305"><span class="lineNum">     305</span>                         :     void demoteToWeakReference() { m_strongPtr = nullptr; }</span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">           1            :     void demoteToWeakReference() { m_strongPtr = nullptr; }</span></span>
 <span id="L306"><span class="lineNum">     306</span>                         :     bool isStrongReference() const { return m_strongPtr != nullptr; }</span>
 <span id="L307"><span class="lineNum">     307</span>                         : </span>
 <span id="L308"><span class="lineNum">     308</span>                         :     T&amp; operator*() const { return *m_weakPtr; }</span>
 <span id="L309"><span class="lineNum">     309</span>                         : </span>
-<span id="L310"><span class="lineNum">     310</span>                         :     T* operator-&gt;() const { return m_weakPtr; }</span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">           1            :     T* operator-&gt;() const { return m_weakPtr; }</span></span>
 <span id="L311"><span class="lineNum">     311</span>                         : </span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaUNC">           0            :     T* Ptr() const { return m_weakPtr; }</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">           1            :     T* Ptr() const { return m_weakPtr; }</span></span>
 <span id="L313"><span class="lineNum">     313</span>                         :     T* get() const { return m_weakPtr; }</span>
 <span id="L314"><span class="lineNum">     314</span>                         : </span>
-<span id="L315"><span class="lineNum">     315</span>                         :     operator T*() const { return m_weakPtr; }</span>
-<span id="L316"><span class="lineNum">     316</span>                         :     operator RefPtr&lt;T&gt;() const { return m_weakPtr; }</span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           1            :     operator T*() const { return m_weakPtr; }</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">           1            :     operator RefPtr&lt;T&gt;() const { return m_weakPtr; }</span></span>
 <span id="L317"><span class="lineNum">     317</span>                         : </span>
 <span id="L318"><span class="lineNum">     318</span>                         : </span>
 <span id="L319"><span class="lineNum">     319</span>                         :     TransformablePtr&lt;T&gt;&amp; operator=(T* ptr)</span>
-<span id="L320"><span class="lineNum">     320</span>                         :     {</span>
-<span id="L321"><span class="lineNum">     321</span>                         :         m_weakPtr = ptr;</span>
-<span id="L322"><span class="lineNum">     322</span>                         :         m_strongPtr = ptr;</span>
-<span id="L323"><span class="lineNum">     323</span>                         :         return *this;</span>
-<span id="L324"><span class="lineNum">     324</span>                         :     }</span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">           1            :     {</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">           1            :         m_weakPtr = ptr;</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">           1            :         m_strongPtr = ptr;</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">           1            :         return *this;</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L325"><span class="lineNum">     325</span>                         :     template&lt;typename U&gt;</span>
 <span id="L326"><span class="lineNum">     326</span>                         :     TransformablePtr&lt;T&gt;&amp; operator=(const RefPtr&lt;U&gt;&amp; ptr)</span>
-<span id="L327"><span class="lineNum">     327</span>                         :     {</span>
-<span id="L328"><span class="lineNum">     328</span>                         :         m_weakPtr = ptr.Ptr();</span>
-<span id="L329"><span class="lineNum">     329</span>                         :         m_strongPtr = ptr;</span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">           1            :     {</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">           1            :         m_weakPtr = ptr.Ptr();</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">           1            :         m_strongPtr = ptr;</span></span>
 <span id="L330"><span class="lineNum">     330</span>                         :         return *this;</span>
-<span id="L331"><span class="lineNum">     331</span>                         :     }</span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L332"><span class="lineNum">     332</span>                         : </span>
 <span id="L333"><span class="lineNum">     333</span>                         :     HashCode getHashCode() const</span>
 <span id="L334"><span class="lineNum">     334</span>                         :     {</span>
@@ -634,7 +634,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L343"><span class="lineNum">     343</span>                         : </span>
 <span id="L344"><span class="lineNum">     344</span>                         :     bool operator!=(const T* ptr) const { return m_weakPtr != ptr; }</span>
 <span id="L345"><span class="lineNum">     345</span>                         : </span>
-<span id="L346"><span class="lineNum">     346</span>                         :     bool operator==(RefPtr&lt;T&gt; const&amp; ptr) const { return m_weakPtr == ptr.Ptr(); }</span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">           1            :     bool operator==(RefPtr&lt;T&gt; const&amp; ptr) const { return m_weakPtr == ptr.Ptr(); }</span></span>
 <span id="L347"><span class="lineNum">     347</span>                         : </span>
 <span id="L348"><span class="lineNum">     348</span>                         :     bool operator!=(RefPtr&lt;T&gt; const&amp; ptr) const { return m_weakPtr != ptr.Ptr(); }</span>
 <span id="L349"><span class="lineNum">     349</span>                         : </span>
