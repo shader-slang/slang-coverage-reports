@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-04 04:44:41 UTC</td>
+      <td class="headerValue">2026-11-05 05:16:55 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -1081,46 +1081,50 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L808"><span class="lineNum">     808</span> <span class="tlaGNC">           1 :     UInt m_uniqueIDCounter = 1;</span></span>
 <span id="L809"><span class="lineNum">     809</span>              :     Dictionary&lt;IRInst*, UInt&gt; m_mapIRValueToID;</span>
 <span id="L810"><span class="lineNum">     810</span>              : </span>
-<span id="L811"><span class="lineNum">     811</span>              :     HashSet&lt;String&gt; m_irDeclsVisited;</span>
-<span id="L812"><span class="lineNum">     812</span>              : </span>
-<span id="L813"><span class="lineNum">     813</span>              :     HashSet&lt;String&gt; m_irTupleTypes;</span>
+<span id="L811"><span class="lineNum">     811</span>              :     // Memoised doesCalleeHaveSideEffect: emit does not change callees&#x27; associations, and without</span>
+<span id="L812"><span class="lineNum">     812</span>              :     // the cache every fold query walks the callee&#x27;s whole use list (quadratic in call sites).</span>
+<span id="L813"><span class="lineNum">     813</span>              :     Dictionary&lt;IRInst*, bool&gt; m_calleeSideEffectCache;</span>
 <span id="L814"><span class="lineNum">     814</span>              : </span>
-<span id="L815"><span class="lineNum">     815</span>              :     // The &quot;effective&quot; profile that is being used to emit code,</span>
-<span id="L816"><span class="lineNum">     816</span>              :     // combining information from the target and entry point.</span>
-<span id="L817"><span class="lineNum">     817</span>              :     Profile m_effectiveProfile;</span>
+<span id="L815"><span class="lineNum">     815</span>              :     HashSet&lt;String&gt; m_irDeclsVisited;</span>
+<span id="L816"><span class="lineNum">     816</span>              : </span>
+<span id="L817"><span class="lineNum">     817</span>              :     HashSet&lt;String&gt; m_irTupleTypes;</span>
 <span id="L818"><span class="lineNum">     818</span>              : </span>
-<span id="L819"><span class="lineNum">     819</span>              :     // Map a string name to the number of times we have seen this</span>
-<span id="L820"><span class="lineNum">     820</span>              :     // name used so far during code emission.</span>
-<span id="L821"><span class="lineNum">     821</span>              :     Dictionary&lt;String, UInt&gt; m_uniqueNameCounters;</span>
+<span id="L819"><span class="lineNum">     819</span>              :     // The &quot;effective&quot; profile that is being used to emit code,</span>
+<span id="L820"><span class="lineNum">     820</span>              :     // combining information from the target and entry point.</span>
+<span id="L821"><span class="lineNum">     821</span>              :     Profile m_effectiveProfile;</span>
 <span id="L822"><span class="lineNum">     822</span>              : </span>
-<span id="L823"><span class="lineNum">     823</span>              :     // Map an IR instruction to the name that we&#x27;ve decided</span>
-<span id="L824"><span class="lineNum">     824</span>              :     // to use for it when emitting code.</span>
-<span id="L825"><span class="lineNum">     825</span>              :     Dictionary&lt;IRInst*, String&gt; m_mapInstToName;</span>
+<span id="L823"><span class="lineNum">     823</span>              :     // Map a string name to the number of times we have seen this</span>
+<span id="L824"><span class="lineNum">     824</span>              :     // name used so far during code emission.</span>
+<span id="L825"><span class="lineNum">     825</span>              :     Dictionary&lt;String, UInt&gt; m_uniqueNameCounters;</span>
 <span id="L826"><span class="lineNum">     826</span>              : </span>
-<span id="L827"><span class="lineNum">     827</span>              :     OrderedHashSet&lt;IRStringLit*&gt; m_requiredPreludes;</span>
-<span id="L828"><span class="lineNum">     828</span>              : </span>
-<span id="L829"><span class="lineNum">     829</span>              :     Dictionary&lt;const char*, IRStringLit*&gt; m_builtinPreludes;</span>
+<span id="L827"><span class="lineNum">     827</span>              :     // Map an IR instruction to the name that we&#x27;ve decided</span>
+<span id="L828"><span class="lineNum">     828</span>              :     // to use for it when emitting code.</span>
+<span id="L829"><span class="lineNum">     829</span>              :     Dictionary&lt;IRInst*, String&gt; m_mapInstToName;</span>
 <span id="L830"><span class="lineNum">     830</span>              : </span>
-<span id="L831"><span class="lineNum">     831</span> <span class="tlaGNC">           1 :     Dictionary&lt;IRInst*, bool&gt;* m_foldSafetyCache = nullptr;</span></span>
+<span id="L831"><span class="lineNum">     831</span>              :     OrderedHashSet&lt;IRStringLit*&gt; m_requiredPreludes;</span>
 <span id="L832"><span class="lineNum">     832</span>              : </span>
-<span id="L833"><span class="lineNum">     833</span>              :     bool isSafeToFoldIntoUseSitesUncached(IRInst* inst);</span>
+<span id="L833"><span class="lineNum">     833</span>              :     Dictionary&lt;const char*, IRStringLit*&gt; m_builtinPreludes;</span>
 <span id="L834"><span class="lineNum">     834</span>              : </span>
-<span id="L835"><span class="lineNum">     835</span>              :     // Rename entry point if target doesn&#x27;t allow the name (e.g., &#x27;main&#x27;)</span>
-<span id="L836"><span class="lineNum">     836</span>              :     virtual String maybeMakeEntryPointNameValid(String name, DiagnosticSink* sink);</span>
-<span id="L837"><span class="lineNum">     837</span>              : </span>
-<span id="L838"><span class="lineNum">     838</span>              :     // Indicates if we are emiting for Optix cooperative vector.</span>
-<span id="L839"><span class="lineNum">     839</span> <span class="tlaGNC">           1 :     bool isOptixCoopVec = false;</span></span>
-<span id="L840"><span class="lineNum">     840</span>              : </span>
-<span id="L841"><span class="lineNum">     841</span>              :     // Set of diagnostic IDs that have already been reported to prevent duplicates</span>
-<span id="L842"><span class="lineNum">     842</span>              :     HashSet&lt;int&gt; m_reportedDiagnosticIds;</span>
-<span id="L843"><span class="lineNum">     843</span>              : </span>
-<span id="L844"><span class="lineNum">     844</span>              :     // Set of diagnostic keys (ID + all parameters) that have already been reported to prevent</span>
-<span id="L845"><span class="lineNum">     845</span>              :     // duplicates</span>
-<span id="L846"><span class="lineNum">     846</span>              :     HashSet&lt;String&gt; m_reportedDiagnosticKeys;</span>
-<span id="L847"><span class="lineNum">     847</span>              : };</span>
-<span id="L848"><span class="lineNum">     848</span>              : </span>
-<span id="L849"><span class="lineNum">     849</span>              : } // namespace Slang</span>
-<span id="L850"><span class="lineNum">     850</span>              : #endif</span>
+<span id="L835"><span class="lineNum">     835</span> <span class="tlaGNC">           1 :     Dictionary&lt;IRInst*, bool&gt;* m_foldSafetyCache = nullptr;</span></span>
+<span id="L836"><span class="lineNum">     836</span>              : </span>
+<span id="L837"><span class="lineNum">     837</span>              :     bool isSafeToFoldIntoUseSitesUncached(IRInst* inst);</span>
+<span id="L838"><span class="lineNum">     838</span>              : </span>
+<span id="L839"><span class="lineNum">     839</span>              :     // Rename entry point if target doesn&#x27;t allow the name (e.g., &#x27;main&#x27;)</span>
+<span id="L840"><span class="lineNum">     840</span>              :     virtual String maybeMakeEntryPointNameValid(String name, DiagnosticSink* sink);</span>
+<span id="L841"><span class="lineNum">     841</span>              : </span>
+<span id="L842"><span class="lineNum">     842</span>              :     // Indicates if we are emiting for Optix cooperative vector.</span>
+<span id="L843"><span class="lineNum">     843</span> <span class="tlaGNC">           1 :     bool isOptixCoopVec = false;</span></span>
+<span id="L844"><span class="lineNum">     844</span>              : </span>
+<span id="L845"><span class="lineNum">     845</span>              :     // Set of diagnostic IDs that have already been reported to prevent duplicates</span>
+<span id="L846"><span class="lineNum">     846</span>              :     HashSet&lt;int&gt; m_reportedDiagnosticIds;</span>
+<span id="L847"><span class="lineNum">     847</span>              : </span>
+<span id="L848"><span class="lineNum">     848</span>              :     // Set of diagnostic keys (ID + all parameters) that have already been reported to prevent</span>
+<span id="L849"><span class="lineNum">     849</span>              :     // duplicates</span>
+<span id="L850"><span class="lineNum">     850</span>              :     HashSet&lt;String&gt; m_reportedDiagnosticKeys;</span>
+<span id="L851"><span class="lineNum">     851</span>              : };</span>
+<span id="L852"><span class="lineNum">     852</span>              : </span>
+<span id="L853"><span class="lineNum">     853</span>              : } // namespace Slang</span>
+<span id="L854"><span class="lineNum">     854</span>              : #endif</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

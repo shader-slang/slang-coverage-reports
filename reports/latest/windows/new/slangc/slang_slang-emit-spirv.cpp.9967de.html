@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-04 04:44:41 UTC</td>
+      <td class="headerValue">2026-11-05 05:16:55 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">89.3&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:89.3%;background-color:hsl(104, 70%, 50%)"></div></div>
-      <span class="metricCounts">3,877 / 4,342</span>
+      <span class="metricValue">89.6&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:89.6%;background-color:hsl(104, 70%, 50%)"></div></div>
+      <span class="metricCounts">3,891 / 4,342</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -9805,35 +9805,35 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L9532"><span class="lineNum">    9532</span>              :         IRFloatCast* inst,</span>
 <span id="L9533"><span class="lineNum">    9533</span>              :         IRMatrixType* fromTypeM,</span>
 <span id="L9534"><span class="lineNum">    9534</span>              :         IRMatrixType* toTypeM)</span>
-<span id="L9535"><span class="lineNum">    9535</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L9535"><span class="lineNum">    9535</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L9536"><span class="lineNum">    9536</span>              :         // Because there is no spirv instruction to convert matrix to matrix, we need to convert it</span>
 <span id="L9537"><span class="lineNum">    9537</span>              :         // row by row.</span>
-<span id="L9538"><span class="lineNum">    9538</span> <span class="tlaUNC">           0 :         auto rowCount = getIntVal(fromTypeM-&gt;getRowCount());</span></span>
-<span id="L9539"><span class="lineNum">    9539</span> <span class="tlaUNC">           0 :         auto colCount = getIntVal(fromTypeM-&gt;getColumnCount());</span></span>
+<span id="L9538"><span class="lineNum">    9538</span> <span class="tlaGNC">           1 :         auto rowCount = getIntVal(fromTypeM-&gt;getRowCount());</span></span>
+<span id="L9539"><span class="lineNum">    9539</span> <span class="tlaGNC">           1 :         auto colCount = getIntVal(fromTypeM-&gt;getColumnCount());</span></span>
 <span id="L9540"><span class="lineNum">    9540</span>              : </span>
-<span id="L9541"><span class="lineNum">    9541</span> <span class="tlaUNC">           0 :         IRBuilder builder(m_irModule);</span></span>
+<span id="L9541"><span class="lineNum">    9541</span> <span class="tlaGNC">           1 :         IRBuilder builder(m_irModule);</span></span>
 <span id="L9542"><span class="lineNum">    9542</span>              :         // Get from and to type of the row vector</span>
-<span id="L9543"><span class="lineNum">    9543</span> <span class="tlaUNC">           0 :         auto fromTypeV = builder.getVectorType(fromTypeM-&gt;getElementType(), colCount);</span></span>
-<span id="L9544"><span class="lineNum">    9544</span> <span class="tlaUNC">           0 :         auto toVectorV = builder.getVectorType(toTypeM-&gt;getElementType(), colCount);</span></span>
+<span id="L9543"><span class="lineNum">    9543</span> <span class="tlaGNC">           1 :         auto fromTypeV = builder.getVectorType(fromTypeM-&gt;getElementType(), colCount);</span></span>
+<span id="L9544"><span class="lineNum">    9544</span> <span class="tlaGNC">           1 :         auto toVectorV = builder.getVectorType(toTypeM-&gt;getElementType(), colCount);</span></span>
 <span id="L9545"><span class="lineNum">    9545</span>              : </span>
-<span id="L9546"><span class="lineNum">    9546</span> <span class="tlaUNC">           0 :         List&lt;SpvInst*&gt; rowVectorsConverted;</span></span>
+<span id="L9546"><span class="lineNum">    9546</span> <span class="tlaGNC">           1 :         List&lt;SpvInst*&gt; rowVectorsConverted;</span></span>
 <span id="L9547"><span class="lineNum">    9547</span>              :         // convert each row vector to toType.</span>
-<span id="L9548"><span class="lineNum">    9548</span> <span class="tlaUNC">           0 :         for (uint32_t i = 0; i &lt; rowCount; i++)</span></span>
+<span id="L9548"><span class="lineNum">    9548</span> <span class="tlaGNC">           1 :         for (uint32_t i = 0; i &lt; rowCount; i++)</span></span>
 <span id="L9549"><span class="lineNum">    9549</span>              :         {</span>
-<span id="L9550"><span class="lineNum">    9550</span> <span class="tlaUNC">           0 :             auto rowVector = emitOpCompositeExtract(</span></span>
+<span id="L9550"><span class="lineNum">    9550</span> <span class="tlaGNC">           1 :             auto rowVector = emitOpCompositeExtract(</span></span>
 <span id="L9551"><span class="lineNum">    9551</span>              :                 parent,</span>
 <span id="L9552"><span class="lineNum">    9552</span>              :                 nullptr,</span>
 <span id="L9553"><span class="lineNum">    9553</span>              :                 fromTypeV,</span>
 <span id="L9554"><span class="lineNum">    9554</span>              :                 inst-&gt;getOperand(0),</span>
 <span id="L9555"><span class="lineNum">    9555</span>              :                 makeArray(SpvLiteralInteger::from32(i)));</span>
 <span id="L9556"><span class="lineNum">    9556</span>              : </span>
-<span id="L9557"><span class="lineNum">    9557</span> <span class="tlaUNC">           0 :             auto rowVectorConverted = emitOpFConvert(parent, nullptr, toVectorV, rowVector);</span></span>
-<span id="L9558"><span class="lineNum">    9558</span> <span class="tlaUNC">           0 :             rowVectorsConverted.add(rowVectorConverted);</span></span>
+<span id="L9557"><span class="lineNum">    9557</span> <span class="tlaGNC">           1 :             auto rowVectorConverted = emitOpFConvert(parent, nullptr, toVectorV, rowVector);</span></span>
+<span id="L9558"><span class="lineNum">    9558</span> <span class="tlaGNC">           1 :             rowVectorsConverted.add(rowVectorConverted);</span></span>
 <span id="L9559"><span class="lineNum">    9559</span>              :         }</span>
 <span id="L9560"><span class="lineNum">    9560</span>              : </span>
 <span id="L9561"><span class="lineNum">    9561</span>              :         // construct a matrix from the converted row vectors.</span>
-<span id="L9562"><span class="lineNum">    9562</span> <span class="tlaUNC">           0 :         return emitCompositeConstruct(parent, inst, toTypeM, rowVectorsConverted);</span></span>
-<span id="L9563"><span class="lineNum">    9563</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L9562"><span class="lineNum">    9562</span> <span class="tlaGNC">           1 :         return emitCompositeConstruct(parent, inst, toTypeM, rowVectorsConverted);</span></span>
+<span id="L9563"><span class="lineNum">    9563</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L9564"><span class="lineNum">    9564</span>              : </span>
 <span id="L9565"><span class="lineNum">    9565</span>              :     void maybeRequireCoopMatConversionNV(IRType* fromType, IRType* toType)</span>
 <span id="L9566"><span class="lineNum">    9566</span> <span class="tlaGNC">           1 :     {</span></span>
@@ -9905,7 +9905,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L9632"><span class="lineNum">    9632</span>              : </span>
 <span id="L9633"><span class="lineNum">    9633</span> <span class="tlaGNC">           1 :         if (isMatrixCast)</span></span>
 <span id="L9634"><span class="lineNum">    9634</span>              :         {</span>
-<span id="L9635"><span class="lineNum">    9635</span> <span class="tlaUNC">           0 :             return emitFloatCastForMatrix(</span></span>
+<span id="L9635"><span class="lineNum">    9635</span> <span class="tlaGNC">           1 :             return emitFloatCastForMatrix(</span></span>
 <span id="L9636"><span class="lineNum">    9636</span>              :                 parent,</span>
 <span id="L9637"><span class="lineNum">    9637</span>              :                 inst,</span>
 <span id="L9638"><span class="lineNum">    9638</span>              :                 as&lt;IRMatrixType&gt;(fromTypeV),</span>
