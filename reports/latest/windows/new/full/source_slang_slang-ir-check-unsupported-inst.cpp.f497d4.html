@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-05 05:16:53 UTC</td>
+      <td class="headerValue">2026-11-06 05:19:35 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">96.9&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:96.9%;background-color:hsl(115, 70%, 50%)"></div></div>
-      <span class="metricCounts">158 / 163</span>
+      <span class="metricValue">95.5&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:95.5%;background-color:hsl(113, 70%, 50%)"></div></div>
+      <span class="metricCounts">212 / 222</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -699,89 +699,243 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L426"><span class="lineNum">     426</span>              :     }</span>
 <span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L428"><span class="lineNum">     428</span>              : </span>
-<span id="L429"><span class="lineNum">     429</span>              : void checkUnsupportedInst(IRModule* module, TargetRequest* target, DiagnosticSink* sink)</span>
-<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L431"><span class="lineNum">     431</span>              :     // The CUDA/PTX emitter has no type name for a multisampled texture, whereas</span>
-<span id="L432"><span class="lineNum">     432</span>              :     // the host C++ emitter does.</span>
-<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">           1 :     const bool supportsMultisampledTexture = !isCUDATarget(target);</span></span>
-<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">           1 :     const bool supportsFuncTypedValue = doesTargetSupportFuncTypedValue(target);</span></span>
-<span id="L435"><span class="lineNum">     435</span>              : </span>
-<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L437"><span class="lineNum">     437</span>              :     {</span>
-<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">           1 :         if (!supportsFuncTypedValue)</span></span>
-<span id="L439"><span class="lineNum">     439</span>              :         {</span>
-<span id="L440"><span class="lineNum">     440</span>              :             // C++/CUDA/Metal move a global into a `KernelContext` struct field</span>
-<span id="L441"><span class="lineNum">     441</span>              :             // (`introduceExplicitGlobalContext`), so a function-typed global appears as a field.</span>
-<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">           1 :             if (auto structType = as&lt;IRStructType&gt;(globalInst))</span></span>
-<span id="L443"><span class="lineNum">     443</span>              :             {</span>
-<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">           1 :                 for (auto field : structType-&gt;getFields())</span></span>
-<span id="L445"><span class="lineNum">     445</span>              :                 {</span>
-<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">           1 :                     if (as&lt;IRFuncType&gt;(unwrapArrayAndPointers(field-&gt;getFieldType())))</span></span>
-<span id="L447"><span class="lineNum">     447</span>              :                     {</span>
-<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">           1 :                         auto key = field-&gt;getKey();</span></span>
-<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">           1 :                         auto loc = key-&gt;sourceLoc.isValid() ? key-&gt;sourceLoc : findFirstUseLoc(key);</span></span>
-<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">           1 :                         sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
-<span id="L451"><span class="lineNum">     451</span>              :                     }</span>
-<span id="L452"><span class="lineNum">     452</span>              :                 }</span>
-<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L454"><span class="lineNum">     454</span>              :             // WGSL does not run that pass, so its globals stay module-scope variables.</span>
-<span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">           1 :             else if (globalInst-&gt;getOp() == kIROp_GlobalVar)</span></span>
-<span id="L456"><span class="lineNum">     456</span>              :             {</span>
-<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">           1 :                 if (as&lt;IRFuncType&gt;(unwrapArrayAndPointers(globalInst-&gt;getDataType())))</span></span>
-<span id="L458"><span class="lineNum">     458</span>              :                 {</span>
-<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">           1 :                     auto loc = globalInst-&gt;sourceLoc.isValid() ? globalInst-&gt;sourceLoc</span></span>
-<span id="L460"><span class="lineNum">     460</span>              :                                                                : findFirstUseLoc(globalInst);</span>
-<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
-<span id="L462"><span class="lineNum">     462</span>              :                 }</span>
-<span id="L463"><span class="lineNum">     463</span>              :             }</span>
-<span id="L464"><span class="lineNum">     464</span>              :         }</span>
-<span id="L465"><span class="lineNum">     465</span>              : </span>
-<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">           1 :         switch (globalInst-&gt;getOp())</span></span>
-<span id="L467"><span class="lineNum">     467</span>              :         {</span>
-<span id="L468"><span class="lineNum">     468</span>              :         case kIROp_VectorType:</span>
-<span id="L469"><span class="lineNum">     469</span>              :         case kIROp_MatrixType:</span>
-<span id="L470"><span class="lineNum">     470</span>              :             {</span>
-<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">           1 :                 if (!as&lt;IRBasicType&gt;(globalInst-&gt;getOperand(0)) &amp;&amp;</span></span>
-<span id="L472"><span class="lineNum">     472</span>              :                     !as&lt;IRPackedFloatType&gt;(globalInst-&gt;getOperand(0)))</span>
-<span id="L473"><span class="lineNum">     473</span>              :                 {</span>
-<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::UnsupportedBuiltinType{</span></span>
-<span id="L475"><span class="lineNum">     475</span>              :                         .type = globalInst,</span>
-<span id="L476"><span class="lineNum">     476</span>              :                         .location = findFirstUseLoc(globalInst)});</span>
-<span id="L477"><span class="lineNum">     477</span>              :                 }</span>
-<span id="L478"><span class="lineNum">     478</span>              :                 break;</span>
-<span id="L479"><span class="lineNum">     479</span>              :             }</span>
-<span id="L480"><span class="lineNum">     480</span>              :         case kIROp_TextureType:</span>
-<span id="L481"><span class="lineNum">     481</span>              :             {</span>
-<span id="L482"><span class="lineNum">     482</span>              :                 // Texture types are hoisted, deduplicated global insts, so checking</span>
-<span id="L483"><span class="lineNum">     483</span>              :                 // the type here catches every use site (global param, struct field,</span>
-<span id="L484"><span class="lineNum">     484</span>              :                 // local, parameter) with a single diagnostic.</span>
-<span id="L485"><span class="lineNum">     485</span> <span class="tlaGNC">           1 :                 if (!supportsMultisampledTexture &amp;&amp;</span></span>
-<span id="L486"><span class="lineNum">     486</span>              :                     as&lt;IRTextureTypeBase&gt;(globalInst)-&gt;isMultisample())</span>
-<span id="L487"><span class="lineNum">     487</span>              :                 {</span>
-<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::MultisampledTextureNotSupportedOnTarget{</span></span>
-<span id="L489"><span class="lineNum">     489</span>              :                         .type = globalInst,</span>
-<span id="L490"><span class="lineNum">     490</span>              :                         .location = findFirstUseLoc(globalInst)});</span>
-<span id="L491"><span class="lineNum">     491</span>              :                 }</span>
-<span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L493"><span class="lineNum">     493</span>              :             }</span>
-<span id="L494"><span class="lineNum">     494</span>              :         case kIROp_Func:</span>
-<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">           1 :             checkUnsupportedInst(target, as&lt;IRFunc&gt;(globalInst), sink);</span></span>
-<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">           1 :             break;</span></span>
-<span id="L497"><span class="lineNum">     497</span>              :         case kIROp_Generic:</span>
-<span id="L498"><span class="lineNum">     498</span>              :             {</span>
-<span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">           1 :                 auto generic = as&lt;IRGeneric&gt;(globalInst);</span></span>
-<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">           1 :                 auto innerFunc = as&lt;IRFunc&gt;(findGenericReturnVal(generic));</span></span>
-<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">           1 :                 if (innerFunc)</span></span>
-<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">           1 :                     checkUnsupportedInst(target, innerFunc, sink);</span></span>
-<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">           1 :                 break;</span></span>
-<span id="L504"><span class="lineNum">     504</span>              :             }</span>
-<span id="L505"><span class="lineNum">     505</span>              :         default:</span>
-<span id="L506"><span class="lineNum">     506</span>              :             break;</span>
-<span id="L507"><span class="lineNum">     507</span>              :         }</span>
-<span id="L508"><span class="lineNum">     508</span>              :     }</span>
-<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L510"><span class="lineNum">     510</span>              : </span>
-<span id="L511"><span class="lineNum">     511</span>              : } // namespace Slang</span>
+<span id="L429"><span class="lineNum">     429</span>              : // Return why MSL cannot express the floating-point atomic load, exchange, compare-exchange, min</span>
+<span id="L430"><span class="lineNum">     430</span>              : // or max `atomic`, or nullptr if it can. Other atomic operations, and atomics whose value is not</span>
+<span id="L431"><span class="lineNum">     431</span>              : // floating-point, also return nullptr. MSL has `atomic_float` load, exchange and compare-exchange</span>
+<span id="L432"><span class="lineNum">     432</span>              : // on device memory only (MSL 4.1 spec, section 6.16.4), no floating-point atomic min or max, and</span>
+<span id="L433"><span class="lineNum">     433</span>              : // integer-only texture atomics (section 6.13). For example, `Atomic&lt;float&gt;.load` through a device</span>
+<span id="L434"><span class="lineNum">     434</span>              : // pointer fits, but the same load on a `groupshared Atomic&lt;float&gt;` does not. Device memory means</span>
+<span id="L435"><span class="lineNum">     435</span>              : // the `Global` and `UserPointer` address spaces, which the Metal emitter prints as `device`.</span>
+<span id="L436"><span class="lineNum">     436</span>              : static const char* getUnsupportedMetalFloatAtomicReason(IRAtomicOperation* atomic)</span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">           1 :     switch (atomic-&gt;getOp())</span></span>
+<span id="L439"><span class="lineNum">     439</span>              :     {</span>
+<span id="L440"><span class="lineNum">     440</span>              :     case kIROp_AtomicLoad:</span>
+<span id="L441"><span class="lineNum">     441</span>              :     case kIROp_AtomicExchange:</span>
+<span id="L442"><span class="lineNum">     442</span>              :     case kIROp_AtomicCompareExchange:</span>
+<span id="L443"><span class="lineNum">     443</span>              :     case kIROp_AtomicMin:</span>
+<span id="L444"><span class="lineNum">     444</span>              :     case kIROp_AtomicMax:</span>
+<span id="L445"><span class="lineNum">     445</span>              :         break;</span>
+<span id="L446"><span class="lineNum">     446</span>              :     default:</span>
+<span id="L447"><span class="lineNum">     447</span>              :         return nullptr;</span>
+<span id="L448"><span class="lineNum">     448</span>              :     }</span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">           1 :     auto valueType = atomic-&gt;getDataType();</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">           1 :     if (!isFloatingType(valueType))</span></span>
+<span id="L451"><span class="lineNum">     451</span>              :         return nullptr;</span>
+<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">           1 :     if (atomic-&gt;getOp() == kIROp_AtomicMin || atomic-&gt;getOp() == kIROp_AtomicMax)</span></span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">           1 :         return &quot;floating point atomic min or max&quot;;</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">           1 :     if (valueType-&gt;getOp() != kIROp_FloatType)</span></span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">           1 :         return &quot;floating point atomic operation on a type other than 32-bit float&quot;;</span></span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">           1 :     if (getAtomicImageSubscript(atomic))</span></span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">           1 :         return &quot;floating point atomic operation on a texture&quot;;</span></span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">           1 :     auto destPtrType = cast&lt;IRPtrTypeBase&gt;(atomic-&gt;getPtr()-&gt;getDataType());</span></span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">           1 :     switch (destPtrType-&gt;getAddressSpace())</span></span>
+<span id="L460"><span class="lineNum">     460</span>              :     {</span>
+<span id="L461"><span class="lineNum">     461</span>              :     case AddressSpace::Global:</span>
+<span id="L462"><span class="lineNum">     462</span>              :     case AddressSpace::UserPointer:</span>
+<span id="L463"><span class="lineNum">     463</span>              :         return nullptr;</span>
+<span id="L464"><span class="lineNum">     464</span>              :     default:</span>
+<span id="L465"><span class="lineNum">     465</span>              :         return &quot;floating point atomic operation outside device memory&quot;;</span>
+<span id="L466"><span class="lineNum">     466</span>              :     }</span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L468"><span class="lineNum">     468</span>              : </span>
+<span id="L469"><span class="lineNum">     469</span>              : // Diagnose an atomic operation on the texture element `subscript` that MSL cannot express. The</span>
+<span id="L470"><span class="lineNum">     470</span>              : // MSL texture atomic members operate on one scalar texel, so a texture with a vector element type</span>
+<span id="L471"><span class="lineNum">     471</span>              : // has none. An array texture takes its array index from the last component of the coordinate, so</span>
+<span id="L472"><span class="lineNum">     472</span>              : // that coordinate must be a vector. Both diagnostics point at `subscript`, the texture access in</span>
+<span id="L473"><span class="lineNum">     473</span>              : // the user&#x27;s code.</span>
+<span id="L474"><span class="lineNum">     474</span>              : static void checkUnsupportedMetalTextureAtomic(IRImageSubscript* subscript, DiagnosticSink* sink)</span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">           1 :     auto resourceType = getImageSubscriptResourceType(subscript);</span></span>
+<span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC">           1 :     if (auto textureType = as&lt;IRTextureType&gt;(resourceType))</span></span>
+<span id="L478"><span class="lineNum">     478</span>              :     {</span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">           1 :         if (as&lt;IRVectorType&gt;(textureType-&gt;getElementType()))</span></span>
+<span id="L480"><span class="lineNum">     480</span>              :         {</span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">           1 :             sink-&gt;diagnose(Diagnostics::UnsupportedTargetIntrinsic{</span></span>
+<span id="L482"><span class="lineNum">     482</span>              :                 .operation = &quot;atomic operation on non-scalar texture&quot;,</span>
+<span id="L483"><span class="lineNum">     483</span>              :                 .location = subscript-&gt;sourceLoc});</span>
+<span id="L484"><span class="lineNum">     484</span>              :         }</span>
+<span id="L485"><span class="lineNum">     485</span>              :     }</span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">           1 :     if (resourceType &amp;&amp; getIntVal(resourceType-&gt;getIsArrayInst()) != 0 &amp;&amp;</span></span>
+<span id="L487"><span class="lineNum">     487</span>              :         !as&lt;IRVectorType&gt;(subscript-&gt;getCoord()-&gt;getDataType()))</span>
+<span id="L488"><span class="lineNum">     488</span>              :     {</span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaUNC">           0 :         sink-&gt;diagnose(Diagnostics::UnsupportedTargetIntrinsic{</span></span>
+<span id="L490"><span class="lineNum">     490</span>              :             .operation = &quot;invalid image coordinate for atomic operation&quot;,</span>
+<span id="L491"><span class="lineNum">     491</span>              :             .location = subscript-&gt;sourceLoc});</span>
+<span id="L492"><span class="lineNum">     492</span>              :     }</span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L494"><span class="lineNum">     494</span>              : </span>
+<span id="L495"><span class="lineNum">     495</span>              : // Diagnose a cooperative matrix type that the Metal emitter cannot express. The emitter writes a</span>
+<span id="L496"><span class="lineNum">     496</span>              : // cooperative matrix as a `simdgroup_matrix`, which it supports only as an 8x8 matrix of `half` or</span>
+<span id="L497"><span class="lineNum">     497</span>              : // `float` with subgroup scope.</span>
+<span id="L498"><span class="lineNum">     498</span>              : static void checkUnsupportedMetalCoopMatrixType(IRCoopMatrixType* coopType, DiagnosticSink* sink)</span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">           1 :     auto rows = getIntVal(coopType-&gt;getRowCount());</span></span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">           1 :     auto cols = getIntVal(coopType-&gt;getColumnCount());</span></span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">           1 :     if (rows != 8 || cols != 8)</span></span>
+<span id="L503"><span class="lineNum">     503</span>              :     {</span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">           1 :         sink-&gt;diagnose(Diagnostics::Unimplemented{</span></span>
+<span id="L505"><span class="lineNum">     505</span>              :             .feature = &quot;Metal cooperative matrices (simdgroup_matrix) only support 8x8 dimensions&quot;,</span>
+<span id="L506"><span class="lineNum">     506</span>              :             .location = coopType-&gt;sourceLoc});</span>
+<span id="L507"><span class="lineNum">     507</span>              :     }</span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">           1 :     auto scope = getIntVal(coopType-&gt;getScope());</span></span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">           1 :     if (scope != (IRIntegerValue)MemoryScope::Subgroup)</span></span>
+<span id="L510"><span class="lineNum">     510</span>              :     {</span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaUNC">           0 :         sink-&gt;diagnose(Diagnostics::Unimplemented{</span></span>
+<span id="L512"><span class="lineNum">     512</span>              :             .feature = &quot;Metal cooperative matrices (simdgroup_matrix) only support Subgroup scope&quot;,</span>
+<span id="L513"><span class="lineNum">     513</span>              :             .location = coopType-&gt;sourceLoc});</span>
+<span id="L514"><span class="lineNum">     514</span>              :     }</span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">           1 :     auto elementType = coopType-&gt;getElementType();</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">           1 :     if (elementType-&gt;getOp() != kIROp_HalfType &amp;&amp; elementType-&gt;getOp() != kIROp_FloatType)</span></span>
+<span id="L517"><span class="lineNum">     517</span>              :     {</span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaUNC">           0 :         sink-&gt;diagnose(Diagnostics::Unimplemented{</span></span>
+<span id="L519"><span class="lineNum">     519</span>              :             .feature = &quot;Metal cooperative matrices only support half and float element types&quot;,</span>
+<span id="L520"><span class="lineNum">     520</span>              :             .location = coopType-&gt;sourceLoc});</span>
+<span id="L521"><span class="lineNum">     521</span>              :     }</span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L523"><span class="lineNum">     523</span>              : </span>
+<span id="L524"><span class="lineNum">     524</span>              : // Diagnose a cooperative matrix multiply-add that requests saturating accumulation, which the</span>
+<span id="L525"><span class="lineNum">     525</span>              : // Metal emitter&#x27;s `simdgroup_multiply_accumulate` cannot express.</span>
+<span id="L526"><span class="lineNum">     526</span>              : static void checkUnsupportedMetalCoopMatMulAdd(IRCoopMatMulAdd* mulAdd, DiagnosticSink* sink)</span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">           1 :     auto saturatingLit = as&lt;IRBoolLit&gt;(mulAdd-&gt;getSaturatingAccumulation());</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">           1 :     if (saturatingLit &amp;&amp; saturatingLit-&gt;getValue())</span></span>
+<span id="L530"><span class="lineNum">     530</span>              :     {</span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">           1 :         sink-&gt;diagnose(Diagnostics::Unimplemented{</span></span>
+<span id="L532"><span class="lineNum">     532</span>              :             .feature = &quot;saturating accumulation for Metal cooperative matrices (simdgroup_matrix)&quot;,</span>
+<span id="L533"><span class="lineNum">     533</span>              :             .location = mulAdd-&gt;sourceLoc});</span>
+<span id="L534"><span class="lineNum">     534</span>              :     }</span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L536"><span class="lineNum">     536</span>              : </span>
+<span id="L537"><span class="lineNum">     537</span>              : // Diagnose the instructions in `module` that the Metal emitter cannot express: unsupported atomic</span>
+<span id="L538"><span class="lineNum">     538</span>              : // operations, cooperative matrix types, and saturating cooperative matrix multiply-adds. We visit</span>
+<span id="L539"><span class="lineNum">     539</span>              : // only top-level functions because those are the bodies that the Metal emitter emits: a generic</span>
+<span id="L540"><span class="lineNum">     540</span>              : // that remains at this point is not emitted, and its body can still hold pointers whose address</span>
+<span id="L541"><span class="lineNum">     541</span>              : // space was never specialized. Cooperative matrix types are hoisted, deduplicated global</span>
+<span id="L542"><span class="lineNum">     542</span>              : // instructions, so each one is checked once.</span>
+<span id="L543"><span class="lineNum">     543</span>              : static void checkUnsupportedMetalInsts(IRModule* module, DiagnosticSink* sink)</span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L546"><span class="lineNum">     546</span>              :     {</span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">           1 :         if (auto coopType = as&lt;IRCoopMatrixType&gt;(globalInst))</span></span>
+<span id="L548"><span class="lineNum">     548</span>              :         {</span>
+<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">           1 :             checkUnsupportedMetalCoopMatrixType(coopType, sink);</span></span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">           1 :             continue;</span></span>
+<span id="L551"><span class="lineNum">     551</span>              :         }</span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">           1 :         auto func = as&lt;IRFunc&gt;(globalInst);</span></span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">           1 :         if (!func)</span></span>
+<span id="L554"><span class="lineNum">     554</span>              :             continue;</span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">           1 :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L556"><span class="lineNum">     556</span>              :         {</span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">           1 :             for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L558"><span class="lineNum">     558</span>              :             {</span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">           1 :                 if (auto mulAdd = as&lt;IRCoopMatMulAdd&gt;(inst))</span></span>
+<span id="L560"><span class="lineNum">     560</span>              :                 {</span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">           1 :                     checkUnsupportedMetalCoopMatMulAdd(mulAdd, sink);</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaUNC">           0 :                     continue;</span></span>
+<span id="L563"><span class="lineNum">     563</span>              :                 }</span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">           1 :                 auto atomic = as&lt;IRAtomicOperation&gt;(inst);</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">           1 :                 if (!atomic)</span></span>
+<span id="L566"><span class="lineNum">     566</span>              :                     continue;</span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">           1 :                 if (auto reason = getUnsupportedMetalFloatAtomicReason(atomic))</span></span>
+<span id="L568"><span class="lineNum">     568</span>              :                 {</span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::UnsupportedTargetIntrinsic{</span></span>
+<span id="L570"><span class="lineNum">     570</span>              :                         .operation = reason,</span>
+<span id="L571"><span class="lineNum">     571</span>              :                         .location = atomic-&gt;sourceLoc});</span>
+<span id="L572"><span class="lineNum">     572</span>              :                 }</span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">           1 :                 if (auto subscript = getAtomicImageSubscript(atomic))</span></span>
+<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">           1 :                     checkUnsupportedMetalTextureAtomic(subscript, sink);</span></span>
+<span id="L575"><span class="lineNum">     575</span>              :             }</span>
+<span id="L576"><span class="lineNum">     576</span>              :         }</span>
+<span id="L577"><span class="lineNum">     577</span>              :     }</span>
+<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L579"><span class="lineNum">     579</span>              : </span>
+<span id="L580"><span class="lineNum">     580</span>              : void checkUnsupportedInst(IRModule* module, TargetRequest* target, DiagnosticSink* sink)</span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">           1 :     if (isMetalTarget(target))</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">           1 :         checkUnsupportedMetalInsts(module, sink);</span></span>
+<span id="L584"><span class="lineNum">     584</span>              : </span>
+<span id="L585"><span class="lineNum">     585</span>              :     // The CUDA/PTX emitter has no type name for a multisampled texture, whereas</span>
+<span id="L586"><span class="lineNum">     586</span>              :     // the host C++ emitter does.</span>
+<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">           1 :     const bool supportsMultisampledTexture = !isCUDATarget(target);</span></span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">           1 :     const bool supportsFuncTypedValue = doesTargetSupportFuncTypedValue(target);</span></span>
+<span id="L589"><span class="lineNum">     589</span>              : </span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L591"><span class="lineNum">     591</span>              :     {</span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">           1 :         if (!supportsFuncTypedValue)</span></span>
+<span id="L593"><span class="lineNum">     593</span>              :         {</span>
+<span id="L594"><span class="lineNum">     594</span>              :             // C++/CUDA/Metal move a global into a `KernelContext` struct field</span>
+<span id="L595"><span class="lineNum">     595</span>              :             // (`introduceExplicitGlobalContext`), so a function-typed global appears as a field.</span>
+<span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">           1 :             if (auto structType = as&lt;IRStructType&gt;(globalInst))</span></span>
+<span id="L597"><span class="lineNum">     597</span>              :             {</span>
+<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">           1 :                 for (auto field : structType-&gt;getFields())</span></span>
+<span id="L599"><span class="lineNum">     599</span>              :                 {</span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">           1 :                     if (as&lt;IRFuncType&gt;(unwrapArrayAndPointers(field-&gt;getFieldType())))</span></span>
+<span id="L601"><span class="lineNum">     601</span>              :                     {</span>
+<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">           1 :                         auto key = field-&gt;getKey();</span></span>
+<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">           1 :                         auto loc = key-&gt;sourceLoc.isValid() ? key-&gt;sourceLoc : findFirstUseLoc(key);</span></span>
+<span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">           1 :                         sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
+<span id="L605"><span class="lineNum">     605</span>              :                     }</span>
+<span id="L606"><span class="lineNum">     606</span>              :                 }</span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L608"><span class="lineNum">     608</span>              :             // WGSL does not run that pass, so its globals stay module-scope variables.</span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">           1 :             else if (globalInst-&gt;getOp() == kIROp_GlobalVar)</span></span>
+<span id="L610"><span class="lineNum">     610</span>              :             {</span>
+<span id="L611"><span class="lineNum">     611</span> <span class="tlaGNC">           1 :                 if (as&lt;IRFuncType&gt;(unwrapArrayAndPointers(globalInst-&gt;getDataType())))</span></span>
+<span id="L612"><span class="lineNum">     612</span>              :                 {</span>
+<span id="L613"><span class="lineNum">     613</span> <span class="tlaGNC">           1 :                     auto loc = globalInst-&gt;sourceLoc.isValid() ? globalInst-&gt;sourceLoc</span></span>
+<span id="L614"><span class="lineNum">     614</span>              :                                                                : findFirstUseLoc(globalInst);</span>
+<span id="L615"><span class="lineNum">     615</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
+<span id="L616"><span class="lineNum">     616</span>              :                 }</span>
+<span id="L617"><span class="lineNum">     617</span>              :             }</span>
+<span id="L618"><span class="lineNum">     618</span>              :         }</span>
+<span id="L619"><span class="lineNum">     619</span>              : </span>
+<span id="L620"><span class="lineNum">     620</span> <span class="tlaGNC">           1 :         switch (globalInst-&gt;getOp())</span></span>
+<span id="L621"><span class="lineNum">     621</span>              :         {</span>
+<span id="L622"><span class="lineNum">     622</span>              :         case kIROp_VectorType:</span>
+<span id="L623"><span class="lineNum">     623</span>              :         case kIROp_MatrixType:</span>
+<span id="L624"><span class="lineNum">     624</span>              :             {</span>
+<span id="L625"><span class="lineNum">     625</span> <span class="tlaGNC">           1 :                 if (!as&lt;IRBasicType&gt;(globalInst-&gt;getOperand(0)) &amp;&amp;</span></span>
+<span id="L626"><span class="lineNum">     626</span>              :                     !as&lt;IRPackedFloatType&gt;(globalInst-&gt;getOperand(0)))</span>
+<span id="L627"><span class="lineNum">     627</span>              :                 {</span>
+<span id="L628"><span class="lineNum">     628</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::UnsupportedBuiltinType{</span></span>
+<span id="L629"><span class="lineNum">     629</span>              :                         .type = globalInst,</span>
+<span id="L630"><span class="lineNum">     630</span>              :                         .location = findFirstUseLoc(globalInst)});</span>
+<span id="L631"><span class="lineNum">     631</span>              :                 }</span>
+<span id="L632"><span class="lineNum">     632</span>              :                 break;</span>
+<span id="L633"><span class="lineNum">     633</span>              :             }</span>
+<span id="L634"><span class="lineNum">     634</span>              :         case kIROp_TextureType:</span>
+<span id="L635"><span class="lineNum">     635</span>              :             {</span>
+<span id="L636"><span class="lineNum">     636</span>              :                 // Texture types are hoisted, deduplicated global insts, so checking</span>
+<span id="L637"><span class="lineNum">     637</span>              :                 // the type here catches every use site (global param, struct field,</span>
+<span id="L638"><span class="lineNum">     638</span>              :                 // local, parameter) with a single diagnostic.</span>
+<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">           1 :                 if (!supportsMultisampledTexture &amp;&amp;</span></span>
+<span id="L640"><span class="lineNum">     640</span>              :                     as&lt;IRTextureTypeBase&gt;(globalInst)-&gt;isMultisample())</span>
+<span id="L641"><span class="lineNum">     641</span>              :                 {</span>
+<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::MultisampledTextureNotSupportedOnTarget{</span></span>
+<span id="L643"><span class="lineNum">     643</span>              :                         .type = globalInst,</span>
+<span id="L644"><span class="lineNum">     644</span>              :                         .location = findFirstUseLoc(globalInst)});</span>
+<span id="L645"><span class="lineNum">     645</span>              :                 }</span>
+<span id="L646"><span class="lineNum">     646</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L647"><span class="lineNum">     647</span>              :             }</span>
+<span id="L648"><span class="lineNum">     648</span>              :         case kIROp_Func:</span>
+<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">           1 :             checkUnsupportedInst(target, as&lt;IRFunc&gt;(globalInst), sink);</span></span>
+<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L651"><span class="lineNum">     651</span>              :         case kIROp_Generic:</span>
+<span id="L652"><span class="lineNum">     652</span>              :             {</span>
+<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">           1 :                 auto generic = as&lt;IRGeneric&gt;(globalInst);</span></span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">           1 :                 auto innerFunc = as&lt;IRFunc&gt;(findGenericReturnVal(generic));</span></span>
+<span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">           1 :                 if (innerFunc)</span></span>
+<span id="L656"><span class="lineNum">     656</span> <span class="tlaGNC">           1 :                     checkUnsupportedInst(target, innerFunc, sink);</span></span>
+<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L658"><span class="lineNum">     658</span>              :             }</span>
+<span id="L659"><span class="lineNum">     659</span>              :         default:</span>
+<span id="L660"><span class="lineNum">     660</span>              :             break;</span>
+<span id="L661"><span class="lineNum">     661</span>              :         }</span>
+<span id="L662"><span class="lineNum">     662</span>              :     }</span>
+<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L664"><span class="lineNum">     664</span>              : </span>
+<span id="L665"><span class="lineNum">     665</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
