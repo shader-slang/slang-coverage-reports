@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-10 05:15:00 UTC</td>
+      <td class="headerValue">2026-11-11 04:10:28 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -335,41 +335,41 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L44"><span class="lineNum">      44</span>                         : struct RttiInfoManager</span>
 <span id="L45"><span class="lineNum">      45</span>                         : {</span>
 <span id="L46"><span class="lineNum">      46</span>                         :     void* allocate(size_t size)</span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       30391            :     {</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       30391            :         std::lock_guard&lt;std::recursive_mutex&gt; guard(m_mutex);</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       30391            :         return m_arena.allocate(size);</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       30391            :     }</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       30189            :     {</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       30189            :         std::lock_guard&lt;std::recursive_mutex&gt; guard(m_mutex);</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       30189            :         return m_arena.allocate(size);</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       30189            :     }</span></span>
 <span id="L51"><span class="lineNum">      51</span>                         :     void deallocateAll()</span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         423            :     {</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         423            :         std::lock_guard&lt;std::recursive_mutex&gt; guard(m_mutex);</span></span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         423            :         m_arena.reset();</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         423            :     }</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         421            :     {</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         421            :         std::lock_guard&lt;std::recursive_mutex&gt; guard(m_mutex);</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         421            :         m_arena.reset();</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         421            :     }</span></span>
 <span id="L56"><span class="lineNum">      56</span>                         : </span>
 <span id="L57"><span class="lineNum">      57</span>                         :     static RttiInfoManager&amp; getSingleton()</span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       30814            :     {</span></span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">       30814            :         static RttiInfoManager g_manager;</span></span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">       30814            :         return g_manager;</span></span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       30814            :     }</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       30610            :     {</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">       30610            :         static RttiInfoManager g_manager;</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">       30610            :         return g_manager;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       30610            :     }</span></span>
 <span id="L62"><span class="lineNum">      62</span>                         : </span>
 <span id="L63"><span class="lineNum">      63</span>                         : protected:</span>
 <span id="L64"><span class="lineNum">      64</span>                         :     RttiInfoManager()</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         687            :         : m_arena(1024)</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         687            :     {</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">         687            :     }</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         683            :         : m_arena(1024)</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         683            :     {</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">         683            :     }</span></span>
 <span id="L68"><span class="lineNum">      68</span>                         : </span>
 <span id="L69"><span class="lineNum">      69</span>                         :     std::recursive_mutex m_mutex; ///&lt; We need a mutex to guard access to m_arena</span>
 <span id="L70"><span class="lineNum">      70</span>                         :     MemoryArena m_arena;</span>
 <span id="L71"><span class="lineNum">      71</span>                         : };</span>
 <span id="L72"><span class="lineNum">      72</span>                         : </span>
 <span id="L73"><span class="lineNum">      73</span>                         : /* static */ void* RttiInfo::allocate(size_t size)</span>
-<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">       30391            : {</span></span>
-<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       30391            :     return RttiInfoManager::getSingleton().allocate(size);</span></span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">       30391            : }</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">       30189            : {</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       30189            :     return RttiInfoManager::getSingleton().allocate(size);</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">       30189            : }</span></span>
 <span id="L77"><span class="lineNum">      77</span>                         : </span>
 <span id="L78"><span class="lineNum">      78</span>                         : /* static */ void RttiInfo::deallocateAll()</span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">         423            : {</span></span>
-<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">         423            :     return RttiInfoManager::getSingleton().deallocateAll();</span></span>
-<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">         423            : }</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">         421            : {</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">         421            :     return RttiInfoManager::getSingleton().deallocateAll();</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">         421            : }</span></span>
 <span id="L82"><span class="lineNum">      82</span>                         : </span>
 <span id="L83"><span class="lineNum">      83</span>                         : /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! StructRttiBuilder !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
 <span id="L84"><span class="lineNum">      84</span>                         :  */</span>
@@ -487,31 +487,31 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L196"><span class="lineNum">     196</span>                         :  */</span>
 <span id="L197"><span class="lineNum">     197</span>                         : </span>
 <span id="L198"><span class="lineNum">     198</span>                         : void StructRttiBuilder::_init(const char* name, const StructRttiInfo* super, const Byte* base)</span>
-<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       30391            : {</span></span>
-<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">       30391            :     m_rttiInfo.m_name = name;</span></span>
-<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       30391            :     m_rttiInfo.m_super = super;</span></span>
-<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">       30391            :     m_base = base;</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       30189            : {</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">       30189            :     m_rttiInfo.m_name = name;</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       30189            :     m_rttiInfo.m_super = super;</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">       30189            :     m_base = base;</span></span>
 <span id="L203"><span class="lineNum">     203</span>                         : </span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">       30391            :     m_rttiInfo.m_fieldCount = 0;</span></span>
-<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">       30391            :     m_rttiInfo.m_fields = nullptr;</span></span>
-<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">       30391            : }</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">       30189            :     m_rttiInfo.m_fieldCount = 0;</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">       30189            :     m_rttiInfo.m_fields = nullptr;</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">       30189            : }</span></span>
 <span id="L207"><span class="lineNum">     207</span>                         : </span>
 <span id="L208"><span class="lineNum">     208</span>                         : StructRttiInfo StructRttiBuilder::make()</span>
-<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">       30391            : {</span></span>
-<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">       30391            :     const Index fieldCount = m_fields.getCount();</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">       30189            : {</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">       30189            :     const Index fieldCount = m_fields.getCount();</span></span>
 <span id="L211"><span class="lineNum">     211</span>                         : </span>
-<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">       30391 <span class="branchPart" title="br0: 30391; br1: 0">(1/2)</span>      :     if (fieldCount)</span></span>
-<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">       30391            :     {</span></span>
-<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">       30391            :         StructRttiInfo::Field* dstFields =</span></span>
-<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">       30391            :             (StructRttiInfo::Field*)RttiInfo::allocate(sizeof(StructRttiInfo::Field) * fieldCount);</span></span>
-<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       30391            :         ::memcpy(dstFields, m_fields.getBuffer(), sizeof(StructRttiInfo::Field) * fieldCount);</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">       30189 <span class="branchPart" title="br0: 30189; br1: 0">(1/2)</span>      :     if (fieldCount)</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">       30189            :     {</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">       30189            :         StructRttiInfo::Field* dstFields =</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">       30189            :             (StructRttiInfo::Field*)RttiInfo::allocate(sizeof(StructRttiInfo::Field) * fieldCount);</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       30189            :         ::memcpy(dstFields, m_fields.getBuffer(), sizeof(StructRttiInfo::Field) * fieldCount);</span></span>
 <span id="L217"><span class="lineNum">     217</span>                         : </span>
-<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       30391            :         m_rttiInfo.m_fields = dstFields;</span></span>
-<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">       30391            :         m_rttiInfo.m_fieldCount = fieldCount;</span></span>
-<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       30391            :     }</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       30189            :         m_rttiInfo.m_fields = dstFields;</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">       30189            :         m_rttiInfo.m_fieldCount = fieldCount;</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       30189            :     }</span></span>
 <span id="L221"><span class="lineNum">     221</span>                         : </span>
-<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">       30391            :     return m_rttiInfo;</span></span>
-<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">       30391            : }</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">       30189            :     return m_rttiInfo;</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">       30189            : }</span></span>
 <span id="L224"><span class="lineNum">     224</span>                         : </span>
 <span id="L225"><span class="lineNum">     225</span>                         : /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! RttiTypeFuncsMap !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
 <span id="L226"><span class="lineNum">     226</span>                         :  */</span>

@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-10 05:15:29 UTC</td>
+      <td class="headerValue">2026-11-11 04:10:51 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -409,7 +409,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L118"><span class="lineNum">     118</span>                         :     uint32_t size : 24;</span>
 <span id="L119"><span class="lineNum">     119</span>                         :     uint32_t offset;</span>
 <span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">          62            :     slang::OperandDataType getType() const { return slang::OperandDataType(type); }</span></span>
-<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">       11018            :     void setType(slang::OperandDataType newType) { type = uint32_t(newType); }</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">        3021            :     void setType(slang::OperandDataType newType) { type = uint32_t(newType); }</span></span>
 <span id="L122"><span class="lineNum">     122</span>                         : };</span>
 <span id="L123"><span class="lineNum">     123</span>                         : </span>
 <span id="L124"><span class="lineNum">     124</span>                         : struct VMInstHeader</span>
@@ -419,7 +419,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L128"><span class="lineNum">     128</span>                         :                       // the opcode.</span>
 <span id="L129"><span class="lineNum">     129</span>                         :     uint32_t opcodeExtension;</span>
 <span id="L130"><span class="lineNum">     130</span>                         :     uint32_t operandCount;</span>
-<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       25554            :     VMOperand&amp; getOperand(Index index) const { return *((VMOperand*)(this + 1) + index); }</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">        9851            :     VMOperand&amp; getOperand(Index index) const { return *((VMOperand*)(this + 1) + index); }</span></span>
 <span id="L132"><span class="lineNum">     132</span>                         : };</span>
 <span id="L133"><span class="lineNum">     133</span>                         : </span>
 <span id="L134"><span class="lineNum">     134</span>                         : struct VMFuncHeader</span>
@@ -430,7 +430,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L139"><span class="lineNum">     139</span>                         :     uint32_t parameterCount;         // Number of parameters for the function.</span>
 <span id="L140"><span class="lineNum">     140</span>                         :     uint32_t returnValueSizeInBytes; // Size of the return value in bytes.</span>
 <span id="L141"><span class="lineNum">     141</span>                         :     uint32_t parameterSizeInBytes;   // Size of the parameters in bytes.</span>
-<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">        3214            :     uint32_t getParameterOffset(Index index) const { return *((uint32_t*)(this + 1) + index); }</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">        1166            :     uint32_t getParameterOffset(Index index) const { return *((uint32_t*)(this + 1) + index); }</span></span>
 <span id="L143"><span class="lineNum">     143</span>                         :     uint8_t* getCode() const { return (uint8_t*)(this + 1) + parameterCount * sizeof(uint32_t); }</span>
 <span id="L144"><span class="lineNum">     144</span>                         : };</span>
 <span id="L145"><span class="lineNum">     145</span>                         : </span>
@@ -452,24 +452,24 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L161"><span class="lineNum">     161</span>                         :     uint8_t* codePtr; // Pointer to the current instruction.</span>
 <span id="L162"><span class="lineNum">     162</span>                         : </span>
 <span id="L163"><span class="lineNum">     163</span>                         :     void moveNext()</span>
-<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       12646            :     {</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">        4522            :     {</span></span>
 <span id="L165"><span class="lineNum">     165</span>                         :         // Read the instruction header</span>
-<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">       12646            :         TInstHeader header;</span></span>
-<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       12646            :         memcpy(&amp;header, codePtr, sizeof(header));</span></span>
-<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       12646            :         codePtr += sizeof(header);</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">        4522            :         TInstHeader header;</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">        4522            :         memcpy(&amp;header, codePtr, sizeof(header));</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">        4522            :         codePtr += sizeof(header);</span></span>
 <span id="L169"><span class="lineNum">     169</span>                         : </span>
 <span id="L170"><span class="lineNum">     170</span>                         :         // Calculate the size of operand list.</span>
-<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       12646            :         auto operandListSize = header.operandCount * sizeof(TOperand);</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">        4522            :         auto operandListSize = header.operandCount * sizeof(TOperand);</span></span>
 <span id="L172"><span class="lineNum">     172</span>                         : </span>
 <span id="L173"><span class="lineNum">     173</span>                         :         // Advance the code pointer by the size of the header and operand list.</span>
-<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       12646            :         codePtr += operandListSize;</span></span>
-<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       12646            :     }</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">        4522            :         codePtr += operandListSize;</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">        4522            :     }</span></span>
 <span id="L176"><span class="lineNum">     176</span>                         : </span>
 <span id="L177"><span class="lineNum">     177</span>                         :     VMInstIterator&amp; operator++()</span>
-<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       12646            :     {</span></span>
-<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       12646            :         moveNext();</span></span>
-<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       12646            :         return *this;</span></span>
-<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       12646            :     }</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">        4522            :     {</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">        4522            :         moveNext();</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">        4522            :         return *this;</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">        4522            :     }</span></span>
 <span id="L182"><span class="lineNum">     182</span>                         :     VMInstIterator operator++(int)</span>
 <span id="L183"><span class="lineNum">     183</span>                         :     {</span>
 <span id="L184"><span class="lineNum">     184</span>                         :         VMInstIterator rs = *this;</span>
@@ -477,9 +477,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L186"><span class="lineNum">     186</span>                         :         return rs;</span>
 <span id="L187"><span class="lineNum">     187</span>                         :     }</span>
 <span id="L188"><span class="lineNum">     188</span>                         : </span>
-<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">       15227            :     bool operator!=(const VMInstIterator&amp; iter) const { return codePtr != iter.codePtr; }</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">        5317            :     bool operator!=(const VMInstIterator&amp; iter) const { return codePtr != iter.codePtr; }</span></span>
 <span id="L190"><span class="lineNum">     190</span>                         :     bool operator==(const VMInstIterator&amp; iter) const { return codePtr == iter.codePtr; }</span>
-<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">       12648            :     TInstHeader* operator*() const { return reinterpret_cast&lt;TInstHeader*&gt;(codePtr); }</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        4524            :     TInstHeader* operator*() const { return reinterpret_cast&lt;TInstHeader*&gt;(codePtr); }</span></span>
 <span id="L192"><span class="lineNum">     192</span>                         : };</span>
 <span id="L193"><span class="lineNum">     193</span>                         : </span>
 <span id="L194"><span class="lineNum">     194</span>                         : struct VMModuleView;</span>

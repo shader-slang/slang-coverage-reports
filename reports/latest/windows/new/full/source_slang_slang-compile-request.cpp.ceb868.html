@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-10 05:15:42 UTC</td>
+      <td class="headerValue">2026-11-11 04:11:01 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -1097,210 +1097,213 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">           1 :         parseTranslationUnit(translationUnit);</span></span>
 <span id="L825"><span class="lineNum">     825</span>              :     }</span>
 <span id="L826"><span class="lineNum">     826</span>              : </span>
-<span id="L827"><span class="lineNum">     827</span> <span class="tlaGNC">           1 :     if (optionSet.getBoolOption(CompilerOptionName::PreprocessorOutput))</span></span>
-<span id="L828"><span class="lineNum">     828</span>              :     {</span>
-<span id="L829"><span class="lineNum">     829</span>              :         // If doing pre-processor output, then we are done</span>
-<span id="L830"><span class="lineNum">     830</span>              :         return SLANG_OK;</span>
-<span id="L831"><span class="lineNum">     831</span>              :     }</span>
+<span id="L827"><span class="lineNum">     827</span>              :     // We check for errors before the preprocessor-only (`-E`) return so that `-E` fails like any</span>
+<span id="L828"><span class="lineNum">     828</span>              :     // other request with errors. Under `-E`, `parseTranslationUnit` has already written the</span>
+<span id="L829"><span class="lineNum">     829</span>              :     // preprocessed text, so failing here keeps that text.</span>
+<span id="L830"><span class="lineNum">     830</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
+<span id="L831"><span class="lineNum">     831</span>              :         return SLANG_FAIL;</span>
 <span id="L832"><span class="lineNum">     832</span>              : </span>
-<span id="L833"><span class="lineNum">     833</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
-<span id="L834"><span class="lineNum">     834</span>              :         return SLANG_FAIL;</span>
-<span id="L835"><span class="lineNum">     835</span>              : </span>
-<span id="L836"><span class="lineNum">     836</span>              :     // Perform semantic checking on the whole collection</span>
-<span id="L837"><span class="lineNum">     837</span>              :     {</span>
-<span id="L838"><span class="lineNum">     838</span> <span class="tlaGNC">           1 :         SLANG_PROFILE_SECTION(SemanticChecking);</span></span>
-<span id="L839"><span class="lineNum">     839</span> <span class="tlaGNC">           1 :         checkAllTranslationUnits();</span></span>
-<span id="L840"><span class="lineNum">     840</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L841"><span class="lineNum">     841</span>              : </span>
-<span id="L842"><span class="lineNum">     842</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
-<span id="L843"><span class="lineNum">     843</span>              :         return SLANG_FAIL;</span>
+<span id="L833"><span class="lineNum">     833</span> <span class="tlaGNC">           1 :     if (optionSet.getBoolOption(CompilerOptionName::PreprocessorOutput))</span></span>
+<span id="L834"><span class="lineNum">     834</span>              :     {</span>
+<span id="L835"><span class="lineNum">     835</span>              :         // If doing pre-processor output, then we are done</span>
+<span id="L836"><span class="lineNum">     836</span>              :         return SLANG_OK;</span>
+<span id="L837"><span class="lineNum">     837</span>              :     }</span>
+<span id="L838"><span class="lineNum">     838</span>              : </span>
+<span id="L839"><span class="lineNum">     839</span>              :     // Perform semantic checking on the whole collection</span>
+<span id="L840"><span class="lineNum">     840</span>              :     {</span>
+<span id="L841"><span class="lineNum">     841</span> <span class="tlaGNC">           1 :         SLANG_PROFILE_SECTION(SemanticChecking);</span></span>
+<span id="L842"><span class="lineNum">     842</span> <span class="tlaGNC">           1 :         checkAllTranslationUnits();</span></span>
+<span id="L843"><span class="lineNum">     843</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L844"><span class="lineNum">     844</span>              : </span>
-<span id="L845"><span class="lineNum">     845</span>              :     // After semantic checking is performed we can try and output doc information for this</span>
-<span id="L846"><span class="lineNum">     846</span> <span class="tlaGNC">           1 :     if (optionSet.getBoolOption(CompilerOptionName::Doc))</span></span>
-<span id="L847"><span class="lineNum">     847</span>              :     {</span>
-<span id="L848"><span class="lineNum">     848</span>              :         // TODO: implement the logic to output generated documents to target directory/zip file.</span>
-<span id="L849"><span class="lineNum">     849</span>              :     }</span>
-<span id="L850"><span class="lineNum">     850</span>              : </span>
-<span id="L851"><span class="lineNum">     851</span>              :     // Look up all the entry points that are expected,</span>
-<span id="L852"><span class="lineNum">     852</span>              :     // and use them to populate the `program` member.</span>
-<span id="L853"><span class="lineNum">     853</span>              :     //</span>
-<span id="L854"><span class="lineNum">     854</span> <span class="tlaGNC">           1 :     m_globalComponentType = createUnspecializedGlobalComponentType(this);</span></span>
-<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
-<span id="L856"><span class="lineNum">     856</span>              :         return SLANG_FAIL;</span>
-<span id="L857"><span class="lineNum">     857</span>              : </span>
-<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">           1 :     m_globalAndEntryPointsComponentType =</span></span>
-<span id="L859"><span class="lineNum">     859</span>              :         createUnspecializedGlobalAndEntryPointsComponentType(this, m_unspecializedEntryPoints);</span>
-<span id="L860"><span class="lineNum">     860</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
-<span id="L861"><span class="lineNum">     861</span>              :         return SLANG_FAIL;</span>
-<span id="L862"><span class="lineNum">     862</span>              : </span>
-<span id="L863"><span class="lineNum">     863</span>              :     // We always generate IR for all the translation units.</span>
-<span id="L864"><span class="lineNum">     864</span>              :     //</span>
-<span id="L865"><span class="lineNum">     865</span>              :     // TODO: We may eventually have a mode where we skip</span>
-<span id="L866"><span class="lineNum">     866</span>              :     // IR codegen and only produce an AST (e.g., for use when</span>
-<span id="L867"><span class="lineNum">     867</span>              :     // debugging problems in the parser or semantic checking),</span>
-<span id="L868"><span class="lineNum">     868</span>              :     // but for now there are no cases where not having IR</span>
-<span id="L869"><span class="lineNum">     869</span>              :     // makes sense.</span>
-<span id="L870"><span class="lineNum">     870</span>              :     //</span>
-<span id="L871"><span class="lineNum">     871</span> <span class="tlaGNC">           1 :     generateIR();</span></span>
-<span id="L872"><span class="lineNum">     872</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
-<span id="L873"><span class="lineNum">     873</span>              :         return SLANG_FAIL;</span>
-<span id="L874"><span class="lineNum">     874</span>              : </span>
-<span id="L875"><span class="lineNum">     875</span>              :     // Do parameter binding generation, for each compilation target.</span>
-<span id="L876"><span class="lineNum">     876</span>              :     //</span>
-<span id="L877"><span class="lineNum">     877</span> <span class="tlaGNC">           1 :     for (auto targetReq : getLinkage()-&gt;targets)</span></span>
-<span id="L878"><span class="lineNum">     878</span>              :     {</span>
-<span id="L879"><span class="lineNum">     879</span> <span class="tlaGNC">           1 :         auto targetProgram = m_globalAndEntryPointsComponentType-&gt;getTargetProgram(targetReq);</span></span>
-<span id="L880"><span class="lineNum">     880</span> <span class="tlaGNC">           1 :         targetProgram-&gt;getOrCreateLayout(getSink());</span></span>
-<span id="L881"><span class="lineNum">     881</span> <span class="tlaGNC">           1 :         targetProgram-&gt;getOrCreateIRModuleForLayout(getSink());</span></span>
-<span id="L882"><span class="lineNum">     882</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L883"><span class="lineNum">     883</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
-<span id="L884"><span class="lineNum">     884</span>              :         return SLANG_FAIL;</span>
-<span id="L885"><span class="lineNum">     885</span>              : </span>
-<span id="L886"><span class="lineNum">     886</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L845"><span class="lineNum">     845</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
+<span id="L846"><span class="lineNum">     846</span>              :         return SLANG_FAIL;</span>
+<span id="L847"><span class="lineNum">     847</span>              : </span>
+<span id="L848"><span class="lineNum">     848</span>              :     // After semantic checking is performed we can try and output doc information for this</span>
+<span id="L849"><span class="lineNum">     849</span> <span class="tlaGNC">           1 :     if (optionSet.getBoolOption(CompilerOptionName::Doc))</span></span>
+<span id="L850"><span class="lineNum">     850</span>              :     {</span>
+<span id="L851"><span class="lineNum">     851</span>              :         // TODO: implement the logic to output generated documents to target directory/zip file.</span>
+<span id="L852"><span class="lineNum">     852</span>              :     }</span>
+<span id="L853"><span class="lineNum">     853</span>              : </span>
+<span id="L854"><span class="lineNum">     854</span>              :     // Look up all the entry points that are expected,</span>
+<span id="L855"><span class="lineNum">     855</span>              :     // and use them to populate the `program` member.</span>
+<span id="L856"><span class="lineNum">     856</span>              :     //</span>
+<span id="L857"><span class="lineNum">     857</span> <span class="tlaGNC">           1 :     m_globalComponentType = createUnspecializedGlobalComponentType(this);</span></span>
+<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
+<span id="L859"><span class="lineNum">     859</span>              :         return SLANG_FAIL;</span>
+<span id="L860"><span class="lineNum">     860</span>              : </span>
+<span id="L861"><span class="lineNum">     861</span> <span class="tlaGNC">           1 :     m_globalAndEntryPointsComponentType =</span></span>
+<span id="L862"><span class="lineNum">     862</span>              :         createUnspecializedGlobalAndEntryPointsComponentType(this, m_unspecializedEntryPoints);</span>
+<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
+<span id="L864"><span class="lineNum">     864</span>              :         return SLANG_FAIL;</span>
+<span id="L865"><span class="lineNum">     865</span>              : </span>
+<span id="L866"><span class="lineNum">     866</span>              :     // We always generate IR for all the translation units.</span>
+<span id="L867"><span class="lineNum">     867</span>              :     //</span>
+<span id="L868"><span class="lineNum">     868</span>              :     // TODO: We may eventually have a mode where we skip</span>
+<span id="L869"><span class="lineNum">     869</span>              :     // IR codegen and only produce an AST (e.g., for use when</span>
+<span id="L870"><span class="lineNum">     870</span>              :     // debugging problems in the parser or semantic checking),</span>
+<span id="L871"><span class="lineNum">     871</span>              :     // but for now there are no cases where not having IR</span>
+<span id="L872"><span class="lineNum">     872</span>              :     // makes sense.</span>
+<span id="L873"><span class="lineNum">     873</span>              :     //</span>
+<span id="L874"><span class="lineNum">     874</span> <span class="tlaGNC">           1 :     generateIR();</span></span>
+<span id="L875"><span class="lineNum">     875</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
+<span id="L876"><span class="lineNum">     876</span>              :         return SLANG_FAIL;</span>
+<span id="L877"><span class="lineNum">     877</span>              : </span>
+<span id="L878"><span class="lineNum">     878</span>              :     // Do parameter binding generation, for each compilation target.</span>
+<span id="L879"><span class="lineNum">     879</span>              :     //</span>
+<span id="L880"><span class="lineNum">     880</span> <span class="tlaGNC">           1 :     for (auto targetReq : getLinkage()-&gt;targets)</span></span>
+<span id="L881"><span class="lineNum">     881</span>              :     {</span>
+<span id="L882"><span class="lineNum">     882</span> <span class="tlaGNC">           1 :         auto targetProgram = m_globalAndEntryPointsComponentType-&gt;getTargetProgram(targetReq);</span></span>
+<span id="L883"><span class="lineNum">     883</span> <span class="tlaGNC">           1 :         targetProgram-&gt;getOrCreateLayout(getSink());</span></span>
+<span id="L884"><span class="lineNum">     884</span> <span class="tlaGNC">           1 :         targetProgram-&gt;getOrCreateIRModuleForLayout(getSink());</span></span>
+<span id="L885"><span class="lineNum">     885</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L886"><span class="lineNum">     886</span> <span class="tlaGNC">           1 :     if (getSink()-&gt;getErrorCount() != 0)</span></span>
+<span id="L887"><span class="lineNum">     887</span>              :         return SLANG_FAIL;</span>
 <span id="L888"><span class="lineNum">     888</span>              : </span>
-<span id="L889"><span class="lineNum">     889</span>              : int FrontEndCompileRequest::addTranslationUnit(SourceLanguage language, Name* moduleName)</span>
-<span id="L890"><span class="lineNum">     890</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L891"><span class="lineNum">     891</span> <span class="tlaGNC">           1 :     RefPtr&lt;TranslationUnitRequest&gt; translationUnit = new TranslationUnitRequest(this);</span></span>
-<span id="L892"><span class="lineNum">     892</span> <span class="tlaGNC">           1 :     translationUnit-&gt;compileRequest = this;</span></span>
-<span id="L893"><span class="lineNum">     893</span> <span class="tlaGNC">           1 :     translationUnit-&gt;sourceLanguage = SourceLanguage(language);</span></span>
-<span id="L894"><span class="lineNum">     894</span> <span class="tlaGNC">           1 :     translationUnit-&gt;sourceLanguageExplicitlyRequested = SourceLanguage(language);</span></span>
-<span id="L895"><span class="lineNum">     895</span>              : </span>
-<span id="L896"><span class="lineNum">     896</span> <span class="tlaGNC">           1 :     translationUnit-&gt;setModuleName(moduleName);</span></span>
-<span id="L897"><span class="lineNum">     897</span> <span class="tlaGNC">           1 :     return addTranslationUnit(translationUnit);</span></span>
-<span id="L898"><span class="lineNum">     898</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L899"><span class="lineNum">     899</span>              : </span>
-<span id="L900"><span class="lineNum">     900</span>              : int FrontEndCompileRequest::addTranslationUnit(TranslationUnitRequest* translationUnit)</span>
-<span id="L901"><span class="lineNum">     901</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L902"><span class="lineNum">     902</span> <span class="tlaGNC">           1 :     Index result = translationUnits.getCount();</span></span>
-<span id="L903"><span class="lineNum">     903</span> <span class="tlaGNC">           1 :     translationUnits.add(translationUnit);</span></span>
-<span id="L904"><span class="lineNum">     904</span>              :     return (int)result;</span>
-<span id="L905"><span class="lineNum">     905</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L906"><span class="lineNum">     906</span>              : </span>
-<span id="L907"><span class="lineNum">     907</span>              : void FrontEndCompileRequest::addTranslationUnitSourceArtifact(</span>
-<span id="L908"><span class="lineNum">     908</span>              :     int translationUnitIndex,</span>
-<span id="L909"><span class="lineNum">     909</span>              :     IArtifact* sourceArtifact)</span>
-<span id="L910"><span class="lineNum">     910</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L911"><span class="lineNum">     911</span> <span class="tlaGNC">           1 :     auto translationUnit = translationUnits[translationUnitIndex];</span></span>
-<span id="L912"><span class="lineNum">     912</span>              : </span>
-<span id="L913"><span class="lineNum">     913</span>              :     // Add the source file</span>
-<span id="L914"><span class="lineNum">     914</span> <span class="tlaGNC">           1 :     translationUnit-&gt;addSourceArtifact(sourceArtifact);</span></span>
+<span id="L889"><span class="lineNum">     889</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L890"><span class="lineNum">     890</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L891"><span class="lineNum">     891</span>              : </span>
+<span id="L892"><span class="lineNum">     892</span>              : int FrontEndCompileRequest::addTranslationUnit(SourceLanguage language, Name* moduleName)</span>
+<span id="L893"><span class="lineNum">     893</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L894"><span class="lineNum">     894</span> <span class="tlaGNC">           1 :     RefPtr&lt;TranslationUnitRequest&gt; translationUnit = new TranslationUnitRequest(this);</span></span>
+<span id="L895"><span class="lineNum">     895</span> <span class="tlaGNC">           1 :     translationUnit-&gt;compileRequest = this;</span></span>
+<span id="L896"><span class="lineNum">     896</span> <span class="tlaGNC">           1 :     translationUnit-&gt;sourceLanguage = SourceLanguage(language);</span></span>
+<span id="L897"><span class="lineNum">     897</span> <span class="tlaGNC">           1 :     translationUnit-&gt;sourceLanguageExplicitlyRequested = SourceLanguage(language);</span></span>
+<span id="L898"><span class="lineNum">     898</span>              : </span>
+<span id="L899"><span class="lineNum">     899</span> <span class="tlaGNC">           1 :     translationUnit-&gt;setModuleName(moduleName);</span></span>
+<span id="L900"><span class="lineNum">     900</span> <span class="tlaGNC">           1 :     return addTranslationUnit(translationUnit);</span></span>
+<span id="L901"><span class="lineNum">     901</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L902"><span class="lineNum">     902</span>              : </span>
+<span id="L903"><span class="lineNum">     903</span>              : int FrontEndCompileRequest::addTranslationUnit(TranslationUnitRequest* translationUnit)</span>
+<span id="L904"><span class="lineNum">     904</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L905"><span class="lineNum">     905</span> <span class="tlaGNC">           1 :     Index result = translationUnits.getCount();</span></span>
+<span id="L906"><span class="lineNum">     906</span> <span class="tlaGNC">           1 :     translationUnits.add(translationUnit);</span></span>
+<span id="L907"><span class="lineNum">     907</span>              :     return (int)result;</span>
+<span id="L908"><span class="lineNum">     908</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L909"><span class="lineNum">     909</span>              : </span>
+<span id="L910"><span class="lineNum">     910</span>              : void FrontEndCompileRequest::addTranslationUnitSourceArtifact(</span>
+<span id="L911"><span class="lineNum">     911</span>              :     int translationUnitIndex,</span>
+<span id="L912"><span class="lineNum">     912</span>              :     IArtifact* sourceArtifact)</span>
+<span id="L913"><span class="lineNum">     913</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L914"><span class="lineNum">     914</span> <span class="tlaGNC">           1 :     auto translationUnit = translationUnits[translationUnitIndex];</span></span>
 <span id="L915"><span class="lineNum">     915</span>              : </span>
-<span id="L916"><span class="lineNum">     916</span> <span class="tlaGNC">           1 :     if (!translationUnit-&gt;moduleName)</span></span>
-<span id="L917"><span class="lineNum">     917</span>              :     {</span>
-<span id="L918"><span class="lineNum">     918</span> <span class="tlaGNC">           1 :         String artifactName = maybeStripLiterateFileExtension(sourceArtifact-&gt;getName());</span></span>
-<span id="L919"><span class="lineNum">     919</span> <span class="tlaGNC">           1 :         translationUnit-&gt;setModuleName(</span></span>
-<span id="L920"><span class="lineNum">     920</span>              :             getNamePool()-&gt;getName(Path::getFileNameWithoutExt(artifactName)));</span>
-<span id="L921"><span class="lineNum">     921</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">           1 :     if (translationUnit-&gt;module-&gt;getFilePath() == nullptr)</span></span>
-<span id="L923"><span class="lineNum">     923</span> <span class="tlaGNC">           1 :         translationUnit-&gt;module-&gt;setPathInfo(PathInfo::makePath(sourceArtifact-&gt;getName()));</span></span>
-<span id="L924"><span class="lineNum">     924</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L925"><span class="lineNum">     925</span>              : </span>
-<span id="L926"><span class="lineNum">     926</span>              : void FrontEndCompileRequest::addTranslationUnitSourceBlob(</span>
-<span id="L927"><span class="lineNum">     927</span>              :     int translationUnitIndex,</span>
-<span id="L928"><span class="lineNum">     928</span>              :     String const&amp; path,</span>
-<span id="L929"><span class="lineNum">     929</span>              :     ISlangBlob* sourceBlob)</span>
-<span id="L930"><span class="lineNum">     930</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L931"><span class="lineNum">     931</span> <span class="tlaGNC">           1 :     auto translationUnit = translationUnits[translationUnitIndex];</span></span>
-<span id="L932"><span class="lineNum">     932</span>              :     auto sourceDesc =</span>
-<span id="L933"><span class="lineNum">     933</span> <span class="tlaGNC">           1 :         ArtifactDescUtil::makeDescForSourceLanguage(asExternal(translationUnit-&gt;sourceLanguage));</span></span>
-<span id="L934"><span class="lineNum">     934</span>              : </span>
-<span id="L935"><span class="lineNum">     935</span> <span class="tlaGNC">           1 :     auto artifact = ArtifactUtil::createArtifact(sourceDesc, path.getBuffer());</span></span>
-<span id="L936"><span class="lineNum">     936</span> <span class="tlaGNC">           1 :     artifact-&gt;addRepresentationUnknown(sourceBlob);</span></span>
+<span id="L916"><span class="lineNum">     916</span>              :     // Add the source file</span>
+<span id="L917"><span class="lineNum">     917</span> <span class="tlaGNC">           1 :     translationUnit-&gt;addSourceArtifact(sourceArtifact);</span></span>
+<span id="L918"><span class="lineNum">     918</span>              : </span>
+<span id="L919"><span class="lineNum">     919</span> <span class="tlaGNC">           1 :     if (!translationUnit-&gt;moduleName)</span></span>
+<span id="L920"><span class="lineNum">     920</span>              :     {</span>
+<span id="L921"><span class="lineNum">     921</span> <span class="tlaGNC">           1 :         String artifactName = maybeStripLiterateFileExtension(sourceArtifact-&gt;getName());</span></span>
+<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">           1 :         translationUnit-&gt;setModuleName(</span></span>
+<span id="L923"><span class="lineNum">     923</span>              :             getNamePool()-&gt;getName(Path::getFileNameWithoutExt(artifactName)));</span>
+<span id="L924"><span class="lineNum">     924</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L925"><span class="lineNum">     925</span> <span class="tlaGNC">           1 :     if (translationUnit-&gt;module-&gt;getFilePath() == nullptr)</span></span>
+<span id="L926"><span class="lineNum">     926</span> <span class="tlaGNC">           1 :         translationUnit-&gt;module-&gt;setPathInfo(PathInfo::makePath(sourceArtifact-&gt;getName()));</span></span>
+<span id="L927"><span class="lineNum">     927</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L928"><span class="lineNum">     928</span>              : </span>
+<span id="L929"><span class="lineNum">     929</span>              : void FrontEndCompileRequest::addTranslationUnitSourceBlob(</span>
+<span id="L930"><span class="lineNum">     930</span>              :     int translationUnitIndex,</span>
+<span id="L931"><span class="lineNum">     931</span>              :     String const&amp; path,</span>
+<span id="L932"><span class="lineNum">     932</span>              :     ISlangBlob* sourceBlob)</span>
+<span id="L933"><span class="lineNum">     933</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L934"><span class="lineNum">     934</span> <span class="tlaGNC">           1 :     auto translationUnit = translationUnits[translationUnitIndex];</span></span>
+<span id="L935"><span class="lineNum">     935</span>              :     auto sourceDesc =</span>
+<span id="L936"><span class="lineNum">     936</span> <span class="tlaGNC">           1 :         ArtifactDescUtil::makeDescForSourceLanguage(asExternal(translationUnit-&gt;sourceLanguage));</span></span>
 <span id="L937"><span class="lineNum">     937</span>              : </span>
-<span id="L938"><span class="lineNum">     938</span> <span class="tlaGNC">           1 :     addTranslationUnitSourceArtifact(translationUnitIndex, artifact);</span></span>
-<span id="L939"><span class="lineNum">     939</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L938"><span class="lineNum">     938</span> <span class="tlaGNC">           1 :     auto artifact = ArtifactUtil::createArtifact(sourceDesc, path.getBuffer());</span></span>
+<span id="L939"><span class="lineNum">     939</span> <span class="tlaGNC">           1 :     artifact-&gt;addRepresentationUnknown(sourceBlob);</span></span>
 <span id="L940"><span class="lineNum">     940</span>              : </span>
-<span id="L941"><span class="lineNum">     941</span>              : void FrontEndCompileRequest::addTranslationUnitSourceFile(</span>
-<span id="L942"><span class="lineNum">     942</span>              :     int translationUnitIndex,</span>
-<span id="L943"><span class="lineNum">     943</span>              :     String const&amp; path)</span>
-<span id="L944"><span class="lineNum">     944</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L945"><span class="lineNum">     945</span>              :     // TODO: We need to consider whether a relative `path` should cause</span>
-<span id="L946"><span class="lineNum">     946</span>              :     // us to look things up using the registered search paths.</span>
-<span id="L947"><span class="lineNum">     947</span>              :     //</span>
-<span id="L948"><span class="lineNum">     948</span>              :     // This behavior wouldn&#x27;t make sense for command-line invocations</span>
-<span id="L949"><span class="lineNum">     949</span>              :     // of `slangc`, but at least one API user wondered by the search</span>
-<span id="L950"><span class="lineNum">     950</span>              :     // paths were not taken into account by this function.</span>
-<span id="L951"><span class="lineNum">     951</span>              :     //</span>
-<span id="L952"><span class="lineNum">     952</span>              : </span>
-<span id="L953"><span class="lineNum">     953</span> <span class="tlaGNC">           1 :     auto fileSystemExt = getLinkage()-&gt;getFileSystemExt();</span></span>
-<span id="L954"><span class="lineNum">     954</span> <span class="tlaGNC">           1 :     auto translationUnit = getTranslationUnit(translationUnitIndex);</span></span>
+<span id="L941"><span class="lineNum">     941</span> <span class="tlaGNC">           1 :     addTranslationUnitSourceArtifact(translationUnitIndex, artifact);</span></span>
+<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L943"><span class="lineNum">     943</span>              : </span>
+<span id="L944"><span class="lineNum">     944</span>              : void FrontEndCompileRequest::addTranslationUnitSourceFile(</span>
+<span id="L945"><span class="lineNum">     945</span>              :     int translationUnitIndex,</span>
+<span id="L946"><span class="lineNum">     946</span>              :     String const&amp; path)</span>
+<span id="L947"><span class="lineNum">     947</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L948"><span class="lineNum">     948</span>              :     // TODO: We need to consider whether a relative `path` should cause</span>
+<span id="L949"><span class="lineNum">     949</span>              :     // us to look things up using the registered search paths.</span>
+<span id="L950"><span class="lineNum">     950</span>              :     //</span>
+<span id="L951"><span class="lineNum">     951</span>              :     // This behavior wouldn&#x27;t make sense for command-line invocations</span>
+<span id="L952"><span class="lineNum">     952</span>              :     // of `slangc`, but at least one API user wondered by the search</span>
+<span id="L953"><span class="lineNum">     953</span>              :     // paths were not taken into account by this function.</span>
+<span id="L954"><span class="lineNum">     954</span>              :     //</span>
 <span id="L955"><span class="lineNum">     955</span>              : </span>
-<span id="L956"><span class="lineNum">     956</span>              :     auto sourceDesc =</span>
-<span id="L957"><span class="lineNum">     957</span> <span class="tlaGNC">           1 :         ArtifactDescUtil::makeDescForSourceLanguage(asExternal(translationUnit-&gt;sourceLanguage));</span></span>
+<span id="L956"><span class="lineNum">     956</span> <span class="tlaGNC">           1 :     auto fileSystemExt = getLinkage()-&gt;getFileSystemExt();</span></span>
+<span id="L957"><span class="lineNum">     957</span> <span class="tlaGNC">           1 :     auto translationUnit = getTranslationUnit(translationUnitIndex);</span></span>
 <span id="L958"><span class="lineNum">     958</span>              : </span>
-<span id="L959"><span class="lineNum">     959</span> <span class="tlaGNC">           1 :     auto sourceArtifact = ArtifactUtil::createArtifact(sourceDesc, path.getBuffer());</span></span>
-<span id="L960"><span class="lineNum">     960</span>              : </span>
-<span id="L961"><span class="lineNum">     961</span> <span class="tlaGNC">           1 :     auto extRep = new ExtFileArtifactRepresentation(path.getUnownedSlice(), fileSystemExt);</span></span>
-<span id="L962"><span class="lineNum">     962</span> <span class="tlaGNC">           1 :     sourceArtifact-&gt;addRepresentation(extRep);</span></span>
+<span id="L959"><span class="lineNum">     959</span>              :     auto sourceDesc =</span>
+<span id="L960"><span class="lineNum">     960</span> <span class="tlaGNC">           1 :         ArtifactDescUtil::makeDescForSourceLanguage(asExternal(translationUnit-&gt;sourceLanguage));</span></span>
+<span id="L961"><span class="lineNum">     961</span>              : </span>
+<span id="L962"><span class="lineNum">     962</span> <span class="tlaGNC">           1 :     auto sourceArtifact = ArtifactUtil::createArtifact(sourceDesc, path.getBuffer());</span></span>
 <span id="L963"><span class="lineNum">     963</span>              : </span>
-<span id="L964"><span class="lineNum">     964</span>              :     SlangResult existsRes = SLANG_OK;</span>
-<span id="L965"><span class="lineNum">     965</span>              : </span>
-<span id="L966"><span class="lineNum">     966</span>              :     // If we require caching, we demand it&#x27;s loaded here.</span>
-<span id="L967"><span class="lineNum">     967</span>              :     //</span>
-<span id="L968"><span class="lineNum">     968</span>              :     // In practice this probably means repro capture is enabled. So we want to</span>
-<span id="L969"><span class="lineNum">     969</span>              :     // load the blob such that it&#x27;s in the cache, even if it doesn&#x27;t actually</span>
-<span id="L970"><span class="lineNum">     970</span>              :     // have to be loaded for the compilation.</span>
-<span id="L971"><span class="lineNum">     971</span> <span class="tlaGNC">           1 :     if (getLinkage()-&gt;m_requireCacheFileSystem)</span></span>
-<span id="L972"><span class="lineNum">     972</span>              :     {</span>
-<span id="L973"><span class="lineNum">     973</span> <span class="tlaUNC">           0 :         ComPtr&lt;ISlangBlob&gt; blob;</span></span>
-<span id="L974"><span class="lineNum">     974</span>              :         // If we can load the blob, then it exists</span>
-<span id="L975"><span class="lineNum">     975</span> <span class="tlaUNC">           0 :         existsRes = sourceArtifact-&gt;loadBlob(ArtifactKeep::Yes, blob.writeRef());</span></span>
-<span id="L976"><span class="lineNum">     976</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L977"><span class="lineNum">     977</span>              :     else</span>
-<span id="L978"><span class="lineNum">     978</span>              :     {</span>
-<span id="L979"><span class="lineNum">     979</span> <span class="tlaGNC">           1 :         existsRes = sourceArtifact-&gt;exists() ? SLANG_OK : SLANG_E_NOT_FOUND;</span></span>
-<span id="L980"><span class="lineNum">     980</span>              :     }</span>
-<span id="L981"><span class="lineNum">     981</span>              : </span>
-<span id="L982"><span class="lineNum">     982</span> <span class="tlaGNC">           1 :     if (SLANG_FAILED(existsRes))</span></span>
-<span id="L983"><span class="lineNum">     983</span>              :     {</span>
-<span id="L984"><span class="lineNum">     984</span>              :         // Emit a diagnostic!</span>
-<span id="L985"><span class="lineNum">     985</span> <span class="tlaUNC">           0 :         getSink()-&gt;diagnose(Diagnostics::CannotOpenFile{.path = path});</span></span>
-<span id="L986"><span class="lineNum">     986</span>              :         return;</span>
-<span id="L987"><span class="lineNum">     987</span>              :     }</span>
-<span id="L988"><span class="lineNum">     988</span>              : </span>
-<span id="L989"><span class="lineNum">     989</span> <span class="tlaGNC">           1 :     addTranslationUnitSourceArtifact(translationUnitIndex, sourceArtifact);</span></span>
-<span id="L990"><span class="lineNum">     990</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L964"><span class="lineNum">     964</span> <span class="tlaGNC">           1 :     auto extRep = new ExtFileArtifactRepresentation(path.getUnownedSlice(), fileSystemExt);</span></span>
+<span id="L965"><span class="lineNum">     965</span> <span class="tlaGNC">           1 :     sourceArtifact-&gt;addRepresentation(extRep);</span></span>
+<span id="L966"><span class="lineNum">     966</span>              : </span>
+<span id="L967"><span class="lineNum">     967</span>              :     SlangResult existsRes = SLANG_OK;</span>
+<span id="L968"><span class="lineNum">     968</span>              : </span>
+<span id="L969"><span class="lineNum">     969</span>              :     // If we require caching, we demand it&#x27;s loaded here.</span>
+<span id="L970"><span class="lineNum">     970</span>              :     //</span>
+<span id="L971"><span class="lineNum">     971</span>              :     // In practice this probably means repro capture is enabled. So we want to</span>
+<span id="L972"><span class="lineNum">     972</span>              :     // load the blob such that it&#x27;s in the cache, even if it doesn&#x27;t actually</span>
+<span id="L973"><span class="lineNum">     973</span>              :     // have to be loaded for the compilation.</span>
+<span id="L974"><span class="lineNum">     974</span> <span class="tlaGNC">           1 :     if (getLinkage()-&gt;m_requireCacheFileSystem)</span></span>
+<span id="L975"><span class="lineNum">     975</span>              :     {</span>
+<span id="L976"><span class="lineNum">     976</span> <span class="tlaUNC">           0 :         ComPtr&lt;ISlangBlob&gt; blob;</span></span>
+<span id="L977"><span class="lineNum">     977</span>              :         // If we can load the blob, then it exists</span>
+<span id="L978"><span class="lineNum">     978</span> <span class="tlaUNC">           0 :         existsRes = sourceArtifact-&gt;loadBlob(ArtifactKeep::Yes, blob.writeRef());</span></span>
+<span id="L979"><span class="lineNum">     979</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L980"><span class="lineNum">     980</span>              :     else</span>
+<span id="L981"><span class="lineNum">     981</span>              :     {</span>
+<span id="L982"><span class="lineNum">     982</span> <span class="tlaGNC">           1 :         existsRes = sourceArtifact-&gt;exists() ? SLANG_OK : SLANG_E_NOT_FOUND;</span></span>
+<span id="L983"><span class="lineNum">     983</span>              :     }</span>
+<span id="L984"><span class="lineNum">     984</span>              : </span>
+<span id="L985"><span class="lineNum">     985</span> <span class="tlaGNC">           1 :     if (SLANG_FAILED(existsRes))</span></span>
+<span id="L986"><span class="lineNum">     986</span>              :     {</span>
+<span id="L987"><span class="lineNum">     987</span>              :         // Emit a diagnostic!</span>
+<span id="L988"><span class="lineNum">     988</span> <span class="tlaUNC">           0 :         getSink()-&gt;diagnose(Diagnostics::CannotOpenFile{.path = path});</span></span>
+<span id="L989"><span class="lineNum">     989</span>              :         return;</span>
+<span id="L990"><span class="lineNum">     990</span>              :     }</span>
 <span id="L991"><span class="lineNum">     991</span>              : </span>
-<span id="L992"><span class="lineNum">     992</span>              : int FrontEndCompileRequest::addEntryPoint(</span>
-<span id="L993"><span class="lineNum">     993</span>              :     int translationUnitIndex,</span>
-<span id="L994"><span class="lineNum">     994</span>              :     String const&amp; name,</span>
-<span id="L995"><span class="lineNum">     995</span>              :     Profile entryPointProfile)</span>
-<span id="L996"><span class="lineNum">     996</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L997"><span class="lineNum">     997</span> <span class="tlaGNC">           1 :     auto translationUnitReq = translationUnits[translationUnitIndex];</span></span>
-<span id="L998"><span class="lineNum">     998</span>              : </span>
-<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">           1 :     Index result = m_entryPointReqs.getCount();</span></span>
-<span id="L1000"><span class="lineNum">    1000</span>              : </span>
-<span id="L1001"><span class="lineNum">    1001</span> <span class="tlaGNC">           1 :     RefPtr&lt;FrontEndEntryPointRequest&gt; entryPointReq = new FrontEndEntryPointRequest(</span></span>
-<span id="L1002"><span class="lineNum">    1002</span>              :         this,</span>
-<span id="L1003"><span class="lineNum">    1003</span>              :         translationUnitIndex,</span>
-<span id="L1004"><span class="lineNum">    1004</span>              :         getNamePool()-&gt;getName(name),</span>
-<span id="L1005"><span class="lineNum">    1005</span>              :         entryPointProfile);</span>
-<span id="L1006"><span class="lineNum">    1006</span>              : </span>
-<span id="L1007"><span class="lineNum">    1007</span> <span class="tlaGNC">           1 :     m_entryPointReqs.add(entryPointReq);</span></span>
-<span id="L1008"><span class="lineNum">    1008</span>              :     //    translationUnitReq-&gt;entryPoints.add(entryPointReq);</span>
+<span id="L992"><span class="lineNum">     992</span> <span class="tlaGNC">           1 :     addTranslationUnitSourceArtifact(translationUnitIndex, sourceArtifact);</span></span>
+<span id="L993"><span class="lineNum">     993</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L994"><span class="lineNum">     994</span>              : </span>
+<span id="L995"><span class="lineNum">     995</span>              : int FrontEndCompileRequest::addEntryPoint(</span>
+<span id="L996"><span class="lineNum">     996</span>              :     int translationUnitIndex,</span>
+<span id="L997"><span class="lineNum">     997</span>              :     String const&amp; name,</span>
+<span id="L998"><span class="lineNum">     998</span>              :     Profile entryPointProfile)</span>
+<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">           1 :     auto translationUnitReq = translationUnits[translationUnitIndex];</span></span>
+<span id="L1001"><span class="lineNum">    1001</span>              : </span>
+<span id="L1002"><span class="lineNum">    1002</span> <span class="tlaGNC">           1 :     Index result = m_entryPointReqs.getCount();</span></span>
+<span id="L1003"><span class="lineNum">    1003</span>              : </span>
+<span id="L1004"><span class="lineNum">    1004</span> <span class="tlaGNC">           1 :     RefPtr&lt;FrontEndEntryPointRequest&gt; entryPointReq = new FrontEndEntryPointRequest(</span></span>
+<span id="L1005"><span class="lineNum">    1005</span>              :         this,</span>
+<span id="L1006"><span class="lineNum">    1006</span>              :         translationUnitIndex,</span>
+<span id="L1007"><span class="lineNum">    1007</span>              :         getNamePool()-&gt;getName(name),</span>
+<span id="L1008"><span class="lineNum">    1008</span>              :         entryPointProfile);</span>
 <span id="L1009"><span class="lineNum">    1009</span>              : </span>
-<span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">           1 :     return int(result);</span></span>
-<span id="L1011"><span class="lineNum">    1011</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">           1 :     m_entryPointReqs.add(entryPointReq);</span></span>
+<span id="L1011"><span class="lineNum">    1011</span>              :     //    translationUnitReq-&gt;entryPoints.add(entryPointReq);</span>
 <span id="L1012"><span class="lineNum">    1012</span>              : </span>
-<span id="L1013"><span class="lineNum">    1013</span>              : int EndToEndCompileRequest::addEntryPoint(</span>
-<span id="L1014"><span class="lineNum">    1014</span>              :     int translationUnitIndex,</span>
-<span id="L1015"><span class="lineNum">    1015</span>              :     String const&amp; name,</span>
-<span id="L1016"><span class="lineNum">    1016</span>              :     Profile entryPointProfile,</span>
-<span id="L1017"><span class="lineNum">    1017</span>              :     List&lt;String&gt; const&amp; genericTypeNames)</span>
-<span id="L1018"><span class="lineNum">    1018</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1019"><span class="lineNum">    1019</span> <span class="tlaGNC">           1 :     getFrontEndReq()-&gt;addEntryPoint(translationUnitIndex, name, entryPointProfile);</span></span>
-<span id="L1020"><span class="lineNum">    1020</span>              : </span>
-<span id="L1021"><span class="lineNum">    1021</span> <span class="tlaGNC">           1 :     EntryPointInfo entryPointInfo;</span></span>
-<span id="L1022"><span class="lineNum">    1022</span> <span class="tlaGNC">           1 :     for (auto typeName : genericTypeNames)</span></span>
-<span id="L1023"><span class="lineNum">    1023</span> <span class="tlaGNC">           1 :         entryPointInfo.specializationArgStrings.add(typeName);</span></span>
-<span id="L1024"><span class="lineNum">    1024</span>              : </span>
-<span id="L1025"><span class="lineNum">    1025</span> <span class="tlaGNC">           1 :     Index result = m_entryPoints.getCount();</span></span>
-<span id="L1026"><span class="lineNum">    1026</span> <span class="tlaGNC">           1 :     m_entryPoints.add(_Move(entryPointInfo));</span></span>
-<span id="L1027"><span class="lineNum">    1027</span> <span class="tlaGNC">           1 :     return (int)result;</span></span>
-<span id="L1028"><span class="lineNum">    1028</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1029"><span class="lineNum">    1029</span>              : </span>
-<span id="L1030"><span class="lineNum">    1030</span>              : } // namespace Slang</span>
+<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">           1 :     return int(result);</span></span>
+<span id="L1014"><span class="lineNum">    1014</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1015"><span class="lineNum">    1015</span>              : </span>
+<span id="L1016"><span class="lineNum">    1016</span>              : int EndToEndCompileRequest::addEntryPoint(</span>
+<span id="L1017"><span class="lineNum">    1017</span>              :     int translationUnitIndex,</span>
+<span id="L1018"><span class="lineNum">    1018</span>              :     String const&amp; name,</span>
+<span id="L1019"><span class="lineNum">    1019</span>              :     Profile entryPointProfile,</span>
+<span id="L1020"><span class="lineNum">    1020</span>              :     List&lt;String&gt; const&amp; genericTypeNames)</span>
+<span id="L1021"><span class="lineNum">    1021</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1022"><span class="lineNum">    1022</span> <span class="tlaGNC">           1 :     getFrontEndReq()-&gt;addEntryPoint(translationUnitIndex, name, entryPointProfile);</span></span>
+<span id="L1023"><span class="lineNum">    1023</span>              : </span>
+<span id="L1024"><span class="lineNum">    1024</span> <span class="tlaGNC">           1 :     EntryPointInfo entryPointInfo;</span></span>
+<span id="L1025"><span class="lineNum">    1025</span> <span class="tlaGNC">           1 :     for (auto typeName : genericTypeNames)</span></span>
+<span id="L1026"><span class="lineNum">    1026</span> <span class="tlaGNC">           1 :         entryPointInfo.specializationArgStrings.add(typeName);</span></span>
+<span id="L1027"><span class="lineNum">    1027</span>              : </span>
+<span id="L1028"><span class="lineNum">    1028</span> <span class="tlaGNC">           1 :     Index result = m_entryPoints.getCount();</span></span>
+<span id="L1029"><span class="lineNum">    1029</span> <span class="tlaGNC">           1 :     m_entryPoints.add(_Move(entryPointInfo));</span></span>
+<span id="L1030"><span class="lineNum">    1030</span> <span class="tlaGNC">           1 :     return (int)result;</span></span>
+<span id="L1031"><span class="lineNum">    1031</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1032"><span class="lineNum">    1032</span>              : </span>
+<span id="L1033"><span class="lineNum">    1033</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

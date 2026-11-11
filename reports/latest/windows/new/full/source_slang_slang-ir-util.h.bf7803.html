@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-10 05:15:42 UTC</td>
+      <td class="headerValue">2026-11-11 04:11:01 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -1038,88 +1038,91 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L765"><span class="lineNum">     765</span>              : // group&quot;) should peel with this function first, then test the terminal instruction.</span>
 <span id="L766"><span class="lineNum">     766</span>              : IRInst* peelAddressForwardingOps(IRInst* addr);</span>
 <span id="L767"><span class="lineNum">     767</span>              : </span>
-<span id="L768"><span class="lineNum">     768</span>              : /// Return whether `inst` records source-level debug information without affecting execution.</span>
-<span id="L769"><span class="lineNum">     769</span>              : bool isDebugInfoInst(IRInst* inst);</span>
+<span id="L768"><span class="lineNum">     768</span>              : /// Returns whether `inst` has an `[Artificial]` decoration; returns false for null.</span>
+<span id="L769"><span class="lineNum">     769</span>              : bool isArtificialInst(IRInst* inst);</span>
 <span id="L770"><span class="lineNum">     770</span>              : </span>
-<span id="L771"><span class="lineNum">     771</span>              : /// Return whether `op` is a dedicated IR operation that reads resource contents.</span>
-<span id="L772"><span class="lineNum">     772</span>              : bool doesOpReadResourceContents(IROp op);</span>
+<span id="L771"><span class="lineNum">     771</span>              : /// Return whether `inst` records source-level debug information without affecting execution.</span>
+<span id="L772"><span class="lineNum">     772</span>              : bool isDebugInfoInst(IRInst* inst);</span>
 <span id="L773"><span class="lineNum">     773</span>              : </span>
-<span id="L774"><span class="lineNum">     774</span>              : /// Return whether `op` directly produces an address into a resource&#x27;s contents.</span>
-<span id="L775"><span class="lineNum">     775</span>              : bool doesOpProduceResourceContentAddress(IROp op);</span>
+<span id="L774"><span class="lineNum">     774</span>              : /// Return whether `op` is a dedicated IR operation that reads resource contents.</span>
+<span id="L775"><span class="lineNum">     775</span>              : bool doesOpReadResourceContents(IROp op);</span>
 <span id="L776"><span class="lineNum">     776</span>              : </span>
-<span id="L777"><span class="lineNum">     777</span>              : // Returns true if the memory location pointed to by `ptrInst` is immutable.</span>
-<span id="L778"><span class="lineNum">     778</span>              : // An immutable location is the memory region that can&#x27;t be modified by the user code.</span>
-<span id="L779"><span class="lineNum">     779</span>              : // Examples are ConstantBuffer and shader resource contents(e.g. StructuredBuffer).</span>
-<span id="L780"><span class="lineNum">     780</span>              : // Note that this is to be disguished from the access qualifier of the pointer itself,</span>
-<span id="L781"><span class="lineNum">     781</span>              : // e.g. a `ptrInst` of type `Ptr&lt;T, Access.Read&gt;` may still point to a mutable location,</span>
-<span id="L782"><span class="lineNum">     782</span>              : // so this function returns false in that case.</span>
-<span id="L783"><span class="lineNum">     783</span>              : bool isPointerToImmutableLocation(IRInst* ptrInst);</span>
-<span id="L784"><span class="lineNum">     784</span>              : </span>
-<span id="L785"><span class="lineNum">     785</span>              : // Check if `use` is the `baseAddr` operand of a GetElement/FieldExtract inst.</span>
-<span id="L786"><span class="lineNum">     786</span>              : // This is true if `use` is the first operand of the user inst.</span>
-<span id="L787"><span class="lineNum">     787</span>              : inline bool isUseBaseAddrOperand(IRUse* use, IRInst* user)</span>
-<span id="L788"><span class="lineNum">     788</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L789"><span class="lineNum">     789</span> <span class="tlaGNC">           1 :     return user-&gt;getOperandUse(0) == use;</span></span>
-<span id="L790"><span class="lineNum">     790</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L791"><span class="lineNum">     791</span>              : </span>
-<span id="L792"><span class="lineNum">     792</span>              : // Check if the inst is a generic parameter.</span>
-<span id="L793"><span class="lineNum">     793</span>              : bool isGenericParameter(IRInst* inst);</span>
+<span id="L777"><span class="lineNum">     777</span>              : /// Return whether `op` directly produces an address into a resource&#x27;s contents.</span>
+<span id="L778"><span class="lineNum">     778</span>              : bool doesOpProduceResourceContentAddress(IROp op);</span>
+<span id="L779"><span class="lineNum">     779</span>              : </span>
+<span id="L780"><span class="lineNum">     780</span>              : // Returns true if the memory location pointed to by `ptrInst` is immutable.</span>
+<span id="L781"><span class="lineNum">     781</span>              : // An immutable location is the memory region that can&#x27;t be modified by the user code.</span>
+<span id="L782"><span class="lineNum">     782</span>              : // Examples are ConstantBuffer and shader resource contents(e.g. StructuredBuffer).</span>
+<span id="L783"><span class="lineNum">     783</span>              : // Note that this is to be disguished from the access qualifier of the pointer itself,</span>
+<span id="L784"><span class="lineNum">     784</span>              : // e.g. a `ptrInst` of type `Ptr&lt;T, Access.Read&gt;` may still point to a mutable location,</span>
+<span id="L785"><span class="lineNum">     785</span>              : // so this function returns false in that case.</span>
+<span id="L786"><span class="lineNum">     786</span>              : bool isPointerToImmutableLocation(IRInst* ptrInst);</span>
+<span id="L787"><span class="lineNum">     787</span>              : </span>
+<span id="L788"><span class="lineNum">     788</span>              : // Check if `use` is the `baseAddr` operand of a GetElement/FieldExtract inst.</span>
+<span id="L789"><span class="lineNum">     789</span>              : // This is true if `use` is the first operand of the user inst.</span>
+<span id="L790"><span class="lineNum">     790</span>              : inline bool isUseBaseAddrOperand(IRUse* use, IRInst* user)</span>
+<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L792"><span class="lineNum">     792</span> <span class="tlaGNC">           1 :     return user-&gt;getOperandUse(0) == use;</span></span>
+<span id="L793"><span class="lineNum">     793</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L794"><span class="lineNum">     794</span>              : </span>
-<span id="L795"><span class="lineNum">     795</span>              : // Usually we want to enforce that an instruction is defined before any of its uses, but</span>
-<span id="L796"><span class="lineNum">     796</span>              : // if the use is a generic parameter, we can relax this rule when the instruction is the data type</span>
-<span id="L797"><span class="lineNum">     797</span>              : // of the generic parameter.</span>
-<span id="L798"><span class="lineNum">     798</span>              : bool canRelaxInstOrderRule(IRInst* instToCheck, IRInst* otherInst);</span>
-<span id="L799"><span class="lineNum">     799</span>              : </span>
-<span id="L800"><span class="lineNum">     800</span>              : IRIntegerValue getInterfaceAnyValueSize(IRInst* type, SourceLoc usageLoc);</span>
-<span id="L801"><span class="lineNum">     801</span>              : </span>
-<span id="L802"><span class="lineNum">     802</span>              : // Return true if the inst can be stored into a variable.</span>
-<span id="L803"><span class="lineNum">     803</span>              : bool canInstBeStored(IRInst* inst);</span>
+<span id="L795"><span class="lineNum">     795</span>              : // Check if the inst is a generic parameter.</span>
+<span id="L796"><span class="lineNum">     796</span>              : bool isGenericParameter(IRInst* inst);</span>
+<span id="L797"><span class="lineNum">     797</span>              : </span>
+<span id="L798"><span class="lineNum">     798</span>              : // Usually we want to enforce that an instruction is defined before any of its uses, but</span>
+<span id="L799"><span class="lineNum">     799</span>              : // if the use is a generic parameter, we can relax this rule when the instruction is the data type</span>
+<span id="L800"><span class="lineNum">     800</span>              : // of the generic parameter.</span>
+<span id="L801"><span class="lineNum">     801</span>              : bool canRelaxInstOrderRule(IRInst* instToCheck, IRInst* otherInst);</span>
+<span id="L802"><span class="lineNum">     802</span>              : </span>
+<span id="L803"><span class="lineNum">     803</span>              : IRIntegerValue getInterfaceAnyValueSize(IRInst* type, SourceLoc usageLoc);</span>
 <span id="L804"><span class="lineNum">     804</span>              : </span>
-<span id="L805"><span class="lineNum">     805</span>              : IRType* getTextureTypeFromCombinedTextureSampler(IRType* type);</span>
-<span id="L806"><span class="lineNum">     806</span>              : IRType* getSamplerTypeFromCombinedTextureSampler(IRType* type);</span>
+<span id="L805"><span class="lineNum">     805</span>              : // Return true if the inst can be stored into a variable.</span>
+<span id="L806"><span class="lineNum">     806</span>              : bool canInstBeStored(IRInst* inst);</span>
 <span id="L807"><span class="lineNum">     807</span>              : </span>
-<span id="L808"><span class="lineNum">     808</span>              : bool isReadNoneCallee(IRInst* callee);</span>
-<span id="L809"><span class="lineNum">     809</span>              : </span>
-<span id="L810"><span class="lineNum">     810</span>              : /// True iff `callee` is read-none AND every user-supplied derivative variant</span>
-<span id="L811"><span class="lineNum">     811</span>              : /// of it whose read-none-ness is not already implied by the primary is also</span>
-<span id="L812"><span class="lineNum">     812</span>              : /// read-none.</span>
-<span id="L813"><span class="lineNum">     813</span>              : ///</span>
-<span id="L814"><span class="lineNum">     814</span>              : /// In practice this checks the `ForwardDerivative` annotation and the</span>
-<span id="L815"><span class="lineNum">     815</span>              : /// `BackwardDerivativePropagate` annotation. `BackwardDerivativeApply` is</span>
-<span id="L816"><span class="lineNum">     816</span>              : /// intentionally not consulted because the apply wrapper inherits</span>
-<span id="L817"><span class="lineNum">     817</span>              : /// read-none-ness from the primary callee — see the implementation comment</span>
-<span id="L818"><span class="lineNum">     818</span>              : /// in `slang-ir-util.cpp` for the unwrapping chain.</span>
-<span id="L819"><span class="lineNum">     819</span>              : ///</span>
-<span id="L820"><span class="lineNum">     820</span>              : /// The carry-set analysis in slang-ir-check-differentiability needs this</span>
-<span id="L821"><span class="lineNum">     821</span>              : /// stronger property: a primary callee can be `[__readNone]` while its</span>
-<span id="L822"><span class="lineNum">     822</span>              : /// user-supplied `[ForwardDerivative]` or `[BackwardDerivative]` has side</span>
-<span id="L823"><span class="lineNum">     823</span>              : /// effects, in which case a call to the primary still produces observable</span>
-<span id="L824"><span class="lineNum">     824</span>              : /// derivative state through differentiation. Other callers of</span>
-<span id="L825"><span class="lineNum">     825</span>              : /// `isReadNoneCallee` reason about the local function&#x27;s own read-none-ness</span>
-<span id="L826"><span class="lineNum">     826</span>              : /// and should not use this variant.</span>
-<span id="L827"><span class="lineNum">     827</span>              : bool isReadNoneCalleeAndAllDerivatives(IRInst* callee);</span>
-<span id="L828"><span class="lineNum">     828</span>              : </span>
-<span id="L829"><span class="lineNum">     829</span>              : bool isNoSideEffectCallee(IRInst* callee);</span>
-<span id="L830"><span class="lineNum">     830</span>              : </span>
-<span id="L831"><span class="lineNum">     831</span>              : bool tryGetConstantIntLit(IRInst* inst, Int64&amp; outValue);</span>
-<span id="L832"><span class="lineNum">     832</span>              : </span>
-<span id="L833"><span class="lineNum">     833</span>              : bool areKnownEqualShapeElements(IRInst* left, IRInst* right);</span>
-<span id="L834"><span class="lineNum">     834</span>              : </span>
-<span id="L835"><span class="lineNum">     835</span>              : IRInst* emitPackLike(IRModule* module, IRInst* oldInst, ArrayView&lt;IRInst*&gt; elements);</span>
-<span id="L836"><span class="lineNum">     836</span>              : </span>
-<span id="L837"><span class="lineNum">     837</span>              : /// Returns true if `type` is one of the work-graph record types (e.g.</span>
-<span id="L838"><span class="lineNum">     838</span>              : /// DispatchNodeInputRecord&lt;T&gt;, ThreadNodeInputRecord&lt;T&gt;, NodeOutput&lt;T&gt;, etc.).</span>
-<span id="L839"><span class="lineNum">     839</span>              : /// These types are opaque ABI objects that must survive type legalization unchanged.</span>
-<span id="L840"><span class="lineNum">     840</span>              : bool isWorkGraphRecordType(IRType* type);</span>
-<span id="L841"><span class="lineNum">     841</span>              : </span>
-<span id="L842"><span class="lineNum">     842</span>              : /// Returns the element type operand for generic work-graph record types, or null</span>
-<span id="L843"><span class="lineNum">     843</span>              : /// for non-generic record types. Empty record types such as `EmptyNodeOutput`</span>
-<span id="L844"><span class="lineNum">     844</span>              : /// intentionally return null because they carry no payload element type.</span>
-<span id="L845"><span class="lineNum">     845</span>              : IRType* getWorkGraphRecordElementType(IRType* type);</span>
-<span id="L846"><span class="lineNum">     846</span>              : </span>
-<span id="L847"><span class="lineNum">     847</span>              : } // namespace Slang</span>
-<span id="L848"><span class="lineNum">     848</span>              : </span>
-<span id="L849"><span class="lineNum">     849</span>              : #endif</span>
+<span id="L808"><span class="lineNum">     808</span>              : IRType* getTextureTypeFromCombinedTextureSampler(IRType* type);</span>
+<span id="L809"><span class="lineNum">     809</span>              : IRType* getSamplerTypeFromCombinedTextureSampler(IRType* type);</span>
+<span id="L810"><span class="lineNum">     810</span>              : </span>
+<span id="L811"><span class="lineNum">     811</span>              : bool isReadNoneCallee(IRInst* callee);</span>
+<span id="L812"><span class="lineNum">     812</span>              : </span>
+<span id="L813"><span class="lineNum">     813</span>              : /// True iff `callee` is read-none AND every user-supplied derivative variant</span>
+<span id="L814"><span class="lineNum">     814</span>              : /// of it whose read-none-ness is not already implied by the primary is also</span>
+<span id="L815"><span class="lineNum">     815</span>              : /// read-none.</span>
+<span id="L816"><span class="lineNum">     816</span>              : ///</span>
+<span id="L817"><span class="lineNum">     817</span>              : /// In practice this checks the `ForwardDerivative` annotation and the</span>
+<span id="L818"><span class="lineNum">     818</span>              : /// `BackwardDerivativePropagate` annotation. `BackwardDerivativeApply` is</span>
+<span id="L819"><span class="lineNum">     819</span>              : /// intentionally not consulted because the apply wrapper inherits</span>
+<span id="L820"><span class="lineNum">     820</span>              : /// read-none-ness from the primary callee — see the implementation comment</span>
+<span id="L821"><span class="lineNum">     821</span>              : /// in `slang-ir-util.cpp` for the unwrapping chain.</span>
+<span id="L822"><span class="lineNum">     822</span>              : ///</span>
+<span id="L823"><span class="lineNum">     823</span>              : /// The carry-set analysis in slang-ir-check-differentiability needs this</span>
+<span id="L824"><span class="lineNum">     824</span>              : /// stronger property: a primary callee can be `[__readNone]` while its</span>
+<span id="L825"><span class="lineNum">     825</span>              : /// user-supplied `[ForwardDerivative]` or `[BackwardDerivative]` has side</span>
+<span id="L826"><span class="lineNum">     826</span>              : /// effects, in which case a call to the primary still produces observable</span>
+<span id="L827"><span class="lineNum">     827</span>              : /// derivative state through differentiation. Other callers of</span>
+<span id="L828"><span class="lineNum">     828</span>              : /// `isReadNoneCallee` reason about the local function&#x27;s own read-none-ness</span>
+<span id="L829"><span class="lineNum">     829</span>              : /// and should not use this variant.</span>
+<span id="L830"><span class="lineNum">     830</span>              : bool isReadNoneCalleeAndAllDerivatives(IRInst* callee);</span>
+<span id="L831"><span class="lineNum">     831</span>              : </span>
+<span id="L832"><span class="lineNum">     832</span>              : bool isNoSideEffectCallee(IRInst* callee);</span>
+<span id="L833"><span class="lineNum">     833</span>              : </span>
+<span id="L834"><span class="lineNum">     834</span>              : bool tryGetConstantIntLit(IRInst* inst, Int64&amp; outValue);</span>
+<span id="L835"><span class="lineNum">     835</span>              : </span>
+<span id="L836"><span class="lineNum">     836</span>              : bool areKnownEqualShapeElements(IRInst* left, IRInst* right);</span>
+<span id="L837"><span class="lineNum">     837</span>              : </span>
+<span id="L838"><span class="lineNum">     838</span>              : IRInst* emitPackLike(IRModule* module, IRInst* oldInst, ArrayView&lt;IRInst*&gt; elements);</span>
+<span id="L839"><span class="lineNum">     839</span>              : </span>
+<span id="L840"><span class="lineNum">     840</span>              : /// Returns true if `type` is one of the work-graph record types (e.g.</span>
+<span id="L841"><span class="lineNum">     841</span>              : /// DispatchNodeInputRecord&lt;T&gt;, ThreadNodeInputRecord&lt;T&gt;, NodeOutput&lt;T&gt;, etc.).</span>
+<span id="L842"><span class="lineNum">     842</span>              : /// These types are opaque ABI objects that must survive type legalization unchanged.</span>
+<span id="L843"><span class="lineNum">     843</span>              : bool isWorkGraphRecordType(IRType* type);</span>
+<span id="L844"><span class="lineNum">     844</span>              : </span>
+<span id="L845"><span class="lineNum">     845</span>              : /// Returns the element type operand for generic work-graph record types, or null</span>
+<span id="L846"><span class="lineNum">     846</span>              : /// for non-generic record types. Empty record types such as `EmptyNodeOutput`</span>
+<span id="L847"><span class="lineNum">     847</span>              : /// intentionally return null because they carry no payload element type.</span>
+<span id="L848"><span class="lineNum">     848</span>              : IRType* getWorkGraphRecordElementType(IRType* type);</span>
+<span id="L849"><span class="lineNum">     849</span>              : </span>
+<span id="L850"><span class="lineNum">     850</span>              : } // namespace Slang</span>
+<span id="L851"><span class="lineNum">     851</span>              : </span>
+<span id="L852"><span class="lineNum">     852</span>              : #endif</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

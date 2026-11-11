@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-10 05:15:36 UTC</td>
+      <td class="headerValue">2026-11-11 04:10:57 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -491,82 +491,84 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L206"><span class="lineNum">     206</span>              :     bool isSpecializationDisabled();</span>
 <span id="L207"><span class="lineNum">     207</span>              : </span>
 <span id="L208"><span class="lineNum">     208</span>              :     bool shouldSkipSPIRVValidation();</span>
-<span id="L209"><span class="lineNum">     209</span>              : </span>
-<span id="L210"><span class="lineNum">     210</span>              :     SlangResult requireTranslationUnitSourceFiles();</span>
-<span id="L211"><span class="lineNum">     211</span>              : </span>
-<span id="L212"><span class="lineNum">     212</span>              :     //</span>
-<span id="L213"><span class="lineNum">     213</span>              : </span>
-<span id="L214"><span class="lineNum">     214</span>              :     SlangResult emitEntryPoints(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
-<span id="L215"><span class="lineNum">     215</span>              : </span>
-<span id="L216"><span class="lineNum">     216</span>              :     SlangResult emitPrecompiledDownstreamIR(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
-<span id="L217"><span class="lineNum">     217</span>              : </span>
-<span id="L218"><span class="lineNum">     218</span>              :     void maybeDumpIntermediate(IArtifact* artifact);</span>
-<span id="L219"><span class="lineNum">     219</span>              : </span>
-<span id="L220"><span class="lineNum">     220</span>              :     // Used to cause instructions available in precompiled blobs to be</span>
-<span id="L221"><span class="lineNum">     221</span>              :     // removed between IR linking and target source generation.</span>
-<span id="L222"><span class="lineNum">     222</span>              :     bool removeAvailableInDownstreamIR = false;</span>
-<span id="L223"><span class="lineNum">     223</span>              : </span>
-<span id="L224"><span class="lineNum">     224</span>              :     // Determines if program level compilation like getTargetCode() or getEntryPointCode()</span>
-<span id="L225"><span class="lineNum">     225</span>              :     // should return a fully linked downstream program or just the glue SPIR-V/DXIL that</span>
-<span id="L226"><span class="lineNum">     226</span>              :     // imports and uses the precompiled SPIR-V/DXIL from constituent modules.</span>
-<span id="L227"><span class="lineNum">     227</span>              :     // This is a no-op if modules are not precompiled.</span>
-<span id="L228"><span class="lineNum">     228</span>              :     bool shouldSkipDownstreamLinking();</span>
-<span id="L229"><span class="lineNum">     229</span>              : </span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaUNC">           0 :     RequiredLoweringPassSet&amp; getRequiredLoweringPassSet() { return m_requiredLoweringPassSet; }</span></span>
-<span id="L231"><span class="lineNum">     231</span>              : </span>
-<span id="L232"><span class="lineNum">     232</span>              : protected:</span>
-<span id="L233"><span class="lineNum">     233</span>              :     CodeGenTarget m_targetFormat = CodeGenTarget::Unknown;</span>
-<span id="L234"><span class="lineNum">     234</span>              :     Profile m_targetProfile;</span>
-<span id="L235"><span class="lineNum">     235</span>              :     ExtensionTracker* m_extensionTracker = nullptr;</span>
-<span id="L236"><span class="lineNum">     236</span>              : </span>
-<span id="L237"><span class="lineNum">     237</span>              :     // To improve the performance of our backend, we will try to avoid running</span>
-<span id="L238"><span class="lineNum">     238</span>              :     // passes related to features not used in the user code.</span>
-<span id="L239"><span class="lineNum">     239</span>              :     // To do so, we will scan the IR module once, and determine which passes are needed</span>
-<span id="L240"><span class="lineNum">     240</span>              :     // based on the instructions used in the IR module.</span>
-<span id="L241"><span class="lineNum">     241</span>              :     // This will allow us to skip running passes that are not needed, without having to</span>
-<span id="L242"><span class="lineNum">     242</span>              :     // run all the passes only to find out that no work is needed.</span>
-<span id="L243"><span class="lineNum">     243</span>              :     // This is especially important for the performance of the backend, as some passes</span>
-<span id="L244"><span class="lineNum">     244</span>              :     // have an initialization cost (such as building reference graphs or DOM trees) that</span>
-<span id="L245"><span class="lineNum">     245</span>              :     // can be expensive.</span>
-<span id="L246"><span class="lineNum">     246</span>              :     RequiredLoweringPassSet m_requiredLoweringPassSet;</span>
-<span id="L247"><span class="lineNum">     247</span>              : </span>
-<span id="L248"><span class="lineNum">     248</span>              :     /// Will output assembly as well as the artifact if appropriate for the artifact type for</span>
-<span id="L249"><span class="lineNum">     249</span>              :     /// assembly output and conversion is possible</span>
-<span id="L250"><span class="lineNum">     250</span>              :     void _dumpIntermediateMaybeWithAssembly(IArtifact* artifact);</span>
-<span id="L251"><span class="lineNum">     251</span>              : </span>
-<span id="L252"><span class="lineNum">     252</span>              :     void _dumpIntermediate(IArtifact* artifact);</span>
-<span id="L253"><span class="lineNum">     253</span>              :     void _dumpIntermediate(const ArtifactDesc&amp; desc, void const* data, size_t size);</span>
-<span id="L254"><span class="lineNum">     254</span>              : </span>
-<span id="L255"><span class="lineNum">     255</span>              :     /* Emits entry point source taking into account if a pass-through or not. Uses &#x27;targetFormat&#x27; to</span>
-<span id="L256"><span class="lineNum">     256</span>              :     determine the target (not targetReq) */</span>
-<span id="L257"><span class="lineNum">     257</span>              :     SlangResult emitEntryPointsSource(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
-<span id="L258"><span class="lineNum">     258</span>              : </span>
-<span id="L259"><span class="lineNum">     259</span>              :     SlangResult emitEntryPointsSourceFromIR(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
-<span id="L260"><span class="lineNum">     260</span>              : </span>
-<span id="L261"><span class="lineNum">     261</span>              :     SlangResult emitWithDownstreamForEntryPoints(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
-<span id="L262"><span class="lineNum">     262</span>              : </span>
-<span id="L263"><span class="lineNum">     263</span>              :     /* Determines a suitable filename to identify the input for a given entry point being compiled.</span>
-<span id="L264"><span class="lineNum">     264</span>              :     If the end-to-end compile is a pass-through case, will attempt to find the (unique) source file</span>
-<span id="L265"><span class="lineNum">     265</span>              :     pathname for the translation unit containing the entry point at `entryPointIndex.</span>
-<span id="L266"><span class="lineNum">     266</span>              :     If the compilation is not in a pass-through case, then always returns `&quot;slang-generated&quot;`.</span>
-<span id="L267"><span class="lineNum">     267</span>              :     @param endToEndReq The end-to-end compile request which might be using pass-through compilation</span>
-<span id="L268"><span class="lineNum">     268</span>              :     @param entryPointIndex The index of the entry point to compute a filename for.</span>
-<span id="L269"><span class="lineNum">     269</span>              :     @return the appropriate source filename */</span>
-<span id="L270"><span class="lineNum">     270</span>              :     String calcSourcePathForEntryPoints();</span>
-<span id="L271"><span class="lineNum">     271</span>              : </span>
-<span id="L272"><span class="lineNum">     272</span>              :     TranslationUnitRequest* findPassThroughTranslationUnit(Int entryPointIndex);</span>
+<span id="L209"><span class="lineNum">     209</span>              :     bool shouldValidateWithDownstreamCompiler();</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span>              :     SlangResult requireTranslationUnitSourceFiles();</span>
+<span id="L212"><span class="lineNum">     212</span>              : </span>
+<span id="L213"><span class="lineNum">     213</span>              :     //</span>
+<span id="L214"><span class="lineNum">     214</span>              : </span>
+<span id="L215"><span class="lineNum">     215</span>              :     SlangResult emitEntryPoints(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
+<span id="L216"><span class="lineNum">     216</span>              : </span>
+<span id="L217"><span class="lineNum">     217</span>              :     SlangResult emitPrecompiledDownstreamIR(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
+<span id="L218"><span class="lineNum">     218</span>              : </span>
+<span id="L219"><span class="lineNum">     219</span>              :     void maybeDumpIntermediate(IArtifact* artifact);</span>
+<span id="L220"><span class="lineNum">     220</span>              : </span>
+<span id="L221"><span class="lineNum">     221</span>              :     // Used to cause instructions available in precompiled blobs to be</span>
+<span id="L222"><span class="lineNum">     222</span>              :     // removed between IR linking and target source generation.</span>
+<span id="L223"><span class="lineNum">     223</span>              :     bool removeAvailableInDownstreamIR = false;</span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span>              :     // Determines if program level compilation like getTargetCode() or getEntryPointCode()</span>
+<span id="L226"><span class="lineNum">     226</span>              :     // should return a fully linked downstream program or just the glue SPIR-V/DXIL that</span>
+<span id="L227"><span class="lineNum">     227</span>              :     // imports and uses the precompiled SPIR-V/DXIL from constituent modules.</span>
+<span id="L228"><span class="lineNum">     228</span>              :     // This is a no-op if modules are not precompiled.</span>
+<span id="L229"><span class="lineNum">     229</span>              :     bool shouldSkipDownstreamLinking();</span>
+<span id="L230"><span class="lineNum">     230</span>              : </span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaUNC">           0 :     RequiredLoweringPassSet&amp; getRequiredLoweringPassSet() { return m_requiredLoweringPassSet; }</span></span>
+<span id="L232"><span class="lineNum">     232</span>              : </span>
+<span id="L233"><span class="lineNum">     233</span>              : protected:</span>
+<span id="L234"><span class="lineNum">     234</span>              :     CodeGenTarget m_targetFormat = CodeGenTarget::Unknown;</span>
+<span id="L235"><span class="lineNum">     235</span>              :     Profile m_targetProfile;</span>
+<span id="L236"><span class="lineNum">     236</span>              :     ExtensionTracker* m_extensionTracker = nullptr;</span>
+<span id="L237"><span class="lineNum">     237</span>              : </span>
+<span id="L238"><span class="lineNum">     238</span>              :     // To improve the performance of our backend, we will try to avoid running</span>
+<span id="L239"><span class="lineNum">     239</span>              :     // passes related to features not used in the user code.</span>
+<span id="L240"><span class="lineNum">     240</span>              :     // To do so, we will scan the IR module once, and determine which passes are needed</span>
+<span id="L241"><span class="lineNum">     241</span>              :     // based on the instructions used in the IR module.</span>
+<span id="L242"><span class="lineNum">     242</span>              :     // This will allow us to skip running passes that are not needed, without having to</span>
+<span id="L243"><span class="lineNum">     243</span>              :     // run all the passes only to find out that no work is needed.</span>
+<span id="L244"><span class="lineNum">     244</span>              :     // This is especially important for the performance of the backend, as some passes</span>
+<span id="L245"><span class="lineNum">     245</span>              :     // have an initialization cost (such as building reference graphs or DOM trees) that</span>
+<span id="L246"><span class="lineNum">     246</span>              :     // can be expensive.</span>
+<span id="L247"><span class="lineNum">     247</span>              :     RequiredLoweringPassSet m_requiredLoweringPassSet;</span>
+<span id="L248"><span class="lineNum">     248</span>              : </span>
+<span id="L249"><span class="lineNum">     249</span>              :     /// Will output assembly as well as the artifact if appropriate for the artifact type for</span>
+<span id="L250"><span class="lineNum">     250</span>              :     /// assembly output and conversion is possible</span>
+<span id="L251"><span class="lineNum">     251</span>              :     void _dumpIntermediateMaybeWithAssembly(IArtifact* artifact);</span>
+<span id="L252"><span class="lineNum">     252</span>              : </span>
+<span id="L253"><span class="lineNum">     253</span>              :     void _dumpIntermediate(IArtifact* artifact);</span>
+<span id="L254"><span class="lineNum">     254</span>              :     void _dumpIntermediate(const ArtifactDesc&amp; desc, void const* data, size_t size);</span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span>              :     /* Emits entry point source taking into account if a pass-through or not. Uses &#x27;targetFormat&#x27; to</span>
+<span id="L257"><span class="lineNum">     257</span>              :     determine the target (not targetReq) */</span>
+<span id="L258"><span class="lineNum">     258</span>              :     SlangResult emitEntryPointsSource(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
+<span id="L259"><span class="lineNum">     259</span>              : </span>
+<span id="L260"><span class="lineNum">     260</span>              :     SlangResult emitEntryPointsSourceFromIR(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span>              :     SlangResult emitWithDownstreamForEntryPoints(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
+<span id="L263"><span class="lineNum">     263</span>              :     SlangResult validateEmittedSourceWithDownstream(CodeGenTarget sourceTarget);</span>
+<span id="L264"><span class="lineNum">     264</span>              : </span>
+<span id="L265"><span class="lineNum">     265</span>              :     /* Determines a suitable filename to identify the input for a given entry point being compiled.</span>
+<span id="L266"><span class="lineNum">     266</span>              :     If the end-to-end compile is a pass-through case, will attempt to find the (unique) source file</span>
+<span id="L267"><span class="lineNum">     267</span>              :     pathname for the translation unit containing the entry point at `entryPointIndex.</span>
+<span id="L268"><span class="lineNum">     268</span>              :     If the compilation is not in a pass-through case, then always returns `&quot;slang-generated&quot;`.</span>
+<span id="L269"><span class="lineNum">     269</span>              :     @param endToEndReq The end-to-end compile request which might be using pass-through compilation</span>
+<span id="L270"><span class="lineNum">     270</span>              :     @param entryPointIndex The index of the entry point to compute a filename for.</span>
+<span id="L271"><span class="lineNum">     271</span>              :     @return the appropriate source filename */</span>
+<span id="L272"><span class="lineNum">     272</span>              :     String calcSourcePathForEntryPoints();</span>
 <span id="L273"><span class="lineNum">     273</span>              : </span>
-<span id="L274"><span class="lineNum">     274</span>              : </span>
-<span id="L275"><span class="lineNum">     275</span>              :     SlangResult _emitEntryPoints(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
+<span id="L274"><span class="lineNum">     274</span>              :     TranslationUnitRequest* findPassThroughTranslationUnit(Int entryPointIndex);</span>
+<span id="L275"><span class="lineNum">     275</span>              : </span>
 <span id="L276"><span class="lineNum">     276</span>              : </span>
-<span id="L277"><span class="lineNum">     277</span>              : private:</span>
-<span id="L278"><span class="lineNum">     278</span>              :     Shared* m_shared = nullptr;</span>
-<span id="L279"><span class="lineNum">     279</span>              : };</span>
-<span id="L280"><span class="lineNum">     280</span>              : </span>
-<span id="L281"><span class="lineNum">     281</span>              : // TODO: The &quot;artifact&quot; system is a scourge.</span>
-<span id="L282"><span class="lineNum">     282</span>              : IArtifact* getSeparateDbgArtifact(IArtifact* artifact);</span>
-<span id="L283"><span class="lineNum">     283</span>              : </span>
-<span id="L284"><span class="lineNum">     284</span>              : } // namespace Slang</span>
+<span id="L277"><span class="lineNum">     277</span>              :     SlangResult _emitEntryPoints(ComPtr&lt;IArtifact&gt;&amp; outArtifact);</span>
+<span id="L278"><span class="lineNum">     278</span>              : </span>
+<span id="L279"><span class="lineNum">     279</span>              : private:</span>
+<span id="L280"><span class="lineNum">     280</span>              :     Shared* m_shared = nullptr;</span>
+<span id="L281"><span class="lineNum">     281</span>              : };</span>
+<span id="L282"><span class="lineNum">     282</span>              : </span>
+<span id="L283"><span class="lineNum">     283</span>              : // TODO: The &quot;artifact&quot; system is a scourge.</span>
+<span id="L284"><span class="lineNum">     284</span>              : IArtifact* getSeparateDbgArtifact(IArtifact* artifact);</span>
+<span id="L285"><span class="lineNum">     285</span>              : </span>
+<span id="L286"><span class="lineNum">     286</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

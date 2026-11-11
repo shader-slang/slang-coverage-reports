@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-10 05:15:42 UTC</td>
+      <td class="headerValue">2026-11-11 04:11:01 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">82.1&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:82.1%;background-color:hsl(93, 70%, 50%)"></div></div>
-      <span class="metricCounts">1,261 / 1,536</span>
+      <span class="metricValue">82.2&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:82.2%;background-color:hsl(93, 70%, 50%)"></div></div>
+      <span class="metricCounts">1,266 / 1,541</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -3835,486 +3835,495 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3562"><span class="lineNum">    3562</span>              :     }</span>
 <span id="L3563"><span class="lineNum">    3563</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L3564"><span class="lineNum">    3564</span>              : </span>
-<span id="L3565"><span class="lineNum">    3565</span>              : bool isDebugInfoInst(IRInst* inst)</span>
+<span id="L3565"><span class="lineNum">    3565</span>              : bool isArtificialInst(IRInst* inst)</span>
 <span id="L3566"><span class="lineNum">    3566</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3567"><span class="lineNum">    3567</span>              :     // Debug instructions describe source locations, variables, and scopes rather than executing at</span>
-<span id="L3568"><span class="lineNum">    3568</span>              :     // runtime. This classification lets an analysis ignore them when they do not affect the</span>
-<span id="L3569"><span class="lineNum">    3569</span>              :     // question it answers. An optimization must still preserve required debug information.</span>
-<span id="L3570"><span class="lineNum">    3570</span> <span class="tlaGNC">           1 :     switch (inst-&gt;getOp())</span></span>
-<span id="L3571"><span class="lineNum">    3571</span>              :     {</span>
-<span id="L3572"><span class="lineNum">    3572</span>              :     case kIROp_DebugValue:</span>
-<span id="L3573"><span class="lineNum">    3573</span>              :     case kIROp_DebugVar:</span>
-<span id="L3574"><span class="lineNum">    3574</span>              :     case kIROp_DebugLine:</span>
-<span id="L3575"><span class="lineNum">    3575</span>              :     case kIROp_DebugLocationDecoration:</span>
-<span id="L3576"><span class="lineNum">    3576</span>              :     case kIROp_DebugFuncDecoration:</span>
-<span id="L3577"><span class="lineNum">    3577</span>              :     case kIROp_DebugSource:</span>
-<span id="L3578"><span class="lineNum">    3578</span>              :     case kIROp_DebugInlinedAt:</span>
-<span id="L3579"><span class="lineNum">    3579</span>              :     case kIROp_DebugInlinedVariable:</span>
-<span id="L3580"><span class="lineNum">    3580</span>              :     case kIROp_DebugScope:</span>
-<span id="L3581"><span class="lineNum">    3581</span>              :     case kIROp_DebugNoScope:</span>
-<span id="L3582"><span class="lineNum">    3582</span>              :     case kIROp_DebugFunction:</span>
-<span id="L3583"><span class="lineNum">    3583</span>              :     case kIROp_DebugLexicalBlock:</span>
-<span id="L3584"><span class="lineNum">    3584</span>              :     case kIROp_DebugBuildIdentifier:</span>
-<span id="L3585"><span class="lineNum">    3585</span>              :     case kIROp_DebugCompilationUnit:</span>
-<span id="L3586"><span class="lineNum">    3586</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L3587"><span class="lineNum">    3587</span>              :     default:</span>
-<span id="L3588"><span class="lineNum">    3588</span> <span class="tlaGNC">           1 :         return false;</span></span>
-<span id="L3589"><span class="lineNum">    3589</span>              :     }</span>
-<span id="L3590"><span class="lineNum">    3590</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3591"><span class="lineNum">    3591</span>              : </span>
-<span id="L3592"><span class="lineNum">    3592</span>              : bool doesOpReadResourceContents(IROp op)</span>
-<span id="L3593"><span class="lineNum">    3593</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3594"><span class="lineNum">    3594</span>              :     // These dedicated operations produce results that depend on resource contents. A resource</span>
-<span id="L3595"><span class="lineNum">    3595</span>              :     // method represented as an `IRCall` is classified through its callee instead. Operations that</span>
-<span id="L3596"><span class="lineNum">    3596</span>              :     // only query resource dimensions or other metadata do not read the contents.</span>
-<span id="L3597"><span class="lineNum">    3597</span> <span class="tlaGNC">           1 :     switch (op)</span></span>
-<span id="L3598"><span class="lineNum">    3598</span>              :     {</span>
-<span id="L3599"><span class="lineNum">    3599</span>              :     case kIROp_ImageGatherOffset:</span>
-<span id="L3600"><span class="lineNum">    3600</span>              :     case kIROp_ImageLoad:</span>
-<span id="L3601"><span class="lineNum">    3601</span>              :     case kIROp_Sample:</span>
-<span id="L3602"><span class="lineNum">    3602</span>              :     case kIROp_SampleGrad:</span>
-<span id="L3603"><span class="lineNum">    3603</span>              :     case kIROp_StructuredBufferLoad:</span>
-<span id="L3604"><span class="lineNum">    3604</span>              :     case kIROp_ByteAddressBufferLoad:</span>
-<span id="L3605"><span class="lineNum">    3605</span>              :     case kIROp_StructuredBufferLoadStatus:</span>
-<span id="L3606"><span class="lineNum">    3606</span>              :     case kIROp_RWStructuredBufferLoad:</span>
-<span id="L3607"><span class="lineNum">    3607</span>              :     case kIROp_RWStructuredBufferLoadStatus:</span>
-<span id="L3608"><span class="lineNum">    3608</span>              :     case kIROp_StructuredBufferConsume:</span>
-<span id="L3609"><span class="lineNum">    3609</span>              :     case kIROp_SubpassLoad:</span>
-<span id="L3610"><span class="lineNum">    3610</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L3611"><span class="lineNum">    3611</span>              :     default:</span>
-<span id="L3612"><span class="lineNum">    3612</span> <span class="tlaGNC">           1 :         return false;</span></span>
-<span id="L3613"><span class="lineNum">    3613</span>              :     }</span>
-<span id="L3614"><span class="lineNum">    3614</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3615"><span class="lineNum">    3615</span>              : </span>
-<span id="L3616"><span class="lineNum">    3616</span>              : bool doesOpProduceResourceContentAddress(IROp op)</span>
-<span id="L3617"><span class="lineNum">    3617</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3618"><span class="lineNum">    3618</span>              :     // These operations create an address whose storage belongs to a resource. Analyses should</span>
-<span id="L3619"><span class="lineNum">    3619</span>              :     // classify them as resource-content roots before applying the general rule that follows operand</span>
-<span id="L3620"><span class="lineNum">    3620</span>              :     // zero through other address projections and pointer casts.</span>
-<span id="L3621"><span class="lineNum">    3621</span> <span class="tlaGNC">           1 :     switch (op)</span></span>
-<span id="L3622"><span class="lineNum">    3622</span>              :     {</span>
-<span id="L3623"><span class="lineNum">    3623</span>              :     case kIROp_GetStructuredBufferPtr:</span>
-<span id="L3624"><span class="lineNum">    3624</span>              :     case kIROp_GetUntypedBufferPtr:</span>
-<span id="L3625"><span class="lineNum">    3625</span>              :     case kIROp_RWStructuredBufferGetElementPtr:</span>
-<span id="L3626"><span class="lineNum">    3626</span>              :     case kIROp_ImageSubscript:</span>
-<span id="L3627"><span class="lineNum">    3627</span>              :     case kIROp_ImageTexelPointer:</span>
-<span id="L3628"><span class="lineNum">    3628</span>              :     case kIROp_SPIRVLoadTexelPointerFromHeap:</span>
-<span id="L3629"><span class="lineNum">    3629</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L3630"><span class="lineNum">    3630</span>              :     default:</span>
-<span id="L3631"><span class="lineNum">    3631</span> <span class="tlaGNC">           1 :         return false;</span></span>
-<span id="L3632"><span class="lineNum">    3632</span>              :     }</span>
-<span id="L3633"><span class="lineNum">    3633</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3634"><span class="lineNum">    3634</span>              : </span>
-<span id="L3635"><span class="lineNum">    3635</span>              : // True if `addr`&#x27;s chain bottoms out at `GetOptiXSbtDataPtr` (the OptiX SBT), peeling every</span>
-<span id="L3636"><span class="lineNum">    3636</span>              : // forwarding op, including the `BitCast`/`GetOffsetPtr` that `getRootAddr` does not peel.</span>
-<span id="L3637"><span class="lineNum">    3637</span>              : static bool isAddressIntoOptiXShaderBindingTable(IRInst* addr)</span>
-<span id="L3638"><span class="lineNum">    3638</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3639"><span class="lineNum">    3639</span> <span class="tlaGNC">           1 :     return peelAddressForwardingOps(addr)-&gt;getOp() == kIROp_GetOptiXSbtDataPtr;</span></span>
-<span id="L3640"><span class="lineNum">    3640</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3641"><span class="lineNum">    3641</span>              : </span>
-<span id="L3642"><span class="lineNum">    3642</span>              : bool isPointerToImmutableLocation(IRInst* loc)</span>
-<span id="L3643"><span class="lineNum">    3643</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3644"><span class="lineNum">    3644</span>              :     // The OptiX SBT (`GetOptiXSbtDataPtr`) is typed as a `ConstantBuffer&lt;&gt;` but is mutated</span>
-<span id="L3645"><span class="lineNum">    3645</span>              :     // in place by the host between dispatches, so it is not immutable; otherwise CUDA emit</span>
-<span id="L3646"><span class="lineNum">    3646</span>              :     // would route its loads through the read-only cache (`__ldg`) and read stale data.</span>
-<span id="L3647"><span class="lineNum">    3647</span>              :     // Genuine `ConstantBuffer&lt;&gt;` (not SBT-rooted) is unaffected. See shader-slang/slang#10188.</span>
-<span id="L3648"><span class="lineNum">    3648</span> <span class="tlaGNC">           1 :     if (isAddressIntoOptiXShaderBindingTable(loc))</span></span>
-<span id="L3649"><span class="lineNum">    3649</span>              :         return false;</span>
+<span id="L3567"><span class="lineNum">    3567</span>              :     // Module-scope lowering has no current function to query.</span>
+<span id="L3568"><span class="lineNum">    3568</span> <span class="tlaGNC">           1 :     if (!inst)</span></span>
+<span id="L3569"><span class="lineNum">    3569</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L3570"><span class="lineNum">    3570</span>              : </span>
+<span id="L3571"><span class="lineNum">    3571</span> <span class="tlaGNC">           1 :     return inst-&gt;findDecoration&lt;IRArtificialDecoration&gt;() != nullptr;</span></span>
+<span id="L3572"><span class="lineNum">    3572</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3573"><span class="lineNum">    3573</span>              : </span>
+<span id="L3574"><span class="lineNum">    3574</span>              : bool isDebugInfoInst(IRInst* inst)</span>
+<span id="L3575"><span class="lineNum">    3575</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3576"><span class="lineNum">    3576</span>              :     // Debug instructions describe source locations, variables, and scopes rather than executing at</span>
+<span id="L3577"><span class="lineNum">    3577</span>              :     // runtime. This classification lets an analysis ignore them when they do not affect the</span>
+<span id="L3578"><span class="lineNum">    3578</span>              :     // question it answers. An optimization must still preserve required debug information.</span>
+<span id="L3579"><span class="lineNum">    3579</span> <span class="tlaGNC">           1 :     switch (inst-&gt;getOp())</span></span>
+<span id="L3580"><span class="lineNum">    3580</span>              :     {</span>
+<span id="L3581"><span class="lineNum">    3581</span>              :     case kIROp_DebugValue:</span>
+<span id="L3582"><span class="lineNum">    3582</span>              :     case kIROp_DebugVar:</span>
+<span id="L3583"><span class="lineNum">    3583</span>              :     case kIROp_DebugLine:</span>
+<span id="L3584"><span class="lineNum">    3584</span>              :     case kIROp_DebugLocationDecoration:</span>
+<span id="L3585"><span class="lineNum">    3585</span>              :     case kIROp_DebugFuncDecoration:</span>
+<span id="L3586"><span class="lineNum">    3586</span>              :     case kIROp_DebugSource:</span>
+<span id="L3587"><span class="lineNum">    3587</span>              :     case kIROp_DebugInlinedAt:</span>
+<span id="L3588"><span class="lineNum">    3588</span>              :     case kIROp_DebugInlinedVariable:</span>
+<span id="L3589"><span class="lineNum">    3589</span>              :     case kIROp_DebugScope:</span>
+<span id="L3590"><span class="lineNum">    3590</span>              :     case kIROp_DebugNoScope:</span>
+<span id="L3591"><span class="lineNum">    3591</span>              :     case kIROp_DebugFunction:</span>
+<span id="L3592"><span class="lineNum">    3592</span>              :     case kIROp_DebugLexicalBlock:</span>
+<span id="L3593"><span class="lineNum">    3593</span>              :     case kIROp_DebugBuildIdentifier:</span>
+<span id="L3594"><span class="lineNum">    3594</span>              :     case kIROp_DebugCompilationUnit:</span>
+<span id="L3595"><span class="lineNum">    3595</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L3596"><span class="lineNum">    3596</span>              :     default:</span>
+<span id="L3597"><span class="lineNum">    3597</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L3598"><span class="lineNum">    3598</span>              :     }</span>
+<span id="L3599"><span class="lineNum">    3599</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3600"><span class="lineNum">    3600</span>              : </span>
+<span id="L3601"><span class="lineNum">    3601</span>              : bool doesOpReadResourceContents(IROp op)</span>
+<span id="L3602"><span class="lineNum">    3602</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3603"><span class="lineNum">    3603</span>              :     // These dedicated operations produce results that depend on resource contents. A resource</span>
+<span id="L3604"><span class="lineNum">    3604</span>              :     // method represented as an `IRCall` is classified through its callee instead. Operations that</span>
+<span id="L3605"><span class="lineNum">    3605</span>              :     // only query resource dimensions or other metadata do not read the contents.</span>
+<span id="L3606"><span class="lineNum">    3606</span> <span class="tlaGNC">           1 :     switch (op)</span></span>
+<span id="L3607"><span class="lineNum">    3607</span>              :     {</span>
+<span id="L3608"><span class="lineNum">    3608</span>              :     case kIROp_ImageGatherOffset:</span>
+<span id="L3609"><span class="lineNum">    3609</span>              :     case kIROp_ImageLoad:</span>
+<span id="L3610"><span class="lineNum">    3610</span>              :     case kIROp_Sample:</span>
+<span id="L3611"><span class="lineNum">    3611</span>              :     case kIROp_SampleGrad:</span>
+<span id="L3612"><span class="lineNum">    3612</span>              :     case kIROp_StructuredBufferLoad:</span>
+<span id="L3613"><span class="lineNum">    3613</span>              :     case kIROp_ByteAddressBufferLoad:</span>
+<span id="L3614"><span class="lineNum">    3614</span>              :     case kIROp_StructuredBufferLoadStatus:</span>
+<span id="L3615"><span class="lineNum">    3615</span>              :     case kIROp_RWStructuredBufferLoad:</span>
+<span id="L3616"><span class="lineNum">    3616</span>              :     case kIROp_RWStructuredBufferLoadStatus:</span>
+<span id="L3617"><span class="lineNum">    3617</span>              :     case kIROp_StructuredBufferConsume:</span>
+<span id="L3618"><span class="lineNum">    3618</span>              :     case kIROp_SubpassLoad:</span>
+<span id="L3619"><span class="lineNum">    3619</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L3620"><span class="lineNum">    3620</span>              :     default:</span>
+<span id="L3621"><span class="lineNum">    3621</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L3622"><span class="lineNum">    3622</span>              :     }</span>
+<span id="L3623"><span class="lineNum">    3623</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3624"><span class="lineNum">    3624</span>              : </span>
+<span id="L3625"><span class="lineNum">    3625</span>              : bool doesOpProduceResourceContentAddress(IROp op)</span>
+<span id="L3626"><span class="lineNum">    3626</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3627"><span class="lineNum">    3627</span>              :     // These operations create an address whose storage belongs to a resource. Analyses should</span>
+<span id="L3628"><span class="lineNum">    3628</span>              :     // classify them as resource-content roots before applying the general rule that follows operand</span>
+<span id="L3629"><span class="lineNum">    3629</span>              :     // zero through other address projections and pointer casts.</span>
+<span id="L3630"><span class="lineNum">    3630</span> <span class="tlaGNC">           1 :     switch (op)</span></span>
+<span id="L3631"><span class="lineNum">    3631</span>              :     {</span>
+<span id="L3632"><span class="lineNum">    3632</span>              :     case kIROp_GetStructuredBufferPtr:</span>
+<span id="L3633"><span class="lineNum">    3633</span>              :     case kIROp_GetUntypedBufferPtr:</span>
+<span id="L3634"><span class="lineNum">    3634</span>              :     case kIROp_RWStructuredBufferGetElementPtr:</span>
+<span id="L3635"><span class="lineNum">    3635</span>              :     case kIROp_ImageSubscript:</span>
+<span id="L3636"><span class="lineNum">    3636</span>              :     case kIROp_ImageTexelPointer:</span>
+<span id="L3637"><span class="lineNum">    3637</span>              :     case kIROp_SPIRVLoadTexelPointerFromHeap:</span>
+<span id="L3638"><span class="lineNum">    3638</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L3639"><span class="lineNum">    3639</span>              :     default:</span>
+<span id="L3640"><span class="lineNum">    3640</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L3641"><span class="lineNum">    3641</span>              :     }</span>
+<span id="L3642"><span class="lineNum">    3642</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3643"><span class="lineNum">    3643</span>              : </span>
+<span id="L3644"><span class="lineNum">    3644</span>              : // True if `addr`&#x27;s chain bottoms out at `GetOptiXSbtDataPtr` (the OptiX SBT), peeling every</span>
+<span id="L3645"><span class="lineNum">    3645</span>              : // forwarding op, including the `BitCast`/`GetOffsetPtr` that `getRootAddr` does not peel.</span>
+<span id="L3646"><span class="lineNum">    3646</span>              : static bool isAddressIntoOptiXShaderBindingTable(IRInst* addr)</span>
+<span id="L3647"><span class="lineNum">    3647</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3648"><span class="lineNum">    3648</span> <span class="tlaGNC">           1 :     return peelAddressForwardingOps(addr)-&gt;getOp() == kIROp_GetOptiXSbtDataPtr;</span></span>
+<span id="L3649"><span class="lineNum">    3649</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L3650"><span class="lineNum">    3650</span>              : </span>
-<span id="L3651"><span class="lineNum">    3651</span> <span class="tlaGNC">           1 :     switch (loc-&gt;getOp())</span></span>
-<span id="L3652"><span class="lineNum">    3652</span>              :     {</span>
-<span id="L3653"><span class="lineNum">    3653</span>              :     case kIROp_GetStructuredBufferPtr:</span>
-<span id="L3654"><span class="lineNum">    3654</span>              :     case kIROp_RWStructuredBufferGetElementPtr:</span>
-<span id="L3655"><span class="lineNum">    3655</span>              :     case kIROp_ImageSubscript:</span>
-<span id="L3656"><span class="lineNum">    3656</span> <span class="tlaGNC">           1 :         return isPointerToImmutableLocation(loc-&gt;getOperand(0));</span></span>
-<span id="L3657"><span class="lineNum">    3657</span>              :     default:</span>
-<span id="L3658"><span class="lineNum">    3658</span>              :         break;</span>
-<span id="L3659"><span class="lineNum">    3659</span>              :     }</span>
-<span id="L3660"><span class="lineNum">    3660</span>              : </span>
-<span id="L3661"><span class="lineNum">    3661</span> <span class="tlaGNC">           1 :     auto type = loc-&gt;getDataType();</span></span>
-<span id="L3662"><span class="lineNum">    3662</span> <span class="tlaGNC">           1 :     if (!type)</span></span>
-<span id="L3663"><span class="lineNum">    3663</span>              :         return false;</span>
-<span id="L3664"><span class="lineNum">    3664</span>              : </span>
-<span id="L3665"><span class="lineNum">    3665</span> <span class="tlaGNC">           1 :     switch (type-&gt;getOp())</span></span>
-<span id="L3666"><span class="lineNum">    3666</span>              :     {</span>
-<span id="L3667"><span class="lineNum">    3667</span>              :     case kIROp_HLSLStructuredBufferType:</span>
-<span id="L3668"><span class="lineNum">    3668</span>              :     case kIROp_HLSLByteAddressBufferType:</span>
-<span id="L3669"><span class="lineNum">    3669</span>              :     case kIROp_ConstantBufferType:</span>
-<span id="L3670"><span class="lineNum">    3670</span>              :     case kIROp_ParameterBlockType:</span>
-<span id="L3671"><span class="lineNum">    3671</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L3672"><span class="lineNum">    3672</span>              :     default:</span>
-<span id="L3673"><span class="lineNum">    3673</span>              :         break;</span>
-<span id="L3674"><span class="lineNum">    3674</span>              :     }</span>
-<span id="L3675"><span class="lineNum">    3675</span>              : </span>
-<span id="L3676"><span class="lineNum">    3676</span> <span class="tlaGNC">           1 :     if (auto textureType = as&lt;IRTextureType&gt;(type))</span></span>
-<span id="L3677"><span class="lineNum">    3677</span> <span class="tlaUNC">           0 :         return textureType-&gt;getAccess() == SLANG_RESOURCE_ACCESS_READ;</span></span>
-<span id="L3678"><span class="lineNum">    3678</span>              : </span>
-<span id="L3679"><span class="lineNum">    3679</span> <span class="tlaGNC">           1 :     if (auto ptrType = as&lt;IRPtrTypeBase&gt;(type))</span></span>
-<span id="L3680"><span class="lineNum">    3680</span>              :     {</span>
-<span id="L3681"><span class="lineNum">    3681</span> <span class="tlaGNC">           1 :         switch (ptrType-&gt;getAddressSpace())</span></span>
-<span id="L3682"><span class="lineNum">    3682</span>              :         {</span>
-<span id="L3683"><span class="lineNum">    3683</span>              :         case AddressSpace::BuiltinInput:</span>
-<span id="L3684"><span class="lineNum">    3684</span>              :         case AddressSpace::Input:</span>
-<span id="L3685"><span class="lineNum">    3685</span>              :         case AddressSpace::MetalObjectData:</span>
-<span id="L3686"><span class="lineNum">    3686</span>              :         case AddressSpace::Uniform:</span>
-<span id="L3687"><span class="lineNum">    3687</span>              :         case AddressSpace::UniformConstant:</span>
-<span id="L3688"><span class="lineNum">    3688</span>              :             return true;</span>
-<span id="L3689"><span class="lineNum">    3689</span>              :         }</span>
-<span id="L3690"><span class="lineNum">    3690</span> <span class="tlaGNC">           1 :         if (ptrType-&gt;getAccessQualifier() == AccessQualifier::Immutable)</span></span>
-<span id="L3691"><span class="lineNum">    3691</span>              :             return true;</span>
-<span id="L3692"><span class="lineNum">    3692</span>              :     }</span>
-<span id="L3693"><span class="lineNum">    3693</span>              :     return false;</span>
-<span id="L3694"><span class="lineNum">    3694</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3695"><span class="lineNum">    3695</span>              : </span>
-<span id="L3696"><span class="lineNum">    3696</span>              : bool isGenericParameter(IRInst* inst)</span>
-<span id="L3697"><span class="lineNum">    3697</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3698"><span class="lineNum">    3698</span>              :     // The generic parameter must be in the first block</span>
-<span id="L3699"><span class="lineNum">    3699</span> <span class="tlaGNC">           1 :     bool isParam = inst-&gt;getOp() == kIROp_Param;</span></span>
-<span id="L3700"><span class="lineNum">    3700</span>              :     bool isGeneric = false;</span>
-<span id="L3701"><span class="lineNum">    3701</span> <span class="tlaGNC">           1 :     if (auto irBlock = as&lt;IRBlock&gt;(inst-&gt;parent))</span></span>
-<span id="L3702"><span class="lineNum">    3702</span>              :     {</span>
-<span id="L3703"><span class="lineNum">    3703</span> <span class="tlaGNC">           1 :         isGeneric = as&lt;IRGeneric&gt;(irBlock-&gt;getParent()) != nullptr;</span></span>
-<span id="L3704"><span class="lineNum">    3704</span>              :     }</span>
-<span id="L3705"><span class="lineNum">    3705</span> <span class="tlaGNC">           1 :     return isParam &amp;&amp; isGeneric;</span></span>
-<span id="L3706"><span class="lineNum">    3706</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3707"><span class="lineNum">    3707</span>              : </span>
-<span id="L3708"><span class="lineNum">    3708</span>              : bool canRelaxInstOrderRule(IRInst* inst, IRInst* useOfInst)</span>
-<span id="L3709"><span class="lineNum">    3709</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3710"><span class="lineNum">    3710</span> <span class="tlaGNC">           1 :     bool isSameBlock = (inst-&gt;getParent() == useOfInst-&gt;getParent());</span></span>
-<span id="L3711"><span class="lineNum">    3711</span> <span class="tlaGNC">           1 :     return isSameBlock &amp;&amp; isGenericParameter(useOfInst) &amp;&amp; (useOfInst-&gt;getDataType() == inst);</span></span>
-<span id="L3712"><span class="lineNum">    3712</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3713"><span class="lineNum">    3713</span>              : </span>
-<span id="L3714"><span class="lineNum">    3714</span>              : IRIntegerValue getInterfaceAnyValueSize(IRInst* type, SourceLoc usageLoc)</span>
-<span id="L3715"><span class="lineNum">    3715</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3716"><span class="lineNum">    3716</span>              :     SLANG_UNUSED(usageLoc);</span>
-<span id="L3717"><span class="lineNum">    3717</span>              : </span>
-<span id="L3718"><span class="lineNum">    3718</span> <span class="tlaGNC">           1 :     if (auto decor = type-&gt;findDecoration&lt;IRAnyValueSizeDecoration&gt;())</span></span>
-<span id="L3719"><span class="lineNum">    3719</span>              :     {</span>
-<span id="L3720"><span class="lineNum">    3720</span> <span class="tlaGNC">           1 :         return decor-&gt;getSize();</span></span>
-<span id="L3721"><span class="lineNum">    3721</span>              :     }</span>
+<span id="L3651"><span class="lineNum">    3651</span>              : bool isPointerToImmutableLocation(IRInst* loc)</span>
+<span id="L3652"><span class="lineNum">    3652</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3653"><span class="lineNum">    3653</span>              :     // The OptiX SBT (`GetOptiXSbtDataPtr`) is typed as a `ConstantBuffer&lt;&gt;` but is mutated</span>
+<span id="L3654"><span class="lineNum">    3654</span>              :     // in place by the host between dispatches, so it is not immutable; otherwise CUDA emit</span>
+<span id="L3655"><span class="lineNum">    3655</span>              :     // would route its loads through the read-only cache (`__ldg`) and read stale data.</span>
+<span id="L3656"><span class="lineNum">    3656</span>              :     // Genuine `ConstantBuffer&lt;&gt;` (not SBT-rooted) is unaffected. See shader-slang/slang#10188.</span>
+<span id="L3657"><span class="lineNum">    3657</span> <span class="tlaGNC">           1 :     if (isAddressIntoOptiXShaderBindingTable(loc))</span></span>
+<span id="L3658"><span class="lineNum">    3658</span>              :         return false;</span>
+<span id="L3659"><span class="lineNum">    3659</span>              : </span>
+<span id="L3660"><span class="lineNum">    3660</span> <span class="tlaGNC">           1 :     switch (loc-&gt;getOp())</span></span>
+<span id="L3661"><span class="lineNum">    3661</span>              :     {</span>
+<span id="L3662"><span class="lineNum">    3662</span>              :     case kIROp_GetStructuredBufferPtr:</span>
+<span id="L3663"><span class="lineNum">    3663</span>              :     case kIROp_RWStructuredBufferGetElementPtr:</span>
+<span id="L3664"><span class="lineNum">    3664</span>              :     case kIROp_ImageSubscript:</span>
+<span id="L3665"><span class="lineNum">    3665</span> <span class="tlaGNC">           1 :         return isPointerToImmutableLocation(loc-&gt;getOperand(0));</span></span>
+<span id="L3666"><span class="lineNum">    3666</span>              :     default:</span>
+<span id="L3667"><span class="lineNum">    3667</span>              :         break;</span>
+<span id="L3668"><span class="lineNum">    3668</span>              :     }</span>
+<span id="L3669"><span class="lineNum">    3669</span>              : </span>
+<span id="L3670"><span class="lineNum">    3670</span> <span class="tlaGNC">           1 :     auto type = loc-&gt;getDataType();</span></span>
+<span id="L3671"><span class="lineNum">    3671</span> <span class="tlaGNC">           1 :     if (!type)</span></span>
+<span id="L3672"><span class="lineNum">    3672</span>              :         return false;</span>
+<span id="L3673"><span class="lineNum">    3673</span>              : </span>
+<span id="L3674"><span class="lineNum">    3674</span> <span class="tlaGNC">           1 :     switch (type-&gt;getOp())</span></span>
+<span id="L3675"><span class="lineNum">    3675</span>              :     {</span>
+<span id="L3676"><span class="lineNum">    3676</span>              :     case kIROp_HLSLStructuredBufferType:</span>
+<span id="L3677"><span class="lineNum">    3677</span>              :     case kIROp_HLSLByteAddressBufferType:</span>
+<span id="L3678"><span class="lineNum">    3678</span>              :     case kIROp_ConstantBufferType:</span>
+<span id="L3679"><span class="lineNum">    3679</span>              :     case kIROp_ParameterBlockType:</span>
+<span id="L3680"><span class="lineNum">    3680</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L3681"><span class="lineNum">    3681</span>              :     default:</span>
+<span id="L3682"><span class="lineNum">    3682</span>              :         break;</span>
+<span id="L3683"><span class="lineNum">    3683</span>              :     }</span>
+<span id="L3684"><span class="lineNum">    3684</span>              : </span>
+<span id="L3685"><span class="lineNum">    3685</span> <span class="tlaGNC">           1 :     if (auto textureType = as&lt;IRTextureType&gt;(type))</span></span>
+<span id="L3686"><span class="lineNum">    3686</span> <span class="tlaUNC">           0 :         return textureType-&gt;getAccess() == SLANG_RESOURCE_ACCESS_READ;</span></span>
+<span id="L3687"><span class="lineNum">    3687</span>              : </span>
+<span id="L3688"><span class="lineNum">    3688</span> <span class="tlaGNC">           1 :     if (auto ptrType = as&lt;IRPtrTypeBase&gt;(type))</span></span>
+<span id="L3689"><span class="lineNum">    3689</span>              :     {</span>
+<span id="L3690"><span class="lineNum">    3690</span> <span class="tlaGNC">           1 :         switch (ptrType-&gt;getAddressSpace())</span></span>
+<span id="L3691"><span class="lineNum">    3691</span>              :         {</span>
+<span id="L3692"><span class="lineNum">    3692</span>              :         case AddressSpace::BuiltinInput:</span>
+<span id="L3693"><span class="lineNum">    3693</span>              :         case AddressSpace::Input:</span>
+<span id="L3694"><span class="lineNum">    3694</span>              :         case AddressSpace::MetalObjectData:</span>
+<span id="L3695"><span class="lineNum">    3695</span>              :         case AddressSpace::Uniform:</span>
+<span id="L3696"><span class="lineNum">    3696</span>              :         case AddressSpace::UniformConstant:</span>
+<span id="L3697"><span class="lineNum">    3697</span>              :             return true;</span>
+<span id="L3698"><span class="lineNum">    3698</span>              :         }</span>
+<span id="L3699"><span class="lineNum">    3699</span> <span class="tlaGNC">           1 :         if (ptrType-&gt;getAccessQualifier() == AccessQualifier::Immutable)</span></span>
+<span id="L3700"><span class="lineNum">    3700</span>              :             return true;</span>
+<span id="L3701"><span class="lineNum">    3701</span>              :     }</span>
+<span id="L3702"><span class="lineNum">    3702</span>              :     return false;</span>
+<span id="L3703"><span class="lineNum">    3703</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3704"><span class="lineNum">    3704</span>              : </span>
+<span id="L3705"><span class="lineNum">    3705</span>              : bool isGenericParameter(IRInst* inst)</span>
+<span id="L3706"><span class="lineNum">    3706</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3707"><span class="lineNum">    3707</span>              :     // The generic parameter must be in the first block</span>
+<span id="L3708"><span class="lineNum">    3708</span> <span class="tlaGNC">           1 :     bool isParam = inst-&gt;getOp() == kIROp_Param;</span></span>
+<span id="L3709"><span class="lineNum">    3709</span>              :     bool isGeneric = false;</span>
+<span id="L3710"><span class="lineNum">    3710</span> <span class="tlaGNC">           1 :     if (auto irBlock = as&lt;IRBlock&gt;(inst-&gt;parent))</span></span>
+<span id="L3711"><span class="lineNum">    3711</span>              :     {</span>
+<span id="L3712"><span class="lineNum">    3712</span> <span class="tlaGNC">           1 :         isGeneric = as&lt;IRGeneric&gt;(irBlock-&gt;getParent()) != nullptr;</span></span>
+<span id="L3713"><span class="lineNum">    3713</span>              :     }</span>
+<span id="L3714"><span class="lineNum">    3714</span> <span class="tlaGNC">           1 :     return isParam &amp;&amp; isGeneric;</span></span>
+<span id="L3715"><span class="lineNum">    3715</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3716"><span class="lineNum">    3716</span>              : </span>
+<span id="L3717"><span class="lineNum">    3717</span>              : bool canRelaxInstOrderRule(IRInst* inst, IRInst* useOfInst)</span>
+<span id="L3718"><span class="lineNum">    3718</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3719"><span class="lineNum">    3719</span> <span class="tlaGNC">           1 :     bool isSameBlock = (inst-&gt;getParent() == useOfInst-&gt;getParent());</span></span>
+<span id="L3720"><span class="lineNum">    3720</span> <span class="tlaGNC">           1 :     return isSameBlock &amp;&amp; isGenericParameter(useOfInst) &amp;&amp; (useOfInst-&gt;getDataType() == inst);</span></span>
+<span id="L3721"><span class="lineNum">    3721</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L3722"><span class="lineNum">    3722</span>              : </span>
-<span id="L3723"><span class="lineNum">    3723</span>              :     // We could conceivably make it an error to have an interface</span>
-<span id="L3724"><span class="lineNum">    3724</span>              :     // without an `[anyValueSize(...)]` attribute, but then we risk</span>
-<span id="L3725"><span class="lineNum">    3725</span>              :     // producing error messages even when doing 100% static specialization.</span>
-<span id="L3726"><span class="lineNum">    3726</span>              :     //</span>
-<span id="L3727"><span class="lineNum">    3727</span>              :     // It is simpler to use a reasonable default size and treat any</span>
-<span id="L3728"><span class="lineNum">    3728</span>              :     // type without an explicit attribute as using that size.</span>
-<span id="L3729"><span class="lineNum">    3729</span>              :     //</span>
-<span id="L3730"><span class="lineNum">    3730</span>              :     return kDefaultAnyValueSize;</span>
-<span id="L3731"><span class="lineNum">    3731</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3732"><span class="lineNum">    3732</span>              : </span>
-<span id="L3733"><span class="lineNum">    3733</span>              : IRType* getTextureTypeFromCombinedTextureSampler(IRType* type)</span>
-<span id="L3734"><span class="lineNum">    3734</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3735"><span class="lineNum">    3735</span> <span class="tlaGNC">           1 :     IRBuilder builder(type);</span></span>
-<span id="L3736"><span class="lineNum">    3736</span> <span class="tlaGNC">           1 :     builder.setInsertBefore(type);</span></span>
-<span id="L3737"><span class="lineNum">    3737</span> <span class="tlaGNC">           1 :     auto textureType = as&lt;IRTextureTypeBase&gt;(type);</span></span>
-<span id="L3738"><span class="lineNum">    3738</span> <span class="tlaGNC">           1 :     return builder.getTextureType(</span></span>
-<span id="L3739"><span class="lineNum">    3739</span>              :         textureType-&gt;getElementType(),</span>
-<span id="L3740"><span class="lineNum">    3740</span>              :         textureType-&gt;getShapeInst(),</span>
-<span id="L3741"><span class="lineNum">    3741</span>              :         textureType-&gt;getIsArrayInst(),</span>
-<span id="L3742"><span class="lineNum">    3742</span>              :         textureType-&gt;getIsMultisampleInst(),</span>
-<span id="L3743"><span class="lineNum">    3743</span>              :         textureType-&gt;getSampleCountInst(),</span>
-<span id="L3744"><span class="lineNum">    3744</span>              :         textureType-&gt;getAccessInst(),</span>
-<span id="L3745"><span class="lineNum">    3745</span>              :         textureType-&gt;getIsShadowInst(),</span>
-<span id="L3746"><span class="lineNum">    3746</span>              :         builder.getIntValue(builder.getIntType(), 0),</span>
-<span id="L3747"><span class="lineNum">    3747</span>              :         textureType-&gt;getFormatInst());</span>
-<span id="L3748"><span class="lineNum">    3748</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3749"><span class="lineNum">    3749</span>              : </span>
-<span id="L3750"><span class="lineNum">    3750</span>              : IRType* getSamplerTypeFromCombinedTextureSampler(IRType* type)</span>
-<span id="L3751"><span class="lineNum">    3751</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3752"><span class="lineNum">    3752</span> <span class="tlaGNC">           1 :     IRBuilder builder(type);</span></span>
-<span id="L3753"><span class="lineNum">    3753</span> <span class="tlaGNC">           1 :     builder.setInsertBefore(type);</span></span>
-<span id="L3754"><span class="lineNum">    3754</span>              : </span>
-<span id="L3755"><span class="lineNum">    3755</span> <span class="tlaGNC">           1 :     auto textureType = as&lt;IRTextureTypeBase&gt;(type);</span></span>
-<span id="L3756"><span class="lineNum">    3756</span>              : </span>
-<span id="L3757"><span class="lineNum">    3757</span> <span class="tlaGNC">           1 :     if (getIntVal(textureType-&gt;getIsShadowInst()) != 0)</span></span>
-<span id="L3758"><span class="lineNum">    3758</span>              :         return builder.getType(kIROp_SamplerComparisonStateType);</span>
-<span id="L3759"><span class="lineNum">    3759</span>              :     else</span>
-<span id="L3760"><span class="lineNum">    3760</span>              :         return builder.getType(kIROp_SamplerStateType);</span>
-<span id="L3761"><span class="lineNum">    3761</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3762"><span class="lineNum">    3762</span>              : </span>
-<span id="L3763"><span class="lineNum">    3763</span>              : IRInst* getInnerMostGenericReturnVal(IRGeneric* generic)</span>
-<span id="L3764"><span class="lineNum">    3764</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3765"><span class="lineNum">    3765</span> <span class="tlaGNC">           1 :     auto returnVal = findGenericReturnVal(generic);</span></span>
-<span id="L3766"><span class="lineNum">    3766</span> <span class="tlaGNC">           1 :     if (auto innerGeneric = as&lt;IRGeneric&gt;(returnVal))</span></span>
-<span id="L3767"><span class="lineNum">    3767</span>              :         return getInnerMostGenericReturnVal(innerGeneric);</span>
-<span id="L3768"><span class="lineNum">    3768</span>              :     return returnVal;</span>
-<span id="L3769"><span class="lineNum">    3769</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3770"><span class="lineNum">    3770</span>              : </span>
-<span id="L3771"><span class="lineNum">    3771</span>              : bool isReadNoneCallee(IRInst* callee)</span>
-<span id="L3772"><span class="lineNum">    3772</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3773"><span class="lineNum">    3773</span> <span class="tlaGNC">           1 :     if (auto func = as&lt;IRFunc&gt;(callee))</span></span>
-<span id="L3774"><span class="lineNum">    3774</span>              :     {</span>
-<span id="L3775"><span class="lineNum">    3775</span> <span class="tlaGNC">           1 :         if (func-&gt;findDecoration&lt;IRReadNoneDecoration&gt;())</span></span>
-<span id="L3776"><span class="lineNum">    3776</span>              :             return true;</span>
-<span id="L3777"><span class="lineNum">    3777</span>              :     }</span>
-<span id="L3778"><span class="lineNum">    3778</span>              : </span>
-<span id="L3779"><span class="lineNum">    3779</span> <span class="tlaGNC">           1 :     if (as&lt;IRSpecialize&gt;(callee))</span></span>
-<span id="L3780"><span class="lineNum">    3780</span>              :     {</span>
-<span id="L3781"><span class="lineNum">    3781</span> <span class="tlaGNC">           1 :         if (auto specialize = as&lt;IRSpecialize&gt;(callee-&gt;getOperand(0)))</span></span>
-<span id="L3782"><span class="lineNum">    3782</span>              :         {</span>
-<span id="L3783"><span class="lineNum">    3783</span> <span class="tlaGNC">           1 :             return isReadNoneCallee(specialize);</span></span>
-<span id="L3784"><span class="lineNum">    3784</span>              :         }</span>
-<span id="L3785"><span class="lineNum">    3785</span> <span class="tlaGNC">           1 :         else if (auto generic = as&lt;IRGeneric&gt;(callee-&gt;getOperand(0)))</span></span>
-<span id="L3786"><span class="lineNum">    3786</span>              :         {</span>
-<span id="L3787"><span class="lineNum">    3787</span> <span class="tlaGNC">           1 :             auto genericReturnVal = getInnerMostGenericReturnVal(generic);</span></span>
-<span id="L3788"><span class="lineNum">    3788</span>              : </span>
-<span id="L3789"><span class="lineNum">    3789</span> <span class="tlaGNC">           1 :             if (genericReturnVal)</span></span>
-<span id="L3790"><span class="lineNum">    3790</span>              :                 return isReadNoneCallee(genericReturnVal);</span>
-<span id="L3791"><span class="lineNum">    3791</span>              :             else</span>
-<span id="L3792"><span class="lineNum">    3792</span>              :                 return false;</span>
+<span id="L3723"><span class="lineNum">    3723</span>              : IRIntegerValue getInterfaceAnyValueSize(IRInst* type, SourceLoc usageLoc)</span>
+<span id="L3724"><span class="lineNum">    3724</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3725"><span class="lineNum">    3725</span>              :     SLANG_UNUSED(usageLoc);</span>
+<span id="L3726"><span class="lineNum">    3726</span>              : </span>
+<span id="L3727"><span class="lineNum">    3727</span> <span class="tlaGNC">           1 :     if (auto decor = type-&gt;findDecoration&lt;IRAnyValueSizeDecoration&gt;())</span></span>
+<span id="L3728"><span class="lineNum">    3728</span>              :     {</span>
+<span id="L3729"><span class="lineNum">    3729</span> <span class="tlaGNC">           1 :         return decor-&gt;getSize();</span></span>
+<span id="L3730"><span class="lineNum">    3730</span>              :     }</span>
+<span id="L3731"><span class="lineNum">    3731</span>              : </span>
+<span id="L3732"><span class="lineNum">    3732</span>              :     // We could conceivably make it an error to have an interface</span>
+<span id="L3733"><span class="lineNum">    3733</span>              :     // without an `[anyValueSize(...)]` attribute, but then we risk</span>
+<span id="L3734"><span class="lineNum">    3734</span>              :     // producing error messages even when doing 100% static specialization.</span>
+<span id="L3735"><span class="lineNum">    3735</span>              :     //</span>
+<span id="L3736"><span class="lineNum">    3736</span>              :     // It is simpler to use a reasonable default size and treat any</span>
+<span id="L3737"><span class="lineNum">    3737</span>              :     // type without an explicit attribute as using that size.</span>
+<span id="L3738"><span class="lineNum">    3738</span>              :     //</span>
+<span id="L3739"><span class="lineNum">    3739</span>              :     return kDefaultAnyValueSize;</span>
+<span id="L3740"><span class="lineNum">    3740</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3741"><span class="lineNum">    3741</span>              : </span>
+<span id="L3742"><span class="lineNum">    3742</span>              : IRType* getTextureTypeFromCombinedTextureSampler(IRType* type)</span>
+<span id="L3743"><span class="lineNum">    3743</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3744"><span class="lineNum">    3744</span> <span class="tlaGNC">           1 :     IRBuilder builder(type);</span></span>
+<span id="L3745"><span class="lineNum">    3745</span> <span class="tlaGNC">           1 :     builder.setInsertBefore(type);</span></span>
+<span id="L3746"><span class="lineNum">    3746</span> <span class="tlaGNC">           1 :     auto textureType = as&lt;IRTextureTypeBase&gt;(type);</span></span>
+<span id="L3747"><span class="lineNum">    3747</span> <span class="tlaGNC">           1 :     return builder.getTextureType(</span></span>
+<span id="L3748"><span class="lineNum">    3748</span>              :         textureType-&gt;getElementType(),</span>
+<span id="L3749"><span class="lineNum">    3749</span>              :         textureType-&gt;getShapeInst(),</span>
+<span id="L3750"><span class="lineNum">    3750</span>              :         textureType-&gt;getIsArrayInst(),</span>
+<span id="L3751"><span class="lineNum">    3751</span>              :         textureType-&gt;getIsMultisampleInst(),</span>
+<span id="L3752"><span class="lineNum">    3752</span>              :         textureType-&gt;getSampleCountInst(),</span>
+<span id="L3753"><span class="lineNum">    3753</span>              :         textureType-&gt;getAccessInst(),</span>
+<span id="L3754"><span class="lineNum">    3754</span>              :         textureType-&gt;getIsShadowInst(),</span>
+<span id="L3755"><span class="lineNum">    3755</span>              :         builder.getIntValue(builder.getIntType(), 0),</span>
+<span id="L3756"><span class="lineNum">    3756</span>              :         textureType-&gt;getFormatInst());</span>
+<span id="L3757"><span class="lineNum">    3757</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3758"><span class="lineNum">    3758</span>              : </span>
+<span id="L3759"><span class="lineNum">    3759</span>              : IRType* getSamplerTypeFromCombinedTextureSampler(IRType* type)</span>
+<span id="L3760"><span class="lineNum">    3760</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3761"><span class="lineNum">    3761</span> <span class="tlaGNC">           1 :     IRBuilder builder(type);</span></span>
+<span id="L3762"><span class="lineNum">    3762</span> <span class="tlaGNC">           1 :     builder.setInsertBefore(type);</span></span>
+<span id="L3763"><span class="lineNum">    3763</span>              : </span>
+<span id="L3764"><span class="lineNum">    3764</span> <span class="tlaGNC">           1 :     auto textureType = as&lt;IRTextureTypeBase&gt;(type);</span></span>
+<span id="L3765"><span class="lineNum">    3765</span>              : </span>
+<span id="L3766"><span class="lineNum">    3766</span> <span class="tlaGNC">           1 :     if (getIntVal(textureType-&gt;getIsShadowInst()) != 0)</span></span>
+<span id="L3767"><span class="lineNum">    3767</span>              :         return builder.getType(kIROp_SamplerComparisonStateType);</span>
+<span id="L3768"><span class="lineNum">    3768</span>              :     else</span>
+<span id="L3769"><span class="lineNum">    3769</span>              :         return builder.getType(kIROp_SamplerStateType);</span>
+<span id="L3770"><span class="lineNum">    3770</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3771"><span class="lineNum">    3771</span>              : </span>
+<span id="L3772"><span class="lineNum">    3772</span>              : IRInst* getInnerMostGenericReturnVal(IRGeneric* generic)</span>
+<span id="L3773"><span class="lineNum">    3773</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3774"><span class="lineNum">    3774</span> <span class="tlaGNC">           1 :     auto returnVal = findGenericReturnVal(generic);</span></span>
+<span id="L3775"><span class="lineNum">    3775</span> <span class="tlaGNC">           1 :     if (auto innerGeneric = as&lt;IRGeneric&gt;(returnVal))</span></span>
+<span id="L3776"><span class="lineNum">    3776</span>              :         return getInnerMostGenericReturnVal(innerGeneric);</span>
+<span id="L3777"><span class="lineNum">    3777</span>              :     return returnVal;</span>
+<span id="L3778"><span class="lineNum">    3778</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3779"><span class="lineNum">    3779</span>              : </span>
+<span id="L3780"><span class="lineNum">    3780</span>              : bool isReadNoneCallee(IRInst* callee)</span>
+<span id="L3781"><span class="lineNum">    3781</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3782"><span class="lineNum">    3782</span> <span class="tlaGNC">           1 :     if (auto func = as&lt;IRFunc&gt;(callee))</span></span>
+<span id="L3783"><span class="lineNum">    3783</span>              :     {</span>
+<span id="L3784"><span class="lineNum">    3784</span> <span class="tlaGNC">           1 :         if (func-&gt;findDecoration&lt;IRReadNoneDecoration&gt;())</span></span>
+<span id="L3785"><span class="lineNum">    3785</span>              :             return true;</span>
+<span id="L3786"><span class="lineNum">    3786</span>              :     }</span>
+<span id="L3787"><span class="lineNum">    3787</span>              : </span>
+<span id="L3788"><span class="lineNum">    3788</span> <span class="tlaGNC">           1 :     if (as&lt;IRSpecialize&gt;(callee))</span></span>
+<span id="L3789"><span class="lineNum">    3789</span>              :     {</span>
+<span id="L3790"><span class="lineNum">    3790</span> <span class="tlaGNC">           1 :         if (auto specialize = as&lt;IRSpecialize&gt;(callee-&gt;getOperand(0)))</span></span>
+<span id="L3791"><span class="lineNum">    3791</span>              :         {</span>
+<span id="L3792"><span class="lineNum">    3792</span> <span class="tlaGNC">           1 :             return isReadNoneCallee(specialize);</span></span>
 <span id="L3793"><span class="lineNum">    3793</span>              :         }</span>
-<span id="L3794"><span class="lineNum">    3794</span>              :     }</span>
-<span id="L3795"><span class="lineNum">    3795</span>              : </span>
-<span id="L3796"><span class="lineNum">    3796</span> <span class="tlaGNC">           1 :     if (as&lt;IRTranslateBase&gt;(callee))</span></span>
-<span id="L3797"><span class="lineNum">    3797</span>              :     {</span>
-<span id="L3798"><span class="lineNum">    3798</span> <span class="tlaGNC">           1 :         switch (callee-&gt;getOp())</span></span>
-<span id="L3799"><span class="lineNum">    3799</span>              :         {</span>
-<span id="L3800"><span class="lineNum">    3800</span>              :         // Translations that have the same readNone property as the original function.</span>
-<span id="L3801"><span class="lineNum">    3801</span>              :         case kIROp_BackwardDifferentiatePrimal:</span>
-<span id="L3802"><span class="lineNum">    3802</span>              :         case kIROp_BackwardPrimalFromLegacyBwdDiffFunc:</span>
-<span id="L3803"><span class="lineNum">    3803</span>              :         case kIROp_ForwardDifferentiate:</span>
-<span id="L3804"><span class="lineNum">    3804</span>              :         case kIROp_TrivialForwardDifferentiate:</span>
-<span id="L3805"><span class="lineNum">    3805</span>              :         case kIROp_TrivialBackwardDifferentiatePrimal:</span>
-<span id="L3806"><span class="lineNum">    3806</span>              :         case kIROp_FunctionCopy:</span>
-<span id="L3807"><span class="lineNum">    3807</span> <span class="tlaGNC">           1 :             return isReadNoneCallee(callee-&gt;getOperand(0));</span></span>
-<span id="L3808"><span class="lineNum">    3808</span>              : </span>
-<span id="L3809"><span class="lineNum">    3809</span>              :         case kIROp_BackwardPropagateFromLegacyBwdDiffFunc:</span>
-<span id="L3810"><span class="lineNum">    3810</span> <span class="tlaGNC">           1 :             return isReadNoneCallee(callee-&gt;getOperand(1));</span></span>
-<span id="L3811"><span class="lineNum">    3811</span>              : </span>
-<span id="L3812"><span class="lineNum">    3812</span>              :         // Translations that produce a readNone function even if the original function</span>
-<span id="L3813"><span class="lineNum">    3813</span>              :         // is not readNone.</span>
-<span id="L3814"><span class="lineNum">    3814</span>              :         case kIROp_BackwardRemat:</span>
-<span id="L3815"><span class="lineNum">    3815</span>              :         case kIROp_BackwardRematFromLegacyBwdDiffFunc:</span>
-<span id="L3816"><span class="lineNum">    3816</span>              :         case kIROp_TrivialBackwardDifferentiatePropagate:</span>
-<span id="L3817"><span class="lineNum">    3817</span>              :         case kIROp_TrivialBackwardRemat:</span>
-<span id="L3818"><span class="lineNum">    3818</span>              :             return true;</span>
-<span id="L3819"><span class="lineNum">    3819</span>              :         }</span>
-<span id="L3820"><span class="lineNum">    3820</span>              :     }</span>
-<span id="L3821"><span class="lineNum">    3821</span>              : </span>
-<span id="L3822"><span class="lineNum">    3822</span>              :     // Default: cannot assume that unknown op-codes are read-none</span>
-<span id="L3823"><span class="lineNum">    3823</span> <span class="tlaGNC">           1 :     return false;</span></span>
-<span id="L3824"><span class="lineNum">    3824</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3825"><span class="lineNum">    3825</span>              : </span>
-<span id="L3826"><span class="lineNum">    3826</span>              : bool isReadNoneCalleeAndAllDerivatives(IRInst* callee)</span>
-<span id="L3827"><span class="lineNum">    3827</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3828"><span class="lineNum">    3828</span>              :     // The primary callee must be read-none first; the carry-set gate cannot</span>
-<span id="L3829"><span class="lineNum">    3829</span>              :     // weaken its existing guarantee.</span>
-<span id="L3830"><span class="lineNum">    3830</span> <span class="tlaGNC">           1 :     if (!isReadNoneCallee(callee))</span></span>
-<span id="L3831"><span class="lineNum">    3831</span>              :         return false;</span>
-<span id="L3832"><span class="lineNum">    3832</span>              : </span>
-<span id="L3833"><span class="lineNum">    3833</span>              :     // Look annotations up on the resolved inner function rather than on the</span>
-<span id="L3834"><span class="lineNum">    3834</span>              :     // unresolved callee. This is intentionally conservative: stdlib generics</span>
-<span id="L3835"><span class="lineNum">    3835</span>              :     // (e.g. `sqrt`) attach `[ForwardDerivativeOf]` / `[BackwardDerivativeOf]`</span>
-<span id="L3836"><span class="lineNum">    3836</span>              :     // annotations on the `IRSpecialize` wrapper, and those derivatives are</span>
-<span id="L3837"><span class="lineNum">    3837</span>              :     // genuinely pure but typically NOT marked `[__readNone]` (the stdlib</span>
-<span id="L3838"><span class="lineNum">    3838</span>              :     // doesn&#x27;t bother). Looking them up on the unresolved callee would find</span>
-<span id="L3839"><span class="lineNum">    3839</span>              :     // them and force a non-readNone verdict on every call site to a stdlib</span>
-<span id="L3840"><span class="lineNum">    3840</span>              :     // math function, regressing the false-positive fixes from #11286.</span>
-<span id="L3841"><span class="lineNum">    3841</span>              :     //</span>
-<span id="L3842"><span class="lineNum">    3842</span>              :     // The trade-off is that user-defined generic primaries (whose</span>
-<span id="L3843"><span class="lineNum">    3843</span>              :     // `[ForwardDerivative]` / `[BackwardDerivative]` annotations also live</span>
-<span id="L3844"><span class="lineNum">    3844</span>              :     // on the `IRSpecialize`) bypass this gate. That&#x27;s an under-approximation</span>
-<span id="L3845"><span class="lineNum">    3845</span>              :     // — a generic `[__readNone]` primary with a side-effecting user-supplied</span>
-<span id="L3846"><span class="lineNum">    3846</span>              :     // derivative is not currently caught. A more accurate fix would</span>
-<span id="L3847"><span class="lineNum">    3847</span>              :     // distinguish &quot;stdlib-style pure derivative not explicitly annotated&quot;</span>
-<span id="L3848"><span class="lineNum">    3848</span>              :     // from &quot;user-supplied derivative with possible side effects&quot; without</span>
-<span id="L3849"><span class="lineNum">    3849</span>              :     // requiring stdlib annotation churn; see follow-up tracking.</span>
-<span id="L3850"><span class="lineNum">    3850</span> <span class="tlaGNC">           1 :     IRInst* annotated = getResolvedInstForDecorations(callee);</span></span>
-<span id="L3851"><span class="lineNum">    3851</span> <span class="tlaGNC">           1 :     if (!annotated)</span></span>
-<span id="L3852"><span class="lineNum">    3852</span>              :         return true;</span>
-<span id="L3853"><span class="lineNum">    3853</span>              : </span>
-<span id="L3854"><span class="lineNum">    3854</span> <span class="tlaGNC">           1 :     IRBuilder builder(annotated-&gt;getModule());</span></span>
-<span id="L3855"><span class="lineNum">    3855</span>              : </span>
-<span id="L3856"><span class="lineNum">    3856</span> <span class="tlaGNC">           1 :     auto isAssociatedDerivativeReadNone = [&amp;](AnnotationKind kind) -&gt; bool</span></span>
-<span id="L3857"><span class="lineNum">    3857</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L3858"><span class="lineNum">    3858</span> <span class="tlaGNC">           1 :         IRInst* derivativeFunc = builder.tryLookupAnnotation(annotated, kind);</span></span>
-<span id="L3859"><span class="lineNum">    3859</span> <span class="tlaGNC">           1 :         if (!derivativeFunc)</span></span>
-<span id="L3860"><span class="lineNum">    3860</span>              :             return true;</span>
-<span id="L3861"><span class="lineNum">    3861</span> <span class="tlaGNC">           1 :         return isReadNoneCallee(derivativeFunc);</span></span>
-<span id="L3862"><span class="lineNum">    3862</span> <span class="tlaGNC">           1 :     };</span></span>
-<span id="L3863"><span class="lineNum">    3863</span>              : </span>
-<span id="L3864"><span class="lineNum">    3864</span>              :     // ForwardDerivative points directly at the user&#x27;s fwd-diff function.</span>
-<span id="L3865"><span class="lineNum">    3865</span> <span class="tlaGNC">           1 :     if (!isAssociatedDerivativeReadNone(AnnotationKind::ForwardDerivative))</span></span>
-<span id="L3866"><span class="lineNum">    3866</span>              :         return false;</span>
-<span id="L3867"><span class="lineNum">    3867</span>              : </span>
-<span id="L3868"><span class="lineNum">    3868</span>              :     // BackwardDerivativePropagate points at the synthesized propagate-phase</span>
-<span id="L3869"><span class="lineNum">    3869</span>              :     // wrapper. `isReadNoneCallee`&#x27;s `IRTranslateBase` switch above unwraps</span>
-<span id="L3870"><span class="lineNum">    3870</span>              :     // that wrapper via `kIROp_BackwardPropagateFromLegacyBwdDiffFunc`</span>
-<span id="L3871"><span class="lineNum">    3871</span>              :     // (operand 1 = user&#x27;s bwd-diff function copy), so the wrapper&#x27;s</span>
-<span id="L3872"><span class="lineNum">    3872</span>              :     // readNone-ness correctly inherits from the user-supplied backward</span>
-<span id="L3873"><span class="lineNum">    3873</span>              :     // function.</span>
-<span id="L3874"><span class="lineNum">    3874</span>              :     //</span>
-<span id="L3875"><span class="lineNum">    3875</span>              :     // `AnnotationKind::BackwardDerivativeApply` is intentionally NOT</span>
-<span id="L3876"><span class="lineNum">    3876</span>              :     // consulted: its wrapper is `BackwardPrimalFromLegacyBwdDiffFunc(primary,</span>
-<span id="L3877"><span class="lineNum">    3877</span>              :     // bwd_diff)`, which the same switch unwraps via</span>
-<span id="L3878"><span class="lineNum">    3878</span>              :     // `kIROp_BackwardPrimalFromLegacyBwdDiffFunc` -&gt; operand 0 = primary.</span>
-<span id="L3879"><span class="lineNum">    3879</span>              :     // Apply therefore inherits its readNone-ness from the already-checked</span>
-<span id="L3880"><span class="lineNum">    3880</span>              :     // primary callee and adds no information beyond the first</span>
-<span id="L3881"><span class="lineNum">    3881</span>              :     // `isReadNoneCallee(callee)` gate above.</span>
-<span id="L3882"><span class="lineNum">    3882</span> <span class="tlaGNC">           1 :     if (!isAssociatedDerivativeReadNone(AnnotationKind::BackwardDerivativePropagate))</span></span>
-<span id="L3883"><span class="lineNum">    3883</span> <span class="tlaGNC">           1 :         return false;</span></span>
-<span id="L3884"><span class="lineNum">    3884</span>              : </span>
-<span id="L3885"><span class="lineNum">    3885</span> <span class="tlaUNC">           0 :     return true;</span></span>
-<span id="L3886"><span class="lineNum">    3886</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3887"><span class="lineNum">    3887</span>              : </span>
-<span id="L3888"><span class="lineNum">    3888</span>              : </span>
-<span id="L3889"><span class="lineNum">    3889</span>              : bool isNoSideEffectCallee(IRInst* callee)</span>
-<span id="L3890"><span class="lineNum">    3890</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3891"><span class="lineNum">    3891</span> <span class="tlaGNC">           1 :     if (auto func = as&lt;IRFunc&gt;(callee))</span></span>
-<span id="L3892"><span class="lineNum">    3892</span>              :     {</span>
-<span id="L3893"><span class="lineNum">    3893</span> <span class="tlaGNC">           1 :         if (func-&gt;findDecoration&lt;IRNoSideEffectDecoration&gt;() ||</span></span>
-<span id="L3894"><span class="lineNum">    3894</span>              :             func-&gt;findDecoration&lt;IRReadNoneDecoration&gt;())</span>
-<span id="L3895"><span class="lineNum">    3895</span>              :             return true;</span>
-<span id="L3896"><span class="lineNum">    3896</span>              :     }</span>
+<span id="L3794"><span class="lineNum">    3794</span> <span class="tlaGNC">           1 :         else if (auto generic = as&lt;IRGeneric&gt;(callee-&gt;getOperand(0)))</span></span>
+<span id="L3795"><span class="lineNum">    3795</span>              :         {</span>
+<span id="L3796"><span class="lineNum">    3796</span> <span class="tlaGNC">           1 :             auto genericReturnVal = getInnerMostGenericReturnVal(generic);</span></span>
+<span id="L3797"><span class="lineNum">    3797</span>              : </span>
+<span id="L3798"><span class="lineNum">    3798</span> <span class="tlaGNC">           1 :             if (genericReturnVal)</span></span>
+<span id="L3799"><span class="lineNum">    3799</span>              :                 return isReadNoneCallee(genericReturnVal);</span>
+<span id="L3800"><span class="lineNum">    3800</span>              :             else</span>
+<span id="L3801"><span class="lineNum">    3801</span>              :                 return false;</span>
+<span id="L3802"><span class="lineNum">    3802</span>              :         }</span>
+<span id="L3803"><span class="lineNum">    3803</span>              :     }</span>
+<span id="L3804"><span class="lineNum">    3804</span>              : </span>
+<span id="L3805"><span class="lineNum">    3805</span> <span class="tlaGNC">           1 :     if (as&lt;IRTranslateBase&gt;(callee))</span></span>
+<span id="L3806"><span class="lineNum">    3806</span>              :     {</span>
+<span id="L3807"><span class="lineNum">    3807</span> <span class="tlaGNC">           1 :         switch (callee-&gt;getOp())</span></span>
+<span id="L3808"><span class="lineNum">    3808</span>              :         {</span>
+<span id="L3809"><span class="lineNum">    3809</span>              :         // Translations that have the same readNone property as the original function.</span>
+<span id="L3810"><span class="lineNum">    3810</span>              :         case kIROp_BackwardDifferentiatePrimal:</span>
+<span id="L3811"><span class="lineNum">    3811</span>              :         case kIROp_BackwardPrimalFromLegacyBwdDiffFunc:</span>
+<span id="L3812"><span class="lineNum">    3812</span>              :         case kIROp_ForwardDifferentiate:</span>
+<span id="L3813"><span class="lineNum">    3813</span>              :         case kIROp_TrivialForwardDifferentiate:</span>
+<span id="L3814"><span class="lineNum">    3814</span>              :         case kIROp_TrivialBackwardDifferentiatePrimal:</span>
+<span id="L3815"><span class="lineNum">    3815</span>              :         case kIROp_FunctionCopy:</span>
+<span id="L3816"><span class="lineNum">    3816</span> <span class="tlaGNC">           1 :             return isReadNoneCallee(callee-&gt;getOperand(0));</span></span>
+<span id="L3817"><span class="lineNum">    3817</span>              : </span>
+<span id="L3818"><span class="lineNum">    3818</span>              :         case kIROp_BackwardPropagateFromLegacyBwdDiffFunc:</span>
+<span id="L3819"><span class="lineNum">    3819</span> <span class="tlaGNC">           1 :             return isReadNoneCallee(callee-&gt;getOperand(1));</span></span>
+<span id="L3820"><span class="lineNum">    3820</span>              : </span>
+<span id="L3821"><span class="lineNum">    3821</span>              :         // Translations that produce a readNone function even if the original function</span>
+<span id="L3822"><span class="lineNum">    3822</span>              :         // is not readNone.</span>
+<span id="L3823"><span class="lineNum">    3823</span>              :         case kIROp_BackwardRemat:</span>
+<span id="L3824"><span class="lineNum">    3824</span>              :         case kIROp_BackwardRematFromLegacyBwdDiffFunc:</span>
+<span id="L3825"><span class="lineNum">    3825</span>              :         case kIROp_TrivialBackwardDifferentiatePropagate:</span>
+<span id="L3826"><span class="lineNum">    3826</span>              :         case kIROp_TrivialBackwardRemat:</span>
+<span id="L3827"><span class="lineNum">    3827</span>              :             return true;</span>
+<span id="L3828"><span class="lineNum">    3828</span>              :         }</span>
+<span id="L3829"><span class="lineNum">    3829</span>              :     }</span>
+<span id="L3830"><span class="lineNum">    3830</span>              : </span>
+<span id="L3831"><span class="lineNum">    3831</span>              :     // Default: cannot assume that unknown op-codes are read-none</span>
+<span id="L3832"><span class="lineNum">    3832</span> <span class="tlaGNC">           1 :     return false;</span></span>
+<span id="L3833"><span class="lineNum">    3833</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3834"><span class="lineNum">    3834</span>              : </span>
+<span id="L3835"><span class="lineNum">    3835</span>              : bool isReadNoneCalleeAndAllDerivatives(IRInst* callee)</span>
+<span id="L3836"><span class="lineNum">    3836</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3837"><span class="lineNum">    3837</span>              :     // The primary callee must be read-none first; the carry-set gate cannot</span>
+<span id="L3838"><span class="lineNum">    3838</span>              :     // weaken its existing guarantee.</span>
+<span id="L3839"><span class="lineNum">    3839</span> <span class="tlaGNC">           1 :     if (!isReadNoneCallee(callee))</span></span>
+<span id="L3840"><span class="lineNum">    3840</span>              :         return false;</span>
+<span id="L3841"><span class="lineNum">    3841</span>              : </span>
+<span id="L3842"><span class="lineNum">    3842</span>              :     // Look annotations up on the resolved inner function rather than on the</span>
+<span id="L3843"><span class="lineNum">    3843</span>              :     // unresolved callee. This is intentionally conservative: stdlib generics</span>
+<span id="L3844"><span class="lineNum">    3844</span>              :     // (e.g. `sqrt`) attach `[ForwardDerivativeOf]` / `[BackwardDerivativeOf]`</span>
+<span id="L3845"><span class="lineNum">    3845</span>              :     // annotations on the `IRSpecialize` wrapper, and those derivatives are</span>
+<span id="L3846"><span class="lineNum">    3846</span>              :     // genuinely pure but typically NOT marked `[__readNone]` (the stdlib</span>
+<span id="L3847"><span class="lineNum">    3847</span>              :     // doesn&#x27;t bother). Looking them up on the unresolved callee would find</span>
+<span id="L3848"><span class="lineNum">    3848</span>              :     // them and force a non-readNone verdict on every call site to a stdlib</span>
+<span id="L3849"><span class="lineNum">    3849</span>              :     // math function, regressing the false-positive fixes from #11286.</span>
+<span id="L3850"><span class="lineNum">    3850</span>              :     //</span>
+<span id="L3851"><span class="lineNum">    3851</span>              :     // The trade-off is that user-defined generic primaries (whose</span>
+<span id="L3852"><span class="lineNum">    3852</span>              :     // `[ForwardDerivative]` / `[BackwardDerivative]` annotations also live</span>
+<span id="L3853"><span class="lineNum">    3853</span>              :     // on the `IRSpecialize`) bypass this gate. That&#x27;s an under-approximation</span>
+<span id="L3854"><span class="lineNum">    3854</span>              :     // — a generic `[__readNone]` primary with a side-effecting user-supplied</span>
+<span id="L3855"><span class="lineNum">    3855</span>              :     // derivative is not currently caught. A more accurate fix would</span>
+<span id="L3856"><span class="lineNum">    3856</span>              :     // distinguish &quot;stdlib-style pure derivative not explicitly annotated&quot;</span>
+<span id="L3857"><span class="lineNum">    3857</span>              :     // from &quot;user-supplied derivative with possible side effects&quot; without</span>
+<span id="L3858"><span class="lineNum">    3858</span>              :     // requiring stdlib annotation churn; see follow-up tracking.</span>
+<span id="L3859"><span class="lineNum">    3859</span> <span class="tlaGNC">           1 :     IRInst* annotated = getResolvedInstForDecorations(callee);</span></span>
+<span id="L3860"><span class="lineNum">    3860</span> <span class="tlaGNC">           1 :     if (!annotated)</span></span>
+<span id="L3861"><span class="lineNum">    3861</span>              :         return true;</span>
+<span id="L3862"><span class="lineNum">    3862</span>              : </span>
+<span id="L3863"><span class="lineNum">    3863</span> <span class="tlaGNC">           1 :     IRBuilder builder(annotated-&gt;getModule());</span></span>
+<span id="L3864"><span class="lineNum">    3864</span>              : </span>
+<span id="L3865"><span class="lineNum">    3865</span> <span class="tlaGNC">           1 :     auto isAssociatedDerivativeReadNone = [&amp;](AnnotationKind kind) -&gt; bool</span></span>
+<span id="L3866"><span class="lineNum">    3866</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L3867"><span class="lineNum">    3867</span> <span class="tlaGNC">           1 :         IRInst* derivativeFunc = builder.tryLookupAnnotation(annotated, kind);</span></span>
+<span id="L3868"><span class="lineNum">    3868</span> <span class="tlaGNC">           1 :         if (!derivativeFunc)</span></span>
+<span id="L3869"><span class="lineNum">    3869</span>              :             return true;</span>
+<span id="L3870"><span class="lineNum">    3870</span> <span class="tlaGNC">           1 :         return isReadNoneCallee(derivativeFunc);</span></span>
+<span id="L3871"><span class="lineNum">    3871</span> <span class="tlaGNC">           1 :     };</span></span>
+<span id="L3872"><span class="lineNum">    3872</span>              : </span>
+<span id="L3873"><span class="lineNum">    3873</span>              :     // ForwardDerivative points directly at the user&#x27;s fwd-diff function.</span>
+<span id="L3874"><span class="lineNum">    3874</span> <span class="tlaGNC">           1 :     if (!isAssociatedDerivativeReadNone(AnnotationKind::ForwardDerivative))</span></span>
+<span id="L3875"><span class="lineNum">    3875</span>              :         return false;</span>
+<span id="L3876"><span class="lineNum">    3876</span>              : </span>
+<span id="L3877"><span class="lineNum">    3877</span>              :     // BackwardDerivativePropagate points at the synthesized propagate-phase</span>
+<span id="L3878"><span class="lineNum">    3878</span>              :     // wrapper. `isReadNoneCallee`&#x27;s `IRTranslateBase` switch above unwraps</span>
+<span id="L3879"><span class="lineNum">    3879</span>              :     // that wrapper via `kIROp_BackwardPropagateFromLegacyBwdDiffFunc`</span>
+<span id="L3880"><span class="lineNum">    3880</span>              :     // (operand 1 = user&#x27;s bwd-diff function copy), so the wrapper&#x27;s</span>
+<span id="L3881"><span class="lineNum">    3881</span>              :     // readNone-ness correctly inherits from the user-supplied backward</span>
+<span id="L3882"><span class="lineNum">    3882</span>              :     // function.</span>
+<span id="L3883"><span class="lineNum">    3883</span>              :     //</span>
+<span id="L3884"><span class="lineNum">    3884</span>              :     // `AnnotationKind::BackwardDerivativeApply` is intentionally NOT</span>
+<span id="L3885"><span class="lineNum">    3885</span>              :     // consulted: its wrapper is `BackwardPrimalFromLegacyBwdDiffFunc(primary,</span>
+<span id="L3886"><span class="lineNum">    3886</span>              :     // bwd_diff)`, which the same switch unwraps via</span>
+<span id="L3887"><span class="lineNum">    3887</span>              :     // `kIROp_BackwardPrimalFromLegacyBwdDiffFunc` -&gt; operand 0 = primary.</span>
+<span id="L3888"><span class="lineNum">    3888</span>              :     // Apply therefore inherits its readNone-ness from the already-checked</span>
+<span id="L3889"><span class="lineNum">    3889</span>              :     // primary callee and adds no information beyond the first</span>
+<span id="L3890"><span class="lineNum">    3890</span>              :     // `isReadNoneCallee(callee)` gate above.</span>
+<span id="L3891"><span class="lineNum">    3891</span> <span class="tlaGNC">           1 :     if (!isAssociatedDerivativeReadNone(AnnotationKind::BackwardDerivativePropagate))</span></span>
+<span id="L3892"><span class="lineNum">    3892</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L3893"><span class="lineNum">    3893</span>              : </span>
+<span id="L3894"><span class="lineNum">    3894</span> <span class="tlaUNC">           0 :     return true;</span></span>
+<span id="L3895"><span class="lineNum">    3895</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3896"><span class="lineNum">    3896</span>              : </span>
 <span id="L3897"><span class="lineNum">    3897</span>              : </span>
-<span id="L3898"><span class="lineNum">    3898</span> <span class="tlaGNC">           1 :     if (as&lt;IRSpecialize&gt;(callee))</span></span>
-<span id="L3899"><span class="lineNum">    3899</span>              :     {</span>
-<span id="L3900"><span class="lineNum">    3900</span> <span class="tlaGNC">           1 :         if (auto specialize = as&lt;IRSpecialize&gt;(callee-&gt;getOperand(0)))</span></span>
-<span id="L3901"><span class="lineNum">    3901</span>              :         {</span>
-<span id="L3902"><span class="lineNum">    3902</span> <span class="tlaGNC">           1 :             return isNoSideEffectCallee(specialize);</span></span>
-<span id="L3903"><span class="lineNum">    3903</span>              :         }</span>
-<span id="L3904"><span class="lineNum">    3904</span> <span class="tlaGNC">           1 :         else if (auto generic = as&lt;IRGeneric&gt;(callee-&gt;getOperand(0)))</span></span>
-<span id="L3905"><span class="lineNum">    3905</span>              :         {</span>
-<span id="L3906"><span class="lineNum">    3906</span> <span class="tlaGNC">           1 :             auto genericReturnVal = getInnerMostGenericReturnVal(generic);</span></span>
-<span id="L3907"><span class="lineNum">    3907</span>              : </span>
-<span id="L3908"><span class="lineNum">    3908</span> <span class="tlaGNC">           1 :             if (genericReturnVal)</span></span>
-<span id="L3909"><span class="lineNum">    3909</span>              :                 return isNoSideEffectCallee(genericReturnVal);</span>
-<span id="L3910"><span class="lineNum">    3910</span>              :             else</span>
-<span id="L3911"><span class="lineNum">    3911</span>              :                 return false;</span>
+<span id="L3898"><span class="lineNum">    3898</span>              : bool isNoSideEffectCallee(IRInst* callee)</span>
+<span id="L3899"><span class="lineNum">    3899</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3900"><span class="lineNum">    3900</span> <span class="tlaGNC">           1 :     if (auto func = as&lt;IRFunc&gt;(callee))</span></span>
+<span id="L3901"><span class="lineNum">    3901</span>              :     {</span>
+<span id="L3902"><span class="lineNum">    3902</span> <span class="tlaGNC">           1 :         if (func-&gt;findDecoration&lt;IRNoSideEffectDecoration&gt;() ||</span></span>
+<span id="L3903"><span class="lineNum">    3903</span>              :             func-&gt;findDecoration&lt;IRReadNoneDecoration&gt;())</span>
+<span id="L3904"><span class="lineNum">    3904</span>              :             return true;</span>
+<span id="L3905"><span class="lineNum">    3905</span>              :     }</span>
+<span id="L3906"><span class="lineNum">    3906</span>              : </span>
+<span id="L3907"><span class="lineNum">    3907</span> <span class="tlaGNC">           1 :     if (as&lt;IRSpecialize&gt;(callee))</span></span>
+<span id="L3908"><span class="lineNum">    3908</span>              :     {</span>
+<span id="L3909"><span class="lineNum">    3909</span> <span class="tlaGNC">           1 :         if (auto specialize = as&lt;IRSpecialize&gt;(callee-&gt;getOperand(0)))</span></span>
+<span id="L3910"><span class="lineNum">    3910</span>              :         {</span>
+<span id="L3911"><span class="lineNum">    3911</span> <span class="tlaGNC">           1 :             return isNoSideEffectCallee(specialize);</span></span>
 <span id="L3912"><span class="lineNum">    3912</span>              :         }</span>
-<span id="L3913"><span class="lineNum">    3913</span>              :     }</span>
-<span id="L3914"><span class="lineNum">    3914</span>              : </span>
-<span id="L3915"><span class="lineNum">    3915</span> <span class="tlaGNC">           1 :     if (as&lt;IRTranslateBase&gt;(callee))</span></span>
-<span id="L3916"><span class="lineNum">    3916</span>              :     {</span>
-<span id="L3917"><span class="lineNum">    3917</span> <span class="tlaGNC">           1 :         switch (callee-&gt;getOp())</span></span>
-<span id="L3918"><span class="lineNum">    3918</span>              :         {</span>
-<span id="L3919"><span class="lineNum">    3919</span>              :         // Translations that have the same noSideEffect property as the original function.</span>
-<span id="L3920"><span class="lineNum">    3920</span>              :         case kIROp_BackwardDifferentiatePrimal:</span>
-<span id="L3921"><span class="lineNum">    3921</span>              :         case kIROp_BackwardPrimalFromLegacyBwdDiffFunc:</span>
-<span id="L3922"><span class="lineNum">    3922</span>              :         case kIROp_ForwardDifferentiate:</span>
-<span id="L3923"><span class="lineNum">    3923</span>              :         case kIROp_TrivialForwardDifferentiate:</span>
-<span id="L3924"><span class="lineNum">    3924</span>              :         case kIROp_TrivialBackwardDifferentiatePrimal:</span>
-<span id="L3925"><span class="lineNum">    3925</span>              :         case kIROp_FunctionCopy:</span>
-<span id="L3926"><span class="lineNum">    3926</span> <span class="tlaGNC">           1 :             return isNoSideEffectCallee(callee-&gt;getOperand(0));</span></span>
-<span id="L3927"><span class="lineNum">    3927</span>              : </span>
-<span id="L3928"><span class="lineNum">    3928</span>              :         case kIROp_BackwardPropagateFromLegacyBwdDiffFunc:</span>
-<span id="L3929"><span class="lineNum">    3929</span> <span class="tlaGNC">           1 :             return isNoSideEffectCallee(callee-&gt;getOperand(1));</span></span>
-<span id="L3930"><span class="lineNum">    3930</span>              : </span>
-<span id="L3931"><span class="lineNum">    3931</span>              :         // Translations that produce a noSideEffect function even if the original function</span>
-<span id="L3932"><span class="lineNum">    3932</span>              :         // is not noSideEffect.</span>
-<span id="L3933"><span class="lineNum">    3933</span>              :         case kIROp_BackwardRemat:</span>
-<span id="L3934"><span class="lineNum">    3934</span>              :         case kIROp_BackwardRematFromLegacyBwdDiffFunc:</span>
-<span id="L3935"><span class="lineNum">    3935</span>              :         case kIROp_TrivialBackwardDifferentiatePropagate:</span>
-<span id="L3936"><span class="lineNum">    3936</span>              :         case kIROp_TrivialBackwardRemat:</span>
-<span id="L3937"><span class="lineNum">    3937</span>              :             return true;</span>
-<span id="L3938"><span class="lineNum">    3938</span>              :         }</span>
-<span id="L3939"><span class="lineNum">    3939</span>              :     }</span>
-<span id="L3940"><span class="lineNum">    3940</span>              : </span>
-<span id="L3941"><span class="lineNum">    3941</span>              :     // Default: cannot assume that unknown op-codes are read-none</span>
-<span id="L3942"><span class="lineNum">    3942</span> <span class="tlaGNC">           1 :     return false;</span></span>
-<span id="L3943"><span class="lineNum">    3943</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3944"><span class="lineNum">    3944</span>              : </span>
-<span id="L3945"><span class="lineNum">    3945</span>              : bool tryGetConstantIntLit(IRInst* inst, Int64&amp; outValue)</span>
-<span id="L3946"><span class="lineNum">    3946</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3947"><span class="lineNum">    3947</span> <span class="tlaGNC">           1 :     if (auto intLit = as&lt;IRIntLit&gt;(inst))</span></span>
-<span id="L3948"><span class="lineNum">    3948</span>              :     {</span>
-<span id="L3949"><span class="lineNum">    3949</span> <span class="tlaGNC">           1 :         outValue = intLit-&gt;getValue();</span></span>
-<span id="L3950"><span class="lineNum">    3950</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L3951"><span class="lineNum">    3951</span>              :     }</span>
-<span id="L3952"><span class="lineNum">    3952</span>              :     return false;</span>
-<span id="L3953"><span class="lineNum">    3953</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3954"><span class="lineNum">    3954</span>              : </span>
-<span id="L3955"><span class="lineNum">    3955</span>              : bool areKnownEqualShapeElements(IRInst* left, IRInst* right)</span>
-<span id="L3956"><span class="lineNum">    3956</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3957"><span class="lineNum">    3957</span> <span class="tlaGNC">           1 :     if (left == right)</span></span>
-<span id="L3958"><span class="lineNum">    3958</span> <span class="tlaUNC">           0 :         return true;</span></span>
-<span id="L3959"><span class="lineNum">    3959</span>              : </span>
-<span id="L3960"><span class="lineNum">    3960</span> <span class="tlaGNC">           1 :     auto leftInt = as&lt;IRIntLit&gt;(left);</span></span>
-<span id="L3961"><span class="lineNum">    3961</span> <span class="tlaGNC">           1 :     auto rightInt = as&lt;IRIntLit&gt;(right);</span></span>
-<span id="L3962"><span class="lineNum">    3962</span> <span class="tlaGNC">           1 :     return leftInt &amp;&amp; rightInt &amp;&amp; leftInt-&gt;getValue() == rightInt-&gt;getValue();</span></span>
-<span id="L3963"><span class="lineNum">    3963</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3964"><span class="lineNum">    3964</span>              : </span>
-<span id="L3965"><span class="lineNum">    3965</span>              : IRInst* emitPackLike(IRModule* module, IRInst* oldInst, ArrayView&lt;IRInst*&gt; elements)</span>
-<span id="L3966"><span class="lineNum">    3966</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L3967"><span class="lineNum">    3967</span> <span class="tlaUNC">           0 :     auto resultType = as&lt;IRType&gt;(oldInst-&gt;getDataType());</span></span>
-<span id="L3968"><span class="lineNum">    3968</span> <span class="tlaUNC">           0 :     if (!resultType)</span></span>
-<span id="L3969"><span class="lineNum">    3969</span>              :         return nullptr;</span>
-<span id="L3970"><span class="lineNum">    3970</span>              : </span>
-<span id="L3971"><span class="lineNum">    3971</span> <span class="tlaUNC">           0 :     IRBuilder builder(module);</span></span>
-<span id="L3972"><span class="lineNum">    3972</span> <span class="tlaUNC">           0 :     IRBuilderSourceLocRAII srcLocRAII(&amp;builder, oldInst-&gt;sourceLoc);</span></span>
-<span id="L3973"><span class="lineNum">    3973</span> <span class="tlaUNC">           0 :     builder.setInsertBefore(oldInst);</span></span>
-<span id="L3974"><span class="lineNum">    3974</span>              : </span>
-<span id="L3975"><span class="lineNum">    3975</span> <span class="tlaUNC">           0 :     if (resultType-&gt;getOp() == kIROp_TupleType)</span></span>
-<span id="L3976"><span class="lineNum">    3976</span> <span class="tlaUNC">           0 :         return builder.emitMakeTuple(resultType, elements.getCount(), elements.getBuffer());</span></span>
-<span id="L3977"><span class="lineNum">    3977</span>              : </span>
-<span id="L3978"><span class="lineNum">    3978</span> <span class="tlaUNC">           0 :     return builder.emitMakeValuePack(resultType, elements.getCount(), elements.getBuffer());</span></span>
-<span id="L3979"><span class="lineNum">    3979</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L3980"><span class="lineNum">    3980</span>              : </span>
-<span id="L3981"><span class="lineNum">    3981</span>              : bool isWorkGraphRecordType(IRType* type)</span>
-<span id="L3982"><span class="lineNum">    3982</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3983"><span class="lineNum">    3983</span>              :     SLANG_ASSERT(type);</span>
-<span id="L3984"><span class="lineNum">    3984</span> <span class="tlaGNC">           1 :     switch (type-&gt;getOp())</span></span>
-<span id="L3985"><span class="lineNum">    3985</span>              :     {</span>
-<span id="L3986"><span class="lineNum">    3986</span>              :     case kIROp_DispatchNodeInputRecordType:</span>
-<span id="L3987"><span class="lineNum">    3987</span>              :     case kIROp_ThreadNodeInputRecordType:</span>
-<span id="L3988"><span class="lineNum">    3988</span>              :     case kIROp_GroupNodeInputRecordsType:</span>
-<span id="L3989"><span class="lineNum">    3989</span>              :     case kIROp_EmptyNodeInputType:</span>
-<span id="L3990"><span class="lineNum">    3990</span>              :     case kIROp_ThreadNodeOutputRecordsType:</span>
-<span id="L3991"><span class="lineNum">    3991</span>              :     case kIROp_GroupNodeOutputRecordsType:</span>
-<span id="L3992"><span class="lineNum">    3992</span>              :     case kIROp_NodeOutputType:</span>
-<span id="L3993"><span class="lineNum">    3993</span>              :     case kIROp_NodeOutputArrayType:</span>
-<span id="L3994"><span class="lineNum">    3994</span>              :     case kIROp_EmptyNodeOutputType:</span>
-<span id="L3995"><span class="lineNum">    3995</span>              :     case kIROp_EmptyNodeOutputArrayType:</span>
-<span id="L3996"><span class="lineNum">    3996</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L3997"><span class="lineNum">    3997</span>              :     default:</span>
-<span id="L3998"><span class="lineNum">    3998</span> <span class="tlaGNC">           1 :         return false;</span></span>
-<span id="L3999"><span class="lineNum">    3999</span>              :     }</span>
-<span id="L4000"><span class="lineNum">    4000</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4001"><span class="lineNum">    4001</span>              : </span>
-<span id="L4002"><span class="lineNum">    4002</span>              : IRType* getWorkGraphRecordElementType(IRType* type)</span>
-<span id="L4003"><span class="lineNum">    4003</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L4004"><span class="lineNum">    4004</span>              :     SLANG_ASSERT(type);</span>
-<span id="L4005"><span class="lineNum">    4005</span>              : </span>
-<span id="L4006"><span class="lineNum">    4006</span> <span class="tlaGNC">           1 :     switch (type-&gt;getOp())</span></span>
-<span id="L4007"><span class="lineNum">    4007</span>              :     {</span>
-<span id="L4008"><span class="lineNum">    4008</span>              :     case kIROp_DispatchNodeInputRecordType:</span>
-<span id="L4009"><span class="lineNum">    4009</span>              :     case kIROp_ThreadNodeInputRecordType:</span>
-<span id="L4010"><span class="lineNum">    4010</span>              :     case kIROp_GroupNodeInputRecordsType:</span>
-<span id="L4011"><span class="lineNum">    4011</span>              :     case kIROp_ThreadNodeOutputRecordsType:</span>
-<span id="L4012"><span class="lineNum">    4012</span>              :     case kIROp_GroupNodeOutputRecordsType:</span>
-<span id="L4013"><span class="lineNum">    4013</span>              :     case kIROp_NodeOutputType:</span>
-<span id="L4014"><span class="lineNum">    4014</span>              :     case kIROp_NodeOutputArrayType:</span>
-<span id="L4015"><span class="lineNum">    4015</span> <span class="tlaGNC">           1 :         return as&lt;IRType&gt;(type-&gt;getOperand(0));</span></span>
-<span id="L4016"><span class="lineNum">    4016</span>              :     default:</span>
-<span id="L4017"><span class="lineNum">    4017</span>              :         break;</span>
-<span id="L4018"><span class="lineNum">    4018</span>              :     }</span>
-<span id="L4019"><span class="lineNum">    4019</span>              : </span>
-<span id="L4020"><span class="lineNum">    4020</span> <span class="tlaGNC">           1 :     return nullptr;</span></span>
-<span id="L4021"><span class="lineNum">    4021</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4022"><span class="lineNum">    4022</span>              : </span>
-<span id="L4023"><span class="lineNum">    4023</span>              : // True when a resource `type`&#x27;s `DescriptorHandle` is a native `uint64` bindless handle under</span>
-<span id="L4024"><span class="lineNum">    4024</span>              : // `spvBindlessTextureNV` (rather than a `uint2` heap index) — exactly the texture and sampler</span>
-<span id="L4025"><span class="lineNum">    4025</span>              : // types. This is the source of truth: the core-module query `__isBindlessTextureNVEncodable&lt;T&gt;()`</span>
-<span id="L4026"><span class="lineNum">    4026</span>              : // folds through this classifier (peephole over `kIROp_IsBindlessTextureNVEncodable`), and the AST</span>
-<span id="L4027"><span class="lineNum">    4027</span>              : // twin `_isBindlessTextureNVUInt64ElementType` (`slang-type-layout.cpp`) must stay in agreement.</span>
-<span id="L4028"><span class="lineNum">    4028</span>              : bool isBindlessTextureNVEncodableResourceType(IRType* type)</span>
-<span id="L4029"><span class="lineNum">    4029</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L4030"><span class="lineNum">    4030</span> <span class="tlaGNC">           1 :     auto unwrapped = unwrapAttributedType(type);</span></span>
-<span id="L4031"><span class="lineNum">    4031</span> <span class="tlaGNC">           1 :     return as&lt;IRTextureType&gt;(unwrapped) || as&lt;IRSamplerStateTypeBase&gt;(unwrapped);</span></span>
-<span id="L4032"><span class="lineNum">    4032</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4033"><span class="lineNum">    4033</span>              : </span>
-<span id="L4034"><span class="lineNum">    4034</span>              : bool isDescriptorHandleRepresentedAsUInt64(IRInst* descriptorHandleType, bool hasBindlessTextureNV)</span>
-<span id="L4035"><span class="lineNum">    4035</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L4036"><span class="lineNum">    4036</span> <span class="tlaGNC">           1 :     if (!hasBindlessTextureNV)</span></span>
-<span id="L4037"><span class="lineNum">    4037</span>              :         return false;</span>
-<span id="L4038"><span class="lineNum">    4038</span> <span class="tlaGNC">           1 :     auto handleType = as&lt;IRDescriptorHandleType&gt;(descriptorHandleType);</span></span>
-<span id="L4039"><span class="lineNum">    4039</span> <span class="tlaGNC">           1 :     if (!handleType)</span></span>
-<span id="L4040"><span class="lineNum">    4040</span> <span class="tlaGNC">           1 :         return false;</span></span>
-<span id="L4041"><span class="lineNum">    4041</span> <span class="tlaGNC">           1 :     return isBindlessTextureNVEncodableResourceType(handleType-&gt;getResourceType());</span></span>
-<span id="L4042"><span class="lineNum">    4042</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4043"><span class="lineNum">    4043</span>              : </span>
-<span id="L4044"><span class="lineNum">    4044</span>              : } // namespace Slang</span>
+<span id="L3913"><span class="lineNum">    3913</span> <span class="tlaGNC">           1 :         else if (auto generic = as&lt;IRGeneric&gt;(callee-&gt;getOperand(0)))</span></span>
+<span id="L3914"><span class="lineNum">    3914</span>              :         {</span>
+<span id="L3915"><span class="lineNum">    3915</span> <span class="tlaGNC">           1 :             auto genericReturnVal = getInnerMostGenericReturnVal(generic);</span></span>
+<span id="L3916"><span class="lineNum">    3916</span>              : </span>
+<span id="L3917"><span class="lineNum">    3917</span> <span class="tlaGNC">           1 :             if (genericReturnVal)</span></span>
+<span id="L3918"><span class="lineNum">    3918</span>              :                 return isNoSideEffectCallee(genericReturnVal);</span>
+<span id="L3919"><span class="lineNum">    3919</span>              :             else</span>
+<span id="L3920"><span class="lineNum">    3920</span>              :                 return false;</span>
+<span id="L3921"><span class="lineNum">    3921</span>              :         }</span>
+<span id="L3922"><span class="lineNum">    3922</span>              :     }</span>
+<span id="L3923"><span class="lineNum">    3923</span>              : </span>
+<span id="L3924"><span class="lineNum">    3924</span> <span class="tlaGNC">           1 :     if (as&lt;IRTranslateBase&gt;(callee))</span></span>
+<span id="L3925"><span class="lineNum">    3925</span>              :     {</span>
+<span id="L3926"><span class="lineNum">    3926</span> <span class="tlaGNC">           1 :         switch (callee-&gt;getOp())</span></span>
+<span id="L3927"><span class="lineNum">    3927</span>              :         {</span>
+<span id="L3928"><span class="lineNum">    3928</span>              :         // Translations that have the same noSideEffect property as the original function.</span>
+<span id="L3929"><span class="lineNum">    3929</span>              :         case kIROp_BackwardDifferentiatePrimal:</span>
+<span id="L3930"><span class="lineNum">    3930</span>              :         case kIROp_BackwardPrimalFromLegacyBwdDiffFunc:</span>
+<span id="L3931"><span class="lineNum">    3931</span>              :         case kIROp_ForwardDifferentiate:</span>
+<span id="L3932"><span class="lineNum">    3932</span>              :         case kIROp_TrivialForwardDifferentiate:</span>
+<span id="L3933"><span class="lineNum">    3933</span>              :         case kIROp_TrivialBackwardDifferentiatePrimal:</span>
+<span id="L3934"><span class="lineNum">    3934</span>              :         case kIROp_FunctionCopy:</span>
+<span id="L3935"><span class="lineNum">    3935</span> <span class="tlaGNC">           1 :             return isNoSideEffectCallee(callee-&gt;getOperand(0));</span></span>
+<span id="L3936"><span class="lineNum">    3936</span>              : </span>
+<span id="L3937"><span class="lineNum">    3937</span>              :         case kIROp_BackwardPropagateFromLegacyBwdDiffFunc:</span>
+<span id="L3938"><span class="lineNum">    3938</span> <span class="tlaGNC">           1 :             return isNoSideEffectCallee(callee-&gt;getOperand(1));</span></span>
+<span id="L3939"><span class="lineNum">    3939</span>              : </span>
+<span id="L3940"><span class="lineNum">    3940</span>              :         // Translations that produce a noSideEffect function even if the original function</span>
+<span id="L3941"><span class="lineNum">    3941</span>              :         // is not noSideEffect.</span>
+<span id="L3942"><span class="lineNum">    3942</span>              :         case kIROp_BackwardRemat:</span>
+<span id="L3943"><span class="lineNum">    3943</span>              :         case kIROp_BackwardRematFromLegacyBwdDiffFunc:</span>
+<span id="L3944"><span class="lineNum">    3944</span>              :         case kIROp_TrivialBackwardDifferentiatePropagate:</span>
+<span id="L3945"><span class="lineNum">    3945</span>              :         case kIROp_TrivialBackwardRemat:</span>
+<span id="L3946"><span class="lineNum">    3946</span>              :             return true;</span>
+<span id="L3947"><span class="lineNum">    3947</span>              :         }</span>
+<span id="L3948"><span class="lineNum">    3948</span>              :     }</span>
+<span id="L3949"><span class="lineNum">    3949</span>              : </span>
+<span id="L3950"><span class="lineNum">    3950</span>              :     // Default: cannot assume that unknown op-codes are read-none</span>
+<span id="L3951"><span class="lineNum">    3951</span> <span class="tlaGNC">           1 :     return false;</span></span>
+<span id="L3952"><span class="lineNum">    3952</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3953"><span class="lineNum">    3953</span>              : </span>
+<span id="L3954"><span class="lineNum">    3954</span>              : bool tryGetConstantIntLit(IRInst* inst, Int64&amp; outValue)</span>
+<span id="L3955"><span class="lineNum">    3955</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3956"><span class="lineNum">    3956</span> <span class="tlaGNC">           1 :     if (auto intLit = as&lt;IRIntLit&gt;(inst))</span></span>
+<span id="L3957"><span class="lineNum">    3957</span>              :     {</span>
+<span id="L3958"><span class="lineNum">    3958</span> <span class="tlaGNC">           1 :         outValue = intLit-&gt;getValue();</span></span>
+<span id="L3959"><span class="lineNum">    3959</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L3960"><span class="lineNum">    3960</span>              :     }</span>
+<span id="L3961"><span class="lineNum">    3961</span>              :     return false;</span>
+<span id="L3962"><span class="lineNum">    3962</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3963"><span class="lineNum">    3963</span>              : </span>
+<span id="L3964"><span class="lineNum">    3964</span>              : bool areKnownEqualShapeElements(IRInst* left, IRInst* right)</span>
+<span id="L3965"><span class="lineNum">    3965</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3966"><span class="lineNum">    3966</span> <span class="tlaGNC">           1 :     if (left == right)</span></span>
+<span id="L3967"><span class="lineNum">    3967</span> <span class="tlaUNC">           0 :         return true;</span></span>
+<span id="L3968"><span class="lineNum">    3968</span>              : </span>
+<span id="L3969"><span class="lineNum">    3969</span> <span class="tlaGNC">           1 :     auto leftInt = as&lt;IRIntLit&gt;(left);</span></span>
+<span id="L3970"><span class="lineNum">    3970</span> <span class="tlaGNC">           1 :     auto rightInt = as&lt;IRIntLit&gt;(right);</span></span>
+<span id="L3971"><span class="lineNum">    3971</span> <span class="tlaGNC">           1 :     return leftInt &amp;&amp; rightInt &amp;&amp; leftInt-&gt;getValue() == rightInt-&gt;getValue();</span></span>
+<span id="L3972"><span class="lineNum">    3972</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3973"><span class="lineNum">    3973</span>              : </span>
+<span id="L3974"><span class="lineNum">    3974</span>              : IRInst* emitPackLike(IRModule* module, IRInst* oldInst, ArrayView&lt;IRInst*&gt; elements)</span>
+<span id="L3975"><span class="lineNum">    3975</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L3976"><span class="lineNum">    3976</span> <span class="tlaUNC">           0 :     auto resultType = as&lt;IRType&gt;(oldInst-&gt;getDataType());</span></span>
+<span id="L3977"><span class="lineNum">    3977</span> <span class="tlaUNC">           0 :     if (!resultType)</span></span>
+<span id="L3978"><span class="lineNum">    3978</span>              :         return nullptr;</span>
+<span id="L3979"><span class="lineNum">    3979</span>              : </span>
+<span id="L3980"><span class="lineNum">    3980</span> <span class="tlaUNC">           0 :     IRBuilder builder(module);</span></span>
+<span id="L3981"><span class="lineNum">    3981</span> <span class="tlaUNC">           0 :     IRBuilderSourceLocRAII srcLocRAII(&amp;builder, oldInst-&gt;sourceLoc);</span></span>
+<span id="L3982"><span class="lineNum">    3982</span> <span class="tlaUNC">           0 :     builder.setInsertBefore(oldInst);</span></span>
+<span id="L3983"><span class="lineNum">    3983</span>              : </span>
+<span id="L3984"><span class="lineNum">    3984</span> <span class="tlaUNC">           0 :     if (resultType-&gt;getOp() == kIROp_TupleType)</span></span>
+<span id="L3985"><span class="lineNum">    3985</span> <span class="tlaUNC">           0 :         return builder.emitMakeTuple(resultType, elements.getCount(), elements.getBuffer());</span></span>
+<span id="L3986"><span class="lineNum">    3986</span>              : </span>
+<span id="L3987"><span class="lineNum">    3987</span> <span class="tlaUNC">           0 :     return builder.emitMakeValuePack(resultType, elements.getCount(), elements.getBuffer());</span></span>
+<span id="L3988"><span class="lineNum">    3988</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L3989"><span class="lineNum">    3989</span>              : </span>
+<span id="L3990"><span class="lineNum">    3990</span>              : bool isWorkGraphRecordType(IRType* type)</span>
+<span id="L3991"><span class="lineNum">    3991</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3992"><span class="lineNum">    3992</span>              :     SLANG_ASSERT(type);</span>
+<span id="L3993"><span class="lineNum">    3993</span> <span class="tlaGNC">           1 :     switch (type-&gt;getOp())</span></span>
+<span id="L3994"><span class="lineNum">    3994</span>              :     {</span>
+<span id="L3995"><span class="lineNum">    3995</span>              :     case kIROp_DispatchNodeInputRecordType:</span>
+<span id="L3996"><span class="lineNum">    3996</span>              :     case kIROp_ThreadNodeInputRecordType:</span>
+<span id="L3997"><span class="lineNum">    3997</span>              :     case kIROp_GroupNodeInputRecordsType:</span>
+<span id="L3998"><span class="lineNum">    3998</span>              :     case kIROp_EmptyNodeInputType:</span>
+<span id="L3999"><span class="lineNum">    3999</span>              :     case kIROp_ThreadNodeOutputRecordsType:</span>
+<span id="L4000"><span class="lineNum">    4000</span>              :     case kIROp_GroupNodeOutputRecordsType:</span>
+<span id="L4001"><span class="lineNum">    4001</span>              :     case kIROp_NodeOutputType:</span>
+<span id="L4002"><span class="lineNum">    4002</span>              :     case kIROp_NodeOutputArrayType:</span>
+<span id="L4003"><span class="lineNum">    4003</span>              :     case kIROp_EmptyNodeOutputType:</span>
+<span id="L4004"><span class="lineNum">    4004</span>              :     case kIROp_EmptyNodeOutputArrayType:</span>
+<span id="L4005"><span class="lineNum">    4005</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L4006"><span class="lineNum">    4006</span>              :     default:</span>
+<span id="L4007"><span class="lineNum">    4007</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L4008"><span class="lineNum">    4008</span>              :     }</span>
+<span id="L4009"><span class="lineNum">    4009</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4010"><span class="lineNum">    4010</span>              : </span>
+<span id="L4011"><span class="lineNum">    4011</span>              : IRType* getWorkGraphRecordElementType(IRType* type)</span>
+<span id="L4012"><span class="lineNum">    4012</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4013"><span class="lineNum">    4013</span>              :     SLANG_ASSERT(type);</span>
+<span id="L4014"><span class="lineNum">    4014</span>              : </span>
+<span id="L4015"><span class="lineNum">    4015</span> <span class="tlaGNC">           1 :     switch (type-&gt;getOp())</span></span>
+<span id="L4016"><span class="lineNum">    4016</span>              :     {</span>
+<span id="L4017"><span class="lineNum">    4017</span>              :     case kIROp_DispatchNodeInputRecordType:</span>
+<span id="L4018"><span class="lineNum">    4018</span>              :     case kIROp_ThreadNodeInputRecordType:</span>
+<span id="L4019"><span class="lineNum">    4019</span>              :     case kIROp_GroupNodeInputRecordsType:</span>
+<span id="L4020"><span class="lineNum">    4020</span>              :     case kIROp_ThreadNodeOutputRecordsType:</span>
+<span id="L4021"><span class="lineNum">    4021</span>              :     case kIROp_GroupNodeOutputRecordsType:</span>
+<span id="L4022"><span class="lineNum">    4022</span>              :     case kIROp_NodeOutputType:</span>
+<span id="L4023"><span class="lineNum">    4023</span>              :     case kIROp_NodeOutputArrayType:</span>
+<span id="L4024"><span class="lineNum">    4024</span> <span class="tlaGNC">           1 :         return as&lt;IRType&gt;(type-&gt;getOperand(0));</span></span>
+<span id="L4025"><span class="lineNum">    4025</span>              :     default:</span>
+<span id="L4026"><span class="lineNum">    4026</span>              :         break;</span>
+<span id="L4027"><span class="lineNum">    4027</span>              :     }</span>
+<span id="L4028"><span class="lineNum">    4028</span>              : </span>
+<span id="L4029"><span class="lineNum">    4029</span> <span class="tlaGNC">           1 :     return nullptr;</span></span>
+<span id="L4030"><span class="lineNum">    4030</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4031"><span class="lineNum">    4031</span>              : </span>
+<span id="L4032"><span class="lineNum">    4032</span>              : // True when a resource `type`&#x27;s `DescriptorHandle` is a native `uint64` bindless handle under</span>
+<span id="L4033"><span class="lineNum">    4033</span>              : // `spvBindlessTextureNV` (rather than a `uint2` heap index) — exactly the texture and sampler</span>
+<span id="L4034"><span class="lineNum">    4034</span>              : // types. This is the source of truth: the core-module query `__isBindlessTextureNVEncodable&lt;T&gt;()`</span>
+<span id="L4035"><span class="lineNum">    4035</span>              : // folds through this classifier (peephole over `kIROp_IsBindlessTextureNVEncodable`), and the AST</span>
+<span id="L4036"><span class="lineNum">    4036</span>              : // twin `_isBindlessTextureNVUInt64ElementType` (`slang-type-layout.cpp`) must stay in agreement.</span>
+<span id="L4037"><span class="lineNum">    4037</span>              : bool isBindlessTextureNVEncodableResourceType(IRType* type)</span>
+<span id="L4038"><span class="lineNum">    4038</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4039"><span class="lineNum">    4039</span> <span class="tlaGNC">           1 :     auto unwrapped = unwrapAttributedType(type);</span></span>
+<span id="L4040"><span class="lineNum">    4040</span> <span class="tlaGNC">           1 :     return as&lt;IRTextureType&gt;(unwrapped) || as&lt;IRSamplerStateTypeBase&gt;(unwrapped);</span></span>
+<span id="L4041"><span class="lineNum">    4041</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4042"><span class="lineNum">    4042</span>              : </span>
+<span id="L4043"><span class="lineNum">    4043</span>              : bool isDescriptorHandleRepresentedAsUInt64(IRInst* descriptorHandleType, bool hasBindlessTextureNV)</span>
+<span id="L4044"><span class="lineNum">    4044</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4045"><span class="lineNum">    4045</span> <span class="tlaGNC">           1 :     if (!hasBindlessTextureNV)</span></span>
+<span id="L4046"><span class="lineNum">    4046</span>              :         return false;</span>
+<span id="L4047"><span class="lineNum">    4047</span> <span class="tlaGNC">           1 :     auto handleType = as&lt;IRDescriptorHandleType&gt;(descriptorHandleType);</span></span>
+<span id="L4048"><span class="lineNum">    4048</span> <span class="tlaGNC">           1 :     if (!handleType)</span></span>
+<span id="L4049"><span class="lineNum">    4049</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L4050"><span class="lineNum">    4050</span> <span class="tlaGNC">           1 :     return isBindlessTextureNVEncodableResourceType(handleType-&gt;getResourceType());</span></span>
+<span id="L4051"><span class="lineNum">    4051</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4052"><span class="lineNum">    4052</span>              : </span>
+<span id="L4053"><span class="lineNum">    4053</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

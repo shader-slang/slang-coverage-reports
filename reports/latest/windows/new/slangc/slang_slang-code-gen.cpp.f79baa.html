@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-10 05:15:43 UTC</td>
+      <td class="headerValue">2026-11-11 04:11:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">83.3&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:83.3%;background-color:hsl(95, 70%, 50%)"></div></div>
-      <span class="metricCounts">440 / 528</span>
+      <span class="metricValue">82.9&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:82.9%;background-color:hsl(94, 70%, 50%)"></div></div>
+      <span class="metricCounts">467 / 563</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -1481,273 +1481,357 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1208"><span class="lineNum">    1208</span> <span class="tlaUNC">           0 :     return SLANG_FAIL;</span></span>
 <span id="L1209"><span class="lineNum">    1209</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1210"><span class="lineNum">    1210</span>              : </span>
-<span id="L1211"><span class="lineNum">    1211</span>              : // Helper class for recording compile time.</span>
-<span id="L1212"><span class="lineNum">    1212</span>              : struct CompileTimerRAII</span>
-<span id="L1213"><span class="lineNum">    1213</span>              : {</span>
-<span id="L1214"><span class="lineNum">    1214</span>              :     std::chrono::high_resolution_clock::time_point startTime;</span>
-<span id="L1215"><span class="lineNum">    1215</span>              :     Session* session;</span>
-<span id="L1216"><span class="lineNum">    1216</span> <span class="tlaGNC">           1 :     CompileTimerRAII(Session* inSession)</span></span>
-<span id="L1217"><span class="lineNum">    1217</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1218"><span class="lineNum">    1218</span> <span class="tlaGNC">           1 :         startTime = std::chrono::high_resolution_clock::now();</span></span>
-<span id="L1219"><span class="lineNum">    1219</span>              :         session = inSession;</span>
-<span id="L1220"><span class="lineNum">    1220</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1221"><span class="lineNum">    1221</span>              :     ~CompileTimerRAII()</span>
-<span id="L1222"><span class="lineNum">    1222</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1223"><span class="lineNum">    1223</span> <span class="tlaGNC">           1 :         double elapsedTime = std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(</span></span>
-<span id="L1224"><span class="lineNum">    1224</span>              :                                  std::chrono::high_resolution_clock::now() - startTime)</span>
-<span id="L1225"><span class="lineNum">    1225</span>              :                                  .count() /</span>
-<span id="L1226"><span class="lineNum">    1226</span>              :                              1e6;</span>
-<span id="L1227"><span class="lineNum">    1227</span> <span class="tlaGNC">           1 :         session-&gt;addTotalCompileTime(elapsedTime);</span></span>
-<span id="L1228"><span class="lineNum">    1228</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L1229"><span class="lineNum">    1229</span>              : };</span>
-<span id="L1230"><span class="lineNum">    1230</span>              : </span>
-<span id="L1231"><span class="lineNum">    1231</span>              : // Do emit logic for a zero or more entry points</span>
-<span id="L1232"><span class="lineNum">    1232</span>              : SlangResult CodeGenContext::emitEntryPoints(ComPtr&lt;IArtifact&gt;&amp; outArtifact)</span>
-<span id="L1233"><span class="lineNum">    1233</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1234"><span class="lineNum">    1234</span> <span class="tlaGNC">           1 :     CompileTimerRAII recordCompileTime(getSession());</span></span>
-<span id="L1235"><span class="lineNum">    1235</span>              : </span>
-<span id="L1236"><span class="lineNum">    1236</span> <span class="tlaGNC">           1 :     auto target = getTargetFormat();</span></span>
-<span id="L1237"><span class="lineNum">    1237</span>              : </span>
-<span id="L1238"><span class="lineNum">    1238</span> <span class="tlaGNC">           1 :     switch (target)</span></span>
-<span id="L1239"><span class="lineNum">    1239</span>              :     {</span>
-<span id="L1240"><span class="lineNum">    1240</span>              :     case CodeGenTarget::SPIRVAssembly:</span>
-<span id="L1241"><span class="lineNum">    1241</span>              :     case CodeGenTarget::DXBytecodeAssembly:</span>
-<span id="L1242"><span class="lineNum">    1242</span>              :     case CodeGenTarget::DXILAssembly:</span>
-<span id="L1243"><span class="lineNum">    1243</span>              :     case CodeGenTarget::SPIRV:</span>
-<span id="L1244"><span class="lineNum">    1244</span>              :     case CodeGenTarget::DXIL:</span>
-<span id="L1245"><span class="lineNum">    1245</span>              :     case CodeGenTarget::DXBytecode:</span>
-<span id="L1246"><span class="lineNum">    1246</span>              :     case CodeGenTarget::MetalLib:</span>
-<span id="L1247"><span class="lineNum">    1247</span>              :     case CodeGenTarget::MetalLibAssembly:</span>
-<span id="L1248"><span class="lineNum">    1248</span>              :     case CodeGenTarget::PTX:</span>
-<span id="L1249"><span class="lineNum">    1249</span>              :     case CodeGenTarget::HostHostCallable:</span>
-<span id="L1250"><span class="lineNum">    1250</span>              :     case CodeGenTarget::ShaderHostCallable:</span>
-<span id="L1251"><span class="lineNum">    1251</span>              :     case CodeGenTarget::ShaderSharedLibrary:</span>
-<span id="L1252"><span class="lineNum">    1252</span>              :     case CodeGenTarget::HostExecutable:</span>
-<span id="L1253"><span class="lineNum">    1253</span>              :     case CodeGenTarget::HostSharedLibrary:</span>
-<span id="L1254"><span class="lineNum">    1254</span>              :     case CodeGenTarget::WGSLSPIRVAssembly:</span>
-<span id="L1255"><span class="lineNum">    1255</span>              :     case CodeGenTarget::HostVM:</span>
-<span id="L1256"><span class="lineNum">    1256</span>              :     case CodeGenTarget::HostObjectCode:</span>
-<span id="L1257"><span class="lineNum">    1257</span>              :     case CodeGenTarget::ShaderObjectCode:</span>
-<span id="L1258"><span class="lineNum">    1258</span>              :     case CodeGenTarget::HostLLVMIR:</span>
-<span id="L1259"><span class="lineNum">    1259</span>              :     case CodeGenTarget::ShaderLLVMIR:</span>
-<span id="L1260"><span class="lineNum">    1260</span>              :         {</span>
-<span id="L1261"><span class="lineNum">    1261</span> <span class="tlaGNC">           1 :             SLANG_RETURN_ON_FAIL(_emitEntryPoints(outArtifact));</span></span>
-<span id="L1262"><span class="lineNum">    1262</span>              : </span>
-<span id="L1263"><span class="lineNum">    1263</span> <span class="tlaGNC">           1 :             maybeDumpIntermediate(outArtifact);</span></span>
-<span id="L1264"><span class="lineNum">    1264</span>              :             return SLANG_OK;</span>
-<span id="L1265"><span class="lineNum">    1265</span>              :         }</span>
-<span id="L1266"><span class="lineNum">    1266</span>              :         break;</span>
-<span id="L1267"><span class="lineNum">    1267</span>              :     case CodeGenTarget::GLSL:</span>
-<span id="L1268"><span class="lineNum">    1268</span>              :     case CodeGenTarget::HLSL:</span>
-<span id="L1269"><span class="lineNum">    1269</span>              :     case CodeGenTarget::CUDASource:</span>
-<span id="L1270"><span class="lineNum">    1270</span>              :     case CodeGenTarget::CUDAHeader:</span>
-<span id="L1271"><span class="lineNum">    1271</span>              :     case CodeGenTarget::CPPSource:</span>
-<span id="L1272"><span class="lineNum">    1272</span>              :     case CodeGenTarget::CPPHeader:</span>
-<span id="L1273"><span class="lineNum">    1273</span>              :     case CodeGenTarget::HostCPPSource:</span>
-<span id="L1274"><span class="lineNum">    1274</span>              :     case CodeGenTarget::PyTorchCppBinding:</span>
-<span id="L1275"><span class="lineNum">    1275</span>              :     case CodeGenTarget::CSource:</span>
-<span id="L1276"><span class="lineNum">    1276</span>              :     case CodeGenTarget::Metal:</span>
-<span id="L1277"><span class="lineNum">    1277</span>              :     case CodeGenTarget::WGSL:</span>
-<span id="L1278"><span class="lineNum">    1278</span>              :         {</span>
-<span id="L1279"><span class="lineNum">    1279</span> <span class="tlaGNC">           1 :             RefPtr&lt;ExtensionTracker&gt; extensionTracker = _newExtensionTracker(target);</span></span>
-<span id="L1280"><span class="lineNum">    1280</span>              : </span>
-<span id="L1281"><span class="lineNum">    1281</span> <span class="tlaGNC">           1 :             CodeGenContext subContext(this, target, extensionTracker);</span></span>
-<span id="L1282"><span class="lineNum">    1282</span>              : </span>
-<span id="L1283"><span class="lineNum">    1283</span> <span class="tlaGNC">           1 :             ComPtr&lt;IArtifact&gt; sourceArtifact;</span></span>
-<span id="L1284"><span class="lineNum">    1284</span>              : </span>
-<span id="L1285"><span class="lineNum">    1285</span> <span class="tlaGNC">           1 :             SLANG_RETURN_ON_FAIL(subContext.emitEntryPointsSource(sourceArtifact));</span></span>
-<span id="L1286"><span class="lineNum">    1286</span>              : </span>
-<span id="L1287"><span class="lineNum">    1287</span> <span class="tlaGNC">           1 :             subContext.maybeDumpIntermediate(sourceArtifact);</span></span>
-<span id="L1288"><span class="lineNum">    1288</span> <span class="tlaGNC">           1 :             outArtifact = sourceArtifact;</span></span>
-<span id="L1289"><span class="lineNum">    1289</span> <span class="tlaGNC">           1 :             return SLANG_OK;</span></span>
-<span id="L1290"><span class="lineNum">    1290</span>              :         }</span>
-<span id="L1291"><span class="lineNum">    1291</span>              :         break;</span>
+<span id="L1211"><span class="lineNum">    1211</span>              : /// Compiles the source code that Slang emits for `sourceTarget` with the downstream compiler that</span>
+<span id="L1212"><span class="lineNum">    1212</span>              : /// matches the target, and discards the result.</span>
+<span id="L1213"><span class="lineNum">    1213</span>              : ///</span>
+<span id="L1214"><span class="lineNum">    1214</span>              : /// A test that checks only the emitted text cannot find code that the downstream compiler rejects.</span>
+<span id="L1215"><span class="lineNum">    1215</span>              : /// With `-validate-with-downstream-compiler`, the same compile that produces the binary target</span>
+<span id="L1216"><span class="lineNum">    1216</span>              : /// (for example `metal` to `metallib`) runs on the emitted source, and its errors make the compile</span>
+<span id="L1217"><span class="lineNum">    1217</span>              : /// fail. For a target that Slang does not pass to a downstream compiler, the function reports an</span>
+<span id="L1218"><span class="lineNum">    1218</span>              : /// error instead of skipping the validation silently.</span>
+<span id="L1219"><span class="lineNum">    1219</span>              : SlangResult CodeGenContext::validateEmittedSourceWithDownstream(CodeGenTarget sourceTarget)</span>
+<span id="L1220"><span class="lineNum">    1220</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1221"><span class="lineNum">    1221</span>              :     CodeGenTarget binaryTarget = CodeGenTarget::None;</span>
+<span id="L1222"><span class="lineNum">    1222</span> <span class="tlaGNC">           1 :     switch (sourceTarget)</span></span>
+<span id="L1223"><span class="lineNum">    1223</span>              :     {</span>
+<span id="L1224"><span class="lineNum">    1224</span>              :     case CodeGenTarget::Metal:</span>
+<span id="L1225"><span class="lineNum">    1225</span> <span class="tlaUNC">           0 :         binaryTarget = CodeGenTarget::MetalLib;</span></span>
+<span id="L1226"><span class="lineNum">    1226</span> <span class="tlaUNC">           0 :         break;</span></span>
+<span id="L1227"><span class="lineNum">    1227</span>              :     case CodeGenTarget::HLSL:</span>
+<span id="L1228"><span class="lineNum">    1228</span>              :         {</span>
+<span id="L1229"><span class="lineNum">    1229</span>              :             // DXC does not accept the shader models before 6.0, and FXC does not accept the</span>
+<span id="L1230"><span class="lineNum">    1230</span>              :             // models from 6.0, so the shader model of the entry point selects the compiler.</span>
+<span id="L1231"><span class="lineNum">    1231</span> <span class="tlaGNC">           1 :             Profile profile;</span></span>
+<span id="L1232"><span class="lineNum">    1232</span> <span class="tlaGNC">           1 :             if (getEntryPointCount() == 1)</span></span>
+<span id="L1233"><span class="lineNum">    1233</span> <span class="tlaGNC">           1 :                 profile =</span></span>
+<span id="L1234"><span class="lineNum">    1234</span>              :                     getEffectiveProfile(getEntryPoint(getSingleEntryPointIndex()), getTargetReq());</span>
+<span id="L1235"><span class="lineNum">    1235</span>              :             else</span>
+<span id="L1236"><span class="lineNum">    1236</span> <span class="tlaUNC">           0 :                 profile =</span></span>
+<span id="L1237"><span class="lineNum">    1237</span>              :                     getEffectiveTargetProfile(getTargetReq(), getTargetProgram()-&gt;getOptionSet());</span>
+<span id="L1238"><span class="lineNum">    1238</span> <span class="tlaGNC">           1 :             binaryTarget = (profile.getFamily() == ProfileFamily::DX &amp;&amp;</span></span>
+<span id="L1239"><span class="lineNum">    1239</span>              :                             profile.getVersion() &lt; ProfileVersion::DX_6_0)</span>
+<span id="L1240"><span class="lineNum">    1240</span>              :                                ? CodeGenTarget::DXBytecode</span>
+<span id="L1241"><span class="lineNum">    1241</span>              :                                : CodeGenTarget::DXIL;</span>
+<span id="L1242"><span class="lineNum">    1242</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L1243"><span class="lineNum">    1243</span> <span class="tlaGNC">           1 :         break;</span></span>
+<span id="L1244"><span class="lineNum">    1244</span>              :     case CodeGenTarget::GLSL:</span>
+<span id="L1245"><span class="lineNum">    1245</span> <span class="tlaGNC">           1 :         binaryTarget = CodeGenTarget::SPIRV;</span></span>
+<span id="L1246"><span class="lineNum">    1246</span> <span class="tlaGNC">           1 :         break;</span></span>
+<span id="L1247"><span class="lineNum">    1247</span>              :     case CodeGenTarget::WGSL:</span>
+<span id="L1248"><span class="lineNum">    1248</span> <span class="tlaGNC">           1 :         binaryTarget = CodeGenTarget::WGSLSPIRV;</span></span>
+<span id="L1249"><span class="lineNum">    1249</span> <span class="tlaGNC">           1 :         break;</span></span>
+<span id="L1250"><span class="lineNum">    1250</span>              :     case CodeGenTarget::CUDASource:</span>
+<span id="L1251"><span class="lineNum">    1251</span> <span class="tlaUNC">           0 :         binaryTarget = CodeGenTarget::PTX;</span></span>
+<span id="L1252"><span class="lineNum">    1252</span> <span class="tlaUNC">           0 :         break;</span></span>
+<span id="L1253"><span class="lineNum">    1253</span>              :     case CodeGenTarget::CPPSource:</span>
+<span id="L1254"><span class="lineNum">    1254</span> <span class="tlaGNC">           1 :         binaryTarget = CodeGenTarget::ShaderSharedLibrary;</span></span>
+<span id="L1255"><span class="lineNum">    1255</span> <span class="tlaGNC">           1 :         break;</span></span>
+<span id="L1256"><span class="lineNum">    1256</span>              :     case CodeGenTarget::HostCPPSource:</span>
+<span id="L1257"><span class="lineNum">    1257</span> <span class="tlaUNC">           0 :         binaryTarget = CodeGenTarget::HostSharedLibrary;</span></span>
+<span id="L1258"><span class="lineNum">    1258</span>              :         break;</span>
+<span id="L1259"><span class="lineNum">    1259</span>              :     default:</span>
+<span id="L1260"><span class="lineNum">    1260</span> <span class="tlaGNC">           1 :         getSink()-&gt;diagnose(Diagnostics::ValidateWithDownstreamCompilerUnsupportedTarget{</span></span>
+<span id="L1261"><span class="lineNum">    1261</span>              :             .target = TypeTextUtil::getCompileTargetName(SlangCompileTarget(sourceTarget))});</span>
+<span id="L1262"><span class="lineNum">    1262</span> <span class="tlaGNC">           1 :         return SLANG_FAIL;</span></span>
+<span id="L1263"><span class="lineNum">    1263</span>              :     }</span>
+<span id="L1264"><span class="lineNum">    1264</span>              : </span>
+<span id="L1265"><span class="lineNum">    1265</span>              :     // We call `emitWithDownstreamForEntryPoints` directly instead of `_emitEntryPoints`, because</span>
+<span id="L1266"><span class="lineNum">    1266</span>              :     // the latter emits SPIR-V without a downstream compiler when the user chooses that.</span>
+<span id="L1267"><span class="lineNum">    1267</span> <span class="tlaGNC">           1 :     CodeGenContext validationContext(this, binaryTarget);</span></span>
+<span id="L1268"><span class="lineNum">    1268</span> <span class="tlaGNC">           1 :     validationContext.m_targetProfile = m_targetProfile;</span></span>
+<span id="L1269"><span class="lineNum">    1269</span> <span class="tlaGNC">           1 :     ComPtr&lt;IArtifact&gt; binaryArtifact;</span></span>
+<span id="L1270"><span class="lineNum">    1270</span> <span class="tlaGNC">           1 :     return validationContext.emitWithDownstreamForEntryPoints(binaryArtifact);</span></span>
+<span id="L1271"><span class="lineNum">    1271</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1272"><span class="lineNum">    1272</span>              : </span>
+<span id="L1273"><span class="lineNum">    1273</span>              : // Helper class for recording compile time.</span>
+<span id="L1274"><span class="lineNum">    1274</span>              : struct CompileTimerRAII</span>
+<span id="L1275"><span class="lineNum">    1275</span>              : {</span>
+<span id="L1276"><span class="lineNum">    1276</span>              :     std::chrono::high_resolution_clock::time_point startTime;</span>
+<span id="L1277"><span class="lineNum">    1277</span>              :     Session* session;</span>
+<span id="L1278"><span class="lineNum">    1278</span> <span class="tlaGNC">           1 :     CompileTimerRAII(Session* inSession)</span></span>
+<span id="L1279"><span class="lineNum">    1279</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1280"><span class="lineNum">    1280</span> <span class="tlaGNC">           1 :         startTime = std::chrono::high_resolution_clock::now();</span></span>
+<span id="L1281"><span class="lineNum">    1281</span>              :         session = inSession;</span>
+<span id="L1282"><span class="lineNum">    1282</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1283"><span class="lineNum">    1283</span>              :     ~CompileTimerRAII()</span>
+<span id="L1284"><span class="lineNum">    1284</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L1285"><span class="lineNum">    1285</span> <span class="tlaGNC">           1 :         double elapsedTime = std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(</span></span>
+<span id="L1286"><span class="lineNum">    1286</span>              :                                  std::chrono::high_resolution_clock::now() - startTime)</span>
+<span id="L1287"><span class="lineNum">    1287</span>              :                                  .count() /</span>
+<span id="L1288"><span class="lineNum">    1288</span>              :                              1e6;</span>
+<span id="L1289"><span class="lineNum">    1289</span> <span class="tlaGNC">           1 :         session-&gt;addTotalCompileTime(elapsedTime);</span></span>
+<span id="L1290"><span class="lineNum">    1290</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L1291"><span class="lineNum">    1291</span>              : };</span>
 <span id="L1292"><span class="lineNum">    1292</span>              : </span>
-<span id="L1293"><span class="lineNum">    1293</span>              :     case CodeGenTarget::None:</span>
-<span id="L1294"><span class="lineNum">    1294</span>              :         // The user requested no output</span>
-<span id="L1295"><span class="lineNum">    1295</span>              :         return SLANG_OK;</span>
-<span id="L1296"><span class="lineNum">    1296</span>              : </span>
-<span id="L1297"><span class="lineNum">    1297</span>              :         // Note(tfoley): We currently hit this case when compiling the core module</span>
-<span id="L1298"><span class="lineNum">    1298</span>              :     case CodeGenTarget::Unknown:</span>
-<span id="L1299"><span class="lineNum">    1299</span>              :         return SLANG_OK;</span>
-<span id="L1300"><span class="lineNum">    1300</span>              : </span>
-<span id="L1301"><span class="lineNum">    1301</span>              :     default:</span>
-<span id="L1302"><span class="lineNum">    1302</span> <span class="tlaUNC">           0 :         SLANG_UNEXPECTED(&quot;unhandled code generation target&quot;);</span></span>
-<span id="L1303"><span class="lineNum">    1303</span>              :         break;</span>
-<span id="L1304"><span class="lineNum">    1304</span>              :     }</span>
-<span id="L1305"><span class="lineNum">    1305</span>              :     return SLANG_FAIL;</span>
-<span id="L1306"><span class="lineNum">    1306</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1307"><span class="lineNum">    1307</span>              : </span>
-<span id="L1308"><span class="lineNum">    1308</span>              : void CodeGenContext::_dumpIntermediateMaybeWithAssembly(IArtifact* artifact)</span>
-<span id="L1309"><span class="lineNum">    1309</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1310"><span class="lineNum">    1310</span> <span class="tlaUNC">           0 :     _dumpIntermediate(artifact);</span></span>
-<span id="L1311"><span class="lineNum">    1311</span>              : </span>
-<span id="L1312"><span class="lineNum">    1312</span> <span class="tlaUNC">           0 :     ComPtr&lt;IArtifact&gt; assembly;</span></span>
-<span id="L1313"><span class="lineNum">    1313</span> <span class="tlaUNC">           0 :     ArtifactOutputUtil::maybeDisassemble(getSession(), artifact, nullptr, assembly);</span></span>
-<span id="L1314"><span class="lineNum">    1314</span>              : </span>
-<span id="L1315"><span class="lineNum">    1315</span> <span class="tlaUNC">           0 :     if (assembly)</span></span>
-<span id="L1316"><span class="lineNum">    1316</span>              :     {</span>
-<span id="L1317"><span class="lineNum">    1317</span> <span class="tlaUNC">           0 :         _dumpIntermediate(assembly);</span></span>
-<span id="L1318"><span class="lineNum">    1318</span>              :     }</span>
-<span id="L1319"><span class="lineNum">    1319</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1320"><span class="lineNum">    1320</span>              : </span>
-<span id="L1321"><span class="lineNum">    1321</span>              : void CodeGenContext::_dumpIntermediate(IArtifact* artifact)</span>
-<span id="L1322"><span class="lineNum">    1322</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1323"><span class="lineNum">    1323</span> <span class="tlaUNC">           0 :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
-<span id="L1324"><span class="lineNum">    1324</span> <span class="tlaUNC">           0 :     if (SLANG_FAILED(artifact-&gt;loadBlob(ArtifactKeep::No, blob.writeRef())))</span></span>
-<span id="L1325"><span class="lineNum">    1325</span>              :     {</span>
-<span id="L1326"><span class="lineNum">    1326</span>              :         return;</span>
-<span id="L1327"><span class="lineNum">    1327</span>              :     }</span>
-<span id="L1328"><span class="lineNum">    1328</span> <span class="tlaUNC">           0 :     _dumpIntermediate(artifact-&gt;getDesc(), blob-&gt;getBufferPointer(), blob-&gt;getBufferSize());</span></span>
-<span id="L1329"><span class="lineNum">    1329</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1330"><span class="lineNum">    1330</span>              : </span>
-<span id="L1331"><span class="lineNum">    1331</span>              : void CodeGenContext::_dumpIntermediate(const ArtifactDesc&amp; desc, void const* data, size_t size)</span>
-<span id="L1332"><span class="lineNum">    1332</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1333"><span class="lineNum">    1333</span>              :     // Try to generate a unique ID for the file to dump,</span>
-<span id="L1334"><span class="lineNum">    1334</span>              :     // even in cases where there might be multiple threads</span>
-<span id="L1335"><span class="lineNum">    1335</span>              :     // doing compilation.</span>
-<span id="L1336"><span class="lineNum">    1336</span>              :     //</span>
-<span id="L1337"><span class="lineNum">    1337</span>              :     // This is primarily a debugging aid, so we don&#x27;t</span>
-<span id="L1338"><span class="lineNum">    1338</span>              :     // really need/want to do anything too elaborate</span>
-<span id="L1339"><span class="lineNum">    1339</span>              : </span>
-<span id="L1340"><span class="lineNum">    1340</span>              :     static std::atomic&lt;uint32_t&gt; counter(0);</span>
-<span id="L1341"><span class="lineNum">    1341</span>              : </span>
-<span id="L1342"><span class="lineNum">    1342</span> <span class="tlaUNC">           0 :     const uint32_t id = ++counter;</span></span>
-<span id="L1343"><span class="lineNum">    1343</span>              : </span>
-<span id="L1344"><span class="lineNum">    1344</span>              :     // Just use the counter for the &#x27;base name&#x27;</span>
-<span id="L1345"><span class="lineNum">    1345</span> <span class="tlaUNC">           0 :     StringBuilder basename;</span></span>
-<span id="L1346"><span class="lineNum">    1346</span>              : </span>
-<span id="L1347"><span class="lineNum">    1347</span>              :     // Add the prefix</span>
-<span id="L1348"><span class="lineNum">    1348</span> <span class="tlaUNC">           0 :     basename &lt;&lt; getIntermediateDumpPrefix();</span></span>
-<span id="L1349"><span class="lineNum">    1349</span>              : </span>
-<span id="L1350"><span class="lineNum">    1350</span>              :     // Add the id</span>
-<span id="L1351"><span class="lineNum">    1351</span> <span class="tlaUNC">           0 :     basename &lt;&lt; int(id);</span></span>
-<span id="L1352"><span class="lineNum">    1352</span>              : </span>
-<span id="L1353"><span class="lineNum">    1353</span>              :     // Work out the filename based on the desc and the basename</span>
-<span id="L1354"><span class="lineNum">    1354</span> <span class="tlaUNC">           0 :     StringBuilder filename;</span></span>
-<span id="L1355"><span class="lineNum">    1355</span> <span class="tlaUNC">           0 :     ArtifactDescUtil::calcNameForDesc(desc, basename.getUnownedSlice(), filename);</span></span>
+<span id="L1293"><span class="lineNum">    1293</span>              : // Do emit logic for a zero or more entry points</span>
+<span id="L1294"><span class="lineNum">    1294</span>              : SlangResult CodeGenContext::emitEntryPoints(ComPtr&lt;IArtifact&gt;&amp; outArtifact)</span>
+<span id="L1295"><span class="lineNum">    1295</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1296"><span class="lineNum">    1296</span> <span class="tlaGNC">           1 :     CompileTimerRAII recordCompileTime(getSession());</span></span>
+<span id="L1297"><span class="lineNum">    1297</span>              : </span>
+<span id="L1298"><span class="lineNum">    1298</span> <span class="tlaGNC">           1 :     auto target = getTargetFormat();</span></span>
+<span id="L1299"><span class="lineNum">    1299</span>              : </span>
+<span id="L1300"><span class="lineNum">    1300</span> <span class="tlaGNC">           1 :     switch (target)</span></span>
+<span id="L1301"><span class="lineNum">    1301</span>              :     {</span>
+<span id="L1302"><span class="lineNum">    1302</span>              :     case CodeGenTarget::SPIRVAssembly:</span>
+<span id="L1303"><span class="lineNum">    1303</span>              :     case CodeGenTarget::DXBytecodeAssembly:</span>
+<span id="L1304"><span class="lineNum">    1304</span>              :     case CodeGenTarget::DXILAssembly:</span>
+<span id="L1305"><span class="lineNum">    1305</span>              :     case CodeGenTarget::SPIRV:</span>
+<span id="L1306"><span class="lineNum">    1306</span>              :     case CodeGenTarget::DXIL:</span>
+<span id="L1307"><span class="lineNum">    1307</span>              :     case CodeGenTarget::DXBytecode:</span>
+<span id="L1308"><span class="lineNum">    1308</span>              :     case CodeGenTarget::MetalLib:</span>
+<span id="L1309"><span class="lineNum">    1309</span>              :     case CodeGenTarget::MetalLibAssembly:</span>
+<span id="L1310"><span class="lineNum">    1310</span>              :     case CodeGenTarget::PTX:</span>
+<span id="L1311"><span class="lineNum">    1311</span>              :     case CodeGenTarget::HostHostCallable:</span>
+<span id="L1312"><span class="lineNum">    1312</span>              :     case CodeGenTarget::ShaderHostCallable:</span>
+<span id="L1313"><span class="lineNum">    1313</span>              :     case CodeGenTarget::ShaderSharedLibrary:</span>
+<span id="L1314"><span class="lineNum">    1314</span>              :     case CodeGenTarget::HostExecutable:</span>
+<span id="L1315"><span class="lineNum">    1315</span>              :     case CodeGenTarget::HostSharedLibrary:</span>
+<span id="L1316"><span class="lineNum">    1316</span>              :     case CodeGenTarget::WGSLSPIRVAssembly:</span>
+<span id="L1317"><span class="lineNum">    1317</span>              :     case CodeGenTarget::HostVM:</span>
+<span id="L1318"><span class="lineNum">    1318</span>              :     case CodeGenTarget::HostObjectCode:</span>
+<span id="L1319"><span class="lineNum">    1319</span>              :     case CodeGenTarget::ShaderObjectCode:</span>
+<span id="L1320"><span class="lineNum">    1320</span>              :     case CodeGenTarget::HostLLVMIR:</span>
+<span id="L1321"><span class="lineNum">    1321</span>              :     case CodeGenTarget::ShaderLLVMIR:</span>
+<span id="L1322"><span class="lineNum">    1322</span>              :         {</span>
+<span id="L1323"><span class="lineNum">    1323</span>              :             // Most of these targets come out of a downstream compiler already, so emitting them</span>
+<span id="L1324"><span class="lineNum">    1324</span>              :             // validates them. Slang itself produces the VM and LLVM IR targets, and with the LLVM</span>
+<span id="L1325"><span class="lineNum">    1325</span>              :             // backend it produces the CPU binary targets too, so no downstream tool checks them.</span>
+<span id="L1326"><span class="lineNum">    1326</span> <span class="tlaGNC">           1 :             if (shouldValidateWithDownstreamCompiler() &amp;&amp;</span></span>
+<span id="L1327"><span class="lineNum">    1327</span>              :                 (target == CodeGenTarget::HostVM || target == CodeGenTarget::HostLLVMIR ||</span>
+<span id="L1328"><span class="lineNum">    1328</span>              :                  target == CodeGenTarget::ShaderLLVMIR || isCPUTargetViaLLVM(getTargetReq())))</span>
+<span id="L1329"><span class="lineNum">    1329</span>              :             {</span>
+<span id="L1330"><span class="lineNum">    1330</span> <span class="tlaUNC">           0 :                 getSink()-&gt;diagnose(Diagnostics::ValidateWithDownstreamCompilerUnsupportedTarget{</span></span>
+<span id="L1331"><span class="lineNum">    1331</span>              :                     .target = TypeTextUtil::getCompileTargetName(SlangCompileTarget(target))});</span>
+<span id="L1332"><span class="lineNum">    1332</span> <span class="tlaUNC">           0 :                 return SLANG_FAIL;</span></span>
+<span id="L1333"><span class="lineNum">    1333</span>              :             }</span>
+<span id="L1334"><span class="lineNum">    1334</span>              : </span>
+<span id="L1335"><span class="lineNum">    1335</span> <span class="tlaGNC">           1 :             SLANG_RETURN_ON_FAIL(_emitEntryPoints(outArtifact));</span></span>
+<span id="L1336"><span class="lineNum">    1336</span>              : </span>
+<span id="L1337"><span class="lineNum">    1337</span> <span class="tlaGNC">           1 :             maybeDumpIntermediate(outArtifact);</span></span>
+<span id="L1338"><span class="lineNum">    1338</span>              :             return SLANG_OK;</span>
+<span id="L1339"><span class="lineNum">    1339</span>              :         }</span>
+<span id="L1340"><span class="lineNum">    1340</span>              :         break;</span>
+<span id="L1341"><span class="lineNum">    1341</span>              :     case CodeGenTarget::GLSL:</span>
+<span id="L1342"><span class="lineNum">    1342</span>              :     case CodeGenTarget::HLSL:</span>
+<span id="L1343"><span class="lineNum">    1343</span>              :     case CodeGenTarget::CUDASource:</span>
+<span id="L1344"><span class="lineNum">    1344</span>              :     case CodeGenTarget::CUDAHeader:</span>
+<span id="L1345"><span class="lineNum">    1345</span>              :     case CodeGenTarget::CPPSource:</span>
+<span id="L1346"><span class="lineNum">    1346</span>              :     case CodeGenTarget::CPPHeader:</span>
+<span id="L1347"><span class="lineNum">    1347</span>              :     case CodeGenTarget::HostCPPSource:</span>
+<span id="L1348"><span class="lineNum">    1348</span>              :     case CodeGenTarget::PyTorchCppBinding:</span>
+<span id="L1349"><span class="lineNum">    1349</span>              :     case CodeGenTarget::CSource:</span>
+<span id="L1350"><span class="lineNum">    1350</span>              :     case CodeGenTarget::Metal:</span>
+<span id="L1351"><span class="lineNum">    1351</span>              :     case CodeGenTarget::WGSL:</span>
+<span id="L1352"><span class="lineNum">    1352</span>              :         {</span>
+<span id="L1353"><span class="lineNum">    1353</span> <span class="tlaGNC">           1 :             RefPtr&lt;ExtensionTracker&gt; extensionTracker = _newExtensionTracker(target);</span></span>
+<span id="L1354"><span class="lineNum">    1354</span>              : </span>
+<span id="L1355"><span class="lineNum">    1355</span> <span class="tlaGNC">           1 :             CodeGenContext subContext(this, target, extensionTracker);</span></span>
 <span id="L1356"><span class="lineNum">    1356</span>              : </span>
-<span id="L1357"><span class="lineNum">    1357</span>              :     // If didn&#x27;t produce a filename, use basename with .unknown extension</span>
-<span id="L1358"><span class="lineNum">    1358</span> <span class="tlaUNC">           0 :     if (filename.getLength() == 0)</span></span>
-<span id="L1359"><span class="lineNum">    1359</span>              :     {</span>
-<span id="L1360"><span class="lineNum">    1360</span> <span class="tlaUNC">           0 :         filename = basename;</span></span>
-<span id="L1361"><span class="lineNum">    1361</span> <span class="tlaUNC">           0 :         filename &lt;&lt; &quot;.unknown&quot;;</span></span>
-<span id="L1362"><span class="lineNum">    1362</span>              :     }</span>
-<span id="L1363"><span class="lineNum">    1363</span>              : </span>
-<span id="L1364"><span class="lineNum">    1364</span>              :     // Write to a file</span>
-<span id="L1365"><span class="lineNum">    1365</span> <span class="tlaUNC">           0 :     ArtifactOutputUtil::writeToFile(desc, data, size, filename);</span></span>
-<span id="L1366"><span class="lineNum">    1366</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1367"><span class="lineNum">    1367</span>              : </span>
-<span id="L1368"><span class="lineNum">    1368</span>              : void CodeGenContext::maybeDumpIntermediate(IArtifact* artifact)</span>
-<span id="L1369"><span class="lineNum">    1369</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1370"><span class="lineNum">    1370</span> <span class="tlaGNC">           1 :     if (!shouldDumpIntermediates())</span></span>
-<span id="L1371"><span class="lineNum">    1371</span>              :         return;</span>
-<span id="L1372"><span class="lineNum">    1372</span>              : </span>
-<span id="L1373"><span class="lineNum">    1373</span>              : </span>
-<span id="L1374"><span class="lineNum">    1374</span> <span class="tlaUNC">           0 :     _dumpIntermediateMaybeWithAssembly(artifact);</span></span>
-<span id="L1375"><span class="lineNum">    1375</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1376"><span class="lineNum">    1376</span>              : </span>
-<span id="L1377"><span class="lineNum">    1377</span>              : IRDumpOptions CodeGenContext::getIRDumpOptions()</span>
-<span id="L1378"><span class="lineNum">    1378</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1379"><span class="lineNum">    1379</span> <span class="tlaGNC">           1 :     if (auto endToEndReq = isEndToEndCompile())</span></span>
-<span id="L1380"><span class="lineNum">    1380</span>              :     {</span>
-<span id="L1381"><span class="lineNum">    1381</span> <span class="tlaGNC">           1 :         return endToEndReq-&gt;getFrontEndReq()-&gt;m_irDumpOptions;</span></span>
+<span id="L1357"><span class="lineNum">    1357</span> <span class="tlaGNC">           1 :             ComPtr&lt;IArtifact&gt; sourceArtifact;</span></span>
+<span id="L1358"><span class="lineNum">    1358</span>              : </span>
+<span id="L1359"><span class="lineNum">    1359</span> <span class="tlaGNC">           1 :             SLANG_RETURN_ON_FAIL(subContext.emitEntryPointsSource(sourceArtifact));</span></span>
+<span id="L1360"><span class="lineNum">    1360</span>              : </span>
+<span id="L1361"><span class="lineNum">    1361</span> <span class="tlaGNC">           1 :             subContext.maybeDumpIntermediate(sourceArtifact);</span></span>
+<span id="L1362"><span class="lineNum">    1362</span>              : </span>
+<span id="L1363"><span class="lineNum">    1363</span> <span class="tlaGNC">           1 :             if (shouldValidateWithDownstreamCompiler())</span></span>
+<span id="L1364"><span class="lineNum">    1364</span> <span class="tlaGNC">           1 :                 SLANG_RETURN_ON_FAIL(validateEmittedSourceWithDownstream(target));</span></span>
+<span id="L1365"><span class="lineNum">    1365</span>              : </span>
+<span id="L1366"><span class="lineNum">    1366</span> <span class="tlaGNC">           1 :             outArtifact = sourceArtifact;</span></span>
+<span id="L1367"><span class="lineNum">    1367</span> <span class="tlaGNC">           1 :             return SLANG_OK;</span></span>
+<span id="L1368"><span class="lineNum">    1368</span>              :         }</span>
+<span id="L1369"><span class="lineNum">    1369</span>              :         break;</span>
+<span id="L1370"><span class="lineNum">    1370</span>              : </span>
+<span id="L1371"><span class="lineNum">    1371</span>              :     case CodeGenTarget::None:</span>
+<span id="L1372"><span class="lineNum">    1372</span>              :         // The user requested no output</span>
+<span id="L1373"><span class="lineNum">    1373</span>              :         return SLANG_OK;</span>
+<span id="L1374"><span class="lineNum">    1374</span>              : </span>
+<span id="L1375"><span class="lineNum">    1375</span>              :         // Note(tfoley): We currently hit this case when compiling the core module</span>
+<span id="L1376"><span class="lineNum">    1376</span>              :     case CodeGenTarget::Unknown:</span>
+<span id="L1377"><span class="lineNum">    1377</span>              :         return SLANG_OK;</span>
+<span id="L1378"><span class="lineNum">    1378</span>              : </span>
+<span id="L1379"><span class="lineNum">    1379</span>              :     default:</span>
+<span id="L1380"><span class="lineNum">    1380</span> <span class="tlaUNC">           0 :         SLANG_UNEXPECTED(&quot;unhandled code generation target&quot;);</span></span>
+<span id="L1381"><span class="lineNum">    1381</span>              :         break;</span>
 <span id="L1382"><span class="lineNum">    1382</span>              :     }</span>
-<span id="L1383"><span class="lineNum">    1383</span> <span class="tlaGNC">           1 :     return IRDumpOptions();</span></span>
+<span id="L1383"><span class="lineNum">    1383</span>              :     return SLANG_FAIL;</span>
 <span id="L1384"><span class="lineNum">    1384</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1385"><span class="lineNum">    1385</span>              : </span>
-<span id="L1386"><span class="lineNum">    1386</span>              : bool CodeGenContext::shouldValidateIR()</span>
-<span id="L1387"><span class="lineNum">    1387</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1388"><span class="lineNum">    1388</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(CompilerOptionName::ValidateIr);</span></span>
-<span id="L1389"><span class="lineNum">    1389</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1390"><span class="lineNum">    1390</span>              : </span>
-<span id="L1391"><span class="lineNum">    1391</span>              : bool CodeGenContext::shouldSkipSPIRVValidation()</span>
-<span id="L1392"><span class="lineNum">    1392</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1393"><span class="lineNum">    1393</span> <span class="tlaUNC">           0 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L1394"><span class="lineNum">    1394</span>              :         CompilerOptionName::SkipSPIRVValidation);</span>
-<span id="L1395"><span class="lineNum">    1395</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1396"><span class="lineNum">    1396</span>              : </span>
-<span id="L1397"><span class="lineNum">    1397</span>              : bool CodeGenContext::shouldDumpIR()</span>
-<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1399"><span class="lineNum">    1399</span> <span class="tlaUNC">           0 :     return getTargetProgram()-&gt;getOptionSet().shouldDumpIR();</span></span>
-<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1401"><span class="lineNum">    1401</span>              : </span>
-<span id="L1402"><span class="lineNum">    1402</span>              : bool CodeGenContext::shouldSkipDownstreamLinking()</span>
-<span id="L1403"><span class="lineNum">    1403</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1404"><span class="lineNum">    1404</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L1405"><span class="lineNum">    1405</span>              :         CompilerOptionName::SkipDownstreamLinking);</span>
-<span id="L1406"><span class="lineNum">    1406</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1407"><span class="lineNum">    1407</span>              : </span>
-<span id="L1408"><span class="lineNum">    1408</span>              : bool CodeGenContext::shouldReportCheckpointIntermediates()</span>
-<span id="L1409"><span class="lineNum">    1409</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1410"><span class="lineNum">    1410</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L1411"><span class="lineNum">    1411</span>              :         CompilerOptionName::ReportCheckpointIntermediates);</span>
-<span id="L1412"><span class="lineNum">    1412</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1413"><span class="lineNum">    1413</span>              : </span>
-<span id="L1414"><span class="lineNum">    1414</span>              : bool CodeGenContext::shouldReportDynamicDispatchSites()</span>
-<span id="L1415"><span class="lineNum">    1415</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1416"><span class="lineNum">    1416</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L1417"><span class="lineNum">    1417</span>              :         CompilerOptionName::ReportDynamicDispatchSites);</span>
-<span id="L1418"><span class="lineNum">    1418</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1386"><span class="lineNum">    1386</span>              : void CodeGenContext::_dumpIntermediateMaybeWithAssembly(IArtifact* artifact)</span>
+<span id="L1387"><span class="lineNum">    1387</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1388"><span class="lineNum">    1388</span> <span class="tlaUNC">           0 :     _dumpIntermediate(artifact);</span></span>
+<span id="L1389"><span class="lineNum">    1389</span>              : </span>
+<span id="L1390"><span class="lineNum">    1390</span> <span class="tlaUNC">           0 :     ComPtr&lt;IArtifact&gt; assembly;</span></span>
+<span id="L1391"><span class="lineNum">    1391</span> <span class="tlaUNC">           0 :     ArtifactOutputUtil::maybeDisassemble(getSession(), artifact, nullptr, assembly);</span></span>
+<span id="L1392"><span class="lineNum">    1392</span>              : </span>
+<span id="L1393"><span class="lineNum">    1393</span> <span class="tlaUNC">           0 :     if (assembly)</span></span>
+<span id="L1394"><span class="lineNum">    1394</span>              :     {</span>
+<span id="L1395"><span class="lineNum">    1395</span> <span class="tlaUNC">           0 :         _dumpIntermediate(assembly);</span></span>
+<span id="L1396"><span class="lineNum">    1396</span>              :     }</span>
+<span id="L1397"><span class="lineNum">    1397</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1398"><span class="lineNum">    1398</span>              : </span>
+<span id="L1399"><span class="lineNum">    1399</span>              : void CodeGenContext::_dumpIntermediate(IArtifact* artifact)</span>
+<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1401"><span class="lineNum">    1401</span> <span class="tlaUNC">           0 :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
+<span id="L1402"><span class="lineNum">    1402</span> <span class="tlaUNC">           0 :     if (SLANG_FAILED(artifact-&gt;loadBlob(ArtifactKeep::No, blob.writeRef())))</span></span>
+<span id="L1403"><span class="lineNum">    1403</span>              :     {</span>
+<span id="L1404"><span class="lineNum">    1404</span>              :         return;</span>
+<span id="L1405"><span class="lineNum">    1405</span>              :     }</span>
+<span id="L1406"><span class="lineNum">    1406</span> <span class="tlaUNC">           0 :     _dumpIntermediate(artifact-&gt;getDesc(), blob-&gt;getBufferPointer(), blob-&gt;getBufferSize());</span></span>
+<span id="L1407"><span class="lineNum">    1407</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1408"><span class="lineNum">    1408</span>              : </span>
+<span id="L1409"><span class="lineNum">    1409</span>              : void CodeGenContext::_dumpIntermediate(const ArtifactDesc&amp; desc, void const* data, size_t size)</span>
+<span id="L1410"><span class="lineNum">    1410</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1411"><span class="lineNum">    1411</span>              :     // Try to generate a unique ID for the file to dump,</span>
+<span id="L1412"><span class="lineNum">    1412</span>              :     // even in cases where there might be multiple threads</span>
+<span id="L1413"><span class="lineNum">    1413</span>              :     // doing compilation.</span>
+<span id="L1414"><span class="lineNum">    1414</span>              :     //</span>
+<span id="L1415"><span class="lineNum">    1415</span>              :     // This is primarily a debugging aid, so we don&#x27;t</span>
+<span id="L1416"><span class="lineNum">    1416</span>              :     // really need/want to do anything too elaborate</span>
+<span id="L1417"><span class="lineNum">    1417</span>              : </span>
+<span id="L1418"><span class="lineNum">    1418</span>              :     static std::atomic&lt;uint32_t&gt; counter(0);</span>
 <span id="L1419"><span class="lineNum">    1419</span>              : </span>
-<span id="L1420"><span class="lineNum">    1420</span>              : bool CodeGenContext::shouldTraceCoverage()</span>
-<span id="L1421"><span class="lineNum">    1421</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1422"><span class="lineNum">    1422</span> <span class="tlaUNC">           0 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(CompilerOptionName::TraceCoverage);</span></span>
-<span id="L1423"><span class="lineNum">    1423</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1420"><span class="lineNum">    1420</span> <span class="tlaUNC">           0 :     const uint32_t id = ++counter;</span></span>
+<span id="L1421"><span class="lineNum">    1421</span>              : </span>
+<span id="L1422"><span class="lineNum">    1422</span>              :     // Just use the counter for the &#x27;base name&#x27;</span>
+<span id="L1423"><span class="lineNum">    1423</span> <span class="tlaUNC">           0 :     StringBuilder basename;</span></span>
 <span id="L1424"><span class="lineNum">    1424</span>              : </span>
-<span id="L1425"><span class="lineNum">    1425</span>              : bool CodeGenContext::shouldTraceAnyCoverage()</span>
-<span id="L1426"><span class="lineNum">    1426</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1427"><span class="lineNum">    1427</span> <span class="tlaGNC">           1 :     auto&amp; optionSet = getTargetProgram()-&gt;getOptionSet();</span></span>
-<span id="L1428"><span class="lineNum">    1428</span> <span class="tlaGNC">           1 :     return optionSet.getBoolOption(CompilerOptionName::TraceCoverage) ||</span></span>
-<span id="L1429"><span class="lineNum">    1429</span>              :            optionSet.getBoolOption(CompilerOptionName::TraceFunctionCoverage) ||</span>
-<span id="L1430"><span class="lineNum">    1430</span>              :            optionSet.getBoolOption(CompilerOptionName::TraceBranchCoverage);</span>
-<span id="L1431"><span class="lineNum">    1431</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1432"><span class="lineNum">    1432</span>              : </span>
-<span id="L1433"><span class="lineNum">    1433</span>              : bool CodeGenContext::shouldDumpIntermediates()</span>
-<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1435"><span class="lineNum">    1435</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().shouldDumpIntermediates();</span></span>
-<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1437"><span class="lineNum">    1437</span>              : </span>
-<span id="L1438"><span class="lineNum">    1438</span>              : bool CodeGenContext::shouldTrackLiveness()</span>
-<span id="L1439"><span class="lineNum">    1439</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1440"><span class="lineNum">    1440</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(CompilerOptionName::TrackLiveness);</span></span>
-<span id="L1441"><span class="lineNum">    1441</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1442"><span class="lineNum">    1442</span>              : </span>
-<span id="L1443"><span class="lineNum">    1443</span>              : String CodeGenContext::getIntermediateDumpPrefix()</span>
-<span id="L1444"><span class="lineNum">    1444</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L1445"><span class="lineNum">    1445</span> <span class="tlaUNC">           0 :     return getTargetProgram()-&gt;getOptionSet().getStringOption(</span></span>
-<span id="L1446"><span class="lineNum">    1446</span>              :         CompilerOptionName::DumpIntermediatePrefix);</span>
-<span id="L1447"><span class="lineNum">    1447</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L1448"><span class="lineNum">    1448</span>              : </span>
-<span id="L1449"><span class="lineNum">    1449</span>              : bool CodeGenContext::getUseUnknownImageFormatAsDefault()</span>
-<span id="L1450"><span class="lineNum">    1450</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L1452"><span class="lineNum">    1452</span>              :         CompilerOptionName::DefaultImageFormatUnknown);</span>
+<span id="L1425"><span class="lineNum">    1425</span>              :     // Add the prefix</span>
+<span id="L1426"><span class="lineNum">    1426</span> <span class="tlaUNC">           0 :     basename &lt;&lt; getIntermediateDumpPrefix();</span></span>
+<span id="L1427"><span class="lineNum">    1427</span>              : </span>
+<span id="L1428"><span class="lineNum">    1428</span>              :     // Add the id</span>
+<span id="L1429"><span class="lineNum">    1429</span> <span class="tlaUNC">           0 :     basename &lt;&lt; int(id);</span></span>
+<span id="L1430"><span class="lineNum">    1430</span>              : </span>
+<span id="L1431"><span class="lineNum">    1431</span>              :     // Work out the filename based on the desc and the basename</span>
+<span id="L1432"><span class="lineNum">    1432</span> <span class="tlaUNC">           0 :     StringBuilder filename;</span></span>
+<span id="L1433"><span class="lineNum">    1433</span> <span class="tlaUNC">           0 :     ArtifactDescUtil::calcNameForDesc(desc, basename.getUnownedSlice(), filename);</span></span>
+<span id="L1434"><span class="lineNum">    1434</span>              : </span>
+<span id="L1435"><span class="lineNum">    1435</span>              :     // If didn&#x27;t produce a filename, use basename with .unknown extension</span>
+<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaUNC">           0 :     if (filename.getLength() == 0)</span></span>
+<span id="L1437"><span class="lineNum">    1437</span>              :     {</span>
+<span id="L1438"><span class="lineNum">    1438</span> <span class="tlaUNC">           0 :         filename = basename;</span></span>
+<span id="L1439"><span class="lineNum">    1439</span> <span class="tlaUNC">           0 :         filename &lt;&lt; &quot;.unknown&quot;;</span></span>
+<span id="L1440"><span class="lineNum">    1440</span>              :     }</span>
+<span id="L1441"><span class="lineNum">    1441</span>              : </span>
+<span id="L1442"><span class="lineNum">    1442</span>              :     // Write to a file</span>
+<span id="L1443"><span class="lineNum">    1443</span> <span class="tlaUNC">           0 :     ArtifactOutputUtil::writeToFile(desc, data, size, filename);</span></span>
+<span id="L1444"><span class="lineNum">    1444</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1445"><span class="lineNum">    1445</span>              : </span>
+<span id="L1446"><span class="lineNum">    1446</span>              : void CodeGenContext::maybeDumpIntermediate(IArtifact* artifact)</span>
+<span id="L1447"><span class="lineNum">    1447</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1448"><span class="lineNum">    1448</span> <span class="tlaGNC">           1 :     if (!shouldDumpIntermediates())</span></span>
+<span id="L1449"><span class="lineNum">    1449</span>              :         return;</span>
+<span id="L1450"><span class="lineNum">    1450</span>              : </span>
+<span id="L1451"><span class="lineNum">    1451</span>              : </span>
+<span id="L1452"><span class="lineNum">    1452</span> <span class="tlaUNC">           0 :     _dumpIntermediateMaybeWithAssembly(artifact);</span></span>
 <span id="L1453"><span class="lineNum">    1453</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1454"><span class="lineNum">    1454</span>              : </span>
-<span id="L1455"><span class="lineNum">    1455</span>              : bool CodeGenContext::isSpecializationDisabled()</span>
+<span id="L1455"><span class="lineNum">    1455</span>              : IRDumpOptions CodeGenContext::getIRDumpOptions()</span>
 <span id="L1456"><span class="lineNum">    1456</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1457"><span class="lineNum">    1457</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
-<span id="L1458"><span class="lineNum">    1458</span>              :         CompilerOptionName::DisableSpecialization);</span>
-<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1460"><span class="lineNum">    1460</span>              : </span>
-<span id="L1461"><span class="lineNum">    1461</span>              : SlangResult CodeGenContext::requireTranslationUnitSourceFiles()</span>
-<span id="L1462"><span class="lineNum">    1462</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaGNC">           1 :     if (auto endToEndReq = isPassThroughEnabled())</span></span>
-<span id="L1464"><span class="lineNum">    1464</span>              :     {</span>
-<span id="L1465"><span class="lineNum">    1465</span> <span class="tlaGNC">           1 :         for (auto entryPointIndex : getEntryPointIndices())</span></span>
-<span id="L1466"><span class="lineNum">    1466</span>              :         {</span>
-<span id="L1467"><span class="lineNum">    1467</span> <span class="tlaGNC">           1 :             auto translationUnit = getPassThroughTranslationUnit(endToEndReq, entryPointIndex);</span></span>
-<span id="L1468"><span class="lineNum">    1468</span>              :             SLANG_ASSERT(translationUnit);</span>
-<span id="L1469"><span class="lineNum">    1469</span>              :             /// Make sure we have the source files</span>
-<span id="L1470"><span class="lineNum">    1470</span> <span class="tlaGNC">           1 :             SLANG_RETURN_ON_FAIL(translationUnit-&gt;requireSourceFiles());</span></span>
-<span id="L1471"><span class="lineNum">    1471</span>              :         }</span>
-<span id="L1472"><span class="lineNum">    1472</span>              :     }</span>
-<span id="L1473"><span class="lineNum">    1473</span>              : </span>
-<span id="L1474"><span class="lineNum">    1474</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L1475"><span class="lineNum">    1475</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L1476"><span class="lineNum">    1476</span>              : </span>
-<span id="L1477"><span class="lineNum">    1477</span>              : } // namespace Slang</span>
+<span id="L1457"><span class="lineNum">    1457</span> <span class="tlaGNC">           1 :     if (auto endToEndReq = isEndToEndCompile())</span></span>
+<span id="L1458"><span class="lineNum">    1458</span>              :     {</span>
+<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">           1 :         return endToEndReq-&gt;getFrontEndReq()-&gt;m_irDumpOptions;</span></span>
+<span id="L1460"><span class="lineNum">    1460</span>              :     }</span>
+<span id="L1461"><span class="lineNum">    1461</span> <span class="tlaGNC">           1 :     return IRDumpOptions();</span></span>
+<span id="L1462"><span class="lineNum">    1462</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1463"><span class="lineNum">    1463</span>              : </span>
+<span id="L1464"><span class="lineNum">    1464</span>              : bool CodeGenContext::shouldValidateIR()</span>
+<span id="L1465"><span class="lineNum">    1465</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1466"><span class="lineNum">    1466</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(CompilerOptionName::ValidateIr);</span></span>
+<span id="L1467"><span class="lineNum">    1467</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1468"><span class="lineNum">    1468</span>              : </span>
+<span id="L1469"><span class="lineNum">    1469</span>              : bool CodeGenContext::shouldSkipSPIRVValidation()</span>
+<span id="L1470"><span class="lineNum">    1470</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1471"><span class="lineNum">    1471</span> <span class="tlaUNC">           0 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L1472"><span class="lineNum">    1472</span>              :         CompilerOptionName::SkipSPIRVValidation);</span>
+<span id="L1473"><span class="lineNum">    1473</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1474"><span class="lineNum">    1474</span>              : </span>
+<span id="L1475"><span class="lineNum">    1475</span>              : bool CodeGenContext::shouldValidateWithDownstreamCompiler()</span>
+<span id="L1476"><span class="lineNum">    1476</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1477"><span class="lineNum">    1477</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L1478"><span class="lineNum">    1478</span>              :         CompilerOptionName::ValidateWithDownstreamCompiler);</span>
+<span id="L1479"><span class="lineNum">    1479</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1480"><span class="lineNum">    1480</span>              : </span>
+<span id="L1481"><span class="lineNum">    1481</span>              : bool CodeGenContext::shouldDumpIR()</span>
+<span id="L1482"><span class="lineNum">    1482</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1483"><span class="lineNum">    1483</span> <span class="tlaUNC">           0 :     return getTargetProgram()-&gt;getOptionSet().shouldDumpIR();</span></span>
+<span id="L1484"><span class="lineNum">    1484</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1485"><span class="lineNum">    1485</span>              : </span>
+<span id="L1486"><span class="lineNum">    1486</span>              : bool CodeGenContext::shouldSkipDownstreamLinking()</span>
+<span id="L1487"><span class="lineNum">    1487</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1488"><span class="lineNum">    1488</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L1489"><span class="lineNum">    1489</span>              :         CompilerOptionName::SkipDownstreamLinking);</span>
+<span id="L1490"><span class="lineNum">    1490</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1491"><span class="lineNum">    1491</span>              : </span>
+<span id="L1492"><span class="lineNum">    1492</span>              : bool CodeGenContext::shouldReportCheckpointIntermediates()</span>
+<span id="L1493"><span class="lineNum">    1493</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1494"><span class="lineNum">    1494</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L1495"><span class="lineNum">    1495</span>              :         CompilerOptionName::ReportCheckpointIntermediates);</span>
+<span id="L1496"><span class="lineNum">    1496</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1497"><span class="lineNum">    1497</span>              : </span>
+<span id="L1498"><span class="lineNum">    1498</span>              : bool CodeGenContext::shouldReportDynamicDispatchSites()</span>
+<span id="L1499"><span class="lineNum">    1499</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1500"><span class="lineNum">    1500</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L1501"><span class="lineNum">    1501</span>              :         CompilerOptionName::ReportDynamicDispatchSites);</span>
+<span id="L1502"><span class="lineNum">    1502</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1503"><span class="lineNum">    1503</span>              : </span>
+<span id="L1504"><span class="lineNum">    1504</span>              : bool CodeGenContext::shouldTraceCoverage()</span>
+<span id="L1505"><span class="lineNum">    1505</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1506"><span class="lineNum">    1506</span> <span class="tlaUNC">           0 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(CompilerOptionName::TraceCoverage);</span></span>
+<span id="L1507"><span class="lineNum">    1507</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1508"><span class="lineNum">    1508</span>              : </span>
+<span id="L1509"><span class="lineNum">    1509</span>              : bool CodeGenContext::shouldTraceAnyCoverage()</span>
+<span id="L1510"><span class="lineNum">    1510</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1511"><span class="lineNum">    1511</span> <span class="tlaGNC">           1 :     auto&amp; optionSet = getTargetProgram()-&gt;getOptionSet();</span></span>
+<span id="L1512"><span class="lineNum">    1512</span> <span class="tlaGNC">           1 :     return optionSet.getBoolOption(CompilerOptionName::TraceCoverage) ||</span></span>
+<span id="L1513"><span class="lineNum">    1513</span>              :            optionSet.getBoolOption(CompilerOptionName::TraceFunctionCoverage) ||</span>
+<span id="L1514"><span class="lineNum">    1514</span>              :            optionSet.getBoolOption(CompilerOptionName::TraceBranchCoverage);</span>
+<span id="L1515"><span class="lineNum">    1515</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1516"><span class="lineNum">    1516</span>              : </span>
+<span id="L1517"><span class="lineNum">    1517</span>              : bool CodeGenContext::shouldDumpIntermediates()</span>
+<span id="L1518"><span class="lineNum">    1518</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1519"><span class="lineNum">    1519</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().shouldDumpIntermediates();</span></span>
+<span id="L1520"><span class="lineNum">    1520</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1521"><span class="lineNum">    1521</span>              : </span>
+<span id="L1522"><span class="lineNum">    1522</span>              : bool CodeGenContext::shouldTrackLiveness()</span>
+<span id="L1523"><span class="lineNum">    1523</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1524"><span class="lineNum">    1524</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(CompilerOptionName::TrackLiveness);</span></span>
+<span id="L1525"><span class="lineNum">    1525</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1526"><span class="lineNum">    1526</span>              : </span>
+<span id="L1527"><span class="lineNum">    1527</span>              : String CodeGenContext::getIntermediateDumpPrefix()</span>
+<span id="L1528"><span class="lineNum">    1528</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L1529"><span class="lineNum">    1529</span> <span class="tlaUNC">           0 :     return getTargetProgram()-&gt;getOptionSet().getStringOption(</span></span>
+<span id="L1530"><span class="lineNum">    1530</span>              :         CompilerOptionName::DumpIntermediatePrefix);</span>
+<span id="L1531"><span class="lineNum">    1531</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1532"><span class="lineNum">    1532</span>              : </span>
+<span id="L1533"><span class="lineNum">    1533</span>              : bool CodeGenContext::getUseUnknownImageFormatAsDefault()</span>
+<span id="L1534"><span class="lineNum">    1534</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1535"><span class="lineNum">    1535</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L1536"><span class="lineNum">    1536</span>              :         CompilerOptionName::DefaultImageFormatUnknown);</span>
+<span id="L1537"><span class="lineNum">    1537</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1538"><span class="lineNum">    1538</span>              : </span>
+<span id="L1539"><span class="lineNum">    1539</span>              : bool CodeGenContext::isSpecializationDisabled()</span>
+<span id="L1540"><span class="lineNum">    1540</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1541"><span class="lineNum">    1541</span> <span class="tlaGNC">           1 :     return getTargetProgram()-&gt;getOptionSet().getBoolOption(</span></span>
+<span id="L1542"><span class="lineNum">    1542</span>              :         CompilerOptionName::DisableSpecialization);</span>
+<span id="L1543"><span class="lineNum">    1543</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1544"><span class="lineNum">    1544</span>              : </span>
+<span id="L1545"><span class="lineNum">    1545</span>              : SlangResult CodeGenContext::requireTranslationUnitSourceFiles()</span>
+<span id="L1546"><span class="lineNum">    1546</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L1547"><span class="lineNum">    1547</span> <span class="tlaGNC">           1 :     if (auto endToEndReq = isPassThroughEnabled())</span></span>
+<span id="L1548"><span class="lineNum">    1548</span>              :     {</span>
+<span id="L1549"><span class="lineNum">    1549</span> <span class="tlaGNC">           1 :         for (auto entryPointIndex : getEntryPointIndices())</span></span>
+<span id="L1550"><span class="lineNum">    1550</span>              :         {</span>
+<span id="L1551"><span class="lineNum">    1551</span> <span class="tlaGNC">           1 :             auto translationUnit = getPassThroughTranslationUnit(endToEndReq, entryPointIndex);</span></span>
+<span id="L1552"><span class="lineNum">    1552</span>              :             SLANG_ASSERT(translationUnit);</span>
+<span id="L1553"><span class="lineNum">    1553</span>              :             /// Make sure we have the source files</span>
+<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaGNC">           1 :             SLANG_RETURN_ON_FAIL(translationUnit-&gt;requireSourceFiles());</span></span>
+<span id="L1555"><span class="lineNum">    1555</span>              :         }</span>
+<span id="L1556"><span class="lineNum">    1556</span>              :     }</span>
+<span id="L1557"><span class="lineNum">    1557</span>              : </span>
+<span id="L1558"><span class="lineNum">    1558</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L1559"><span class="lineNum">    1559</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L1560"><span class="lineNum">    1560</span>              : </span>
+<span id="L1561"><span class="lineNum">    1561</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

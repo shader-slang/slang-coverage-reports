@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-10 05:15:19 UTC</td>
+      <td class="headerValue">2026-11-11 04:10:43 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -310,14 +310,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L19"><span class="lineNum">      19</span>                         :     // We also desire that when invalid the `size` member is 0.</span>
 <span id="L20"><span class="lineNum">      20</span>                         :     // This is so that equality testing doesn&#x27;t require anything special.</span>
 <span id="L21"><span class="lineNum">      21</span>                         :     SLANG_FORCE_INLINE static Count calcAligned(Count size, Count alignment)</span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">        1073            :     {</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">        1073            :         return (size + alignment - 1) &amp; ~(alignment - 1);</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">        1073            :     }</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">        1050            :     {</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">        1050            :         return (size + alignment - 1) &amp; ~(alignment - 1);</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">        1050            :     }</span></span>
 <span id="L25"><span class="lineNum">      25</span>                         :     // Use to get the max of two alignments. Uses some maths such that `invalid` is always max</span>
 <span id="L26"><span class="lineNum">      26</span>                         :     SLANG_FORCE_INLINE static Count maxAlignment(Count a, Count b)</span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         308            :     {</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         308 <span class="branchAll" title="br0: 88; br1: 220">(2/2)</span>      :         return (UCount(a) - 1) &gt; (UCount(b) - 1) ? a : b;</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">         308            :     }</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         292            :     {</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">         292 <span class="branchAll" title="br0: 88; br1: 204">(2/2)</span>      :         return (UCount(a) - 1) &gt; (UCount(b) - 1) ? a : b;</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">         292            :     }</span></span>
 <span id="L30"><span class="lineNum">      30</span>                         : </span>
 <span id="L31"><span class="lineNum">      31</span>                         :     /// Given two sizes, returns a result that can hold the union.</span>
 <span id="L32"><span class="lineNum">      32</span>                         :     static NaturalSize calcUnion(NaturalSize a, NaturalSize b);</span>
@@ -327,40 +327,40 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L36"><span class="lineNum">      36</span>                         :     static const Count kInvalidAlignment = 0;</span>
 <span id="L37"><span class="lineNum">      37</span>                         : </span>
 <span id="L38"><span class="lineNum">      38</span>                         :     /// Get the stride, which is equivalent to the size aligned</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         765            :     SLANG_FORCE_INLINE Count getStride() const { return calcAligned(size, alignment); }</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         758            :     SLANG_FORCE_INLINE Count getStride() const { return calcAligned(size, alignment); }</span></span>
 <span id="L40"><span class="lineNum">      40</span>                         : </span>
 <span id="L41"><span class="lineNum">      41</span>                         :     /// Append rhs to this.</span>
 <span id="L42"><span class="lineNum">      42</span>                         :     /// If rhs is invalid or this is the result will also be invalid</span>
 <span id="L43"><span class="lineNum">      43</span>                         :     void append(const ThisType&amp; rhs)</span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">         308            :     {</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         308            :         const auto newAlignment = maxAlignment(alignment, rhs.alignment);</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">         292            :     {</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         292            :         const auto newAlignment = maxAlignment(alignment, rhs.alignment);</span></span>
 <span id="L46"><span class="lineNum">      46</span>                         : </span>
 <span id="L47"><span class="lineNum">      47</span>                         :         // If the new alignment is valid we calculate the size, else it&#x27;s 0</span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         308            :         size =</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         308 <span class="branchPart" title="br0: 308; br1: 0">(1/2)</span>      :             (newAlignment != kInvalidAlignment) ? (calcAligned(size, rhs.alignment) + rhs.size) : 0;</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         292            :         size =</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         292 <span class="branchPart" title="br0: 292; br1: 0">(1/2)</span>      :             (newAlignment != kInvalidAlignment) ? (calcAligned(size, rhs.alignment) + rhs.size) : 0;</span></span>
 <span id="L50"><span class="lineNum">      50</span>                         : </span>
 <span id="L51"><span class="lineNum">      51</span>                         :         // Set the new alignment</span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         308            :         alignment = newAlignment;</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         308            :     }</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         292            :         alignment = newAlignment;</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         292            :     }</span></span>
 <span id="L54"><span class="lineNum">      54</span>                         : </span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">        3346            :     SLANG_FORCE_INLINE bool isInvalid() const { return alignment == kInvalidAlignment; }</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">        2574            :     SLANG_FORCE_INLINE bool isValid() const { return !isInvalid(); }</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">        3270            :     SLANG_FORCE_INLINE bool isInvalid() const { return alignment == kInvalidAlignment; }</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">        2505            :     SLANG_FORCE_INLINE bool isValid() const { return !isInvalid(); }</span></span>
 <span id="L57"><span class="lineNum">      57</span>                         : </span>
 <span id="L58"><span class="lineNum">      58</span>                         :     bool operator==(const ThisType&amp; rhs) const</span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">         241            :     {</span></span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">         241 <span class="branchPart" title="br0: 241; br1: 0; br2: 241; br3: 0">(2/4)</span>      :         return size == rhs.size &amp;&amp; alignment == rhs.alignment;</span></span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">         241            :     }</span></span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         241            :     bool operator!=(const ThisType&amp; rhs) const { return !(*this == rhs); }</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">         233            :     {</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">         233 <span class="branchPart" title="br0: 233; br1: 0; br2: 233; br3: 0">(2/4)</span>      :         return size == rhs.size &amp;&amp; alignment == rhs.alignment;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">         233            :     }</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         233            :     bool operator!=(const ThisType&amp; rhs) const { return !(*this == rhs); }</span></span>
 <span id="L63"><span class="lineNum">      63</span>                         : </span>
 <span id="L64"><span class="lineNum">      64</span>                         :     /// Converts to bool to make testing convenient</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        2574            :     operator bool() const { return isValid(); }</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        2505            :     operator bool() const { return isValid(); }</span></span>
 <span id="L66"><span class="lineNum">      66</span>                         : </span>
 <span id="L67"><span class="lineNum">      67</span>                         :     /// An empty size. It consumes 0 bytes and has the lowest alignment (1)</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">         284            :     static ThisType makeEmpty() { return ThisType{0, 1}; }</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">         276            :     static ThisType makeEmpty() { return ThisType{0, 1}; }</span></span>
 <span id="L69"><span class="lineNum">      69</span>                         :     /// Make an invalid size.</span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">        2754            :     static ThisType makeInvalid() { return ThisType{0, kInvalidAlignment}; }</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">        2715            :     static ThisType makeInvalid() { return ThisType{0, kInvalidAlignment}; }</span></span>
 <span id="L71"><span class="lineNum">      71</span>                         :     /// Make a size with an amount of bytes and the alignment</span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">        2391            :     static ThisType make(Count size, Count alignment) { return ThisType{size, alignment}; }</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">        2361            :     static ThisType make(Count size, Count alignment) { return ThisType{size, alignment}; }</span></span>
 <span id="L73"><span class="lineNum">      73</span>                         : </span>
 <span id="L74"><span class="lineNum">      74</span>                         :     /// Given a base type returns it&#x27;s size</span>
 <span id="L75"><span class="lineNum">      75</span>                         :     static ThisType makeFromBaseType(BaseType baseType);</span>
