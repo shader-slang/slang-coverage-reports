@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-12 04:11:53 UTC</td>
+      <td class="headerValue">2026-11-13 05:42:24 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">64.9&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:64.9%;background-color:hsl(28, 70%, 50%)"></div></div>
-      <span class="metricCounts">113 / 174</span>
+      <span class="metricValue">66.3&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:66.3%;background-color:hsl(28, 70%, 50%)"></div></div>
+      <span class="metricCounts">120 / 181</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -399,288 +399,300 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L126"><span class="lineNum">     126</span>              :         case kIROp_BoolType:</span>
 <span id="L127"><span class="lineNum">     127</span>              :         case kIROp_CharType:</span>
 <span id="L128"><span class="lineNum">     128</span>              :             return kIROp_CUDALDG;</span>
-<span id="L129"><span class="lineNum">     129</span>              :         case kIROp_VectorType:</span>
+<span id="L129"><span class="lineNum">     129</span>              :         case kIROp_PtrType:</span>
 <span id="L130"><span class="lineNum">     130</span>              :             {</span>
-<span id="L131"><span class="lineNum">     131</span>              :                 // For vector types that has a direct mapping to CUDA __ldg,</span>
-<span id="L132"><span class="lineNum">     132</span>              :                 // use the instruction directly.</span>
-<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">           1 :                 auto vectorType = as&lt;IRVectorType&gt;(type);</span></span>
-<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">           1 :                 auto elementType = vectorType-&gt;getElementType();</span></span>
-<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">           1 :                 auto elementCount = getIntVal(vectorType-&gt;getElementCount());</span></span>
-<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">           1 :                 IRSizeAndAlignment elementSize;</span></span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">           1 :                 getNaturalSizeAndAlignment(</span></span>
-<span id="L138"><span class="lineNum">     138</span>              :                     targetProgram-&gt;getTargetReq(),</span>
-<span id="L139"><span class="lineNum">     139</span>              :                     elementType,</span>
-<span id="L140"><span class="lineNum">     140</span>              :                     &amp;elementSize);</span>
-<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">           1 :                 if (elementCount &lt;= 2)</span></span>
-<span id="L142"><span class="lineNum">     142</span>              :                     return kIROp_CUDALDG;</span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">           1 :                 else if (elementCount == 4)</span></span>
-<span id="L144"><span class="lineNum">     144</span>              :                 {</span>
-<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">           1 :                     switch (elementType-&gt;getOp())</span></span>
-<span id="L146"><span class="lineNum">     146</span>              :                     {</span>
-<span id="L147"><span class="lineNum">     147</span>              :                     case kIROp_FloatType:</span>
-<span id="L148"><span class="lineNum">     148</span>              :                     case kIROp_UIntType:</span>
-<span id="L149"><span class="lineNum">     149</span>              :                     case kIROp_IntType:</span>
-<span id="L150"><span class="lineNum">     150</span>              :                     case kIROp_Int8Type:</span>
-<span id="L151"><span class="lineNum">     151</span>              :                     case kIROp_UInt8Type:</span>
-<span id="L152"><span class="lineNum">     152</span>              :                     case kIROp_Int16Type:</span>
-<span id="L153"><span class="lineNum">     153</span>              :                     case kIROp_UInt16Type:</span>
-<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">           1 :                         return kIROp_CUDALDG;</span></span>
-<span id="L155"><span class="lineNum">     155</span>              :                     }</span>
-<span id="L156"><span class="lineNum">     156</span>              :                 }</span>
-<span id="L157"><span class="lineNum">     157</span>              :                 // For other vector types, we need to generate a function to load its content.</span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">           1 :                 IRParam* ptrParam = nullptr;</span></span>
-<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">           1 :                 auto func = createLoadFunc(builder, type, ptrParam);</span></span>
-<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; args;</span></span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">           1 :                 for (UInt i = 0; i &lt; (UInt)elementCount; i++)</span></span>
-<span id="L162"><span class="lineNum">     162</span>              :                 {</span>
-<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">           1 :                     auto elementPtr = builder.emitElementAddress(</span></span>
-<span id="L164"><span class="lineNum">     164</span>              :                         builder.getPtrType(elementType),</span>
-<span id="L165"><span class="lineNum">     165</span>              :                         ptrParam,</span>
-<span id="L166"><span class="lineNum">     166</span>              :                         builder.getIntValue(builder.getIntType(), i));</span>
-<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">           1 :                     auto loadedElement =</span></span>
-<span id="L168"><span class="lineNum">     168</span>              :                         builder.emitIntrinsicInst(elementType, kIROp_CUDALDG, 1, &amp;elementPtr);</span>
-<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">           1 :                     args.add(loadedElement);</span></span>
-<span id="L170"><span class="lineNum">     170</span>              :                 }</span>
-<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">           1 :                 auto result = builder.emitMakeVector(type, args);</span></span>
-<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">           1 :                 builder.emitReturn(result);</span></span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">           1 :                 return func;</span></span>
-<span id="L174"><span class="lineNum">     174</span>              :             }</span>
-<span id="L175"><span class="lineNum">     175</span>              :             break;</span>
-<span id="L176"><span class="lineNum">     176</span>              :         case kIROp_MatrixType:</span>
-<span id="L177"><span class="lineNum">     177</span>              :             {</span>
-<span id="L178"><span class="lineNum">     178</span>              :                 // For matrix types, we should generate a function to load its content by row or</span>
-<span id="L179"><span class="lineNum">     179</span>              :                 // column, depending on the layout.</span>
-<span id="L180"><span class="lineNum">     180</span> <span class="tlaUNC">           0 :                 auto matrixType = as&lt;IRMatrixType&gt;(type);</span></span>
-<span id="L181"><span class="lineNum">     181</span> <span class="tlaUNC">           0 :                 auto elementType = matrixType-&gt;getElementType();</span></span>
-<span id="L182"><span class="lineNum">     182</span> <span class="tlaUNC">           0 :                 auto rowCount = getIntVal(matrixType-&gt;getRowCount());</span></span>
-<span id="L183"><span class="lineNum">     183</span> <span class="tlaUNC">           0 :                 auto colCount = getIntVal(matrixType-&gt;getColumnCount());</span></span>
-<span id="L184"><span class="lineNum">     184</span> <span class="tlaUNC">           0 :                 auto layout = (MatrixLayoutMode)getIntVal(matrixType-&gt;getLayout());</span></span>
-<span id="L185"><span class="lineNum">     185</span> <span class="tlaUNC">           0 :                 IRParam* ptrParam = nullptr;</span></span>
-<span id="L186"><span class="lineNum">     186</span> <span class="tlaUNC">           0 :                 auto func = createLoadFunc(builder, type, ptrParam);</span></span>
-<span id="L187"><span class="lineNum">     187</span> <span class="tlaUNC">           0 :                 if (layout == kMatrixLayoutMode_ColumnMajor)</span></span>
-<span id="L188"><span class="lineNum">     188</span>              :                 {</span>
-<span id="L189"><span class="lineNum">     189</span>              :                     // For column major matrix, we can load it by column (vector) directly.</span>
-<span id="L190"><span class="lineNum">     190</span> <span class="tlaUNC">           0 :                     auto vectorType = builder.getVectorType(elementType, rowCount);</span></span>
-<span id="L191"><span class="lineNum">     191</span> <span class="tlaUNC">           0 :                     auto vectorPtrType = builder.getPtrType(vectorType);</span></span>
-<span id="L192"><span class="lineNum">     192</span> <span class="tlaUNC">           0 :                     auto elementBasePtr = builder.emitBitCast(vectorPtrType, ptrParam);</span></span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaUNC">           0 :                     List&lt;IRInst*&gt; args;</span></span>
-<span id="L194"><span class="lineNum">     194</span> <span class="tlaUNC">           0 :                     for (UInt i = 0; i &lt; (UInt)colCount; i++)</span></span>
-<span id="L195"><span class="lineNum">     195</span>              :                     {</span>
-<span id="L196"><span class="lineNum">     196</span> <span class="tlaUNC">           0 :                         auto colPtr = builder.emitGetOffsetPtr(</span></span>
-<span id="L197"><span class="lineNum">     197</span>              :                             elementBasePtr,</span>
-<span id="L198"><span class="lineNum">     198</span>              :                             builder.getIntValue(builder.getIntType(), i));</span>
-<span id="L199"><span class="lineNum">     199</span> <span class="tlaUNC">           0 :                         auto loadedCol = emitImmutableLoad(builder, colPtr);</span></span>
-<span id="L200"><span class="lineNum">     200</span> <span class="tlaUNC">           0 :                         args.add(loadedCol);</span></span>
-<span id="L201"><span class="lineNum">     201</span>              :                     }</span>
-<span id="L202"><span class="lineNum">     202</span>              :                     // Rearrange loaded vectors in row-major order.</span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaUNC">           0 :                     List&lt;IRInst*&gt; elements;</span></span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaUNC">           0 :                     for (UInt i = 0; i &lt; (UInt)rowCount; i++)</span></span>
-<span id="L205"><span class="lineNum">     205</span>              :                     {</span>
-<span id="L206"><span class="lineNum">     206</span> <span class="tlaUNC">           0 :                         for (UInt j = 0; j &lt; (UInt)colCount; j++)</span></span>
-<span id="L207"><span class="lineNum">     207</span>              :                         {</span>
-<span id="L208"><span class="lineNum">     208</span> <span class="tlaUNC">           0 :                             elements.add(builder.emitElementExtract(</span></span>
-<span id="L209"><span class="lineNum">     209</span>              :                                 elementType,</span>
-<span id="L210"><span class="lineNum">     210</span>              :                                 args[j],</span>
-<span id="L211"><span class="lineNum">     211</span>              :                                 builder.getIntValue(builder.getIntType(), i)));</span>
-<span id="L212"><span class="lineNum">     212</span>              :                         }</span>
+<span id="L131"><span class="lineNum">     131</span>              :                 // `__ldg` has no pointer overload. A pointer is 64 bits on CUDA, so load its bits</span>
+<span id="L132"><span class="lineNum">     132</span>              :                 // through the 64-bit integer overload and cast them back to the pointer type.</span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">           1 :                 IRParam* ptrParam = nullptr;</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">           1 :                 auto func = createLoadFunc(builder, type, ptrParam);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">           1 :                 auto bitsType = builder.getUInt64Type();</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">           1 :                 auto bitsPtr = builder.emitBitCast(builder.getPtrType(bitsType), ptrParam);</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">           1 :                 auto bits = builder.emitIntrinsicInst(bitsType, kIROp_CUDALDG, 1, &amp;bitsPtr);</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">           1 :                 builder.emitReturn(builder.emitBitCast(type, bits));</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">           1 :                 return func;</span></span>
+<span id="L140"><span class="lineNum">     140</span>              :             }</span>
+<span id="L141"><span class="lineNum">     141</span>              :         case kIROp_VectorType:</span>
+<span id="L142"><span class="lineNum">     142</span>              :             {</span>
+<span id="L143"><span class="lineNum">     143</span>              :                 // For vector types that has a direct mapping to CUDA __ldg,</span>
+<span id="L144"><span class="lineNum">     144</span>              :                 // use the instruction directly.</span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">           1 :                 auto vectorType = as&lt;IRVectorType&gt;(type);</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">           1 :                 auto elementType = vectorType-&gt;getElementType();</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">           1 :                 auto elementCount = getIntVal(vectorType-&gt;getElementCount());</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">           1 :                 IRSizeAndAlignment elementSize;</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">           1 :                 getNaturalSizeAndAlignment(</span></span>
+<span id="L150"><span class="lineNum">     150</span>              :                     targetProgram-&gt;getTargetReq(),</span>
+<span id="L151"><span class="lineNum">     151</span>              :                     elementType,</span>
+<span id="L152"><span class="lineNum">     152</span>              :                     &amp;elementSize);</span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">           1 :                 if (elementCount &lt;= 2)</span></span>
+<span id="L154"><span class="lineNum">     154</span>              :                     return kIROp_CUDALDG;</span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">           1 :                 else if (elementCount == 4)</span></span>
+<span id="L156"><span class="lineNum">     156</span>              :                 {</span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">           1 :                     switch (elementType-&gt;getOp())</span></span>
+<span id="L158"><span class="lineNum">     158</span>              :                     {</span>
+<span id="L159"><span class="lineNum">     159</span>              :                     case kIROp_FloatType:</span>
+<span id="L160"><span class="lineNum">     160</span>              :                     case kIROp_UIntType:</span>
+<span id="L161"><span class="lineNum">     161</span>              :                     case kIROp_IntType:</span>
+<span id="L162"><span class="lineNum">     162</span>              :                     case kIROp_Int8Type:</span>
+<span id="L163"><span class="lineNum">     163</span>              :                     case kIROp_UInt8Type:</span>
+<span id="L164"><span class="lineNum">     164</span>              :                     case kIROp_Int16Type:</span>
+<span id="L165"><span class="lineNum">     165</span>              :                     case kIROp_UInt16Type:</span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">           1 :                         return kIROp_CUDALDG;</span></span>
+<span id="L167"><span class="lineNum">     167</span>              :                     }</span>
+<span id="L168"><span class="lineNum">     168</span>              :                 }</span>
+<span id="L169"><span class="lineNum">     169</span>              :                 // For other vector types, we need to generate a function to load its content.</span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">           1 :                 IRParam* ptrParam = nullptr;</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">           1 :                 auto func = createLoadFunc(builder, type, ptrParam);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; args;</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">           1 :                 for (UInt i = 0; i &lt; (UInt)elementCount; i++)</span></span>
+<span id="L174"><span class="lineNum">     174</span>              :                 {</span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">           1 :                     auto elementPtr = builder.emitElementAddress(</span></span>
+<span id="L176"><span class="lineNum">     176</span>              :                         builder.getPtrType(elementType),</span>
+<span id="L177"><span class="lineNum">     177</span>              :                         ptrParam,</span>
+<span id="L178"><span class="lineNum">     178</span>              :                         builder.getIntValue(builder.getIntType(), i));</span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">           1 :                     auto loadedElement =</span></span>
+<span id="L180"><span class="lineNum">     180</span>              :                         builder.emitIntrinsicInst(elementType, kIROp_CUDALDG, 1, &amp;elementPtr);</span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">           1 :                     args.add(loadedElement);</span></span>
+<span id="L182"><span class="lineNum">     182</span>              :                 }</span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">           1 :                 auto result = builder.emitMakeVector(type, args);</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">           1 :                 builder.emitReturn(result);</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">           1 :                 return func;</span></span>
+<span id="L186"><span class="lineNum">     186</span>              :             }</span>
+<span id="L187"><span class="lineNum">     187</span>              :             break;</span>
+<span id="L188"><span class="lineNum">     188</span>              :         case kIROp_MatrixType:</span>
+<span id="L189"><span class="lineNum">     189</span>              :             {</span>
+<span id="L190"><span class="lineNum">     190</span>              :                 // For matrix types, we should generate a function to load its content by row or</span>
+<span id="L191"><span class="lineNum">     191</span>              :                 // column, depending on the layout.</span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaUNC">           0 :                 auto matrixType = as&lt;IRMatrixType&gt;(type);</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaUNC">           0 :                 auto elementType = matrixType-&gt;getElementType();</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaUNC">           0 :                 auto rowCount = getIntVal(matrixType-&gt;getRowCount());</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaUNC">           0 :                 auto colCount = getIntVal(matrixType-&gt;getColumnCount());</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaUNC">           0 :                 auto layout = (MatrixLayoutMode)getIntVal(matrixType-&gt;getLayout());</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaUNC">           0 :                 IRParam* ptrParam = nullptr;</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaUNC">           0 :                 auto func = createLoadFunc(builder, type, ptrParam);</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaUNC">           0 :                 if (layout == kMatrixLayoutMode_ColumnMajor)</span></span>
+<span id="L200"><span class="lineNum">     200</span>              :                 {</span>
+<span id="L201"><span class="lineNum">     201</span>              :                     // For column major matrix, we can load it by column (vector) directly.</span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaUNC">           0 :                     auto vectorType = builder.getVectorType(elementType, rowCount);</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaUNC">           0 :                     auto vectorPtrType = builder.getPtrType(vectorType);</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaUNC">           0 :                     auto elementBasePtr = builder.emitBitCast(vectorPtrType, ptrParam);</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaUNC">           0 :                     List&lt;IRInst*&gt; args;</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaUNC">           0 :                     for (UInt i = 0; i &lt; (UInt)colCount; i++)</span></span>
+<span id="L207"><span class="lineNum">     207</span>              :                     {</span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaUNC">           0 :                         auto colPtr = builder.emitGetOffsetPtr(</span></span>
+<span id="L209"><span class="lineNum">     209</span>              :                             elementBasePtr,</span>
+<span id="L210"><span class="lineNum">     210</span>              :                             builder.getIntValue(builder.getIntType(), i));</span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaUNC">           0 :                         auto loadedCol = emitImmutableLoad(builder, colPtr);</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaUNC">           0 :                         args.add(loadedCol);</span></span>
 <span id="L213"><span class="lineNum">     213</span>              :                     }</span>
-<span id="L214"><span class="lineNum">     214</span> <span class="tlaUNC">           0 :                     auto result = builder.emitMakeMatrix(</span></span>
-<span id="L215"><span class="lineNum">     215</span>              :                         type,</span>
-<span id="L216"><span class="lineNum">     216</span>              :                         (UInt)elements.getCount(),</span>
-<span id="L217"><span class="lineNum">     217</span>              :                         elements.getArrayView().getBuffer());</span>
-<span id="L218"><span class="lineNum">     218</span> <span class="tlaUNC">           0 :                     builder.emitReturn(result);</span></span>
-<span id="L219"><span class="lineNum">     219</span> <span class="tlaUNC">           0 :                     return func;</span></span>
-<span id="L220"><span class="lineNum">     220</span>              :                 }</span>
-<span id="L221"><span class="lineNum">     221</span>              :                 else</span>
-<span id="L222"><span class="lineNum">     222</span>              :                 {</span>
-<span id="L223"><span class="lineNum">     223</span>              :                     // For row major matrix, we can load it by row (vector) directly.</span>
-<span id="L224"><span class="lineNum">     224</span> <span class="tlaUNC">           0 :                     auto vectorType = builder.getVectorType(elementType, colCount);</span></span>
-<span id="L225"><span class="lineNum">     225</span> <span class="tlaUNC">           0 :                     auto vectorPtrType = builder.getPtrType(vectorType);</span></span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaUNC">           0 :                     auto elementBasePtr = builder.emitBitCast(vectorPtrType, ptrParam);</span></span>
-<span id="L227"><span class="lineNum">     227</span> <span class="tlaUNC">           0 :                     List&lt;IRInst*&gt; args;</span></span>
-<span id="L228"><span class="lineNum">     228</span> <span class="tlaUNC">           0 :                     for (UInt i = 0; i &lt; (UInt)rowCount; i++)</span></span>
-<span id="L229"><span class="lineNum">     229</span>              :                     {</span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaUNC">           0 :                         auto rowPtr = builder.emitGetOffsetPtr(</span></span>
-<span id="L231"><span class="lineNum">     231</span>              :                             elementBasePtr,</span>
-<span id="L232"><span class="lineNum">     232</span>              :                             builder.getIntValue(builder.getIntType(), i));</span>
-<span id="L233"><span class="lineNum">     233</span> <span class="tlaUNC">           0 :                         auto loadedRow = emitImmutableLoad(builder, rowPtr);</span></span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaUNC">           0 :                         args.add(loadedRow);</span></span>
-<span id="L235"><span class="lineNum">     235</span>              :                     }</span>
-<span id="L236"><span class="lineNum">     236</span> <span class="tlaUNC">           0 :                     auto result =</span></span>
-<span id="L237"><span class="lineNum">     237</span>              :                         builder.emitMakeMatrix(type, (UInt)args.getCount(), args.getBuffer());</span>
-<span id="L238"><span class="lineNum">     238</span> <span class="tlaUNC">           0 :                     builder.emitReturn(result);</span></span>
-<span id="L239"><span class="lineNum">     239</span> <span class="tlaUNC">           0 :                     return func;</span></span>
-<span id="L240"><span class="lineNum">     240</span>              :                 }</span>
-<span id="L241"><span class="lineNum">     241</span>              :             }</span>
-<span id="L242"><span class="lineNum">     242</span>              :             break;</span>
-<span id="L243"><span class="lineNum">     243</span>              :         case kIROp_ArrayType:</span>
-<span id="L244"><span class="lineNum">     244</span>              :             {</span>
-<span id="L245"><span class="lineNum">     245</span>              :                 // For array types, we need to generate a function to load its content by element.</span>
-<span id="L246"><span class="lineNum">     246</span> <span class="tlaUNC">           0 :                 auto arrayType = as&lt;IRArrayType&gt;(type);</span></span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaUNC">           0 :                 auto elementType = arrayType-&gt;getElementType();</span></span>
-<span id="L248"><span class="lineNum">     248</span> <span class="tlaUNC">           0 :                 auto elementCount = getIntVal(arrayType-&gt;getElementCount());</span></span>
-<span id="L249"><span class="lineNum">     249</span> <span class="tlaUNC">           0 :                 IRParam* ptrParam = nullptr;</span></span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaUNC">           0 :                 auto func = createLoadFunc(builder, type, ptrParam);</span></span>
-<span id="L251"><span class="lineNum">     251</span> <span class="tlaUNC">           0 :                 List&lt;IRInst*&gt; args;</span></span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaUNC">           0 :                 for (UInt i = 0; i &lt; (UInt)elementCount; i++)</span></span>
-<span id="L253"><span class="lineNum">     253</span>              :                 {</span>
-<span id="L254"><span class="lineNum">     254</span> <span class="tlaUNC">           0 :                     auto elementPtr = builder.emitElementAddress(</span></span>
-<span id="L255"><span class="lineNum">     255</span>              :                         builder.getPtrType(elementType),</span>
-<span id="L256"><span class="lineNum">     256</span>              :                         ptrParam,</span>
-<span id="L257"><span class="lineNum">     257</span>              :                         builder.getIntValue(builder.getIntType(), i));</span>
-<span id="L258"><span class="lineNum">     258</span> <span class="tlaUNC">           0 :                     auto loadedElement = emitImmutableLoad(builder, elementPtr);</span></span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaUNC">           0 :                     if (!loadedElement)</span></span>
-<span id="L260"><span class="lineNum">     260</span>              :                     {</span>
-<span id="L261"><span class="lineNum">     261</span> <span class="tlaUNC">           0 :                         func-&gt;removeAndDeallocate();</span></span>
-<span id="L262"><span class="lineNum">     262</span> <span class="tlaUNC">           0 :                         return LoadMethod();</span></span>
-<span id="L263"><span class="lineNum">     263</span>              :                     }</span>
-<span id="L264"><span class="lineNum">     264</span> <span class="tlaUNC">           0 :                     args.add(loadedElement);</span></span>
-<span id="L265"><span class="lineNum">     265</span>              :                 }</span>
-<span id="L266"><span class="lineNum">     266</span> <span class="tlaUNC">           0 :                 auto result = builder.emitMakeArray(type, (UInt)args.getCount(), args.getBuffer());</span></span>
-<span id="L267"><span class="lineNum">     267</span> <span class="tlaUNC">           0 :                 builder.emitReturn(result);</span></span>
-<span id="L268"><span class="lineNum">     268</span> <span class="tlaUNC">           0 :                 return func;</span></span>
-<span id="L269"><span class="lineNum">     269</span>              :             }</span>
-<span id="L270"><span class="lineNum">     270</span>              :         case kIROp_StructType:</span>
-<span id="L271"><span class="lineNum">     271</span>              :             {</span>
-<span id="L272"><span class="lineNum">     272</span>              :                 // For struct types, we need to generate a function to load its content by field.</span>
-<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">           1 :                 auto structType = as&lt;IRStructType&gt;(type);</span></span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">           1 :                 IRParam* ptrParam = nullptr;</span></span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">           1 :                 auto func = createLoadFunc(builder, type, ptrParam);</span></span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; args;</span></span>
-<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">           1 :                 for (auto field : structType-&gt;getFields())</span></span>
-<span id="L278"><span class="lineNum">     278</span>              :                 {</span>
-<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">           1 :                     auto fieldType = field-&gt;getFieldType();</span></span>
-<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">           1 :                     auto fieldPtr = builder.emitFieldAddress(</span></span>
-<span id="L281"><span class="lineNum">     281</span>              :                         builder.getPtrType(fieldType),</span>
-<span id="L282"><span class="lineNum">     282</span>              :                         ptrParam,</span>
-<span id="L283"><span class="lineNum">     283</span>              :                         field-&gt;getKey());</span>
-<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">           1 :                     auto loadedField = emitImmutableLoad(builder, fieldPtr);</span></span>
-<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">           1 :                     if (!loadedField)</span></span>
-<span id="L286"><span class="lineNum">     286</span>              :                     {</span>
-<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">           1 :                         func-&gt;removeAndDeallocate();</span></span>
-<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">           1 :                         return LoadMethod();</span></span>
-<span id="L289"><span class="lineNum">     289</span>              :                     }</span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">           1 :                     args.add(loadedField);</span></span>
-<span id="L291"><span class="lineNum">     291</span>              :                 }</span>
-<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">           1 :                 auto result = builder.emitMakeStruct(type, args);</span></span>
-<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">           1 :                 builder.emitReturn(result);</span></span>
-<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">           1 :                 return func;</span></span>
-<span id="L295"><span class="lineNum">     295</span>              :             }</span>
-<span id="L296"><span class="lineNum">     296</span>              :         }</span>
-<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">           1 :         return LoadMethod();</span></span>
-<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L299"><span class="lineNum">     299</span>              : </span>
-<span id="L300"><span class="lineNum">     300</span>              :     LoadMethod getOrCreateLoadFuncForType(IRType* type)</span>
-<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">           1 :         if (auto func = loadFuncs.tryGetValue(type))</span></span>
-<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">           1 :             return *func;</span></span>
-<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">           1 :         auto result = createLoadFuncForType(type);</span></span>
-<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">           1 :         loadFuncs[type] = result;</span></span>
-<span id="L306"><span class="lineNum">     306</span>              :         return result;</span>
-<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L308"><span class="lineNum">     308</span>              : </span>
-<span id="L309"><span class="lineNum">     309</span>              :     IRInst* emitImmutableLoad(IRBuilder&amp; builder, IRInst* ptr)</span>
-<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">           1 :         IRType* valueType = tryGetPointedToType(&amp;builder, ptr-&gt;getDataType());</span></span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">           1 :         if (!valueType)</span></span>
-<span id="L313"><span class="lineNum">     313</span>              :             return nullptr;</span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">           1 :         auto loadFunc = getOrCreateLoadFuncForType(valueType);</span></span>
-<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           1 :         if (!loadFunc)</span></span>
-<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">           1 :             return nullptr;</span></span>
-<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">           1 :         return loadFunc.apply(builder, valueType, ptr);</span></span>
-<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L319"><span class="lineNum">     319</span>              : </span>
-<span id="L320"><span class="lineNum">     320</span>              :     void processInst(IRInst* inst)</span>
-<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L322"><span class="lineNum">     322</span>              :         // For every load instruction we see in the module, if the it is loading from</span>
-<span id="L323"><span class="lineNum">     323</span>              :         // an immutable location, try to lower it into a series of __ldg calls.</span>
-<span id="L324"><span class="lineNum">     324</span>              :         // We need to handle both ordinary loads and structured buffer loads.</span>
-<span id="L325"><span class="lineNum">     325</span>              :         //</span>
-<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">           1 :         switch (inst-&gt;getOp())</span></span>
-<span id="L327"><span class="lineNum">     327</span>              :         {</span>
-<span id="L328"><span class="lineNum">     328</span>              :         case kIROp_Load:</span>
-<span id="L329"><span class="lineNum">     329</span>              :             {</span>
-<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">           1 :                 auto load = as&lt;IRLoad&gt;(inst);</span></span>
-<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">           1 :                 auto ptr = load-&gt;getPtr();</span></span>
-<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">           1 :                 auto rootAddr = getRootAddr(ptr);</span></span>
-<span id="L333"><span class="lineNum">     333</span>              :                 // isAddressIntoCudaConstantParameterGroup must see the unpeeled `ptr`, not</span>
-<span id="L334"><span class="lineNum">     334</span>              :                 // `rootAddr`: `getRootAddr` doesn&#x27;t peel BitCast/Reinterpret/PtrCast/</span>
-<span id="L335"><span class="lineNum">     335</span>              :                 // GetOffsetPtr, so passing `rootAddr` here could stop short of `globalParam`</span>
-<span id="L336"><span class="lineNum">     336</span>              :                 // and miss the exclusion.</span>
-<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">           1 :                 if (!isAddressIntoCudaConstantParameterGroup(ptr) &amp;&amp;</span></span>
-<span id="L338"><span class="lineNum">     338</span>              :                     isPointerToImmutableLocation(rootAddr))</span>
-<span id="L339"><span class="lineNum">     339</span>              :                 {</span>
-<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">           1 :                     IRBuilder builder(load);</span></span>
-<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">           1 :                     builder.setInsertBefore(load);</span></span>
-<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">           1 :                     if (auto newLoad = emitImmutableLoad(builder, ptr))</span></span>
-<span id="L343"><span class="lineNum">     343</span>              :                     {</span>
-<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">           1 :                         load-&gt;replaceUsesWith(newLoad);</span></span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">           1 :                         load-&gt;removeAndDeallocate();</span></span>
-<span id="L346"><span class="lineNum">     346</span>              :                     }</span>
-<span id="L347"><span class="lineNum">     347</span>              :                 }</span>
-<span id="L348"><span class="lineNum">     348</span>              :             }</span>
-<span id="L349"><span class="lineNum">     349</span>              :             break;</span>
-<span id="L350"><span class="lineNum">     350</span>              :         case kIROp_StructuredBufferLoad:</span>
-<span id="L351"><span class="lineNum">     351</span>              :             {</span>
-<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">           1 :                 IRBuilder builder(inst);</span></span>
-<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">           1 :                 builder.setInsertBefore(inst);</span></span>
-<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">           1 :                 auto ptr = builder.emitRWStructuredBufferGetElementPtr(</span></span>
-<span id="L355"><span class="lineNum">     355</span>              :                     inst-&gt;getOperand(0),</span>
-<span id="L356"><span class="lineNum">     356</span>              :                     inst-&gt;getOperand(1));</span>
-<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">           1 :                 if (auto newLoad = emitImmutableLoad(builder, ptr))</span></span>
-<span id="L358"><span class="lineNum">     358</span>              :                 {</span>
-<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">           1 :                     inst-&gt;replaceUsesWith(newLoad);</span></span>
-<span id="L360"><span class="lineNum">     360</span>              :                     inst-&gt;removeAndDeallocate();</span>
-<span id="L361"><span class="lineNum">     361</span>              :                 }</span>
-<span id="L362"><span class="lineNum">     362</span>              :                 else</span>
-<span id="L363"><span class="lineNum">     363</span>              :                 {</span>
-<span id="L364"><span class="lineNum">     364</span>              :                     // For some reason this load cannot be lowered, remove the ptr we just created.</span>
-<span id="L365"><span class="lineNum">     365</span>              :                     ptr-&gt;removeAndDeallocate();</span>
-<span id="L366"><span class="lineNum">     366</span>              :                 }</span>
-<span id="L367"><span class="lineNum">     367</span>              :             }</span>
-<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">           1 :             break;</span></span>
-<span id="L369"><span class="lineNum">     369</span>              :         case kIROp_CUDALDG:</span>
-<span id="L370"><span class="lineNum">     370</span>              :             {</span>
-<span id="L371"><span class="lineNum">     371</span>              :                 // Does the load needs lowering? If so insert lowered loads.</span>
-<span id="L372"><span class="lineNum">     372</span> <span class="tlaUNC">           0 :                 IRBuilder builder(inst);</span></span>
-<span id="L373"><span class="lineNum">     373</span> <span class="tlaUNC">           0 :                 builder.setInsertBefore(inst);</span></span>
-<span id="L374"><span class="lineNum">     374</span> <span class="tlaUNC">           0 :                 auto ptr = inst-&gt;getOperand(0);</span></span>
-<span id="L375"><span class="lineNum">     375</span> <span class="tlaUNC">           0 :                 auto valueType = tryGetPointedToType(&amp;builder, ptr-&gt;getDataType());</span></span>
-<span id="L376"><span class="lineNum">     376</span> <span class="tlaUNC">           0 :                 if (!valueType)</span></span>
-<span id="L377"><span class="lineNum">     377</span>              :                     break;</span>
-<span id="L378"><span class="lineNum">     378</span> <span class="tlaUNC">           0 :                 auto loadFunc = getOrCreateLoadFuncForType(valueType);</span></span>
-<span id="L379"><span class="lineNum">     379</span> <span class="tlaUNC">           0 :                 if (!loadFunc)</span></span>
-<span id="L380"><span class="lineNum">     380</span>              :                     break;</span>
-<span id="L381"><span class="lineNum">     381</span>              :                 // If the type doesn&#x27;t need further lowering, we don&#x27;t need to do anything.</span>
-<span id="L382"><span class="lineNum">     382</span> <span class="tlaUNC">           0 :                 if (loadFunc.kind == LoadMethodKind::Opcode &amp;&amp; loadFunc.op == kIROp_CUDALDG)</span></span>
-<span id="L383"><span class="lineNum">     383</span>              :                     break;</span>
-<span id="L384"><span class="lineNum">     384</span> <span class="tlaUNC">           0 :                 auto newLoad = loadFunc.apply(builder, valueType, ptr);</span></span>
-<span id="L385"><span class="lineNum">     385</span> <span class="tlaUNC">           0 :                 inst-&gt;replaceUsesWith(newLoad);</span></span>
-<span id="L386"><span class="lineNum">     386</span> <span class="tlaUNC">           0 :                 inst-&gt;removeAndDeallocate();</span></span>
-<span id="L387"><span class="lineNum">     387</span>              :             }</span>
-<span id="L388"><span class="lineNum">     388</span>              :             break;</span>
-<span id="L389"><span class="lineNum">     389</span>              :         }</span>
-<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L391"><span class="lineNum">     391</span>              : </span>
-<span id="L392"><span class="lineNum">     392</span>              :     void processModule()</span>
-<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">           1 :         processAllInsts([&amp;](IRInst* inst) { processInst(inst); });</span></span>
-<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L396"><span class="lineNum">     396</span>              : </span>
-<span id="L397"><span class="lineNum">     397</span>              :     ImmutableBufferLoadLoweringContext(IRModule* inModule)</span>
-<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">           1 :         : InstPassBase(inModule)</span></span>
-<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L401"><span class="lineNum">     401</span>              : };</span>
-<span id="L402"><span class="lineNum">     402</span>              : </span>
-<span id="L403"><span class="lineNum">     403</span>              : void lowerImmutableBufferLoadForCUDA(IRModule* module, TargetProgram* targetProgram)</span>
-<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">           1 :     ImmutableBufferLoadLoweringContext context(module);</span></span>
-<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">           1 :     context.targetProgram = targetProgram;</span></span>
-<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">           1 :     context.processModule();</span></span>
-<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L409"><span class="lineNum">     409</span>              : </span>
-<span id="L410"><span class="lineNum">     410</span>              : } // namespace Slang</span>
+<span id="L214"><span class="lineNum">     214</span>              :                     // Rearrange loaded vectors in row-major order.</span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaUNC">           0 :                     List&lt;IRInst*&gt; elements;</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaUNC">           0 :                     for (UInt i = 0; i &lt; (UInt)rowCount; i++)</span></span>
+<span id="L217"><span class="lineNum">     217</span>              :                     {</span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaUNC">           0 :                         for (UInt j = 0; j &lt; (UInt)colCount; j++)</span></span>
+<span id="L219"><span class="lineNum">     219</span>              :                         {</span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaUNC">           0 :                             elements.add(builder.emitElementExtract(</span></span>
+<span id="L221"><span class="lineNum">     221</span>              :                                 elementType,</span>
+<span id="L222"><span class="lineNum">     222</span>              :                                 args[j],</span>
+<span id="L223"><span class="lineNum">     223</span>              :                                 builder.getIntValue(builder.getIntType(), i)));</span>
+<span id="L224"><span class="lineNum">     224</span>              :                         }</span>
+<span id="L225"><span class="lineNum">     225</span>              :                     }</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaUNC">           0 :                     auto result = builder.emitMakeMatrix(</span></span>
+<span id="L227"><span class="lineNum">     227</span>              :                         type,</span>
+<span id="L228"><span class="lineNum">     228</span>              :                         (UInt)elements.getCount(),</span>
+<span id="L229"><span class="lineNum">     229</span>              :                         elements.getArrayView().getBuffer());</span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaUNC">           0 :                     builder.emitReturn(result);</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaUNC">           0 :                     return func;</span></span>
+<span id="L232"><span class="lineNum">     232</span>              :                 }</span>
+<span id="L233"><span class="lineNum">     233</span>              :                 else</span>
+<span id="L234"><span class="lineNum">     234</span>              :                 {</span>
+<span id="L235"><span class="lineNum">     235</span>              :                     // For row major matrix, we can load it by row (vector) directly.</span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaUNC">           0 :                     auto vectorType = builder.getVectorType(elementType, colCount);</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaUNC">           0 :                     auto vectorPtrType = builder.getPtrType(vectorType);</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaUNC">           0 :                     auto elementBasePtr = builder.emitBitCast(vectorPtrType, ptrParam);</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaUNC">           0 :                     List&lt;IRInst*&gt; args;</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaUNC">           0 :                     for (UInt i = 0; i &lt; (UInt)rowCount; i++)</span></span>
+<span id="L241"><span class="lineNum">     241</span>              :                     {</span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaUNC">           0 :                         auto rowPtr = builder.emitGetOffsetPtr(</span></span>
+<span id="L243"><span class="lineNum">     243</span>              :                             elementBasePtr,</span>
+<span id="L244"><span class="lineNum">     244</span>              :                             builder.getIntValue(builder.getIntType(), i));</span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaUNC">           0 :                         auto loadedRow = emitImmutableLoad(builder, rowPtr);</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaUNC">           0 :                         args.add(loadedRow);</span></span>
+<span id="L247"><span class="lineNum">     247</span>              :                     }</span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaUNC">           0 :                     auto result =</span></span>
+<span id="L249"><span class="lineNum">     249</span>              :                         builder.emitMakeMatrix(type, (UInt)args.getCount(), args.getBuffer());</span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaUNC">           0 :                     builder.emitReturn(result);</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaUNC">           0 :                     return func;</span></span>
+<span id="L252"><span class="lineNum">     252</span>              :                 }</span>
+<span id="L253"><span class="lineNum">     253</span>              :             }</span>
+<span id="L254"><span class="lineNum">     254</span>              :             break;</span>
+<span id="L255"><span class="lineNum">     255</span>              :         case kIROp_ArrayType:</span>
+<span id="L256"><span class="lineNum">     256</span>              :             {</span>
+<span id="L257"><span class="lineNum">     257</span>              :                 // For array types, we need to generate a function to load its content by element.</span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaUNC">           0 :                 auto arrayType = as&lt;IRArrayType&gt;(type);</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaUNC">           0 :                 auto elementType = arrayType-&gt;getElementType();</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaUNC">           0 :                 auto elementCount = getIntVal(arrayType-&gt;getElementCount());</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaUNC">           0 :                 IRParam* ptrParam = nullptr;</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaUNC">           0 :                 auto func = createLoadFunc(builder, type, ptrParam);</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaUNC">           0 :                 List&lt;IRInst*&gt; args;</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaUNC">           0 :                 for (UInt i = 0; i &lt; (UInt)elementCount; i++)</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :                 {</span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaUNC">           0 :                     auto elementPtr = builder.emitElementAddress(</span></span>
+<span id="L267"><span class="lineNum">     267</span>              :                         builder.getPtrType(elementType),</span>
+<span id="L268"><span class="lineNum">     268</span>              :                         ptrParam,</span>
+<span id="L269"><span class="lineNum">     269</span>              :                         builder.getIntValue(builder.getIntType(), i));</span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaUNC">           0 :                     auto loadedElement = emitImmutableLoad(builder, elementPtr);</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaUNC">           0 :                     if (!loadedElement)</span></span>
+<span id="L272"><span class="lineNum">     272</span>              :                     {</span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaUNC">           0 :                         func-&gt;removeAndDeallocate();</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaUNC">           0 :                         return LoadMethod();</span></span>
+<span id="L275"><span class="lineNum">     275</span>              :                     }</span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaUNC">           0 :                     args.add(loadedElement);</span></span>
+<span id="L277"><span class="lineNum">     277</span>              :                 }</span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaUNC">           0 :                 auto result = builder.emitMakeArray(type, (UInt)args.getCount(), args.getBuffer());</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaUNC">           0 :                 builder.emitReturn(result);</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaUNC">           0 :                 return func;</span></span>
+<span id="L281"><span class="lineNum">     281</span>              :             }</span>
+<span id="L282"><span class="lineNum">     282</span>              :         case kIROp_StructType:</span>
+<span id="L283"><span class="lineNum">     283</span>              :             {</span>
+<span id="L284"><span class="lineNum">     284</span>              :                 // For struct types, we need to generate a function to load its content by field.</span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">           1 :                 auto structType = as&lt;IRStructType&gt;(type);</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">           1 :                 IRParam* ptrParam = nullptr;</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">           1 :                 auto func = createLoadFunc(builder, type, ptrParam);</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; args;</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">           1 :                 for (auto field : structType-&gt;getFields())</span></span>
+<span id="L290"><span class="lineNum">     290</span>              :                 {</span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">           1 :                     auto fieldType = field-&gt;getFieldType();</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">           1 :                     auto fieldPtr = builder.emitFieldAddress(</span></span>
+<span id="L293"><span class="lineNum">     293</span>              :                         builder.getPtrType(fieldType),</span>
+<span id="L294"><span class="lineNum">     294</span>              :                         ptrParam,</span>
+<span id="L295"><span class="lineNum">     295</span>              :                         field-&gt;getKey());</span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">           1 :                     auto loadedField = emitImmutableLoad(builder, fieldPtr);</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">           1 :                     if (!loadedField)</span></span>
+<span id="L298"><span class="lineNum">     298</span>              :                     {</span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">           1 :                         func-&gt;removeAndDeallocate();</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">           1 :                         return LoadMethod();</span></span>
+<span id="L301"><span class="lineNum">     301</span>              :                     }</span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">           1 :                     args.add(loadedField);</span></span>
+<span id="L303"><span class="lineNum">     303</span>              :                 }</span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">           1 :                 auto result = builder.emitMakeStruct(type, args);</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">           1 :                 builder.emitReturn(result);</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">           1 :                 return func;</span></span>
+<span id="L307"><span class="lineNum">     307</span>              :             }</span>
+<span id="L308"><span class="lineNum">     308</span>              :         }</span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">           1 :         return LoadMethod();</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L311"><span class="lineNum">     311</span>              : </span>
+<span id="L312"><span class="lineNum">     312</span>              :     LoadMethod getOrCreateLoadFuncForType(IRType* type)</span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">           1 :         if (auto func = loadFuncs.tryGetValue(type))</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           1 :             return *func;</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">           1 :         auto result = createLoadFuncForType(type);</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">           1 :         loadFuncs[type] = result;</span></span>
+<span id="L318"><span class="lineNum">     318</span>              :         return result;</span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L320"><span class="lineNum">     320</span>              : </span>
+<span id="L321"><span class="lineNum">     321</span>              :     IRInst* emitImmutableLoad(IRBuilder&amp; builder, IRInst* ptr)</span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">           1 :         IRType* valueType = tryGetPointedToType(&amp;builder, ptr-&gt;getDataType());</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">           1 :         if (!valueType)</span></span>
+<span id="L325"><span class="lineNum">     325</span>              :             return nullptr;</span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">           1 :         auto loadFunc = getOrCreateLoadFuncForType(valueType);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">           1 :         if (!loadFunc)</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">           1 :             return nullptr;</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">           1 :         return loadFunc.apply(builder, valueType, ptr);</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span>              :     void processInst(IRInst* inst)</span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L334"><span class="lineNum">     334</span>              :         // For every load instruction we see in the module, if the it is loading from</span>
+<span id="L335"><span class="lineNum">     335</span>              :         // an immutable location, try to lower it into a series of __ldg calls.</span>
+<span id="L336"><span class="lineNum">     336</span>              :         // We need to handle both ordinary loads and structured buffer loads.</span>
+<span id="L337"><span class="lineNum">     337</span>              :         //</span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">           1 :         switch (inst-&gt;getOp())</span></span>
+<span id="L339"><span class="lineNum">     339</span>              :         {</span>
+<span id="L340"><span class="lineNum">     340</span>              :         case kIROp_Load:</span>
+<span id="L341"><span class="lineNum">     341</span>              :             {</span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">           1 :                 auto load = as&lt;IRLoad&gt;(inst);</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">           1 :                 auto ptr = load-&gt;getPtr();</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">           1 :                 auto rootAddr = getRootAddr(ptr);</span></span>
+<span id="L345"><span class="lineNum">     345</span>              :                 // isAddressIntoCudaConstantParameterGroup must see the unpeeled `ptr`, not</span>
+<span id="L346"><span class="lineNum">     346</span>              :                 // `rootAddr`: `getRootAddr` doesn&#x27;t peel BitCast/Reinterpret/PtrCast/</span>
+<span id="L347"><span class="lineNum">     347</span>              :                 // GetOffsetPtr, so passing `rootAddr` here could stop short of `globalParam`</span>
+<span id="L348"><span class="lineNum">     348</span>              :                 // and miss the exclusion.</span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">           1 :                 if (!isAddressIntoCudaConstantParameterGroup(ptr) &amp;&amp;</span></span>
+<span id="L350"><span class="lineNum">     350</span>              :                     isPointerToImmutableLocation(rootAddr))</span>
+<span id="L351"><span class="lineNum">     351</span>              :                 {</span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">           1 :                     IRBuilder builder(load);</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">           1 :                     builder.setInsertBefore(load);</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">           1 :                     if (auto newLoad = emitImmutableLoad(builder, ptr))</span></span>
+<span id="L355"><span class="lineNum">     355</span>              :                     {</span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">           1 :                         load-&gt;replaceUsesWith(newLoad);</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">           1 :                         load-&gt;removeAndDeallocate();</span></span>
+<span id="L358"><span class="lineNum">     358</span>              :                     }</span>
+<span id="L359"><span class="lineNum">     359</span>              :                 }</span>
+<span id="L360"><span class="lineNum">     360</span>              :             }</span>
+<span id="L361"><span class="lineNum">     361</span>              :             break;</span>
+<span id="L362"><span class="lineNum">     362</span>              :         case kIROp_StructuredBufferLoad:</span>
+<span id="L363"><span class="lineNum">     363</span>              :             {</span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">           1 :                 IRBuilder builder(inst);</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">           1 :                 builder.setInsertBefore(inst);</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">           1 :                 auto ptr = builder.emitRWStructuredBufferGetElementPtr(</span></span>
+<span id="L367"><span class="lineNum">     367</span>              :                     inst-&gt;getOperand(0),</span>
+<span id="L368"><span class="lineNum">     368</span>              :                     inst-&gt;getOperand(1));</span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">           1 :                 if (auto newLoad = emitImmutableLoad(builder, ptr))</span></span>
+<span id="L370"><span class="lineNum">     370</span>              :                 {</span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">           1 :                     inst-&gt;replaceUsesWith(newLoad);</span></span>
+<span id="L372"><span class="lineNum">     372</span>              :                     inst-&gt;removeAndDeallocate();</span>
+<span id="L373"><span class="lineNum">     373</span>              :                 }</span>
+<span id="L374"><span class="lineNum">     374</span>              :                 else</span>
+<span id="L375"><span class="lineNum">     375</span>              :                 {</span>
+<span id="L376"><span class="lineNum">     376</span>              :                     // For some reason this load cannot be lowered, remove the ptr we just created.</span>
+<span id="L377"><span class="lineNum">     377</span>              :                     ptr-&gt;removeAndDeallocate();</span>
+<span id="L378"><span class="lineNum">     378</span>              :                 }</span>
+<span id="L379"><span class="lineNum">     379</span>              :             }</span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L381"><span class="lineNum">     381</span>              :         case kIROp_CUDALDG:</span>
+<span id="L382"><span class="lineNum">     382</span>              :             {</span>
+<span id="L383"><span class="lineNum">     383</span>              :                 // Does the load needs lowering? If so insert lowered loads.</span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaUNC">           0 :                 IRBuilder builder(inst);</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaUNC">           0 :                 builder.setInsertBefore(inst);</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaUNC">           0 :                 auto ptr = inst-&gt;getOperand(0);</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaUNC">           0 :                 auto valueType = tryGetPointedToType(&amp;builder, ptr-&gt;getDataType());</span></span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaUNC">           0 :                 if (!valueType)</span></span>
+<span id="L389"><span class="lineNum">     389</span>              :                     break;</span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaUNC">           0 :                 auto loadFunc = getOrCreateLoadFuncForType(valueType);</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaUNC">           0 :                 if (!loadFunc)</span></span>
+<span id="L392"><span class="lineNum">     392</span>              :                     break;</span>
+<span id="L393"><span class="lineNum">     393</span>              :                 // If the type doesn&#x27;t need further lowering, we don&#x27;t need to do anything.</span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaUNC">           0 :                 if (loadFunc.kind == LoadMethodKind::Opcode &amp;&amp; loadFunc.op == kIROp_CUDALDG)</span></span>
+<span id="L395"><span class="lineNum">     395</span>              :                     break;</span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaUNC">           0 :                 auto newLoad = loadFunc.apply(builder, valueType, ptr);</span></span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaUNC">           0 :                 inst-&gt;replaceUsesWith(newLoad);</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaUNC">           0 :                 inst-&gt;removeAndDeallocate();</span></span>
+<span id="L399"><span class="lineNum">     399</span>              :             }</span>
+<span id="L400"><span class="lineNum">     400</span>              :             break;</span>
+<span id="L401"><span class="lineNum">     401</span>              :         }</span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L403"><span class="lineNum">     403</span>              : </span>
+<span id="L404"><span class="lineNum">     404</span>              :     void processModule()</span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">           1 :         processAllInsts([&amp;](IRInst* inst) { processInst(inst); });</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L408"><span class="lineNum">     408</span>              : </span>
+<span id="L409"><span class="lineNum">     409</span>              :     ImmutableBufferLoadLoweringContext(IRModule* inModule)</span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">           1 :         : InstPassBase(inModule)</span></span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L413"><span class="lineNum">     413</span>              : };</span>
+<span id="L414"><span class="lineNum">     414</span>              : </span>
+<span id="L415"><span class="lineNum">     415</span>              : void lowerImmutableBufferLoadForCUDA(IRModule* module, TargetProgram* targetProgram)</span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">           1 :     ImmutableBufferLoadLoweringContext context(module);</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">           1 :     context.targetProgram = targetProgram;</span></span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">           1 :     context.processModule();</span></span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L421"><span class="lineNum">     421</span>              : </span>
+<span id="L422"><span class="lineNum">     422</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

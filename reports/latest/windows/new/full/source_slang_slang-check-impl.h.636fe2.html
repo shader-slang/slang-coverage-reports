@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-12 04:11:52 UTC</td>
+      <td class="headerValue">2026-11-13 05:42:22 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -4483,668 +4483,663 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L4210"><span class="lineNum">    4210</span>              : </span>
 <span id="L4211"><span class="lineNum">    4211</span>              :     bool argumentNamesGroupSharedStorage(Expr* arg);</span>
 <span id="L4212"><span class="lineNum">    4212</span>              :     void checkArgumentOfGroupSharedParam(ParamDecl* paramIn, Expr* argIn);</span>
-<span id="L4213"><span class="lineNum">    4213</span>              :     void checkGroupSharedArgumentsToExclusiveParams(</span>
-<span id="L4214"><span class="lineNum">    4214</span>              :         InvokeExpr* invoke,</span>
-<span id="L4215"><span class="lineNum">    4215</span>              :         FuncType* funcType,</span>
-<span id="L4216"><span class="lineNum">    4216</span>              :         DeclRef&lt;CallableDecl&gt; calleeDeclRef,</span>
-<span id="L4217"><span class="lineNum">    4217</span>              :         List&lt;DeclRef&lt;ParamDecl&gt;&gt; const&amp; paramDeclRefs);</span>
-<span id="L4218"><span class="lineNum">    4218</span>              :     void checkGroupSharedPartialWriteInDifferentiatedBody(Expr* target, Expr* storage);</span>
-<span id="L4219"><span class="lineNum">    4219</span>              :     void checkGroupSharedPartialWritesByCall(</span>
+<span id="L4213"><span class="lineNum">    4213</span>              :     Decl* findGroupSharedVariablePartlyWrittenInDifferentiatedBody(Expr* target, Expr* storage);</span>
+<span id="L4214"><span class="lineNum">    4214</span>              :     void checkGroupSharedPartialWritesByCall(</span>
+<span id="L4215"><span class="lineNum">    4215</span>              :         InvokeExpr* invoke,</span>
+<span id="L4216"><span class="lineNum">    4216</span>              :         FuncType* funcType,</span>
+<span id="L4217"><span class="lineNum">    4217</span>              :         DeclRef&lt;CallableDecl&gt; calleeDeclRef,</span>
+<span id="L4218"><span class="lineNum">    4218</span>              :         List&lt;DeclRef&lt;ParamDecl&gt;&gt; const&amp; paramDeclRefs);</span>
+<span id="L4219"><span class="lineNum">    4219</span>              :     void _checkAliasedOutArguments(</span>
 <span id="L4220"><span class="lineNum">    4220</span>              :         InvokeExpr* invoke,</span>
 <span id="L4221"><span class="lineNum">    4221</span>              :         FuncType* funcType,</span>
-<span id="L4222"><span class="lineNum">    4222</span>              :         DeclRef&lt;CallableDecl&gt; calleeDeclRef,</span>
-<span id="L4223"><span class="lineNum">    4223</span>              :         List&lt;DeclRef&lt;ParamDecl&gt;&gt; const&amp; paramDeclRefs);</span>
-<span id="L4224"><span class="lineNum">    4224</span>              :     void _checkAliasedOutArguments(</span>
-<span id="L4225"><span class="lineNum">    4225</span>              :         InvokeExpr* invoke,</span>
-<span id="L4226"><span class="lineNum">    4226</span>              :         FuncType* funcType,</span>
-<span id="L4227"><span class="lineNum">    4227</span>              :         List&lt;DeclRef&lt;ParamDecl&gt;&gt; const&amp; paramDeclRefs);</span>
-<span id="L4228"><span class="lineNum">    4228</span>              :     Expr* CheckInvokeExprWithCheckedOperands(InvokeExpr* expr);</span>
-<span id="L4229"><span class="lineNum">    4229</span>              : </span>
-<span id="L4230"><span class="lineNum">    4230</span>              :     /// Diagnose `invoke`, a call whose callee may throw, unless a `try` covers it. While its</span>
-<span id="L4231"><span class="lineNum">    4231</span>              :     /// coverage is pending, `invoke` is added to `m_pendingTryCoverage` instead.</span>
-<span id="L4232"><span class="lineNum">    4232</span>              :     void checkThrowingCallIsCovered(InvokeExpr* invoke);</span>
+<span id="L4222"><span class="lineNum">    4222</span>              :         List&lt;DeclRef&lt;ParamDecl&gt;&gt; const&amp; paramDeclRefs);</span>
+<span id="L4223"><span class="lineNum">    4223</span>              :     Expr* CheckInvokeExprWithCheckedOperands(InvokeExpr* expr);</span>
+<span id="L4224"><span class="lineNum">    4224</span>              : </span>
+<span id="L4225"><span class="lineNum">    4225</span>              :     /// Diagnose `invoke`, a call whose callee may throw, unless a `try` covers it. While its</span>
+<span id="L4226"><span class="lineNum">    4226</span>              :     /// coverage is pending, `invoke` is added to `m_pendingTryCoverage` instead.</span>
+<span id="L4227"><span class="lineNum">    4227</span>              :     void checkThrowingCallIsCovered(InvokeExpr* invoke);</span>
+<span id="L4228"><span class="lineNum">    4228</span>              : </span>
+<span id="L4229"><span class="lineNum">    4229</span>              :     /// Return whether the coverage of the throwing calls in the argument of `expr` waits for</span>
+<span id="L4230"><span class="lineNum">    4230</span>              :     /// `expr` to resolve: `expr` is a single-argument call that is not an operator, so it may</span>
+<span id="L4231"><span class="lineNum">    4231</span>              :     /// resolve to an identity conversion of its argument, and a `try` covers or may cover it.</span>
+<span id="L4232"><span class="lineNum">    4232</span>              :     bool shouldDeferArgumentTryCoverage(InvokeExpr* expr);</span>
 <span id="L4233"><span class="lineNum">    4233</span>              : </span>
-<span id="L4234"><span class="lineNum">    4234</span>              :     /// Return whether the coverage of the throwing calls in the argument of `expr` waits for</span>
-<span id="L4235"><span class="lineNum">    4235</span>              :     /// `expr` to resolve: `expr` is a single-argument call that is not an operator, so it may</span>
-<span id="L4236"><span class="lineNum">    4236</span>              :     /// resolve to an identity conversion of its argument, and a `try` covers or may cover it.</span>
-<span id="L4237"><span class="lineNum">    4237</span>              :     bool shouldDeferArgumentTryCoverage(InvokeExpr* expr);</span>
+<span id="L4234"><span class="lineNum">    4234</span>              :     /// Settle the coverage of `pendingCalls`, collected while the argument of a call was checked.</span>
+<span id="L4235"><span class="lineNum">    4235</span>              :     /// A pending call that the call resolved to (`checkedExpr`) is covered when the call would be;</span>
+<span id="L4236"><span class="lineNum">    4236</span>              :     /// no `try` covers any other pending call.</span>
+<span id="L4237"><span class="lineNum">    4237</span>              :     void settlePendingTryCoverage(Expr* checkedExpr, List&lt;InvokeExpr*&gt; const&amp; pendingCalls);</span>
 <span id="L4238"><span class="lineNum">    4238</span>              : </span>
-<span id="L4239"><span class="lineNum">    4239</span>              :     /// Settle the coverage of `pendingCalls`, collected while the argument of a call was checked.</span>
-<span id="L4240"><span class="lineNum">    4240</span>              :     /// A pending call that the call resolved to (`checkedExpr`) is covered when the call would be;</span>
-<span id="L4241"><span class="lineNum">    4241</span>              :     /// no `try` covers any other pending call.</span>
-<span id="L4242"><span class="lineNum">    4242</span>              :     void settlePendingTryCoverage(Expr* checkedExpr, List&lt;InvokeExpr*&gt; const&amp; pendingCalls);</span>
-<span id="L4243"><span class="lineNum">    4243</span>              : </span>
-<span id="L4244"><span class="lineNum">    4244</span>              :     // Get the type to use when referencing a declaration</span>
-<span id="L4245"><span class="lineNum">    4245</span>              :     QualType GetTypeForDeclRef(DeclRef&lt;Decl&gt; declRef, SourceLoc loc);</span>
-<span id="L4246"><span class="lineNum">    4246</span>              : </span>
-<span id="L4247"><span class="lineNum">    4247</span>              :     //</span>
-<span id="L4248"><span class="lineNum">    4248</span>              :     //</span>
-<span id="L4249"><span class="lineNum">    4249</span>              :     //</span>
-<span id="L4250"><span class="lineNum">    4250</span>              : </span>
-<span id="L4251"><span class="lineNum">    4251</span>              :     Expr* CheckMatrixSwizzleExpr(</span>
-<span id="L4252"><span class="lineNum">    4252</span>              :         MemberExpr* memberRefExpr,</span>
-<span id="L4253"><span class="lineNum">    4253</span>              :         Type* baseElementType,</span>
-<span id="L4254"><span class="lineNum">    4254</span>              :         IntegerLiteralValue baseElementRowCount,</span>
-<span id="L4255"><span class="lineNum">    4255</span>              :         IntegerLiteralValue baseElementColCount);</span>
-<span id="L4256"><span class="lineNum">    4256</span>              : </span>
-<span id="L4257"><span class="lineNum">    4257</span>              :     Expr* CheckMatrixSwizzleExpr(</span>
-<span id="L4258"><span class="lineNum">    4258</span>              :         MemberExpr* memberRefExpr,</span>
-<span id="L4259"><span class="lineNum">    4259</span>              :         Type* baseElementType,</span>
-<span id="L4260"><span class="lineNum">    4260</span>              :         IntVal* baseElementRowCount,</span>
-<span id="L4261"><span class="lineNum">    4261</span>              :         IntVal* baseElementColCount);</span>
-<span id="L4262"><span class="lineNum">    4262</span>              : </span>
-<span id="L4263"><span class="lineNum">    4263</span>              :     Expr* checkTupleSwizzleExpr(MemberExpr* memberExpr, TupleType* baseTupleType);</span>
+<span id="L4239"><span class="lineNum">    4239</span>              :     // Get the type to use when referencing a declaration</span>
+<span id="L4240"><span class="lineNum">    4240</span>              :     QualType GetTypeForDeclRef(DeclRef&lt;Decl&gt; declRef, SourceLoc loc);</span>
+<span id="L4241"><span class="lineNum">    4241</span>              : </span>
+<span id="L4242"><span class="lineNum">    4242</span>              :     //</span>
+<span id="L4243"><span class="lineNum">    4243</span>              :     //</span>
+<span id="L4244"><span class="lineNum">    4244</span>              :     //</span>
+<span id="L4245"><span class="lineNum">    4245</span>              : </span>
+<span id="L4246"><span class="lineNum">    4246</span>              :     Expr* CheckMatrixSwizzleExpr(</span>
+<span id="L4247"><span class="lineNum">    4247</span>              :         MemberExpr* memberRefExpr,</span>
+<span id="L4248"><span class="lineNum">    4248</span>              :         Type* baseElementType,</span>
+<span id="L4249"><span class="lineNum">    4249</span>              :         IntegerLiteralValue baseElementRowCount,</span>
+<span id="L4250"><span class="lineNum">    4250</span>              :         IntegerLiteralValue baseElementColCount);</span>
+<span id="L4251"><span class="lineNum">    4251</span>              : </span>
+<span id="L4252"><span class="lineNum">    4252</span>              :     Expr* CheckMatrixSwizzleExpr(</span>
+<span id="L4253"><span class="lineNum">    4253</span>              :         MemberExpr* memberRefExpr,</span>
+<span id="L4254"><span class="lineNum">    4254</span>              :         Type* baseElementType,</span>
+<span id="L4255"><span class="lineNum">    4255</span>              :         IntVal* baseElementRowCount,</span>
+<span id="L4256"><span class="lineNum">    4256</span>              :         IntVal* baseElementColCount);</span>
+<span id="L4257"><span class="lineNum">    4257</span>              : </span>
+<span id="L4258"><span class="lineNum">    4258</span>              :     Expr* checkTupleSwizzleExpr(MemberExpr* memberExpr, TupleType* baseTupleType);</span>
+<span id="L4259"><span class="lineNum">    4259</span>              : </span>
+<span id="L4260"><span class="lineNum">    4260</span>              :     Expr* CheckSwizzleExpr(</span>
+<span id="L4261"><span class="lineNum">    4261</span>              :         MemberExpr* memberRefExpr,</span>
+<span id="L4262"><span class="lineNum">    4262</span>              :         Type* baseElementType,</span>
+<span id="L4263"><span class="lineNum">    4263</span>              :         IntegerLiteralValue baseElementCount);</span>
 <span id="L4264"><span class="lineNum">    4264</span>              : </span>
 <span id="L4265"><span class="lineNum">    4265</span>              :     Expr* CheckSwizzleExpr(</span>
 <span id="L4266"><span class="lineNum">    4266</span>              :         MemberExpr* memberRefExpr,</span>
 <span id="L4267"><span class="lineNum">    4267</span>              :         Type* baseElementType,</span>
-<span id="L4268"><span class="lineNum">    4268</span>              :         IntegerLiteralValue baseElementCount);</span>
+<span id="L4268"><span class="lineNum">    4268</span>              :         IntVal* baseElementCount);</span>
 <span id="L4269"><span class="lineNum">    4269</span>              : </span>
-<span id="L4270"><span class="lineNum">    4270</span>              :     Expr* CheckSwizzleExpr(</span>
-<span id="L4271"><span class="lineNum">    4271</span>              :         MemberExpr* memberRefExpr,</span>
-<span id="L4272"><span class="lineNum">    4272</span>              :         Type* baseElementType,</span>
-<span id="L4273"><span class="lineNum">    4273</span>              :         IntVal* baseElementCount);</span>
-<span id="L4274"><span class="lineNum">    4274</span>              : </span>
-<span id="L4275"><span class="lineNum">    4275</span>              :     // Check a member expr as a general member lookup.</span>
-<span id="L4276"><span class="lineNum">    4276</span>              :     // This is the default/fallback behavior if the base type isn&#x27;t swizzlable.</span>
-<span id="L4277"><span class="lineNum">    4277</span>              :     Expr* checkGeneralMemberLookupExpr(MemberExpr* expr, Type* baseType);</span>
-<span id="L4278"><span class="lineNum">    4278</span>              : </span>
-<span id="L4279"><span class="lineNum">    4279</span>              :     /// Perform semantic checking of an assignment where the operands have already been checked.</span>
-<span id="L4280"><span class="lineNum">    4280</span>              :     Expr* checkAssignWithCheckedOperands(AssignExpr* expr);</span>
+<span id="L4270"><span class="lineNum">    4270</span>              :     // Check a member expr as a general member lookup.</span>
+<span id="L4271"><span class="lineNum">    4271</span>              :     // This is the default/fallback behavior if the base type isn&#x27;t swizzlable.</span>
+<span id="L4272"><span class="lineNum">    4272</span>              :     Expr* checkGeneralMemberLookupExpr(MemberExpr* expr, Type* baseType);</span>
+<span id="L4273"><span class="lineNum">    4273</span>              : </span>
+<span id="L4274"><span class="lineNum">    4274</span>              :     /// Perform semantic checking of an assignment where the operands have already been checked.</span>
+<span id="L4275"><span class="lineNum">    4275</span>              :     Expr* checkAssignWithCheckedOperands(AssignExpr* expr);</span>
+<span id="L4276"><span class="lineNum">    4276</span>              : </span>
+<span id="L4277"><span class="lineNum">    4277</span>              :     // Look up a static member</span>
+<span id="L4278"><span class="lineNum">    4278</span>              :     // @param expr Can be StaticMemberExpr or MemberExpr</span>
+<span id="L4279"><span class="lineNum">    4279</span>              :     // @param baseExpression Is the underlying type expression determined from resolving expr</span>
+<span id="L4280"><span class="lineNum">    4280</span>              :     Expr* _lookupStaticMember(DeclRefExpr* expr, Expr* baseExpression);</span>
 <span id="L4281"><span class="lineNum">    4281</span>              : </span>
-<span id="L4282"><span class="lineNum">    4282</span>              :     // Look up a static member</span>
-<span id="L4283"><span class="lineNum">    4283</span>              :     // @param expr Can be StaticMemberExpr or MemberExpr</span>
-<span id="L4284"><span class="lineNum">    4284</span>              :     // @param baseExpression Is the underlying type expression determined from resolving expr</span>
-<span id="L4285"><span class="lineNum">    4285</span>              :     Expr* _lookupStaticMember(DeclRefExpr* expr, Expr* baseExpression);</span>
-<span id="L4286"><span class="lineNum">    4286</span>              : </span>
-<span id="L4287"><span class="lineNum">    4287</span>              :     Expr* visitStaticMemberExpr(StaticMemberExpr* expr);</span>
-<span id="L4288"><span class="lineNum">    4288</span>              : </span>
-<span id="L4289"><span class="lineNum">    4289</span>              :     /// Perform checking operations required for the &quot;base&quot; expression of a member-reference like</span>
-<span id="L4290"><span class="lineNum">    4290</span>              :     /// `base.someField`</span>
-<span id="L4291"><span class="lineNum">    4291</span>              :     enum class CheckBaseContext</span>
-<span id="L4292"><span class="lineNum">    4292</span>              :     {</span>
-<span id="L4293"><span class="lineNum">    4293</span>              :         Member,</span>
-<span id="L4294"><span class="lineNum">    4294</span>              :         Subscript,</span>
-<span id="L4295"><span class="lineNum">    4295</span>              :     };</span>
-<span id="L4296"><span class="lineNum">    4296</span>              :     Expr* checkBaseForMemberExpr(</span>
-<span id="L4297"><span class="lineNum">    4297</span>              :         Expr* baseExpr,</span>
-<span id="L4298"><span class="lineNum">    4298</span>              :         CheckBaseContext checkBaseContext,</span>
-<span id="L4299"><span class="lineNum">    4299</span>              :         bool&amp; outNeedDeref);</span>
-<span id="L4300"><span class="lineNum">    4300</span>              : </span>
-<span id="L4301"><span class="lineNum">    4301</span>              :     Expr* maybeDereference(Expr* inExpr, CheckBaseContext checkBaseContext);</span>
-<span id="L4302"><span class="lineNum">    4302</span>              : </span>
-<span id="L4303"><span class="lineNum">    4303</span>              :     /// Prepare baseExpr for use as the base of a member expr.</span>
-<span id="L4304"><span class="lineNum">    4304</span>              :     /// This include inserting implicit open-existential operations as needed.</span>
-<span id="L4305"><span class="lineNum">    4305</span>              :     Expr* maybeInsertImplicitOpForMemberBase(</span>
-<span id="L4306"><span class="lineNum">    4306</span>              :         Expr* baseExpr,</span>
-<span id="L4307"><span class="lineNum">    4307</span>              :         CheckBaseContext checkBaseContext,</span>
-<span id="L4308"><span class="lineNum">    4308</span>              :         bool&amp; outNeedDeref);</span>
+<span id="L4282"><span class="lineNum">    4282</span>              :     Expr* visitStaticMemberExpr(StaticMemberExpr* expr);</span>
+<span id="L4283"><span class="lineNum">    4283</span>              : </span>
+<span id="L4284"><span class="lineNum">    4284</span>              :     /// Perform checking operations required for the &quot;base&quot; expression of a member-reference like</span>
+<span id="L4285"><span class="lineNum">    4285</span>              :     /// `base.someField`</span>
+<span id="L4286"><span class="lineNum">    4286</span>              :     enum class CheckBaseContext</span>
+<span id="L4287"><span class="lineNum">    4287</span>              :     {</span>
+<span id="L4288"><span class="lineNum">    4288</span>              :         Member,</span>
+<span id="L4289"><span class="lineNum">    4289</span>              :         Subscript,</span>
+<span id="L4290"><span class="lineNum">    4290</span>              :     };</span>
+<span id="L4291"><span class="lineNum">    4291</span>              :     Expr* checkBaseForMemberExpr(</span>
+<span id="L4292"><span class="lineNum">    4292</span>              :         Expr* baseExpr,</span>
+<span id="L4293"><span class="lineNum">    4293</span>              :         CheckBaseContext checkBaseContext,</span>
+<span id="L4294"><span class="lineNum">    4294</span>              :         bool&amp; outNeedDeref);</span>
+<span id="L4295"><span class="lineNum">    4295</span>              : </span>
+<span id="L4296"><span class="lineNum">    4296</span>              :     Expr* maybeDereference(Expr* inExpr, CheckBaseContext checkBaseContext);</span>
+<span id="L4297"><span class="lineNum">    4297</span>              : </span>
+<span id="L4298"><span class="lineNum">    4298</span>              :     /// Prepare baseExpr for use as the base of a member expr.</span>
+<span id="L4299"><span class="lineNum">    4299</span>              :     /// This include inserting implicit open-existential operations as needed.</span>
+<span id="L4300"><span class="lineNum">    4300</span>              :     Expr* maybeInsertImplicitOpForMemberBase(</span>
+<span id="L4301"><span class="lineNum">    4301</span>              :         Expr* baseExpr,</span>
+<span id="L4302"><span class="lineNum">    4302</span>              :         CheckBaseContext checkBaseContext,</span>
+<span id="L4303"><span class="lineNum">    4303</span>              :         bool&amp; outNeedDeref);</span>
+<span id="L4304"><span class="lineNum">    4304</span>              : </span>
+<span id="L4305"><span class="lineNum">    4305</span>              :     Expr* lookupMemberResultFailure(</span>
+<span id="L4306"><span class="lineNum">    4306</span>              :         DeclRefExpr* expr,</span>
+<span id="L4307"><span class="lineNum">    4307</span>              :         QualType const&amp; baseType,</span>
+<span id="L4308"><span class="lineNum">    4308</span>              :         bool supressDiagnostic = false);</span>
 <span id="L4309"><span class="lineNum">    4309</span>              : </span>
-<span id="L4310"><span class="lineNum">    4310</span>              :     Expr* lookupMemberResultFailure(</span>
-<span id="L4311"><span class="lineNum">    4311</span>              :         DeclRefExpr* expr,</span>
-<span id="L4312"><span class="lineNum">    4312</span>              :         QualType const&amp; baseType,</span>
-<span id="L4313"><span class="lineNum">    4313</span>              :         bool supressDiagnostic = false);</span>
-<span id="L4314"><span class="lineNum">    4314</span>              : </span>
-<span id="L4315"><span class="lineNum">    4315</span>              :     /// Called after member lookup on `expr` has failed with `baseType` as the base. If the base is</span>
-<span id="L4316"><span class="lineNum">    4316</span>              :     /// a user-declared generic type parameter (directly, or as `T.m` / `v::m`), emit a note for</span>
-<span id="L4317"><span class="lineNum">    4317</span>              :     /// each interface that: is visible from the failed access and not from the core module;</span>
-<span id="L4318"><span class="lineNum">    4318</span>              :     /// directly declares a visible requirement of the failed name, static when the access is</span>
-<span id="L4319"><span class="lineNum">    4319</span>              :     /// static; and, by its unqualified name, resolves to itself at the generic declaration that</span>
-<span id="L4320"><span class="lineNum">    4320</span>              :     /// owns the parameter. A non-generic interface gets `where T : IFoo`; a generic one gets</span>
-<span id="L4321"><span class="lineNum">    4321</span>              :     /// &quot;consider constraining &#x27;T&#x27; to interface &#x27;IFoo&#x27;&quot;, since its type arguments cannot be</span>
-<span id="L4322"><span class="lineNum">    4322</span>              :     /// inferred.</span>
-<span id="L4323"><span class="lineNum">    4323</span>              :     void maybeSuggestMissingGenericConstraintForMemberLookup(</span>
-<span id="L4324"><span class="lineNum">    4324</span>              :         DeclRefExpr* expr,</span>
-<span id="L4325"><span class="lineNum">    4325</span>              :         QualType const&amp; baseType);</span>
-<span id="L4326"><span class="lineNum">    4326</span>              : </span>
-<span id="L4327"><span class="lineNum">    4327</span>              :     /// Return true if looking up `name` from `scope` (default lookup mask, keeping only results</span>
-<span id="L4328"><span class="lineNum">    4328</span>              :     /// visible from `scope`) finds exactly one distinct declaration and it is `decl`. A diagnostic</span>
-<span id="L4329"><span class="lineNum">    4329</span>              :     /// that prints an unqualified name for the user to write at `scope` uses this to check the name</span>
-<span id="L4330"><span class="lineNum">    4330</span>              :     /// will mean `decl` there; for a generic declaration, `decl` is the `GenericDecl`, which is</span>
-<span id="L4331"><span class="lineNum">    4331</span>              :     /// what lookup returns for its name. The default mask also finds non-type declarations, so a</span>
-<span id="L4332"><span class="lineNum">    4332</span>              :     /// same-named function makes this conservatively return false.</span>
-<span id="L4333"><span class="lineNum">    4333</span>              :     bool doesNameResolveToDecl(Name* name, Scope* scope, Decl* decl);</span>
+<span id="L4310"><span class="lineNum">    4310</span>              :     /// Called after member lookup on `expr` has failed with `baseType` as the base. If the base is</span>
+<span id="L4311"><span class="lineNum">    4311</span>              :     /// a user-declared generic type parameter (directly, or as `T.m` / `v::m`), emit a note for</span>
+<span id="L4312"><span class="lineNum">    4312</span>              :     /// each interface that: is visible from the failed access and not from the core module;</span>
+<span id="L4313"><span class="lineNum">    4313</span>              :     /// directly declares a visible requirement of the failed name, static when the access is</span>
+<span id="L4314"><span class="lineNum">    4314</span>              :     /// static; and, by its unqualified name, resolves to itself at the generic declaration that</span>
+<span id="L4315"><span class="lineNum">    4315</span>              :     /// owns the parameter. A non-generic interface gets `where T : IFoo`; a generic one gets</span>
+<span id="L4316"><span class="lineNum">    4316</span>              :     /// &quot;consider constraining &#x27;T&#x27; to interface &#x27;IFoo&#x27;&quot;, since its type arguments cannot be</span>
+<span id="L4317"><span class="lineNum">    4317</span>              :     /// inferred.</span>
+<span id="L4318"><span class="lineNum">    4318</span>              :     void maybeSuggestMissingGenericConstraintForMemberLookup(</span>
+<span id="L4319"><span class="lineNum">    4319</span>              :         DeclRefExpr* expr,</span>
+<span id="L4320"><span class="lineNum">    4320</span>              :         QualType const&amp; baseType);</span>
+<span id="L4321"><span class="lineNum">    4321</span>              : </span>
+<span id="L4322"><span class="lineNum">    4322</span>              :     /// Return true if looking up `name` from `scope` (default lookup mask, keeping only results</span>
+<span id="L4323"><span class="lineNum">    4323</span>              :     /// visible from `scope`) finds exactly one distinct declaration and it is `decl`. A diagnostic</span>
+<span id="L4324"><span class="lineNum">    4324</span>              :     /// that prints an unqualified name for the user to write at `scope` uses this to check the name</span>
+<span id="L4325"><span class="lineNum">    4325</span>              :     /// will mean `decl` there; for a generic declaration, `decl` is the `GenericDecl`, which is</span>
+<span id="L4326"><span class="lineNum">    4326</span>              :     /// what lookup returns for its name. The default mask also finds non-type declarations, so a</span>
+<span id="L4327"><span class="lineNum">    4327</span>              :     /// same-named function makes this conservatively return false.</span>
+<span id="L4328"><span class="lineNum">    4328</span>              :     bool doesNameResolveToDecl(Name* name, Scope* scope, Decl* decl);</span>
+<span id="L4329"><span class="lineNum">    4329</span>              : </span>
+<span id="L4330"><span class="lineNum">    4330</span>              :     SharedSemanticsContext&amp; operator=(const SharedSemanticsContext&amp;) = delete;</span>
+<span id="L4331"><span class="lineNum">    4331</span>              : </span>
+<span id="L4332"><span class="lineNum">    4332</span>              : </span>
+<span id="L4333"><span class="lineNum">    4333</span>              :     //</span>
 <span id="L4334"><span class="lineNum">    4334</span>              : </span>
-<span id="L4335"><span class="lineNum">    4335</span>              :     SharedSemanticsContext&amp; operator=(const SharedSemanticsContext&amp;) = delete;</span>
-<span id="L4336"><span class="lineNum">    4336</span>              : </span>
+<span id="L4335"><span class="lineNum">    4335</span>              :     void importModuleIntoScope(Scope* scope, ModuleDecl* moduleDecl);</span>
+<span id="L4336"><span class="lineNum">    4336</span>              :     void importFileDeclIntoScope(Scope* scope, FileDecl* fileDecl);</span>
 <span id="L4337"><span class="lineNum">    4337</span>              : </span>
-<span id="L4338"><span class="lineNum">    4338</span>              :     //</span>
-<span id="L4339"><span class="lineNum">    4339</span>              : </span>
-<span id="L4340"><span class="lineNum">    4340</span>              :     void importModuleIntoScope(Scope* scope, ModuleDecl* moduleDecl);</span>
-<span id="L4341"><span class="lineNum">    4341</span>              :     void importFileDeclIntoScope(Scope* scope, FileDecl* fileDecl);</span>
+<span id="L4338"><span class="lineNum">    4338</span>              : </span>
+<span id="L4339"><span class="lineNum">    4339</span>              :     void suggestCompletionItems(</span>
+<span id="L4340"><span class="lineNum">    4340</span>              :         CompletionSuggestions::ScopeKind scopeKind,</span>
+<span id="L4341"><span class="lineNum">    4341</span>              :         LookupResult const&amp; lookupResult);</span>
 <span id="L4342"><span class="lineNum">    4342</span>              : </span>
-<span id="L4343"><span class="lineNum">    4343</span>              : </span>
-<span id="L4344"><span class="lineNum">    4344</span>              :     void suggestCompletionItems(</span>
-<span id="L4345"><span class="lineNum">    4345</span>              :         CompletionSuggestions::ScopeKind scopeKind,</span>
-<span id="L4346"><span class="lineNum">    4346</span>              :         LookupResult const&amp; lookupResult);</span>
+<span id="L4343"><span class="lineNum">    4343</span>              :     bool createInvokeExprForExplicitCtor(</span>
+<span id="L4344"><span class="lineNum">    4344</span>              :         Type* toType,</span>
+<span id="L4345"><span class="lineNum">    4345</span>              :         InitializerListExpr* fromInitializerListExpr,</span>
+<span id="L4346"><span class="lineNum">    4346</span>              :         Expr** outExpr);</span>
 <span id="L4347"><span class="lineNum">    4347</span>              : </span>
-<span id="L4348"><span class="lineNum">    4348</span>              :     bool createInvokeExprForExplicitCtor(</span>
+<span id="L4348"><span class="lineNum">    4348</span>              :     bool createCtorInvokeExprForAbstractType(</span>
 <span id="L4349"><span class="lineNum">    4349</span>              :         Type* toType,</span>
 <span id="L4350"><span class="lineNum">    4350</span>              :         InitializerListExpr* fromInitializerListExpr,</span>
 <span id="L4351"><span class="lineNum">    4351</span>              :         Expr** outExpr);</span>
 <span id="L4352"><span class="lineNum">    4352</span>              : </span>
-<span id="L4353"><span class="lineNum">    4353</span>              :     bool createCtorInvokeExprForAbstractType(</span>
+<span id="L4353"><span class="lineNum">    4353</span>              :     bool createInvokeExprForSynthesizedCtor(</span>
 <span id="L4354"><span class="lineNum">    4354</span>              :         Type* toType,</span>
 <span id="L4355"><span class="lineNum">    4355</span>              :         InitializerListExpr* fromInitializerListExpr,</span>
 <span id="L4356"><span class="lineNum">    4356</span>              :         Expr** outExpr);</span>
 <span id="L4357"><span class="lineNum">    4357</span>              : </span>
-<span id="L4358"><span class="lineNum">    4358</span>              :     bool createInvokeExprForSynthesizedCtor(</span>
-<span id="L4359"><span class="lineNum">    4359</span>              :         Type* toType,</span>
-<span id="L4360"><span class="lineNum">    4360</span>              :         InitializerListExpr* fromInitializerListExpr,</span>
-<span id="L4361"><span class="lineNum">    4361</span>              :         Expr** outExpr);</span>
-<span id="L4362"><span class="lineNum">    4362</span>              : </span>
-<span id="L4363"><span class="lineNum">    4363</span>              :     Expr* _createCtorInvokeExpr(Type* toType, const SourceLoc&amp; loc, const List&lt;Expr*&gt;&amp; coercedArgs);</span>
-<span id="L4364"><span class="lineNum">    4364</span>              :     bool _hasExplicitConstructor(StructDecl* structDecl, bool checkBaseType);</span>
-<span id="L4365"><span class="lineNum">    4365</span>              :     ConstructorDecl* _getSynthesizedConstructor(</span>
-<span id="L4366"><span class="lineNum">    4366</span>              :         StructDecl* structDecl,</span>
-<span id="L4367"><span class="lineNum">    4367</span>              :         ConstructorDecl::ConstructorFlavor flavor);</span>
-<span id="L4368"><span class="lineNum">    4368</span>              :     bool isCStyleType(Type* type, HashSet&lt;Type*&gt;&amp; isVisit);</span>
-<span id="L4369"><span class="lineNum">    4369</span>              : </span>
-<span id="L4370"><span class="lineNum">    4370</span>              :     void addVisibilityModifier(Decl* decl, DeclVisibility vis);</span>
-<span id="L4371"><span class="lineNum">    4371</span>              : </span>
-<span id="L4372"><span class="lineNum">    4372</span>              :     void checkRayPayloadStructFields(StructDecl* structDecl);</span>
-<span id="L4373"><span class="lineNum">    4373</span>              : </span>
-<span id="L4374"><span class="lineNum">    4374</span>              :     CatchStmt* findMatchingCatchStmt(Type* errorType);</span>
-<span id="L4375"><span class="lineNum">    4375</span>              : </span>
-<span id="L4376"><span class="lineNum">    4376</span>              :     DeclaredSubtypeWitness* getThisTypeWitness(</span>
-<span id="L4377"><span class="lineNum">    4377</span>              :         ASTBuilder* astBuilder,</span>
-<span id="L4378"><span class="lineNum">    4378</span>              :         DeclRef&lt;InterfaceDecl&gt; interfaceDeclRef);</span>
-<span id="L4379"><span class="lineNum">    4379</span>              : </span>
-<span id="L4380"><span class="lineNum">    4380</span>              :     // Differentiability of a function is represented by conformance of the function-as-type to</span>
-<span id="L4381"><span class="lineNum">    4381</span>              :     // `IForwardDifferentiable`/`IBackwardDifferentiable`. Query that conformance directly instead</span>
-<span id="L4382"><span class="lineNum">    4382</span>              :     // of probing for the `fwd_diff`/`bwd_diff` associated-function entries; those entries are</span>
-<span id="L4383"><span class="lineNum">    4383</span>              :     // witnesses produced by the conformance, not the source of truth.</span>
-<span id="L4384"><span class="lineNum">    4384</span>              :     SubtypeWitness* isFuncForwardDifferentiable(DeclRef&lt;CallableDecl&gt; declRef);</span>
-<span id="L4385"><span class="lineNum">    4385</span>              :     SubtypeWitness* isFuncBackwardDifferentiable(DeclRef&lt;CallableDecl&gt; declRef);</span>
-<span id="L4386"><span class="lineNum">    4386</span>              : };</span>
+<span id="L4358"><span class="lineNum">    4358</span>              :     Expr* _createCtorInvokeExpr(Type* toType, const SourceLoc&amp; loc, const List&lt;Expr*&gt;&amp; coercedArgs);</span>
+<span id="L4359"><span class="lineNum">    4359</span>              :     bool _hasExplicitConstructor(StructDecl* structDecl, bool checkBaseType);</span>
+<span id="L4360"><span class="lineNum">    4360</span>              :     ConstructorDecl* _getSynthesizedConstructor(</span>
+<span id="L4361"><span class="lineNum">    4361</span>              :         StructDecl* structDecl,</span>
+<span id="L4362"><span class="lineNum">    4362</span>              :         ConstructorDecl::ConstructorFlavor flavor);</span>
+<span id="L4363"><span class="lineNum">    4363</span>              :     bool isCStyleType(Type* type, HashSet&lt;Type*&gt;&amp; isVisit);</span>
+<span id="L4364"><span class="lineNum">    4364</span>              : </span>
+<span id="L4365"><span class="lineNum">    4365</span>              :     void addVisibilityModifier(Decl* decl, DeclVisibility vis);</span>
+<span id="L4366"><span class="lineNum">    4366</span>              : </span>
+<span id="L4367"><span class="lineNum">    4367</span>              :     void checkRayPayloadStructFields(StructDecl* structDecl);</span>
+<span id="L4368"><span class="lineNum">    4368</span>              : </span>
+<span id="L4369"><span class="lineNum">    4369</span>              :     CatchStmt* findMatchingCatchStmt(Type* errorType);</span>
+<span id="L4370"><span class="lineNum">    4370</span>              : </span>
+<span id="L4371"><span class="lineNum">    4371</span>              :     DeclaredSubtypeWitness* getThisTypeWitness(</span>
+<span id="L4372"><span class="lineNum">    4372</span>              :         ASTBuilder* astBuilder,</span>
+<span id="L4373"><span class="lineNum">    4373</span>              :         DeclRef&lt;InterfaceDecl&gt; interfaceDeclRef);</span>
+<span id="L4374"><span class="lineNum">    4374</span>              : </span>
+<span id="L4375"><span class="lineNum">    4375</span>              :     // Differentiability of a function is represented by conformance of the function-as-type to</span>
+<span id="L4376"><span class="lineNum">    4376</span>              :     // `IForwardDifferentiable`/`IBackwardDifferentiable`. Query that conformance directly instead</span>
+<span id="L4377"><span class="lineNum">    4377</span>              :     // of probing for the `fwd_diff`/`bwd_diff` associated-function entries; those entries are</span>
+<span id="L4378"><span class="lineNum">    4378</span>              :     // witnesses produced by the conformance, not the source of truth.</span>
+<span id="L4379"><span class="lineNum">    4379</span>              :     SubtypeWitness* isFuncForwardDifferentiable(DeclRef&lt;CallableDecl&gt; declRef);</span>
+<span id="L4380"><span class="lineNum">    4380</span>              :     SubtypeWitness* isFuncBackwardDifferentiable(DeclRef&lt;CallableDecl&gt; declRef);</span>
+<span id="L4381"><span class="lineNum">    4381</span>              : };</span>
+<span id="L4382"><span class="lineNum">    4382</span>              : </span>
+<span id="L4383"><span class="lineNum">    4383</span>              : inline void ensureDecl(SemanticsVisitor* visitor, Decl* decl, DeclCheckState state)</span>
+<span id="L4384"><span class="lineNum">    4384</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4385"><span class="lineNum">    4385</span> <span class="tlaGNC">           1 :     visitor-&gt;ensureDecl(decl, state);</span></span>
+<span id="L4386"><span class="lineNum">    4386</span>              : }</span>
 <span id="L4387"><span class="lineNum">    4387</span>              : </span>
-<span id="L4388"><span class="lineNum">    4388</span>              : inline void ensureDecl(SemanticsVisitor* visitor, Decl* decl, DeclCheckState state)</span>
-<span id="L4389"><span class="lineNum">    4389</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L4390"><span class="lineNum">    4390</span> <span class="tlaGNC">           1 :     visitor-&gt;ensureDecl(decl, state);</span></span>
-<span id="L4391"><span class="lineNum">    4391</span>              : }</span>
-<span id="L4392"><span class="lineNum">    4392</span>              : </span>
-<span id="L4393"><span class="lineNum">    4393</span>              : DeclRef&lt;ExtensionDecl&gt; applyExtensionToType(</span>
-<span id="L4394"><span class="lineNum">    4394</span>              :     SemanticsVisitor* semantics,</span>
-<span id="L4395"><span class="lineNum">    4395</span>              :     ExtensionDecl* extDecl,</span>
-<span id="L4396"><span class="lineNum">    4396</span>              :     Type* type,</span>
-<span id="L4397"><span class="lineNum">    4397</span>              :     Dictionary&lt;Type*, SubtypeWitness*&gt;* additionalSubtypeWitness = nullptr);</span>
-<span id="L4398"><span class="lineNum">    4398</span>              : </span>
-<span id="L4399"><span class="lineNum">    4399</span>              : </span>
-<span id="L4400"><span class="lineNum">    4400</span>              : struct SemanticsExprVisitor : public SemanticsVisitor, ExprVisitor&lt;SemanticsExprVisitor, Expr*&gt;</span>
-<span id="L4401"><span class="lineNum">    4401</span>              : {</span>
-<span id="L4402"><span class="lineNum">    4402</span>              : public:</span>
-<span id="L4403"><span class="lineNum">    4403</span>              :     SemanticsExprVisitor(SemanticsContext const&amp; outer)</span>
-<span id="L4404"><span class="lineNum">    4404</span>              :         : SemanticsVisitor(outer)</span>
-<span id="L4405"><span class="lineNum">    4405</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L4406"><span class="lineNum">    4406</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L4407"><span class="lineNum">    4407</span>              : </span>
-<span id="L4408"><span class="lineNum">    4408</span>              :     Expr* visitSizeOfLikeExpr(SizeOfLikeExpr* expr);</span>
-<span id="L4409"><span class="lineNum">    4409</span>              :     Expr* visitFloatBitCastExpr(FloatBitCastExpr* expr);</span>
-<span id="L4410"><span class="lineNum">    4410</span>              :     Expr* visitAddressOfExpr(AddressOfExpr* expr);</span>
-<span id="L4411"><span class="lineNum">    4411</span>              :     Expr* visitIncompleteExpr(IncompleteExpr* expr);</span>
-<span id="L4412"><span class="lineNum">    4412</span>              :     Expr* visitBoolLiteralExpr(BoolLiteralExpr* expr);</span>
-<span id="L4413"><span class="lineNum">    4413</span>              :     Expr* visitNullPtrLiteralExpr(NullPtrLiteralExpr* expr);</span>
-<span id="L4414"><span class="lineNum">    4414</span>              :     Expr* visitNoneLiteralExpr(NoneLiteralExpr* expr);</span>
-<span id="L4415"><span class="lineNum">    4415</span>              :     Expr* visitIntegerLiteralExpr(IntegerLiteralExpr* expr);</span>
-<span id="L4416"><span class="lineNum">    4416</span>              :     Expr* visitFloatingPointLiteralExpr(FloatingPointLiteralExpr* expr);</span>
-<span id="L4417"><span class="lineNum">    4417</span>              :     Expr* visitStringLiteralExpr(StringLiteralExpr* expr);</span>
-<span id="L4418"><span class="lineNum">    4418</span>              : </span>
-<span id="L4419"><span class="lineNum">    4419</span>              :     Expr* visitIndexExpr(IndexExpr* subscriptExpr);</span>
-<span id="L4420"><span class="lineNum">    4420</span>              : </span>
-<span id="L4421"><span class="lineNum">    4421</span>              :     Expr* visitParenExpr(ParenExpr* expr);</span>
-<span id="L4422"><span class="lineNum">    4422</span>              : </span>
-<span id="L4423"><span class="lineNum">    4423</span>              :     Expr* visitTupleExpr(TupleExpr* expr);</span>
-<span id="L4424"><span class="lineNum">    4424</span>              : </span>
-<span id="L4425"><span class="lineNum">    4425</span>              :     Expr* visitAssignExpr(AssignExpr* expr);</span>
-<span id="L4426"><span class="lineNum">    4426</span>              : </span>
-<span id="L4427"><span class="lineNum">    4427</span>              :     Expr* visitGenericAppExpr(GenericAppExpr* genericAppExpr);</span>
-<span id="L4428"><span class="lineNum">    4428</span>              : </span>
-<span id="L4429"><span class="lineNum">    4429</span>              :     Expr* visitSharedTypeExpr(SharedTypeExpr* expr);</span>
-<span id="L4430"><span class="lineNum">    4430</span>              : </span>
-<span id="L4431"><span class="lineNum">    4431</span>              :     Expr* visitInvokeExpr(InvokeExpr* expr);</span>
+<span id="L4388"><span class="lineNum">    4388</span>              : DeclRef&lt;ExtensionDecl&gt; applyExtensionToType(</span>
+<span id="L4389"><span class="lineNum">    4389</span>              :     SemanticsVisitor* semantics,</span>
+<span id="L4390"><span class="lineNum">    4390</span>              :     ExtensionDecl* extDecl,</span>
+<span id="L4391"><span class="lineNum">    4391</span>              :     Type* type,</span>
+<span id="L4392"><span class="lineNum">    4392</span>              :     Dictionary&lt;Type*, SubtypeWitness*&gt;* additionalSubtypeWitness = nullptr);</span>
+<span id="L4393"><span class="lineNum">    4393</span>              : </span>
+<span id="L4394"><span class="lineNum">    4394</span>              : </span>
+<span id="L4395"><span class="lineNum">    4395</span>              : struct SemanticsExprVisitor : public SemanticsVisitor, ExprVisitor&lt;SemanticsExprVisitor, Expr*&gt;</span>
+<span id="L4396"><span class="lineNum">    4396</span>              : {</span>
+<span id="L4397"><span class="lineNum">    4397</span>              : public:</span>
+<span id="L4398"><span class="lineNum">    4398</span>              :     SemanticsExprVisitor(SemanticsContext const&amp; outer)</span>
+<span id="L4399"><span class="lineNum">    4399</span>              :         : SemanticsVisitor(outer)</span>
+<span id="L4400"><span class="lineNum">    4400</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L4401"><span class="lineNum">    4401</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L4402"><span class="lineNum">    4402</span>              : </span>
+<span id="L4403"><span class="lineNum">    4403</span>              :     Expr* visitSizeOfLikeExpr(SizeOfLikeExpr* expr);</span>
+<span id="L4404"><span class="lineNum">    4404</span>              :     Expr* visitFloatBitCastExpr(FloatBitCastExpr* expr);</span>
+<span id="L4405"><span class="lineNum">    4405</span>              :     Expr* visitAddressOfExpr(AddressOfExpr* expr);</span>
+<span id="L4406"><span class="lineNum">    4406</span>              :     Expr* visitIncompleteExpr(IncompleteExpr* expr);</span>
+<span id="L4407"><span class="lineNum">    4407</span>              :     Expr* visitBoolLiteralExpr(BoolLiteralExpr* expr);</span>
+<span id="L4408"><span class="lineNum">    4408</span>              :     Expr* visitNullPtrLiteralExpr(NullPtrLiteralExpr* expr);</span>
+<span id="L4409"><span class="lineNum">    4409</span>              :     Expr* visitNoneLiteralExpr(NoneLiteralExpr* expr);</span>
+<span id="L4410"><span class="lineNum">    4410</span>              :     Expr* visitIntegerLiteralExpr(IntegerLiteralExpr* expr);</span>
+<span id="L4411"><span class="lineNum">    4411</span>              :     Expr* visitFloatingPointLiteralExpr(FloatingPointLiteralExpr* expr);</span>
+<span id="L4412"><span class="lineNum">    4412</span>              :     Expr* visitStringLiteralExpr(StringLiteralExpr* expr);</span>
+<span id="L4413"><span class="lineNum">    4413</span>              : </span>
+<span id="L4414"><span class="lineNum">    4414</span>              :     Expr* visitIndexExpr(IndexExpr* subscriptExpr);</span>
+<span id="L4415"><span class="lineNum">    4415</span>              : </span>
+<span id="L4416"><span class="lineNum">    4416</span>              :     Expr* visitParenExpr(ParenExpr* expr);</span>
+<span id="L4417"><span class="lineNum">    4417</span>              : </span>
+<span id="L4418"><span class="lineNum">    4418</span>              :     Expr* visitTupleExpr(TupleExpr* expr);</span>
+<span id="L4419"><span class="lineNum">    4419</span>              : </span>
+<span id="L4420"><span class="lineNum">    4420</span>              :     Expr* visitAssignExpr(AssignExpr* expr);</span>
+<span id="L4421"><span class="lineNum">    4421</span>              : </span>
+<span id="L4422"><span class="lineNum">    4422</span>              :     Expr* visitGenericAppExpr(GenericAppExpr* genericAppExpr);</span>
+<span id="L4423"><span class="lineNum">    4423</span>              : </span>
+<span id="L4424"><span class="lineNum">    4424</span>              :     Expr* visitSharedTypeExpr(SharedTypeExpr* expr);</span>
+<span id="L4425"><span class="lineNum">    4425</span>              : </span>
+<span id="L4426"><span class="lineNum">    4426</span>              :     Expr* visitInvokeExpr(InvokeExpr* expr);</span>
+<span id="L4427"><span class="lineNum">    4427</span>              : </span>
+<span id="L4428"><span class="lineNum">    4428</span>              :     // A `BuiltinOperatorExpr` is produced already-checked by `convertToBuiltinArithmeticOp`</span>
+<span id="L4429"><span class="lineNum">    4429</span>              :     // (during `visitInvokeExpr`), so checking it is a no-op; this exists for visitor</span>
+<span id="L4430"><span class="lineNum">    4430</span>              :     // completeness / idempotent re-checks.</span>
+<span id="L4431"><span class="lineNum">    4431</span>              :     Expr* visitBuiltinOperatorExpr(BuiltinOperatorExpr* expr);</span>
 <span id="L4432"><span class="lineNum">    4432</span>              : </span>
-<span id="L4433"><span class="lineNum">    4433</span>              :     // A `BuiltinOperatorExpr` is produced already-checked by `convertToBuiltinArithmeticOp`</span>
-<span id="L4434"><span class="lineNum">    4434</span>              :     // (during `visitInvokeExpr`), so checking it is a no-op; this exists for visitor</span>
-<span id="L4435"><span class="lineNum">    4435</span>              :     // completeness / idempotent re-checks.</span>
-<span id="L4436"><span class="lineNum">    4436</span>              :     Expr* visitBuiltinOperatorExpr(BuiltinOperatorExpr* expr);</span>
-<span id="L4437"><span class="lineNum">    4437</span>              : </span>
-<span id="L4438"><span class="lineNum">    4438</span>              :     Expr* visitSelectExpr(SelectExpr* expr);</span>
-<span id="L4439"><span class="lineNum">    4439</span>              : </span>
-<span id="L4440"><span class="lineNum">    4440</span>              :     Expr* visitVarExpr(VarExpr* expr);</span>
-<span id="L4441"><span class="lineNum">    4441</span>              : </span>
-<span id="L4442"><span class="lineNum">    4442</span>              :     Expr* visitTypeCastExpr(TypeCastExpr* expr);</span>
-<span id="L4443"><span class="lineNum">    4443</span>              : </span>
-<span id="L4444"><span class="lineNum">    4444</span>              :     Expr* visitBuiltinCastExpr(BuiltinCastExpr* expr);</span>
-<span id="L4445"><span class="lineNum">    4445</span>              : </span>
-<span id="L4446"><span class="lineNum">    4446</span>              :     Expr* visitTryExpr(TryExpr* expr);</span>
-<span id="L4447"><span class="lineNum">    4447</span>              : </span>
-<span id="L4448"><span class="lineNum">    4448</span>              :     Expr* visitIsTypeExpr(IsTypeExpr* expr);</span>
-<span id="L4449"><span class="lineNum">    4449</span>              : </span>
-<span id="L4450"><span class="lineNum">    4450</span>              :     Expr* visitAsTypeExpr(AsTypeExpr* expr);</span>
-<span id="L4451"><span class="lineNum">    4451</span>              : </span>
-<span id="L4452"><span class="lineNum">    4452</span>              :     Expr* visitExpandExpr(ExpandExpr* expr);</span>
-<span id="L4453"><span class="lineNum">    4453</span>              : </span>
-<span id="L4454"><span class="lineNum">    4454</span>              :     Expr* visitEachExpr(EachExpr* expr);</span>
-<span id="L4455"><span class="lineNum">    4455</span>              : </span>
-<span id="L4456"><span class="lineNum">    4456</span>              :     Expr* visitLambdaExpr(LambdaExpr* expr);</span>
-<span id="L4457"><span class="lineNum">    4457</span>              : </span>
-<span id="L4458"><span class="lineNum">    4458</span>              :     void maybeCheckKnownBuiltinInvocation(Expr* invokeExpr);</span>
-<span id="L4459"><span class="lineNum">    4459</span>              : </span>
-<span id="L4460"><span class="lineNum">    4460</span>              :     //</span>
-<span id="L4461"><span class="lineNum">    4461</span>              :     // Some syntax nodes should not occur in the concrete input syntax,</span>
-<span id="L4462"><span class="lineNum">    4462</span>              :     // and will only appear *after* checking is complete. We need to</span>
-<span id="L4463"><span class="lineNum">    4463</span>              :     // deal with this cases here, even if they are no-ops.</span>
-<span id="L4464"><span class="lineNum">    4464</span>              :     //</span>
-<span id="L4465"><span class="lineNum">    4465</span>              : </span>
-<span id="L4466"><span class="lineNum">    4466</span>              : #define CASE(NAME) \</span>
-<span id="L4467"><span class="lineNum">    4467</span>              :     Expr* visit##NAME(NAME* expr) { return expr; }</span>
-<span id="L4468"><span class="lineNum">    4468</span>              : </span>
-<span id="L4469"><span class="lineNum">    4469</span> <span class="tlaUNC">           0 :     CASE(DerefExpr)</span></span>
-<span id="L4470"><span class="lineNum">    4470</span> <span class="tlaUNC">           0 :     CASE(MakeRefExpr)</span></span>
-<span id="L4471"><span class="lineNum">    4471</span> <span class="tlaUNC">           0 :     CASE(MatrixSwizzleExpr)</span></span>
-<span id="L4472"><span class="lineNum">    4472</span> <span class="tlaUNC">           0 :     CASE(SwizzleExpr)</span></span>
-<span id="L4473"><span class="lineNum">    4473</span> <span class="tlaGNC">           1 :     CASE(OverloadedExpr)</span></span>
-<span id="L4474"><span class="lineNum">    4474</span> <span class="tlaGNC">           1 :     CASE(OverloadedExpr2)</span></span>
-<span id="L4475"><span class="lineNum">    4475</span> <span class="tlaUNC">           0 :     CASE(AggTypeCtorExpr)</span></span>
-<span id="L4476"><span class="lineNum">    4476</span> <span class="tlaUNC">           0 :     CASE(ModifierCastExpr)</span></span>
-<span id="L4477"><span class="lineNum">    4477</span> <span class="tlaUNC">           0 :     CASE(LetExpr)</span></span>
-<span id="L4478"><span class="lineNum">    4478</span> <span class="tlaUNC">           0 :     CASE(ExtractExistentialValueExpr)</span></span>
-<span id="L4479"><span class="lineNum">    4479</span> <span class="tlaUNC">           0 :     CASE(OpenRefExpr)</span></span>
-<span id="L4480"><span class="lineNum">    4480</span> <span class="tlaUNC">           0 :     CASE(MakeOptionalExpr)</span></span>
-<span id="L4481"><span class="lineNum">    4481</span> <span class="tlaUNC">           0 :     CASE(CastOptionalExpr)</span></span>
-<span id="L4482"><span class="lineNum">    4482</span> <span class="tlaUNC">           0 :     CASE(PartiallyAppliedGenericExpr)</span></span>
-<span id="L4483"><span class="lineNum">    4483</span> <span class="tlaUNC">           0 :     CASE(PackExpr)</span></span>
-<span id="L4484"><span class="lineNum">    4484</span>              : #undef CASE</span>
-<span id="L4485"><span class="lineNum">    4485</span>              : </span>
-<span id="L4486"><span class="lineNum">    4486</span>              :     Expr* visitStaticMemberExpr(StaticMemberExpr* expr);</span>
+<span id="L4433"><span class="lineNum">    4433</span>              :     Expr* visitSelectExpr(SelectExpr* expr);</span>
+<span id="L4434"><span class="lineNum">    4434</span>              : </span>
+<span id="L4435"><span class="lineNum">    4435</span>              :     Expr* visitVarExpr(VarExpr* expr);</span>
+<span id="L4436"><span class="lineNum">    4436</span>              : </span>
+<span id="L4437"><span class="lineNum">    4437</span>              :     Expr* visitTypeCastExpr(TypeCastExpr* expr);</span>
+<span id="L4438"><span class="lineNum">    4438</span>              : </span>
+<span id="L4439"><span class="lineNum">    4439</span>              :     Expr* visitBuiltinCastExpr(BuiltinCastExpr* expr);</span>
+<span id="L4440"><span class="lineNum">    4440</span>              : </span>
+<span id="L4441"><span class="lineNum">    4441</span>              :     Expr* visitTryExpr(TryExpr* expr);</span>
+<span id="L4442"><span class="lineNum">    4442</span>              : </span>
+<span id="L4443"><span class="lineNum">    4443</span>              :     Expr* visitIsTypeExpr(IsTypeExpr* expr);</span>
+<span id="L4444"><span class="lineNum">    4444</span>              : </span>
+<span id="L4445"><span class="lineNum">    4445</span>              :     Expr* visitAsTypeExpr(AsTypeExpr* expr);</span>
+<span id="L4446"><span class="lineNum">    4446</span>              : </span>
+<span id="L4447"><span class="lineNum">    4447</span>              :     Expr* visitExpandExpr(ExpandExpr* expr);</span>
+<span id="L4448"><span class="lineNum">    4448</span>              : </span>
+<span id="L4449"><span class="lineNum">    4449</span>              :     Expr* visitEachExpr(EachExpr* expr);</span>
+<span id="L4450"><span class="lineNum">    4450</span>              : </span>
+<span id="L4451"><span class="lineNum">    4451</span>              :     Expr* visitLambdaExpr(LambdaExpr* expr);</span>
+<span id="L4452"><span class="lineNum">    4452</span>              : </span>
+<span id="L4453"><span class="lineNum">    4453</span>              :     void maybeCheckKnownBuiltinInvocation(Expr* invokeExpr);</span>
+<span id="L4454"><span class="lineNum">    4454</span>              : </span>
+<span id="L4455"><span class="lineNum">    4455</span>              :     //</span>
+<span id="L4456"><span class="lineNum">    4456</span>              :     // Some syntax nodes should not occur in the concrete input syntax,</span>
+<span id="L4457"><span class="lineNum">    4457</span>              :     // and will only appear *after* checking is complete. We need to</span>
+<span id="L4458"><span class="lineNum">    4458</span>              :     // deal with this cases here, even if they are no-ops.</span>
+<span id="L4459"><span class="lineNum">    4459</span>              :     //</span>
+<span id="L4460"><span class="lineNum">    4460</span>              : </span>
+<span id="L4461"><span class="lineNum">    4461</span>              : #define CASE(NAME) \</span>
+<span id="L4462"><span class="lineNum">    4462</span>              :     Expr* visit##NAME(NAME* expr) { return expr; }</span>
+<span id="L4463"><span class="lineNum">    4463</span>              : </span>
+<span id="L4464"><span class="lineNum">    4464</span> <span class="tlaUNC">           0 :     CASE(DerefExpr)</span></span>
+<span id="L4465"><span class="lineNum">    4465</span> <span class="tlaUNC">           0 :     CASE(MakeRefExpr)</span></span>
+<span id="L4466"><span class="lineNum">    4466</span> <span class="tlaUNC">           0 :     CASE(MatrixSwizzleExpr)</span></span>
+<span id="L4467"><span class="lineNum">    4467</span> <span class="tlaUNC">           0 :     CASE(SwizzleExpr)</span></span>
+<span id="L4468"><span class="lineNum">    4468</span> <span class="tlaGNC">           1 :     CASE(OverloadedExpr)</span></span>
+<span id="L4469"><span class="lineNum">    4469</span> <span class="tlaGNC">           1 :     CASE(OverloadedExpr2)</span></span>
+<span id="L4470"><span class="lineNum">    4470</span> <span class="tlaUNC">           0 :     CASE(AggTypeCtorExpr)</span></span>
+<span id="L4471"><span class="lineNum">    4471</span> <span class="tlaUNC">           0 :     CASE(ModifierCastExpr)</span></span>
+<span id="L4472"><span class="lineNum">    4472</span> <span class="tlaUNC">           0 :     CASE(LetExpr)</span></span>
+<span id="L4473"><span class="lineNum">    4473</span> <span class="tlaUNC">           0 :     CASE(ExtractExistentialValueExpr)</span></span>
+<span id="L4474"><span class="lineNum">    4474</span> <span class="tlaUNC">           0 :     CASE(OpenRefExpr)</span></span>
+<span id="L4475"><span class="lineNum">    4475</span> <span class="tlaUNC">           0 :     CASE(MakeOptionalExpr)</span></span>
+<span id="L4476"><span class="lineNum">    4476</span> <span class="tlaUNC">           0 :     CASE(CastOptionalExpr)</span></span>
+<span id="L4477"><span class="lineNum">    4477</span> <span class="tlaUNC">           0 :     CASE(PartiallyAppliedGenericExpr)</span></span>
+<span id="L4478"><span class="lineNum">    4478</span> <span class="tlaUNC">           0 :     CASE(PackExpr)</span></span>
+<span id="L4479"><span class="lineNum">    4479</span>              : #undef CASE</span>
+<span id="L4480"><span class="lineNum">    4480</span>              : </span>
+<span id="L4481"><span class="lineNum">    4481</span>              :     Expr* visitStaticMemberExpr(StaticMemberExpr* expr);</span>
+<span id="L4482"><span class="lineNum">    4482</span>              : </span>
+<span id="L4483"><span class="lineNum">    4483</span>              :     Expr* visitMemberExpr(MemberExpr* expr);</span>
+<span id="L4484"><span class="lineNum">    4484</span>              : </span>
+<span id="L4485"><span class="lineNum">    4485</span>              :     Expr* visitInitializerListExpr(InitializerListExpr* expr);</span>
+<span id="L4486"><span class="lineNum">    4486</span>              :     Expr* visitMakeArrayFromElementExpr(MakeArrayFromElementExpr* expr);</span>
 <span id="L4487"><span class="lineNum">    4487</span>              : </span>
-<span id="L4488"><span class="lineNum">    4488</span>              :     Expr* visitMemberExpr(MemberExpr* expr);</span>
-<span id="L4489"><span class="lineNum">    4489</span>              : </span>
-<span id="L4490"><span class="lineNum">    4490</span>              :     Expr* visitInitializerListExpr(InitializerListExpr* expr);</span>
-<span id="L4491"><span class="lineNum">    4491</span>              :     Expr* visitMakeArrayFromElementExpr(MakeArrayFromElementExpr* expr);</span>
-<span id="L4492"><span class="lineNum">    4492</span>              : </span>
-<span id="L4493"><span class="lineNum">    4493</span>              :     Expr* visitThisExpr(ThisExpr* expr);</span>
-<span id="L4494"><span class="lineNum">    4494</span>              :     Expr* visitThisTypeExpr(ThisTypeExpr* expr);</span>
-<span id="L4495"><span class="lineNum">    4495</span>              :     Expr* visitHLSLUnsignedTypeExpr(HLSLUnsignedTypeExpr* expr);</span>
-<span id="L4496"><span class="lineNum">    4496</span>              :     Expr* visitThisInterfaceExpr(ThisInterfaceExpr* expr);</span>
-<span id="L4497"><span class="lineNum">    4497</span>              :     Expr* visitCastToSuperTypeExpr(CastToSuperTypeExpr* expr);</span>
-<span id="L4498"><span class="lineNum">    4498</span>              :     Expr* visitReturnValExpr(ReturnValExpr* expr);</span>
-<span id="L4499"><span class="lineNum">    4499</span>              :     Expr* visitAndTypeExpr(AndTypeExpr* expr);</span>
-<span id="L4500"><span class="lineNum">    4500</span>              :     Expr* visitPointerTypeExpr(PointerTypeExpr* expr);</span>
-<span id="L4501"><span class="lineNum">    4501</span>              :     Expr* visitModifiedTypeExpr(ModifiedTypeExpr* expr);</span>
-<span id="L4502"><span class="lineNum">    4502</span>              :     Expr* visitFuncTypeExpr(FuncTypeExpr* expr);</span>
-<span id="L4503"><span class="lineNum">    4503</span>              :     Expr* visitTupleTypeExpr(TupleTypeExpr* expr);</span>
-<span id="L4504"><span class="lineNum">    4504</span>              :     Expr* visitPackBranchTypeExpr(PackBranchTypeExpr* expr);</span>
-<span id="L4505"><span class="lineNum">    4505</span>              : </span>
-<span id="L4506"><span class="lineNum">    4506</span>              :     Expr* visitFuncAsTypeExpr(FuncAsTypeExpr* expr);</span>
-<span id="L4507"><span class="lineNum">    4507</span>              :     Expr* visitFuncTypeOfExpr(FuncTypeOfExpr* expr);</span>
-<span id="L4508"><span class="lineNum">    4508</span>              : </span>
-<span id="L4509"><span class="lineNum">    4509</span>              :     Expr* visitForwardDifferentiateExpr(ForwardDifferentiateExpr* expr);</span>
-<span id="L4510"><span class="lineNum">    4510</span>              :     Expr* visitBackwardDifferentiateExpr(BackwardDifferentiateExpr* expr);</span>
-<span id="L4511"><span class="lineNum">    4511</span>              :     Expr* visitApplyForBwdExpr(ApplyForBwdExpr* expr);</span>
-<span id="L4512"><span class="lineNum">    4512</span>              :     Expr* visitPrimalSubstituteExpr(PrimalSubstituteExpr* expr);</span>
-<span id="L4513"><span class="lineNum">    4513</span>              :     Expr* visitDispatchKernelExpr(DispatchKernelExpr* expr);</span>
-<span id="L4514"><span class="lineNum">    4514</span>              : </span>
-<span id="L4515"><span class="lineNum">    4515</span>              :     Expr* visitTreatAsDifferentiableExpr(TreatAsDifferentiableExpr* expr);</span>
+<span id="L4488"><span class="lineNum">    4488</span>              :     Expr* visitThisExpr(ThisExpr* expr);</span>
+<span id="L4489"><span class="lineNum">    4489</span>              :     Expr* visitThisTypeExpr(ThisTypeExpr* expr);</span>
+<span id="L4490"><span class="lineNum">    4490</span>              :     Expr* visitHLSLUnsignedTypeExpr(HLSLUnsignedTypeExpr* expr);</span>
+<span id="L4491"><span class="lineNum">    4491</span>              :     Expr* visitThisInterfaceExpr(ThisInterfaceExpr* expr);</span>
+<span id="L4492"><span class="lineNum">    4492</span>              :     Expr* visitCastToSuperTypeExpr(CastToSuperTypeExpr* expr);</span>
+<span id="L4493"><span class="lineNum">    4493</span>              :     Expr* visitReturnValExpr(ReturnValExpr* expr);</span>
+<span id="L4494"><span class="lineNum">    4494</span>              :     Expr* visitAndTypeExpr(AndTypeExpr* expr);</span>
+<span id="L4495"><span class="lineNum">    4495</span>              :     Expr* visitPointerTypeExpr(PointerTypeExpr* expr);</span>
+<span id="L4496"><span class="lineNum">    4496</span>              :     Expr* visitModifiedTypeExpr(ModifiedTypeExpr* expr);</span>
+<span id="L4497"><span class="lineNum">    4497</span>              :     Expr* visitFuncTypeExpr(FuncTypeExpr* expr);</span>
+<span id="L4498"><span class="lineNum">    4498</span>              :     Expr* visitTupleTypeExpr(TupleTypeExpr* expr);</span>
+<span id="L4499"><span class="lineNum">    4499</span>              :     Expr* visitPackBranchTypeExpr(PackBranchTypeExpr* expr);</span>
+<span id="L4500"><span class="lineNum">    4500</span>              : </span>
+<span id="L4501"><span class="lineNum">    4501</span>              :     Expr* visitFuncAsTypeExpr(FuncAsTypeExpr* expr);</span>
+<span id="L4502"><span class="lineNum">    4502</span>              :     Expr* visitFuncTypeOfExpr(FuncTypeOfExpr* expr);</span>
+<span id="L4503"><span class="lineNum">    4503</span>              : </span>
+<span id="L4504"><span class="lineNum">    4504</span>              :     Expr* visitForwardDifferentiateExpr(ForwardDifferentiateExpr* expr);</span>
+<span id="L4505"><span class="lineNum">    4505</span>              :     Expr* visitBackwardDifferentiateExpr(BackwardDifferentiateExpr* expr);</span>
+<span id="L4506"><span class="lineNum">    4506</span>              :     Expr* visitApplyForBwdExpr(ApplyForBwdExpr* expr);</span>
+<span id="L4507"><span class="lineNum">    4507</span>              :     Expr* visitPrimalSubstituteExpr(PrimalSubstituteExpr* expr);</span>
+<span id="L4508"><span class="lineNum">    4508</span>              :     Expr* visitDispatchKernelExpr(DispatchKernelExpr* expr);</span>
+<span id="L4509"><span class="lineNum">    4509</span>              : </span>
+<span id="L4510"><span class="lineNum">    4510</span>              :     Expr* visitTreatAsDifferentiableExpr(TreatAsDifferentiableExpr* expr);</span>
+<span id="L4511"><span class="lineNum">    4511</span>              : </span>
+<span id="L4512"><span class="lineNum">    4512</span>              :     Expr* visitGetArrayLengthExpr(GetArrayLengthExpr* expr);</span>
+<span id="L4513"><span class="lineNum">    4513</span>              : </span>
+<span id="L4514"><span class="lineNum">    4514</span>              :     Expr* visitPackQueryExpr(PackQueryExpr* expr);</span>
+<span id="L4515"><span class="lineNum">    4515</span>              :     Expr* visitShapePackTransformExpr(ShapePackTransformExpr* expr);</span>
 <span id="L4516"><span class="lineNum">    4516</span>              : </span>
-<span id="L4517"><span class="lineNum">    4517</span>              :     Expr* visitGetArrayLengthExpr(GetArrayLengthExpr* expr);</span>
+<span id="L4517"><span class="lineNum">    4517</span>              :     Expr* visitDefaultConstructExpr(DefaultConstructExpr* expr);</span>
 <span id="L4518"><span class="lineNum">    4518</span>              : </span>
-<span id="L4519"><span class="lineNum">    4519</span>              :     Expr* visitPackQueryExpr(PackQueryExpr* expr);</span>
-<span id="L4520"><span class="lineNum">    4520</span>              :     Expr* visitShapePackTransformExpr(ShapePackTransformExpr* expr);</span>
-<span id="L4521"><span class="lineNum">    4521</span>              : </span>
-<span id="L4522"><span class="lineNum">    4522</span>              :     Expr* visitDefaultConstructExpr(DefaultConstructExpr* expr);</span>
-<span id="L4523"><span class="lineNum">    4523</span>              : </span>
-<span id="L4524"><span class="lineNum">    4524</span>              :     Expr* visitDetachExpr(DetachExpr* expr);</span>
+<span id="L4519"><span class="lineNum">    4519</span>              :     Expr* visitDetachExpr(DetachExpr* expr);</span>
+<span id="L4520"><span class="lineNum">    4520</span>              : </span>
+<span id="L4521"><span class="lineNum">    4521</span>              :     Expr* visitSPIRVAsmExpr(SPIRVAsmExpr*);</span>
+<span id="L4522"><span class="lineNum">    4522</span>              : </span>
+<span id="L4523"><span class="lineNum">    4523</span>              :     /// Perform semantic checking on a `modifier` that is being applied to the given `type`</span>
+<span id="L4524"><span class="lineNum">    4524</span>              :     Val* checkTypeModifier(Modifier* modifier, Type* type);</span>
 <span id="L4525"><span class="lineNum">    4525</span>              : </span>
-<span id="L4526"><span class="lineNum">    4526</span>              :     Expr* visitSPIRVAsmExpr(SPIRVAsmExpr*);</span>
-<span id="L4527"><span class="lineNum">    4527</span>              : </span>
-<span id="L4528"><span class="lineNum">    4528</span>              :     /// Perform semantic checking on a `modifier` that is being applied to the given `type`</span>
-<span id="L4529"><span class="lineNum">    4529</span>              :     Val* checkTypeModifier(Modifier* modifier, Type* type);</span>
-<span id="L4530"><span class="lineNum">    4530</span>              : </span>
-<span id="L4531"><span class="lineNum">    4531</span>              : private:</span>
-<span id="L4532"><span class="lineNum">    4532</span>              :     // Convert the logic operator expression to not use &#x27;InvokeExpr&#x27; type</span>
-<span id="L4533"><span class="lineNum">    4533</span>              :     Expr* convertToLogicOperatorExpr(InvokeExpr* expr);</span>
-<span id="L4534"><span class="lineNum">    4534</span>              : </span>
-<span id="L4535"><span class="lineNum">    4535</span>              :     // Recognize an ordinary builtin operator on builtin scalar/vector/matrix operands and</span>
-<span id="L4536"><span class="lineNum">    4536</span>              :     // rewrite it directly to a `BuiltinOperatorExpr` carrying the resolved `BuiltinOperationKind`,</span>
-<span id="L4537"><span class="lineNum">    4537</span>              :     // returning null when the operator should instead go through normal overload resolution.</span>
-<span id="L4538"><span class="lineNum">    4538</span>              :     //</span>
-<span id="L4539"><span class="lineNum">    4539</span>              :     // This exists for performance: the vast majority of operators in real shader code are builtin</span>
-<span id="L4540"><span class="lineNum">    4540</span>              :     // arithmetic/comparison/bitwise/unary ops on numeric scalars/vectors/matrices, and routing</span>
-<span id="L4541"><span class="lineNum">    4541</span>              :     // each one through full generic `operator OP` overload resolution (candidate collection,</span>
-<span id="L4542"><span class="lineNum">    4542</span>              :     // inference, coercion) is a large front-end cost. Handling them here lets the common case skip</span>
-<span id="L4543"><span class="lineNum">    4543</span>              :     // all of that and lower straight to the corresponding builtin IR op.</span>
-<span id="L4544"><span class="lineNum">    4544</span>              :     //</span>
-<span id="L4545"><span class="lineNum">    4545</span>              :     // Recognized: `+ - * / %`, `== != &lt; &gt; &lt;= &gt;=`, `&amp; | ^ &lt;&lt; &gt;&gt;`, and unary `- ! ~` on builtin</span>
-<span id="L4546"><span class="lineNum">    4546</span>              :     // integer/floating-point/bool operands (same-type operands as-is; different builtin types</span>
-<span id="L4547"><span class="lineNum">    4547</span>              :     // promoted via `getBuiltinArithmeticCommonType`). Returns null to fall back to normal</span>
-<span id="L4548"><span class="lineNum">    4548</span>              :     // resolution for: the short-circuiting `&amp;&amp;`/`||`, mixed shapes that are not</span>
-<span id="L4549"><span class="lineNum">    4549</span>              :     // broadcast-compatible, user-defined operand types, and -- in GLSL operator scope only --</span>
-<span id="L4550"><span class="lineNum">    4550</span>              :     // matrix operands and vector equality (`==`/`!=`), whose semantics the `glsl` module owns.</span>
-<span id="L4551"><span class="lineNum">    4551</span>              :     Expr* convertToBuiltinArithmeticOp(InvokeExpr* expr);</span>
-<span id="L4552"><span class="lineNum">    4552</span>              : </span>
-<span id="L4553"><span class="lineNum">    4553</span>              :     // For a builtin binary operator `a OP b` whose operands have *different* builtin</span>
-<span id="L4554"><span class="lineNum">    4554</span>              :     // scalar/vector/matrix types, compute the common operand type that overload resolution</span>
-<span id="L4555"><span class="lineNum">    4555</span>              :     // would converge on (the &quot;usual arithmetic conversions&quot;): the result element type is the</span>
-<span id="L4556"><span class="lineNum">    4556</span>              :     // higher-ranked of the two base types (float beats int; among ints the larger size wins,</span>
-<span id="L4557"><span class="lineNum">    4557</span>              :     // and on a size tie the unsigned type wins) so neither operand needs a narrowing</span>
-<span id="L4558"><span class="lineNum">    4558</span>              :     // conversion, and the result shape broadcasts a scalar against a vector/matrix (requiring</span>
-<span id="L4559"><span class="lineNum">    4559</span>              :     // matching extents for vector-vector / matrix-matrix). Returns null when the operands are</span>
-<span id="L4560"><span class="lineNum">    4560</span>              :     // not both builtin numeric scalar/vector/matrix types or the shapes are not</span>
-<span id="L4561"><span class="lineNum">    4561</span>              :     // broadcast-compatible, in which case the caller falls back to overload resolution.</span>
-<span id="L4562"><span class="lineNum">    4562</span>              :     Type* getBuiltinArithmeticCommonType(Type* left, Type* right);</span>
+<span id="L4526"><span class="lineNum">    4526</span>              : private:</span>
+<span id="L4527"><span class="lineNum">    4527</span>              :     // Convert the logic operator expression to not use &#x27;InvokeExpr&#x27; type</span>
+<span id="L4528"><span class="lineNum">    4528</span>              :     Expr* convertToLogicOperatorExpr(InvokeExpr* expr);</span>
+<span id="L4529"><span class="lineNum">    4529</span>              : </span>
+<span id="L4530"><span class="lineNum">    4530</span>              :     // Recognize an ordinary builtin operator on builtin scalar/vector/matrix operands and</span>
+<span id="L4531"><span class="lineNum">    4531</span>              :     // rewrite it directly to a `BuiltinOperatorExpr` carrying the resolved `BuiltinOperationKind`,</span>
+<span id="L4532"><span class="lineNum">    4532</span>              :     // returning null when the operator should instead go through normal overload resolution.</span>
+<span id="L4533"><span class="lineNum">    4533</span>              :     //</span>
+<span id="L4534"><span class="lineNum">    4534</span>              :     // This exists for performance: the vast majority of operators in real shader code are builtin</span>
+<span id="L4535"><span class="lineNum">    4535</span>              :     // arithmetic/comparison/bitwise/unary ops on numeric scalars/vectors/matrices, and routing</span>
+<span id="L4536"><span class="lineNum">    4536</span>              :     // each one through full generic `operator OP` overload resolution (candidate collection,</span>
+<span id="L4537"><span class="lineNum">    4537</span>              :     // inference, coercion) is a large front-end cost. Handling them here lets the common case skip</span>
+<span id="L4538"><span class="lineNum">    4538</span>              :     // all of that and lower straight to the corresponding builtin IR op.</span>
+<span id="L4539"><span class="lineNum">    4539</span>              :     //</span>
+<span id="L4540"><span class="lineNum">    4540</span>              :     // Recognized: `+ - * / %`, `== != &lt; &gt; &lt;= &gt;=`, `&amp; | ^ &lt;&lt; &gt;&gt;`, and unary `- ! ~` on builtin</span>
+<span id="L4541"><span class="lineNum">    4541</span>              :     // integer/floating-point/bool operands (same-type operands as-is; different builtin types</span>
+<span id="L4542"><span class="lineNum">    4542</span>              :     // promoted via `getBuiltinArithmeticCommonType`). Returns null to fall back to normal</span>
+<span id="L4543"><span class="lineNum">    4543</span>              :     // resolution for: the short-circuiting `&amp;&amp;`/`||`, mixed shapes that are not</span>
+<span id="L4544"><span class="lineNum">    4544</span>              :     // broadcast-compatible, user-defined operand types, and -- in GLSL operator scope only --</span>
+<span id="L4545"><span class="lineNum">    4545</span>              :     // matrix operands and vector equality (`==`/`!=`), whose semantics the `glsl` module owns.</span>
+<span id="L4546"><span class="lineNum">    4546</span>              :     Expr* convertToBuiltinArithmeticOp(InvokeExpr* expr);</span>
+<span id="L4547"><span class="lineNum">    4547</span>              : </span>
+<span id="L4548"><span class="lineNum">    4548</span>              :     // For a builtin binary operator `a OP b` whose operands have *different* builtin</span>
+<span id="L4549"><span class="lineNum">    4549</span>              :     // scalar/vector/matrix types, compute the common operand type that overload resolution</span>
+<span id="L4550"><span class="lineNum">    4550</span>              :     // would converge on (the &quot;usual arithmetic conversions&quot;): the result element type is the</span>
+<span id="L4551"><span class="lineNum">    4551</span>              :     // higher-ranked of the two base types (float beats int; among ints the larger size wins,</span>
+<span id="L4552"><span class="lineNum">    4552</span>              :     // and on a size tie the unsigned type wins) so neither operand needs a narrowing</span>
+<span id="L4553"><span class="lineNum">    4553</span>              :     // conversion, and the result shape broadcasts a scalar against a vector/matrix (requiring</span>
+<span id="L4554"><span class="lineNum">    4554</span>              :     // matching extents for vector-vector / matrix-matrix). Returns null when the operands are</span>
+<span id="L4555"><span class="lineNum">    4555</span>              :     // not both builtin numeric scalar/vector/matrix types or the shapes are not</span>
+<span id="L4556"><span class="lineNum">    4556</span>              :     // broadcast-compatible, in which case the caller falls back to overload resolution.</span>
+<span id="L4557"><span class="lineNum">    4557</span>              :     Type* getBuiltinArithmeticCommonType(Type* left, Type* right);</span>
+<span id="L4558"><span class="lineNum">    4558</span>              : </span>
+<span id="L4559"><span class="lineNum">    4559</span>              :     // Return `target` with its element/base type replaced by `newElementType`, preserving the</span>
+<span id="L4560"><span class="lineNum">    4560</span>              :     // composite shape: a scalar becomes `newElementType`, a `vector&lt;T,N&gt;` becomes</span>
+<span id="L4561"><span class="lineNum">    4561</span>              :     // `vector&lt;newElementType,N&gt;`, and a `matrix&lt;T,R,C&gt;` becomes `matrix&lt;newElementType,R,C&gt;`.</span>
+<span id="L4562"><span class="lineNum">    4562</span>              :     Type* substituteElementOfCompositeType(Type* target, Type* newElementType);</span>
 <span id="L4563"><span class="lineNum">    4563</span>              : </span>
-<span id="L4564"><span class="lineNum">    4564</span>              :     // Return `target` with its element/base type replaced by `newElementType`, preserving the</span>
-<span id="L4565"><span class="lineNum">    4565</span>              :     // composite shape: a scalar becomes `newElementType`, a `vector&lt;T,N&gt;` becomes</span>
-<span id="L4566"><span class="lineNum">    4566</span>              :     // `vector&lt;newElementType,N&gt;`, and a `matrix&lt;T,R,C&gt;` becomes `matrix&lt;newElementType,R,C&gt;`.</span>
-<span id="L4567"><span class="lineNum">    4567</span>              :     Type* substituteElementOfCompositeType(Type* target, Type* newElementType);</span>
-<span id="L4568"><span class="lineNum">    4568</span>              : </span>
-<span id="L4569"><span class="lineNum">    4569</span>              :     // Coerce the operands of a builtin binary operator to the common operand type that overload</span>
-<span id="L4570"><span class="lineNum">    4570</span>              :     // resolution would have selected (via `getBuiltinArithmeticCommonType`), and return that</span>
-<span id="L4571"><span class="lineNum">    4571</span>              :     // type. Each operand is converted to its *own* shape with the common element base (so e.g. a</span>
-<span id="L4572"><span class="lineNum">    4572</span>              :     // `vector * scalar` stays a two-shape operation that backends can lower to a vector-times-</span>
-<span id="L4573"><span class="lineNum">    4573</span>              :     // scalar instruction). `outLeftArg`/`outRightArg` receive the (possibly coerced) operand</span>
-<span id="L4574"><span class="lineNum">    4574</span>              :     // expressions. Operands that are already the same type are returned unchanged. Returns null</span>
-<span id="L4575"><span class="lineNum">    4575</span>              :     // when the operands are not broadcast-compatible builtin numeric types or a coercion fails,</span>
-<span id="L4576"><span class="lineNum">    4576</span>              :     // signalling that the fast-path conversion should be abandoned.</span>
-<span id="L4577"><span class="lineNum">    4577</span>              :     Type* coerceOperandsOfBuiltinBinaryExpr(</span>
-<span id="L4578"><span class="lineNum">    4578</span>              :         Expr* leftArg,</span>
-<span id="L4579"><span class="lineNum">    4579</span>              :         Expr* rightArg,</span>
-<span id="L4580"><span class="lineNum">    4580</span>              :         Expr*&amp; outLeftArg,</span>
-<span id="L4581"><span class="lineNum">    4581</span>              :         Expr*&amp; outRightArg);</span>
-<span id="L4582"><span class="lineNum">    4582</span>              : </span>
-<span id="L4583"><span class="lineNum">    4583</span>              :     /// The scalar family (integer, floating-point, or boolean) that an operand element type is</span>
-<span id="L4584"><span class="lineNum">    4584</span>              :     /// known to belong to for the purposes of the builtin-operator fast path. All three fields</span>
-<span id="L4585"><span class="lineNum">    4585</span>              :     /// are false when the type is not known to belong to any of them.</span>
-<span id="L4586"><span class="lineNum">    4586</span>              :     struct BuiltinArithmeticElementFamily</span>
-<span id="L4587"><span class="lineNum">    4587</span>              :     {</span>
-<span id="L4588"><span class="lineNum">    4588</span>              :         bool isInteger = false;</span>
-<span id="L4589"><span class="lineNum">    4589</span>              :         bool isFloat = false;</span>
-<span id="L4590"><span class="lineNum">    4590</span>              :         // True only for a genuinely `bool`-typed element: the concrete-type branch of</span>
-<span id="L4591"><span class="lineNum">    4591</span>              :         // `classifyBuiltinArithmeticElementType` sets this from `baseType == BaseType::Bool`</span>
-<span id="L4592"><span class="lineNum">    4592</span>              :         // directly. There is no sealed marker interface implemented by `bool` alone --</span>
-<span id="L4593"><span class="lineNum">    4593</span>              :         // `__BuiltinLogicalType` (see `isLogical` below) is implemented by `bool` AND every</span>
-<span id="L4594"><span class="lineNum">    4594</span>              :         // builtin integer type -- so a generic type parameter can never prove `isBool`; only a</span>
-<span id="L4595"><span class="lineNum">    4595</span>              :         // concrete `bool` operand can. Required for unary logical-not (`!`), whose result must</span>
-<span id="L4596"><span class="lineNum">    4596</span>              :         // be `bool`-shaped: taking the fast path for a `__BuiltinLogicalType`-constrained</span>
-<span id="L4597"><span class="lineNum">    4597</span>              :         // generic instantiated with an integer would build a `Not` node typed as that integer.</span>
-<span id="L4598"><span class="lineNum">    4598</span>              :         bool isBool = false;</span>
-<span id="L4599"><span class="lineNum">    4599</span>              :         // True for a *generic* element type that conforms to `__BuiltinLogicalType` (`bool` and</span>
-<span id="L4600"><span class="lineNum">    4600</span>              :         // every builtin integer type; see core.meta.slang) -- the concrete-type branch never sets</span>
-<span id="L4601"><span class="lineNum">    4601</span>              :         // this, since a concrete `bool`/integer is already fully classified by `isBool`/</span>
-<span id="L4602"><span class="lineNum">    4602</span>              :         // `isInteger`. Safe for an operator whose builtin semantics don&#x27;t depend on which of</span>
-<span id="L4603"><span class="lineNum">    4603</span>              :         // those the element actually is, e.g. equality (`==`/`!=`, which lower to the same</span>
-<span id="L4604"><span class="lineNum">    4604</span>              :         // `kIROp_Eql`/`kIROp_Neq` regardless): a generic parameter constrained only to</span>
-<span id="L4605"><span class="lineNum">    4605</span>              :         // `__BuiltinLogicalType` still needs equality fast-pathed, but must NOT take the</span>
-<span id="L4606"><span class="lineNum">    4606</span>              :         // logical-not fast path -- that&#x27;s exactly why this is a separate flag from `isBool`</span>
-<span id="L4607"><span class="lineNum">    4607</span>              :         // rather than folded into it.</span>
-<span id="L4608"><span class="lineNum">    4608</span>              :         bool isLogical = false;</span>
-<span id="L4609"><span class="lineNum">    4609</span> <span class="tlaGNC">           1 :         bool isKnown() const { return isInteger || isFloat || isBool || isLogical; }</span></span>
-<span id="L4610"><span class="lineNum">    4610</span>              :     };</span>
-<span id="L4611"><span class="lineNum">    4611</span>              : </span>
-<span id="L4612"><span class="lineNum">    4612</span>              :     /// Classifies `elementType`&#x27;s scalar family for the builtin-operator fast path in</span>
-<span id="L4613"><span class="lineNum">    4613</span>              :     /// `convertToBuiltinArithmeticOp`. A concrete `BasicExpressionType` (`int`, `float`, `bool`,</span>
-<span id="L4614"><span class="lineNum">    4614</span>              :     /// ...) is classified directly from `BaseTypeInfo`. A generic type parameter constrained to</span>
-<span id="L4615"><span class="lineNum">    4615</span>              :     /// one of the `[sealed]` builtin marker interfaces (`__BuiltinIntegerType`,</span>
-<span id="L4616"><span class="lineNum">    4616</span>              :     /// `__BuiltinFloatingPointType`, `__BuiltinLogicalType`; see core.meta.slang) is classified</span>
-<span id="L4617"><span class="lineNum">    4617</span>              :     /// the same way: those interfaces are sealed, so only the compiler&#x27;s own builtin scalar types</span>
-<span id="L4618"><span class="lineNum">    4618</span>              :     /// can conform to them, which means every legal instantiation of such a parameter is itself a</span>
-<span id="L4619"><span class="lineNum">    4619</span>              :     /// `BasicExpressionType` of that family, even though the parameter is not one yet. Any other</span>
-<span id="L4620"><span class="lineNum">    4620</span>              :     /// type (aggregates, an unconstrained or differently-constrained generic parameter, etc.)</span>
-<span id="L4621"><span class="lineNum">    4621</span>              :     /// classifies as unknown, which the caller treats as &quot;not eligible for the fast path.&quot;</span>
-<span id="L4622"><span class="lineNum">    4622</span>              :     BuiltinArithmeticElementFamily classifyBuiltinArithmeticElementType(Type* elementType);</span>
-<span id="L4623"><span class="lineNum">    4623</span>              : </span>
-<span id="L4624"><span class="lineNum">    4624</span>              :     // True when builtin operators may have GLSL rather than Slang/HLSL semantics: either</span>
-<span id="L4625"><span class="lineNum">    4625</span>              :     // `-allow-glsl` is set, or the `glsl` module is in scope (its `operator*` overloads</span>
-<span id="L4626"><span class="lineNum">    4626</span>              :     // make `mat * mat` a matrix product). The builtin-operator fast path is disabled then.</span>
-<span id="L4627"><span class="lineNum">    4627</span>              :     bool isGLSLOperatorScope();</span>
-<span id="L4628"><span class="lineNum">    4628</span>              : };</span>
-<span id="L4629"><span class="lineNum">    4629</span>              : </span>
-<span id="L4630"><span class="lineNum">    4630</span>              : struct SemanticsStmtVisitor : public SemanticsVisitor, StmtVisitor&lt;SemanticsStmtVisitor&gt;</span>
-<span id="L4631"><span class="lineNum">    4631</span>              : {</span>
-<span id="L4632"><span class="lineNum">    4632</span>              :     SemanticsStmtVisitor(SemanticsContext const&amp; outer)</span>
-<span id="L4633"><span class="lineNum">    4633</span>              :         : SemanticsVisitor(outer)</span>
-<span id="L4634"><span class="lineNum">    4634</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L4635"><span class="lineNum">    4635</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L4636"><span class="lineNum">    4636</span>              : </span>
-<span id="L4637"><span class="lineNum">    4637</span> <span class="tlaGNC">           1 :     FunctionDeclBase* getParentFunc() { return m_parentFunc; }</span></span>
-<span id="L4638"><span class="lineNum">    4638</span>              : </span>
-<span id="L4639"><span class="lineNum">    4639</span>              :     void checkStmt(Stmt* stmt);</span>
-<span id="L4640"><span class="lineNum">    4640</span>              : </span>
-<span id="L4641"><span class="lineNum">    4641</span>              :     Stmt* findOuterStmtWithLabel(Name* label);</span>
-<span id="L4642"><span class="lineNum">    4642</span>              : </span>
-<span id="L4643"><span class="lineNum">    4643</span>              :     void visitDeclStmt(DeclStmt* stmt);</span>
-<span id="L4644"><span class="lineNum">    4644</span>              : </span>
-<span id="L4645"><span class="lineNum">    4645</span>              :     /// Check `decl` and its initializer, make the local declaration visible afterward,</span>
-<span id="L4646"><span class="lineNum">    4646</span>              :     /// and register the lambda captures in its initializer.</span>
-<span id="L4647"><span class="lineNum">    4647</span>              :     ///</span>
-<span id="L4648"><span class="lineNum">    4648</span>              :     /// Earlier bindings remain available while the initializer is checked.</span>
-<span id="L4649"><span class="lineNum">    4649</span>              :     /// Once an HLSL loop variable is visible, lookup selects it over earlier locals of the same</span>
-<span id="L4650"><span class="lineNum">    4650</span>              :     /// name in its scope.</span>
-<span id="L4651"><span class="lineNum">    4651</span>              :     void checkDeclAtDeclarationPoint(Decl* decl);</span>
-<span id="L4652"><span class="lineNum">    4652</span>              : </span>
-<span id="L4653"><span class="lineNum">    4653</span>              :     void visitBlockStmt(BlockStmt* stmt);</span>
-<span id="L4654"><span class="lineNum">    4654</span>              : </span>
-<span id="L4655"><span class="lineNum">    4655</span>              :     void visitSeqStmt(SeqStmt* stmt);</span>
-<span id="L4656"><span class="lineNum">    4656</span>              : </span>
-<span id="L4657"><span class="lineNum">    4657</span>              :     void visitLabelStmt(LabelStmt* stmt);</span>
-<span id="L4658"><span class="lineNum">    4658</span>              : </span>
-<span id="L4659"><span class="lineNum">    4659</span>              :     void visitBreakStmt(BreakStmt* stmt);</span>
-<span id="L4660"><span class="lineNum">    4660</span>              : </span>
-<span id="L4661"><span class="lineNum">    4661</span>              :     void visitContinueStmt(ContinueStmt* stmt);</span>
-<span id="L4662"><span class="lineNum">    4662</span>              : </span>
-<span id="L4663"><span class="lineNum">    4663</span>              :     void visitDoWhileStmt(DoWhileStmt* stmt);</span>
-<span id="L4664"><span class="lineNum">    4664</span>              : </span>
-<span id="L4665"><span class="lineNum">    4665</span>              :     void visitForStmt(ForStmt* stmt);</span>
-<span id="L4666"><span class="lineNum">    4666</span>              : </span>
-<span id="L4667"><span class="lineNum">    4667</span>              :     void visitCompileTimeForStmt(CompileTimeForStmt* stmt);</span>
-<span id="L4668"><span class="lineNum">    4668</span>              : </span>
-<span id="L4669"><span class="lineNum">    4669</span>              :     void visitSwitchStmt(SwitchStmt* stmt);</span>
-<span id="L4670"><span class="lineNum">    4670</span>              : </span>
-<span id="L4671"><span class="lineNum">    4671</span>              :     void visitCaseStmt(CaseStmt* stmt);</span>
-<span id="L4672"><span class="lineNum">    4672</span>              : </span>
-<span id="L4673"><span class="lineNum">    4673</span>              :     void visitTargetSwitchStmt(TargetSwitchStmt* stmt);</span>
-<span id="L4674"><span class="lineNum">    4674</span>              : </span>
-<span id="L4675"><span class="lineNum">    4675</span>              :     void visitTargetCaseStmt(TargetCaseStmt* stmt);</span>
-<span id="L4676"><span class="lineNum">    4676</span>              : </span>
-<span id="L4677"><span class="lineNum">    4677</span>              :     void visitIntrinsicAsmStmt(IntrinsicAsmStmt*);</span>
-<span id="L4678"><span class="lineNum">    4678</span>              : </span>
-<span id="L4679"><span class="lineNum">    4679</span>              :     void visitDefaultStmt(DefaultStmt* stmt);</span>
-<span id="L4680"><span class="lineNum">    4680</span>              : </span>
-<span id="L4681"><span class="lineNum">    4681</span>              :     void visitIfStmt(IfStmt* stmt);</span>
-<span id="L4682"><span class="lineNum">    4682</span>              : </span>
-<span id="L4683"><span class="lineNum">    4683</span>              :     void visitUnparsedStmt(UnparsedStmt*);</span>
-<span id="L4684"><span class="lineNum">    4684</span>              : </span>
-<span id="L4685"><span class="lineNum">    4685</span>              :     void visitEmptyStmt(EmptyStmt*);</span>
-<span id="L4686"><span class="lineNum">    4686</span>              : </span>
-<span id="L4687"><span class="lineNum">    4687</span>              :     void visitDiscardStmt(DiscardStmt*);</span>
-<span id="L4688"><span class="lineNum">    4688</span>              : </span>
-<span id="L4689"><span class="lineNum">    4689</span>              :     void visitReturnStmt(ReturnStmt* stmt);</span>
-<span id="L4690"><span class="lineNum">    4690</span>              : </span>
-<span id="L4691"><span class="lineNum">    4691</span>              :     void visitDeferStmt(DeferStmt* stmt);</span>
-<span id="L4692"><span class="lineNum">    4692</span>              : </span>
-<span id="L4693"><span class="lineNum">    4693</span>              :     void visitThrowStmt(ThrowStmt* stmt);</span>
-<span id="L4694"><span class="lineNum">    4694</span>              : </span>
-<span id="L4695"><span class="lineNum">    4695</span>              :     void visitCatchStmt(CatchStmt* stmt);</span>
-<span id="L4696"><span class="lineNum">    4696</span>              : </span>
-<span id="L4697"><span class="lineNum">    4697</span>              :     void visitWhileStmt(WhileStmt* stmt);</span>
-<span id="L4698"><span class="lineNum">    4698</span>              : </span>
-<span id="L4699"><span class="lineNum">    4699</span>              :     void visitGpuForeachStmt(GpuForeachStmt* stmt);</span>
-<span id="L4700"><span class="lineNum">    4700</span>              : </span>
-<span id="L4701"><span class="lineNum">    4701</span>              :     void visitExpressionStmt(ExpressionStmt* stmt);</span>
-<span id="L4702"><span class="lineNum">    4702</span>              : </span>
-<span id="L4703"><span class="lineNum">    4703</span>              :     void visitRequireCapabilityStmt(RequireCapabilityStmt* stmt);</span>
+<span id="L4564"><span class="lineNum">    4564</span>              :     // Coerce the operands of a builtin binary operator to the common operand type that overload</span>
+<span id="L4565"><span class="lineNum">    4565</span>              :     // resolution would have selected (via `getBuiltinArithmeticCommonType`), and return that</span>
+<span id="L4566"><span class="lineNum">    4566</span>              :     // type. Each operand is converted to its *own* shape with the common element base (so e.g. a</span>
+<span id="L4567"><span class="lineNum">    4567</span>              :     // `vector * scalar` stays a two-shape operation that backends can lower to a vector-times-</span>
+<span id="L4568"><span class="lineNum">    4568</span>              :     // scalar instruction). `outLeftArg`/`outRightArg` receive the (possibly coerced) operand</span>
+<span id="L4569"><span class="lineNum">    4569</span>              :     // expressions. Operands that are already the same type are returned unchanged. Returns null</span>
+<span id="L4570"><span class="lineNum">    4570</span>              :     // when the operands are not broadcast-compatible builtin numeric types or a coercion fails,</span>
+<span id="L4571"><span class="lineNum">    4571</span>              :     // signalling that the fast-path conversion should be abandoned.</span>
+<span id="L4572"><span class="lineNum">    4572</span>              :     Type* coerceOperandsOfBuiltinBinaryExpr(</span>
+<span id="L4573"><span class="lineNum">    4573</span>              :         Expr* leftArg,</span>
+<span id="L4574"><span class="lineNum">    4574</span>              :         Expr* rightArg,</span>
+<span id="L4575"><span class="lineNum">    4575</span>              :         Expr*&amp; outLeftArg,</span>
+<span id="L4576"><span class="lineNum">    4576</span>              :         Expr*&amp; outRightArg);</span>
+<span id="L4577"><span class="lineNum">    4577</span>              : </span>
+<span id="L4578"><span class="lineNum">    4578</span>              :     /// The scalar family (integer, floating-point, or boolean) that an operand element type is</span>
+<span id="L4579"><span class="lineNum">    4579</span>              :     /// known to belong to for the purposes of the builtin-operator fast path. All three fields</span>
+<span id="L4580"><span class="lineNum">    4580</span>              :     /// are false when the type is not known to belong to any of them.</span>
+<span id="L4581"><span class="lineNum">    4581</span>              :     struct BuiltinArithmeticElementFamily</span>
+<span id="L4582"><span class="lineNum">    4582</span>              :     {</span>
+<span id="L4583"><span class="lineNum">    4583</span>              :         bool isInteger = false;</span>
+<span id="L4584"><span class="lineNum">    4584</span>              :         bool isFloat = false;</span>
+<span id="L4585"><span class="lineNum">    4585</span>              :         // True only for a genuinely `bool`-typed element: the concrete-type branch of</span>
+<span id="L4586"><span class="lineNum">    4586</span>              :         // `classifyBuiltinArithmeticElementType` sets this from `baseType == BaseType::Bool`</span>
+<span id="L4587"><span class="lineNum">    4587</span>              :         // directly. There is no sealed marker interface implemented by `bool` alone --</span>
+<span id="L4588"><span class="lineNum">    4588</span>              :         // `__BuiltinLogicalType` (see `isLogical` below) is implemented by `bool` AND every</span>
+<span id="L4589"><span class="lineNum">    4589</span>              :         // builtin integer type -- so a generic type parameter can never prove `isBool`; only a</span>
+<span id="L4590"><span class="lineNum">    4590</span>              :         // concrete `bool` operand can. Required for unary logical-not (`!`), whose result must</span>
+<span id="L4591"><span class="lineNum">    4591</span>              :         // be `bool`-shaped: taking the fast path for a `__BuiltinLogicalType`-constrained</span>
+<span id="L4592"><span class="lineNum">    4592</span>              :         // generic instantiated with an integer would build a `Not` node typed as that integer.</span>
+<span id="L4593"><span class="lineNum">    4593</span>              :         bool isBool = false;</span>
+<span id="L4594"><span class="lineNum">    4594</span>              :         // True for a *generic* element type that conforms to `__BuiltinLogicalType` (`bool` and</span>
+<span id="L4595"><span class="lineNum">    4595</span>              :         // every builtin integer type; see core.meta.slang) -- the concrete-type branch never sets</span>
+<span id="L4596"><span class="lineNum">    4596</span>              :         // this, since a concrete `bool`/integer is already fully classified by `isBool`/</span>
+<span id="L4597"><span class="lineNum">    4597</span>              :         // `isInteger`. Safe for an operator whose builtin semantics don&#x27;t depend on which of</span>
+<span id="L4598"><span class="lineNum">    4598</span>              :         // those the element actually is, e.g. equality (`==`/`!=`, which lower to the same</span>
+<span id="L4599"><span class="lineNum">    4599</span>              :         // `kIROp_Eql`/`kIROp_Neq` regardless): a generic parameter constrained only to</span>
+<span id="L4600"><span class="lineNum">    4600</span>              :         // `__BuiltinLogicalType` still needs equality fast-pathed, but must NOT take the</span>
+<span id="L4601"><span class="lineNum">    4601</span>              :         // logical-not fast path -- that&#x27;s exactly why this is a separate flag from `isBool`</span>
+<span id="L4602"><span class="lineNum">    4602</span>              :         // rather than folded into it.</span>
+<span id="L4603"><span class="lineNum">    4603</span>              :         bool isLogical = false;</span>
+<span id="L4604"><span class="lineNum">    4604</span> <span class="tlaGNC">           1 :         bool isKnown() const { return isInteger || isFloat || isBool || isLogical; }</span></span>
+<span id="L4605"><span class="lineNum">    4605</span>              :     };</span>
+<span id="L4606"><span class="lineNum">    4606</span>              : </span>
+<span id="L4607"><span class="lineNum">    4607</span>              :     /// Classifies `elementType`&#x27;s scalar family for the builtin-operator fast path in</span>
+<span id="L4608"><span class="lineNum">    4608</span>              :     /// `convertToBuiltinArithmeticOp`. A concrete `BasicExpressionType` (`int`, `float`, `bool`,</span>
+<span id="L4609"><span class="lineNum">    4609</span>              :     /// ...) is classified directly from `BaseTypeInfo`. A generic type parameter constrained to</span>
+<span id="L4610"><span class="lineNum">    4610</span>              :     /// one of the `[sealed]` builtin marker interfaces (`__BuiltinIntegerType`,</span>
+<span id="L4611"><span class="lineNum">    4611</span>              :     /// `__BuiltinFloatingPointType`, `__BuiltinLogicalType`; see core.meta.slang) is classified</span>
+<span id="L4612"><span class="lineNum">    4612</span>              :     /// the same way: those interfaces are sealed, so only the compiler&#x27;s own builtin scalar types</span>
+<span id="L4613"><span class="lineNum">    4613</span>              :     /// can conform to them, which means every legal instantiation of such a parameter is itself a</span>
+<span id="L4614"><span class="lineNum">    4614</span>              :     /// `BasicExpressionType` of that family, even though the parameter is not one yet. Any other</span>
+<span id="L4615"><span class="lineNum">    4615</span>              :     /// type (aggregates, an unconstrained or differently-constrained generic parameter, etc.)</span>
+<span id="L4616"><span class="lineNum">    4616</span>              :     /// classifies as unknown, which the caller treats as &quot;not eligible for the fast path.&quot;</span>
+<span id="L4617"><span class="lineNum">    4617</span>              :     BuiltinArithmeticElementFamily classifyBuiltinArithmeticElementType(Type* elementType);</span>
+<span id="L4618"><span class="lineNum">    4618</span>              : </span>
+<span id="L4619"><span class="lineNum">    4619</span>              :     // True when builtin operators may have GLSL rather than Slang/HLSL semantics: either</span>
+<span id="L4620"><span class="lineNum">    4620</span>              :     // `-allow-glsl` is set, or the `glsl` module is in scope (its `operator*` overloads</span>
+<span id="L4621"><span class="lineNum">    4621</span>              :     // make `mat * mat` a matrix product). The builtin-operator fast path is disabled then.</span>
+<span id="L4622"><span class="lineNum">    4622</span>              :     bool isGLSLOperatorScope();</span>
+<span id="L4623"><span class="lineNum">    4623</span>              : };</span>
+<span id="L4624"><span class="lineNum">    4624</span>              : </span>
+<span id="L4625"><span class="lineNum">    4625</span>              : struct SemanticsStmtVisitor : public SemanticsVisitor, StmtVisitor&lt;SemanticsStmtVisitor&gt;</span>
+<span id="L4626"><span class="lineNum">    4626</span>              : {</span>
+<span id="L4627"><span class="lineNum">    4627</span>              :     SemanticsStmtVisitor(SemanticsContext const&amp; outer)</span>
+<span id="L4628"><span class="lineNum">    4628</span>              :         : SemanticsVisitor(outer)</span>
+<span id="L4629"><span class="lineNum">    4629</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L4630"><span class="lineNum">    4630</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L4631"><span class="lineNum">    4631</span>              : </span>
+<span id="L4632"><span class="lineNum">    4632</span> <span class="tlaGNC">           1 :     FunctionDeclBase* getParentFunc() { return m_parentFunc; }</span></span>
+<span id="L4633"><span class="lineNum">    4633</span>              : </span>
+<span id="L4634"><span class="lineNum">    4634</span>              :     void checkStmt(Stmt* stmt);</span>
+<span id="L4635"><span class="lineNum">    4635</span>              : </span>
+<span id="L4636"><span class="lineNum">    4636</span>              :     Stmt* findOuterStmtWithLabel(Name* label);</span>
+<span id="L4637"><span class="lineNum">    4637</span>              : </span>
+<span id="L4638"><span class="lineNum">    4638</span>              :     void visitDeclStmt(DeclStmt* stmt);</span>
+<span id="L4639"><span class="lineNum">    4639</span>              : </span>
+<span id="L4640"><span class="lineNum">    4640</span>              :     /// Check `decl` and its initializer, make the local declaration visible afterward,</span>
+<span id="L4641"><span class="lineNum">    4641</span>              :     /// and register the lambda captures in its initializer.</span>
+<span id="L4642"><span class="lineNum">    4642</span>              :     ///</span>
+<span id="L4643"><span class="lineNum">    4643</span>              :     /// Earlier bindings remain available while the initializer is checked.</span>
+<span id="L4644"><span class="lineNum">    4644</span>              :     /// Once an HLSL loop variable is visible, lookup selects it over earlier locals of the same</span>
+<span id="L4645"><span class="lineNum">    4645</span>              :     /// name in its scope.</span>
+<span id="L4646"><span class="lineNum">    4646</span>              :     void checkDeclAtDeclarationPoint(Decl* decl);</span>
+<span id="L4647"><span class="lineNum">    4647</span>              : </span>
+<span id="L4648"><span class="lineNum">    4648</span>              :     void visitBlockStmt(BlockStmt* stmt);</span>
+<span id="L4649"><span class="lineNum">    4649</span>              : </span>
+<span id="L4650"><span class="lineNum">    4650</span>              :     void visitSeqStmt(SeqStmt* stmt);</span>
+<span id="L4651"><span class="lineNum">    4651</span>              : </span>
+<span id="L4652"><span class="lineNum">    4652</span>              :     void visitLabelStmt(LabelStmt* stmt);</span>
+<span id="L4653"><span class="lineNum">    4653</span>              : </span>
+<span id="L4654"><span class="lineNum">    4654</span>              :     void visitBreakStmt(BreakStmt* stmt);</span>
+<span id="L4655"><span class="lineNum">    4655</span>              : </span>
+<span id="L4656"><span class="lineNum">    4656</span>              :     void visitContinueStmt(ContinueStmt* stmt);</span>
+<span id="L4657"><span class="lineNum">    4657</span>              : </span>
+<span id="L4658"><span class="lineNum">    4658</span>              :     void visitDoWhileStmt(DoWhileStmt* stmt);</span>
+<span id="L4659"><span class="lineNum">    4659</span>              : </span>
+<span id="L4660"><span class="lineNum">    4660</span>              :     void visitForStmt(ForStmt* stmt);</span>
+<span id="L4661"><span class="lineNum">    4661</span>              : </span>
+<span id="L4662"><span class="lineNum">    4662</span>              :     void visitCompileTimeForStmt(CompileTimeForStmt* stmt);</span>
+<span id="L4663"><span class="lineNum">    4663</span>              : </span>
+<span id="L4664"><span class="lineNum">    4664</span>              :     void visitSwitchStmt(SwitchStmt* stmt);</span>
+<span id="L4665"><span class="lineNum">    4665</span>              : </span>
+<span id="L4666"><span class="lineNum">    4666</span>              :     void visitCaseStmt(CaseStmt* stmt);</span>
+<span id="L4667"><span class="lineNum">    4667</span>              : </span>
+<span id="L4668"><span class="lineNum">    4668</span>              :     void visitTargetSwitchStmt(TargetSwitchStmt* stmt);</span>
+<span id="L4669"><span class="lineNum">    4669</span>              : </span>
+<span id="L4670"><span class="lineNum">    4670</span>              :     void visitTargetCaseStmt(TargetCaseStmt* stmt);</span>
+<span id="L4671"><span class="lineNum">    4671</span>              : </span>
+<span id="L4672"><span class="lineNum">    4672</span>              :     void visitIntrinsicAsmStmt(IntrinsicAsmStmt*);</span>
+<span id="L4673"><span class="lineNum">    4673</span>              : </span>
+<span id="L4674"><span class="lineNum">    4674</span>              :     void visitDefaultStmt(DefaultStmt* stmt);</span>
+<span id="L4675"><span class="lineNum">    4675</span>              : </span>
+<span id="L4676"><span class="lineNum">    4676</span>              :     void visitIfStmt(IfStmt* stmt);</span>
+<span id="L4677"><span class="lineNum">    4677</span>              : </span>
+<span id="L4678"><span class="lineNum">    4678</span>              :     void visitUnparsedStmt(UnparsedStmt*);</span>
+<span id="L4679"><span class="lineNum">    4679</span>              : </span>
+<span id="L4680"><span class="lineNum">    4680</span>              :     void visitEmptyStmt(EmptyStmt*);</span>
+<span id="L4681"><span class="lineNum">    4681</span>              : </span>
+<span id="L4682"><span class="lineNum">    4682</span>              :     void visitDiscardStmt(DiscardStmt*);</span>
+<span id="L4683"><span class="lineNum">    4683</span>              : </span>
+<span id="L4684"><span class="lineNum">    4684</span>              :     void visitReturnStmt(ReturnStmt* stmt);</span>
+<span id="L4685"><span class="lineNum">    4685</span>              : </span>
+<span id="L4686"><span class="lineNum">    4686</span>              :     void visitDeferStmt(DeferStmt* stmt);</span>
+<span id="L4687"><span class="lineNum">    4687</span>              : </span>
+<span id="L4688"><span class="lineNum">    4688</span>              :     void visitThrowStmt(ThrowStmt* stmt);</span>
+<span id="L4689"><span class="lineNum">    4689</span>              : </span>
+<span id="L4690"><span class="lineNum">    4690</span>              :     void visitCatchStmt(CatchStmt* stmt);</span>
+<span id="L4691"><span class="lineNum">    4691</span>              : </span>
+<span id="L4692"><span class="lineNum">    4692</span>              :     void visitWhileStmt(WhileStmt* stmt);</span>
+<span id="L4693"><span class="lineNum">    4693</span>              : </span>
+<span id="L4694"><span class="lineNum">    4694</span>              :     void visitGpuForeachStmt(GpuForeachStmt* stmt);</span>
+<span id="L4695"><span class="lineNum">    4695</span>              : </span>
+<span id="L4696"><span class="lineNum">    4696</span>              :     void visitExpressionStmt(ExpressionStmt* stmt);</span>
+<span id="L4697"><span class="lineNum">    4697</span>              : </span>
+<span id="L4698"><span class="lineNum">    4698</span>              :     void visitRequireCapabilityStmt(RequireCapabilityStmt* stmt);</span>
+<span id="L4699"><span class="lineNum">    4699</span>              : </span>
+<span id="L4700"><span class="lineNum">    4700</span>              :     // If `expr` is the discarded result of a call to a `[NoDiscard]` function,</span>
+<span id="L4701"><span class="lineNum">    4701</span>              :     // emit an error. Used for any context where an expression&#x27;s result is</span>
+<span id="L4702"><span class="lineNum">    4702</span>              :     // ignored (an expression statement, or a `for` loop&#x27;s side-effect expression).</span>
+<span id="L4703"><span class="lineNum">    4703</span>              :     void maybeDiagnoseDiscardedNoDiscardResult(Expr* expr);</span>
 <span id="L4704"><span class="lineNum">    4704</span>              : </span>
-<span id="L4705"><span class="lineNum">    4705</span>              :     // If `expr` is the discarded result of a call to a `[NoDiscard]` function,</span>
-<span id="L4706"><span class="lineNum">    4706</span>              :     // emit an error. Used for any context where an expression&#x27;s result is</span>
-<span id="L4707"><span class="lineNum">    4707</span>              :     // ignored (an expression statement, or a `for` loop&#x27;s side-effect expression).</span>
-<span id="L4708"><span class="lineNum">    4708</span>              :     void maybeDiagnoseDiscardedNoDiscardResult(Expr* expr);</span>
+<span id="L4705"><span class="lineNum">    4705</span>              :     // Try to infer the max number of iterations the loop will run.</span>
+<span id="L4706"><span class="lineNum">    4706</span>              :     void tryInferLoopMaxIterations(ForStmt* stmt);</span>
+<span id="L4707"><span class="lineNum">    4707</span>              : </span>
+<span id="L4708"><span class="lineNum">    4708</span>              :     void checkLoopInDifferentiableFunc(Stmt* stmt);</span>
 <span id="L4709"><span class="lineNum">    4709</span>              : </span>
-<span id="L4710"><span class="lineNum">    4710</span>              :     // Try to infer the max number of iterations the loop will run.</span>
-<span id="L4711"><span class="lineNum">    4711</span>              :     void tryInferLoopMaxIterations(ForStmt* stmt);</span>
+<span id="L4710"><span class="lineNum">    4710</span>              : private:</span>
+<span id="L4711"><span class="lineNum">    4711</span>              :     void validateCaseStmts(SwitchStmt* stmt, DiagnosticSink* sink);</span>
 <span id="L4712"><span class="lineNum">    4712</span>              : </span>
-<span id="L4713"><span class="lineNum">    4713</span>              :     void checkLoopInDifferentiableFunc(Stmt* stmt);</span>
-<span id="L4714"><span class="lineNum">    4714</span>              : </span>
-<span id="L4715"><span class="lineNum">    4715</span>              : private:</span>
-<span id="L4716"><span class="lineNum">    4716</span>              :     void validateCaseStmts(SwitchStmt* stmt, DiagnosticSink* sink);</span>
-<span id="L4717"><span class="lineNum">    4717</span>              : </span>
-<span id="L4718"><span class="lineNum">    4718</span>              :     void generateUniqueIDForStmt(BreakableStmt* stmt);</span>
-<span id="L4719"><span class="lineNum">    4719</span>              : };</span>
-<span id="L4720"><span class="lineNum">    4720</span>              : </span>
-<span id="L4721"><span class="lineNum">    4721</span>              : struct SemanticsDeclVisitorBase : public SemanticsVisitor</span>
-<span id="L4722"><span class="lineNum">    4722</span>              : {</span>
-<span id="L4723"><span class="lineNum">    4723</span>              :     SemanticsDeclVisitorBase(SemanticsContext const&amp; outer)</span>
-<span id="L4724"><span class="lineNum">    4724</span>              :         : SemanticsVisitor(outer)</span>
-<span id="L4725"><span class="lineNum">    4725</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L4726"><span class="lineNum">    4726</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L4713"><span class="lineNum">    4713</span>              :     void generateUniqueIDForStmt(BreakableStmt* stmt);</span>
+<span id="L4714"><span class="lineNum">    4714</span>              : };</span>
+<span id="L4715"><span class="lineNum">    4715</span>              : </span>
+<span id="L4716"><span class="lineNum">    4716</span>              : struct SemanticsDeclVisitorBase : public SemanticsVisitor</span>
+<span id="L4717"><span class="lineNum">    4717</span>              : {</span>
+<span id="L4718"><span class="lineNum">    4718</span>              :     SemanticsDeclVisitorBase(SemanticsContext const&amp; outer)</span>
+<span id="L4719"><span class="lineNum">    4719</span>              :         : SemanticsVisitor(outer)</span>
+<span id="L4720"><span class="lineNum">    4720</span> <span class="tlaGNC">           1 :     {</span></span>
+<span id="L4721"><span class="lineNum">    4721</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L4722"><span class="lineNum">    4722</span>              : </span>
+<span id="L4723"><span class="lineNum">    4723</span>              :     void checkBodyStmt(Stmt* stmt, FunctionDeclBase* parentDecl)</span>
+<span id="L4724"><span class="lineNum">    4724</span>              :     {</span>
+<span id="L4725"><span class="lineNum">    4725</span>              :         checkStmt(stmt, withParentFunc(parentDecl));</span>
+<span id="L4726"><span class="lineNum">    4726</span>              :     }</span>
 <span id="L4727"><span class="lineNum">    4727</span>              : </span>
-<span id="L4728"><span class="lineNum">    4728</span>              :     void checkBodyStmt(Stmt* stmt, FunctionDeclBase* parentDecl)</span>
-<span id="L4729"><span class="lineNum">    4729</span>              :     {</span>
-<span id="L4730"><span class="lineNum">    4730</span>              :         checkStmt(stmt, withParentFunc(parentDecl));</span>
-<span id="L4731"><span class="lineNum">    4731</span>              :     }</span>
+<span id="L4728"><span class="lineNum">    4728</span>              :     void checkModule(ModuleDecl* programNode);</span>
+<span id="L4729"><span class="lineNum">    4729</span>              : </span>
+<span id="L4730"><span class="lineNum">    4730</span>              :     ConstructorDecl* createCtor(AggTypeDecl* decl, DeclVisibility ctorVisibility);</span>
+<span id="L4731"><span class="lineNum">    4731</span>              : };</span>
 <span id="L4732"><span class="lineNum">    4732</span>              : </span>
-<span id="L4733"><span class="lineNum">    4733</span>              :     void checkModule(ModuleDecl* programNode);</span>
+<span id="L4733"><span class="lineNum">    4733</span>              : bool isUnsizedArrayType(Type* type);</span>
 <span id="L4734"><span class="lineNum">    4734</span>              : </span>
-<span id="L4735"><span class="lineNum">    4735</span>              :     ConstructorDecl* createCtor(AggTypeDecl* decl, DeclVisibility ctorVisibility);</span>
-<span id="L4736"><span class="lineNum">    4736</span>              : };</span>
-<span id="L4737"><span class="lineNum">    4737</span>              : </span>
-<span id="L4738"><span class="lineNum">    4738</span>              : bool isUnsizedArrayType(Type* type);</span>
-<span id="L4739"><span class="lineNum">    4739</span>              : </span>
-<span id="L4740"><span class="lineNum">    4740</span>              : bool isInterfaceType(Type* type);</span>
-<span id="L4741"><span class="lineNum">    4741</span>              : </span>
-<span id="L4742"><span class="lineNum">    4742</span>              : bool isImmutableBufferType(Type* type);</span>
-<span id="L4743"><span class="lineNum">    4743</span>              : </span>
-<span id="L4744"><span class="lineNum">    4744</span>              : // Check if `type` is nullable. An `Optional&lt;T&gt;` will occupy the same space as `T`, if `T`</span>
-<span id="L4745"><span class="lineNum">    4745</span>              : // is nullable.</span>
-<span id="L4746"><span class="lineNum">    4746</span>              : bool doesTypeHaveAnUnusedBitPatternThatCanBeUsedForOptionalRepresentation(Type* type);</span>
-<span id="L4747"><span class="lineNum">    4747</span>              : </span>
-<span id="L4748"><span class="lineNum">    4748</span>              : EnumDecl* isEnumType(Type* type);</span>
-<span id="L4749"><span class="lineNum">    4749</span>              : </span>
-<span id="L4750"><span class="lineNum">    4750</span>              : DeclVisibility getDeclVisibility(Decl* decl);</span>
-<span id="L4751"><span class="lineNum">    4751</span>              : </span>
-<span id="L4752"><span class="lineNum">    4752</span>              : // If `type` is unsized, return the trailing unsized array field that makes it so.</span>
-<span id="L4753"><span class="lineNum">    4753</span>              : VarDeclBase* getTrailingUnsizedArrayElement(</span>
-<span id="L4754"><span class="lineNum">    4754</span>              :     Type* type,</span>
-<span id="L4755"><span class="lineNum">    4755</span>              :     VarDeclBase* rootObject,</span>
-<span id="L4756"><span class="lineNum">    4756</span>              :     ArrayExpressionType*&amp; outArrayType);</span>
-<span id="L4757"><span class="lineNum">    4757</span>              : </span>
-<span id="L4758"><span class="lineNum">    4758</span>              : // Test if `type` can be an opaque handle on certain targets, this includes</span>
-<span id="L4759"><span class="lineNum">    4759</span>              : // texture, buffer, sampler, acceleration structure, etc.</span>
-<span id="L4760"><span class="lineNum">    4760</span>              : bool isOpaqueHandleType(Type* type);</span>
-<span id="L4761"><span class="lineNum">    4761</span>              : </span>
-<span id="L4762"><span class="lineNum">    4762</span>              : // Returns true if `type` itself is an opaque handle type, or if it is a struct</span>
-<span id="L4763"><span class="lineNum">    4763</span>              : // (or array thereof) that transitively contains an opaque handle field.</span>
-<span id="L4764"><span class="lineNum">    4764</span>              : bool typeTransitivelyContainsOpaqueHandle(SemanticsVisitor* visitor, Type* type);</span>
-<span id="L4765"><span class="lineNum">    4765</span>              : </span>
-<span id="L4766"><span class="lineNum">    4766</span>              : void diagnoseMissingCapabilityProvenance(</span>
+<span id="L4735"><span class="lineNum">    4735</span>              : bool isInterfaceType(Type* type);</span>
+<span id="L4736"><span class="lineNum">    4736</span>              : </span>
+<span id="L4737"><span class="lineNum">    4737</span>              : bool isImmutableBufferType(Type* type);</span>
+<span id="L4738"><span class="lineNum">    4738</span>              : </span>
+<span id="L4739"><span class="lineNum">    4739</span>              : // Check if `type` is nullable. An `Optional&lt;T&gt;` will occupy the same space as `T`, if `T`</span>
+<span id="L4740"><span class="lineNum">    4740</span>              : // is nullable.</span>
+<span id="L4741"><span class="lineNum">    4741</span>              : bool doesTypeHaveAnUnusedBitPatternThatCanBeUsedForOptionalRepresentation(Type* type);</span>
+<span id="L4742"><span class="lineNum">    4742</span>              : </span>
+<span id="L4743"><span class="lineNum">    4743</span>              : EnumDecl* isEnumType(Type* type);</span>
+<span id="L4744"><span class="lineNum">    4744</span>              : </span>
+<span id="L4745"><span class="lineNum">    4745</span>              : DeclVisibility getDeclVisibility(Decl* decl);</span>
+<span id="L4746"><span class="lineNum">    4746</span>              : </span>
+<span id="L4747"><span class="lineNum">    4747</span>              : // If `type` is unsized, return the trailing unsized array field that makes it so.</span>
+<span id="L4748"><span class="lineNum">    4748</span>              : VarDeclBase* getTrailingUnsizedArrayElement(</span>
+<span id="L4749"><span class="lineNum">    4749</span>              :     Type* type,</span>
+<span id="L4750"><span class="lineNum">    4750</span>              :     VarDeclBase* rootObject,</span>
+<span id="L4751"><span class="lineNum">    4751</span>              :     ArrayExpressionType*&amp; outArrayType);</span>
+<span id="L4752"><span class="lineNum">    4752</span>              : </span>
+<span id="L4753"><span class="lineNum">    4753</span>              : // Test if `type` can be an opaque handle on certain targets, this includes</span>
+<span id="L4754"><span class="lineNum">    4754</span>              : // texture, buffer, sampler, acceleration structure, etc.</span>
+<span id="L4755"><span class="lineNum">    4755</span>              : bool isOpaqueHandleType(Type* type);</span>
+<span id="L4756"><span class="lineNum">    4756</span>              : </span>
+<span id="L4757"><span class="lineNum">    4757</span>              : // Returns true if `type` itself is an opaque handle type, or if it is a struct</span>
+<span id="L4758"><span class="lineNum">    4758</span>              : // (or array thereof) that transitively contains an opaque handle field.</span>
+<span id="L4759"><span class="lineNum">    4759</span>              : bool typeTransitivelyContainsOpaqueHandle(SemanticsVisitor* visitor, Type* type);</span>
+<span id="L4760"><span class="lineNum">    4760</span>              : </span>
+<span id="L4761"><span class="lineNum">    4761</span>              : void diagnoseMissingCapabilityProvenance(</span>
+<span id="L4762"><span class="lineNum">    4762</span>              :     CompilerOptionSet&amp; optionSet,</span>
+<span id="L4763"><span class="lineNum">    4763</span>              :     DiagnosticSink* sink,</span>
+<span id="L4764"><span class="lineNum">    4764</span>              :     Decl* decl,</span>
+<span id="L4765"><span class="lineNum">    4765</span>              :     CapabilitySet const&amp; setToFind);</span>
+<span id="L4766"><span class="lineNum">    4766</span>              : void diagnoseCapabilityProvenance(</span>
 <span id="L4767"><span class="lineNum">    4767</span>              :     CompilerOptionSet&amp; optionSet,</span>
 <span id="L4768"><span class="lineNum">    4768</span>              :     DiagnosticSink* sink,</span>
 <span id="L4769"><span class="lineNum">    4769</span>              :     Decl* decl,</span>
-<span id="L4770"><span class="lineNum">    4770</span>              :     CapabilitySet const&amp; setToFind);</span>
-<span id="L4771"><span class="lineNum">    4771</span>              : void diagnoseCapabilityProvenance(</span>
-<span id="L4772"><span class="lineNum">    4772</span>              :     CompilerOptionSet&amp; optionSet,</span>
-<span id="L4773"><span class="lineNum">    4773</span>              :     DiagnosticSink* sink,</span>
-<span id="L4774"><span class="lineNum">    4774</span>              :     Decl* decl,</span>
-<span id="L4775"><span class="lineNum">    4775</span>              :     CapabilityAtom atomToFind,</span>
-<span id="L4776"><span class="lineNum">    4776</span>              :     HashSet&lt;Decl*&gt;&amp; printedDecls);</span>
-<span id="L4777"><span class="lineNum">    4777</span>              : </span>
-<span id="L4778"><span class="lineNum">    4778</span>              : void _ensureAllDeclsRec(SemanticsDeclVisitorBase* visitor, Decl* decl, DeclCheckState state);</span>
-<span id="L4779"><span class="lineNum">    4779</span>              : </span>
-<span id="L4780"><span class="lineNum">    4780</span>              : RefPtr&lt;EntryPoint&gt; findAndValidateEntryPoint(FrontEndEntryPointRequest* entryPointReq);</span>
-<span id="L4781"><span class="lineNum">    4781</span>              : </span>
-<span id="L4782"><span class="lineNum">    4782</span>              : bool resolveStageOfProfileWithEntryPoint(</span>
-<span id="L4783"><span class="lineNum">    4783</span>              :     Profile&amp; entryPointProfile,</span>
-<span id="L4784"><span class="lineNum">    4784</span>              :     CompilerOptionSet&amp; optionSet,</span>
-<span id="L4785"><span class="lineNum">    4785</span>              :     const List&lt;RefPtr&lt;TargetRequest&gt;&gt;&amp; targets,</span>
-<span id="L4786"><span class="lineNum">    4786</span>              :     FuncDecl* entryPointFuncDecl,</span>
-<span id="L4787"><span class="lineNum">    4787</span>              :     DiagnosticSink* sink);</span>
-<span id="L4788"><span class="lineNum">    4788</span>              : </span>
-<span id="L4789"><span class="lineNum">    4789</span>              : // For an extensions decl, collect a list of decls on which the extension might be applying to.</span>
-<span id="L4790"><span class="lineNum">    4790</span>              : // For example, if we see a `extension Foo`, return a `Decl*` that represents `struct Foo`.</span>
-<span id="L4791"><span class="lineNum">    4791</span>              : // In the case of free-form generic extensions i.e. `extension&lt;T:IFoo&gt; T : IBar`, return `IFoo`.</span>
-<span id="L4792"><span class="lineNum">    4792</span>              : // These are the decls that we need to register the extension with in</span>
-<span id="L4793"><span class="lineNum">    4793</span>              : // `mapTypeToCandidateExtensions`.</span>
-<span id="L4794"><span class="lineNum">    4794</span>              : // Returns true when any base decls are found.</span>
-<span id="L4795"><span class="lineNum">    4795</span>              : bool getExtensionTargetDeclList(</span>
-<span id="L4796"><span class="lineNum">    4796</span>              :     ASTBuilder* astBuilder,</span>
-<span id="L4797"><span class="lineNum">    4797</span>              :     DeclRefType* targetDeclRefType,</span>
-<span id="L4798"><span class="lineNum">    4798</span>              :     ExtensionDecl* extDeclRef,</span>
-<span id="L4799"><span class="lineNum">    4799</span>              :     ShortList&lt;AggTypeDecl*&gt;&amp; targetDecls);</span>
-<span id="L4800"><span class="lineNum">    4800</span>              : </span>
-<span id="L4801"><span class="lineNum">    4801</span>              : void validateEntryPoint(EntryPoint* entryPoint, DiagnosticSink* sink);</span>
-<span id="L4802"><span class="lineNum">    4802</span>              : </span>
-<span id="L4803"><span class="lineNum">    4803</span>              : // Collect the requirements of a checked declaration reference, including its generic arguments.</span>
-<span id="L4804"><span class="lineNum">    4804</span>              : // Append contributing declarations to `outReferencedDecls` for use-site diagnostics without</span>
-<span id="L4805"><span class="lineNum">    4805</span>              : // changing the shared declaration&#x27;s requirements or provenance.</span>
-<span id="L4806"><span class="lineNum">    4806</span>              : CapabilitySet getDeclRefCapabilityRequirements(</span>
-<span id="L4807"><span class="lineNum">    4807</span>              :     SemanticsVisitor* visitor,</span>
-<span id="L4808"><span class="lineNum">    4808</span>              :     DeclRef&lt;Decl&gt; declRef,</span>
-<span id="L4809"><span class="lineNum">    4809</span>              :     List&lt;Decl*&gt;&amp; outReferencedDecls);</span>
-<span id="L4810"><span class="lineNum">    4810</span>              : </span>
-<span id="L4811"><span class="lineNum">    4811</span>              : RefPtr&lt;ComponentType&gt; createUnspecializedGlobalComponentType(</span>
-<span id="L4812"><span class="lineNum">    4812</span>              :     FrontEndCompileRequest* compileRequest);</span>
-<span id="L4813"><span class="lineNum">    4813</span>              : </span>
-<span id="L4814"><span class="lineNum">    4814</span>              : RefPtr&lt;ComponentType&gt; createUnspecializedGlobalAndEntryPointsComponentType(</span>
-<span id="L4815"><span class="lineNum">    4815</span>              :     FrontEndCompileRequest* compileRequest,</span>
-<span id="L4816"><span class="lineNum">    4816</span>              :     List&lt;RefPtr&lt;ComponentType&gt;&gt;&amp; outUnspecializedEntryPoints);</span>
-<span id="L4817"><span class="lineNum">    4817</span>              : </span>
-<span id="L4818"><span class="lineNum">    4818</span>              : RefPtr&lt;ComponentType&gt; createSpecializedGlobalComponentType(EndToEndCompileRequest* endToEndReq);</span>
-<span id="L4819"><span class="lineNum">    4819</span>              : </span>
-<span id="L4820"><span class="lineNum">    4820</span>              : RefPtr&lt;ComponentType&gt; createSpecializedGlobalAndEntryPointsComponentType(</span>
-<span id="L4821"><span class="lineNum">    4821</span>              :     EndToEndCompileRequest* endToEndReq,</span>
-<span id="L4822"><span class="lineNum">    4822</span>              :     List&lt;RefPtr&lt;ComponentType&gt;&gt;&amp; outSpecializedEntryPoints);</span>
-<span id="L4823"><span class="lineNum">    4823</span>              : </span>
-<span id="L4824"><span class="lineNum">    4824</span>              : // Return the witness that proves a type-coercion constraint under `args`, or</span>
-<span id="L4825"><span class="lineNum">    4825</span>              : // `nullptr` if the substituted source and destination types cannot be coerced.</span>
-<span id="L4826"><span class="lineNum">    4826</span>              : // `maybeContext` is required when `shouldEmitError` is true so diagnostics can</span>
-<span id="L4827"><span class="lineNum">    4827</span>              : // point at the operation that requested the constraint.</span>
-<span id="L4828"><span class="lineNum">    4828</span>              : TypeCoercionWitness* findTypeCoercionWitnessForConstraint(</span>
-<span id="L4829"><span class="lineNum">    4829</span>              :     ASTBuilder* astBuilder,</span>
-<span id="L4830"><span class="lineNum">    4830</span>              :     SemanticsVisitor* visitor,</span>
-<span id="L4831"><span class="lineNum">    4831</span>              :     TypeCoercionConstraintDecl* constraintDecl,</span>
-<span id="L4832"><span class="lineNum">    4832</span>              :     DeclRef&lt;GenericDecl&gt; genericDeclRef,</span>
-<span id="L4833"><span class="lineNum">    4833</span>              :     SemanticsVisitor::OverloadResolveContext* maybeContext,</span>
-<span id="L4834"><span class="lineNum">    4834</span>              :     ArrayView&lt;Val*&gt; args,</span>
-<span id="L4835"><span class="lineNum">    4835</span>              :     bool shouldEmitError);</span>
-<span id="L4836"><span class="lineNum">    4836</span>              : </span>
-<span id="L4837"><span class="lineNum">    4837</span>              : // Return the witness that proves differentiability metadata is available for</span>
-<span id="L4838"><span class="lineNum">    4838</span>              : // the substituted constraint type, or `nullptr` if the metadata cannot be</span>
-<span id="L4839"><span class="lineNum">    4839</span>              : // proved. `maybeContext` is required when `shouldEmitError` is true so</span>
-<span id="L4840"><span class="lineNum">    4840</span>              : // diagnostics can point at the operation that requested the constraint.</span>
-<span id="L4841"><span class="lineNum">    4841</span>              : Witness* findDiffTypeInfoWitnessForConstraint(</span>
-<span id="L4842"><span class="lineNum">    4842</span>              :     ASTBuilder* astBuilder,</span>
-<span id="L4843"><span class="lineNum">    4843</span>              :     SemanticsVisitor* visitor,</span>
-<span id="L4844"><span class="lineNum">    4844</span>              :     HasDiffTypeInfoConstraintDecl* constraintDecl,</span>
-<span id="L4845"><span class="lineNum">    4845</span>              :     DeclRef&lt;GenericDecl&gt; genericDeclRef,</span>
-<span id="L4846"><span class="lineNum">    4846</span>              :     SemanticsVisitor::OverloadResolveContext* maybeContext,</span>
-<span id="L4847"><span class="lineNum">    4847</span>              :     ArrayView&lt;Val*&gt; args,</span>
-<span id="L4848"><span class="lineNum">    4848</span>              :     bool shouldEmitError);</span>
-<span id="L4849"><span class="lineNum">    4849</span>              : </span>
-<span id="L4850"><span class="lineNum">    4850</span>              : // Return the witness that proves `constrainedArg` is a non-empty pack, or</span>
-<span id="L4851"><span class="lineNum">    4851</span>              : // `nullptr` if the pack is empty or not known to be non-empty. `maybeContext` is</span>
-<span id="L4852"><span class="lineNum">    4852</span>              : // required when `shouldEmitError` is true so diagnostics can point at the</span>
-<span id="L4853"><span class="lineNum">    4853</span>              : // operation that requested the constraint.</span>
-<span id="L4854"><span class="lineNum">    4854</span>              : Witness* findNonEmptyPackWitnessForConstraint(</span>
-<span id="L4855"><span class="lineNum">    4855</span>              :     ASTBuilder* astBuilder,</span>
-<span id="L4856"><span class="lineNum">    4856</span>              :     SemanticsVisitor* visitor,</span>
-<span id="L4857"><span class="lineNum">    4857</span>              :     Val* constrainedArg,</span>
-<span id="L4858"><span class="lineNum">    4858</span>              :     SemanticsVisitor::OverloadResolveContext* maybeContext,</span>
-<span id="L4859"><span class="lineNum">    4859</span>              :     bool shouldEmitError);</span>
-<span id="L4860"><span class="lineNum">    4860</span>              : </span>
-<span id="L4861"><span class="lineNum">    4861</span>              : // Return the witness that proves `actualCount == expectedCount`, or `nullptr`</span>
-<span id="L4862"><span class="lineNum">    4862</span>              : // if the concrete count or an in-scope declared constraint cannot prove that</span>
-<span id="L4863"><span class="lineNum">    4863</span>              : // equality.</span>
-<span id="L4864"><span class="lineNum">    4864</span>              : Witness* findVariadicPackCountWitnessForConstraint(</span>
-<span id="L4865"><span class="lineNum">    4865</span>              :     ASTBuilder* astBuilder,</span>
-<span id="L4866"><span class="lineNum">    4866</span>              :     SemanticsVisitor* visitor,</span>
-<span id="L4867"><span class="lineNum">    4867</span>              :     IntVal* actualCount,</span>
-<span id="L4868"><span class="lineNum">    4868</span>              :     IntVal* expectedCount,</span>
-<span id="L4869"><span class="lineNum">    4869</span>              :     SemanticsVisitor::OverloadResolveContext* maybeContext,</span>
-<span id="L4870"><span class="lineNum">    4870</span>              :     bool shouldEmitError);</span>
-<span id="L4871"><span class="lineNum">    4871</span>              : </span>
-<span id="L4872"><span class="lineNum">    4872</span>              : SourceLoc _getTypeNestingDiagnosticPosForDecl(Decl* decl);</span>
-<span id="L4873"><span class="lineNum">    4873</span>              : </span>
-<span id="L4874"><span class="lineNum">    4874</span>              : } // namespace Slang</span>
+<span id="L4770"><span class="lineNum">    4770</span>              :     CapabilityAtom atomToFind,</span>
+<span id="L4771"><span class="lineNum">    4771</span>              :     HashSet&lt;Decl*&gt;&amp; printedDecls);</span>
+<span id="L4772"><span class="lineNum">    4772</span>              : </span>
+<span id="L4773"><span class="lineNum">    4773</span>              : void _ensureAllDeclsRec(SemanticsDeclVisitorBase* visitor, Decl* decl, DeclCheckState state);</span>
+<span id="L4774"><span class="lineNum">    4774</span>              : </span>
+<span id="L4775"><span class="lineNum">    4775</span>              : RefPtr&lt;EntryPoint&gt; findAndValidateEntryPoint(FrontEndEntryPointRequest* entryPointReq);</span>
+<span id="L4776"><span class="lineNum">    4776</span>              : </span>
+<span id="L4777"><span class="lineNum">    4777</span>              : bool resolveStageOfProfileWithEntryPoint(</span>
+<span id="L4778"><span class="lineNum">    4778</span>              :     Profile&amp; entryPointProfile,</span>
+<span id="L4779"><span class="lineNum">    4779</span>              :     CompilerOptionSet&amp; optionSet,</span>
+<span id="L4780"><span class="lineNum">    4780</span>              :     const List&lt;RefPtr&lt;TargetRequest&gt;&gt;&amp; targets,</span>
+<span id="L4781"><span class="lineNum">    4781</span>              :     FuncDecl* entryPointFuncDecl,</span>
+<span id="L4782"><span class="lineNum">    4782</span>              :     DiagnosticSink* sink);</span>
+<span id="L4783"><span class="lineNum">    4783</span>              : </span>
+<span id="L4784"><span class="lineNum">    4784</span>              : // For an extensions decl, collect a list of decls on which the extension might be applying to.</span>
+<span id="L4785"><span class="lineNum">    4785</span>              : // For example, if we see a `extension Foo`, return a `Decl*` that represents `struct Foo`.</span>
+<span id="L4786"><span class="lineNum">    4786</span>              : // In the case of free-form generic extensions i.e. `extension&lt;T:IFoo&gt; T : IBar`, return `IFoo`.</span>
+<span id="L4787"><span class="lineNum">    4787</span>              : // These are the decls that we need to register the extension with in</span>
+<span id="L4788"><span class="lineNum">    4788</span>              : // `mapTypeToCandidateExtensions`.</span>
+<span id="L4789"><span class="lineNum">    4789</span>              : // Returns true when any base decls are found.</span>
+<span id="L4790"><span class="lineNum">    4790</span>              : bool getExtensionTargetDeclList(</span>
+<span id="L4791"><span class="lineNum">    4791</span>              :     ASTBuilder* astBuilder,</span>
+<span id="L4792"><span class="lineNum">    4792</span>              :     DeclRefType* targetDeclRefType,</span>
+<span id="L4793"><span class="lineNum">    4793</span>              :     ExtensionDecl* extDeclRef,</span>
+<span id="L4794"><span class="lineNum">    4794</span>              :     ShortList&lt;AggTypeDecl*&gt;&amp; targetDecls);</span>
+<span id="L4795"><span class="lineNum">    4795</span>              : </span>
+<span id="L4796"><span class="lineNum">    4796</span>              : void validateEntryPoint(EntryPoint* entryPoint, DiagnosticSink* sink);</span>
+<span id="L4797"><span class="lineNum">    4797</span>              : </span>
+<span id="L4798"><span class="lineNum">    4798</span>              : // Collect the requirements of a checked declaration reference, including its generic arguments.</span>
+<span id="L4799"><span class="lineNum">    4799</span>              : // Append contributing declarations to `outReferencedDecls` for use-site diagnostics without</span>
+<span id="L4800"><span class="lineNum">    4800</span>              : // changing the shared declaration&#x27;s requirements or provenance.</span>
+<span id="L4801"><span class="lineNum">    4801</span>              : CapabilitySet getDeclRefCapabilityRequirements(</span>
+<span id="L4802"><span class="lineNum">    4802</span>              :     SemanticsVisitor* visitor,</span>
+<span id="L4803"><span class="lineNum">    4803</span>              :     DeclRef&lt;Decl&gt; declRef,</span>
+<span id="L4804"><span class="lineNum">    4804</span>              :     List&lt;Decl*&gt;&amp; outReferencedDecls);</span>
+<span id="L4805"><span class="lineNum">    4805</span>              : </span>
+<span id="L4806"><span class="lineNum">    4806</span>              : RefPtr&lt;ComponentType&gt; createUnspecializedGlobalComponentType(</span>
+<span id="L4807"><span class="lineNum">    4807</span>              :     FrontEndCompileRequest* compileRequest);</span>
+<span id="L4808"><span class="lineNum">    4808</span>              : </span>
+<span id="L4809"><span class="lineNum">    4809</span>              : RefPtr&lt;ComponentType&gt; createUnspecializedGlobalAndEntryPointsComponentType(</span>
+<span id="L4810"><span class="lineNum">    4810</span>              :     FrontEndCompileRequest* compileRequest,</span>
+<span id="L4811"><span class="lineNum">    4811</span>              :     List&lt;RefPtr&lt;ComponentType&gt;&gt;&amp; outUnspecializedEntryPoints);</span>
+<span id="L4812"><span class="lineNum">    4812</span>              : </span>
+<span id="L4813"><span class="lineNum">    4813</span>              : RefPtr&lt;ComponentType&gt; createSpecializedGlobalComponentType(EndToEndCompileRequest* endToEndReq);</span>
+<span id="L4814"><span class="lineNum">    4814</span>              : </span>
+<span id="L4815"><span class="lineNum">    4815</span>              : RefPtr&lt;ComponentType&gt; createSpecializedGlobalAndEntryPointsComponentType(</span>
+<span id="L4816"><span class="lineNum">    4816</span>              :     EndToEndCompileRequest* endToEndReq,</span>
+<span id="L4817"><span class="lineNum">    4817</span>              :     List&lt;RefPtr&lt;ComponentType&gt;&gt;&amp; outSpecializedEntryPoints);</span>
+<span id="L4818"><span class="lineNum">    4818</span>              : </span>
+<span id="L4819"><span class="lineNum">    4819</span>              : // Return the witness that proves a type-coercion constraint under `args`, or</span>
+<span id="L4820"><span class="lineNum">    4820</span>              : // `nullptr` if the substituted source and destination types cannot be coerced.</span>
+<span id="L4821"><span class="lineNum">    4821</span>              : // `maybeContext` is required when `shouldEmitError` is true so diagnostics can</span>
+<span id="L4822"><span class="lineNum">    4822</span>              : // point at the operation that requested the constraint.</span>
+<span id="L4823"><span class="lineNum">    4823</span>              : TypeCoercionWitness* findTypeCoercionWitnessForConstraint(</span>
+<span id="L4824"><span class="lineNum">    4824</span>              :     ASTBuilder* astBuilder,</span>
+<span id="L4825"><span class="lineNum">    4825</span>              :     SemanticsVisitor* visitor,</span>
+<span id="L4826"><span class="lineNum">    4826</span>              :     TypeCoercionConstraintDecl* constraintDecl,</span>
+<span id="L4827"><span class="lineNum">    4827</span>              :     DeclRef&lt;GenericDecl&gt; genericDeclRef,</span>
+<span id="L4828"><span class="lineNum">    4828</span>              :     SemanticsVisitor::OverloadResolveContext* maybeContext,</span>
+<span id="L4829"><span class="lineNum">    4829</span>              :     ArrayView&lt;Val*&gt; args,</span>
+<span id="L4830"><span class="lineNum">    4830</span>              :     bool shouldEmitError);</span>
+<span id="L4831"><span class="lineNum">    4831</span>              : </span>
+<span id="L4832"><span class="lineNum">    4832</span>              : // Return the witness that proves differentiability metadata is available for</span>
+<span id="L4833"><span class="lineNum">    4833</span>              : // the substituted constraint type, or `nullptr` if the metadata cannot be</span>
+<span id="L4834"><span class="lineNum">    4834</span>              : // proved. `maybeContext` is required when `shouldEmitError` is true so</span>
+<span id="L4835"><span class="lineNum">    4835</span>              : // diagnostics can point at the operation that requested the constraint.</span>
+<span id="L4836"><span class="lineNum">    4836</span>              : Witness* findDiffTypeInfoWitnessForConstraint(</span>
+<span id="L4837"><span class="lineNum">    4837</span>              :     ASTBuilder* astBuilder,</span>
+<span id="L4838"><span class="lineNum">    4838</span>              :     SemanticsVisitor* visitor,</span>
+<span id="L4839"><span class="lineNum">    4839</span>              :     HasDiffTypeInfoConstraintDecl* constraintDecl,</span>
+<span id="L4840"><span class="lineNum">    4840</span>              :     DeclRef&lt;GenericDecl&gt; genericDeclRef,</span>
+<span id="L4841"><span class="lineNum">    4841</span>              :     SemanticsVisitor::OverloadResolveContext* maybeContext,</span>
+<span id="L4842"><span class="lineNum">    4842</span>              :     ArrayView&lt;Val*&gt; args,</span>
+<span id="L4843"><span class="lineNum">    4843</span>              :     bool shouldEmitError);</span>
+<span id="L4844"><span class="lineNum">    4844</span>              : </span>
+<span id="L4845"><span class="lineNum">    4845</span>              : // Return the witness that proves `constrainedArg` is a non-empty pack, or</span>
+<span id="L4846"><span class="lineNum">    4846</span>              : // `nullptr` if the pack is empty or not known to be non-empty. `maybeContext` is</span>
+<span id="L4847"><span class="lineNum">    4847</span>              : // required when `shouldEmitError` is true so diagnostics can point at the</span>
+<span id="L4848"><span class="lineNum">    4848</span>              : // operation that requested the constraint.</span>
+<span id="L4849"><span class="lineNum">    4849</span>              : Witness* findNonEmptyPackWitnessForConstraint(</span>
+<span id="L4850"><span class="lineNum">    4850</span>              :     ASTBuilder* astBuilder,</span>
+<span id="L4851"><span class="lineNum">    4851</span>              :     SemanticsVisitor* visitor,</span>
+<span id="L4852"><span class="lineNum">    4852</span>              :     Val* constrainedArg,</span>
+<span id="L4853"><span class="lineNum">    4853</span>              :     SemanticsVisitor::OverloadResolveContext* maybeContext,</span>
+<span id="L4854"><span class="lineNum">    4854</span>              :     bool shouldEmitError);</span>
+<span id="L4855"><span class="lineNum">    4855</span>              : </span>
+<span id="L4856"><span class="lineNum">    4856</span>              : // Return the witness that proves `actualCount == expectedCount`, or `nullptr`</span>
+<span id="L4857"><span class="lineNum">    4857</span>              : // if the concrete count or an in-scope declared constraint cannot prove that</span>
+<span id="L4858"><span class="lineNum">    4858</span>              : // equality.</span>
+<span id="L4859"><span class="lineNum">    4859</span>              : Witness* findVariadicPackCountWitnessForConstraint(</span>
+<span id="L4860"><span class="lineNum">    4860</span>              :     ASTBuilder* astBuilder,</span>
+<span id="L4861"><span class="lineNum">    4861</span>              :     SemanticsVisitor* visitor,</span>
+<span id="L4862"><span class="lineNum">    4862</span>              :     IntVal* actualCount,</span>
+<span id="L4863"><span class="lineNum">    4863</span>              :     IntVal* expectedCount,</span>
+<span id="L4864"><span class="lineNum">    4864</span>              :     SemanticsVisitor::OverloadResolveContext* maybeContext,</span>
+<span id="L4865"><span class="lineNum">    4865</span>              :     bool shouldEmitError);</span>
+<span id="L4866"><span class="lineNum">    4866</span>              : </span>
+<span id="L4867"><span class="lineNum">    4867</span>              : SourceLoc _getTypeNestingDiagnosticPosForDecl(Decl* decl);</span>
+<span id="L4868"><span class="lineNum">    4868</span>              : </span>
+<span id="L4869"><span class="lineNum">    4869</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
