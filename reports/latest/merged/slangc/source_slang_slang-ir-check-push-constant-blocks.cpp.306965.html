@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-13 05:41:48 UTC</td>
+      <td class="headerValue">2026-11-14 05:37:15 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -300,15 +300,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L9"><span class="lineNum">       9</span>                         : {</span>
 <span id="L10"><span class="lineNum">      10</span>                         : </span>
 <span id="L11"><span class="lineNum">      11</span>                         : bool isPushConstantBlockByLayout(IRInst* globalParam)</span>
-<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">        3935            : {</span></span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">        3935            :     auto varLayout = findVarLayout(globalParam);</span></span>
-<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">        3935 <span class="branchAll" title="br0: 54; br1: 3881">(2/2)</span>      :     if (!varLayout)</span></span>
+<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">        4003            : {</span></span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">        4003            :     auto varLayout = findVarLayout(globalParam);</span></span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">        4003 <span class="branchAll" title="br0: 54; br1: 3949">(2/2)</span>      :     if (!varLayout)</span></span>
 <span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">          54            :         return false;</span></span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">        3881            :     auto typeLayout = varLayout-&gt;getTypeLayout()-&gt;unwrapArray();</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">        3881 <span class="branchAll" title="br0: 219; br1: 3662">(2/2)</span>      :     if (auto parameterGroupTypeLayout = as&lt;IRParameterGroupTypeLayout&gt;(typeLayout))</span></span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">         219            :         varLayout = parameterGroupTypeLayout-&gt;getContainerVarLayout();</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">        3881            :     return varLayout-&gt;usesResourceKind(LayoutResourceKind::PushConstantBuffer);</span></span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">        3935            : }</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">        3949            :     auto typeLayout = varLayout-&gt;getTypeLayout()-&gt;unwrapArray();</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">        3949 <span class="branchAll" title="br0: 223; br1: 3726">(2/2)</span>      :     if (auto parameterGroupTypeLayout = as&lt;IRParameterGroupTypeLayout&gt;(typeLayout))</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">         223            :         varLayout = parameterGroupTypeLayout-&gt;getContainerVarLayout();</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">        3949            :     return varLayout-&gt;usesResourceKind(LayoutResourceKind::PushConstantBuffer);</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">        4003            : }</span></span>
 <span id="L21"><span class="lineNum">      21</span>                         : </span>
 <span id="L22"><span class="lineNum">      22</span>                         : /// Return the struct type that holds the `uniform` parameters in the push-constant block that</span>
 <span id="L23"><span class="lineNum">      23</span>                         : /// `collectEntryPointUniformParams` creates for an entry point. On SPIR-V the block is a pointer</span>
@@ -370,18 +370,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L79"><span class="lineNum">      79</span>                         :     Dictionary&lt;IRInst*, HashSet&lt;IRFunc*&gt;&gt;&amp; referencingEntryPoints,</span>
 <span id="L80"><span class="lineNum">      80</span>                         :     bool (*isPushConstantBlock)(IRInst* globalParam),</span>
 <span id="L81"><span class="lineNum">      81</span>                         :     DiagnosticSink* sink)</span>
-<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">        4557            : {</span></span>
-<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">        4557            :     List&lt;IRFunc*&gt; entryPoints;</span></span>
-<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">        4557            :     List&lt;IRInst*&gt; pushConstantBlocks;</span></span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">        4557 <span class="branchAll" title="br0: 764632; br1: 4557">(2/2)</span>      :     for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">      764632            :     {</span></span>
-<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">      764632 <span class="branchAll" title="br0: 25182; br1: 739450; br2: 4625; br3: 20557">(4/4)</span>      :         if (auto func = as&lt;IRFunc&gt;(inst); func &amp;&amp; func-&gt;findDecoration&lt;IREntryPointDecoration&gt;())</span></span>
-<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">        4625            :             entryPoints.add(func);</span></span>
-<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">      760007 <span class="branchAll" title="br0: 11495; br1: 748512; br2: 339; br3: 11156">(4/4)</span>      :         else if (as&lt;IRGlobalParam&gt;(inst) &amp;&amp; isPushConstantBlock(inst))</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">        4673            : {</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">        4673            :     List&lt;IRFunc*&gt; entryPoints;</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">        4673            :     List&lt;IRInst*&gt; pushConstantBlocks;</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">        4673 <span class="branchAll" title="br0: 778185; br1: 4673">(2/2)</span>      :     for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">      778185            :     {</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">      778185 <span class="branchAll" title="br0: 25547; br1: 752638; br2: 4741; br3: 20806">(4/4)</span>      :         if (auto func = as&lt;IRFunc&gt;(inst); func &amp;&amp; func-&gt;findDecoration&lt;IREntryPointDecoration&gt;())</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">        4741            :             entryPoints.add(func);</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">      773444 <span class="branchAll" title="br0: 11862; br1: 761582; br2: 339; br3: 11523">(4/4)</span>      :         else if (as&lt;IRGlobalParam&gt;(inst) &amp;&amp; isPushConstantBlock(inst))</span></span>
 <span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">         339            :             pushConstantBlocks.add(inst);</span></span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">      764632            :     }</span></span>
-<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">        4557 <span class="branchAll" title="br0: 4539; br1: 18">(2/2)</span>      :     if (pushConstantBlocks.getCount() &lt; 2)</span></span>
-<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">        4539            :         return;</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">      778185            :     }</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">        4673 <span class="branchAll" title="br0: 4655; br1: 18">(2/2)</span>      :     if (pushConstantBlocks.getCount() &lt; 2)</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">        4655            :         return;</span></span>
 <span id="L94"><span class="lineNum">      94</span>                         : </span>
 <span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">          18 <span class="branchAll" title="br0: 22; br1: 18">(2/2)</span>      :     for (auto entryPoint : entryPoints)</span></span>
 <span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">          22            :     {</span></span>

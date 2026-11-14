@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-13 05:42:22 UTC</td>
+      <td class="headerValue">2026-11-14 05:37:57 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">82.3&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:82.3%;background-color:hsl(93, 70%, 50%)"></div></div>
-      <span class="metricCounts">1,277 / 1,552</span>
+      <span class="metricValue">82.4&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:82.4%;background-color:hsl(94, 70%, 50%)"></div></div>
+      <span class="metricCounts">1,285 / 1,560</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -4376,7 +4376,33 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L4103"><span class="lineNum">    4103</span> <span class="tlaGNC">           1 :     return isBindlessTextureNVEncodableResourceType(handleType-&gt;getResourceType());</span></span>
 <span id="L4104"><span class="lineNum">    4104</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L4105"><span class="lineNum">    4105</span>              : </span>
-<span id="L4106"><span class="lineNum">    4106</span>              : } // namespace Slang</span>
+<span id="L4106"><span class="lineNum">    4106</span>              : bool isImageSamplerOrAccelerationStructureType(IRType* type)</span>
+<span id="L4107"><span class="lineNum">    4107</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4108"><span class="lineNum">    4108</span>              :     // Every type in the `ResourceTypeBase` family is a texture or storage image, which maps to</span>
+<span id="L4109"><span class="lineNum">    4109</span>              :     // `OpTypeImage`, or to `OpTypeSampledImage` when it is combined with a sampler.</span>
+<span id="L4110"><span class="lineNum">    4110</span> <span class="tlaGNC">           1 :     if (as&lt;IRResourceTypeBase&gt;(type))</span></span>
+<span id="L4111"><span class="lineNum">    4111</span>              :         return true;</span>
+<span id="L4112"><span class="lineNum">    4112</span>              : </span>
+<span id="L4113"><span class="lineNum">    4113</span>              :     // A sampler, including a comparison sampler, maps to `OpTypeSampler`.</span>
+<span id="L4114"><span class="lineNum">    4114</span> <span class="tlaGNC">           1 :     if (as&lt;IRSamplerStateTypeBase&gt;(type))</span></span>
+<span id="L4115"><span class="lineNum">    4115</span>              :         return true;</span>
+<span id="L4116"><span class="lineNum">    4116</span>              : </span>
+<span id="L4117"><span class="lineNum">    4117</span>              :     // A subpass input maps to an `OpTypeImage` whose dimension is `SubpassData`.</span>
+<span id="L4118"><span class="lineNum">    4118</span> <span class="tlaGNC">           1 :     if (as&lt;IRSubpassInputType&gt;(type))</span></span>
+<span id="L4119"><span class="lineNum">    4119</span>              :         return true;</span>
+<span id="L4120"><span class="lineNum">    4120</span>              : </span>
+<span id="L4121"><span class="lineNum">    4121</span>              :     // A GLSL input attachment is the GLSL spelling of a subpass input.</span>
+<span id="L4122"><span class="lineNum">    4122</span> <span class="tlaGNC">           1 :     if (as&lt;IRGLSLInputAttachmentType&gt;(type))</span></span>
+<span id="L4123"><span class="lineNum">    4123</span>              :         return true;</span>
+<span id="L4124"><span class="lineNum">    4124</span>              : </span>
+<span id="L4125"><span class="lineNum">    4125</span>              :     // An acceleration structure maps to `OpTypeAccelerationStructureKHR`.</span>
+<span id="L4126"><span class="lineNum">    4126</span> <span class="tlaGNC">           1 :     if (as&lt;IRRaytracingAccelerationStructureType&gt;(type))</span></span>
+<span id="L4127"><span class="lineNum">    4127</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L4128"><span class="lineNum">    4128</span>              : </span>
+<span id="L4129"><span class="lineNum">    4129</span>              :     return false;</span>
+<span id="L4130"><span class="lineNum">    4130</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4131"><span class="lineNum">    4131</span>              : </span>
+<span id="L4132"><span class="lineNum">    4132</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
