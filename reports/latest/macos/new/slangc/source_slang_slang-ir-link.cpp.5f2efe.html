@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-15 04:20:25 UTC</td>
+      <td class="headerValue">2026-11-16 04:18:52 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -372,7 +372,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L81"><span class="lineNum">      81</span>                         :     // referenced by mangled name, and anything unused is removed by later DCE.</span>
 <span id="L82"><span class="lineNum">      82</span>                         :     // `prelinkIR` must never prune, because its output stays live and must</span>
 <span id="L83"><span class="lineNum">      83</span>                         :     // remain complete (see `isFinalCodegenLink` above).</span>
-<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">    19543214 <span class="branchAll" title="br0: 16495507; br1: 3047707; br2: 8805107; br3: 7690400">(4/4)</span>      :     bool canPruneAutodiffLinkArtifacts() { return isFinalCodegenLink &amp;&amp; !useAutodiff; }</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">    19543205 <span class="branchAll" title="br0: 16495498; br1: 3047707; br2: 8805099; br3: 7690399">(4/4)</span>      :     bool canPruneAutodiffLinkArtifacts() { return isFinalCodegenLink &amp;&amp; !useAutodiff; }</span></span>
 <span id="L85"><span class="lineNum">      85</span>                         : </span>
 <span id="L86"><span class="lineNum">      86</span>                         :     IRBuilder builderStorage;</span>
 <span id="L87"><span class="lineNum">      87</span>                         : </span>
@@ -397,9 +397,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L106"><span class="lineNum">     106</span>                         : {</span>
 <span id="L107"><span class="lineNum">     107</span>                         :     IRSharedSpecContext* shared;</span>
 <span id="L108"><span class="lineNum">     108</span>                         : </span>
-<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">    23289129            :     IRSharedSpecContext* getShared() { return shared; }</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">    23289135            :     IRSharedSpecContext* getShared() { return shared; }</span></span>
 <span id="L110"><span class="lineNum">     110</span>                         : </span>
-<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">     2628197            :     IRModule* getModule() { return getShared()-&gt;module; }</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">     2628199            :     IRModule* getModule() { return getShared()-&gt;module; }</span></span>
 <span id="L112"><span class="lineNum">     112</span>                         : </span>
 <span id="L113"><span class="lineNum">     113</span>                         :     List&lt;IRModule*&gt; irModules;</span>
 <span id="L114"><span class="lineNum">     114</span>                         : </span>
@@ -409,26 +409,26 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L118"><span class="lineNum">     118</span>                         :     List&lt;RefPtr&lt;WitnessTableCloneInfo&gt;&gt; witnessTables;</span>
 <span id="L119"><span class="lineNum">     119</span>                         : </span>
 <span id="L120"><span class="lineNum">     120</span>                         :     IRSpecSymbol* findSymbols(UnownedStringSlice mangledName)</span>
-<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">      810180            :     {</span></span>
-<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">      810180            :         ImmutableHashedString hashedName(mangledName);</span></span>
-<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">      810180            :         RefPtr&lt;IRSpecSymbol&gt; symbol;</span></span>
-<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">      810180 <span class="branchAll" title="br0: 61883; br1: 748297">(2/2)</span>      :         if (shared-&gt;symbols.tryGetValue(hashedName, symbol))</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">      810179            :     {</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">      810179            :         ImmutableHashedString hashedName(mangledName);</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">      810179            :         RefPtr&lt;IRSpecSymbol&gt; symbol;</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">      810179 <span class="branchAll" title="br0: 61883; br1: 748296">(2/2)</span>      :         if (shared-&gt;symbols.tryGetValue(hashedName, symbol))</span></span>
 <span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">       61883            :             return symbol;</span></span>
-<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">      748297 <span class="branchAll" title="br0: 2749586; br1: 748297">(2/2)</span>      :         for (auto m : irModules)</span></span>
-<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">     2749586            :         {</span></span>
-<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">     2749586 <span class="branchAll" title="br0: 1307038; br1: 2749586">(2/2)</span>      :             for (auto inst : m-&gt;findSymbolByMangledName(hashedName))</span></span>
-<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">     1307038            :                 insertGlobalValueSymbol(shared, inst);</span></span>
-<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">     2749586            :         }</span></span>
-<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">      748297 <span class="branchAll" title="br0: 748242; br1: 55">(2/2)</span>      :         if (shared-&gt;symbols.tryGetValue(hashedName, symbol))</span></span>
-<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">      748242            :             return symbol;</span></span>
-<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">          55            :         shared-&gt;symbols[hashedName] = nullptr;</span></span>
-<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">          55            :         return nullptr;</span></span>
-<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">      748297            :     }</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">      748296 <span class="branchAll" title="br0: 2749587; br1: 748296">(2/2)</span>      :         for (auto m : irModules)</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">     2749587            :         {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">     2749587 <span class="branchAll" title="br0: 1307039; br1: 2749587">(2/2)</span>      :             for (auto inst : m-&gt;findSymbolByMangledName(hashedName))</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">     1307039            :                 insertGlobalValueSymbol(shared, inst);</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">     2749587            :         }</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">      748296 <span class="branchAll" title="br0: 748243; br1: 53">(2/2)</span>      :         if (shared-&gt;symbols.tryGetValue(hashedName, symbol))</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">      748243            :             return symbol;</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">          53            :         shared-&gt;symbols[hashedName] = nullptr;</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">          53            :         return nullptr;</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">      748296            :     }</span></span>
 <span id="L136"><span class="lineNum">     136</span>                         : </span>
 <span id="L137"><span class="lineNum">     137</span>                         :     // The current specialization environment to use.</span>
 <span id="L138"><span class="lineNum">     138</span>                         :     IRSpecEnv* env = nullptr;</span>
 <span id="L139"><span class="lineNum">     139</span>                         :     IRSpecEnv* getEnv()</span>
-<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">    69032996            :     {</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">    69032879            :     {</span></span>
 <span id="L141"><span class="lineNum">     141</span>                         :         // TODO: need to actually establish environments on contexts we create.</span>
 <span id="L142"><span class="lineNum">     142</span>                         :         //</span>
 <span id="L143"><span class="lineNum">     143</span>                         :         // Or more realistically we need to change the whole approach</span>
@@ -436,8 +436,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L145"><span class="lineNum">     145</span>                         :         // logic between two very different cases.</span>
 <span id="L146"><span class="lineNum">     146</span>                         : </span>
 <span id="L147"><span class="lineNum">     147</span>                         : </span>
-<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">    69032996            :         return env;</span></span>
-<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">    69032996            :     }</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">    69032879            :         return env;</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">    69032879            :     }</span></span>
 <span id="L150"><span class="lineNum">     150</span>                         : </span>
 <span id="L151"><span class="lineNum">     151</span>                         :     // The IR builder to use for creating nodes</span>
 <span id="L152"><span class="lineNum">     152</span>                         :     IRBuilder* builder;</span>
@@ -449,8 +449,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L158"><span class="lineNum">     158</span>                         : };</span>
 <span id="L159"><span class="lineNum">     159</span>                         : </span>
 <span id="L160"><span class="lineNum">     160</span>                         : void registerClonedValue(IRSpecContextBase* context, IRInst* clonedValue, IRInst* originalValue)</span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">    22461780            : {</span></span>
-<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">    22461780 <span class="branchAll" title="br0: 748223; br1: 21713557">(2/2)</span>      :     if (!originalValue)</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">    22461757            : {</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">    22461757 <span class="branchAll" title="br0: 748223; br1: 21713534">(2/2)</span>      :     if (!originalValue)</span></span>
 <span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">      748223            :         return;</span></span>
 <span id="L164"><span class="lineNum">     164</span>                         : </span>
 <span id="L165"><span class="lineNum">     165</span>                         :     // TODO: now that things are scoped using environments, we</span>
@@ -458,11 +458,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L167"><span class="lineNum">     167</span>                         :     // the same key already exists. This should be changed to</span>
 <span id="L168"><span class="lineNum">     168</span>                         :     // an `Add()` call.</span>
 <span id="L169"><span class="lineNum">     169</span>                         :     //</span>
-<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">    21713557            :     context-&gt;getEnv()-&gt;clonedValues[originalValue] = clonedValue;</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">    21713534            :     context-&gt;getEnv()-&gt;clonedValues[originalValue] = clonedValue;</span></span>
 <span id="L171"><span class="lineNum">     171</span>                         : </span>
-<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">    21713557 <span class="branchAll" title="br0: 600222; br1: 21113335">(2/2)</span>      :     switch (clonedValue-&gt;getOp())</span></span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">    21713557            :     {</span></span>
-<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">      600222 <span class="branchAll" title="br0: 600222; br1: 21113335">(2/2)</span>      :     case kIROp_LookupWitnessMethod:</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">    21713534 <span class="branchAll" title="br0: 600222; br1: 21113312">(2/2)</span>      :     switch (clonedValue-&gt;getOp())</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">    21713534            :     {</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">      600222 <span class="branchAll" title="br0: 600222; br1: 21113312">(2/2)</span>      :     case kIROp_LookupWitnessMethod:</span></span>
 <span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">      600222            :         {</span></span>
 <span id="L176"><span class="lineNum">     176</span>                         :             // If `originalVal` represents a witness table entry key, add the key</span>
 <span id="L177"><span class="lineNum">     177</span>                         :             // to witnessTableEntryWorkList.</span>
@@ -477,8 +477,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">      343704            :                 context-&gt;deferredWitnessTableEntryKeys.add(getMangledName(reqKey));</span></span>
 <span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">      600222            :         }</span></span>
 <span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">      600222            :         break;</span></span>
-<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">    21713557            :     }</span></span>
-<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">    21713557            : }</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">    21713534            :     }</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">    21713534            : }</span></span>
 <span id="L191"><span class="lineNum">     191</span>                         : </span>
 <span id="L192"><span class="lineNum">     192</span>                         : // Information on values to use when registering a cloned value</span>
 <span id="L193"><span class="lineNum">     193</span>                         : struct IROriginalValuesForClone</span>
@@ -489,9 +489,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L198"><span class="lineNum">     198</span> <span class="tlaUNC">           0            :     IROriginalValuesForClone() {}</span></span>
 <span id="L199"><span class="lineNum">     199</span>                         : </span>
 <span id="L200"><span class="lineNum">     200</span>                         :     IROriginalValuesForClone(IRInst* originalValue)</span>
-<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">    13724325            :         : originalVal(originalValue)</span></span>
-<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">    13724325            :     {</span></span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">    13724325            :     }</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">    13724321            :         : originalVal(originalValue)</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">    13724321            :     {</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">    13724321            :     }</span></span>
 <span id="L204"><span class="lineNum">     204</span>                         : </span>
 <span id="L205"><span class="lineNum">     205</span>                         :     IROriginalValuesForClone(IRSpecSymbol* symbol)</span>
 <span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      749984            :         : sym(symbol)</span></span>
@@ -503,13 +503,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L212"><span class="lineNum">     212</span>                         :     IRSpecContextBase* context,</span>
 <span id="L213"><span class="lineNum">     213</span>                         :     IRInst* clonedValue,</span>
 <span id="L214"><span class="lineNum">     214</span>                         :     IROriginalValuesForClone const&amp; originalValues)</span>
-<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">    14472539            : {</span></span>
-<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">    14472539            :     registerClonedValue(context, clonedValue, originalValues.originalVal);</span></span>
-<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">    15779536 <span class="branchAll" title="br0: 1306997; br1: 14472539">(2/2)</span>      :     for (auto s = originalValues.sym; s; s = s-&gt;nextWithSameName)</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">    14472541            : {</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">    14472541            :     registerClonedValue(context, clonedValue, originalValues.originalVal);</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">    15779538 <span class="branchAll" title="br0: 1306997; br1: 14472541">(2/2)</span>      :     for (auto s = originalValues.sym; s; s = s-&gt;nextWithSameName)</span></span>
 <span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">     1306997            :     {</span></span>
 <span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">     1306997            :         registerClonedValue(context, clonedValue, s-&gt;irGlobalValue);</span></span>
 <span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">     1306997            :     }</span></span>
-<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">    14472539            : }</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">    14472541            : }</span></span>
 <span id="L222"><span class="lineNum">     222</span>                         : </span>
 <span id="L223"><span class="lineNum">     223</span>                         : IRInst* cloneInst(</span>
 <span id="L224"><span class="lineNum">     224</span>                         :     IRSpecContextBase* context,</span>
@@ -518,7 +518,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L227"><span class="lineNum">     227</span>                         :     IROriginalValuesForClone const&amp; originalValues);</span>
 <span id="L228"><span class="lineNum">     228</span>                         : </span>
 <span id="L229"><span class="lineNum">     229</span>                         : static void cloneAnnotations(IRSpecContextBase* context, IRInst* clonedInst, IRInst* originalInst)</span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">    19487111            : {</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">    19487101            : {</span></span>
 <span id="L231"><span class="lineNum">     231</span>                         :     // `IRAnnotation`s exclusively carry auto-diff trait associations: a target&#x27;s</span>
 <span id="L232"><span class="lineNum">     232</span>                         :     // derivative functions and differential type/zero/add/pair witnesses. Every</span>
 <span id="L233"><span class="lineNum">     233</span>                         :     // `AnnotationKind` is differentiability-related (see the note at its</span>
@@ -532,11 +532,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L241"><span class="lineNum">     241</span>                         :     // is auto-diff-related and bump the count, or teach this gate to</span>
 <span id="L242"><span class="lineNum">     242</span>                         :     // distinguish kinds — otherwise the new annotations are silently dropped</span>
 <span id="L243"><span class="lineNum">     243</span>                         :     // from every non-differentiating program.</span>
-<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">    19487111            :     static_assert(</span></span>
-<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">    19487111            :         int(AnnotationKind::CountOf) == 16,</span></span>
-<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">    19487111            :         &quot;AnnotationKind changed: revisit cloneAnnotations&#x27; wholesale-skip gate&quot;);</span></span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">    19487111 <span class="branchAll" title="br0: 8791908; br1: 10695203">(2/2)</span>      :     if (context-&gt;getShared()-&gt;canPruneAutodiffLinkArtifacts())</span></span>
-<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">     8791908            :         return;</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">    19487101            :     static_assert(</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">    19487101            :         int(AnnotationKind::CountOf) == 16,</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">    19487101            :         &quot;AnnotationKind changed: revisit cloneAnnotations&#x27; wholesale-skip gate&quot;);</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">    19487101 <span class="branchAll" title="br0: 8791898; br1: 10695203">(2/2)</span>      :     if (context-&gt;getShared()-&gt;canPruneAutodiffLinkArtifacts())</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">     8791898            :         return;</span></span>
 <span id="L249"><span class="lineNum">     249</span>                         : </span>
 <span id="L250"><span class="lineNum">     250</span>                         :     // Local annotations will be cloned normally as part of cloning their parent function/generic</span>
 <span id="L251"><span class="lineNum">     251</span>                         :     // body. For module-scope annotations, we need to look them up since they won&#x27;t get</span>
@@ -563,12 +563,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">     2905639            : }</span></span>
 <span id="L273"><span class="lineNum">     273</span>                         : </span>
 <span id="L274"><span class="lineNum">     274</span>                         : IRInst* cloneInst(IRSpecContextBase* context, IRBuilder* builder, IRInst* originalInst)</span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">    12363058            : {</span></span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">    12363058            :     auto clonedInst = cloneInst(context, builder, originalInst, originalInst);</span></span>
-<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">    12363058            :     cloneAnnotations(context, clonedInst, originalInst);</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">    12363055            : {</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">    12363055            :     auto clonedInst = cloneInst(context, builder, originalInst, originalInst);</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">    12363055            :     cloneAnnotations(context, clonedInst, originalInst);</span></span>
 <span id="L278"><span class="lineNum">     278</span>                         : </span>
-<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">    12363058            :     return clonedInst;</span></span>
-<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">    12363058            : }</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">    12363055            :     return clonedInst;</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">    12363055            : }</span></span>
 <span id="L281"><span class="lineNum">     281</span>                         : </span>
 <span id="L282"><span class="lineNum">     282</span>                         : /// Clone any decorations from `originalValue` onto `clonedValue`</span>
 <span id="L283"><span class="lineNum">     283</span>                         : void cloneDecorations(IRSpecContextBase* context, IRInst* clonedValue, IRInst* originalValue)</span>
@@ -584,10 +584,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L293"><span class="lineNum">     293</span>                         : </span>
 <span id="L294"><span class="lineNum">     294</span>                         : </span>
 <span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">     2494822            :     SLANG_UNUSED(context);</span></span>
-<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">     2494822 <span class="branchAll" title="br0: 2524699; br1: 2494822">(2/2)</span>      :     for (auto originalDecoration : originalValue-&gt;getDecorations())</span></span>
-<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">     2524699            :     {</span></span>
-<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">     2524699            :         cloneInst(context, builder, originalDecoration);</span></span>
-<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">     2524699            :     }</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">     2494822 <span class="branchAll" title="br0: 2524700; br1: 2494822">(2/2)</span>      :     for (auto originalDecoration : originalValue-&gt;getDecorations())</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">     2524700            :     {</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">     2524700            :         cloneInst(context, builder, originalDecoration);</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">     2524700            :     }</span></span>
 <span id="L300"><span class="lineNum">     300</span>                         : </span>
 <span id="L301"><span class="lineNum">     301</span>                         :     // We will also clone the location here, just because this is a convenient bottleneck</span>
 <span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">     2494822            :     clonedValue-&gt;sourceLoc = originalValue-&gt;sourceLoc;</span></span>
@@ -598,20 +598,20 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L307"><span class="lineNum">     307</span>                         :     IRSpecContextBase* context,</span>
 <span id="L308"><span class="lineNum">     308</span>                         :     IRInst* clonedValue,</span>
 <span id="L309"><span class="lineNum">     309</span>                         :     IRInst* originalValue)</span>
-<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">    15439363            : {</span></span>
-<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">    15439363            :     IRBuilder builderStorage = *context-&gt;builder;</span></span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">    15439363            :     IRBuilder* builder = &amp;builderStorage;</span></span>
-<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">    15439363            :     builder-&gt;setInsertInto(clonedValue);</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">    15439353            : {</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">    15439353            :     IRBuilder builderStorage = *context-&gt;builder;</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">    15439353            :     IRBuilder* builder = &amp;builderStorage;</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">    15439353            :     builder-&gt;setInsertInto(clonedValue);</span></span>
 <span id="L314"><span class="lineNum">     314</span>                         : </span>
-<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">    15439363            :     SLANG_UNUSED(context);</span></span>
-<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">    15439363 <span class="branchAll" title="br0: 1119707; br1: 15439363">(2/2)</span>      :     for (auto originalItem : originalValue-&gt;getDecorationsAndChildren())</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">    15439353            :     SLANG_UNUSED(context);</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">    15439353 <span class="branchAll" title="br0: 1119707; br1: 15439353">(2/2)</span>      :     for (auto originalItem : originalValue-&gt;getDecorationsAndChildren())</span></span>
 <span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">     1119707            :     {</span></span>
 <span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">     1119707            :         cloneInst(context, builder, originalItem);</span></span>
 <span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">     1119707            :     }</span></span>
 <span id="L320"><span class="lineNum">     320</span>                         : </span>
 <span id="L321"><span class="lineNum">     321</span>                         :     // We will also clone the location here, just because this is a convenient bottleneck</span>
-<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">    15439363            :     clonedValue-&gt;sourceLoc = originalValue-&gt;sourceLoc;</span></span>
-<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">    15439363            : }</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">    15439353            :     clonedValue-&gt;sourceLoc = originalValue-&gt;sourceLoc;</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">    15439353            : }</span></span>
 <span id="L324"><span class="lineNum">     324</span>                         : </span>
 <span id="L325"><span class="lineNum">     325</span>                         : // We use an `IRSpecContext` for the case where we are cloning</span>
 <span id="L326"><span class="lineNum">     326</span>                         : // code from one or more input modules to create a &quot;linked&quot; output</span>
@@ -632,30 +632,30 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L341"><span class="lineNum">     341</span>                         : IRType* cloneType(IRSpecContextBase* context, IRType* originalType);</span>
 <span id="L342"><span class="lineNum">     342</span>                         : </span>
 <span id="L343"><span class="lineNum">     343</span>                         : IRInst* IRSpecContext::maybeCloneValue(IRInst* originalValue)</span>
-<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">    12761580            : {</span></span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">    12761580            :     switch (originalValue-&gt;getOp())</span></span>
-<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">    12761580            :     {</span></span>
-<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">       23047 <span class="branchAll" title="br0: 23047; br1: 12738533">(2/2)</span>      :     case kIROp_StructType:</span></span>
-<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">       23059 <span class="branchAll" title="br0: 12; br1: 12761568">(2/2)</span>      :     case kIROp_ClassType:</span></span>
-<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">       97332 <span class="branchAll" title="br0: 74273; br1: 12687307">(2/2)</span>      :     case kIROp_Func:</span></span>
-<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">      468513 <span class="branchAll" title="br0: 371181; br1: 12390399">(2/2)</span>      :     case kIROp_Generic:</span></span>
-<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">      470239 <span class="branchAll" title="br0: 1726; br1: 12759854">(2/2)</span>      :     case kIROp_GlobalVar:</span></span>
-<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">      490965 <span class="branchAll" title="br0: 20726; br1: 12740854">(2/2)</span>      :     case kIROp_GlobalParam:</span></span>
-<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">      492653 <span class="branchAll" title="br0: 1688; br1: 12759892">(2/2)</span>      :     case kIROp_GlobalConstant:</span></span>
-<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">      771655 <span class="branchAll" title="br0: 279002; br1: 12482578">(2/2)</span>      :     case kIROp_StructKey:</span></span>
-<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">     1036554 <span class="branchAll" title="br0: 264899; br1: 12496681">(2/2)</span>      :     case kIROp_InterfaceRequirementEntry:</span></span>
-<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">     1036565 <span class="branchAll" title="br0: 11; br1: 12761569">(2/2)</span>      :     case kIROp_GlobalGenericParam:</span></span>
-<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">     1112708 <span class="branchAll" title="br0: 76143; br1: 12685437">(2/2)</span>      :     case kIROp_WitnessTable:</span></span>
-<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">     1184763 <span class="branchAll" title="br0: 72055; br1: 12689525">(2/2)</span>      :     case kIROp_InterfaceType:</span></span>
-<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">     1190077 <span class="branchAll" title="br0: 5314; br1: 12756266">(2/2)</span>      :     case kIROp_EnumType:</span></span>
-<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">     1190136 <span class="branchAll" title="br0: 59; br1: 12761521">(2/2)</span>      :     case kIROp_SymbolAlias:</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">    12761561            : {</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">    12761561            :     switch (originalValue-&gt;getOp())</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">    12761561            :     {</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">       23047 <span class="branchAll" title="br0: 23047; br1: 12738514">(2/2)</span>      :     case kIROp_StructType:</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">       23059 <span class="branchAll" title="br0: 12; br1: 12761549">(2/2)</span>      :     case kIROp_ClassType:</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">       97332 <span class="branchAll" title="br0: 74273; br1: 12687288">(2/2)</span>      :     case kIROp_Func:</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">      468513 <span class="branchAll" title="br0: 371181; br1: 12390380">(2/2)</span>      :     case kIROp_Generic:</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">      470239 <span class="branchAll" title="br0: 1726; br1: 12759835">(2/2)</span>      :     case kIROp_GlobalVar:</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">      490965 <span class="branchAll" title="br0: 20726; br1: 12740835">(2/2)</span>      :     case kIROp_GlobalParam:</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">      492653 <span class="branchAll" title="br0: 1688; br1: 12759873">(2/2)</span>      :     case kIROp_GlobalConstant:</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">      771655 <span class="branchAll" title="br0: 279002; br1: 12482559">(2/2)</span>      :     case kIROp_StructKey:</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">     1036554 <span class="branchAll" title="br0: 264899; br1: 12496662">(2/2)</span>      :     case kIROp_InterfaceRequirementEntry:</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">     1036565 <span class="branchAll" title="br0: 11; br1: 12761550">(2/2)</span>      :     case kIROp_GlobalGenericParam:</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">     1112708 <span class="branchAll" title="br0: 76143; br1: 12685418">(2/2)</span>      :     case kIROp_WitnessTable:</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">     1184763 <span class="branchAll" title="br0: 72055; br1: 12689506">(2/2)</span>      :     case kIROp_InterfaceType:</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">     1190077 <span class="branchAll" title="br0: 5314; br1: 12756247">(2/2)</span>      :     case kIROp_EnumType:</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">     1190136 <span class="branchAll" title="br0: 59; br1: 12761502">(2/2)</span>      :     case kIROp_SymbolAlias:</span></span>
 <span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">     1190136            :         {</span></span>
 <span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">     1190136            :             auto clonedInst = cloneGlobalValue(this, originalValue);</span></span>
 <span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">     1190136            :             cloneAnnotations(this, clonedInst, originalValue);</span></span>
 <span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">     1190136            :             return clonedInst;</span></span>
 <span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">     1190077            :         }</span></span>
 <span id="L366"><span class="lineNum">     366</span>                         : </span>
-<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">      101678 <span class="branchAll" title="br0: 101678; br1: 12659902">(2/2)</span>      :     case kIROp_BoolLit:</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">      101678 <span class="branchAll" title="br0: 101678; br1: 12659883">(2/2)</span>      :     case kIROp_BoolLit:</span></span>
 <span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">      101678            :         {</span></span>
 <span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">      101678            :             IRConstant* c = (IRConstant*)originalValue;</span></span>
 <span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">      101678            :             return builder-&gt;getBoolValue(c-&gt;value.intVal != 0);</span></span>
@@ -663,28 +663,28 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L372"><span class="lineNum">     372</span> <span class="tlaUNC">           0            :         break;</span></span>
 <span id="L373"><span class="lineNum">     373</span>                         : </span>
 <span id="L374"><span class="lineNum">     374</span>                         : </span>
-<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">     4199308 <span class="branchAll" title="br0: 4199308; br1: 8562272">(2/2)</span>      :     case kIROp_IntLit:</span></span>
-<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">     4199308            :         {</span></span>
-<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">     4199308            :             IRConstant* c = (IRConstant*)originalValue;</span></span>
-<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">     4199308            :             return builder-&gt;getIntValue(cloneType(this, c-&gt;getDataType()), c-&gt;value.intVal);</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">     4199306 <span class="branchAll" title="br0: 4199306; br1: 8562255">(2/2)</span>      :     case kIROp_IntLit:</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">     4199306            :         {</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">     4199306            :             IRConstant* c = (IRConstant*)originalValue;</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">     4199306            :             return builder-&gt;getIntValue(cloneType(this, c-&gt;getDataType()), c-&gt;value.intVal);</span></span>
 <span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">     1190077            :         }</span></span>
 <span id="L380"><span class="lineNum">     380</span> <span class="tlaUNC">           0            :         break;</span></span>
 <span id="L381"><span class="lineNum">     381</span>                         : </span>
-<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">       68095 <span class="branchAll" title="br0: 68095; br1: 12693485">(2/2)</span>      :     case kIROp_FloatLit:</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">       68095 <span class="branchAll" title="br0: 68095; br1: 12693466">(2/2)</span>      :     case kIROp_FloatLit:</span></span>
 <span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">       68095            :         {</span></span>
 <span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">       68095            :             IRConstant* c = (IRConstant*)originalValue;</span></span>
 <span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">       68095            :             return builder-&gt;getFloatValue(cloneType(this, c-&gt;getDataType()), c-&gt;value.floatVal);</span></span>
 <span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">     1190077            :         }</span></span>
 <span id="L387"><span class="lineNum">     387</span> <span class="tlaUNC">           0            :         break;</span></span>
 <span id="L388"><span class="lineNum">     388</span>                         : </span>
-<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">     4244574 <span class="branchAll" title="br0: 4244574; br1: 8517006">(2/2)</span>      :     case kIROp_StringLit:</span></span>
-<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">     4244574            :         {</span></span>
-<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">     4244574            :             IRConstant* c = (IRConstant*)originalValue;</span></span>
-<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">     4244574            :             return builder-&gt;getStringValue(c-&gt;getStringSlice());</span></span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">     4244573 <span class="branchAll" title="br0: 4244573; br1: 8516988">(2/2)</span>      :     case kIROp_StringLit:</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">     4244573            :         {</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">     4244573            :             IRConstant* c = (IRConstant*)originalValue;</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">     4244573            :             return builder-&gt;getStringValue(c-&gt;getStringSlice());</span></span>
 <span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">     1190077            :         }</span></span>
 <span id="L394"><span class="lineNum">     394</span> <span class="tlaUNC">           0            :         break;</span></span>
 <span id="L395"><span class="lineNum">     395</span>                         : </span>
-<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">         125 <span class="branchAll" title="br0: 125; br1: 12761455">(2/2)</span>      :     case kIROp_PtrLit:</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">         125 <span class="branchAll" title="br0: 125; br1: 12761436">(2/2)</span>      :     case kIROp_PtrLit:</span></span>
 <span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">         125            :         {</span></span>
 <span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">         125            :             IRConstant* c = (IRConstant*)originalValue;</span></span>
 <span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">         125 <span class="branchPart" title="br0: 0; br1: 250">(1/2)</span>      :             SLANG_RELEASE_ASSERT(c-&gt;value.ptrVal == nullptr);</span></span>
@@ -692,73 +692,73 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">     1190077            :         }</span></span>
 <span id="L402"><span class="lineNum">     402</span> <span class="tlaUNC">           0            :         break;</span></span>
 <span id="L403"><span class="lineNum">     403</span>                         : </span>
-<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">      384968 <span class="branchAll" title="br0: 384968; br1: 12376612">(2/2)</span>      :     case kIROp_VoidLit:</span></span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">      384968 <span class="branchAll" title="br0: 384968; br1: 12376593">(2/2)</span>      :     case kIROp_VoidLit:</span></span>
 <span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">      384968            :         {</span></span>
 <span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">      384968            :             return builder-&gt;getVoidValue();</span></span>
 <span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">     1190077            :         }</span></span>
 <span id="L408"><span class="lineNum">     408</span> <span class="tlaUNC">           0            :         break;</span></span>
-<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">     2572714 <span class="branchAll" title="br0: 2572714; br1: 10188866">(2/2)</span>      :     default:</span></span>
-<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">     2572714            :         {</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">     2572703 <span class="branchAll" title="br0: 2572703; br1: 10188858">(2/2)</span>      :     default:</span></span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">     2572703            :         {</span></span>
 <span id="L411"><span class="lineNum">     411</span>                         :             // In the default case, assume that we have some sort of &quot;hoistable&quot;</span>
 <span id="L412"><span class="lineNum">     412</span>                         :             // instruction that requires us to create a clone of it.</span>
 <span id="L413"><span class="lineNum">     413</span>                         : </span>
-<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">     2572714            :             UInt argCount = originalValue-&gt;getOperandCount();</span></span>
-<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">     2572714            :             ShortList&lt;IRInst*&gt; newArgs;</span></span>
-<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">     2572714            :             newArgs.setCount(argCount);</span></span>
-<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">     7573668 <span class="branchAll" title="br0: 5000954; br1: 2572714">(2/2)</span>      :             for (UInt aa = 0; aa &lt; argCount; ++aa)</span></span>
-<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">     5000954            :             {</span></span>
-<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">     5000954            :                 IRInst* originalArg = originalValue-&gt;getOperand(aa);</span></span>
-<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">     5000954            :                 IRInst* clonedArg = cloneValue(this, originalArg);</span></span>
-<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">     5000954            :                 newArgs[aa] = clonedArg;</span></span>
-<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">     5000954            :             }</span></span>
-<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">     2572714            :             IRInst* clonedValue = builder-&gt;createIntrinsicInst(</span></span>
-<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">     2572714            :                 cloneType(this, originalValue-&gt;getFullType()),</span></span>
-<span id="L425"><span class="lineNum">     425</span> <span class="tlaGNC">     2572714            :                 originalValue-&gt;getOp(),</span></span>
-<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">     2572714            :                 argCount,</span></span>
-<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">     2572714            :                 newArgs.getArrayView().getBuffer());</span></span>
-<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">     2572714            :             registerClonedValue(this, clonedValue, originalValue);</span></span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">     2572703            :             UInt argCount = originalValue-&gt;getOperandCount();</span></span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">     2572703            :             ShortList&lt;IRInst*&gt; newArgs;</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">     2572703            :             newArgs.setCount(argCount);</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">     7573646 <span class="branchAll" title="br0: 5000943; br1: 2572703">(2/2)</span>      :             for (UInt aa = 0; aa &lt; argCount; ++aa)</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">     5000943            :             {</span></span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">     5000943            :                 IRInst* originalArg = originalValue-&gt;getOperand(aa);</span></span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">     5000943            :                 IRInst* clonedArg = cloneValue(this, originalArg);</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">     5000943            :                 newArgs[aa] = clonedArg;</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">     5000943            :             }</span></span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">     2572703            :             IRInst* clonedValue = builder-&gt;createIntrinsicInst(</span></span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">     2572703            :                 cloneType(this, originalValue-&gt;getFullType()),</span></span>
+<span id="L425"><span class="lineNum">     425</span> <span class="tlaGNC">     2572703            :                 originalValue-&gt;getOp(),</span></span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">     2572703            :                 argCount,</span></span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">     2572703            :                 newArgs.getArrayView().getBuffer());</span></span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">     2572703            :             registerClonedValue(this, clonedValue, originalValue);</span></span>
 <span id="L429"><span class="lineNum">     429</span>                         : </span>
-<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">     2572714            :             cloneDecorationsAndChildren(this, clonedValue, originalValue);</span></span>
-<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">     2572714            :             addHoistableInst(builder, clonedValue);</span></span>
-<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">     2572714            :             cloneAnnotations(this, clonedValue, originalValue);</span></span>
-<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">     2572714            :             return clonedValue;</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">     2572703            :             cloneDecorationsAndChildren(this, clonedValue, originalValue);</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">     2572703            :             addHoistableInst(builder, clonedValue);</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">     2572703            :             cloneAnnotations(this, clonedValue, originalValue);</span></span>
+<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">     2572703            :             return clonedValue;</span></span>
 <span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">     1190077            :         }</span></span>
 <span id="L435"><span class="lineNum">     435</span> <span class="tlaUNC">           0            :         break;</span></span>
-<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">    12761580            :     }</span></span>
-<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">    12761580            : }</span></span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">    12761561            :     }</span></span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">    12761561            : }</span></span>
 <span id="L438"><span class="lineNum">     438</span>                         : </span>
 <span id="L439"><span class="lineNum">     439</span>                         : IRInst* cloneValue(IRSpecContextBase* context, IRInst* originalValue);</span>
 <span id="L440"><span class="lineNum">     440</span>                         : </span>
 <span id="L441"><span class="lineNum">     441</span>                         : // Find a pre-existing cloned value, or return null if none is available.</span>
 <span id="L442"><span class="lineNum">     442</span>                         : IRInst* findClonedValue(IRSpecContextBase* context, IRInst* originalValue)</span>
-<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">    47319522            : {</span></span>
-<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">    47319522            :     IRInst* clonedValue = nullptr;</span></span>
-<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">    62231013 <span class="branchAll" title="br0: 47319519; br1: 14911494">(2/2)</span>      :     for (auto env = context-&gt;getEnv(); env; env = env-&gt;parent)</span></span>
-<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">    47319519            :     {</span></span>
-<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">    47319519 <span class="branchAll" title="br0: 32408028; br1: 14911491">(2/2)</span>      :         if (env-&gt;clonedValues.tryGetValue(originalValue, clonedValue))</span></span>
-<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">    32408028            :         {</span></span>
-<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">    32408028            :             return clonedValue;</span></span>
-<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">    32408028            :         }</span></span>
-<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">    47319519            :     }</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">    47319496            : {</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">    47319496            :     IRInst* clonedValue = nullptr;</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">    62230971 <span class="branchAll" title="br0: 47319492; br1: 14911479">(2/2)</span>      :     for (auto env = context-&gt;getEnv(); env; env = env-&gt;parent)</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">    47319492            :     {</span></span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">    47319492 <span class="branchAll" title="br0: 32408017; br1: 14911475">(2/2)</span>      :         if (env-&gt;clonedValues.tryGetValue(originalValue, clonedValue))</span></span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">    32408017            :         {</span></span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">    32408017            :             return clonedValue;</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">    32408017            :         }</span></span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">    47319492            :     }</span></span>
 <span id="L452"><span class="lineNum">     452</span>                         : </span>
-<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">    14911494            :     return nullptr;</span></span>
-<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">    47319522            : }</span></span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">    14911479            :     return nullptr;</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">    47319496            : }</span></span>
 <span id="L455"><span class="lineNum">     455</span>                         : </span>
 <span id="L456"><span class="lineNum">     456</span>                         : IRInst* cloneValue(IRSpecContextBase* context, IRInst* originalValue)</span>
-<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">    51455924            : {</span></span>
-<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">    51455924 <span class="branchAll" title="br0: 5339799; br1: 46116125">(2/2)</span>      :     if (!originalValue)</span></span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">    51455879            : {</span></span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">    51455879 <span class="branchAll" title="br0: 5339799; br1: 46116080">(2/2)</span>      :     if (!originalValue)</span></span>
 <span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">     5339799            :         return nullptr;</span></span>
 <span id="L460"><span class="lineNum">     460</span>                         : </span>
-<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">    46116125 <span class="branchAll" title="br0: 32407972; br1: 13708153">(2/2)</span>      :     if (IRInst* clonedValue = findClonedValue(context, originalValue))</span></span>
-<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">    32407972            :         return clonedValue;</span></span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">    46116080 <span class="branchAll" title="br0: 32407963; br1: 13708117">(2/2)</span>      :     if (IRInst* clonedValue = findClonedValue(context, originalValue))</span></span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">    32407963            :         return clonedValue;</span></span>
 <span id="L463"><span class="lineNum">     463</span>                         : </span>
-<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">    13708153            :     return context-&gt;maybeCloneValue(originalValue);</span></span>
-<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">    46116125            : }</span></span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">    13708117            :     return context-&gt;maybeCloneValue(originalValue);</span></span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">    46116080            : }</span></span>
 <span id="L466"><span class="lineNum">     466</span>                         : </span>
 <span id="L467"><span class="lineNum">     467</span>                         : IRType* cloneType(IRSpecContextBase* context, IRType* originalType)</span>
-<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">    20156465            : {</span></span>
-<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">    20156465            :     return (IRType*)cloneValue(context, originalType);</span></span>
-<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">    20156465            : }</span></span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">    20156453            : {</span></span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">    20156453            :     return (IRType*)cloneValue(context, originalType);</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">    20156453            : }</span></span>
 <span id="L471"><span class="lineNum">     471</span>                         : </span>
 <span id="L472"><span class="lineNum">     472</span>                         : void cloneGlobalValueWithCodeCommon(</span>
 <span id="L473"><span class="lineNum">     473</span>                         :     IRSpecContextBase* context,</span>
@@ -831,55 +831,55 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L540"><span class="lineNum">     540</span>                         :     IRBuilder* builder,</span>
 <span id="L541"><span class="lineNum">     541</span>                         :     IRInst* clonedInst,</span>
 <span id="L542"><span class="lineNum">     542</span>                         :     IRInst* originalInst)</span>
-<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">     1570999            : {</span></span>
-<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">     1570999 <span class="branchAll" title="br0: 3311756; br1: 1571000">(2/2)</span>      :     for (auto decoration : originalInst-&gt;getDecorations())</span></span>
-<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">     3311756            :     {</span></span>
-<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">     3311756            :         switch (decoration-&gt;getOp())</span></span>
-<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">     3311756            :         {</span></span>
-<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">     2939439 <span class="branchAll" title="br0: 2939439; br1: 372317">(2/2)</span>      :         default:</span></span>
-<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">     2939439            :             break;</span></span>
-<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">     2939439 <span class="branchAll" title="br0: 296193; br1: 3015563">(2/2)</span>      :         case kIROp_RequireCapabilityAtomDecoration:</span></span>
-<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">      296193            :             {</span></span>
-<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">      296193            :                 auto atom = cast&lt;IRRequireCapabilityAtomDecoration&gt;(decoration)-&gt;getAtom();</span></span>
-<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">      296193            :                 bool alreadyPresent = false;</span></span>
-<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">      296193 <span class="branchAll" title="br0: 2169563; br1: 19071">(2/2)</span>      :                 for (auto existing : clonedInst-&gt;getDecorations())</span></span>
-<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">     2169563            :                 {</span></span>
-<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">     2169563            :                     if (auto requirement = as&lt;IRRequireCapabilityAtomDecoration&gt;(existing);</span></span>
-<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">     2169563 <span class="branchAll" title="br0: 547484; br1: 1622079; br2: 277120; br3: 270364">(4/4)</span>      :                         requirement &amp;&amp; requirement-&gt;getAtom() == atom)</span></span>
-<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">      277122            :                     {</span></span>
-<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">      277122            :                         alreadyPresent = true;</span></span>
-<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">      277122            :                         break;</span></span>
-<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">      277122            :                     }</span></span>
-<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">     2169563            :                 }</span></span>
-<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">      296193 <span class="branchAll" title="br0: 19071; br1: 277122">(2/2)</span>      :                 if (!alreadyPresent)</span></span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">     1570998            : {</span></span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">     1570998 <span class="branchAll" title="br0: 3311761; br1: 1570997">(2/2)</span>      :     for (auto decoration : originalInst-&gt;getDecorations())</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">     3311761            :     {</span></span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">     3311761            :         switch (decoration-&gt;getOp())</span></span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">     3311761            :         {</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">     2939433 <span class="branchAll" title="br0: 2939433; br1: 372328">(2/2)</span>      :         default:</span></span>
+<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">     2939433            :             break;</span></span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">     2939433 <span class="branchAll" title="br0: 296202; br1: 3015559">(2/2)</span>      :         case kIROp_RequireCapabilityAtomDecoration:</span></span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">      296202            :             {</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">      296202            :                 auto atom = cast&lt;IRRequireCapabilityAtomDecoration&gt;(decoration)-&gt;getAtom();</span></span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">      296202            :                 bool alreadyPresent = false;</span></span>
+<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">      296202 <span class="branchAll" title="br0: 2169599; br1: 19071">(2/2)</span>      :                 for (auto existing : clonedInst-&gt;getDecorations())</span></span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">     2169599            :                 {</span></span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">     2169599            :                     if (auto requirement = as&lt;IRRequireCapabilityAtomDecoration&gt;(existing);</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">     2169599 <span class="branchAll" title="br0: 547495; br1: 1622104; br2: 277131; br3: 270364">(4/4)</span>      :                         requirement &amp;&amp; requirement-&gt;getAtom() == atom)</span></span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">      277131            :                     {</span></span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">      277131            :                         alreadyPresent = true;</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">      277131            :                         break;</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">      277131            :                     }</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">     2169599            :                 }</span></span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">      296202 <span class="branchAll" title="br0: 19071; br1: 277131">(2/2)</span>      :                 if (!alreadyPresent)</span></span>
 <span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">       19071            :                     cloneInst(context, builder, decoration);</span></span>
-<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">      296193            :                 break;</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">      296202            :                 break;</span></span>
 <span id="L566"><span class="lineNum">     566</span> <span class="tlaUNC">           0            :             }</span></span>
-<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">        1881 <span class="branchAll" title="br0: 1881; br1: 3309875">(2/2)</span>      :         case kIROp_HLSLExportDecoration:</span></span>
-<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">        1896 <span class="branchAll" title="br0: 15; br1: 3311741">(2/2)</span>      :         case kIROp_BindExistentialSlotsDecoration:</span></span>
-<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">       37717 <span class="branchAll" title="br0: 35821; br1: 3275935">(2/2)</span>      :         case kIROp_LayoutDecoration:</span></span>
-<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">       37717 <span class="branchPart" title="br0: 0; br1: 3311756">(1/2)</span>      :         case kIROp_PublicDecoration:</span></span>
-<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">       38787 <span class="branchAll" title="br0: 1070; br1: 3310686">(2/2)</span>      :         case kIROp_SequentialIDDecoration:</span></span>
-<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">       75004 <span class="branchAll" title="br0: 36217; br1: 3275539">(2/2)</span>      :         case kIROp_IntrinsicOpDecoration:</span></span>
-<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">       75014 <span class="branchAll" title="br0: 10; br1: 3311746">(2/2)</span>      :         case kIROp_NonCopyableTypeDecoration:</span></span>
-<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">       76104 <span class="branchAll" title="br0: 1090; br1: 3310666">(2/2)</span>      :         case kIROp_DynamicDispatchWitnessDecoration:</span></span>
-<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">       76128 <span class="branchAll" title="br0: 24; br1: 3311732">(2/2)</span>      :         case kIROp_Shader64BitIndexingDecoration:</span></span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">        1881 <span class="branchAll" title="br0: 1881; br1: 3309880">(2/2)</span>      :         case kIROp_HLSLExportDecoration:</span></span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">        1896 <span class="branchAll" title="br0: 15; br1: 3311746">(2/2)</span>      :         case kIROp_BindExistentialSlotsDecoration:</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">       37717 <span class="branchAll" title="br0: 35821; br1: 3275940">(2/2)</span>      :         case kIROp_LayoutDecoration:</span></span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">       37717 <span class="branchPart" title="br0: 0; br1: 3311761">(1/2)</span>      :         case kIROp_PublicDecoration:</span></span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">       38787 <span class="branchAll" title="br0: 1070; br1: 3310691">(2/2)</span>      :         case kIROp_SequentialIDDecoration:</span></span>
+<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">       75004 <span class="branchAll" title="br0: 36217; br1: 3275544">(2/2)</span>      :         case kIROp_IntrinsicOpDecoration:</span></span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">       75014 <span class="branchAll" title="br0: 10; br1: 3311751">(2/2)</span>      :         case kIROp_NonCopyableTypeDecoration:</span></span>
+<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">       76104 <span class="branchAll" title="br0: 1090; br1: 3310671">(2/2)</span>      :         case kIROp_DynamicDispatchWitnessDecoration:</span></span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">       76128 <span class="branchAll" title="br0: 24; br1: 3311737">(2/2)</span>      :         case kIROp_Shader64BitIndexingDecoration:</span></span>
 <span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">       76128 <span class="branchAll" title="br0: 37288; br1: 38840">(2/2)</span>      :             if (!clonedInst-&gt;findDecorationImpl(decoration-&gt;getOp()))</span></span>
 <span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">       37288            :             {</span></span>
 <span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">       37288            :                 cloneInst(context, builder, decoration);</span></span>
 <span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">       37288            :             }</span></span>
 <span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">       76128            :             break;</span></span>
-<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">     3311756            :         }</span></span>
-<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">     3311756            :     }</span></span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">     3311761            :         }</span></span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">     3311761            :     }</span></span>
 <span id="L583"><span class="lineNum">     583</span>                         : </span>
 <span id="L584"><span class="lineNum">     584</span>                         :     // We will also copy over source location information from the alternative</span>
 <span id="L585"><span class="lineNum">     585</span>                         :     // values, in case any of them has it available.</span>
 <span id="L586"><span class="lineNum">     586</span>                         :     //</span>
-<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">     1571000 <span class="branchAll" title="br0: 1064781; br1: 506219; br2: 477510; br3: 587271">(4/4)</span>      :     if (originalInst-&gt;sourceLoc.isValid() &amp;&amp; !clonedInst-&gt;sourceLoc.isValid())</span></span>
+<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">     1570997 <span class="branchAll" title="br0: 1064781; br1: 506216; br2: 477510; br3: 587271">(4/4)</span>      :     if (originalInst-&gt;sourceLoc.isValid() &amp;&amp; !clonedInst-&gt;sourceLoc.isValid())</span></span>
 <span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">      477510            :     {</span></span>
 <span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">      477510            :         clonedInst-&gt;sourceLoc = originalInst-&gt;sourceLoc;</span></span>
 <span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">      477510            :     }</span></span>
-<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">     1571000            : }</span></span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">     1570997            : }</span></span>
 <span id="L592"><span class="lineNum">     592</span>                         : </span>
 <span id="L593"><span class="lineNum">     593</span>                         : static void cloneExtraDecorations(</span>
 <span id="L594"><span class="lineNum">     594</span>                         :     IRSpecContextBase* context,</span>
@@ -923,10 +923,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">      840286            :     builder-&gt;setInsertInto(clonedInst);</span></span>
 <span id="L633"><span class="lineNum">     633</span>                         : </span>
 <span id="L634"><span class="lineNum">     634</span>                         :     // Clone any children of the instruction</span>
-<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">      840286 <span class="branchAll" title="br0: 1711695; br1: 840286">(2/2)</span>      :     for (auto child : originalInst-&gt;getDecorationsAndChildren())</span></span>
-<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">     1711695            :     {</span></span>
-<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">     1711695            :         cloneInst(context, builder, child);</span></span>
-<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">     1711695            :     }</span></span>
+<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">      840286 <span class="branchAll" title="br0: 1711694; br1: 840286">(2/2)</span>      :     for (auto child : originalInst-&gt;getDecorationsAndChildren())</span></span>
+<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">     1711694            :     {</span></span>
+<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">     1711694            :         cloneInst(context, builder, child);</span></span>
+<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">     1711694            :     }</span></span>
 <span id="L639"><span class="lineNum">     639</span>                         : </span>
 <span id="L640"><span class="lineNum">     640</span>                         :     // Also clone certain decorations if they appear on *any*</span>
 <span id="L641"><span class="lineNum">     641</span>                         :     // definition of the symbol (not necessarily the one</span>
@@ -1288,9 +1288,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L997"><span class="lineNum">     997</span> <span class="tlaGNC">     1432845            :             SLANG_ASSERT(cb);</span></span>
 <span id="L998"><span class="lineNum">     998</span>                         : </span>
 <span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">     1432845            :             builder-&gt;setInsertInto(cb);</span></span>
-<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">     9760281 <span class="branchAll" title="br0: 8327436; br1: 1432845">(2/2)</span>      :             for (auto oi = ob-&gt;getFirstInst(); oi; oi = oi-&gt;getNextInst())</span></span>
-<span id="L1001"><span class="lineNum">    1001</span> <span class="tlaGNC">     8327436            :             {</span></span>
-<span id="L1002"><span class="lineNum">    1002</span> <span class="tlaGNC">     8327436 <span class="branchAll" title="br0: 1836692; br1: 6490744">(2/2)</span>      :                 if (oi-&gt;getOp() == kIROp_Param)</span></span>
+<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">     9760282 <span class="branchAll" title="br0: 8327437; br1: 1432845">(2/2)</span>      :             for (auto oi = ob-&gt;getFirstInst(); oi; oi = oi-&gt;getNextInst())</span></span>
+<span id="L1001"><span class="lineNum">    1001</span> <span class="tlaGNC">     8327437            :             {</span></span>
+<span id="L1002"><span class="lineNum">    1002</span> <span class="tlaGNC">     8327437 <span class="branchAll" title="br0: 1836692; br1: 6490745">(2/2)</span>      :                 if (oi-&gt;getOp() == kIROp_Param)</span></span>
 <span id="L1003"><span class="lineNum">    1003</span> <span class="tlaGNC">     1836692            :                 {</span></span>
 <span id="L1004"><span class="lineNum">    1004</span>                         :                     // Params may have forward references in its type and</span>
 <span id="L1005"><span class="lineNum">    1005</span>                         :                     // decorations, so we just create a placeholder for it</span>
@@ -1299,11 +1299,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">     1836692            :                     registerClonedValue(context, clonedParam, oi);</span></span>
 <span id="L1009"><span class="lineNum">    1009</span> <span class="tlaGNC">     1836692            :                     paramCloneInfos.add({(IRParam*)oi, clonedParam});</span></span>
 <span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">     1836692            :                 }</span></span>
-<span id="L1011"><span class="lineNum">    1011</span> <span class="tlaGNC">     6490744            :                 else</span></span>
-<span id="L1012"><span class="lineNum">    1012</span> <span class="tlaGNC">     6490744            :                 {</span></span>
-<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">     6490744            :                     cloneInst(context, builder, oi);</span></span>
-<span id="L1014"><span class="lineNum">    1014</span> <span class="tlaGNC">     6490744            :                 }</span></span>
-<span id="L1015"><span class="lineNum">    1015</span> <span class="tlaGNC">     8327436            :             }</span></span>
+<span id="L1011"><span class="lineNum">    1011</span> <span class="tlaGNC">     6490745            :                 else</span></span>
+<span id="L1012"><span class="lineNum">    1012</span> <span class="tlaGNC">     6490745            :                 {</span></span>
+<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">     6490745            :                     cloneInst(context, builder, oi);</span></span>
+<span id="L1014"><span class="lineNum">    1014</span> <span class="tlaGNC">     6490745            :                 }</span></span>
+<span id="L1015"><span class="lineNum">    1015</span> <span class="tlaGNC">     8327437            :             }</span></span>
 <span id="L1016"><span class="lineNum">    1016</span>                         :             // Clone the type and decorations of parameters after all instructs in the block</span>
 <span id="L1017"><span class="lineNum">    1017</span>                         :             // have been cloned.</span>
 <span id="L1018"><span class="lineNum">    1018</span> <span class="tlaGNC">     1432845 <span class="branchAll" title="br0: 1836692; br1: 1432845">(2/2)</span>      :             for (auto param : paramCloneInfos)</span></span>
@@ -1579,9 +1579,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1288"><span class="lineNum">    1288</span>                         : // use it to match against target-specialization modifiers</span>
 <span id="L1289"><span class="lineNum">    1289</span>                         : //</span>
 <span id="L1290"><span class="lineNum">    1290</span>                         : CapabilitySet getTargetCapabilities(IRSpecContext* context)</span>
-<span id="L1291"><span class="lineNum">    1291</span> <span class="tlaGNC">      558873            : {</span></span>
-<span id="L1292"><span class="lineNum">    1292</span> <span class="tlaGNC">      558873            :     return context-&gt;getShared()-&gt;targetReq-&gt;getTargetCaps();</span></span>
-<span id="L1293"><span class="lineNum">    1293</span> <span class="tlaGNC">      558873            : }</span></span>
+<span id="L1291"><span class="lineNum">    1291</span> <span class="tlaGNC">      558874            : {</span></span>
+<span id="L1292"><span class="lineNum">    1292</span> <span class="tlaGNC">      558874            :     return context-&gt;getShared()-&gt;targetReq-&gt;getTargetCaps();</span></span>
+<span id="L1293"><span class="lineNum">    1293</span> <span class="tlaGNC">      558874            : }</span></span>
 <span id="L1294"><span class="lineNum">    1294</span>                         : </span>
 <span id="L1295"><span class="lineNum">    1295</span>                         : /// Get the most appropriate (&quot;best&quot;) capability requirements for `inVal` based on the</span>
 <span id="L1296"><span class="lineNum">    1296</span>                         : /// `targetCaps`.</span>
@@ -1615,14 +1615,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1324"><span class="lineNum">    1324</span>                         : // TODO: there is a missing step here where we need</span>
 <span id="L1325"><span class="lineNum">    1325</span>                         : // to check if things are even available in the first place...</span>
 <span id="L1326"><span class="lineNum">    1326</span>                         : bool isBetterForTarget(IRSpecContext* context, IRInst* newVal, IRInst* oldVal)</span>
-<span id="L1327"><span class="lineNum">    1327</span> <span class="tlaGNC">     1307179            : {</span></span>
+<span id="L1327"><span class="lineNum">    1327</span> <span class="tlaGNC">     1307182            : {</span></span>
 <span id="L1328"><span class="lineNum">    1328</span>                         :     // Anything is better than nothing..</span>
-<span id="L1329"><span class="lineNum">    1329</span> <span class="tlaGNC">     1307179 <span class="branchAll" title="br0: 748307; br1: 558872">(2/2)</span>      :     if (oldVal == nullptr)</span></span>
-<span id="L1330"><span class="lineNum">    1330</span> <span class="tlaGNC">      748307            :     {</span></span>
-<span id="L1331"><span class="lineNum">    1331</span> <span class="tlaGNC">      748307            :         return true;</span></span>
-<span id="L1332"><span class="lineNum">    1332</span> <span class="tlaGNC">      748307            :     }</span></span>
+<span id="L1329"><span class="lineNum">    1329</span> <span class="tlaGNC">     1307182 <span class="branchAll" title="br0: 748308; br1: 558874">(2/2)</span>      :     if (oldVal == nullptr)</span></span>
+<span id="L1330"><span class="lineNum">    1330</span> <span class="tlaGNC">      748308            :     {</span></span>
+<span id="L1331"><span class="lineNum">    1331</span> <span class="tlaGNC">      748308            :         return true;</span></span>
+<span id="L1332"><span class="lineNum">    1332</span> <span class="tlaGNC">      748308            :     }</span></span>
 <span id="L1333"><span class="lineNum">    1333</span>                         : </span>
-<span id="L1334"><span class="lineNum">    1334</span> <span class="tlaGNC">      558872 <span class="branchPart" title="br0: 0; br1: 558872">(1/2)</span>      :     if (!context-&gt;getShared()-&gt;targetReq)</span></span>
+<span id="L1334"><span class="lineNum">    1334</span> <span class="tlaGNC">      558874 <span class="branchPart" title="br0: 0; br1: 558874">(1/2)</span>      :     if (!context-&gt;getShared()-&gt;targetReq)</span></span>
 <span id="L1335"><span class="lineNum">    1335</span> <span class="tlaUNC">           0            :         return false;</span></span>
 <span id="L1336"><span class="lineNum">    1336</span>                         : </span>
 <span id="L1337"><span class="lineNum">    1337</span>                         :     // For right now every declaration might have zero or more</span>
@@ -1664,9 +1664,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1373"><span class="lineNum">    1373</span>                         :     // push back on the automatic inference of extensions/versions in</span>
 <span id="L1374"><span class="lineNum">    1374</span>                         :     // the compiler as much as possible.</span>
 <span id="L1375"><span class="lineNum">    1375</span>                         :     //</span>
-<span id="L1376"><span class="lineNum">    1376</span> <span class="tlaGNC">      558872            :     CapabilitySet targetCaps = getTargetCapabilities(context);</span></span>
-<span id="L1377"><span class="lineNum">    1377</span> <span class="tlaGNC">      558872            :     CapabilitySet newCaps = _getBestSpecializationCaps(newVal, targetCaps);</span></span>
-<span id="L1378"><span class="lineNum">    1378</span> <span class="tlaGNC">      558872            :     CapabilitySet oldCaps = _getBestSpecializationCaps(oldVal, targetCaps);</span></span>
+<span id="L1376"><span class="lineNum">    1376</span> <span class="tlaGNC">      558874            :     CapabilitySet targetCaps = getTargetCapabilities(context);</span></span>
+<span id="L1377"><span class="lineNum">    1377</span> <span class="tlaGNC">      558874            :     CapabilitySet newCaps = _getBestSpecializationCaps(newVal, targetCaps);</span></span>
+<span id="L1378"><span class="lineNum">    1378</span> <span class="tlaGNC">      558874            :     CapabilitySet oldCaps = _getBestSpecializationCaps(oldVal, targetCaps);</span></span>
 <span id="L1379"><span class="lineNum">    1379</span>                         : </span>
 <span id="L1380"><span class="lineNum">    1380</span>                         :     // If either value returned an invalid capability set, it implies</span>
 <span id="L1381"><span class="lineNum">    1381</span>                         :     // that it cannot be used on this target at all, and the other</span>
@@ -1675,33 +1675,33 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1384"><span class="lineNum">    1384</span>                         :     // Note: if both of the candidate values we have are incompatible</span>
 <span id="L1385"><span class="lineNum">    1385</span>                         :     // with our target, then it doesn&#x27;t matter which we favor.</span>
 <span id="L1386"><span class="lineNum">    1386</span>                         :     //</span>
-<span id="L1387"><span class="lineNum">    1387</span> <span class="tlaGNC">      558872 <span class="branchPart" title="br0: 0; br1: 558872">(1/2)</span>      :     if (newCaps.isInvalid())</span></span>
+<span id="L1387"><span class="lineNum">    1387</span> <span class="tlaGNC">      558874 <span class="branchPart" title="br0: 0; br1: 558874">(1/2)</span>      :     if (newCaps.isInvalid())</span></span>
 <span id="L1388"><span class="lineNum">    1388</span> <span class="tlaUNC">           0            :         return false;</span></span>
-<span id="L1389"><span class="lineNum">    1389</span> <span class="tlaGNC">      558872 <span class="branchPart" title="br0: 0; br1: 558872">(1/2)</span>      :     if (oldCaps.isInvalid())</span></span>
+<span id="L1389"><span class="lineNum">    1389</span> <span class="tlaGNC">      558874 <span class="branchPart" title="br0: 0; br1: 558874">(1/2)</span>      :     if (oldCaps.isInvalid())</span></span>
 <span id="L1390"><span class="lineNum">    1390</span> <span class="tlaUNC">           0            :         return true;</span></span>
 <span id="L1391"><span class="lineNum">    1391</span>                         : </span>
-<span id="L1392"><span class="lineNum">    1392</span> <span class="tlaGNC">      558872            :     bool isEqual = false;</span></span>
-<span id="L1393"><span class="lineNum">    1393</span> <span class="tlaGNC">      558872            :     bool isNewBetter = newCaps.isBetterForTarget(oldCaps, targetCaps, isEqual);</span></span>
-<span id="L1394"><span class="lineNum">    1394</span> <span class="tlaGNC">      558872 <span class="branchPart" title="br0: 0; br1: 558872">(1/2)</span>      :     if (!isEqual)</span></span>
+<span id="L1392"><span class="lineNum">    1392</span> <span class="tlaGNC">      558874            :     bool isEqual = false;</span></span>
+<span id="L1393"><span class="lineNum">    1393</span> <span class="tlaGNC">      558874            :     bool isNewBetter = newCaps.isBetterForTarget(oldCaps, targetCaps, isEqual);</span></span>
+<span id="L1394"><span class="lineNum">    1394</span> <span class="tlaGNC">      558874 <span class="branchPart" title="br0: 0; br1: 558874">(1/2)</span>      :     if (!isEqual)</span></span>
 <span id="L1395"><span class="lineNum">    1395</span> <span class="tlaUNC">           0            :         return isNewBetter;</span></span>
 <span id="L1396"><span class="lineNum">    1396</span>                         : </span>
 <span id="L1397"><span class="lineNum">    1397</span>                         :     // All preceding factors being equal, an `[export]` is better</span>
 <span id="L1398"><span class="lineNum">    1398</span>                         :     // than an `[import]`.</span>
 <span id="L1399"><span class="lineNum">    1399</span>                         :     //</span>
-<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaGNC">      558872            :     bool newIsExport = newVal-&gt;findDecoration&lt;IRExportDecoration&gt;() != nullptr;</span></span>
-<span id="L1401"><span class="lineNum">    1401</span> <span class="tlaGNC">      558872            :     bool oldIsExport = oldVal-&gt;findDecoration&lt;IRExportDecoration&gt;() != nullptr;</span></span>
-<span id="L1402"><span class="lineNum">    1402</span> <span class="tlaGNC">      558872 <span class="branchAll" title="br0: 543575; br1: 15297">(2/2)</span>      :     if (newIsExport != oldIsExport)</span></span>
+<span id="L1400"><span class="lineNum">    1400</span> <span class="tlaGNC">      558874            :     bool newIsExport = newVal-&gt;findDecoration&lt;IRExportDecoration&gt;() != nullptr;</span></span>
+<span id="L1401"><span class="lineNum">    1401</span> <span class="tlaGNC">      558874            :     bool oldIsExport = oldVal-&gt;findDecoration&lt;IRExportDecoration&gt;() != nullptr;</span></span>
+<span id="L1402"><span class="lineNum">    1402</span> <span class="tlaGNC">      558874 <span class="branchAll" title="br0: 543575; br1: 15299">(2/2)</span>      :     if (newIsExport != oldIsExport)</span></span>
 <span id="L1403"><span class="lineNum">    1403</span> <span class="tlaGNC">      543575            :         return newIsExport;</span></span>
 <span id="L1404"><span class="lineNum">    1404</span>                         : </span>
 <span id="L1405"><span class="lineNum">    1405</span>                         :     // All preceding factors being equal, a definition is</span>
 <span id="L1406"><span class="lineNum">    1406</span>                         :     // better than a declaration.</span>
-<span id="L1407"><span class="lineNum">    1407</span> <span class="tlaGNC">       15297            :     auto newIsDef = isDefinition(newVal);</span></span>
-<span id="L1408"><span class="lineNum">    1408</span> <span class="tlaGNC">       15297            :     auto oldIsDef = isDefinition(oldVal);</span></span>
-<span id="L1409"><span class="lineNum">    1409</span> <span class="tlaGNC">       15297 <span class="branchAll" title="br0: 19; br1: 15278">(2/2)</span>      :     if (newIsDef != oldIsDef)</span></span>
+<span id="L1407"><span class="lineNum">    1407</span> <span class="tlaGNC">       15299            :     auto newIsDef = isDefinition(newVal);</span></span>
+<span id="L1408"><span class="lineNum">    1408</span> <span class="tlaGNC">       15299            :     auto oldIsDef = isDefinition(oldVal);</span></span>
+<span id="L1409"><span class="lineNum">    1409</span> <span class="tlaGNC">       15299 <span class="branchAll" title="br0: 19; br1: 15280">(2/2)</span>      :     if (newIsDef != oldIsDef)</span></span>
 <span id="L1410"><span class="lineNum">    1410</span> <span class="tlaGNC">          19            :         return newIsDef;</span></span>
 <span id="L1411"><span class="lineNum">    1411</span>                         : </span>
-<span id="L1412"><span class="lineNum">    1412</span> <span class="tlaGNC">       15278            :     return false;</span></span>
-<span id="L1413"><span class="lineNum">    1413</span> <span class="tlaGNC">       15297            : }</span></span>
+<span id="L1412"><span class="lineNum">    1412</span> <span class="tlaGNC">       15280            :     return false;</span></span>
+<span id="L1413"><span class="lineNum">    1413</span> <span class="tlaGNC">       15299            : }</span></span>
 <span id="L1414"><span class="lineNum">    1414</span>                         : </span>
 <span id="L1415"><span class="lineNum">    1415</span>                         : IRFunc* cloneFuncImpl(</span>
 <span id="L1416"><span class="lineNum">    1416</span>                         :     IRSpecContextBase* context,</span>
@@ -1717,146 +1717,146 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1426"><span class="lineNum">    1426</span>                         : </span>
 <span id="L1427"><span class="lineNum">    1427</span>                         : // Can an inst with `opcode` contain basic blocks as children?</span>
 <span id="L1428"><span class="lineNum">    1428</span>                         : bool canInstContainBasicBlocks(IROp opcode)</span>
-<span id="L1429"><span class="lineNum">    1429</span> <span class="tlaGNC">    12867289            : {</span></span>
-<span id="L1430"><span class="lineNum">    1430</span> <span class="tlaGNC">    12867289            :     switch (opcode)</span></span>
-<span id="L1431"><span class="lineNum">    1431</span> <span class="tlaGNC">    12867289            :     {</span></span>
-<span id="L1432"><span class="lineNum">    1432</span> <span class="tlaGNC">         631 <span class="branchAll" title="br0: 631; br1: 12866658">(2/2)</span>      :     case kIROp_Expand:</span></span>
+<span id="L1429"><span class="lineNum">    1429</span> <span class="tlaGNC">    12867293            : {</span></span>
+<span id="L1430"><span class="lineNum">    1430</span> <span class="tlaGNC">    12867293            :     switch (opcode)</span></span>
+<span id="L1431"><span class="lineNum">    1431</span> <span class="tlaGNC">    12867293            :     {</span></span>
+<span id="L1432"><span class="lineNum">    1432</span> <span class="tlaGNC">         631 <span class="branchAll" title="br0: 631; br1: 12866662">(2/2)</span>      :     case kIROp_Expand:</span></span>
 <span id="L1433"><span class="lineNum">    1433</span> <span class="tlaGNC">         631            :         return true;</span></span>
-<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaGNC">    12866658 <span class="branchAll" title="br0: 12866658; br1: 631">(2/2)</span>      :     default:</span></span>
-<span id="L1435"><span class="lineNum">    1435</span> <span class="tlaGNC">    12866658            :         return false;</span></span>
-<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaGNC">    12867289            :     }</span></span>
-<span id="L1437"><span class="lineNum">    1437</span> <span class="tlaGNC">    12867289            : }</span></span>
+<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaGNC">    12866662 <span class="branchAll" title="br0: 12866662; br1: 631">(2/2)</span>      :     default:</span></span>
+<span id="L1435"><span class="lineNum">    1435</span> <span class="tlaGNC">    12866662            :         return false;</span></span>
+<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaGNC">    12867293            :     }</span></span>
+<span id="L1437"><span class="lineNum">    1437</span> <span class="tlaGNC">    12867293            : }</span></span>
 <span id="L1438"><span class="lineNum">    1438</span>                         : </span>
 <span id="L1439"><span class="lineNum">    1439</span>                         : IRInst* cloneInst(</span>
 <span id="L1440"><span class="lineNum">    1440</span>                         :     IRSpecContextBase* context,</span>
 <span id="L1441"><span class="lineNum">    1441</span>                         :     IRBuilder* builder,</span>
 <span id="L1442"><span class="lineNum">    1442</span>                         :     IRInst* originalInst,</span>
 <span id="L1443"><span class="lineNum">    1443</span>                         :     IROriginalValuesForClone const&amp; originalValues)</span>
-<span id="L1444"><span class="lineNum">    1444</span> <span class="tlaGNC">    14468667            : {</span></span>
+<span id="L1444"><span class="lineNum">    1444</span> <span class="tlaGNC">    14468665            : {</span></span>
 <span id="L1445"><span class="lineNum">    1445</span>                         : #if SLANG_ENABLE_IR_BREAK_ALLOC</span>
 <span id="L1446"><span class="lineNum">    1446</span>                         :     _debugSetInstBeingCloned(originalInst-&gt;_debugUID);</span>
 <span id="L1447"><span class="lineNum">    1447</span>                         :     SLANG_DEFER(_debugResetInstBeingCloned());</span>
 <span id="L1448"><span class="lineNum">    1448</span>                         : #endif</span>
 <span id="L1449"><span class="lineNum">    1449</span>                         : </span>
-<span id="L1450"><span class="lineNum">    1450</span> <span class="tlaGNC">    14468667            :     switch (originalInst-&gt;getOp())</span></span>
-<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaGNC">    14468667            :     {</span></span>
+<span id="L1450"><span class="lineNum">    1450</span> <span class="tlaGNC">    14468665            :     switch (originalInst-&gt;getOp())</span></span>
+<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaGNC">    14468665            :     {</span></span>
 <span id="L1452"><span class="lineNum">    1452</span>                         :         // We need to special-case any instruction that is not</span>
 <span id="L1453"><span class="lineNum">    1453</span>                         :         // allocated like an ordinary `IRInst` with trailing args.</span>
-<span id="L1454"><span class="lineNum">    1454</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468667">(1/2)</span>      :     case kIROp_IntLit:</span></span>
-<span id="L1455"><span class="lineNum">    1455</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468667">(1/2)</span>      :     case kIROp_FloatLit:</span></span>
-<span id="L1456"><span class="lineNum">    1456</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468667">(1/2)</span>      :     case kIROp_BoolLit:</span></span>
-<span id="L1457"><span class="lineNum">    1457</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468667">(1/2)</span>      :     case kIROp_StringLit:</span></span>
-<span id="L1458"><span class="lineNum">    1458</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468667">(1/2)</span>      :     case kIROp_BlobLit:</span></span>
-<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">           3 <span class="branchAll" title="br0: 3; br1: 14468664">(2/2)</span>      :     case kIROp_PtrLit:</span></span>
-<span id="L1460"><span class="lineNum">    1460</span> <span class="tlaGNC">           3 <span class="branchPart" title="br0: 0; br1: 14468667">(1/2)</span>      :     case kIROp_VoidLit:</span></span>
+<span id="L1454"><span class="lineNum">    1454</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468665">(1/2)</span>      :     case kIROp_IntLit:</span></span>
+<span id="L1455"><span class="lineNum">    1455</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468665">(1/2)</span>      :     case kIROp_FloatLit:</span></span>
+<span id="L1456"><span class="lineNum">    1456</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468665">(1/2)</span>      :     case kIROp_BoolLit:</span></span>
+<span id="L1457"><span class="lineNum">    1457</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468665">(1/2)</span>      :     case kIROp_StringLit:</span></span>
+<span id="L1458"><span class="lineNum">    1458</span> <span class="tlaUNC">           0 <span class="branchPart" title="br0: 0; br1: 14468665">(1/2)</span>      :     case kIROp_BlobLit:</span></span>
+<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaGNC">           3 <span class="branchAll" title="br0: 3; br1: 14468662">(2/2)</span>      :     case kIROp_PtrLit:</span></span>
+<span id="L1460"><span class="lineNum">    1460</span> <span class="tlaGNC">           3 <span class="branchPart" title="br0: 0; br1: 14468665">(1/2)</span>      :     case kIROp_VoidLit:</span></span>
 <span id="L1461"><span class="lineNum">    1461</span> <span class="tlaGNC">           3            :         return cloneValue(context, originalInst);</span></span>
 <span id="L1462"><span class="lineNum">    1462</span>                         : </span>
-<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaGNC">      180229 <span class="branchAll" title="br0: 180229; br1: 14288438">(2/2)</span>      :     case kIROp_Func:</span></span>
+<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaGNC">      180229 <span class="branchAll" title="br0: 180229; br1: 14288436">(2/2)</span>      :     case kIROp_Func:</span></span>
 <span id="L1464"><span class="lineNum">    1464</span> <span class="tlaGNC">      180229            :         return cloneFuncImpl(context, builder, cast&lt;IRFunc&gt;(originalInst), originalValues);</span></span>
 <span id="L1465"><span class="lineNum">    1465</span>                         : </span>
-<span id="L1466"><span class="lineNum">    1466</span> <span class="tlaGNC">        2571 <span class="branchAll" title="br0: 2571; br1: 14466096">(2/2)</span>      :     case kIROp_GlobalVar:</span></span>
+<span id="L1466"><span class="lineNum">    1466</span> <span class="tlaGNC">        2571 <span class="branchAll" title="br0: 2571; br1: 14466094">(2/2)</span>      :     case kIROp_GlobalVar:</span></span>
 <span id="L1467"><span class="lineNum">    1467</span> <span class="tlaGNC">        2571            :         return cloneGlobalVarImpl(</span></span>
 <span id="L1468"><span class="lineNum">    1468</span> <span class="tlaGNC">        2571            :             context,</span></span>
 <span id="L1469"><span class="lineNum">    1469</span> <span class="tlaGNC">        2571            :             builder,</span></span>
 <span id="L1470"><span class="lineNum">    1470</span> <span class="tlaGNC">        2571            :             cast&lt;IRGlobalVar&gt;(originalInst),</span></span>
 <span id="L1471"><span class="lineNum">    1471</span> <span class="tlaGNC">        2571            :             originalValues);</span></span>
 <span id="L1472"><span class="lineNum">    1472</span>                         : </span>
-<span id="L1473"><span class="lineNum">    1473</span> <span class="tlaGNC">       20726 <span class="branchAll" title="br0: 20726; br1: 14447941">(2/2)</span>      :     case kIROp_GlobalParam:</span></span>
+<span id="L1473"><span class="lineNum">    1473</span> <span class="tlaGNC">       20726 <span class="branchAll" title="br0: 20726; br1: 14447939">(2/2)</span>      :     case kIROp_GlobalParam:</span></span>
 <span id="L1474"><span class="lineNum">    1474</span> <span class="tlaGNC">       20726            :         return cloneGlobalParamImpl(</span></span>
 <span id="L1475"><span class="lineNum">    1475</span> <span class="tlaGNC">       20726            :             context,</span></span>
 <span id="L1476"><span class="lineNum">    1476</span> <span class="tlaGNC">       20726            :             builder,</span></span>
 <span id="L1477"><span class="lineNum">    1477</span> <span class="tlaGNC">       20726            :             cast&lt;IRGlobalParam&gt;(originalInst),</span></span>
 <span id="L1478"><span class="lineNum">    1478</span> <span class="tlaGNC">       20726            :             originalValues);</span></span>
 <span id="L1479"><span class="lineNum">    1479</span>                         : </span>
-<span id="L1480"><span class="lineNum">    1480</span> <span class="tlaGNC">       13953 <span class="branchAll" title="br0: 13953; br1: 14454714">(2/2)</span>      :     case kIROp_GlobalConstant:</span></span>
+<span id="L1480"><span class="lineNum">    1480</span> <span class="tlaGNC">       13953 <span class="branchAll" title="br0: 13953; br1: 14454712">(2/2)</span>      :     case kIROp_GlobalConstant:</span></span>
 <span id="L1481"><span class="lineNum">    1481</span> <span class="tlaGNC">       13953            :         return cloneGlobalConstantImpl(</span></span>
 <span id="L1482"><span class="lineNum">    1482</span> <span class="tlaGNC">       13953            :             context,</span></span>
 <span id="L1483"><span class="lineNum">    1483</span> <span class="tlaGNC">       13953            :             builder,</span></span>
 <span id="L1484"><span class="lineNum">    1484</span> <span class="tlaGNC">       13953            :             cast&lt;IRGlobalConstant&gt;(originalInst),</span></span>
 <span id="L1485"><span class="lineNum">    1485</span> <span class="tlaGNC">       13953            :             originalValues);</span></span>
 <span id="L1486"><span class="lineNum">    1486</span>                         : </span>
-<span id="L1487"><span class="lineNum">    1487</span> <span class="tlaGNC">      107489 <span class="branchAll" title="br0: 107489; br1: 14361178">(2/2)</span>      :     case kIROp_WitnessTable:</span></span>
+<span id="L1487"><span class="lineNum">    1487</span> <span class="tlaGNC">      107489 <span class="branchAll" title="br0: 107489; br1: 14361176">(2/2)</span>      :     case kIROp_WitnessTable:</span></span>
 <span id="L1488"><span class="lineNum">    1488</span> <span class="tlaGNC">      107489            :         return cloneWitnessTableImpl(</span></span>
 <span id="L1489"><span class="lineNum">    1489</span> <span class="tlaGNC">      107489            :             context,</span></span>
 <span id="L1490"><span class="lineNum">    1490</span> <span class="tlaGNC">      107489            :             builder,</span></span>
 <span id="L1491"><span class="lineNum">    1491</span> <span class="tlaGNC">      107489            :             cast&lt;IRWitnessTable&gt;(originalInst),</span></span>
 <span id="L1492"><span class="lineNum">    1492</span> <span class="tlaGNC">      107489            :             originalValues);</span></span>
 <span id="L1493"><span class="lineNum">    1493</span>                         : </span>
-<span id="L1494"><span class="lineNum">    1494</span> <span class="tlaGNC">       24362 <span class="branchAll" title="br0: 24362; br1: 14444305">(2/2)</span>      :     case kIROp_StructType:</span></span>
+<span id="L1494"><span class="lineNum">    1494</span> <span class="tlaGNC">       24362 <span class="branchAll" title="br0: 24362; br1: 14444303">(2/2)</span>      :     case kIROp_StructType:</span></span>
 <span id="L1495"><span class="lineNum">    1495</span> <span class="tlaGNC">       24362            :         return cloneStructTypeImpl(</span></span>
 <span id="L1496"><span class="lineNum">    1496</span> <span class="tlaGNC">       24362            :             context,</span></span>
 <span id="L1497"><span class="lineNum">    1497</span> <span class="tlaGNC">       24362            :             builder,</span></span>
 <span id="L1498"><span class="lineNum">    1498</span> <span class="tlaGNC">       24362            :             cast&lt;IRStructType&gt;(originalInst),</span></span>
 <span id="L1499"><span class="lineNum">    1499</span> <span class="tlaGNC">       24362            :             originalValues);</span></span>
 <span id="L1500"><span class="lineNum">    1500</span>                         : </span>
-<span id="L1501"><span class="lineNum">    1501</span> <span class="tlaGNC">        5315 <span class="branchAll" title="br0: 5315; br1: 14463352">(2/2)</span>      :     case kIROp_EnumType:</span></span>
+<span id="L1501"><span class="lineNum">    1501</span> <span class="tlaGNC">        5315 <span class="branchAll" title="br0: 5315; br1: 14463350">(2/2)</span>      :     case kIROp_EnumType:</span></span>
 <span id="L1502"><span class="lineNum">    1502</span> <span class="tlaGNC">        5315            :         return cloneEnumTypeImpl(context, builder, cast&lt;IREnumType&gt;(originalInst), originalValues);</span></span>
 <span id="L1503"><span class="lineNum">    1503</span>                         : </span>
-<span id="L1504"><span class="lineNum">    1504</span> <span class="tlaGNC">      188704 <span class="branchAll" title="br0: 188704; br1: 14279963">(2/2)</span>      :     case kIROp_InterfaceType:</span></span>
+<span id="L1504"><span class="lineNum">    1504</span> <span class="tlaGNC">      188704 <span class="branchAll" title="br0: 188704; br1: 14279961">(2/2)</span>      :     case kIROp_InterfaceType:</span></span>
 <span id="L1505"><span class="lineNum">    1505</span> <span class="tlaGNC">      188704            :         return cloneInterfaceTypeImpl(</span></span>
 <span id="L1506"><span class="lineNum">    1506</span> <span class="tlaGNC">      188704            :             context,</span></span>
 <span id="L1507"><span class="lineNum">    1507</span> <span class="tlaGNC">      188704            :             builder,</span></span>
 <span id="L1508"><span class="lineNum">    1508</span> <span class="tlaGNC">      188704            :             cast&lt;IRInterfaceType&gt;(originalInst),</span></span>
 <span id="L1509"><span class="lineNum">    1509</span> <span class="tlaGNC">      188704            :             originalValues);</span></span>
 <span id="L1510"><span class="lineNum">    1510</span>                         : </span>
-<span id="L1511"><span class="lineNum">    1511</span> <span class="tlaGNC">      470736 <span class="branchAll" title="br0: 470736; br1: 13997931">(2/2)</span>      :     case kIROp_Generic:</span></span>
+<span id="L1511"><span class="lineNum">    1511</span> <span class="tlaGNC">      470736 <span class="branchAll" title="br0: 470736; br1: 13997929">(2/2)</span>      :     case kIROp_Generic:</span></span>
 <span id="L1512"><span class="lineNum">    1512</span> <span class="tlaGNC">      470736            :         return cloneGenericImpl(context, builder, cast&lt;IRGeneric&gt;(originalInst), originalValues);</span></span>
 <span id="L1513"><span class="lineNum">    1513</span>                         : </span>
-<span id="L1514"><span class="lineNum">    1514</span> <span class="tlaGNC">      587215 <span class="branchAll" title="br0: 587215; br1: 13881452">(2/2)</span>      :     case kIROp_StructKey:</span></span>
+<span id="L1514"><span class="lineNum">    1514</span> <span class="tlaGNC">      587215 <span class="branchAll" title="br0: 587215; br1: 13881450">(2/2)</span>      :     case kIROp_StructKey:</span></span>
 <span id="L1515"><span class="lineNum">    1515</span> <span class="tlaGNC">      587215            :         return cloneStructKeyImpl(</span></span>
 <span id="L1516"><span class="lineNum">    1516</span> <span class="tlaGNC">      587215            :             context,</span></span>
 <span id="L1517"><span class="lineNum">    1517</span> <span class="tlaGNC">      587215            :             builder,</span></span>
 <span id="L1518"><span class="lineNum">    1518</span> <span class="tlaGNC">      587215            :             cast&lt;IRStructKey&gt;(originalInst),</span></span>
 <span id="L1519"><span class="lineNum">    1519</span> <span class="tlaGNC">      587215            :             originalValues);</span></span>
 <span id="L1520"><span class="lineNum">    1520</span>                         : </span>
-<span id="L1521"><span class="lineNum">    1521</span> <span class="tlaGNC">          11 <span class="branchAll" title="br0: 11; br1: 14468656">(2/2)</span>      :     case kIROp_GlobalGenericParam:</span></span>
+<span id="L1521"><span class="lineNum">    1521</span> <span class="tlaGNC">          11 <span class="branchAll" title="br0: 11; br1: 14468654">(2/2)</span>      :     case kIROp_GlobalGenericParam:</span></span>
 <span id="L1522"><span class="lineNum">    1522</span> <span class="tlaGNC">          11            :         return cloneGlobalGenericParamImpl(</span></span>
 <span id="L1523"><span class="lineNum">    1523</span> <span class="tlaGNC">          11            :             context,</span></span>
 <span id="L1524"><span class="lineNum">    1524</span> <span class="tlaGNC">          11            :             builder,</span></span>
 <span id="L1525"><span class="lineNum">    1525</span> <span class="tlaGNC">          11            :             cast&lt;IRGlobalGenericParam&gt;(originalInst),</span></span>
 <span id="L1526"><span class="lineNum">    1526</span> <span class="tlaGNC">          11            :             originalValues);</span></span>
-<span id="L1527"><span class="lineNum">    1527</span> <span class="tlaGNC">          63 <span class="branchAll" title="br0: 63; br1: 14468604">(2/2)</span>      :     case kIROp_SymbolAlias:</span></span>
+<span id="L1527"><span class="lineNum">    1527</span> <span class="tlaGNC">          63 <span class="branchAll" title="br0: 63; br1: 14468602">(2/2)</span>      :     case kIROp_SymbolAlias:</span></span>
 <span id="L1528"><span class="lineNum">    1528</span>                         :         // If we encounter a symbol alias, we want to clone</span>
 <span id="L1529"><span class="lineNum">    1529</span>                         :         // the value it refers to instead of the alias itself.</span>
 <span id="L1530"><span class="lineNum">    1530</span> <span class="tlaGNC">          63            :         return context-&gt;maybeCloneValue(cast&lt;IRSymbolAlias&gt;(originalInst)-&gt;getOperand(0));</span></span>
-<span id="L1531"><span class="lineNum">    1531</span> <span class="tlaGNC">    12867294 <span class="branchAll" title="br0: 12867294; br1: 1601373">(2/2)</span>      :     default:</span></span>
-<span id="L1532"><span class="lineNum">    1532</span> <span class="tlaGNC">    12867294            :         break;</span></span>
-<span id="L1533"><span class="lineNum">    1533</span> <span class="tlaGNC">    14468667            :     }</span></span>
+<span id="L1531"><span class="lineNum">    1531</span> <span class="tlaGNC">    12867290 <span class="branchAll" title="br0: 12867290; br1: 1601375">(2/2)</span>      :     default:</span></span>
+<span id="L1532"><span class="lineNum">    1532</span> <span class="tlaGNC">    12867290            :         break;</span></span>
+<span id="L1533"><span class="lineNum">    1533</span> <span class="tlaGNC">    14468665            :     }</span></span>
 <span id="L1534"><span class="lineNum">    1534</span>                         : </span>
 <span id="L1535"><span class="lineNum">    1535</span>                         :     // The common case is that we just need to construct a cloned</span>
 <span id="L1536"><span class="lineNum">    1536</span>                         :     // instruction with the right number of operands, intialize</span>
 <span id="L1537"><span class="lineNum">    1537</span>                         :     // it, and then add it to the sequence.</span>
-<span id="L1538"><span class="lineNum">    1538</span> <span class="tlaGNC">    12867293            :     UInt argCount = originalInst-&gt;getOperandCount();</span></span>
-<span id="L1539"><span class="lineNum">    1539</span> <span class="tlaGNC">    12867293            :     ShortList&lt;IRInst*&gt; newArgs;</span></span>
-<span id="L1540"><span class="lineNum">    1540</span> <span class="tlaGNC">    12867293            :     newArgs.setCount(argCount);</span></span>
-<span id="L1541"><span class="lineNum">    1541</span> <span class="tlaGNC">    12867293            :     auto oldBuilder = context-&gt;builder;</span></span>
-<span id="L1542"><span class="lineNum">    1542</span> <span class="tlaGNC">    12867293            :     context-&gt;builder = builder;</span></span>
-<span id="L1543"><span class="lineNum">    1543</span> <span class="tlaGNC">    35858469 <span class="branchAll" title="br0: 22991176; br1: 12867293">(2/2)</span>      :     for (UInt aa = 0; aa &lt; argCount; ++aa)</span></span>
-<span id="L1544"><span class="lineNum">    1544</span> <span class="tlaGNC">    22991176            :     {</span></span>
-<span id="L1545"><span class="lineNum">    1545</span> <span class="tlaGNC">    22991176            :         IRInst* originalArg = originalInst-&gt;getOperand(aa);</span></span>
-<span id="L1546"><span class="lineNum">    1546</span> <span class="tlaGNC">    22991176            :         IRInst* clonedArg = cloneValue(context, originalArg);</span></span>
-<span id="L1547"><span class="lineNum">    1547</span> <span class="tlaGNC">    22991176            :         newArgs[aa] = clonedArg;</span></span>
-<span id="L1548"><span class="lineNum">    1548</span> <span class="tlaGNC">    22991176            :     }</span></span>
-<span id="L1549"><span class="lineNum">    1549</span> <span class="tlaGNC">    12867293            :     auto funcType = cloneType(context, originalInst-&gt;getFullType());</span></span>
-<span id="L1550"><span class="lineNum">    1550</span> <span class="tlaGNC">    12867293            :     context-&gt;builder = oldBuilder;</span></span>
-<span id="L1551"><span class="lineNum">    1551</span> <span class="tlaGNC">    12867293            :     IRInst* clonedInst = builder-&gt;createIntrinsicInst(</span></span>
-<span id="L1552"><span class="lineNum">    1552</span> <span class="tlaGNC">    12867293            :         funcType,</span></span>
-<span id="L1553"><span class="lineNum">    1553</span> <span class="tlaGNC">    12867293            :         originalInst-&gt;getOp(),</span></span>
-<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaGNC">    12867293            :         argCount,</span></span>
-<span id="L1555"><span class="lineNum">    1555</span> <span class="tlaGNC">    12867293            :         newArgs.getArrayView().getBuffer());</span></span>
-<span id="L1556"><span class="lineNum">    1556</span> <span class="tlaGNC">    12867293            :     builder-&gt;addInst(clonedInst);</span></span>
-<span id="L1557"><span class="lineNum">    1557</span> <span class="tlaGNC">    12867293            :     registerClonedValue(context, clonedInst, originalValues);</span></span>
-<span id="L1558"><span class="lineNum">    1558</span> <span class="tlaGNC">    12867293 <span class="branchAll" title="br0: 631; br1: 12866662">(2/2)</span>      :     if (canInstContainBasicBlocks(clonedInst-&gt;getOp()))</span></span>
+<span id="L1538"><span class="lineNum">    1538</span> <span class="tlaGNC">    12867289            :     UInt argCount = originalInst-&gt;getOperandCount();</span></span>
+<span id="L1539"><span class="lineNum">    1539</span> <span class="tlaGNC">    12867289            :     ShortList&lt;IRInst*&gt; newArgs;</span></span>
+<span id="L1540"><span class="lineNum">    1540</span> <span class="tlaGNC">    12867289            :     newArgs.setCount(argCount);</span></span>
+<span id="L1541"><span class="lineNum">    1541</span> <span class="tlaGNC">    12867289            :     auto oldBuilder = context-&gt;builder;</span></span>
+<span id="L1542"><span class="lineNum">    1542</span> <span class="tlaGNC">    12867289            :     context-&gt;builder = builder;</span></span>
+<span id="L1543"><span class="lineNum">    1543</span> <span class="tlaGNC">    35858464 <span class="branchAll" title="br0: 22991175; br1: 12867289">(2/2)</span>      :     for (UInt aa = 0; aa &lt; argCount; ++aa)</span></span>
+<span id="L1544"><span class="lineNum">    1544</span> <span class="tlaGNC">    22991175            :     {</span></span>
+<span id="L1545"><span class="lineNum">    1545</span> <span class="tlaGNC">    22991175            :         IRInst* originalArg = originalInst-&gt;getOperand(aa);</span></span>
+<span id="L1546"><span class="lineNum">    1546</span> <span class="tlaGNC">    22991175            :         IRInst* clonedArg = cloneValue(context, originalArg);</span></span>
+<span id="L1547"><span class="lineNum">    1547</span> <span class="tlaGNC">    22991175            :         newArgs[aa] = clonedArg;</span></span>
+<span id="L1548"><span class="lineNum">    1548</span> <span class="tlaGNC">    22991175            :     }</span></span>
+<span id="L1549"><span class="lineNum">    1549</span> <span class="tlaGNC">    12867289            :     auto funcType = cloneType(context, originalInst-&gt;getFullType());</span></span>
+<span id="L1550"><span class="lineNum">    1550</span> <span class="tlaGNC">    12867289            :     context-&gt;builder = oldBuilder;</span></span>
+<span id="L1551"><span class="lineNum">    1551</span> <span class="tlaGNC">    12867289            :     IRInst* clonedInst = builder-&gt;createIntrinsicInst(</span></span>
+<span id="L1552"><span class="lineNum">    1552</span> <span class="tlaGNC">    12867289            :         funcType,</span></span>
+<span id="L1553"><span class="lineNum">    1553</span> <span class="tlaGNC">    12867289            :         originalInst-&gt;getOp(),</span></span>
+<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaGNC">    12867289            :         argCount,</span></span>
+<span id="L1555"><span class="lineNum">    1555</span> <span class="tlaGNC">    12867289            :         newArgs.getArrayView().getBuffer());</span></span>
+<span id="L1556"><span class="lineNum">    1556</span> <span class="tlaGNC">    12867289            :     builder-&gt;addInst(clonedInst);</span></span>
+<span id="L1557"><span class="lineNum">    1557</span> <span class="tlaGNC">    12867289            :     registerClonedValue(context, clonedInst, originalValues);</span></span>
+<span id="L1558"><span class="lineNum">    1558</span> <span class="tlaGNC">    12867289 <span class="branchAll" title="br0: 631; br1: 12866658">(2/2)</span>      :     if (canInstContainBasicBlocks(clonedInst-&gt;getOp()))</span></span>
 <span id="L1559"><span class="lineNum">    1559</span> <span class="tlaGNC">         631            :         cloneGlobalValueWithCodeCommon(</span></span>
 <span id="L1560"><span class="lineNum">    1560</span> <span class="tlaGNC">         631            :             context,</span></span>
 <span id="L1561"><span class="lineNum">    1561</span> <span class="tlaGNC">         631            :             (IRGlobalValueWithCode*)clonedInst,</span></span>
 <span id="L1562"><span class="lineNum">    1562</span> <span class="tlaGNC">         631            :             (IRGlobalValueWithCode*)originalInst,</span></span>
 <span id="L1563"><span class="lineNum">    1563</span> <span class="tlaGNC">         631            :             originalValues);</span></span>
-<span id="L1564"><span class="lineNum">    1564</span> <span class="tlaGNC">    12866662            :     else</span></span>
-<span id="L1565"><span class="lineNum">    1565</span> <span class="tlaGNC">    12866662            :         cloneDecorationsAndChildren(context, clonedInst, originalInst);</span></span>
-<span id="L1566"><span class="lineNum">    1566</span> <span class="tlaGNC">    12867293            :     cloneExtraDecorations(context, clonedInst, originalValues);</span></span>
-<span id="L1567"><span class="lineNum">    1567</span> <span class="tlaGNC">    12867293            :     return clonedInst;</span></span>
-<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">    14468667            : }</span></span>
+<span id="L1564"><span class="lineNum">    1564</span> <span class="tlaGNC">    12866658            :     else</span></span>
+<span id="L1565"><span class="lineNum">    1565</span> <span class="tlaGNC">    12866658            :         cloneDecorationsAndChildren(context, clonedInst, originalInst);</span></span>
+<span id="L1566"><span class="lineNum">    1566</span> <span class="tlaGNC">    12867289            :     cloneExtraDecorations(context, clonedInst, originalValues);</span></span>
+<span id="L1567"><span class="lineNum">    1567</span> <span class="tlaGNC">    12867289            :     return clonedInst;</span></span>
+<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">    14468665            : }</span></span>
 <span id="L1569"><span class="lineNum">    1569</span>                         : </span>
 <span id="L1570"><span class="lineNum">    1570</span>                         : IRInst* cloneGlobalValueImpl(</span>
 <span id="L1571"><span class="lineNum">    1571</span>                         :     IRSpecContext* context,</span>
@@ -1879,11 +1879,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1588"><span class="lineNum">    1588</span>                         :     // are linking into is skipped: its annotations stay in place, and its linking info is not</span>
 <span id="L1589"><span class="lineNum">    1589</span>                         :     // prebuilt.</span>
 <span id="L1590"><span class="lineNum">    1590</span> <span class="tlaGNC">     2054053            :     cloneAnnotations(context, clonedValue, originalInst);</span></span>
-<span id="L1591"><span class="lineNum">    1591</span> <span class="tlaGNC">     3361233 <span class="branchAll" title="br0: 1307180; br1: 2054053">(2/2)</span>      :     for (auto s = originalValues.sym; s; s = s-&gt;nextWithSameName)</span></span>
-<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaGNC">     1307180            :     {</span></span>
-<span id="L1593"><span class="lineNum">    1593</span> <span class="tlaGNC">     1307180 <span class="branchPart" title="br0: 1307180; br1: 0">(1/2)</span>      :         if (s-&gt;irGlobalValue-&gt;getModule() != context-&gt;getModule())</span></span>
-<span id="L1594"><span class="lineNum">    1594</span> <span class="tlaGNC">     1307180            :             cloneAnnotations(context, clonedValue, s-&gt;irGlobalValue);</span></span>
-<span id="L1595"><span class="lineNum">    1595</span> <span class="tlaGNC">     1307180            :     }</span></span>
+<span id="L1591"><span class="lineNum">    1591</span> <span class="tlaGNC">     3361235 <span class="branchAll" title="br0: 1307182; br1: 2054053">(2/2)</span>      :     for (auto s = originalValues.sym; s; s = s-&gt;nextWithSameName)</span></span>
+<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaGNC">     1307182            :     {</span></span>
+<span id="L1593"><span class="lineNum">    1593</span> <span class="tlaGNC">     1307182 <span class="branchPart" title="br0: 1307182; br1: 0">(1/2)</span>      :         if (s-&gt;irGlobalValue-&gt;getModule() != context-&gt;getModule())</span></span>
+<span id="L1594"><span class="lineNum">    1594</span> <span class="tlaGNC">     1307182            :             cloneAnnotations(context, clonedValue, s-&gt;irGlobalValue);</span></span>
+<span id="L1595"><span class="lineNum">    1595</span> <span class="tlaGNC">     1307182            :     }</span></span>
 <span id="L1596"><span class="lineNum">    1596</span> <span class="tlaGNC">     2054053            :     return clonedValue;</span></span>
 <span id="L1597"><span class="lineNum">    1597</span> <span class="tlaGNC">     2054053            : }</span></span>
 <span id="L1598"><span class="lineNum">    1598</span>                         : </span>
@@ -1896,27 +1896,27 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1605"><span class="lineNum">    1605</span>                         :     IRSpecContext* context,</span>
 <span id="L1606"><span class="lineNum">    1606</span>                         :     IRInst* originalVal,</span>
 <span id="L1607"><span class="lineNum">    1607</span>                         :     IRLinkageDecoration* originalLinkage)</span>
-<span id="L1608"><span class="lineNum">    1608</span> <span class="tlaGNC">     1203391            : {</span></span>
+<span id="L1608"><span class="lineNum">    1608</span> <span class="tlaGNC">     1203390            : {</span></span>
 <span id="L1609"><span class="lineNum">    1609</span>                         :     // If the global value being cloned is already in target module, don&#x27;t clone</span>
 <span id="L1610"><span class="lineNum">    1610</span>                         :     // Why checking this?</span>
 <span id="L1611"><span class="lineNum">    1611</span>                         :     //   When specializing a generic function G (which is already in target module),</span>
 <span id="L1612"><span class="lineNum">    1612</span>                         :     //   where G calls a normal function F (which is already in target module),</span>
 <span id="L1613"><span class="lineNum">    1613</span>                         :     //   then when we are making a copy of G via cloneFuncCommom(), it will recursively clone F,</span>
 <span id="L1614"><span class="lineNum">    1614</span>                         :     //   however we don&#x27;t want to make a duplicate of F in the target module.</span>
-<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaGNC">     1203391 <span class="branchPart" title="br0: 0; br1: 1203391">(1/2)</span>      :     if (originalVal-&gt;getParent() == context-&gt;getModule()-&gt;getModuleInst())</span></span>
+<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaGNC">     1203390 <span class="branchPart" title="br0: 0; br1: 1203390">(1/2)</span>      :     if (originalVal-&gt;getParent() == context-&gt;getModule()-&gt;getModuleInst())</span></span>
 <span id="L1616"><span class="lineNum">    1616</span> <span class="tlaUNC">           0            :         return originalVal;</span></span>
 <span id="L1617"><span class="lineNum">    1617</span>                         : </span>
 <span id="L1618"><span class="lineNum">    1618</span>                         :     // Check if we&#x27;ve already cloned this value, for the case where</span>
 <span id="L1619"><span class="lineNum">    1619</span>                         :     // an original value has already been established.</span>
-<span id="L1620"><span class="lineNum">    1620</span> <span class="tlaGNC">     1203391 <span class="branchPart" title="br0: 1203391; br1: 0">(1/2)</span>      :     if (originalVal)</span></span>
-<span id="L1621"><span class="lineNum">    1621</span> <span class="tlaGNC">     1203391            :     {</span></span>
-<span id="L1622"><span class="lineNum">    1622</span> <span class="tlaGNC">     1203391 <span class="branchAll" title="br0: 56; br1: 1203335">(2/2)</span>      :         if (IRInst* clonedVal = findClonedValue(context, originalVal))</span></span>
+<span id="L1620"><span class="lineNum">    1620</span> <span class="tlaGNC">     1203390 <span class="branchPart" title="br0: 1203390; br1: 0">(1/2)</span>      :     if (originalVal)</span></span>
+<span id="L1621"><span class="lineNum">    1621</span> <span class="tlaGNC">     1203390            :     {</span></span>
+<span id="L1622"><span class="lineNum">    1622</span> <span class="tlaGNC">     1203390 <span class="branchAll" title="br0: 56; br1: 1203334">(2/2)</span>      :         if (IRInst* clonedVal = findClonedValue(context, originalVal))</span></span>
 <span id="L1623"><span class="lineNum">    1623</span> <span class="tlaGNC">          56            :         {</span></span>
 <span id="L1624"><span class="lineNum">    1624</span> <span class="tlaGNC">          56            :             return clonedVal;</span></span>
 <span id="L1625"><span class="lineNum">    1625</span> <span class="tlaGNC">          56            :         }</span></span>
-<span id="L1626"><span class="lineNum">    1626</span> <span class="tlaGNC">     1203391            :     }</span></span>
+<span id="L1626"><span class="lineNum">    1626</span> <span class="tlaGNC">     1203390            :     }</span></span>
 <span id="L1627"><span class="lineNum">    1627</span>                         : </span>
-<span id="L1628"><span class="lineNum">    1628</span> <span class="tlaGNC">     1203335 <span class="branchAll" title="br0: 455028; br1: 748307">(2/2)</span>      :     if (!originalLinkage)</span></span>
+<span id="L1628"><span class="lineNum">    1628</span> <span class="tlaGNC">     1203334 <span class="branchAll" title="br0: 455028; br1: 748306">(2/2)</span>      :     if (!originalLinkage)</span></span>
 <span id="L1629"><span class="lineNum">    1629</span> <span class="tlaGNC">      455028            :     {</span></span>
 <span id="L1630"><span class="lineNum">    1630</span>                         :         // If there is no mangled name, then we assume this is a local symbol,</span>
 <span id="L1631"><span class="lineNum">    1631</span>                         :         // and it can&#x27;t possibly have multiple declarations.</span>
@@ -1928,9 +1928,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1637"><span class="lineNum">    1637</span>                         :     // with the same mangled name as `originalVal` and try</span>
 <span id="L1638"><span class="lineNum">    1638</span>                         :     // to pick the &quot;best&quot; one for our target.</span>
 <span id="L1639"><span class="lineNum">    1639</span>                         : </span>
-<span id="L1640"><span class="lineNum">    1640</span> <span class="tlaGNC">      748307            :     auto mangledName = originalLinkage-&gt;getMangledName();</span></span>
-<span id="L1641"><span class="lineNum">    1641</span> <span class="tlaGNC">      748307            :     IRSpecSymbol* sym = context-&gt;findSymbols(mangledName);</span></span>
-<span id="L1642"><span class="lineNum">    1642</span> <span class="tlaGNC">      748307 <span class="branchPart" title="br0: 0; br1: 748307">(1/2)</span>      :     if (!sym)</span></span>
+<span id="L1640"><span class="lineNum">    1640</span> <span class="tlaGNC">      748306            :     auto mangledName = originalLinkage-&gt;getMangledName();</span></span>
+<span id="L1641"><span class="lineNum">    1641</span> <span class="tlaGNC">      748306            :     IRSpecSymbol* sym = context-&gt;findSymbols(mangledName);</span></span>
+<span id="L1642"><span class="lineNum">    1642</span> <span class="tlaGNC">      748306 <span class="branchPart" title="br0: 0; br1: 748306">(1/2)</span>      :     if (!sym)</span></span>
 <span id="L1643"><span class="lineNum">    1643</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L1644"><span class="lineNum">    1644</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (!originalVal)</span></span>
 <span id="L1645"><span class="lineNum">    1645</span> <span class="tlaUNC">           0            :             return nullptr;</span></span>
@@ -1946,15 +1946,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1655"><span class="lineNum">    1655</span>                         :     // more specialized for the chosen target. Otherwise, we simply favor</span>
 <span id="L1656"><span class="lineNum">    1656</span>                         :     // definitions over declarations.</span>
 <span id="L1657"><span class="lineNum">    1657</span>                         :     //</span>
-<span id="L1658"><span class="lineNum">    1658</span> <span class="tlaGNC">      748307            :     IRInst* bestVal = nullptr;</span></span>
-<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">     2055486 <span class="branchAll" title="br0: 1307179; br1: 748307">(2/2)</span>      :     for (IRSpecSymbol* ss = sym; ss; ss = ss-&gt;nextWithSameName)</span></span>
-<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">     1307179            :     {</span></span>
-<span id="L1661"><span class="lineNum">    1661</span> <span class="tlaGNC">     1307179            :         IRInst* newVal = ss-&gt;irGlobalValue;</span></span>
-<span id="L1662"><span class="lineNum">    1662</span> <span class="tlaGNC">     1307179 <span class="branchAll" title="br0: 1142689; br1: 164490">(2/2)</span>      :         if (isBetterForTarget(context, newVal, bestVal))</span></span>
-<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaGNC">     1142689            :             bestVal = newVal;</span></span>
-<span id="L1664"><span class="lineNum">    1664</span> <span class="tlaGNC">     1307179            :     }</span></span>
+<span id="L1658"><span class="lineNum">    1658</span> <span class="tlaGNC">      748306            :     IRInst* bestVal = nullptr;</span></span>
+<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">     2055488 <span class="branchAll" title="br0: 1307182; br1: 748306">(2/2)</span>      :     for (IRSpecSymbol* ss = sym; ss; ss = ss-&gt;nextWithSameName)</span></span>
+<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">     1307182            :     {</span></span>
+<span id="L1661"><span class="lineNum">    1661</span> <span class="tlaGNC">     1307182            :         IRInst* newVal = ss-&gt;irGlobalValue;</span></span>
+<span id="L1662"><span class="lineNum">    1662</span> <span class="tlaGNC">     1307182 <span class="branchAll" title="br0: 1142690; br1: 164492">(2/2)</span>      :         if (isBetterForTarget(context, newVal, bestVal))</span></span>
+<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaGNC">     1142690            :             bestVal = newVal;</span></span>
+<span id="L1664"><span class="lineNum">    1664</span> <span class="tlaGNC">     1307182            :     }</span></span>
 <span id="L1665"><span class="lineNum">    1665</span>                         : </span>
-<span id="L1666"><span class="lineNum">    1666</span> <span class="tlaGNC">      748307 <span class="branchPart" title="br0: 0; br1: 748307">(1/2)</span>      :     if (!bestVal)</span></span>
+<span id="L1666"><span class="lineNum">    1666</span> <span class="tlaGNC">      748306 <span class="branchPart" title="br0: 0; br1: 748306">(1/2)</span>      :     if (!bestVal)</span></span>
 <span id="L1667"><span class="lineNum">    1667</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L1668"><span class="lineNum">    1668</span> <span class="tlaUNC">           0            :         return nullptr;</span></span>
 <span id="L1669"><span class="lineNum">    1669</span> <span class="tlaUNC">           0            :     }</span></span>
@@ -1963,7 +1963,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1672"><span class="lineNum">    1672</span>                         :     // it should either have a body, be an intrinsic, or be imported.</span>
 <span id="L1673"><span class="lineNum">    1673</span>                         :     // This catches cases like extension methods declared without a body,</span>
 <span id="L1674"><span class="lineNum">    1674</span>                         :     // which are not valid (extensions cannot define new requirements).</span>
-<span id="L1675"><span class="lineNum">    1675</span> <span class="tlaGNC">      748307 <span class="branchAll" title="br0: 1; br1: 748306">(2/2)</span>      :     if (!isFunctionDefinedOrImported(bestVal))</span></span>
+<span id="L1675"><span class="lineNum">    1675</span> <span class="tlaGNC">      748306 <span class="branchAll" title="br0: 1; br1: 748305">(2/2)</span>      :     if (!isFunctionDefinedOrImported(bestVal))</span></span>
 <span id="L1676"><span class="lineNum">    1676</span> <span class="tlaGNC">           1            :     {</span></span>
 <span id="L1677"><span class="lineNum">    1677</span> <span class="tlaGNC">           1 <span class="branchPart" title="br0: 1; br1: 0">(1/2)</span>      :         if (auto sink = context-&gt;shared-&gt;sink)</span></span>
 <span id="L1678"><span class="lineNum">    1678</span> <span class="tlaGNC">           1            :         {</span></span>
@@ -1983,7 +1983,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1692"><span class="lineNum">    1692</span>                         :     // Check if we&#x27;ve already cloned this value, for the case where</span>
 <span id="L1693"><span class="lineNum">    1693</span>                         :     // we didn&#x27;t have an original value (just a name), but we&#x27;ve</span>
 <span id="L1694"><span class="lineNum">    1694</span>                         :     // now found a representative value.</span>
-<span id="L1695"><span class="lineNum">    1695</span> <span class="tlaGNC">      748307 <span class="branchPart" title="br0: 0; br1: 748307">(1/2)</span>      :     if (!originalVal)</span></span>
+<span id="L1695"><span class="lineNum">    1695</span> <span class="tlaGNC">      748306 <span class="branchPart" title="br0: 0; br1: 748306">(1/2)</span>      :     if (!originalVal)</span></span>
 <span id="L1696"><span class="lineNum">    1696</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L1697"><span class="lineNum">    1697</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (IRInst* clonedVal = findClonedValue(context, bestVal))</span></span>
 <span id="L1698"><span class="lineNum">    1698</span> <span class="tlaUNC">           0            :         {</span></span>
@@ -1991,54 +1991,54 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1700"><span class="lineNum">    1700</span> <span class="tlaUNC">           0            :         }</span></span>
 <span id="L1701"><span class="lineNum">    1701</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L1702"><span class="lineNum">    1702</span>                         : </span>
-<span id="L1703"><span class="lineNum">    1703</span> <span class="tlaGNC">      748307            :     return cloneGlobalValueImpl(context, bestVal, IROriginalValuesForClone(sym));</span></span>
-<span id="L1704"><span class="lineNum">    1704</span> <span class="tlaGNC">      748307            : }</span></span>
+<span id="L1703"><span class="lineNum">    1703</span> <span class="tlaGNC">      748306            :     return cloneGlobalValueImpl(context, bestVal, IROriginalValuesForClone(sym));</span></span>
+<span id="L1704"><span class="lineNum">    1704</span> <span class="tlaGNC">      748306            : }</span></span>
 <span id="L1705"><span class="lineNum">    1705</span>                         : </span>
 <span id="L1706"><span class="lineNum">    1706</span>                         : // Clone a global value, where `originalVal` is one declaration/definition, but we might</span>
 <span id="L1707"><span class="lineNum">    1707</span>                         : // have to consider others, in order to find the &quot;best&quot; version of the symbol.</span>
 <span id="L1708"><span class="lineNum">    1708</span>                         : IRInst* cloneGlobalValue(IRSpecContext* context, IRInst* originalVal)</span>
-<span id="L1709"><span class="lineNum">    1709</span> <span class="tlaGNC">     1203391            : {</span></span>
+<span id="L1709"><span class="lineNum">    1709</span> <span class="tlaGNC">     1203392            : {</span></span>
 <span id="L1710"><span class="lineNum">    1710</span>                         :     // We are being asked to clone a particular global value, but in</span>
 <span id="L1711"><span class="lineNum">    1711</span>                         :     // the IR that comes out of the front-end there could still</span>
 <span id="L1712"><span class="lineNum">    1712</span>                         :     // be multiple, target-specific, declarations of any given</span>
 <span id="L1713"><span class="lineNum">    1713</span>                         :     // global value, all of which share the same mangled name.</span>
-<span id="L1714"><span class="lineNum">    1714</span> <span class="tlaGNC">     1203391            :     return cloneGlobalValueWithLinkage(</span></span>
-<span id="L1715"><span class="lineNum">    1715</span> <span class="tlaGNC">     1203391            :         context,</span></span>
-<span id="L1716"><span class="lineNum">    1716</span> <span class="tlaGNC">     1203391            :         originalVal,</span></span>
-<span id="L1717"><span class="lineNum">    1717</span> <span class="tlaGNC">     1203391            :         originalVal-&gt;findDecoration&lt;IRLinkageDecoration&gt;());</span></span>
-<span id="L1718"><span class="lineNum">    1718</span> <span class="tlaGNC">     1203391            : }</span></span>
+<span id="L1714"><span class="lineNum">    1714</span> <span class="tlaGNC">     1203392            :     return cloneGlobalValueWithLinkage(</span></span>
+<span id="L1715"><span class="lineNum">    1715</span> <span class="tlaGNC">     1203392            :         context,</span></span>
+<span id="L1716"><span class="lineNum">    1716</span> <span class="tlaGNC">     1203392            :         originalVal,</span></span>
+<span id="L1717"><span class="lineNum">    1717</span> <span class="tlaGNC">     1203392            :         originalVal-&gt;findDecoration&lt;IRLinkageDecoration&gt;());</span></span>
+<span id="L1718"><span class="lineNum">    1718</span> <span class="tlaGNC">     1203392            : }</span></span>
 <span id="L1719"><span class="lineNum">    1719</span>                         : </span>
 <span id="L1720"><span class="lineNum">    1720</span>                         : void insertGlobalValueSymbol(IRSharedSpecContext* sharedContext, IRInst* gv)</span>
-<span id="L1721"><span class="lineNum">    1721</span> <span class="tlaGNC">     5047920            : {</span></span>
-<span id="L1722"><span class="lineNum">    1722</span> <span class="tlaGNC">     5047920            :     auto linkage = gv-&gt;findDecoration&lt;IRLinkageDecoration&gt;();</span></span>
+<span id="L1721"><span class="lineNum">    1721</span> <span class="tlaGNC">     5047921            : {</span></span>
+<span id="L1722"><span class="lineNum">    1722</span> <span class="tlaGNC">     5047921            :     auto linkage = gv-&gt;findDecoration&lt;IRLinkageDecoration&gt;();</span></span>
 <span id="L1723"><span class="lineNum">    1723</span>                         : </span>
 <span id="L1724"><span class="lineNum">    1724</span>                         :     // Don&#x27;t try to register a symbol for global values</span>
 <span id="L1725"><span class="lineNum">    1725</span>                         :     // that don&#x27;t have linkage.</span>
 <span id="L1726"><span class="lineNum">    1726</span>                         :     //</span>
-<span id="L1727"><span class="lineNum">    1727</span> <span class="tlaGNC">     5047920 <span class="branchAll" title="br0: 3410671; br1: 1637249">(2/2)</span>      :     if (!linkage)</span></span>
+<span id="L1727"><span class="lineNum">    1727</span> <span class="tlaGNC">     5047921 <span class="branchAll" title="br0: 3410671; br1: 1637250">(2/2)</span>      :     if (!linkage)</span></span>
 <span id="L1728"><span class="lineNum">    1728</span> <span class="tlaGNC">     3410671            :         return;</span></span>
 <span id="L1729"><span class="lineNum">    1729</span>                         : </span>
-<span id="L1730"><span class="lineNum">    1730</span> <span class="tlaGNC">     1637249            :     auto mangledName = String(linkage-&gt;getMangledName());</span></span>
+<span id="L1730"><span class="lineNum">    1730</span> <span class="tlaGNC">     1637250            :     auto mangledName = String(linkage-&gt;getMangledName());</span></span>
 <span id="L1731"><span class="lineNum">    1731</span>                         : </span>
-<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">     1637249            :     RefPtr&lt;IRSpecSymbol&gt; sym = new IRSpecSymbol();</span></span>
-<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaGNC">     1637249            :     sym-&gt;irGlobalValue = gv;</span></span>
+<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">     1637250            :     RefPtr&lt;IRSpecSymbol&gt; sym = new IRSpecSymbol();</span></span>
+<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaGNC">     1637250            :     sym-&gt;irGlobalValue = gv;</span></span>
 <span id="L1734"><span class="lineNum">    1734</span>                         : </span>
-<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">     1637249            :     RefPtr&lt;IRSpecSymbol&gt; prev;</span></span>
-<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaGNC">     1637249 <span class="branchAll" title="br0: 559163; br1: 1078086">(2/2)</span>      :     if (sharedContext-&gt;symbols.tryGetValue(mangledName, prev))</span></span>
+<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">     1637250            :     RefPtr&lt;IRSpecSymbol&gt; prev;</span></span>
+<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaGNC">     1637250 <span class="branchAll" title="br0: 559163; br1: 1078087">(2/2)</span>      :     if (sharedContext-&gt;symbols.tryGetValue(mangledName, prev))</span></span>
 <span id="L1737"><span class="lineNum">    1737</span> <span class="tlaGNC">      559163            :     {</span></span>
 <span id="L1738"><span class="lineNum">    1738</span> <span class="tlaGNC">      559163            :         sym-&gt;nextWithSameName = prev-&gt;nextWithSameName;</span></span>
 <span id="L1739"><span class="lineNum">    1739</span> <span class="tlaGNC">      559163            :         prev-&gt;nextWithSameName = sym;</span></span>
 <span id="L1740"><span class="lineNum">    1740</span> <span class="tlaGNC">      559163            :     }</span></span>
-<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaGNC">     1078086            :     else</span></span>
-<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaGNC">     1078086            :     {</span></span>
-<span id="L1743"><span class="lineNum">    1743</span> <span class="tlaGNC">     1078086            :         sharedContext-&gt;symbols.add(mangledName, sym);</span></span>
-<span id="L1744"><span class="lineNum">    1744</span> <span class="tlaGNC">     1078086            :     }</span></span>
+<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaGNC">     1078087            :     else</span></span>
+<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaGNC">     1078087            :     {</span></span>
+<span id="L1743"><span class="lineNum">    1743</span> <span class="tlaGNC">     1078087            :         sharedContext-&gt;symbols.add(mangledName, sym);</span></span>
+<span id="L1744"><span class="lineNum">    1744</span> <span class="tlaGNC">     1078087            :     }</span></span>
 <span id="L1745"><span class="lineNum">    1745</span>                         : </span>
-<span id="L1746"><span class="lineNum">    1746</span> <span class="tlaGNC">     1637249 <span class="branchAll" title="br0: 708988; br1: 928261">(2/2)</span>      :     if (as&lt;IRImportDecoration&gt;(linkage))</span></span>
+<span id="L1746"><span class="lineNum">    1746</span> <span class="tlaGNC">     1637250 <span class="branchAll" title="br0: 708988; br1: 928262">(2/2)</span>      :     if (as&lt;IRImportDecoration&gt;(linkage))</span></span>
 <span id="L1747"><span class="lineNum">    1747</span> <span class="tlaGNC">      708988            :         sharedContext-&gt;isImportedSymbol.tryGetValueOrAdd(mangledName, true);</span></span>
-<span id="L1748"><span class="lineNum">    1748</span> <span class="tlaGNC">      928261            :     else</span></span>
-<span id="L1749"><span class="lineNum">    1749</span> <span class="tlaGNC">      928261            :         sharedContext-&gt;isImportedSymbol.set(mangledName, false);</span></span>
-<span id="L1750"><span class="lineNum">    1750</span> <span class="tlaGNC">     1637249            : }</span></span>
+<span id="L1748"><span class="lineNum">    1748</span> <span class="tlaGNC">      928262            :     else</span></span>
+<span id="L1749"><span class="lineNum">    1749</span> <span class="tlaGNC">      928262            :         sharedContext-&gt;isImportedSymbol.set(mangledName, false);</span></span>
+<span id="L1750"><span class="lineNum">    1750</span> <span class="tlaGNC">     1637250            : }</span></span>
 <span id="L1751"><span class="lineNum">    1751</span>                         : </span>
 <span id="L1752"><span class="lineNum">    1752</span>                         : void insertGlobalValueSymbols(IRSharedSpecContext* sharedContext, IRModule* originalModule)</span>
 <span id="L1753"><span class="lineNum">    1753</span> <span class="tlaGNC">       13200            : {</span></span>
@@ -2719,12 +2719,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L2428"><span class="lineNum">    2428</span> <span class="tlaGNC">         114            :                 cloneAndKeepAlive(inst);</span></span>
 <span id="L2429"><span class="lineNum">    2429</span> <span class="tlaGNC">          54            :         }</span></span>
 <span id="L2430"><span class="lineNum">    2430</span>                         : </span>
-<span id="L2431"><span class="lineNum">    2431</span> <span class="tlaGNC">       43468 <span class="branchAll" title="br0: 56874; br1: 43468">(2/2)</span>      :         for (auto inst : linkingInfo-&gt;getKnownBuiltins())</span></span>
-<span id="L2432"><span class="lineNum">    2432</span> <span class="tlaGNC">       56874            :         {</span></span>
-<span id="L2433"><span class="lineNum">    2433</span> <span class="tlaGNC">       56874            :             auto knownBuiltin = inst-&gt;findDecoration&lt;IRKnownBuiltinDecoration&gt;();</span></span>
-<span id="L2434"><span class="lineNum">    2434</span> <span class="tlaGNC">       56874 <span class="branchPart" title="br0: 56874; br1: 0; br2: 13155; br3: 43719">(3/4)</span>      :             if (knownBuiltin &amp;&amp; knownBuiltin-&gt;getName() == KnownBuiltinDeclName::NullDifferential)</span></span>
+<span id="L2431"><span class="lineNum">    2431</span> <span class="tlaGNC">       43468 <span class="branchAll" title="br0: 56878; br1: 43468">(2/2)</span>      :         for (auto inst : linkingInfo-&gt;getKnownBuiltins())</span></span>
+<span id="L2432"><span class="lineNum">    2432</span> <span class="tlaGNC">       56878            :         {</span></span>
+<span id="L2433"><span class="lineNum">    2433</span> <span class="tlaGNC">       56878            :             auto knownBuiltin = inst-&gt;findDecoration&lt;IRKnownBuiltinDecoration&gt;();</span></span>
+<span id="L2434"><span class="lineNum">    2434</span> <span class="tlaGNC">       56878 <span class="branchPart" title="br0: 56878; br1: 0; br2: 13155; br3: 43723">(3/4)</span>      :             if (knownBuiltin &amp;&amp; knownBuiltin-&gt;getName() == KnownBuiltinDeclName::NullDifferential)</span></span>
 <span id="L2435"><span class="lineNum">    2435</span> <span class="tlaGNC">       13155            :                 cloneAndKeepAlive(inst);</span></span>
-<span id="L2436"><span class="lineNum">    2436</span> <span class="tlaGNC">       56874            :         }</span></span>
+<span id="L2436"><span class="lineNum">    2436</span> <span class="tlaGNC">       56878            :         }</span></span>
 <span id="L2437"><span class="lineNum">    2437</span> <span class="tlaGNC">       43468            :     }</span></span>
 <span id="L2438"><span class="lineNum">    2438</span>                         : </span>
 <span id="L2439"><span class="lineNum">    2439</span>                         :     // In previous steps, we have skipped cloning the witness table entries, and</span>
