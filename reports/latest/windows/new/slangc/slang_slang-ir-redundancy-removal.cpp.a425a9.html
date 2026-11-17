@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-16 04:18:58 UTC</td>
+      <td class="headerValue">2026-11-17 04:16:13 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">97.5&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:97.5%;background-color:hsl(116, 70%, 50%)"></div></div>
-      <span class="metricCounts">277 / 284</span>
+      <span class="metricValue">97.7&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:97.7%;background-color:hsl(116, 70%, 50%)"></div></div>
+      <span class="metricCounts">292 / 299</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -726,346 +726,408 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">           1 :     return (MemoryScope)getIntVal(memoryScope-&gt;getMemoryScope());</span></span>
 <span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L455"><span class="lineNum">     455</span>              : </span>
-<span id="L456"><span class="lineNum">     456</span>              : bool tryRemoveRedundantStore(</span>
-<span id="L457"><span class="lineNum">     457</span>              :     IRGlobalValueWithCode* func,</span>
-<span id="L458"><span class="lineNum">     458</span>              :     IRStoreBase* store,</span>
-<span id="L459"><span class="lineNum">     459</span>              :     Dictionary&lt;IRInst*, bool&gt;* calleeSideEffectCache)</span>
-<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L461"><span class="lineNum">     461</span>              :     // We perform a quick and conservative check:</span>
-<span id="L462"><span class="lineNum">     462</span>              :     // A store is redundant if it is followed by another store to the same address in</span>
-<span id="L463"><span class="lineNum">     463</span>              :     // the same basic block, and there are no instructions that may use any addresses</span>
-<span id="L464"><span class="lineNum">     464</span>              :     // related to this address.</span>
-<span id="L465"><span class="lineNum">     465</span>              :     bool hasAddrUse = false;</span>
-<span id="L466"><span class="lineNum">     466</span>              :     bool hasOverridingStore = false;</span>
-<span id="L467"><span class="lineNum">     467</span>              : </span>
-<span id="L468"><span class="lineNum">     468</span>              :     // Generally, we do not remove stores to global variables.</span>
-<span id="L469"><span class="lineNum">     469</span>              :     // A special case is if there is a store into a thread-local global var,</span>
-<span id="L470"><span class="lineNum">     470</span>              :     // and there are no other uses of the global var other than the store, we should be able to</span>
-<span id="L471"><span class="lineNum">     471</span>              :     // eliminate the global var. This special case optimization is needed so we don&#x27;t generate</span>
-<span id="L472"><span class="lineNum">     472</span>              :     // code that stores a non-applicable builtin value into a thread-local global var that is not</span>
-<span id="L473"><span class="lineNum">     473</span>              :     // actually used (e.g. sv_instanceindex).</span>
-<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">           1 :     auto rootVar = _getRootVar(store-&gt;getPtr());</span></span>
-<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">           1 :     if (!isChildInstOf(rootVar, func))</span></span>
-<span id="L476"><span class="lineNum">     476</span>              :     {</span>
-<span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC">           1 :         if (auto globalVar = as&lt;IRGlobalVar&gt;(store-&gt;getPtr()))</span></span>
-<span id="L478"><span class="lineNum">     478</span>              :         {</span>
-<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">           1 :             if (auto ptrType = globalVar-&gt;getDataType())</span></span>
-<span id="L480"><span class="lineNum">     480</span>              :             {</span>
-<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">           1 :                 switch (ptrType-&gt;getAddressSpace())</span></span>
-<span id="L482"><span class="lineNum">     482</span>              :                 {</span>
-<span id="L483"><span class="lineNum">     483</span>              :                 case AddressSpace::ThreadLocal:</span>
-<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">           1 :                     for (auto use = globalVar-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L485"><span class="lineNum">     485</span>              :                     {</span>
-<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">           1 :                         if (use-&gt;getUser() != store)</span></span>
-<span id="L487"><span class="lineNum">     487</span>              :                             return false;</span>
-<span id="L488"><span class="lineNum">     488</span>              :                     }</span>
-<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">           1 :                     store-&gt;removeAndDeallocate();</span></span>
-<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">           1 :                     globalVar-&gt;removeAndDeallocate();</span></span>
-<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">           1 :                     return true;</span></span>
-<span id="L492"><span class="lineNum">     492</span>              :                 }</span>
-<span id="L493"><span class="lineNum">     493</span>              :             }</span>
-<span id="L494"><span class="lineNum">     494</span>              :         }</span>
-<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">           1 :         return false;</span></span>
-<span id="L496"><span class="lineNum">     496</span>              :     }</span>
-<span id="L497"><span class="lineNum">     497</span>              : </span>
-<span id="L498"><span class="lineNum">     498</span>              :     // A store can be removed if it stores into a local variable</span>
-<span id="L499"><span class="lineNum">     499</span>              :     // that has no other uses than store.</span>
-<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">           1 :     if (const auto varInst = as&lt;IRVar&gt;(rootVar); varInst)</span></span>
-<span id="L501"><span class="lineNum">     501</span>              :     {</span>
-<span id="L502"><span class="lineNum">     502</span>              :         bool hasNonStoreUse = false;</span>
-<span id="L503"><span class="lineNum">     503</span>              :         // If the entire access chain doesn&#x27;t non-store use, we can safely remove it.</span>
-<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">           1 :         InstHashSet knownAccessChain(func-&gt;getModule());</span></span>
-<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">           1 :         for (auto accessChain = store-&gt;getPtr(); accessChain;)</span></span>
-<span id="L506"><span class="lineNum">     506</span>              :         {</span>
-<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">           1 :             knownAccessChain.add(accessChain);</span></span>
-<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">           1 :             for (auto use = accessChain-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L509"><span class="lineNum">     509</span>              :             {</span>
-<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">           1 :                 if (as&lt;IRDecoration&gt;(use-&gt;getUser()))</span></span>
-<span id="L511"><span class="lineNum">     511</span>              :                     continue;</span>
-<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">           1 :                 if (knownAccessChain.contains(use-&gt;getUser()))</span></span>
-<span id="L513"><span class="lineNum">     513</span>              :                     continue;</span>
-<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">           1 :                 if (use-&gt;getUser()-&gt;getOp() == kIROp_Store &amp;&amp; use == use-&gt;getUser()-&gt;getOperands())</span></span>
-<span id="L515"><span class="lineNum">     515</span>              :                 {</span>
-<span id="L516"><span class="lineNum">     516</span>              :                     continue;</span>
-<span id="L517"><span class="lineNum">     517</span>              :                 }</span>
-<span id="L518"><span class="lineNum">     518</span>              :                 hasNonStoreUse = true;</span>
-<span id="L519"><span class="lineNum">     519</span>              :                 break;</span>
-<span id="L520"><span class="lineNum">     520</span>              :             }</span>
-<span id="L521"><span class="lineNum">     521</span>              :             if (hasNonStoreUse)</span>
-<span id="L522"><span class="lineNum">     522</span>              :                 break;</span>
-<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">           1 :             switch (accessChain-&gt;getOp())</span></span>
-<span id="L524"><span class="lineNum">     524</span>              :             {</span>
-<span id="L525"><span class="lineNum">     525</span>              :             case kIROp_GetElementPtr:</span>
-<span id="L526"><span class="lineNum">     526</span>              :             case kIROp_FieldAddress:</span>
-<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">           1 :                 accessChain = accessChain-&gt;getOperand(0);</span></span>
-<span id="L528"><span class="lineNum">     528</span>              :                 continue;</span>
-<span id="L529"><span class="lineNum">     529</span>              :             default:</span>
-<span id="L530"><span class="lineNum">     530</span>              :                 break;</span>
-<span id="L531"><span class="lineNum">     531</span>              :             }</span>
-<span id="L532"><span class="lineNum">     532</span>              :             break;</span>
-<span id="L533"><span class="lineNum">     533</span>              :         }</span>
-<span id="L534"><span class="lineNum">     534</span>              :         if (!hasNonStoreUse)</span>
-<span id="L535"><span class="lineNum">     535</span>              :         {</span>
-<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">           1 :             store-&gt;removeAndDeallocate();</span></span>
-<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">           1 :             return true;</span></span>
-<span id="L538"><span class="lineNum">     538</span>              :         }</span>
-<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L540"><span class="lineNum">     540</span>              : </span>
-<span id="L541"><span class="lineNum">     541</span>              :     // This store can be removed if there are subsequent stores to the same variable,</span>
-<span id="L542"><span class="lineNum">     542</span>              :     // and there are no insts in between the stores that can read the variable.</span>
-<span id="L543"><span class="lineNum">     543</span>              :     // Additionally, MemoryScope of the `store` must be a sub-set of `nextStore`,</span>
-<span id="L544"><span class="lineNum">     544</span>              :     // otherwise we can not be certain that `nextStore` completely overwrites `store`.</span>
-<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">           1 :     MemoryScope memoryScopeOfStore = getMemoryScopeOfLoadStore(store);</span></span>
-<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">           1 :     HashSet&lt;IRBlock*&gt; visitedBlocks;</span></span>
-<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">           1 :     for (auto next = store-&gt;getNextInst(); next;)</span></span>
-<span id="L548"><span class="lineNum">     548</span>              :     {</span>
-<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">           1 :         if (auto nextStore = as&lt;IRStore&gt;(next))</span></span>
-<span id="L550"><span class="lineNum">     550</span>              :         {</span>
-<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">           1 :             if (nextStore-&gt;getPtr() == store-&gt;getPtr() &amp;&amp;</span></span>
-<span id="L552"><span class="lineNum">     552</span>              :                 isMemoryScopeSubsetOf(memoryScopeOfStore, getMemoryScopeOfLoadStore(nextStore)))</span>
-<span id="L553"><span class="lineNum">     553</span>              :             {</span>
-<span id="L554"><span class="lineNum">     554</span>              :                 hasOverridingStore = true;</span>
-<span id="L555"><span class="lineNum">     555</span>              :                 break;</span>
-<span id="L556"><span class="lineNum">     556</span>              :             }</span>
+<span id="L456"><span class="lineNum">     456</span>              : // Return true when `store` is its destination pointer&#x27;s only use and its block does not end</span>
+<span id="L457"><span class="lineNum">     457</span>              : // with an `IRUnconditionalBranch`, including `IRLoop`.</span>
+<span id="L458"><span class="lineNum">     458</span>              : //</span>
+<span id="L459"><span class="lineNum">     459</span>              : // These conditions rule out an overwrite-search match. Returns false when a match has not</span>
+<span id="L460"><span class="lineNum">     460</span>              : // been ruled out.</span>
+<span id="L461"><span class="lineNum">     461</span>              : static bool canSkipStoreOverwriteSearch(IRStoreBase* store)</span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L463"><span class="lineNum">     463</span>              :     // A failed overwrite search can traverse a long block suffix. To avoid that work, we first</span>
+<span id="L464"><span class="lineNum">     464</span>              :     // check for another use of the destination pointer, since the search only accepts stores</span>
+<span id="L465"><span class="lineNum">     465</span>              :     // through that same operand. One use already belongs to `store`, so we keep the full search</span>
+<span id="L466"><span class="lineNum">     466</span>              :     // whenever another use exists.</span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">           1 :     auto pointerOperand = store-&gt;getPtr();</span></span>
+<span id="L468"><span class="lineNum">     468</span>              :     SLANG_ASSERT(pointerOperand-&gt;hasUses());</span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">           1 :     if (pointerOperand-&gt;hasMoreThanOneUse())</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L471"><span class="lineNum">     471</span>              : </span>
+<span id="L472"><span class="lineNum">     472</span>              :     // A lone use is not enough when the search can follow an unconditional branch: the walk</span>
+<span id="L473"><span class="lineNum">     473</span>              :     // may loop back to `store` itself. We therefore keep the walk for `IRUnconditionalBranch`,</span>
+<span id="L474"><span class="lineNum">     474</span>              :     // including `IRLoop`. For other terminators the search stops at the block boundary, so</span>
+<span id="L475"><span class="lineNum">     475</span>              :     // we can skip it once we have ruled out a distinct matching store.</span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">           1 :     auto block = cast&lt;IRBlock&gt;(store-&gt;getParent());</span></span>
+<span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC">           1 :     return !as&lt;IRUnconditionalBranch&gt;(block-&gt;getTerminator());</span></span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L479"><span class="lineNum">     479</span>              : </span>
+<span id="L480"><span class="lineNum">     480</span>              : bool tryRemoveRedundantStore(</span>
+<span id="L481"><span class="lineNum">     481</span>              :     IRGlobalValueWithCode* func,</span>
+<span id="L482"><span class="lineNum">     482</span>              :     IRStoreBase* store,</span>
+<span id="L483"><span class="lineNum">     483</span>              :     Dictionary&lt;IRInst*, bool&gt;* calleeSideEffectCache)</span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L485"><span class="lineNum">     485</span>              :     // We perform a quick and conservative check:</span>
+<span id="L486"><span class="lineNum">     486</span>              :     // A store is redundant if it is followed by another store to the same address in</span>
+<span id="L487"><span class="lineNum">     487</span>              :     // the same basic block, and there are no instructions that may use any addresses</span>
+<span id="L488"><span class="lineNum">     488</span>              :     // related to this address.</span>
+<span id="L489"><span class="lineNum">     489</span>              :     bool hasAddrUse = false;</span>
+<span id="L490"><span class="lineNum">     490</span>              :     bool hasOverridingStore = false;</span>
+<span id="L491"><span class="lineNum">     491</span>              : </span>
+<span id="L492"><span class="lineNum">     492</span>              :     // Generally, we do not remove stores to global variables.</span>
+<span id="L493"><span class="lineNum">     493</span>              :     // A special case is if there is a store into a thread-local global var,</span>
+<span id="L494"><span class="lineNum">     494</span>              :     // and there are no other uses of the global var other than the store, we should be able to</span>
+<span id="L495"><span class="lineNum">     495</span>              :     // eliminate the global var. This special case optimization is needed so we don&#x27;t generate</span>
+<span id="L496"><span class="lineNum">     496</span>              :     // code that stores a non-applicable builtin value into a thread-local global var that is not</span>
+<span id="L497"><span class="lineNum">     497</span>              :     // actually used (e.g. sv_instanceindex).</span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">           1 :     auto rootVar = _getRootVar(store-&gt;getPtr());</span></span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">           1 :     if (!isChildInstOf(rootVar, func))</span></span>
+<span id="L500"><span class="lineNum">     500</span>              :     {</span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">           1 :         if (auto globalVar = as&lt;IRGlobalVar&gt;(store-&gt;getPtr()))</span></span>
+<span id="L502"><span class="lineNum">     502</span>              :         {</span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">           1 :             if (auto ptrType = globalVar-&gt;getDataType())</span></span>
+<span id="L504"><span class="lineNum">     504</span>              :             {</span>
+<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">           1 :                 switch (ptrType-&gt;getAddressSpace())</span></span>
+<span id="L506"><span class="lineNum">     506</span>              :                 {</span>
+<span id="L507"><span class="lineNum">     507</span>              :                 case AddressSpace::ThreadLocal:</span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">           1 :                     for (auto use = globalVar-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L509"><span class="lineNum">     509</span>              :                     {</span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">           1 :                         if (use-&gt;getUser() != store)</span></span>
+<span id="L511"><span class="lineNum">     511</span>              :                             return false;</span>
+<span id="L512"><span class="lineNum">     512</span>              :                     }</span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">           1 :                     store-&gt;removeAndDeallocate();</span></span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">           1 :                     globalVar-&gt;removeAndDeallocate();</span></span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">           1 :                     return true;</span></span>
+<span id="L516"><span class="lineNum">     516</span>              :                 }</span>
+<span id="L517"><span class="lineNum">     517</span>              :             }</span>
+<span id="L518"><span class="lineNum">     518</span>              :         }</span>
+<span id="L519"><span class="lineNum">     519</span>              :         return false;</span>
+<span id="L520"><span class="lineNum">     520</span>              :     }</span>
+<span id="L521"><span class="lineNum">     521</span>              : </span>
+<span id="L522"><span class="lineNum">     522</span>              :     // A store can be removed if it stores into a local variable</span>
+<span id="L523"><span class="lineNum">     523</span>              :     // that has no other uses than store.</span>
+<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">           1 :     if (const auto varInst = as&lt;IRVar&gt;(rootVar); varInst)</span></span>
+<span id="L525"><span class="lineNum">     525</span>              :     {</span>
+<span id="L526"><span class="lineNum">     526</span>              :         bool hasNonStoreUse = false;</span>
+<span id="L527"><span class="lineNum">     527</span>              :         // If the entire access chain doesn&#x27;t non-store use, we can safely remove it.</span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">           1 :         InstHashSet knownAccessChain(func-&gt;getModule());</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">           1 :         for (auto accessChain = store-&gt;getPtr(); accessChain;)</span></span>
+<span id="L530"><span class="lineNum">     530</span>              :         {</span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">           1 :             knownAccessChain.add(accessChain);</span></span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">           1 :             for (auto use = accessChain-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L533"><span class="lineNum">     533</span>              :             {</span>
+<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">           1 :                 if (as&lt;IRDecoration&gt;(use-&gt;getUser()))</span></span>
+<span id="L535"><span class="lineNum">     535</span>              :                     continue;</span>
+<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">           1 :                 if (knownAccessChain.contains(use-&gt;getUser()))</span></span>
+<span id="L537"><span class="lineNum">     537</span>              :                     continue;</span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">           1 :                 if (use-&gt;getUser()-&gt;getOp() == kIROp_Store &amp;&amp; use == use-&gt;getUser()-&gt;getOperands())</span></span>
+<span id="L539"><span class="lineNum">     539</span>              :                 {</span>
+<span id="L540"><span class="lineNum">     540</span>              :                     continue;</span>
+<span id="L541"><span class="lineNum">     541</span>              :                 }</span>
+<span id="L542"><span class="lineNum">     542</span>              :                 hasNonStoreUse = true;</span>
+<span id="L543"><span class="lineNum">     543</span>              :                 break;</span>
+<span id="L544"><span class="lineNum">     544</span>              :             }</span>
+<span id="L545"><span class="lineNum">     545</span>              :             if (hasNonStoreUse)</span>
+<span id="L546"><span class="lineNum">     546</span>              :                 break;</span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">           1 :             switch (accessChain-&gt;getOp())</span></span>
+<span id="L548"><span class="lineNum">     548</span>              :             {</span>
+<span id="L549"><span class="lineNum">     549</span>              :             case kIROp_GetElementPtr:</span>
+<span id="L550"><span class="lineNum">     550</span>              :             case kIROp_FieldAddress:</span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">           1 :                 accessChain = accessChain-&gt;getOperand(0);</span></span>
+<span id="L552"><span class="lineNum">     552</span>              :                 continue;</span>
+<span id="L553"><span class="lineNum">     553</span>              :             default:</span>
+<span id="L554"><span class="lineNum">     554</span>              :                 break;</span>
+<span id="L555"><span class="lineNum">     555</span>              :             }</span>
+<span id="L556"><span class="lineNum">     556</span>              :             break;</span>
 <span id="L557"><span class="lineNum">     557</span>              :         }</span>
-<span id="L558"><span class="lineNum">     558</span>              : </span>
-<span id="L559"><span class="lineNum">     559</span>              :         // If we see any insts that have reads or modifies the address before seeing</span>
-<span id="L560"><span class="lineNum">     560</span>              :         // an overriding store, don&#x27;t remove the store.</span>
-<span id="L561"><span class="lineNum">     561</span>              :         // We can make the test more accurate by collecting all addresses related to</span>
-<span id="L562"><span class="lineNum">     562</span>              :         // the target address first, and only bail out if any of the related addresses</span>
-<span id="L563"><span class="lineNum">     563</span>              :         // are involved.</span>
-<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">           1 :         switch (next-&gt;getOp())</span></span>
-<span id="L565"><span class="lineNum">     565</span>              :         {</span>
-<span id="L566"><span class="lineNum">     566</span>              :         case kIROp_Load:</span>
-<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">           1 :             if (canAddressesPotentiallyAlias(func, next-&gt;getOperand(0), store-&gt;getPtr()))</span></span>
-<span id="L568"><span class="lineNum">     568</span>              :             {</span>
-<span id="L569"><span class="lineNum">     569</span>              :                 hasAddrUse = true;</span>
-<span id="L570"><span class="lineNum">     570</span>              :             }</span>
-<span id="L571"><span class="lineNum">     571</span>              :             break;</span>
-<span id="L572"><span class="lineNum">     572</span>              :         default:</span>
-<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">           1 :             if (canInstHaveSideEffectAtAddress(func, next, store-&gt;getPtr(), calleeSideEffectCache))</span></span>
-<span id="L574"><span class="lineNum">     574</span>              :             {</span>
-<span id="L575"><span class="lineNum">     575</span>              :                 hasAddrUse = true;</span>
-<span id="L576"><span class="lineNum">     576</span>              :             }</span>
-<span id="L577"><span class="lineNum">     577</span>              :             break;</span>
-<span id="L578"><span class="lineNum">     578</span>              :         }</span>
-<span id="L579"><span class="lineNum">     579</span>              :         if (hasAddrUse)</span>
-<span id="L580"><span class="lineNum">     580</span>              :             break;</span>
-<span id="L581"><span class="lineNum">     581</span>              : </span>
-<span id="L582"><span class="lineNum">     582</span>              :         // If we are at the end of the current block and see a unconditional branch,</span>
-<span id="L583"><span class="lineNum">     583</span>              :         // we can follow the path and check the subsequent block.</span>
-<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">           1 :         if (auto branch = as&lt;IRUnconditionalBranch&gt;(next))</span></span>
-<span id="L585"><span class="lineNum">     585</span>              :         {</span>
-<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">           1 :             auto nextBlock = branch-&gt;getTargetBlock();</span></span>
-<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">           1 :             if (visitedBlocks.add(nextBlock))</span></span>
-<span id="L588"><span class="lineNum">     588</span>              :             {</span>
-<span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">           1 :                 next = nextBlock-&gt;getFirstInst();</span></span>
-<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">           1 :                 continue;</span></span>
-<span id="L591"><span class="lineNum">     591</span>              :             }</span>
-<span id="L592"><span class="lineNum">     592</span>              :         }</span>
-<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">           1 :         next = next-&gt;getNextInst();</span></span>
-<span id="L594"><span class="lineNum">     594</span>              :     }</span>
-<span id="L595"><span class="lineNum">     595</span>              : </span>
-<span id="L596"><span class="lineNum">     596</span>              :     if (!hasAddrUse &amp;&amp; hasOverridingStore)</span>
-<span id="L597"><span class="lineNum">     597</span>              :     {</span>
-<span id="L598"><span class="lineNum">     598</span>              :         store-&gt;removeAndDeallocate();</span>
-<span id="L599"><span class="lineNum">     599</span>              :         return true;</span>
-<span id="L600"><span class="lineNum">     600</span>              :     }</span>
-<span id="L601"><span class="lineNum">     601</span>              : </span>
-<span id="L602"><span class="lineNum">     602</span>              :     // A store can be removed if it is a store into the same var, and there are</span>
-<span id="L603"><span class="lineNum">     603</span>              :     // no side effects between the load of the var and the store of the var.</span>
-<span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">           1 :     if (auto load = as&lt;IRLoad&gt;(store-&gt;getVal()))</span></span>
-<span id="L605"><span class="lineNum">     605</span>              :     {</span>
-<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">           1 :         if (load-&gt;getPtr() == store-&gt;getPtr())</span></span>
-<span id="L607"><span class="lineNum">     607</span>              :         {</span>
-<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">           1 :             if (load-&gt;getParent() == store-&gt;getParent())</span></span>
-<span id="L609"><span class="lineNum">     609</span>              :             {</span>
-<span id="L610"><span class="lineNum">     610</span>              :                 bool valueMayChange = false;</span>
-<span id="L611"><span class="lineNum">     611</span> <span class="tlaGNC">           1 :                 for (auto inst = load-&gt;next; inst; inst = inst-&gt;next)</span></span>
-<span id="L612"><span class="lineNum">     612</span>              :                 {</span>
-<span id="L613"><span class="lineNum">     613</span> <span class="tlaGNC">           1 :                     if (inst == store)</span></span>
-<span id="L614"><span class="lineNum">     614</span>              :                         break;</span>
-<span id="L615"><span class="lineNum">     615</span> <span class="tlaUNC">           0 :                     if (canInstHaveSideEffectAtAddress(</span></span>
-<span id="L616"><span class="lineNum">     616</span>              :                             func,</span>
-<span id="L617"><span class="lineNum">     617</span>              :                             inst,</span>
-<span id="L618"><span class="lineNum">     618</span>              :                             store-&gt;getPtr(),</span>
-<span id="L619"><span class="lineNum">     619</span>              :                             calleeSideEffectCache))</span>
-<span id="L620"><span class="lineNum">     620</span>              :                     {</span>
-<span id="L621"><span class="lineNum">     621</span>              :                         valueMayChange = true;</span>
-<span id="L622"><span class="lineNum">     622</span>              :                         break;</span>
-<span id="L623"><span class="lineNum">     623</span>              :                     }</span>
-<span id="L624"><span class="lineNum">     624</span>              :                 }</span>
-<span id="L625"><span class="lineNum">     625</span>              :                 if (!valueMayChange)</span>
-<span id="L626"><span class="lineNum">     626</span>              :                 {</span>
-<span id="L627"><span class="lineNum">     627</span>              :                     store-&gt;removeAndDeallocate();</span>
-<span id="L628"><span class="lineNum">     628</span>              :                     return true;</span>
-<span id="L629"><span class="lineNum">     629</span>              :                 }</span>
-<span id="L630"><span class="lineNum">     630</span>              :             }</span>
-<span id="L631"><span class="lineNum">     631</span>              :         }</span>
-<span id="L632"><span class="lineNum">     632</span>              :     }</span>
-<span id="L633"><span class="lineNum">     633</span>              : </span>
-<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">           1 :     return false;</span></span>
-<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L636"><span class="lineNum">     636</span>              : </span>
-<span id="L637"><span class="lineNum">     637</span>              : // Checks if we can change or have a modified rootVar</span>
-<span id="L638"><span class="lineNum">     638</span>              : // at some point.</span>
-<span id="L639"><span class="lineNum">     639</span>              : bool isExternallyModifiableAddr(IRInst* rootVar)</span>
-<span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">           1 :     if (!rootVar)</span></span>
-<span id="L642"><span class="lineNum">     642</span>              :         return false;</span>
-<span id="L643"><span class="lineNum">     643</span>              : </span>
-<span id="L644"><span class="lineNum">     644</span> <span class="tlaGNC">           1 :     auto ptr = as&lt;IRBorrowInParamType&gt;(rootVar-&gt;getDataType());</span></span>
-<span id="L645"><span class="lineNum">     645</span> <span class="tlaGNC">           1 :     if (!ptr)</span></span>
-<span id="L646"><span class="lineNum">     646</span>              :         return true;</span>
-<span id="L647"><span class="lineNum">     647</span>              : </span>
-<span id="L648"><span class="lineNum">     648</span>              :     // Only a UserPointer can potentially be modified and changed to point to a different address</span>
-<span id="L649"><span class="lineNum">     649</span>              :     // if constRef. This may happen from a different thread even if constref to the current thread.</span>
-<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">           1 :     auto addrSpace = ptr-&gt;getAddressSpace();</span></span>
-<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">           1 :     if (addrSpace == AddressSpace::UserPointer)</span></span>
-<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">           1 :         return true;</span></span>
-<span id="L653"><span class="lineNum">     653</span>              : </span>
-<span id="L654"><span class="lineNum">     654</span> <span class="tlaUNC">           0 :     return false;</span></span>
-<span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L656"><span class="lineNum">     656</span>              : </span>
-<span id="L657"><span class="lineNum">     657</span>              : bool tryRemoveRedundantLoad(</span>
-<span id="L658"><span class="lineNum">     658</span>              :     IRGlobalValueWithCode* func,</span>
-<span id="L659"><span class="lineNum">     659</span>              :     IRLoad* load,</span>
-<span id="L660"><span class="lineNum">     660</span>              :     Dictionary&lt;IRInst*, bool&gt;* calleeSideEffectCache)</span>
-<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L662"><span class="lineNum">     662</span>              :     bool changed = false;</span>
-<span id="L663"><span class="lineNum">     663</span>              : </span>
-<span id="L664"><span class="lineNum">     664</span>              :     // Get the memory scope we are operating on.</span>
-<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">           1 :     MemoryScope memoryScopeOfLoad = getMemoryScopeOfLoadStore(load);</span></span>
+<span id="L558"><span class="lineNum">     558</span>              :         if (!hasNonStoreUse)</span>
+<span id="L559"><span class="lineNum">     559</span>              :         {</span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">           1 :             store-&gt;removeAndDeallocate();</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">           1 :             return true;</span></span>
+<span id="L562"><span class="lineNum">     562</span>              :         }</span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L564"><span class="lineNum">     564</span>              : </span>
+<span id="L565"><span class="lineNum">     565</span>              :     // The remaining rules need either a matching overwrite or a load from the same pointer</span>
+<span id="L566"><span class="lineNum">     566</span>              :     // stored back unchanged. When we can skip the overwrite search, this store is also the</span>
+<span id="L567"><span class="lineNum">     567</span>              :     // pointer&#x27;s only use, so there cannot be a load for the store-back rule either.</span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">           1 :     if (canSkipStoreOverwriteSearch(store))</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">           1 :         return false;</span></span>
+<span id="L570"><span class="lineNum">     570</span>              : </span>
+<span id="L571"><span class="lineNum">     571</span>              :     // This store can be removed if there are subsequent stores to the same variable,</span>
+<span id="L572"><span class="lineNum">     572</span>              :     // and there are no insts in between the stores that can read the variable.</span>
+<span id="L573"><span class="lineNum">     573</span>              :     // Additionally, MemoryScope of the `store` must be a sub-set of `nextStore`,</span>
+<span id="L574"><span class="lineNum">     574</span>              :     // otherwise we can not be certain that `nextStore` completely overwrites `store`.</span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">           1 :     MemoryScope memoryScopeOfStore = getMemoryScopeOfLoadStore(store);</span></span>
+<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">           1 :     HashSet&lt;IRBlock*&gt; visitedBlocks;</span></span>
+<span id="L577"><span class="lineNum">     577</span>              :     // `canSkipStoreOverwriteSearch` relies on this walk matching identical pointer operands</span>
+<span id="L578"><span class="lineNum">     578</span>              :     // and following only `IRUnconditionalBranch`. Extending either rule also requires updating</span>
+<span id="L579"><span class="lineNum">     579</span>              :     // that predicate so the new matches remain reachable.</span>
+<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">           1 :     for (auto next = store-&gt;getNextInst(); next;)</span></span>
+<span id="L581"><span class="lineNum">     581</span>              :     {</span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">           1 :         if (auto nextStore = as&lt;IRStore&gt;(next))</span></span>
+<span id="L583"><span class="lineNum">     583</span>              :         {</span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">           1 :             if (nextStore-&gt;getPtr() == store-&gt;getPtr() &amp;&amp;</span></span>
+<span id="L585"><span class="lineNum">     585</span>              :                 isMemoryScopeSubsetOf(memoryScopeOfStore, getMemoryScopeOfLoadStore(nextStore)))</span>
+<span id="L586"><span class="lineNum">     586</span>              :             {</span>
+<span id="L587"><span class="lineNum">     587</span>              :                 hasOverridingStore = true;</span>
+<span id="L588"><span class="lineNum">     588</span>              :                 break;</span>
+<span id="L589"><span class="lineNum">     589</span>              :             }</span>
+<span id="L590"><span class="lineNum">     590</span>              :         }</span>
+<span id="L591"><span class="lineNum">     591</span>              : </span>
+<span id="L592"><span class="lineNum">     592</span>              :         // If we see any insts that have reads or modifies the address before seeing</span>
+<span id="L593"><span class="lineNum">     593</span>              :         // an overriding store, don&#x27;t remove the store.</span>
+<span id="L594"><span class="lineNum">     594</span>              :         // We can make the test more accurate by collecting all addresses related to</span>
+<span id="L595"><span class="lineNum">     595</span>              :         // the target address first, and only bail out if any of the related addresses</span>
+<span id="L596"><span class="lineNum">     596</span>              :         // are involved.</span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">           1 :         switch (next-&gt;getOp())</span></span>
+<span id="L598"><span class="lineNum">     598</span>              :         {</span>
+<span id="L599"><span class="lineNum">     599</span>              :         case kIROp_Load:</span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">           1 :             if (canAddressesPotentiallyAlias(func, next-&gt;getOperand(0), store-&gt;getPtr()))</span></span>
+<span id="L601"><span class="lineNum">     601</span>              :             {</span>
+<span id="L602"><span class="lineNum">     602</span>              :                 hasAddrUse = true;</span>
+<span id="L603"><span class="lineNum">     603</span>              :             }</span>
+<span id="L604"><span class="lineNum">     604</span>              :             break;</span>
+<span id="L605"><span class="lineNum">     605</span>              :         default:</span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">           1 :             if (canInstHaveSideEffectAtAddress(func, next, store-&gt;getPtr(), calleeSideEffectCache))</span></span>
+<span id="L607"><span class="lineNum">     607</span>              :             {</span>
+<span id="L608"><span class="lineNum">     608</span>              :                 hasAddrUse = true;</span>
+<span id="L609"><span class="lineNum">     609</span>              :             }</span>
+<span id="L610"><span class="lineNum">     610</span>              :             break;</span>
+<span id="L611"><span class="lineNum">     611</span>              :         }</span>
+<span id="L612"><span class="lineNum">     612</span>              :         if (hasAddrUse)</span>
+<span id="L613"><span class="lineNum">     613</span>              :             break;</span>
+<span id="L614"><span class="lineNum">     614</span>              : </span>
+<span id="L615"><span class="lineNum">     615</span>              :         // If we are at the end of the current block and see a unconditional branch,</span>
+<span id="L616"><span class="lineNum">     616</span>              :         // we can follow the path and check the subsequent block.</span>
+<span id="L617"><span class="lineNum">     617</span> <span class="tlaGNC">           1 :         if (auto branch = as&lt;IRUnconditionalBranch&gt;(next))</span></span>
+<span id="L618"><span class="lineNum">     618</span>              :         {</span>
+<span id="L619"><span class="lineNum">     619</span> <span class="tlaGNC">           1 :             auto nextBlock = branch-&gt;getTargetBlock();</span></span>
+<span id="L620"><span class="lineNum">     620</span> <span class="tlaGNC">           1 :             if (visitedBlocks.add(nextBlock))</span></span>
+<span id="L621"><span class="lineNum">     621</span>              :             {</span>
+<span id="L622"><span class="lineNum">     622</span> <span class="tlaGNC">           1 :                 next = nextBlock-&gt;getFirstInst();</span></span>
+<span id="L623"><span class="lineNum">     623</span> <span class="tlaGNC">           1 :                 continue;</span></span>
+<span id="L624"><span class="lineNum">     624</span>              :             }</span>
+<span id="L625"><span class="lineNum">     625</span>              :         }</span>
+<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">           1 :         next = next-&gt;getNextInst();</span></span>
+<span id="L627"><span class="lineNum">     627</span>              :     }</span>
+<span id="L628"><span class="lineNum">     628</span>              : </span>
+<span id="L629"><span class="lineNum">     629</span>              :     if (!hasAddrUse &amp;&amp; hasOverridingStore)</span>
+<span id="L630"><span class="lineNum">     630</span>              :     {</span>
+<span id="L631"><span class="lineNum">     631</span>              :         store-&gt;removeAndDeallocate();</span>
+<span id="L632"><span class="lineNum">     632</span>              :         return true;</span>
+<span id="L633"><span class="lineNum">     633</span>              :     }</span>
+<span id="L634"><span class="lineNum">     634</span>              : </span>
+<span id="L635"><span class="lineNum">     635</span>              :     // A store can be removed if it is a store into the same var, and there are</span>
+<span id="L636"><span class="lineNum">     636</span>              :     // no side effects between the load of the var and the store of the var.</span>
+<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">           1 :     if (auto load = as&lt;IRLoad&gt;(store-&gt;getVal()))</span></span>
+<span id="L638"><span class="lineNum">     638</span>              :     {</span>
+<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">           1 :         if (load-&gt;getPtr() == store-&gt;getPtr())</span></span>
+<span id="L640"><span class="lineNum">     640</span>              :         {</span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">           1 :             if (load-&gt;getParent() == store-&gt;getParent())</span></span>
+<span id="L642"><span class="lineNum">     642</span>              :             {</span>
+<span id="L643"><span class="lineNum">     643</span>              :                 bool valueMayChange = false;</span>
+<span id="L644"><span class="lineNum">     644</span> <span class="tlaGNC">           1 :                 for (auto inst = load-&gt;next; inst; inst = inst-&gt;next)</span></span>
+<span id="L645"><span class="lineNum">     645</span>              :                 {</span>
+<span id="L646"><span class="lineNum">     646</span> <span class="tlaGNC">           1 :                     if (inst == store)</span></span>
+<span id="L647"><span class="lineNum">     647</span>              :                         break;</span>
+<span id="L648"><span class="lineNum">     648</span> <span class="tlaUNC">           0 :                     if (canInstHaveSideEffectAtAddress(</span></span>
+<span id="L649"><span class="lineNum">     649</span>              :                             func,</span>
+<span id="L650"><span class="lineNum">     650</span>              :                             inst,</span>
+<span id="L651"><span class="lineNum">     651</span>              :                             store-&gt;getPtr(),</span>
+<span id="L652"><span class="lineNum">     652</span>              :                             calleeSideEffectCache))</span>
+<span id="L653"><span class="lineNum">     653</span>              :                     {</span>
+<span id="L654"><span class="lineNum">     654</span>              :                         valueMayChange = true;</span>
+<span id="L655"><span class="lineNum">     655</span>              :                         break;</span>
+<span id="L656"><span class="lineNum">     656</span>              :                     }</span>
+<span id="L657"><span class="lineNum">     657</span>              :                 }</span>
+<span id="L658"><span class="lineNum">     658</span>              :                 if (!valueMayChange)</span>
+<span id="L659"><span class="lineNum">     659</span>              :                 {</span>
+<span id="L660"><span class="lineNum">     660</span>              :                     store-&gt;removeAndDeallocate();</span>
+<span id="L661"><span class="lineNum">     661</span>              :                     return true;</span>
+<span id="L662"><span class="lineNum">     662</span>              :                 }</span>
+<span id="L663"><span class="lineNum">     663</span>              :             }</span>
+<span id="L664"><span class="lineNum">     664</span>              :         }</span>
+<span id="L665"><span class="lineNum">     665</span>              :     }</span>
 <span id="L666"><span class="lineNum">     666</span>              : </span>
-<span id="L667"><span class="lineNum">     667</span>              :     // We can replace a load with a `Store-&gt;getVal()` if that store is a super-set</span>
-<span id="L668"><span class="lineNum">     668</span>              :     // memory scope to our load.</span>
-<span id="L669"><span class="lineNum">     669</span>              :     // Ex 1: Store into Workgroup, load from Invocation. Load will be equal to the Store.</span>
-<span id="L670"><span class="lineNum">     670</span>              :     //</span>
-<span id="L671"><span class="lineNum">     671</span>              :     // Ex 2: Store into Invocation, load from Workgroup. Load may/may-not be equal to the Store</span>
-<span id="L672"><span class="lineNum">     672</span>              :     // since the cache managing the Workgroup scope may contain different data than the invocation.</span>
-<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">           1 :     for (auto prev = load-&gt;getPrevInst(); prev; prev = prev-&gt;getPrevInst())</span></span>
-<span id="L674"><span class="lineNum">     674</span>              :     {</span>
-<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">           1 :         if (auto store = as&lt;IRStore&gt;(prev))</span></span>
-<span id="L676"><span class="lineNum">     676</span>              :         {</span>
-<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :             if (store-&gt;getPtr() == load-&gt;getPtr() &amp;&amp;</span></span>
-<span id="L678"><span class="lineNum">     678</span>              :                 isMemoryScopeSubsetOf(memoryScopeOfLoad, getMemoryScopeOfLoadStore(store)))</span>
-<span id="L679"><span class="lineNum">     679</span>              :             {</span>
-<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">           1 :                 auto value = store-&gt;getVal();</span></span>
-<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">           1 :                 load-&gt;replaceUsesWith(value);</span></span>
-<span id="L682"><span class="lineNum">     682</span> <span class="tlaGNC">           1 :                 load-&gt;removeAndDeallocate();</span></span>
-<span id="L683"><span class="lineNum">     683</span>              :                 changed = true;</span>
-<span id="L684"><span class="lineNum">     684</span>              :                 break;</span>
-<span id="L685"><span class="lineNum">     685</span>              :             }</span>
-<span id="L686"><span class="lineNum">     686</span>              :         }</span>
-<span id="L687"><span class="lineNum">     687</span>              : </span>
-<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">           1 :         if (canInstHaveSideEffectAtAddress(func, prev, load-&gt;getPtr(), calleeSideEffectCache))</span></span>
-<span id="L689"><span class="lineNum">     689</span>              :         {</span>
-<span id="L690"><span class="lineNum">     690</span>              :             break;</span>
-<span id="L691"><span class="lineNum">     691</span>              :         }</span>
-<span id="L692"><span class="lineNum">     692</span>              :     }</span>
-<span id="L693"><span class="lineNum">     693</span>              : </span>
-<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">           1 :     return changed;</span></span>
-<span id="L695"><span class="lineNum">     695</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">           1 :     return false;</span></span>
+<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L669"><span class="lineNum">     669</span>              : </span>
+<span id="L670"><span class="lineNum">     670</span>              : // Checks if we can change or have a modified rootVar</span>
+<span id="L671"><span class="lineNum">     671</span>              : // at some point.</span>
+<span id="L672"><span class="lineNum">     672</span>              : bool isExternallyModifiableAddr(IRInst* rootVar)</span>
+<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L674"><span class="lineNum">     674</span> <span class="tlaGNC">           1 :     if (!rootVar)</span></span>
+<span id="L675"><span class="lineNum">     675</span>              :         return false;</span>
+<span id="L676"><span class="lineNum">     676</span>              : </span>
+<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :     auto ptr = as&lt;IRBorrowInParamType&gt;(rootVar-&gt;getDataType());</span></span>
+<span id="L678"><span class="lineNum">     678</span> <span class="tlaGNC">           1 :     if (!ptr)</span></span>
+<span id="L679"><span class="lineNum">     679</span>              :         return true;</span>
+<span id="L680"><span class="lineNum">     680</span>              : </span>
+<span id="L681"><span class="lineNum">     681</span>              :     // Only a UserPointer can potentially be modified and changed to point to a different address</span>
+<span id="L682"><span class="lineNum">     682</span>              :     // if constRef. This may happen from a different thread even if constref to the current thread.</span>
+<span id="L683"><span class="lineNum">     683</span> <span class="tlaGNC">           1 :     auto addrSpace = ptr-&gt;getAddressSpace();</span></span>
+<span id="L684"><span class="lineNum">     684</span> <span class="tlaGNC">           1 :     if (addrSpace == AddressSpace::UserPointer)</span></span>
+<span id="L685"><span class="lineNum">     685</span> <span class="tlaGNC">           1 :         return true;</span></span>
+<span id="L686"><span class="lineNum">     686</span>              : </span>
+<span id="L687"><span class="lineNum">     687</span> <span class="tlaUNC">           0 :     return false;</span></span>
+<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L689"><span class="lineNum">     689</span>              : </span>
+<span id="L690"><span class="lineNum">     690</span>              : bool tryRemoveRedundantLoad(</span>
+<span id="L691"><span class="lineNum">     691</span>              :     IRGlobalValueWithCode* func,</span>
+<span id="L692"><span class="lineNum">     692</span>              :     IRLoad* load,</span>
+<span id="L693"><span class="lineNum">     693</span>              :     Dictionary&lt;IRInst*, bool&gt;* calleeSideEffectCache)</span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L695"><span class="lineNum">     695</span>              :     bool changed = false;</span>
 <span id="L696"><span class="lineNum">     696</span>              : </span>
-<span id="L697"><span class="lineNum">     697</span>              : bool eliminateRedundantLoadStore(</span>
-<span id="L698"><span class="lineNum">     698</span>              :     IRGlobalValueWithCode* func,</span>
-<span id="L699"><span class="lineNum">     699</span>              :     Dictionary&lt;IRInst*, bool&gt;* calleeSideEffectCache)</span>
-<span id="L700"><span class="lineNum">     700</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L701"><span class="lineNum">     701</span> <span class="tlaGNC">           1 :     bool changed = false;</span></span>
-<span id="L702"><span class="lineNum">     702</span> <span class="tlaGNC">           1 :     for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L703"><span class="lineNum">     703</span>              :     {</span>
-<span id="L704"><span class="lineNum">     704</span>              :         IRInst* nextInst = nullptr;</span>
-<span id="L705"><span class="lineNum">     705</span> <span class="tlaGNC">           1 :         for (auto inst = block-&gt;getFirstInst(); inst; inst = nextInst)</span></span>
-<span id="L706"><span class="lineNum">     706</span>              :         {</span>
-<span id="L707"><span class="lineNum">     707</span> <span class="tlaGNC">           1 :             nextInst = inst-&gt;getNextInst();</span></span>
-<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">           1 :             if (auto load = as&lt;IRLoad&gt;(inst))</span></span>
-<span id="L709"><span class="lineNum">     709</span>              :             {</span>
-<span id="L710"><span class="lineNum">     710</span> <span class="tlaGNC">           1 :                 changed |= tryRemoveRedundantLoad(func, load, calleeSideEffectCache);</span></span>
-<span id="L711"><span class="lineNum">     711</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L712"><span class="lineNum">     712</span> <span class="tlaGNC">           1 :             else if (auto store = as&lt;IRStoreBase&gt;(inst))</span></span>
-<span id="L713"><span class="lineNum">     713</span>              :             {</span>
-<span id="L714"><span class="lineNum">     714</span> <span class="tlaGNC">           1 :                 changed |= tryRemoveRedundantStore(func, store, calleeSideEffectCache);</span></span>
-<span id="L715"><span class="lineNum">     715</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L716"><span class="lineNum">     716</span> <span class="tlaGNC">           1 :             else if (auto getElementPtr = as&lt;IRGetElementPtr&gt;(inst))</span></span>
-<span id="L717"><span class="lineNum">     717</span>              :             {</span>
-<span id="L718"><span class="lineNum">     718</span> <span class="tlaGNC">           1 :                 auto rootAddr = getRootAddr(getElementPtr);</span></span>
-<span id="L719"><span class="lineNum">     719</span> <span class="tlaGNC">           1 :                 if (isExternallyModifiableAddr(rootAddr))</span></span>
-<span id="L720"><span class="lineNum">     720</span>              :                     continue;</span>
-<span id="L721"><span class="lineNum">     721</span>              : </span>
-<span id="L722"><span class="lineNum">     722</span>              :                 // GetElement(Load(GetElementPtr(x)))) ==&gt; Load(GetElementPtr(GetElementPtr(x)))</span>
-<span id="L723"><span class="lineNum">     723</span>              :                 // The benefit is that any GetAddr(Load(...)) can then transitively be optimized</span>
-<span id="L724"><span class="lineNum">     724</span>              :                 // out.</span>
-<span id="L725"><span class="lineNum">     725</span>              :                 // This can only be done if we have no side-effects. `constref` never has</span>
-<span id="L726"><span class="lineNum">     726</span>              :                 // single-invocation side-effects.</span>
-<span id="L727"><span class="lineNum">     727</span> <span class="tlaGNC">           1 :                 traverseUsers&lt;IRLoad&gt;(</span></span>
-<span id="L728"><span class="lineNum">     728</span>              :                     getElementPtr,</span>
-<span id="L729"><span class="lineNum">     729</span> <span class="tlaGNC">           1 :                     [&amp;](IRLoad* load)</span></span>
-<span id="L730"><span class="lineNum">     730</span> <span class="tlaGNC">           1 :                     {</span></span>
-<span id="L731"><span class="lineNum">     731</span> <span class="tlaGNC">           1 :                         traverseUsers&lt;IRGetElement&gt;(</span></span>
-<span id="L732"><span class="lineNum">     732</span>              :                             load,</span>
-<span id="L733"><span class="lineNum">     733</span>              :                             [&amp;](IRGetElement* getElement)</span>
-<span id="L734"><span class="lineNum">     734</span> <span class="tlaGNC">           1 :                             {</span></span>
-<span id="L735"><span class="lineNum">     735</span>              :                                 // Only optimize if the load</span>
-<span id="L736"><span class="lineNum">     736</span>              :                                 // is the base</span>
-<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">           1 :                                 if (getElement-&gt;getBase() != load)</span></span>
-<span id="L738"><span class="lineNum">     738</span>              :                                     return;</span>
-<span id="L739"><span class="lineNum">     739</span>              : </span>
-<span id="L740"><span class="lineNum">     740</span> <span class="tlaGNC">           1 :                                 IRBuilder builder(getElement);</span></span>
-<span id="L741"><span class="lineNum">     741</span> <span class="tlaGNC">           1 :                                 builder.setInsertBefore(getElement);</span></span>
-<span id="L742"><span class="lineNum">     742</span> <span class="tlaGNC">           1 :                                 auto newGetElementPtr = builder.emitElementAddress(</span></span>
-<span id="L743"><span class="lineNum">     743</span>              :                                     getElementPtr,</span>
-<span id="L744"><span class="lineNum">     744</span>              :                                     getElement-&gt;getIndex());</span>
-<span id="L745"><span class="lineNum">     745</span> <span class="tlaGNC">           1 :                                 auto newLoad = builder.emitLoad(newGetElementPtr);</span></span>
-<span id="L746"><span class="lineNum">     746</span> <span class="tlaGNC">           1 :                                 getElement-&gt;replaceUsesWith(newLoad);</span></span>
-<span id="L747"><span class="lineNum">     747</span> <span class="tlaGNC">           1 :                                 changed = true;</span></span>
-<span id="L748"><span class="lineNum">     748</span> <span class="tlaGNC">           1 :                             });</span></span>
-<span id="L749"><span class="lineNum">     749</span> <span class="tlaGNC">           1 :                     });</span></span>
-<span id="L750"><span class="lineNum">     750</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L751"><span class="lineNum">     751</span> <span class="tlaGNC">           1 :             else if (auto fieldAddress = as&lt;IRFieldAddress&gt;(inst))</span></span>
+<span id="L697"><span class="lineNum">     697</span>              :     // Get the memory scope we are operating on.</span>
+<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">           1 :     MemoryScope memoryScopeOfLoad = getMemoryScopeOfLoadStore(load);</span></span>
+<span id="L699"><span class="lineNum">     699</span>              : </span>
+<span id="L700"><span class="lineNum">     700</span>              :     // We can replace a load with a `Store-&gt;getVal()` if that store is a super-set</span>
+<span id="L701"><span class="lineNum">     701</span>              :     // memory scope to our load.</span>
+<span id="L702"><span class="lineNum">     702</span>              :     // Ex 1: Store into Workgroup, load from Invocation. Load will be equal to the Store.</span>
+<span id="L703"><span class="lineNum">     703</span>              :     //</span>
+<span id="L704"><span class="lineNum">     704</span>              :     // Ex 2: Store into Invocation, load from Workgroup. Load may/may-not be equal to the Store</span>
+<span id="L705"><span class="lineNum">     705</span>              :     // since the cache managing the Workgroup scope may contain different data than the invocation.</span>
+<span id="L706"><span class="lineNum">     706</span>              :     // `eliminateRedundantLoadStore` indexes earlier `IRStore` pointer operands in this block</span>
+<span id="L707"><span class="lineNum">     707</span>              :     // to rule out unsuccessful searches. If we extend the matching or traversal rules below,</span>
+<span id="L708"><span class="lineNum">     708</span>              :     // we must extend that filter too so it does not hide the new forwarding opportunities.</span>
+<span id="L709"><span class="lineNum">     709</span> <span class="tlaGNC">           1 :     for (auto prev = load-&gt;getPrevInst(); prev; prev = prev-&gt;getPrevInst())</span></span>
+<span id="L710"><span class="lineNum">     710</span>              :     {</span>
+<span id="L711"><span class="lineNum">     711</span> <span class="tlaGNC">           1 :         if (auto store = as&lt;IRStore&gt;(prev))</span></span>
+<span id="L712"><span class="lineNum">     712</span>              :         {</span>
+<span id="L713"><span class="lineNum">     713</span> <span class="tlaGNC">           1 :             if (store-&gt;getPtr() == load-&gt;getPtr() &amp;&amp;</span></span>
+<span id="L714"><span class="lineNum">     714</span>              :                 isMemoryScopeSubsetOf(memoryScopeOfLoad, getMemoryScopeOfLoadStore(store)))</span>
+<span id="L715"><span class="lineNum">     715</span>              :             {</span>
+<span id="L716"><span class="lineNum">     716</span> <span class="tlaGNC">           1 :                 auto value = store-&gt;getVal();</span></span>
+<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">           1 :                 load-&gt;replaceUsesWith(value);</span></span>
+<span id="L718"><span class="lineNum">     718</span> <span class="tlaGNC">           1 :                 load-&gt;removeAndDeallocate();</span></span>
+<span id="L719"><span class="lineNum">     719</span>              :                 changed = true;</span>
+<span id="L720"><span class="lineNum">     720</span>              :                 break;</span>
+<span id="L721"><span class="lineNum">     721</span>              :             }</span>
+<span id="L722"><span class="lineNum">     722</span>              :         }</span>
+<span id="L723"><span class="lineNum">     723</span>              : </span>
+<span id="L724"><span class="lineNum">     724</span> <span class="tlaGNC">           1 :         if (canInstHaveSideEffectAtAddress(func, prev, load-&gt;getPtr(), calleeSideEffectCache))</span></span>
+<span id="L725"><span class="lineNum">     725</span>              :         {</span>
+<span id="L726"><span class="lineNum">     726</span>              :             break;</span>
+<span id="L727"><span class="lineNum">     727</span>              :         }</span>
+<span id="L728"><span class="lineNum">     728</span>              :     }</span>
+<span id="L729"><span class="lineNum">     729</span>              : </span>
+<span id="L730"><span class="lineNum">     730</span> <span class="tlaGNC">           1 :     return changed;</span></span>
+<span id="L731"><span class="lineNum">     731</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L732"><span class="lineNum">     732</span>              : </span>
+<span id="L733"><span class="lineNum">     733</span>              : bool eliminateRedundantLoadStore(</span>
+<span id="L734"><span class="lineNum">     734</span>              :     IRGlobalValueWithCode* func,</span>
+<span id="L735"><span class="lineNum">     735</span>              :     Dictionary&lt;IRInst*, bool&gt;* calleeSideEffectCache)</span>
+<span id="L736"><span class="lineNum">     736</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">           1 :     bool changed = false;</span></span>
+<span id="L738"><span class="lineNum">     738</span> <span class="tlaGNC">           1 :     for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L739"><span class="lineNum">     739</span>              :     {</span>
+<span id="L740"><span class="lineNum">     740</span>              :         // Looking for a matching store before every load can repeatedly scan a long block prefix.</span>
+<span id="L741"><span class="lineNum">     741</span>              :         // We avoid searches with no possible match by indexing the pointer operands of earlier,</span>
+<span id="L742"><span class="lineNum">     742</span>              :         // surviving `IRStore` instructions in this block. A hit still leaves all memory-scope and</span>
+<span id="L743"><span class="lineNum">     743</span>              :         // side-effect checks to `tryRemoveRedundantLoad`, so extra entries cost only a search.</span>
+<span id="L744"><span class="lineNum">     744</span>              :         // A missing entry, however, could hide a valid replacement. The store-registration step</span>
+<span id="L745"><span class="lineNum">     745</span>              :         // below keeps every candidate represented in reachable code as the pass rewrites the IR.</span>
+<span id="L746"><span class="lineNum">     746</span> <span class="tlaGNC">           1 :         HashSet&lt;IRInst*&gt; earlierStorePointerOperands;</span></span>
+<span id="L747"><span class="lineNum">     747</span>              :         IRInst* nextInst = nullptr;</span>
+<span id="L748"><span class="lineNum">     748</span> <span class="tlaGNC">           1 :         for (auto inst = block-&gt;getFirstInst(); inst; inst = nextInst)</span></span>
+<span id="L749"><span class="lineNum">     749</span>              :         {</span>
+<span id="L750"><span class="lineNum">     750</span> <span class="tlaGNC">           1 :             nextInst = inst-&gt;getNextInst();</span></span>
+<span id="L751"><span class="lineNum">     751</span> <span class="tlaGNC">           1 :             if (auto load = as&lt;IRLoad&gt;(inst))</span></span>
 <span id="L752"><span class="lineNum">     752</span>              :             {</span>
-<span id="L753"><span class="lineNum">     753</span> <span class="tlaGNC">           1 :                 auto rootAddr = getRootAddr(fieldAddress);</span></span>
-<span id="L754"><span class="lineNum">     754</span> <span class="tlaGNC">           1 :                 if (isExternallyModifiableAddr(rootAddr))</span></span>
-<span id="L755"><span class="lineNum">     755</span>              :                     continue;</span>
-<span id="L756"><span class="lineNum">     756</span>              : </span>
-<span id="L757"><span class="lineNum">     757</span>              :                 // ExtractField(Load(GetFieldAddr(x)))) ==&gt; Load(GetFieldAddr(GetFieldAddr(x)))</span>
-<span id="L758"><span class="lineNum">     758</span>              :                 // The benefit is that any GetAddr(Load(...)) can then transitively be optimized</span>
-<span id="L759"><span class="lineNum">     759</span>              :                 // out.</span>
-<span id="L760"><span class="lineNum">     760</span>              :                 // This can only be done if we have no side-effects. `constref` never has</span>
-<span id="L761"><span class="lineNum">     761</span>              :                 // single-invocation side-effects.</span>
-<span id="L762"><span class="lineNum">     762</span> <span class="tlaGNC">           1 :                 traverseUsers&lt;IRLoad&gt;(</span></span>
-<span id="L763"><span class="lineNum">     763</span>              :                     fieldAddress,</span>
-<span id="L764"><span class="lineNum">     764</span> <span class="tlaGNC">           1 :                     [&amp;](IRLoad* load)</span></span>
-<span id="L765"><span class="lineNum">     765</span> <span class="tlaGNC">           1 :                     {</span></span>
-<span id="L766"><span class="lineNum">     766</span> <span class="tlaGNC">           1 :                         traverseUsers&lt;IRFieldExtract&gt;(</span></span>
-<span id="L767"><span class="lineNum">     767</span>              :                             load,</span>
-<span id="L768"><span class="lineNum">     768</span>              :                             [&amp;](IRFieldExtract* fieldExtract)</span>
-<span id="L769"><span class="lineNum">     769</span> <span class="tlaGNC">           1 :                             {</span></span>
-<span id="L770"><span class="lineNum">     770</span>              :                                 // Only optimize if the load</span>
-<span id="L771"><span class="lineNum">     771</span>              :                                 // is the base; not strictly</span>
-<span id="L772"><span class="lineNum">     772</span>              :                                 // needed for field extract,</span>
-<span id="L773"><span class="lineNum">     773</span>              :                                 // but it will prevent future</span>
-<span id="L774"><span class="lineNum">     774</span>              :                                 // regressions if a field ever</span>
-<span id="L775"><span class="lineNum">     775</span>              :                                 // becomes a non-struct-key</span>
-<span id="L776"><span class="lineNum">     776</span> <span class="tlaGNC">           1 :                                 if (fieldExtract-&gt;getBase() != load)</span></span>
-<span id="L777"><span class="lineNum">     777</span>              :                                     return;</span>
-<span id="L778"><span class="lineNum">     778</span>              : </span>
-<span id="L779"><span class="lineNum">     779</span> <span class="tlaGNC">           1 :                                 IRBuilder builder(fieldExtract);</span></span>
-<span id="L780"><span class="lineNum">     780</span> <span class="tlaGNC">           1 :                                 builder.setInsertBefore(fieldExtract);</span></span>
-<span id="L781"><span class="lineNum">     781</span> <span class="tlaGNC">           1 :                                 auto newGetFieldAddress = builder.emitFieldAddress(</span></span>
-<span id="L782"><span class="lineNum">     782</span>              :                                     fieldAddress,</span>
-<span id="L783"><span class="lineNum">     783</span>              :                                     fieldExtract-&gt;getField());</span>
-<span id="L784"><span class="lineNum">     784</span> <span class="tlaGNC">           1 :                                 auto newLoad = builder.emitLoad(newGetFieldAddress);</span></span>
-<span id="L785"><span class="lineNum">     785</span> <span class="tlaGNC">           1 :                                 fieldExtract-&gt;replaceUsesWith(newLoad);</span></span>
-<span id="L786"><span class="lineNum">     786</span> <span class="tlaGNC">           1 :                                 changed = true;</span></span>
-<span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">           1 :                             });</span></span>
-<span id="L788"><span class="lineNum">     788</span> <span class="tlaGNC">           1 :                     });</span></span>
-<span id="L789"><span class="lineNum">     789</span>              :             }</span>
-<span id="L790"><span class="lineNum">     790</span>              :         }</span>
-<span id="L791"><span class="lineNum">     791</span>              :     }</span>
-<span id="L792"><span class="lineNum">     792</span>              :     return changed;</span>
-<span id="L793"><span class="lineNum">     793</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L794"><span class="lineNum">     794</span>              : </span>
-<span id="L795"><span class="lineNum">     795</span>              : } // namespace Slang</span>
+<span id="L753"><span class="lineNum">     753</span> <span class="tlaGNC">           1 :                 if (!earlierStorePointerOperands.contains(load-&gt;getPtr()))</span></span>
+<span id="L754"><span class="lineNum">     754</span>              :                     continue;</span>
+<span id="L755"><span class="lineNum">     755</span> <span class="tlaGNC">           1 :                 changed |= tryRemoveRedundantLoad(func, load, calleeSideEffectCache);</span></span>
+<span id="L756"><span class="lineNum">     756</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L757"><span class="lineNum">     757</span> <span class="tlaGNC">           1 :             else if (auto store = as&lt;IRStoreBase&gt;(inst))</span></span>
+<span id="L758"><span class="lineNum">     758</span>              :             {</span>
+<span id="L759"><span class="lineNum">     759</span> <span class="tlaGNC">           1 :                 if (tryRemoveRedundantStore(func, store, calleeSideEffectCache))</span></span>
+<span id="L760"><span class="lineNum">     760</span>              :                 {</span>
+<span id="L761"><span class="lineNum">     761</span> <span class="tlaGNC">           1 :                     changed = true;</span></span>
+<span id="L762"><span class="lineNum">     762</span> <span class="tlaGNC">           1 :                     continue;</span></span>
+<span id="L763"><span class="lineNum">     763</span>              :                 }</span>
+<span id="L764"><span class="lineNum">     764</span>              : </span>
+<span id="L765"><span class="lineNum">     765</span>              :                 // We need the index to reflect the stores that later load searches will inspect,</span>
+<span id="L766"><span class="lineNum">     766</span>              :                 // but the traversal can rewrite store pointers and delete stores. We therefore</span>
+<span id="L767"><span class="lineNum">     767</span>              :                 // build the index as we go, collecting the current pointer only after deciding</span>
+<span id="L768"><span class="lineNum">     768</span>              :                 // to keep the store.</span>
+<span id="L769"><span class="lineNum">     769</span>              :                 //</span>
+<span id="L770"><span class="lineNum">     770</span>              :                 // After recording a pointer, we can leave its entry unchanged until the block</span>
+<span id="L771"><span class="lineNum">     771</span>              :                 // ends. The remaining rewrites replace later loads or users of later address</span>
+<span id="L772"><span class="lineNum">     772</span>              :                 // computations, which cannot be used by an earlier store in reachable SSA.</span>
+<span id="L773"><span class="lineNum">     773</span>              :                 // Unreachable code lacks that ordering guarantee, so we may miss a forwarding</span>
+<span id="L774"><span class="lineNum">     774</span>              :                 // opportunity there without affecting reachable behavior.</span>
+<span id="L775"><span class="lineNum">     775</span> <span class="tlaGNC">           1 :                 if (auto ordinaryStore = as&lt;IRStore&gt;(store))</span></span>
+<span id="L776"><span class="lineNum">     776</span> <span class="tlaGNC">           1 :                     earlierStorePointerOperands.add(ordinaryStore-&gt;getPtr());</span></span>
+<span id="L777"><span class="lineNum">     777</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L778"><span class="lineNum">     778</span> <span class="tlaGNC">           1 :             else if (auto getElementPtr = as&lt;IRGetElementPtr&gt;(inst))</span></span>
+<span id="L779"><span class="lineNum">     779</span>              :             {</span>
+<span id="L780"><span class="lineNum">     780</span> <span class="tlaGNC">           1 :                 auto rootAddr = getRootAddr(getElementPtr);</span></span>
+<span id="L781"><span class="lineNum">     781</span> <span class="tlaGNC">           1 :                 if (isExternallyModifiableAddr(rootAddr))</span></span>
+<span id="L782"><span class="lineNum">     782</span>              :                     continue;</span>
+<span id="L783"><span class="lineNum">     783</span>              : </span>
+<span id="L784"><span class="lineNum">     784</span>              :                 // GetElement(Load(GetElementPtr(x)))) ==&gt; Load(GetElementPtr(GetElementPtr(x)))</span>
+<span id="L785"><span class="lineNum">     785</span>              :                 // The benefit is that any GetAddr(Load(...)) can then transitively be optimized</span>
+<span id="L786"><span class="lineNum">     786</span>              :                 // out.</span>
+<span id="L787"><span class="lineNum">     787</span>              :                 // This can only be done if we have no side-effects. `constref` never has</span>
+<span id="L788"><span class="lineNum">     788</span>              :                 // single-invocation side-effects.</span>
+<span id="L789"><span class="lineNum">     789</span> <span class="tlaGNC">           1 :                 traverseUsers&lt;IRLoad&gt;(</span></span>
+<span id="L790"><span class="lineNum">     790</span>              :                     getElementPtr,</span>
+<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">           1 :                     [&amp;](IRLoad* load)</span></span>
+<span id="L792"><span class="lineNum">     792</span> <span class="tlaGNC">           1 :                     {</span></span>
+<span id="L793"><span class="lineNum">     793</span> <span class="tlaGNC">           1 :                         traverseUsers&lt;IRGetElement&gt;(</span></span>
+<span id="L794"><span class="lineNum">     794</span>              :                             load,</span>
+<span id="L795"><span class="lineNum">     795</span>              :                             [&amp;](IRGetElement* getElement)</span>
+<span id="L796"><span class="lineNum">     796</span> <span class="tlaGNC">           1 :                             {</span></span>
+<span id="L797"><span class="lineNum">     797</span>              :                                 // Only optimize if the load</span>
+<span id="L798"><span class="lineNum">     798</span>              :                                 // is the base</span>
+<span id="L799"><span class="lineNum">     799</span> <span class="tlaGNC">           1 :                                 if (getElement-&gt;getBase() != load)</span></span>
+<span id="L800"><span class="lineNum">     800</span>              :                                     return;</span>
+<span id="L801"><span class="lineNum">     801</span>              : </span>
+<span id="L802"><span class="lineNum">     802</span> <span class="tlaGNC">           1 :                                 IRBuilder builder(getElement);</span></span>
+<span id="L803"><span class="lineNum">     803</span> <span class="tlaGNC">           1 :                                 builder.setInsertBefore(getElement);</span></span>
+<span id="L804"><span class="lineNum">     804</span> <span class="tlaGNC">           1 :                                 auto newGetElementPtr = builder.emitElementAddress(</span></span>
+<span id="L805"><span class="lineNum">     805</span>              :                                     getElementPtr,</span>
+<span id="L806"><span class="lineNum">     806</span>              :                                     getElement-&gt;getIndex());</span>
+<span id="L807"><span class="lineNum">     807</span> <span class="tlaGNC">           1 :                                 auto newLoad = builder.emitLoad(newGetElementPtr);</span></span>
+<span id="L808"><span class="lineNum">     808</span> <span class="tlaGNC">           1 :                                 getElement-&gt;replaceUsesWith(newLoad);</span></span>
+<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">           1 :                                 changed = true;</span></span>
+<span id="L810"><span class="lineNum">     810</span> <span class="tlaGNC">           1 :                             });</span></span>
+<span id="L811"><span class="lineNum">     811</span> <span class="tlaGNC">           1 :                     });</span></span>
+<span id="L812"><span class="lineNum">     812</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L813"><span class="lineNum">     813</span> <span class="tlaGNC">           1 :             else if (auto fieldAddress = as&lt;IRFieldAddress&gt;(inst))</span></span>
+<span id="L814"><span class="lineNum">     814</span>              :             {</span>
+<span id="L815"><span class="lineNum">     815</span> <span class="tlaGNC">           1 :                 auto rootAddr = getRootAddr(fieldAddress);</span></span>
+<span id="L816"><span class="lineNum">     816</span> <span class="tlaGNC">           1 :                 if (isExternallyModifiableAddr(rootAddr))</span></span>
+<span id="L817"><span class="lineNum">     817</span>              :                     continue;</span>
+<span id="L818"><span class="lineNum">     818</span>              : </span>
+<span id="L819"><span class="lineNum">     819</span>              :                 // ExtractField(Load(GetFieldAddr(x)))) ==&gt; Load(GetFieldAddr(GetFieldAddr(x)))</span>
+<span id="L820"><span class="lineNum">     820</span>              :                 // The benefit is that any GetAddr(Load(...)) can then transitively be optimized</span>
+<span id="L821"><span class="lineNum">     821</span>              :                 // out.</span>
+<span id="L822"><span class="lineNum">     822</span>              :                 // This can only be done if we have no side-effects. `constref` never has</span>
+<span id="L823"><span class="lineNum">     823</span>              :                 // single-invocation side-effects.</span>
+<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">           1 :                 traverseUsers&lt;IRLoad&gt;(</span></span>
+<span id="L825"><span class="lineNum">     825</span>              :                     fieldAddress,</span>
+<span id="L826"><span class="lineNum">     826</span> <span class="tlaGNC">           1 :                     [&amp;](IRLoad* load)</span></span>
+<span id="L827"><span class="lineNum">     827</span> <span class="tlaGNC">           1 :                     {</span></span>
+<span id="L828"><span class="lineNum">     828</span> <span class="tlaGNC">           1 :                         traverseUsers&lt;IRFieldExtract&gt;(</span></span>
+<span id="L829"><span class="lineNum">     829</span>              :                             load,</span>
+<span id="L830"><span class="lineNum">     830</span>              :                             [&amp;](IRFieldExtract* fieldExtract)</span>
+<span id="L831"><span class="lineNum">     831</span> <span class="tlaGNC">           1 :                             {</span></span>
+<span id="L832"><span class="lineNum">     832</span>              :                                 // Only optimize if the load</span>
+<span id="L833"><span class="lineNum">     833</span>              :                                 // is the base; not strictly</span>
+<span id="L834"><span class="lineNum">     834</span>              :                                 // needed for field extract,</span>
+<span id="L835"><span class="lineNum">     835</span>              :                                 // but it will prevent future</span>
+<span id="L836"><span class="lineNum">     836</span>              :                                 // regressions if a field ever</span>
+<span id="L837"><span class="lineNum">     837</span>              :                                 // becomes a non-struct-key</span>
+<span id="L838"><span class="lineNum">     838</span> <span class="tlaGNC">           1 :                                 if (fieldExtract-&gt;getBase() != load)</span></span>
+<span id="L839"><span class="lineNum">     839</span>              :                                     return;</span>
+<span id="L840"><span class="lineNum">     840</span>              : </span>
+<span id="L841"><span class="lineNum">     841</span> <span class="tlaGNC">           1 :                                 IRBuilder builder(fieldExtract);</span></span>
+<span id="L842"><span class="lineNum">     842</span> <span class="tlaGNC">           1 :                                 builder.setInsertBefore(fieldExtract);</span></span>
+<span id="L843"><span class="lineNum">     843</span> <span class="tlaGNC">           1 :                                 auto newGetFieldAddress = builder.emitFieldAddress(</span></span>
+<span id="L844"><span class="lineNum">     844</span>              :                                     fieldAddress,</span>
+<span id="L845"><span class="lineNum">     845</span>              :                                     fieldExtract-&gt;getField());</span>
+<span id="L846"><span class="lineNum">     846</span> <span class="tlaGNC">           1 :                                 auto newLoad = builder.emitLoad(newGetFieldAddress);</span></span>
+<span id="L847"><span class="lineNum">     847</span> <span class="tlaGNC">           1 :                                 fieldExtract-&gt;replaceUsesWith(newLoad);</span></span>
+<span id="L848"><span class="lineNum">     848</span> <span class="tlaGNC">           1 :                                 changed = true;</span></span>
+<span id="L849"><span class="lineNum">     849</span> <span class="tlaGNC">           1 :                             });</span></span>
+<span id="L850"><span class="lineNum">     850</span> <span class="tlaGNC">           1 :                     });</span></span>
+<span id="L851"><span class="lineNum">     851</span>              :             }</span>
+<span id="L852"><span class="lineNum">     852</span>              :         }</span>
+<span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L854"><span class="lineNum">     854</span>              :     return changed;</span>
+<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L856"><span class="lineNum">     856</span>              : </span>
+<span id="L857"><span class="lineNum">     857</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
