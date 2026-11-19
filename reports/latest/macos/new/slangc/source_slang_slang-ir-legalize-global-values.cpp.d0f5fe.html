@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-18 04:12:46 UTC</td>
+      <td class="headerValue">2026-11-19 04:48:00 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -302,40 +302,40 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L11"><span class="lineNum">      11</span>                         : // variable, which runs when the variable is initialized (for kernel targets,</span>
 <span id="L12"><span class="lineNum">      12</span>                         : // `moveGlobalVarInitializationToEntryPoints` later moves it into each entry point).</span>
 <span id="L13"><span class="lineNum">      13</span>                         : static bool isUserInExecutableCode(IRInst* user)</span>
-<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">      146941            : {</span></span>
-<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">      424957 <span class="branchAll" title="br0: 422772; br1: 2185">(2/2)</span>      :     for (auto parent = user-&gt;getParent(); parent; parent = parent-&gt;getParent())</span></span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">      422772            :     {</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">      422772 <span class="branchAll" title="br0: 144740; br1: 278032; br2: 16; br3: 278016">(4/4)</span>      :         if (as&lt;IRFunc&gt;(parent) || as&lt;IRGlobalVar&gt;(parent))</span></span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">      144756            :             return true;</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">      422772            :     }</span></span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">      147004            : {</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">      425107 <span class="branchAll" title="br0: 422922; br1: 2185">(2/2)</span>      :     for (auto parent = user-&gt;getParent(); parent; parent = parent-&gt;getParent())</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">      422922            :     {</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">      422922 <span class="branchAll" title="br0: 144803; br1: 278119; br2: 16; br3: 278103">(4/4)</span>      :         if (as&lt;IRFunc&gt;(parent) || as&lt;IRGlobalVar&gt;(parent))</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">      144819            :             return true;</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">      422922            :     }</span></span>
 <span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">        2185            :     return false;</span></span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">      146941            : }</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">      147004            : }</span></span>
 <span id="L22"><span class="lineNum">      22</span>                         : </span>
 <span id="L23"><span class="lineNum">      23</span>                         : void GlobalInstInliningContextGeneric::inlineGlobalValuesAndRemoveIfUnused(IRModule* module)</span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">       17087            : {</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">       17087            :     List&lt;IRUse*&gt; globalInstUsesToInline;</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">       17152            : {</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">       17152            :     List&lt;IRUse*&gt; globalInstUsesToInline;</span></span>
 <span id="L26"><span class="lineNum">      26</span>                         : </span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">       17087 <span class="branchAll" title="br0: 3007630; br1: 17087">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">     3007630            :     {</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">     3007630 <span class="branchAll" title="br0: 25590; br1: 2982040">(2/2)</span>      :         if (isInlinableGlobalInst(globalInst))</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">       25590            :         {</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">      172531 <span class="branchAll" title="br0: 146941; br1: 25590">(2/2)</span>      :             for (auto use = globalInst-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">      146941            :             {</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">      146941 <span class="branchAll" title="br0: 144756; br1: 2185">(2/2)</span>      :                 if (isUserInExecutableCode(use-&gt;getUser()))</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">      144756            :                     globalInstUsesToInline.add(use);</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">      146941            :             }</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">       25590            :         }</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">     3007630            :     }</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">       17152 <span class="branchAll" title="br0: 3016960; br1: 17152">(2/2)</span>      :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">     3016960            :     {</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">     3016960 <span class="branchAll" title="br0: 25635; br1: 2991325">(2/2)</span>      :         if (isInlinableGlobalInst(globalInst))</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">       25635            :         {</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">      172639 <span class="branchAll" title="br0: 147004; br1: 25635">(2/2)</span>      :             for (auto use = globalInst-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">      147004            :             {</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">      147004 <span class="branchAll" title="br0: 144819; br1: 2185">(2/2)</span>      :                 if (isUserInExecutableCode(use-&gt;getUser()))</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">      144819            :                     globalInstUsesToInline.add(use);</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">      147004            :             }</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">       25635            :         }</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">     3016960            :     }</span></span>
 <span id="L38"><span class="lineNum">      38</span>                         : </span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">       17087            :     HashSet&lt;IRInst*&gt; globalInstsToConsiderDeleting;</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">       17087 <span class="branchAll" title="br0: 144756; br1: 17087">(2/2)</span>      :     for (auto use : globalInstUsesToInline)</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      144756            :     {</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      144756            :         auto user = use-&gt;getUser();</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">      144756            :         IRBuilder builder(user);</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">      144756            :         builder.setInsertBefore(getOutsideASM(user));</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">      144756            :         IRCloneEnv cloneEnv;</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">      144756            :         auto val = maybeInlineGlobalValue(builder, use-&gt;getUser(), use-&gt;get(), cloneEnv);</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">      144756 <span class="branchAll" title="br0: 486; br1: 144270">(2/2)</span>      :         if (val != use-&gt;get())</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">       17152            :     HashSet&lt;IRInst*&gt; globalInstsToConsiderDeleting;</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">       17152 <span class="branchAll" title="br0: 144819; br1: 17152">(2/2)</span>      :     for (auto use : globalInstUsesToInline)</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      144819            :     {</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      144819            :         auto user = use-&gt;getUser();</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">      144819            :         IRBuilder builder(user);</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">      144819            :         builder.setInsertBefore(getOutsideASM(user));</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">      144819            :         IRCloneEnv cloneEnv;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">      144819            :         auto val = maybeInlineGlobalValue(builder, use-&gt;getUser(), use-&gt;get(), cloneEnv);</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">      144819 <span class="branchAll" title="br0: 486; br1: 144333">(2/2)</span>      :         if (val != use-&gt;get())</span></span>
 <span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         486            :         {</span></span>
 <span id="L49"><span class="lineNum">      49</span>                         :             // A global that is illegal for the target, such as a call, is removed below once</span>
 <span id="L50"><span class="lineNum">      50</span>                         :             // every use has its own copy, together with the operands inlined with it.</span>
@@ -343,7 +343,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L52"><span class="lineNum">      52</span>                         : </span>
 <span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         486            :             builder.replaceOperand(use, val);</span></span>
 <span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         486            :         }</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">      144756            :     }</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">      144819            :     }</span></span>
 <span id="L56"><span class="lineNum">      56</span>                         : </span>
 <span id="L57"><span class="lineNum">      57</span>                         :     // Inlining clones a global value together with the operands it needs, so once its uses are</span>
 <span id="L58"><span class="lineNum">      58</span>                         :     // replaced, operands that were inlined with it may be left without uses as well. Dead code</span>
@@ -353,10 +353,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L62"><span class="lineNum">      62</span>                         :     // inlined global are recorded as inlined too, but they go away with their parent, so only</span>
 <span id="L63"><span class="lineNum">      63</span>                         :     // module-scope operands are queued. An operand can be queued more than once, so we skip one</span>
 <span id="L64"><span class="lineNum">      64</span>                         :     // that is no longer in the module.</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       17087            :     List&lt;IRInst*&gt; workList;</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       17087 <span class="branchAll" title="br0: 347; br1: 17087">(2/2)</span>      :     for (auto globalInst : globalInstsToConsiderDeleting)</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       17152            :     List&lt;IRInst*&gt; workList;</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       17152 <span class="branchAll" title="br0: 347; br1: 17152">(2/2)</span>      :     for (auto globalInst : globalInstsToConsiderDeleting)</span></span>
 <span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">         347            :         workList.add(globalInst);</span></span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       17857 <span class="branchAll" title="br0: 770; br1: 17087">(2/2)</span>      :     while (workList.getCount())</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       17922 <span class="branchAll" title="br0: 770; br1: 17152">(2/2)</span>      :     while (workList.getCount())</span></span>
 <span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">         770            :     {</span></span>
 <span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">         770            :         auto globalInst = workList.getLast();</span></span>
 <span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">         770            :         workList.removeLast();</span></span>
@@ -370,127 +370,127 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">        1504            :         }</span></span>
 <span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">         690            :         globalInst-&gt;removeAndDeallocate();</span></span>
 <span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">         690            :     }</span></span>
-<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       17087            : }</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       17152            : }</span></span>
 <span id="L83"><span class="lineNum">      83</span>                         : </span>
 <span id="L84"><span class="lineNum">      84</span>                         : bool GlobalInstInliningContextGeneric::isLegalGlobalInst(IRInst* inst)</span>
-<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">      169608            : {</span></span>
-<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">      169608 <span class="branchPart" title="br0: 0; br1: 169608">(1/2)</span>      :     if (as&lt;IRConstant&gt;(inst))</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">      169716            : {</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">      169716 <span class="branchPart" title="br0: 0; br1: 169716">(1/2)</span>      :     if (as&lt;IRConstant&gt;(inst))</span></span>
 <span id="L87"><span class="lineNum">      87</span> <span class="tlaUNC">           0            :         return true;</span></span>
-<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">      169608 <span class="branchAll" title="br0: 31544; br1: 138064">(2/2)</span>      :     if (isLegalGlobalInstForTarget(inst))</span></span>
-<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       31544            :         return true;</span></span>
-<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">      138064            :     return false;</span></span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">      169608            : }</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">      169716 <span class="branchAll" title="br0: 31591; br1: 138125">(2/2)</span>      :     if (isLegalGlobalInstForTarget(inst))</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       31591            :         return true;</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">      138125            :     return false;</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">      169716            : }</span></span>
 <span id="L92"><span class="lineNum">      92</span>                         : </span>
 <span id="L93"><span class="lineNum">      93</span>                         : bool GlobalInstInliningContextGeneric::isInlinableGlobalInst(IRInst* inst)</span>
-<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">     3049555            : {</span></span>
-<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">     3049555            :     switch (inst-&gt;getOp())</span></span>
-<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">     3049555            :     {</span></span>
-<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">         120 <span class="branchAll" title="br0: 120; br1: 3049435">(2/2)</span>      :     case kIROp_Add:</span></span>
-<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">         120 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_Sub:</span></span>
-<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">         220 <span class="branchAll" title="br0: 100; br1: 3049455">(2/2)</span>      :     case kIROp_Mul:</span></span>
-<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">         220 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_FRem:</span></span>
-<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">         232 <span class="branchAll" title="br0: 12; br1: 3049543">(2/2)</span>      :     case kIROp_IRem:</span></span>
-<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">         252 <span class="branchAll" title="br0: 20; br1: 3049535">(2/2)</span>      :     case kIROp_Lsh:</span></span>
-<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">         270 <span class="branchAll" title="br0: 18; br1: 3049537">(2/2)</span>      :     case kIROp_Rsh:</span></span>
-<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">         270 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_And:</span></span>
-<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">         270 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_Or:</span></span>
-<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">         270 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_Not:</span></span>
-<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">         270 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_Neg:</span></span>
-<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">         372 <span class="branchAll" title="br0: 102; br1: 3049453">(2/2)</span>      :     case kIROp_Div:</span></span>
-<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">         372 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_FieldExtract:</span></span>
-<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">         480 <span class="branchAll" title="br0: 108; br1: 3049447">(2/2)</span>      :     case kIROp_FieldAddress:</span></span>
-<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">         528 <span class="branchAll" title="br0: 48; br1: 3049507">(2/2)</span>      :     case kIROp_GetElement:</span></span>
-<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_GetElementPtr:</span></span>
-<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_GetOffsetPtr:</span></span>
-<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_UpdateElement:</span></span>
-<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_MakeTuple:</span></span>
-<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_MakeValuePack:</span></span>
-<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_GetTupleElement:</span></span>
-<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">        2670 <span class="branchAll" title="br0: 2142; br1: 3047413">(2/2)</span>      :     case kIROp_MakeStruct:</span></span>
-<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">        4134 <span class="branchAll" title="br0: 1464; br1: 3048091">(2/2)</span>      :     case kIROp_MakeArray:</span></span>
-<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">        4416 <span class="branchAll" title="br0: 282; br1: 3049273">(2/2)</span>      :     case kIROp_MakeArrayFromElement:</span></span>
-<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">       10573 <span class="branchAll" title="br0: 6157; br1: 3043398">(2/2)</span>      :     case kIROp_MakeVector:</span></span>
-<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">       10833 <span class="branchAll" title="br0: 260; br1: 3049295">(2/2)</span>      :     case kIROp_MakeMatrix:</span></span>
-<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">       10995 <span class="branchAll" title="br0: 162; br1: 3049393">(2/2)</span>      :     case kIROp_MakeMatrixFromScalar:</span></span>
-<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">       27467 <span class="branchAll" title="br0: 16472; br1: 3033083">(2/2)</span>      :     case kIROp_MakeVectorFromScalar:</span></span>
-<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">       27467 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_Swizzle:</span></span>
-<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">       27467 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_SwizzleSet:</span></span>
-<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       27467 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_MatrixReshape:</span></span>
-<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       27467 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_MakeString:</span></span>
-<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">       27467 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_MakeResultError:</span></span>
-<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">       27467 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_MakeResultValue:</span></span>
-<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       27467 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_GetResultError:</span></span>
-<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">       27467 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_GetResultValue:</span></span>
-<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">       27479 <span class="branchAll" title="br0: 12; br1: 3049543">(2/2)</span>      :     case kIROp_CastFloatToInt:</span></span>
-<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">       27485 <span class="branchAll" title="br0: 6; br1: 3049549">(2/2)</span>      :     case kIROp_CastIntToFloat:</span></span>
-<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">       27518 <span class="branchAll" title="br0: 33; br1: 3049522">(2/2)</span>      :     case kIROp_CastIntToPtr:</span></span>
-<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">       27518 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_PtrCast:</span></span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">       27518 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_CastPtrToBool:</span></span>
-<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">       27518 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_CastPtrToInt:</span></span>
-<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">       27526 <span class="branchAll" title="br0: 8; br1: 3049547">(2/2)</span>      :     case kIROp_BitAnd:</span></span>
-<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       27526 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_BitNot:</span></span>
-<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       27546 <span class="branchAll" title="br0: 20; br1: 3049535">(2/2)</span>      :     case kIROp_BitOr:</span></span>
-<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       27546 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_BitXor:</span></span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">       27558 <span class="branchAll" title="br0: 12; br1: 3049543">(2/2)</span>      :     case kIROp_BitCast:</span></span>
-<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">       27758 <span class="branchAll" title="br0: 200; br1: 3049355">(2/2)</span>      :     case kIROp_IntCast:</span></span>
-<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">       27766 <span class="branchAll" title="br0: 8; br1: 3049547">(2/2)</span>      :     case kIROp_FloatCast:</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">     3058986            : {</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">     3058986            :     switch (inst-&gt;getOp())</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">     3058986            :     {</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">         120 <span class="branchAll" title="br0: 120; br1: 3058866">(2/2)</span>      :     case kIROp_Add:</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">         120 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_Sub:</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">         220 <span class="branchAll" title="br0: 100; br1: 3058886">(2/2)</span>      :     case kIROp_Mul:</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">         220 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_FRem:</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">         232 <span class="branchAll" title="br0: 12; br1: 3058974">(2/2)</span>      :     case kIROp_IRem:</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">         252 <span class="branchAll" title="br0: 20; br1: 3058966">(2/2)</span>      :     case kIROp_Lsh:</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">         270 <span class="branchAll" title="br0: 18; br1: 3058968">(2/2)</span>      :     case kIROp_Rsh:</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">         270 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_And:</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">         270 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_Or:</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">         270 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_Not:</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">         270 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_Neg:</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">         372 <span class="branchAll" title="br0: 102; br1: 3058884">(2/2)</span>      :     case kIROp_Div:</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">         372 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_FieldExtract:</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">         480 <span class="branchAll" title="br0: 108; br1: 3058878">(2/2)</span>      :     case kIROp_FieldAddress:</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">         528 <span class="branchAll" title="br0: 48; br1: 3058938">(2/2)</span>      :     case kIROp_GetElement:</span></span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_GetElementPtr:</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_GetOffsetPtr:</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_UpdateElement:</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_MakeTuple:</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_MakeValuePack:</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">         528 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_GetTupleElement:</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">        2670 <span class="branchAll" title="br0: 2142; br1: 3056844">(2/2)</span>      :     case kIROp_MakeStruct:</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">        4140 <span class="branchAll" title="br0: 1470; br1: 3057516">(2/2)</span>      :     case kIROp_MakeArray:</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">        4422 <span class="branchAll" title="br0: 282; br1: 3058704">(2/2)</span>      :     case kIROp_MakeArrayFromElement:</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">       10591 <span class="branchAll" title="br0: 6169; br1: 3052817">(2/2)</span>      :     case kIROp_MakeVector:</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">       10855 <span class="branchAll" title="br0: 264; br1: 3058722">(2/2)</span>      :     case kIROp_MakeMatrix:</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">       11017 <span class="branchAll" title="br0: 162; br1: 3058824">(2/2)</span>      :     case kIROp_MakeMatrixFromScalar:</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">       27541 <span class="branchAll" title="br0: 16524; br1: 3042462">(2/2)</span>      :     case kIROp_MakeVectorFromScalar:</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">       27541 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_Swizzle:</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">       27541 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_SwizzleSet:</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       27541 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_MatrixReshape:</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       27541 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_MakeString:</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">       27541 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_MakeResultError:</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">       27541 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_MakeResultValue:</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       27541 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_GetResultError:</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">       27541 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_GetResultValue:</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">       27553 <span class="branchAll" title="br0: 12; br1: 3058974">(2/2)</span>      :     case kIROp_CastFloatToInt:</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">       27559 <span class="branchAll" title="br0: 6; br1: 3058980">(2/2)</span>      :     case kIROp_CastIntToFloat:</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">       27592 <span class="branchAll" title="br0: 33; br1: 3058953">(2/2)</span>      :     case kIROp_CastIntToPtr:</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">       27592 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_PtrCast:</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">       27592 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_CastPtrToBool:</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">       27592 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_CastPtrToInt:</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">       27600 <span class="branchAll" title="br0: 8; br1: 3058978">(2/2)</span>      :     case kIROp_BitAnd:</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       27600 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_BitNot:</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       27620 <span class="branchAll" title="br0: 20; br1: 3058966">(2/2)</span>      :     case kIROp_BitOr:</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       27620 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_BitXor:</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">       27632 <span class="branchAll" title="br0: 12; br1: 3058974">(2/2)</span>      :     case kIROp_BitCast:</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">       27832 <span class="branchAll" title="br0: 200; br1: 3058786">(2/2)</span>      :     case kIROp_IntCast:</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">       27840 <span class="branchAll" title="br0: 8; br1: 3058978">(2/2)</span>      :     case kIROp_FloatCast:</span></span>
 <span id="L146"><span class="lineNum">     146</span>                         :     // A `DescriptorHandle`&#x27;s representation is `uint64` or `uint2` depending on the descriptor kind</span>
 <span id="L147"><span class="lineNum">     147</span>                         :     // and target, so an initializer may supply the other width. Reconciling the two is only</span>
 <span id="L148"><span class="lineNum">     148</span>                         :     // possible inside a block (by folding, or a `BitCast`), so these casts — and a `Select` that a</span>
 <span id="L149"><span class="lineNum">     149</span>                         :     // `?:` initializer can put between them — have to be inlinable for the chain around them to</span>
 <span id="L150"><span class="lineNum">     150</span>                         :     // sink into the function that uses the handle.</span>
-<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       27782 <span class="branchAll" title="br0: 16; br1: 3049539">(2/2)</span>      :     case kIROp_CastUInt2ToDescriptorHandle:</span></span>
-<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">       27790 <span class="branchAll" title="br0: 8; br1: 3049547">(2/2)</span>      :     case kIROp_CastUInt64ToDescriptorHandle:</span></span>
-<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">       27790 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_CastDescriptorHandleToUInt2:</span></span>
-<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       27800 <span class="branchAll" title="br0: 10; br1: 3049545">(2/2)</span>      :     case kIROp_CastDescriptorHandleToUInt64:</span></span>
-<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       27828 <span class="branchAll" title="br0: 28; br1: 3049527">(2/2)</span>      :     case kIROp_Select:</span></span>
-<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       27836 <span class="branchAll" title="br0: 8; br1: 3049547">(2/2)</span>      :     case kIROp_Greater:</span></span>
-<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       27854 <span class="branchAll" title="br0: 18; br1: 3049537">(2/2)</span>      :     case kIROp_Less:</span></span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">       27854 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_Geq:</span></span>
-<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">       27854 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_Leq:</span></span>
-<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">       27854 <span class="branchPart" title="br0: 0; br1: 3049555">(1/2)</span>      :     case kIROp_Neq:</span></span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">       27870 <span class="branchAll" title="br0: 16; br1: 3049539">(2/2)</span>      :     case kIROp_Eql:</span></span>
-<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">       28414 <span class="branchAll" title="br0: 544; br1: 3049011">(2/2)</span>      :     case kIROp_Call:</span></span>
-<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">       28531 <span class="branchAll" title="br0: 117; br1: 3049438">(2/2)</span>      :     case kIROp_Load:</span></span>
-<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       28531            :         return true;</span></span>
-<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">     3021024 <span class="branchAll" title="br0: 3021024; br1: 28531">(2/2)</span>      :     default:</span></span>
-<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">     3021024 <span class="branchAll" title="br0: 22626; br1: 2998398">(2/2)</span>      :         if (isInlinableGlobalInstForTarget(inst))</span></span>
-<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       22626            :             return true;</span></span>
-<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">     2998398            :         return false;</span></span>
-<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">     3049555            :     }</span></span>
-<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">     3049555            : }</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       27856 <span class="branchAll" title="br0: 16; br1: 3058970">(2/2)</span>      :     case kIROp_CastUInt2ToDescriptorHandle:</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">       27864 <span class="branchAll" title="br0: 8; br1: 3058978">(2/2)</span>      :     case kIROp_CastUInt64ToDescriptorHandle:</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">       27864 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_CastDescriptorHandleToUInt2:</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       27874 <span class="branchAll" title="br0: 10; br1: 3058976">(2/2)</span>      :     case kIROp_CastDescriptorHandleToUInt64:</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       27902 <span class="branchAll" title="br0: 28; br1: 3058958">(2/2)</span>      :     case kIROp_Select:</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       27910 <span class="branchAll" title="br0: 8; br1: 3058978">(2/2)</span>      :     case kIROp_Greater:</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       27928 <span class="branchAll" title="br0: 18; br1: 3058968">(2/2)</span>      :     case kIROp_Less:</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">       27928 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_Geq:</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">       27928 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_Leq:</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">       27928 <span class="branchPart" title="br0: 0; br1: 3058986">(1/2)</span>      :     case kIROp_Neq:</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">       27944 <span class="branchAll" title="br0: 16; br1: 3058970">(2/2)</span>      :     case kIROp_Eql:</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">       28488 <span class="branchAll" title="br0: 544; br1: 3058442">(2/2)</span>      :     case kIROp_Call:</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">       28605 <span class="branchAll" title="br0: 117; br1: 3058869">(2/2)</span>      :     case kIROp_Load:</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       28605            :         return true;</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">     3030381 <span class="branchAll" title="br0: 3030381; br1: 28605">(2/2)</span>      :     default:</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">     3030381 <span class="branchAll" title="br0: 22642; br1: 3007739">(2/2)</span>      :         if (isInlinableGlobalInstForTarget(inst))</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       22642            :             return true;</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">     3007739            :         return false;</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">     3058986            :     }</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">     3058986            : }</span></span>
 <span id="L171"><span class="lineNum">     171</span>                         : </span>
 <span id="L172"><span class="lineNum">     172</span>                         : bool GlobalInstInliningContextGeneric::shouldInlineInstImpl(IRInst* inst)</span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       41923            : {</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       42026            : {</span></span>
 <span id="L174"><span class="lineNum">     174</span>                         :     // If &#x27;inst&#x27; has an ancestor that is currently being inlined, then we</span>
 <span id="L175"><span class="lineNum">     175</span>                         :     // better inline it since we&#x27;ll be removing the ancestor.</span>
-<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       41923            :     bool ancestorShouldBeInlined = false;</span></span>
-<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">       83846 <span class="branchAll" title="br0: 41923; br1: 41923">(2/2)</span>      :     for (IRInst* ancestor = inst-&gt;parent; ancestor != nullptr; ancestor = ancestor-&gt;parent)</span></span>
-<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       41923 <span class="branchPart" title="br0: 0; br1: 41923">(1/2)</span>      :         if (m_mapGlobalInstToShouldInline.tryGetValue(inst, ancestorShouldBeInlined) &amp;&amp;</span></span>
-<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       41923 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             ancestorShouldBeInlined)</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       42026            :     bool ancestorShouldBeInlined = false;</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">       84052 <span class="branchAll" title="br0: 42026; br1: 42026">(2/2)</span>      :     for (IRInst* ancestor = inst-&gt;parent; ancestor != nullptr; ancestor = ancestor-&gt;parent)</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       42026 <span class="branchPart" title="br0: 0; br1: 42026">(1/2)</span>      :         if (m_mapGlobalInstToShouldInline.tryGetValue(inst, ancestorShouldBeInlined) &amp;&amp;</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       42026 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             ancestorShouldBeInlined)</span></span>
 <span id="L180"><span class="lineNum">     180</span> <span class="tlaUNC">           0            :             return true;</span></span>
 <span id="L181"><span class="lineNum">     181</span>                         : </span>
-<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       41923 <span class="branchAll" title="br0: 16356; br1: 25567">(2/2)</span>      :     if (!isInlinableGlobalInst(inst))</span></span>
-<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">       16356            :         return false;</span></span>
-<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">       25567 <span class="branchAll" title="br0: 25118; br1: 449">(2/2)</span>      :     if (isLegalGlobalInst(inst))</span></span>
-<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">       25118            :     {</span></span>
-<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">       58692 <span class="branchAll" title="br0: 33815; br1: 24877">(2/2)</span>      :         for (UInt i = 0; i &lt; inst-&gt;getOperandCount(); i++)</span></span>
-<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">       33815 <span class="branchAll" title="br0: 241; br1: 33574">(2/2)</span>      :             if (shouldInlineInst(inst-&gt;getOperand(i)))</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       42026 <span class="branchAll" title="br0: 16414; br1: 25612">(2/2)</span>      :     if (!isInlinableGlobalInst(inst))</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">       16414            :         return false;</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">       25612 <span class="branchAll" title="br0: 25163; br1: 449">(2/2)</span>      :     if (isLegalGlobalInst(inst))</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">       25163            :     {</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">       58797 <span class="branchAll" title="br0: 33875; br1: 24922">(2/2)</span>      :         for (UInt i = 0; i &lt; inst-&gt;getOperandCount(); i++)</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">       33875 <span class="branchAll" title="br0: 241; br1: 33634">(2/2)</span>      :             if (shouldInlineInst(inst-&gt;getOperand(i)))</span></span>
 <span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">         241            :                 return true;</span></span>
-<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">       24877            :         return false;</span></span>
-<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">       25118            :     }</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">       24922            :         return false;</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">       25163            :     }</span></span>
 <span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">         449            :     return true;</span></span>
-<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       25567            : }</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       25612            : }</span></span>
 <span id="L193"><span class="lineNum">     193</span>                         : </span>
 <span id="L194"><span class="lineNum">     194</span>                         : bool GlobalInstInliningContextGeneric::shouldInlineInst(IRInst* inst)</span>
-<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">      182416            : {</span></span>
-<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">      182416            :     bool result = false;</span></span>
-<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">      182416 <span class="branchAll" title="br0: 140493; br1: 41923">(2/2)</span>      :     if (m_mapGlobalInstToShouldInline.tryGetValue(inst, result))</span></span>
-<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">      140493            :         return result;</span></span>
-<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       41923            :     result = shouldInlineInstImpl(inst);</span></span>
-<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">       41923            :     m_mapGlobalInstToShouldInline[inst] = result;</span></span>
-<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       41923            :     return result;</span></span>
-<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">      182416            : }</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">      182539            : {</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">      182539            :     bool result = false;</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">      182539 <span class="branchAll" title="br0: 140513; br1: 42026">(2/2)</span>      :     if (m_mapGlobalInstToShouldInline.tryGetValue(inst, result))</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">      140513            :         return result;</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       42026            :     result = shouldInlineInstImpl(inst);</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">       42026            :     m_mapGlobalInstToShouldInline[inst] = result;</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       42026            :     return result;</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">      182539            : }</span></span>
 <span id="L203"><span class="lineNum">     203</span>                         : </span>
 <span id="L204"><span class="lineNum">     204</span>                         : IRInst* GlobalInstInliningContextGeneric::inlineInst(</span>
 <span id="L205"><span class="lineNum">     205</span>                         :     IRBuilder&amp; builder,</span>
@@ -533,41 +533,41 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L242"><span class="lineNum">     242</span>                         :     IRInst* user,</span>
 <span id="L243"><span class="lineNum">     243</span>                         :     IRInst* inst,</span>
 <span id="L244"><span class="lineNum">     244</span>                         :     IRCloneEnv&amp; cloneEnv)</span>
-<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">      147097            : {</span></span>
-<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">      147097 <span class="branchAll" title="br0: 146064; br1: 1033">(2/2)</span>      :     if (!shouldInlineInst(inst))</span></span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">      146064            :     {</span></span>
-<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">      146064 <span class="branchAll" title="br0: 458; br1: 145606">(2/2)</span>      :         switch (inst-&gt;getOp())</span></span>
-<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">      146064            :         {</span></span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">         458 <span class="branchAll" title="br0: 458; br1: 145606">(2/2)</span>      :         case kIROp_Func:</span></span>
-<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">         458 <span class="branchPart" title="br0: 0; br1: 146064">(1/2)</span>      :         case kIROp_Specialize:</span></span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">         458 <span class="branchPart" title="br0: 0; br1: 146064">(1/2)</span>      :         case kIROp_Generic:</span></span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         458 <span class="branchPart" title="br0: 0; br1: 146064">(1/2)</span>      :         case kIROp_LookupWitnessMethod:</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">      147160            : {</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">      147160 <span class="branchAll" title="br0: 146127; br1: 1033">(2/2)</span>      :     if (!shouldInlineInst(inst))</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">      146127            :     {</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">      146127 <span class="branchAll" title="br0: 458; br1: 145669">(2/2)</span>      :         switch (inst-&gt;getOp())</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">      146127            :         {</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">         458 <span class="branchAll" title="br0: 458; br1: 145669">(2/2)</span>      :         case kIROp_Func:</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">         458 <span class="branchPart" title="br0: 0; br1: 146127">(1/2)</span>      :         case kIROp_Specialize:</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">         458 <span class="branchPart" title="br0: 0; br1: 146127">(1/2)</span>      :         case kIROp_Generic:</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         458 <span class="branchPart" title="br0: 0; br1: 146127">(1/2)</span>      :         case kIROp_LookupWitnessMethod:</span></span>
 <span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">         458            :             return inst;</span></span>
-<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">      146064            :         }</span></span>
-<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">      145606 <span class="branchPart" title="br0: 0; br1: 145606">(1/2)</span>      :         if (as&lt;IRType&gt;(inst))</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">      146127            :         }</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">      145669 <span class="branchPart" title="br0: 0; br1: 145669">(1/2)</span>      :         if (as&lt;IRType&gt;(inst))</span></span>
 <span id="L257"><span class="lineNum">     257</span> <span class="tlaUNC">           0            :             return inst;</span></span>
-<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">      145606 <span class="branchAll" title="br0: 1565; br1: 144041">(2/2)</span>      :         if (!wrapReferences)</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">      145669 <span class="branchAll" title="br0: 1565; br1: 144104">(2/2)</span>      :         if (!wrapReferences)</span></span>
 <span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">        1565            :             return inst;</span></span>
 <span id="L260"><span class="lineNum">     260</span>                         : </span>
 <span id="L261"><span class="lineNum">     261</span>                         :         // If we encounter a global value that shouldn&#x27;t be inlined, e.g. a const literal,</span>
 <span id="L262"><span class="lineNum">     262</span>                         :         // we should insert a GlobalValueRef() inst to wrap around it, so all the dependent</span>
 <span id="L263"><span class="lineNum">     263</span>                         :         // uses can be pinned to the function body.</span>
-<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">      144041            :         auto result = inst;</span></span>
-<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">      144041            :         bool shouldWrapGlobalRef = true;</span></span>
-<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">      144041 <span class="branchPart" title="br0: 275230; br1: 12852; br2: 137615; br3: 0">(3/4)</span>      :         if (!isLegalGlobalInst(user) &amp;&amp; !getIROpInfo(user-&gt;getOp()).isHoistable())</span></span>
-<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">      137615            :             shouldWrapGlobalRef = false;</span></span>
-<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">        6426 <span class="branchAll" title="br0: 6340; br1: 86">(2/2)</span>      :         else if (shouldBeInlinedForTarget(user))</span></span>
-<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        6340            :             shouldWrapGlobalRef = false;</span></span>
-<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">      144041 <span class="branchAll" title="br0: 86; br1: 143955">(2/2)</span>      :         if (shouldWrapGlobalRef)</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">      144104            :         auto result = inst;</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">      144104            :         bool shouldWrapGlobalRef = true;</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">      144104 <span class="branchPart" title="br0: 275352; br1: 12856; br2: 137676; br3: 0">(3/4)</span>      :         if (!isLegalGlobalInst(user) &amp;&amp; !getIROpInfo(user-&gt;getOp()).isHoistable())</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">      137676            :             shouldWrapGlobalRef = false;</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">        6428 <span class="branchAll" title="br0: 6342; br1: 86">(2/2)</span>      :         else if (shouldBeInlinedForTarget(user))</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        6342            :             shouldWrapGlobalRef = false;</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">      144104 <span class="branchAll" title="br0: 86; br1: 144018">(2/2)</span>      :         if (shouldWrapGlobalRef)</span></span>
 <span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">          86            :             result = builder.emitGlobalValueRef(inst);</span></span>
-<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">      144041            :         cloneEnv.mapOldValToNew[inst] = result;</span></span>
-<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">      144041            :         return result;</span></span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">      145606            :     }</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">      144104            :         cloneEnv.mapOldValToNew[inst] = result;</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">      144104            :         return result;</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">      145669            :     }</span></span>
 <span id="L275"><span class="lineNum">     275</span>                         : </span>
 <span id="L276"><span class="lineNum">     276</span>                         :     // If the global value is inlinable, we make all its operands avaialble locally, and</span>
 <span id="L277"><span class="lineNum">     277</span>                         :     // then copy it to the local scope.</span>
 <span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">        1033            :     return inlineInst(builder, cloneEnv, inst);</span></span>
-<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">      147097            : }</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">      147160            : }</span></span>
 <span id="L280"><span class="lineNum">     280</span>                         : </span>
 <span id="L281"><span class="lineNum">     281</span>                         : struct GlobalInstLegalizationInliningContext : public GlobalInstInliningContextGeneric</span>
 <span id="L282"><span class="lineNum">     282</span>                         : {</span>
@@ -584,10 +584,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L293"><span class="lineNum">     293</span>                         :     bool targetCanEmitGlobalInitializerForVectorOps;</span>
 <span id="L294"><span class="lineNum">     294</span>                         : </span>
 <span id="L295"><span class="lineNum">     295</span>                         :     explicit GlobalInstLegalizationInliningContext(CodeGenTarget target)</span>
-<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">       12667            :         : targetCanEmitGlobalInitializerForHalf(target != CodeGenTarget::CUDASource)</span></span>
-<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">       12667            :         , targetCanEmitGlobalInitializerForVectorOps(target != CodeGenTarget::CUDASource)</span></span>
-<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">       12667            :     {</span></span>
-<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">       12667            :     }</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">       12706            :         : targetCanEmitGlobalInitializerForHalf(target != CodeGenTarget::CUDASource)</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">       12706            :         , targetCanEmitGlobalInitializerForVectorOps(target != CodeGenTarget::CUDASource)</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">       12706            :     {</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">       12706            :     }</span></span>
 <span id="L300"><span class="lineNum">     300</span>                         : </span>
 <span id="L301"><span class="lineNum">     301</span>                         :     // Return true if a value of `type` can stay a global constant. A simple type is a</span>
 <span id="L302"><span class="lineNum">     302</span>                         :     // scalar, a vector, a matrix, an array of a simple type, or a struct whose fields</span>
@@ -666,7 +666,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">          97            :         }</span></span>
 <span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">          97            :     }</span></span>
 <span id="L377"><span class="lineNum">     377</span>                         : </span>
-<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">     2242605            :     bool isInlinableGlobalInstForTarget(IRInst* /* inst */) override { return false; }</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">     2249331            :     bool isInlinableGlobalInstForTarget(IRInst* /* inst */) override { return false; }</span></span>
 <span id="L379"><span class="lineNum">     379</span>                         : </span>
 <span id="L380"><span class="lineNum">     380</span> <span class="tlaUNC">           0            :     bool shouldBeInlinedForTarget(IRInst* /* user */) override { return false; }</span></span>
 <span id="L381"><span class="lineNum">     381</span>                         : </span>
@@ -829,16 +829,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L538"><span class="lineNum">     538</span>                         : static void legalizeConstantConstructorCallsForGlobalScope(</span>
 <span id="L539"><span class="lineNum">     539</span>                         :     GlobalInstLegalizationInliningContext&amp; context,</span>
 <span id="L540"><span class="lineNum">     540</span>                         :     IRModule* module)</span>
-<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">       12667            : {</span></span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">       12706            : {</span></span>
 <span id="L542"><span class="lineNum">     542</span>                         :     // The calls in a `static const` initializer are direct children of the module.</span>
 <span id="L543"><span class="lineNum">     543</span>                         :     // Collect them first, because the loop below changes the list of global insts.</span>
-<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">       12667            :     List&lt;IRCall*&gt; globalCalls;</span></span>
-<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">       12667 <span class="branchAll" title="br0: 2241616; br1: 12667">(2/2)</span>      :     for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">     2241616            :     {</span></span>
-<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">     2241616 <span class="branchAll" title="br0: 339; br1: 2241277">(2/2)</span>      :         if (auto call = as&lt;IRCall&gt;(inst))</span></span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">       12706            :     List&lt;IRCall*&gt; globalCalls;</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">       12706 <span class="branchAll" title="br0: 2248342; br1: 12706">(2/2)</span>      :     for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">     2248342            :     {</span></span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">     2248342 <span class="branchAll" title="br0: 339; br1: 2248003">(2/2)</span>      :         if (auto call = as&lt;IRCall&gt;(inst))</span></span>
 <span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">         339            :             globalCalls.add(call);</span></span>
-<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">     2241616            :     }</span></span>
-<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">       12667 <span class="branchAll" title="br0: 339; br1: 12667">(2/2)</span>      :     for (auto call : globalCalls)</span></span>
+<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">     2248342            :     }</span></span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">       12706 <span class="branchAll" title="br0: 339; br1: 12706">(2/2)</span>      :     for (auto call : globalCalls)</span></span>
 <span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">         339            :     {</span></span>
 <span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">         339 <span class="branchAll" title="br0: 67; br1: 272">(2/2)</span>      :         if (auto makeStruct = tryBuildMakeStructFromSynthesizedConstructorCall(context, call))</span></span>
 <span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">          67            :         {</span></span>
@@ -846,17 +846,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">          67            :             call-&gt;removeAndDeallocate();</span></span>
 <span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">          67            :         }</span></span>
 <span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">         339            :     }</span></span>
-<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">       12667            : }</span></span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">       12706            : }</span></span>
 <span id="L559"><span class="lineNum">     559</span>                         : </span>
 <span id="L560"><span class="lineNum">     560</span>                         : void inlineGlobalConstantsForLegalization(IRModule* module, CodeGenTarget target)</span>
-<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">       12667            : {</span></span>
-<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       12667            :     GlobalInstLegalizationInliningContext context(target);</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">       12706            : {</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       12706            :     GlobalInstLegalizationInliningContext context(target);</span></span>
 <span id="L563"><span class="lineNum">     563</span>                         : </span>
-<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">       12667            :     legalizeConstantConstructorCallsForGlobalScope(context, module);</span></span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">       12706            :     legalizeConstantConstructorCallsForGlobalScope(context, module);</span></span>
 <span id="L565"><span class="lineNum">     565</span>                         : </span>
-<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">       12667            :     context.wrapReferences = false;</span></span>
-<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">       12667            :     context.inlineGlobalValuesAndRemoveIfUnused(module);</span></span>
-<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">       12667            : }</span></span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">       12706            :     context.wrapReferences = false;</span></span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">       12706            :     context.inlineGlobalValuesAndRemoveIfUnused(module);</span></span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">       12706            : }</span></span>
 <span id="L569"><span class="lineNum">     569</span>                         : </span>
 <span id="L570"><span class="lineNum">     570</span>                         : } // namespace Slang</span>
 </pre>

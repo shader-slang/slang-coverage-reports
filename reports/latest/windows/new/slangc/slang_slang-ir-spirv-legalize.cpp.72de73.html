@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-18 04:12:51 UTC</td>
+      <td class="headerValue">2026-11-19 04:48:05 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">91.5&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:91.5%;background-color:hsl(107, 70%, 50%)"></div></div>
-      <span class="metricCounts">1,385 / 1,514</span>
+      <span class="metricValue">91.6&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:91.6%;background-color:hsl(107, 70%, 50%)"></div></div>
+      <span class="metricCounts">1,382 / 1,508</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -1932,9 +1932,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1659"><span class="lineNum">    1659</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; ps;</span></span>
 <span id="L1660"><span class="lineNum">    1660</span> <span class="tlaGNC">           1 :                 for (const auto p : c-&gt;getParams())</span></span>
 <span id="L1661"><span class="lineNum">    1661</span>              :                 {</span>
-<span id="L1662"><span class="lineNum">    1662</span> <span class="tlaUNC">           0 :                     const auto q = cast&lt;IRParam&gt;(cloneInst(&amp;cloneEnv, &amp;builder, p));</span></span>
-<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaUNC">           0 :                     newContinueBlock-&gt;addParam(q);</span></span>
-<span id="L1664"><span class="lineNum">    1664</span> <span class="tlaUNC">           0 :                     ps.add(q);</span></span>
+<span id="L1662"><span class="lineNum">    1662</span> <span class="tlaGNC">           1 :                     const auto q = cast&lt;IRParam&gt;(cloneInst(&amp;cloneEnv, &amp;builder, p));</span></span>
+<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaGNC">           1 :                     newContinueBlock-&gt;addParam(q);</span></span>
+<span id="L1664"><span class="lineNum">    1664</span> <span class="tlaGNC">           1 :                     ps.add(q);</span></span>
 <span id="L1665"><span class="lineNum">    1665</span>              :                 }</span>
 <span id="L1666"><span class="lineNum">    1666</span>              :                 // Replace all jumps to our loop header/old continue block</span>
 <span id="L1667"><span class="lineNum">    1667</span> <span class="tlaGNC">           1 :                 c-&gt;replaceUsesWith(newContinueBlock);</span></span>
@@ -3574,180 +3574,158 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L3301"><span class="lineNum">    3301</span> <span class="tlaGNC">           1 :                 if (!discardInst)</span></span>
 <span id="L3302"><span class="lineNum">    3302</span>              :                     continue;</span>
 <span id="L3303"><span class="lineNum">    3303</span>              : </span>
-<span id="L3304"><span class="lineNum">    3304</span>              :                 // Get the block&#x27;s terminator</span>
-<span id="L3305"><span class="lineNum">    3305</span> <span class="tlaGNC">           1 :                 auto terminator = block-&gt;getTerminator();</span></span>
-<span id="L3306"><span class="lineNum">    3306</span> <span class="tlaGNC">           1 :                 if (!terminator)</span></span>
-<span id="L3307"><span class="lineNum">    3307</span>              :                     continue;</span>
-<span id="L3308"><span class="lineNum">    3308</span>              : </span>
-<span id="L3309"><span class="lineNum">    3309</span>              :                 // Check if there are instructions between discard and terminator</span>
-<span id="L3310"><span class="lineNum">    3310</span>              :                 bool hasInstructionsBetween = false;</span>
-<span id="L3311"><span class="lineNum">    3311</span> <span class="tlaGNC">           1 :                 bool foundDiscard = false;</span></span>
-<span id="L3312"><span class="lineNum">    3312</span> <span class="tlaGNC">           1 :                 for (auto inst : block-&gt;getOrdinaryInsts())</span></span>
-<span id="L3313"><span class="lineNum">    3313</span>              :                 {</span>
-<span id="L3314"><span class="lineNum">    3314</span> <span class="tlaGNC">           1 :                     if (foundDiscard &amp;&amp; inst != terminator)</span></span>
-<span id="L3315"><span class="lineNum">    3315</span>              :                     {</span>
-<span id="L3316"><span class="lineNum">    3316</span>              :                         hasInstructionsBetween = true;</span>
-<span id="L3317"><span class="lineNum">    3317</span>              :                         break;</span>
+<span id="L3304"><span class="lineNum">    3304</span>              :                 // Remove the original terminator even when it immediately follows discard.</span>
+<span id="L3305"><span class="lineNum">    3305</span>              :                 // A branch after OpKill is never emitted, so retaining it in the IR would give</span>
+<span id="L3306"><span class="lineNum">    3306</span>              :                 // successor phi nodes an incoming value from a block that cannot reach them.</span>
+<span id="L3307"><span class="lineNum">    3307</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; toRemove;</span></span>
+<span id="L3308"><span class="lineNum">    3308</span> <span class="tlaGNC">           1 :                 bool foundDiscard = false;</span></span>
+<span id="L3309"><span class="lineNum">    3309</span> <span class="tlaGNC">           1 :                 for (auto inst : block-&gt;getOrdinaryInsts())</span></span>
+<span id="L3310"><span class="lineNum">    3310</span>              :                 {</span>
+<span id="L3311"><span class="lineNum">    3311</span> <span class="tlaGNC">           1 :                     if (foundDiscard)</span></span>
+<span id="L3312"><span class="lineNum">    3312</span>              :                     {</span>
+<span id="L3313"><span class="lineNum">    3313</span> <span class="tlaGNC">           1 :                         toRemove.add(inst);</span></span>
+<span id="L3314"><span class="lineNum">    3314</span> <span class="tlaGNC">           1 :                     }</span></span>
+<span id="L3315"><span class="lineNum">    3315</span>              :                     else if (inst == discardInst)</span>
+<span id="L3316"><span class="lineNum">    3316</span>              :                     {</span>
+<span id="L3317"><span class="lineNum">    3317</span> <span class="tlaGNC">           1 :                         foundDiscard = true;</span></span>
 <span id="L3318"><span class="lineNum">    3318</span>              :                     }</span>
-<span id="L3319"><span class="lineNum">    3319</span> <span class="tlaGNC">           1 :                     else if (inst == discardInst)</span></span>
-<span id="L3320"><span class="lineNum">    3320</span>              :                     {</span>
-<span id="L3321"><span class="lineNum">    3321</span>              :                         foundDiscard = true;</span>
-<span id="L3322"><span class="lineNum">    3322</span>              :                     }</span>
-<span id="L3323"><span class="lineNum">    3323</span>              :                 }</span>
-<span id="L3324"><span class="lineNum">    3324</span>              : </span>
-<span id="L3325"><span class="lineNum">    3325</span>              :                 if (!hasInstructionsBetween)</span>
-<span id="L3326"><span class="lineNum">    3326</span>              :                     continue;</span>
-<span id="L3327"><span class="lineNum">    3327</span>              : </span>
-<span id="L3328"><span class="lineNum">    3328</span>              :                 // Remove all instructions after discard and replace terminator with unreachable</span>
-<span id="L3329"><span class="lineNum">    3329</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; toRemove;</span></span>
-<span id="L3330"><span class="lineNum">    3330</span> <span class="tlaGNC">           1 :                 foundDiscard = false;</span></span>
-<span id="L3331"><span class="lineNum">    3331</span> <span class="tlaGNC">           1 :                 for (auto inst : block-&gt;getOrdinaryInsts())</span></span>
-<span id="L3332"><span class="lineNum">    3332</span>              :                 {</span>
-<span id="L3333"><span class="lineNum">    3333</span> <span class="tlaGNC">           1 :                     if (foundDiscard)</span></span>
-<span id="L3334"><span class="lineNum">    3334</span>              :                     {</span>
-<span id="L3335"><span class="lineNum">    3335</span> <span class="tlaGNC">           1 :                         toRemove.add(inst);</span></span>
-<span id="L3336"><span class="lineNum">    3336</span> <span class="tlaGNC">           1 :                     }</span></span>
-<span id="L3337"><span class="lineNum">    3337</span>              :                     else if (inst == discardInst)</span>
-<span id="L3338"><span class="lineNum">    3338</span>              :                     {</span>
-<span id="L3339"><span class="lineNum">    3339</span> <span class="tlaGNC">           1 :                         foundDiscard = true;</span></span>
-<span id="L3340"><span class="lineNum">    3340</span>              :                     }</span>
-<span id="L3341"><span class="lineNum">    3341</span>              :                 }</span>
-<span id="L3342"><span class="lineNum">    3342</span>              : </span>
-<span id="L3343"><span class="lineNum">    3343</span>              :                 // Remove the collected instructions</span>
-<span id="L3344"><span class="lineNum">    3344</span> <span class="tlaGNC">           1 :                 for (auto inst : toRemove)</span></span>
-<span id="L3345"><span class="lineNum">    3345</span>              :                 {</span>
-<span id="L3346"><span class="lineNum">    3346</span> <span class="tlaGNC">           1 :                     inst-&gt;removeAndDeallocate();</span></span>
-<span id="L3347"><span class="lineNum">    3347</span>              :                 }</span>
-<span id="L3348"><span class="lineNum">    3348</span>              : </span>
-<span id="L3349"><span class="lineNum">    3349</span>              :                 // Add unreachable terminator after discard</span>
-<span id="L3350"><span class="lineNum">    3350</span> <span class="tlaGNC">           1 :                 builder.setInsertAfter(discardInst);</span></span>
-<span id="L3351"><span class="lineNum">    3351</span> <span class="tlaGNC">           1 :                 builder.emitUnreachable();</span></span>
-<span id="L3352"><span class="lineNum">    3352</span> <span class="tlaGNC">           1 :             }</span></span>
-<span id="L3353"><span class="lineNum">    3353</span>              :         }</span>
-<span id="L3354"><span class="lineNum">    3354</span>              :     }</span>
-<span id="L3355"><span class="lineNum">    3355</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3356"><span class="lineNum">    3356</span>              : </span>
-<span id="L3357"><span class="lineNum">    3357</span>              : // Widen a sub-32-bit access-chain index/offset to a 32-bit integer of the same signedness.</span>
-<span id="L3358"><span class="lineNum">    3358</span>              : // An OpAccessChain / OpPtrAccessChain index is interpreted as signed, so a narrow *unsigned* index</span>
-<span id="L3359"><span class="lineNum">    3359</span>              : // (e.g. a uint16_t of 40000) reads as negative and addresses out of bounds. Widening to 32 bits</span>
-<span id="L3360"><span class="lineNum">    3360</span>              : // preserves the value -- emitIntCast then picks OpUConvert (unsigned) or OpSConvert (signed) --</span>
-<span id="L3361"><span class="lineNum">    3361</span>              : // while indices already 32 bits or wider are left alone, so the 64-bit indexing path (#11967) is</span>
-<span id="L3362"><span class="lineNum">    3362</span>              : // unaffected. Open: a 32-bit unsigned index with bit 31 set has the same hazard and needs 64-bit</span>
-<span id="L3363"><span class="lineNum">    3363</span>              : // widening (a wide-index-capability follow-up); it is unreachable for logical-pointer arrays.</span>
-<span id="L3364"><span class="lineNum">    3364</span>              : static void widenNarrowAccessChainIndex(</span>
-<span id="L3365"><span class="lineNum">    3365</span>              :     IRInst* accessChainInst,</span>
-<span id="L3366"><span class="lineNum">    3366</span>              :     UInt indexOperand,</span>
-<span id="L3367"><span class="lineNum">    3367</span>              :     TargetRequest* targetReq)</span>
-<span id="L3368"><span class="lineNum">    3368</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3369"><span class="lineNum">    3369</span> <span class="tlaGNC">           1 :     IRInst* index = accessChainInst-&gt;getOperand(indexOperand);</span></span>
-<span id="L3370"><span class="lineNum">    3370</span> <span class="tlaGNC">           1 :     IRType* indexType = index-&gt;getDataType();</span></span>
-<span id="L3371"><span class="lineNum">    3371</span>              :     // These ops carry an integer index/offset by construction; the non-integral guard is defensive</span>
-<span id="L3372"><span class="lineNum">    3372</span>              :     // and simply leaves an unexpected operand unchanged rather than asserting during codegen.</span>
-<span id="L3373"><span class="lineNum">    3373</span> <span class="tlaGNC">           1 :     if (!indexType || !isIntegralType(indexType))</span></span>
-<span id="L3374"><span class="lineNum">    3374</span>              :         return;</span>
-<span id="L3375"><span class="lineNum">    3375</span> <span class="tlaGNC">           1 :     const IntInfo info = getIntTypeInfo(targetReq, indexType);</span></span>
-<span id="L3376"><span class="lineNum">    3376</span> <span class="tlaGNC">           1 :     if (info.width &gt;= 32)</span></span>
-<span id="L3377"><span class="lineNum">    3377</span>              :         return;</span>
-<span id="L3378"><span class="lineNum">    3378</span> <span class="tlaGNC">           1 :     IRBuilder builder(accessChainInst);</span></span>
-<span id="L3379"><span class="lineNum">    3379</span> <span class="tlaGNC">           1 :     builder.setInsertBefore(accessChainInst);</span></span>
-<span id="L3380"><span class="lineNum">    3380</span> <span class="tlaGNC">           1 :     IRType* widenedType = info.isSigned ? static_cast&lt;IRType*&gt;(builder.getIntType())</span></span>
-<span id="L3381"><span class="lineNum">    3381</span>              :                                         : static_cast&lt;IRType*&gt;(builder.getUIntType());</span>
-<span id="L3382"><span class="lineNum">    3382</span> <span class="tlaGNC">           1 :     auto widened = builder.emitCast(widenedType, index);</span></span>
-<span id="L3383"><span class="lineNum">    3383</span>              :     // propagateNonUniformDecorations runs before this sweep and marks a bindless index operand</span>
-<span id="L3384"><span class="lineNum">    3384</span>              :     // with IRSPIRVNonUniformResourceDecoration; it does not look through the cast we insert here,</span>
-<span id="L3385"><span class="lineNum">    3385</span>              :     // so we carry that marker onto the widened value to preserve the non-uniform invariant (the</span>
-<span id="L3386"><span class="lineNum">    3386</span>              :     // resulting descriptor pointer&#x27;s NonUniform requirement, VUID-RuntimeSpirv-None-10148,</span>
-<span id="L3387"><span class="lineNum">    3387</span>              :     // depends on it).</span>
-<span id="L3388"><span class="lineNum">    3388</span> <span class="tlaGNC">           1 :     if (index-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;())</span></span>
-<span id="L3389"><span class="lineNum">    3389</span> <span class="tlaGNC">           1 :         builder.addSPIRVNonUniformResourceDecoration(widened);</span></span>
-<span id="L3390"><span class="lineNum">    3390</span> <span class="tlaGNC">           1 :     builder.replaceOperand(accessChainInst-&gt;getOperands() + indexOperand, widened);</span></span>
-<span id="L3391"><span class="lineNum">    3391</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3392"><span class="lineNum">    3392</span>              : </span>
-<span id="L3393"><span class="lineNum">    3393</span>              : // Enforce the invariant that no OpAccessChain / OpPtrAccessChain is emitted with a sub-32-bit index</span>
-<span id="L3394"><span class="lineNum">    3394</span>              : // (see widenNarrowAccessChainIndex). All four access-chain-forming ops carry the index/offset as</span>
-<span id="L3395"><span class="lineNum">    3395</span>              : // operand 1 ({base, index} / {base, offset}). This op list tracks the emitters that forward that</span>
-<span id="L3396"><span class="lineNum">    3396</span>              : // operand into an access chain -- emitGetElementPtr, emitStructuredBufferGetElementPtr,</span>
-<span id="L3397"><span class="lineNum">    3397</span>              : // emitMeshOutputRef, and emitGetOffsetPtr in slang-emit-spirv.cpp -- and must stay in sync with</span>
-<span id="L3398"><span class="lineNum">    3398</span>              : // them.</span>
-<span id="L3399"><span class="lineNum">    3399</span>              : static void widenNarrowAccessChainIndices(IRModule* module, TargetRequest* targetReq)</span>
-<span id="L3400"><span class="lineNum">    3400</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3401"><span class="lineNum">    3401</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
-<span id="L3402"><span class="lineNum">    3402</span>              :     {</span>
-<span id="L3403"><span class="lineNum">    3403</span> <span class="tlaGNC">           1 :         auto code = as&lt;IRGlobalValueWithCode&gt;(globalInst);</span></span>
-<span id="L3404"><span class="lineNum">    3404</span> <span class="tlaGNC">           1 :         if (!code)</span></span>
-<span id="L3405"><span class="lineNum">    3405</span>              :             continue;</span>
-<span id="L3406"><span class="lineNum">    3406</span> <span class="tlaGNC">           1 :         for (auto block : code-&gt;getBlocks())</span></span>
-<span id="L3407"><span class="lineNum">    3407</span>              :         {</span>
-<span id="L3408"><span class="lineNum">    3408</span> <span class="tlaGNC">           1 :             for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L3409"><span class="lineNum">    3409</span>              :             {</span>
-<span id="L3410"><span class="lineNum">    3410</span> <span class="tlaGNC">           1 :                 switch (inst-&gt;getOp())</span></span>
-<span id="L3411"><span class="lineNum">    3411</span>              :                 {</span>
-<span id="L3412"><span class="lineNum">    3412</span>              :                 case kIROp_GetElementPtr:</span>
-<span id="L3413"><span class="lineNum">    3413</span>              :                 case kIROp_RWStructuredBufferGetElementPtr:</span>
-<span id="L3414"><span class="lineNum">    3414</span>              :                 case kIROp_MeshOutputRef:</span>
-<span id="L3415"><span class="lineNum">    3415</span>              :                 case kIROp_GetOffsetPtr:</span>
-<span id="L3416"><span class="lineNum">    3416</span> <span class="tlaGNC">           1 :                     widenNarrowAccessChainIndex(inst, 1, targetReq);</span></span>
-<span id="L3417"><span class="lineNum">    3417</span>              :                     break;</span>
-<span id="L3418"><span class="lineNum">    3418</span>              :                 default:</span>
-<span id="L3419"><span class="lineNum">    3419</span>              :                     break;</span>
-<span id="L3420"><span class="lineNum">    3420</span>              :                 }</span>
-<span id="L3421"><span class="lineNum">    3421</span>              :             }</span>
-<span id="L3422"><span class="lineNum">    3422</span>              :         }</span>
-<span id="L3423"><span class="lineNum">    3423</span>              :     }</span>
-<span id="L3424"><span class="lineNum">    3424</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3425"><span class="lineNum">    3425</span>              : </span>
-<span id="L3426"><span class="lineNum">    3426</span>              : /// Return true if `globalParam` was legalized into a `PushConstant` variable, which is how the</span>
-<span id="L3427"><span class="lineNum">    3427</span>              : /// SPIR-V emitter decides its storage class.</span>
-<span id="L3428"><span class="lineNum">    3428</span>              : static bool isPushConstantGlobalForSPIRV(IRInst* globalParam)</span>
-<span id="L3429"><span class="lineNum">    3429</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3430"><span class="lineNum">    3430</span> <span class="tlaGNC">           1 :     auto ptrType = as&lt;IRPtrTypeBase&gt;(globalParam-&gt;getDataType());</span></span>
-<span id="L3431"><span class="lineNum">    3431</span> <span class="tlaGNC">           1 :     return ptrType &amp;&amp; ptrType-&gt;getAddressSpace() == AddressSpace::PushConstant;</span></span>
-<span id="L3432"><span class="lineNum">    3432</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3319"><span class="lineNum">    3319</span>              :                 }</span>
+<span id="L3320"><span class="lineNum">    3320</span>              : </span>
+<span id="L3321"><span class="lineNum">    3321</span>              :                 // Remove the collected instructions</span>
+<span id="L3322"><span class="lineNum">    3322</span> <span class="tlaGNC">           1 :                 for (auto inst : toRemove)</span></span>
+<span id="L3323"><span class="lineNum">    3323</span>              :                 {</span>
+<span id="L3324"><span class="lineNum">    3324</span> <span class="tlaGNC">           1 :                     inst-&gt;removeAndDeallocate();</span></span>
+<span id="L3325"><span class="lineNum">    3325</span>              :                 }</span>
+<span id="L3326"><span class="lineNum">    3326</span>              : </span>
+<span id="L3327"><span class="lineNum">    3327</span>              :                 // Add unreachable terminator after discard</span>
+<span id="L3328"><span class="lineNum">    3328</span> <span class="tlaGNC">           1 :                 builder.setInsertAfter(discardInst);</span></span>
+<span id="L3329"><span class="lineNum">    3329</span> <span class="tlaGNC">           1 :                 builder.emitUnreachable();</span></span>
+<span id="L3330"><span class="lineNum">    3330</span> <span class="tlaGNC">           1 :             }</span></span>
+<span id="L3331"><span class="lineNum">    3331</span>              :         }</span>
+<span id="L3332"><span class="lineNum">    3332</span>              :     }</span>
+<span id="L3333"><span class="lineNum">    3333</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3334"><span class="lineNum">    3334</span>              : </span>
+<span id="L3335"><span class="lineNum">    3335</span>              : // Widen a sub-32-bit access-chain index/offset to a 32-bit integer of the same signedness.</span>
+<span id="L3336"><span class="lineNum">    3336</span>              : // An OpAccessChain / OpPtrAccessChain index is interpreted as signed, so a narrow *unsigned* index</span>
+<span id="L3337"><span class="lineNum">    3337</span>              : // (e.g. a uint16_t of 40000) reads as negative and addresses out of bounds. Widening to 32 bits</span>
+<span id="L3338"><span class="lineNum">    3338</span>              : // preserves the value -- emitIntCast then picks OpUConvert (unsigned) or OpSConvert (signed) --</span>
+<span id="L3339"><span class="lineNum">    3339</span>              : // while indices already 32 bits or wider are left alone, so the 64-bit indexing path (#11967) is</span>
+<span id="L3340"><span class="lineNum">    3340</span>              : // unaffected. Open: a 32-bit unsigned index with bit 31 set has the same hazard and needs 64-bit</span>
+<span id="L3341"><span class="lineNum">    3341</span>              : // widening (a wide-index-capability follow-up); it is unreachable for logical-pointer arrays.</span>
+<span id="L3342"><span class="lineNum">    3342</span>              : static void widenNarrowAccessChainIndex(</span>
+<span id="L3343"><span class="lineNum">    3343</span>              :     IRInst* accessChainInst,</span>
+<span id="L3344"><span class="lineNum">    3344</span>              :     UInt indexOperand,</span>
+<span id="L3345"><span class="lineNum">    3345</span>              :     TargetRequest* targetReq)</span>
+<span id="L3346"><span class="lineNum">    3346</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3347"><span class="lineNum">    3347</span> <span class="tlaGNC">           1 :     IRInst* index = accessChainInst-&gt;getOperand(indexOperand);</span></span>
+<span id="L3348"><span class="lineNum">    3348</span> <span class="tlaGNC">           1 :     IRType* indexType = index-&gt;getDataType();</span></span>
+<span id="L3349"><span class="lineNum">    3349</span>              :     // These ops carry an integer index/offset by construction; the non-integral guard is defensive</span>
+<span id="L3350"><span class="lineNum">    3350</span>              :     // and simply leaves an unexpected operand unchanged rather than asserting during codegen.</span>
+<span id="L3351"><span class="lineNum">    3351</span> <span class="tlaGNC">           1 :     if (!indexType || !isIntegralType(indexType))</span></span>
+<span id="L3352"><span class="lineNum">    3352</span>              :         return;</span>
+<span id="L3353"><span class="lineNum">    3353</span> <span class="tlaGNC">           1 :     const IntInfo info = getIntTypeInfo(targetReq, indexType);</span></span>
+<span id="L3354"><span class="lineNum">    3354</span> <span class="tlaGNC">           1 :     if (info.width &gt;= 32)</span></span>
+<span id="L3355"><span class="lineNum">    3355</span>              :         return;</span>
+<span id="L3356"><span class="lineNum">    3356</span> <span class="tlaGNC">           1 :     IRBuilder builder(accessChainInst);</span></span>
+<span id="L3357"><span class="lineNum">    3357</span> <span class="tlaGNC">           1 :     builder.setInsertBefore(accessChainInst);</span></span>
+<span id="L3358"><span class="lineNum">    3358</span> <span class="tlaGNC">           1 :     IRType* widenedType = info.isSigned ? static_cast&lt;IRType*&gt;(builder.getIntType())</span></span>
+<span id="L3359"><span class="lineNum">    3359</span>              :                                         : static_cast&lt;IRType*&gt;(builder.getUIntType());</span>
+<span id="L3360"><span class="lineNum">    3360</span> <span class="tlaGNC">           1 :     auto widened = builder.emitCast(widenedType, index);</span></span>
+<span id="L3361"><span class="lineNum">    3361</span>              :     // propagateNonUniformDecorations runs before this sweep and marks a bindless index operand</span>
+<span id="L3362"><span class="lineNum">    3362</span>              :     // with IRSPIRVNonUniformResourceDecoration; it does not look through the cast we insert here,</span>
+<span id="L3363"><span class="lineNum">    3363</span>              :     // so we carry that marker onto the widened value to preserve the non-uniform invariant (the</span>
+<span id="L3364"><span class="lineNum">    3364</span>              :     // resulting descriptor pointer&#x27;s NonUniform requirement, VUID-RuntimeSpirv-None-10148,</span>
+<span id="L3365"><span class="lineNum">    3365</span>              :     // depends on it).</span>
+<span id="L3366"><span class="lineNum">    3366</span> <span class="tlaGNC">           1 :     if (index-&gt;findDecoration&lt;IRSPIRVNonUniformResourceDecoration&gt;())</span></span>
+<span id="L3367"><span class="lineNum">    3367</span> <span class="tlaGNC">           1 :         builder.addSPIRVNonUniformResourceDecoration(widened);</span></span>
+<span id="L3368"><span class="lineNum">    3368</span> <span class="tlaGNC">           1 :     builder.replaceOperand(accessChainInst-&gt;getOperands() + indexOperand, widened);</span></span>
+<span id="L3369"><span class="lineNum">    3369</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3370"><span class="lineNum">    3370</span>              : </span>
+<span id="L3371"><span class="lineNum">    3371</span>              : // Enforce the invariant that no OpAccessChain / OpPtrAccessChain is emitted with a sub-32-bit index</span>
+<span id="L3372"><span class="lineNum">    3372</span>              : // (see widenNarrowAccessChainIndex). All four access-chain-forming ops carry the index/offset as</span>
+<span id="L3373"><span class="lineNum">    3373</span>              : // operand 1 ({base, index} / {base, offset}). This op list tracks the emitters that forward that</span>
+<span id="L3374"><span class="lineNum">    3374</span>              : // operand into an access chain -- emitGetElementPtr, emitStructuredBufferGetElementPtr,</span>
+<span id="L3375"><span class="lineNum">    3375</span>              : // emitMeshOutputRef, and emitGetOffsetPtr in slang-emit-spirv.cpp -- and must stay in sync with</span>
+<span id="L3376"><span class="lineNum">    3376</span>              : // them.</span>
+<span id="L3377"><span class="lineNum">    3377</span>              : static void widenNarrowAccessChainIndices(IRModule* module, TargetRequest* targetReq)</span>
+<span id="L3378"><span class="lineNum">    3378</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3379"><span class="lineNum">    3379</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L3380"><span class="lineNum">    3380</span>              :     {</span>
+<span id="L3381"><span class="lineNum">    3381</span> <span class="tlaGNC">           1 :         auto code = as&lt;IRGlobalValueWithCode&gt;(globalInst);</span></span>
+<span id="L3382"><span class="lineNum">    3382</span> <span class="tlaGNC">           1 :         if (!code)</span></span>
+<span id="L3383"><span class="lineNum">    3383</span>              :             continue;</span>
+<span id="L3384"><span class="lineNum">    3384</span> <span class="tlaGNC">           1 :         for (auto block : code-&gt;getBlocks())</span></span>
+<span id="L3385"><span class="lineNum">    3385</span>              :         {</span>
+<span id="L3386"><span class="lineNum">    3386</span> <span class="tlaGNC">           1 :             for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L3387"><span class="lineNum">    3387</span>              :             {</span>
+<span id="L3388"><span class="lineNum">    3388</span> <span class="tlaGNC">           1 :                 switch (inst-&gt;getOp())</span></span>
+<span id="L3389"><span class="lineNum">    3389</span>              :                 {</span>
+<span id="L3390"><span class="lineNum">    3390</span>              :                 case kIROp_GetElementPtr:</span>
+<span id="L3391"><span class="lineNum">    3391</span>              :                 case kIROp_RWStructuredBufferGetElementPtr:</span>
+<span id="L3392"><span class="lineNum">    3392</span>              :                 case kIROp_MeshOutputRef:</span>
+<span id="L3393"><span class="lineNum">    3393</span>              :                 case kIROp_GetOffsetPtr:</span>
+<span id="L3394"><span class="lineNum">    3394</span> <span class="tlaGNC">           1 :                     widenNarrowAccessChainIndex(inst, 1, targetReq);</span></span>
+<span id="L3395"><span class="lineNum">    3395</span>              :                     break;</span>
+<span id="L3396"><span class="lineNum">    3396</span>              :                 default:</span>
+<span id="L3397"><span class="lineNum">    3397</span>              :                     break;</span>
+<span id="L3398"><span class="lineNum">    3398</span>              :                 }</span>
+<span id="L3399"><span class="lineNum">    3399</span>              :             }</span>
+<span id="L3400"><span class="lineNum">    3400</span>              :         }</span>
+<span id="L3401"><span class="lineNum">    3401</span>              :     }</span>
+<span id="L3402"><span class="lineNum">    3402</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3403"><span class="lineNum">    3403</span>              : </span>
+<span id="L3404"><span class="lineNum">    3404</span>              : /// Return true if `globalParam` was legalized into a `PushConstant` variable, which is how the</span>
+<span id="L3405"><span class="lineNum">    3405</span>              : /// SPIR-V emitter decides its storage class.</span>
+<span id="L3406"><span class="lineNum">    3406</span>              : static bool isPushConstantGlobalForSPIRV(IRInst* globalParam)</span>
+<span id="L3407"><span class="lineNum">    3407</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3408"><span class="lineNum">    3408</span> <span class="tlaGNC">           1 :     auto ptrType = as&lt;IRPtrTypeBase&gt;(globalParam-&gt;getDataType());</span></span>
+<span id="L3409"><span class="lineNum">    3409</span> <span class="tlaGNC">           1 :     return ptrType &amp;&amp; ptrType-&gt;getAddressSpace() == AddressSpace::PushConstant;</span></span>
+<span id="L3410"><span class="lineNum">    3410</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3411"><span class="lineNum">    3411</span>              : </span>
+<span id="L3412"><span class="lineNum">    3412</span>              : void legalizeIRForSPIRV(</span>
+<span id="L3413"><span class="lineNum">    3413</span>              :     SPIRVEmitSharedContext* context,</span>
+<span id="L3414"><span class="lineNum">    3414</span>              :     IRModule* module,</span>
+<span id="L3415"><span class="lineNum">    3415</span>              :     const List&lt;IRFunc*&gt;&amp; entryPoints,</span>
+<span id="L3416"><span class="lineNum">    3416</span>              :     CodeGenContext* codeGenContext)</span>
+<span id="L3417"><span class="lineNum">    3417</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L3418"><span class="lineNum">    3418</span>              :     SLANG_UNUSED(entryPoints);</span>
+<span id="L3419"><span class="lineNum">    3419</span> <span class="tlaGNC">           1 :     legalizeSPIRV(context, module, codeGenContext);</span></span>
+<span id="L3420"><span class="lineNum">    3420</span> <span class="tlaGNC">           1 :     simplifyIRForSpirvLegalization(context-&gt;m_targetProgram, codeGenContext-&gt;getSink(), module);</span></span>
+<span id="L3421"><span class="lineNum">    3421</span>              : </span>
+<span id="L3422"><span class="lineNum">    3422</span>              :     // Widen any sub-32-bit access-chain index to 32 bits now that every producer -- including the</span>
+<span id="L3423"><span class="lineNum">    3423</span>              :     // simplifier&#x27;s redundancy removal, which can rematerialize a GetElementPtr from a narrow index</span>
+<span id="L3424"><span class="lineNum">    3424</span>              :     // -- has run, so no OpAccessChain / OpPtrAccessChain is emitted with a signedness-ambiguous</span>
+<span id="L3425"><span class="lineNum">    3425</span>              :     // sub-32-bit index.</span>
+<span id="L3426"><span class="lineNum">    3426</span> <span class="tlaGNC">           1 :     widenNarrowAccessChainIndices(module, context-&gt;m_targetProgram-&gt;getTargetReq());</span></span>
+<span id="L3427"><span class="lineNum">    3427</span>              : </span>
+<span id="L3428"><span class="lineNum">    3428</span>              :     // Remove unreachable code after discard for SPIRV versions that emit OpKill.</span>
+<span id="L3429"><span class="lineNum">    3429</span>              :     // This is necessary because OpKill is a terminator and cannot have instructions</span>
+<span id="L3430"><span class="lineNum">    3430</span>              :     // after it in the same block. This only applies when targeting SPIRV &lt; 1.6</span>
+<span id="L3431"><span class="lineNum">    3431</span>              :     // without the SPV_EXT_demote_to_helper_invocation extension.</span>
+<span id="L3432"><span class="lineNum">    3432</span> <span class="tlaGNC">           1 :     removeUnreachableCodeAfterDiscardForOpKill(context, module);</span></span>
 <span id="L3433"><span class="lineNum">    3433</span>              : </span>
-<span id="L3434"><span class="lineNum">    3434</span>              : void legalizeIRForSPIRV(</span>
-<span id="L3435"><span class="lineNum">    3435</span>              :     SPIRVEmitSharedContext* context,</span>
-<span id="L3436"><span class="lineNum">    3436</span>              :     IRModule* module,</span>
-<span id="L3437"><span class="lineNum">    3437</span>              :     const List&lt;IRFunc*&gt;&amp; entryPoints,</span>
-<span id="L3438"><span class="lineNum">    3438</span>              :     CodeGenContext* codeGenContext)</span>
-<span id="L3439"><span class="lineNum">    3439</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L3440"><span class="lineNum">    3440</span>              :     SLANG_UNUSED(entryPoints);</span>
-<span id="L3441"><span class="lineNum">    3441</span> <span class="tlaGNC">           1 :     legalizeSPIRV(context, module, codeGenContext);</span></span>
-<span id="L3442"><span class="lineNum">    3442</span> <span class="tlaGNC">           1 :     simplifyIRForSpirvLegalization(context-&gt;m_targetProgram, codeGenContext-&gt;getSink(), module);</span></span>
-<span id="L3443"><span class="lineNum">    3443</span>              : </span>
-<span id="L3444"><span class="lineNum">    3444</span>              :     // Widen any sub-32-bit access-chain index to 32 bits now that every producer -- including the</span>
-<span id="L3445"><span class="lineNum">    3445</span>              :     // simplifier&#x27;s redundancy removal, which can rematerialize a GetElementPtr from a narrow index</span>
-<span id="L3446"><span class="lineNum">    3446</span>              :     // -- has run, so no OpAccessChain / OpPtrAccessChain is emitted with a signedness-ambiguous</span>
-<span id="L3447"><span class="lineNum">    3447</span>              :     // sub-32-bit index.</span>
-<span id="L3448"><span class="lineNum">    3448</span> <span class="tlaGNC">           1 :     widenNarrowAccessChainIndices(module, context-&gt;m_targetProgram-&gt;getTargetReq());</span></span>
-<span id="L3449"><span class="lineNum">    3449</span>              : </span>
-<span id="L3450"><span class="lineNum">    3450</span>              :     // Remove unreachable code after discard for SPIRV versions that emit OpKill.</span>
-<span id="L3451"><span class="lineNum">    3451</span>              :     // This is necessary because OpKill is a terminator and cannot have instructions</span>
-<span id="L3452"><span class="lineNum">    3452</span>              :     // after it in the same block. This only applies when targeting SPIRV &lt; 1.6</span>
-<span id="L3453"><span class="lineNum">    3453</span>              :     // without the SPV_EXT_demote_to_helper_invocation extension.</span>
-<span id="L3454"><span class="lineNum">    3454</span> <span class="tlaGNC">           1 :     removeUnreachableCodeAfterDiscardForOpKill(context, module);</span></span>
-<span id="L3455"><span class="lineNum">    3455</span>              : </span>
-<span id="L3456"><span class="lineNum">    3456</span>              :     // Run DCE to clean up any values that became unused after removing unreachable code</span>
-<span id="L3457"><span class="lineNum">    3457</span> <span class="tlaGNC">           1 :     eliminateDeadCode(module);</span></span>
-<span id="L3458"><span class="lineNum">    3458</span>              : </span>
-<span id="L3459"><span class="lineNum">    3459</span>              :     // An undefined opaque handle that is still present would be emitted as an `OpUndef` that</span>
-<span id="L3460"><span class="lineNum">    3460</span>              :     // Vulkan forbids (VUID-StandaloneSpirv-OpUndef-12464), so we report it instead.</span>
-<span id="L3461"><span class="lineNum">    3461</span> <span class="tlaGNC">           1 :     diagnoseUndefinedOpaqueHandles(module, codeGenContext-&gt;getSink());</span></span>
-<span id="L3462"><span class="lineNum">    3462</span>              : </span>
-<span id="L3463"><span class="lineNum">    3463</span> <span class="tlaGNC">           1 :     buildEntryPointReferenceGraph(context-&gt;m_referencingEntryPoints, module);</span></span>
-<span id="L3464"><span class="lineNum">    3464</span>              : </span>
-<span id="L3465"><span class="lineNum">    3465</span>              :     // `m_referencingEntryPoints` records which globals each entry point&#x27;s call tree uses, which is</span>
-<span id="L3466"><span class="lineNum">    3466</span>              :     // the static use that Vulkan limits to one push-constant block per entry point. We count blocks</span>
-<span id="L3467"><span class="lineNum">    3467</span>              :     // here, after the last dead-code elimination that can remove a block&#x27;s only use.</span>
-<span id="L3468"><span class="lineNum">    3468</span> <span class="tlaGNC">           1 :     checkForMultiplePushConstantBlocksPerEntryPoint(</span></span>
-<span id="L3469"><span class="lineNum">    3469</span>              :         module,</span>
-<span id="L3470"><span class="lineNum">    3470</span>              :         context-&gt;m_referencingEntryPoints,</span>
-<span id="L3471"><span class="lineNum">    3471</span>              :         isPushConstantGlobalForSPIRV,</span>
-<span id="L3472"><span class="lineNum">    3472</span>              :         codeGenContext-&gt;getSink());</span>
-<span id="L3473"><span class="lineNum">    3473</span>              : </span>
-<span id="L3474"><span class="lineNum">    3474</span> <span class="tlaGNC">           1 :     insertFragmentShaderInterlock(context, module);</span></span>
-<span id="L3475"><span class="lineNum">    3475</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L3476"><span class="lineNum">    3476</span>              : </span>
-<span id="L3477"><span class="lineNum">    3477</span>              : } // namespace Slang</span>
+<span id="L3434"><span class="lineNum">    3434</span>              :     // Run DCE to clean up any values that became unused after removing unreachable code</span>
+<span id="L3435"><span class="lineNum">    3435</span> <span class="tlaGNC">           1 :     eliminateDeadCode(module);</span></span>
+<span id="L3436"><span class="lineNum">    3436</span>              : </span>
+<span id="L3437"><span class="lineNum">    3437</span>              :     // An undefined opaque handle that is still present would be emitted as an `OpUndef` that</span>
+<span id="L3438"><span class="lineNum">    3438</span>              :     // Vulkan forbids (VUID-StandaloneSpirv-OpUndef-12464), so we report it instead.</span>
+<span id="L3439"><span class="lineNum">    3439</span> <span class="tlaGNC">           1 :     diagnoseUndefinedOpaqueHandles(module, codeGenContext-&gt;getSink());</span></span>
+<span id="L3440"><span class="lineNum">    3440</span>              : </span>
+<span id="L3441"><span class="lineNum">    3441</span> <span class="tlaGNC">           1 :     buildEntryPointReferenceGraph(context-&gt;m_referencingEntryPoints, module);</span></span>
+<span id="L3442"><span class="lineNum">    3442</span>              : </span>
+<span id="L3443"><span class="lineNum">    3443</span>              :     // `m_referencingEntryPoints` records which globals each entry point&#x27;s call tree uses, which is</span>
+<span id="L3444"><span class="lineNum">    3444</span>              :     // the static use that Vulkan limits to one push-constant block per entry point. We count blocks</span>
+<span id="L3445"><span class="lineNum">    3445</span>              :     // here, after the last dead-code elimination that can remove a block&#x27;s only use.</span>
+<span id="L3446"><span class="lineNum">    3446</span> <span class="tlaGNC">           1 :     checkForMultiplePushConstantBlocksPerEntryPoint(</span></span>
+<span id="L3447"><span class="lineNum">    3447</span>              :         module,</span>
+<span id="L3448"><span class="lineNum">    3448</span>              :         context-&gt;m_referencingEntryPoints,</span>
+<span id="L3449"><span class="lineNum">    3449</span>              :         isPushConstantGlobalForSPIRV,</span>
+<span id="L3450"><span class="lineNum">    3450</span>              :         codeGenContext-&gt;getSink());</span>
+<span id="L3451"><span class="lineNum">    3451</span>              : </span>
+<span id="L3452"><span class="lineNum">    3452</span> <span class="tlaGNC">           1 :     insertFragmentShaderInterlock(context, module);</span></span>
+<span id="L3453"><span class="lineNum">    3453</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L3454"><span class="lineNum">    3454</span>              : </span>
+<span id="L3455"><span class="lineNum">    3455</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

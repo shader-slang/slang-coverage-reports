@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-18 04:12:07 UTC</td>
+      <td class="headerValue">2026-11-19 04:47:21 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">23.5&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:23.5%;background-color:hsl(10, 70%, 50%)"></div></div>
-      <span class="metricCounts">82 / 349</span>
+      <span class="metricValue">23.6&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:23.6%;background-color:hsl(10, 70%, 50%)"></div></div>
+      <span class="metricCounts">82 / 347</span>
     </div>
     <div class="metricCard">
       <span class="metricLabel">Functions</span>
@@ -573,106 +573,104 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L282"><span class="lineNum">     282</span>                         : </span>
 <span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">           1            :     auto inStream = proc-&gt;getStream(StdStreamType::In);</span></span>
 <span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">           1            :     inStream-&gt;write(text.begin(), text.getLength());</span></span>
-<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">           1            :     char terminator = &#x27;\0&#x27;;</span></span>
-<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">           1            :     inStream-&gt;write(&amp;terminator, 1);</span></span>
-<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">           1            :     inStream-&gt;flush();</span></span>
-<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">           1            :     inStream-&gt;close();</span></span>
-<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">           1            :     ExecuteResult result;</span></span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">           1            :     ProcessUtil::readUntilTermination(proc, result);</span></span>
-<span id="L291"><span class="lineNum">     291</span>                         : </span>
-<span id="L292"><span class="lineNum">     292</span>                         :     /*</span>
-<span id="L293"><span class="lineNum">     293</span>                         :     Example result of clang-format:</span>
-<span id="L294"><span class="lineNum">     294</span>                         : </span>
-<span id="L295"><span class="lineNum">     295</span>                         :     &lt;?xml version=&#x27;1.0&#x27;?&gt;</span>
-<span id="L296"><span class="lineNum">     296</span>                         :     &lt;replacements xml:space=&#x27;preserve&#x27; incomplete_format=&#x27;false&#x27;&gt;</span>
-<span id="L297"><span class="lineNum">     297</span>                         :     &lt;replacement offset=&#x27;26&#x27; length=&#x27;2&#x27;&gt;&amp;#13;&amp;#10;  &lt;/replacement&gt;</span>
-<span id="L298"><span class="lineNum">     298</span>                         :     &lt;/replacements&gt;</span>
-<span id="L299"><span class="lineNum">     299</span>                         :     */</span>
-<span id="L300"><span class="lineNum">     300</span>                         : </span>
-<span id="L301"><span class="lineNum">     301</span>                         :     // Adhoc parsing of clang-format&#x27;s result.</span>
-<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">           1            :     List&lt;UnownedStringSlice&gt; lines;</span></span>
-<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">           1            :     auto offsetStr = UnownedStringSlice(&quot;offset=&quot;);</span></span>
-<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">           1            :     auto lengthStr = UnownedStringSlice(&quot;length=&quot;);</span></span>
-<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">           1            :     auto endStr = UnownedStringSlice(&quot;&lt;/replacement&gt;&quot;);</span></span>
-<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">           1            :     auto replacementStr = UnownedStringSlice(&quot;&lt;replacement &quot;);</span></span>
-<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">           1            :     StringUtil::calcLines(result.standardOutput.getUnownedSlice(), lines);</span></span>
-<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     for (auto line : lines)</span></span>
-<span id="L309"><span class="lineNum">     309</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">           1            :         line = line.trim();</span></span>
-<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (!line.startsWith(replacementStr))</span></span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">           1            :         line = line.tail(replacementStr.getLength());</span></span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">           1            :         Index pos = line.indexOf(offsetStr);</span></span>
-<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (pos == -1)</span></span>
-<span id="L316"><span class="lineNum">     316</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">           1            :         pos += offsetStr.getLength();</span></span>
-<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         if (pos &lt; line.getLength() &amp;&amp; line[pos] == &#x27;\&#x27;&#x27;)</span></span>
-<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">           1            :             pos++;</span></span>
-<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">           1            :         Edit edt;</span></span>
-<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">           1            :         edt.offset = StringUtil::parseIntAndAdvancePos(line, pos);</span></span>
-<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">           1            :         pos = line.indexOf(lengthStr);</span></span>
-<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (pos == -1)</span></span>
-<span id="L324"><span class="lineNum">     324</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">           1            :         Index exclusionRangeId = exclusionRanges.binarySearch(</span></span>
-<span id="L326"><span class="lineNum">     326</span> <span class="tlaUNC">           0            :             edt.offset,</span></span>
-<span id="L327"><span class="lineNum">     327</span> <span class="tlaUNC">           0            :             [](TextRange range, Index offset)</span></span>
-<span id="L328"><span class="lineNum">     328</span> <span class="tlaUNC">           0            :             {</span></span>
-<span id="L329"><span class="lineNum">     329</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                 if (range.offsetEnd &lt;= offset)</span></span>
-<span id="L330"><span class="lineNum">     330</span> <span class="tlaUNC">           0            :                     return -1;</span></span>
-<span id="L331"><span class="lineNum">     331</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                 if (range.offsetStart &gt; offset)</span></span>
-<span id="L332"><span class="lineNum">     332</span> <span class="tlaUNC">           0            :                     return 1;</span></span>
-<span id="L333"><span class="lineNum">     333</span> <span class="tlaUNC">           0            :                 return 0;</span></span>
-<span id="L334"><span class="lineNum">     334</span> <span class="tlaUNC">           0            :             });</span></span>
-<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (exclusionRangeId != -1)</span></span>
-<span id="L336"><span class="lineNum">     336</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">           1            :         pos += lengthStr.getLength();</span></span>
-<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         if (pos &lt; line.getLength() &amp;&amp; line[pos] == &#x27;\&#x27;&#x27;)</span></span>
-<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">           1            :             pos++;</span></span>
-<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">           1            :         edt.length = StringUtil::parseIntAndAdvancePos(line, pos);</span></span>
-<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">           1            :         line = line.tail(pos);</span></span>
-<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">           1            :         pos = line.indexOf(&#x27;&gt;&#x27;);</span></span>
-<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (pos == -1)</span></span>
-<span id="L344"><span class="lineNum">     344</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">           1            :         line = line.tail(pos + 1);</span></span>
-<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">           1            :         Index endPos = line.indexOf(endStr);</span></span>
-<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (endPos == -1)</span></span>
-<span id="L348"><span class="lineNum">     348</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">           1            :         line = line.head(endPos);</span></span>
-<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">           1            :         edt.text = parseXmlText(line);</span></span>
-<span id="L351"><span class="lineNum">     351</span>                         :         // For on-type formatting, don&#x27;t make any changes beyond the current cursor position.</span>
-<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         if (cursorOffset != -1 &amp;&amp; edt.offset &gt;= cursorOffset)</span></span>
-<span id="L353"><span class="lineNum">     353</span> <span class="tlaUNC">           0            :             break;</span></span>
-<span id="L354"><span class="lineNum">     354</span>                         :         // Never allow clang-format to put the semicolon after `}` in its own line.</span>
-<span id="L355"><span class="lineNum">     355</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -; br4: -; br5: -">(0/6)</span>      :         if (edt.offset &lt; text.getLength() &amp;&amp; edt.length == 0 &amp;&amp; text[edt.offset] == &#x27;;&#x27; &amp;&amp;</span></span>
-<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :             edt.offset &gt; 0 &amp;&amp; text[edt.offset - 1] == &#x27;}&#x27;)</span></span>
-<span id="L357"><span class="lineNum">     357</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L358"><span class="lineNum">     358</span>                         :         // If need to preserve line break, turn all edits with a line break into a space.</span>
-<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (options.behavior == FormatBehavior::PreserveLineBreak)</span></span>
-<span id="L360"><span class="lineNum">     360</span> <span class="tlaUNC">           0            :         {</span></span>
-<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">           1            :             auto originalText = text.subString(edt.offset, edt.length);</span></span>
-<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">           1            :             bool originalHasLineBreak = originalText.indexOf(&#x27;\n&#x27;) != -1;</span></span>
-<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">           1            :             bool newHasLineBreak = edt.text.indexOf(&#x27;\n&#x27;) != -1;</span></span>
-<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             if (originalHasLineBreak == newHasLineBreak)</span></span>
-<span id="L365"><span class="lineNum">     365</span> <span class="tlaUNC">           0            :             {</span></span>
-<span id="L366"><span class="lineNum">     366</span> <span class="tlaUNC">           0            :             }</span></span>
-<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :             else if (!originalHasLineBreak &amp;&amp; newHasLineBreak)</span></span>
-<span id="L368"><span class="lineNum">     368</span> <span class="tlaUNC">           0            :             {</span></span>
-<span id="L369"><span class="lineNum">     369</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -; br4: -; br5: -">(0/6)</span>      :                 if (edt.offset &lt; text.getLength() &amp;&amp; edt.offset &gt;= 0 &amp;&amp; text[edt.offset] == &#x27;}&#x27;)</span></span>
-<span id="L370"><span class="lineNum">     370</span> <span class="tlaUNC">           0            :                     continue;</span></span>
-<span id="L371"><span class="lineNum">     371</span> <span class="tlaUNC">           0            :                 edt.text = &quot; &quot;;</span></span>
-<span id="L372"><span class="lineNum">     372</span> <span class="tlaUNC">           0            :             }</span></span>
-<span id="L373"><span class="lineNum">     373</span> <span class="tlaUNC">           0            :             else</span></span>
-<span id="L374"><span class="lineNum">     374</span> <span class="tlaUNC">           0            :             {</span></span>
-<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">           1            :                 continue;</span></span>
-<span id="L376"><span class="lineNum">     376</span> <span class="tlaUNC">           0            :             }</span></span>
-<span id="L377"><span class="lineNum">     377</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L378"><span class="lineNum">     378</span> <span class="tlaUNC">           0            :         edits.add(edt);</span></span>
-<span id="L379"><span class="lineNum">     379</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">           1            :     return edits;</span></span>
-<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">           1            : }</span></span>
-<span id="L382"><span class="lineNum">     382</span>                         : </span>
-<span id="L383"><span class="lineNum">     383</span>                         : </span>
-<span id="L384"><span class="lineNum">     384</span>                         : } // namespace Slang</span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">           1            :     inStream-&gt;flush();</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">           1            :     inStream-&gt;close();</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">           1            :     ExecuteResult result;</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">           1            :     ProcessUtil::readUntilTermination(proc, result);</span></span>
+<span id="L289"><span class="lineNum">     289</span>                         : </span>
+<span id="L290"><span class="lineNum">     290</span>                         :     /*</span>
+<span id="L291"><span class="lineNum">     291</span>                         :     Example result of clang-format:</span>
+<span id="L292"><span class="lineNum">     292</span>                         : </span>
+<span id="L293"><span class="lineNum">     293</span>                         :     &lt;?xml version=&#x27;1.0&#x27;?&gt;</span>
+<span id="L294"><span class="lineNum">     294</span>                         :     &lt;replacements xml:space=&#x27;preserve&#x27; incomplete_format=&#x27;false&#x27;&gt;</span>
+<span id="L295"><span class="lineNum">     295</span>                         :     &lt;replacement offset=&#x27;26&#x27; length=&#x27;2&#x27;&gt;&amp;#13;&amp;#10;  &lt;/replacement&gt;</span>
+<span id="L296"><span class="lineNum">     296</span>                         :     &lt;/replacements&gt;</span>
+<span id="L297"><span class="lineNum">     297</span>                         :     */</span>
+<span id="L298"><span class="lineNum">     298</span>                         : </span>
+<span id="L299"><span class="lineNum">     299</span>                         :     // Adhoc parsing of clang-format&#x27;s result.</span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">           1            :     List&lt;UnownedStringSlice&gt; lines;</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">           1            :     auto offsetStr = UnownedStringSlice(&quot;offset=&quot;);</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">           1            :     auto lengthStr = UnownedStringSlice(&quot;length=&quot;);</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">           1            :     auto endStr = UnownedStringSlice(&quot;&lt;/replacement&gt;&quot;);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">           1            :     auto replacementStr = UnownedStringSlice(&quot;&lt;replacement &quot;);</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">           1            :     StringUtil::calcLines(result.standardOutput.getUnownedSlice(), lines);</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     for (auto line : lines)</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">           1            :         line = line.trim();</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (!line.startsWith(replacementStr))</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaUNC">           0            :             continue;</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">           1            :         line = line.tail(replacementStr.getLength());</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">           1            :         Index pos = line.indexOf(offsetStr);</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (pos == -1)</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaUNC">           0            :             continue;</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">           1            :         pos += offsetStr.getLength();</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         if (pos &lt; line.getLength() &amp;&amp; line[pos] == &#x27;\&#x27;&#x27;)</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">           1            :             pos++;</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">           1            :         Edit edt;</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">           1            :         edt.offset = StringUtil::parseIntAndAdvancePos(line, pos);</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">           1            :         pos = line.indexOf(lengthStr);</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (pos == -1)</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaUNC">           0            :             continue;</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">           1            :         Index exclusionRangeId = exclusionRanges.binarySearch(</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaUNC">           0            :             edt.offset,</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaUNC">           0            :             [](TextRange range, Index offset)</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaUNC">           0            :             {</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                 if (range.offsetEnd &lt;= offset)</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaUNC">           0            :                     return -1;</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                 if (range.offsetStart &gt; offset)</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaUNC">           0            :                     return 1;</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaUNC">           0            :                 return 0;</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaUNC">           0            :             });</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (exclusionRangeId != -1)</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaUNC">           0            :             continue;</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">           1            :         pos += lengthStr.getLength();</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         if (pos &lt; line.getLength() &amp;&amp; line[pos] == &#x27;\&#x27;&#x27;)</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">           1            :             pos++;</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">           1            :         edt.length = StringUtil::parseIntAndAdvancePos(line, pos);</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">           1            :         line = line.tail(pos);</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">           1            :         pos = line.indexOf(&#x27;&gt;&#x27;);</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (pos == -1)</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaUNC">           0            :             continue;</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">           1            :         line = line.tail(pos + 1);</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">           1            :         Index endPos = line.indexOf(endStr);</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (endPos == -1)</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaUNC">           0            :             continue;</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">           1            :         line = line.head(endPos);</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">           1            :         edt.text = parseXmlText(line);</span></span>
+<span id="L349"><span class="lineNum">     349</span>                         :         // For on-type formatting, don&#x27;t make any changes beyond the current cursor position.</span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         if (cursorOffset != -1 &amp;&amp; edt.offset &gt;= cursorOffset)</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaUNC">           0            :             break;</span></span>
+<span id="L352"><span class="lineNum">     352</span>                         :         // Never allow clang-format to put the semicolon after `}` in its own line.</span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -; br4: -; br5: -">(0/6)</span>      :         if (edt.offset &lt; text.getLength() &amp;&amp; edt.length == 0 &amp;&amp; text[edt.offset] == &#x27;;&#x27; &amp;&amp;</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :             edt.offset &gt; 0 &amp;&amp; text[edt.offset - 1] == &#x27;}&#x27;)</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaUNC">           0            :             continue;</span></span>
+<span id="L356"><span class="lineNum">     356</span>                         :         // If need to preserve line break, turn all edits with a line break into a space.</span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (options.behavior == FormatBehavior::PreserveLineBreak)</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaUNC">           0            :         {</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">           1            :             auto originalText = text.subString(edt.offset, edt.length);</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">           1            :             bool originalHasLineBreak = originalText.indexOf(&#x27;\n&#x27;) != -1;</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">           1            :             bool newHasLineBreak = edt.text.indexOf(&#x27;\n&#x27;) != -1;</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             if (originalHasLineBreak == newHasLineBreak)</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaUNC">           0            :             {</span></span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaUNC">           0            :             }</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :             else if (!originalHasLineBreak &amp;&amp; newHasLineBreak)</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaUNC">           0            :             {</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -; br4: -; br5: -">(0/6)</span>      :                 if (edt.offset &lt; text.getLength() &amp;&amp; edt.offset &gt;= 0 &amp;&amp; text[edt.offset] == &#x27;}&#x27;)</span></span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaUNC">           0            :                     continue;</span></span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaUNC">           0            :                 edt.text = &quot; &quot;;</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaUNC">           0            :             }</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaUNC">           0            :             else</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaUNC">           0            :             {</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">           1            :                 continue;</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaUNC">           0            :             }</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaUNC">           0            :         }</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaUNC">           0            :         edits.add(edt);</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">           1            :     return edits;</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">           1            : }</span></span>
+<span id="L380"><span class="lineNum">     380</span>                         : </span>
+<span id="L381"><span class="lineNum">     381</span>                         : </span>
+<span id="L382"><span class="lineNum">     382</span>                         : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

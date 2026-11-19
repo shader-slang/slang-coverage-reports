@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-18 04:12:07 UTC</td>
+      <td class="headerValue">2026-11-19 04:47:21 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">83.3&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:83.3%;background-color:hsl(95, 70%, 50%)"></div></div>
-      <span class="metricCounts">174 / 209</span>
+      <span class="metricValue">81.7&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:81.7%;background-color:hsl(93, 70%, 50%)"></div></div>
+      <span class="metricCounts">174 / 213</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -748,204 +748,227 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L475"><span class="lineNum">     475</span>              :                     &amp;securityAttributes,</span>
 <span id="L476"><span class="lineNum">     476</span>              :                     bufferSize));</span>
 <span id="L477"><span class="lineNum">     477</span>              :             }</span>
-<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">           1 :             if (flags &amp; Process::Flag::UnreadableStdin)</span></span>
+<span id="L478"><span class="lineNum">     478</span>              :             else</span>
 <span id="L479"><span class="lineNum">     479</span>              :             {</span>
-<span id="L480"><span class="lineNum">     480</span>              :                 // Hand the child a write-only NUL handle as its stdin, so reads from it error out</span>
-<span id="L481"><span class="lineNum">     481</span>              :                 // rather than reaching EOF. It is deliberately GENERIC_WRITE even though it becomes</span>
-<span id="L482"><span class="lineNum">     482</span>              :                 // the child&#x27;s read end (hStdInput).</span>
-<span id="L483"><span class="lineNum">     483</span> <span class="tlaUNC">           0 :                 const HANDLE nulWrite = CreateFileW(</span></span>
-<span id="L484"><span class="lineNum">     484</span>              :                     L&quot;NUL&quot;,</span>
-<span id="L485"><span class="lineNum">     485</span>              :                     GENERIC_WRITE,</span>
-<span id="L486"><span class="lineNum">     486</span>              :                     FILE_SHARE_READ | FILE_SHARE_WRITE,</span>
-<span id="L487"><span class="lineNum">     487</span>              :                     &amp;securityAttributes,</span>
-<span id="L488"><span class="lineNum">     488</span>              :                     OPEN_EXISTING,</span>
-<span id="L489"><span class="lineNum">     489</span>              :                     0,</span>
-<span id="L490"><span class="lineNum">     490</span>              :                     nullptr);</span>
-<span id="L491"><span class="lineNum">     491</span> <span class="tlaUNC">           0 :                 SLANG_RETURN_FAIL_ON_FALSE(nulWrite != INVALID_HANDLE_VALUE);</span></span>
-<span id="L492"><span class="lineNum">     492</span> <span class="tlaUNC">           0 :                 childStdInRead = nulWrite;</span></span>
-<span id="L493"><span class="lineNum">     493</span> <span class="tlaUNC">           0 :             }</span></span>
-<span id="L494"><span class="lineNum">     494</span>              :             else</span>
-<span id="L495"><span class="lineNum">     495</span>              :             {</span>
-<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">           1 :                 SLANG_RETURN_FAIL_ON_FALSE(CreatePipe(</span></span>
-<span id="L497"><span class="lineNum">     497</span>              :                     childStdInRead.writeRef(),</span>
-<span id="L498"><span class="lineNum">     498</span>              :                     childStdInWriteTmp.writeRef(),</span>
-<span id="L499"><span class="lineNum">     499</span>              :                     &amp;securityAttributes,</span>
-<span id="L500"><span class="lineNum">     500</span>              :                     bufferSize));</span>
-<span id="L501"><span class="lineNum">     501</span>              :             }</span>
-<span id="L502"><span class="lineNum">     502</span>              : </span>
-<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">           1 :             const HANDLE currentProcess = GetCurrentProcess();</span></span>
-<span id="L504"><span class="lineNum">     504</span>              : </span>
-<span id="L505"><span class="lineNum">     505</span>              :             // https://docs.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-duplicatehandle</span>
-<span id="L506"><span class="lineNum">     506</span>              : </span>
-<span id="L507"><span class="lineNum">     507</span>              :             // create a non-inheritable duplicate of the stdout reader</span>
-<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">           1 :             SLANG_RETURN_FAIL_ON_FALSE(DuplicateHandle(</span></span>
-<span id="L509"><span class="lineNum">     509</span>              :                 currentProcess,</span>
-<span id="L510"><span class="lineNum">     510</span>              :                 childStdOutReadTmp,</span>
-<span id="L511"><span class="lineNum">     511</span>              :                 currentProcess,</span>
-<span id="L512"><span class="lineNum">     512</span>              :                 childStdOutRead.writeRef(),</span>
-<span id="L513"><span class="lineNum">     513</span>              :                 0,</span>
-<span id="L514"><span class="lineNum">     514</span>              :                 FALSE,</span>
-<span id="L515"><span class="lineNum">     515</span>              :                 DUPLICATE_SAME_ACCESS));</span>
-<span id="L516"><span class="lineNum">     516</span>              :             // create a non-inheritable duplicate of the stderr reader</span>
-<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">           1 :             if (childStdErrReadTmp)</span></span>
-<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">           1 :                 SLANG_RETURN_FAIL_ON_FALSE(DuplicateHandle(</span></span>
-<span id="L519"><span class="lineNum">     519</span>              :                     currentProcess,</span>
-<span id="L520"><span class="lineNum">     520</span>              :                     childStdErrReadTmp,</span>
-<span id="L521"><span class="lineNum">     521</span>              :                     currentProcess,</span>
-<span id="L522"><span class="lineNum">     522</span>              :                     childStdErrRead.writeRef(),</span>
-<span id="L523"><span class="lineNum">     523</span>              :                     0,</span>
-<span id="L524"><span class="lineNum">     524</span>              :                     FALSE,</span>
-<span id="L525"><span class="lineNum">     525</span>              :                     DUPLICATE_SAME_ACCESS));</span>
-<span id="L526"><span class="lineNum">     526</span>              :             // create a non-inheritable duplicate of the stdin writer</span>
-<span id="L527"><span class="lineNum">     527</span>              :             // Skipped when there is no writer (UnreadableStdin), which leaves childStdInWrite null</span>
-<span id="L528"><span class="lineNum">     528</span>              :             // and so skips the parent-side In stream at the end of this function. This mirrors the</span>
-<span id="L529"><span class="lineNum">     529</span>              :             // childStdErrReadTmp guard above for DisableStdErrRedirection.</span>
-<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">           1 :             if (childStdInWriteTmp)</span></span>
-<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">           1 :                 SLANG_RETURN_FAIL_ON_FALSE(DuplicateHandle(</span></span>
-<span id="L532"><span class="lineNum">     532</span>              :                     currentProcess,</span>
-<span id="L533"><span class="lineNum">     533</span>              :                     childStdInWriteTmp,</span>
-<span id="L534"><span class="lineNum">     534</span>              :                     currentProcess,</span>
-<span id="L535"><span class="lineNum">     535</span>              :                     childStdInWrite.writeRef(),</span>
-<span id="L536"><span class="lineNum">     536</span>              :                     0,</span>
-<span id="L537"><span class="lineNum">     537</span>              :                     FALSE,</span>
-<span id="L538"><span class="lineNum">     538</span>              :                     DUPLICATE_SAME_ACCESS));</span>
-<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">           1 :         }</span></span>
-<span id="L540"><span class="lineNum">     540</span>              : </span>
-<span id="L541"><span class="lineNum">     541</span>              :         // TODO: switch to proper wide-character versions of these...</span>
-<span id="L542"><span class="lineNum">     542</span>              :         STARTUPINFOW startupInfo;</span>
-<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">           1 :         ZeroMemory(&amp;startupInfo, sizeof(startupInfo));</span></span>
-<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">           1 :         startupInfo.cb = sizeof(startupInfo);</span></span>
-<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">           1 :         startupInfo.hStdError = childStdErrWrite;</span></span>
-<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">           1 :         startupInfo.hStdOutput = childStdOutWrite;</span></span>
-<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">           1 :         startupInfo.hStdInput = childStdInRead;</span></span>
-<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">           1 :         startupInfo.dwFlags = STARTF_USESTDHANDLES;</span></span>
-<span id="L549"><span class="lineNum">     549</span>              : </span>
-<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">           1 :         OSString pathBuffer;</span></span>
-<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">           1 :         LPCWSTR path = nullptr;</span></span>
-<span id="L552"><span class="lineNum">     552</span>              : </span>
-<span id="L553"><span class="lineNum">     553</span>              :         const auto&amp; exe = commandLine.m_executableLocation;</span>
-<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">           1 :         if (exe.m_type == ExecutableLocation::Type::Path)</span></span>
-<span id="L555"><span class="lineNum">     555</span>              :         {</span>
-<span id="L556"><span class="lineNum">     556</span>              :             // If it &#x27;Path&#x27; specified we pass in as the lpApplicationName to limit</span>
-<span id="L557"><span class="lineNum">     557</span>              :             // searching.</span>
-<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">           1 :             pathBuffer = exe.m_pathOrName.toWString();</span></span>
-<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">           1 :             path = pathBuffer.begin();</span></span>
-<span id="L560"><span class="lineNum">     560</span>              :         }</span>
-<span id="L561"><span class="lineNum">     561</span>              : </span>
-<span id="L562"><span class="lineNum">     562</span>              :         // Produce the command line string</span>
-<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">           1 :         String cmdString = commandLine.toString();</span></span>
-<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">           1 :         OSString cmdStringBuffer = cmdString.toWString();</span></span>
-<span id="L565"><span class="lineNum">     565</span>              : </span>
-<span id="L566"><span class="lineNum">     566</span>              :         // Now we can actually get around to starting a process</span>
-<span id="L567"><span class="lineNum">     567</span>              :         PROCESS_INFORMATION processInfo;</span>
-<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">           1 :         ZeroMemory(&amp;processInfo, sizeof(processInfo));</span></span>
-<span id="L569"><span class="lineNum">     569</span>              : </span>
-<span id="L570"><span class="lineNum">     570</span>              :         // https://docs.microsoft.com/en-us/windows/win32/procthread/process-creation-flags</span>
-<span id="L571"><span class="lineNum">     571</span>              : </span>
-<span id="L572"><span class="lineNum">     572</span>              :         DWORD createFlags = CREATE_NO_WINDOW;</span>
-<span id="L573"><span class="lineNum">     573</span>              : </span>
-<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">           1 :         if (flags &amp; Process::Flag::AttachDebugger)</span></span>
-<span id="L575"><span class="lineNum">     575</span>              :         {</span>
-<span id="L576"><span class="lineNum">     576</span>              :             createFlags |= CREATE_SUSPENDED;</span>
-<span id="L577"><span class="lineNum">     577</span>              :         }</span>
-<span id="L578"><span class="lineNum">     578</span>              : </span>
-<span id="L579"><span class="lineNum">     579</span>              :         // From docs:</span>
-<span id="L580"><span class="lineNum">     580</span>              :         // If both lpApplicationName and lpCommandLine are non-NULL, the null-terminated string</span>
-<span id="L581"><span class="lineNum">     581</span>              :         // pointed to by lpApplicationName specifies the module to execute, and the null-terminated</span>
-<span id="L582"><span class="lineNum">     582</span>              :         // string pointed to by lpCommandLine specifies the command line.</span>
-<span id="L583"><span class="lineNum">     583</span>              : </span>
-<span id="L584"><span class="lineNum">     584</span>              :         // JS:</span>
-<span id="L585"><span class="lineNum">     585</span>              :         // Somewhat confusingly this means that even if lpApplicationName is specified, it muse</span>
-<span id="L586"><span class="lineNum">     586</span>              :         // *ALSO* be included as the first whitespace delimited arg must *also* be the (possibly)</span>
-<span id="L587"><span class="lineNum">     587</span>              :         // quoted executable</span>
+<span id="L480"><span class="lineNum">     480</span>              :                 // The caller asked us to leave the child&#x27;s stderr alone, so the child writes to</span>
+<span id="L481"><span class="lineNum">     481</span>              :                 // our stderr. `STARTF_USESTDHANDLES` below makes CreateProcess take `hStdError`</span>
+<span id="L482"><span class="lineNum">     482</span>              :                 // literally, so a null handle there gives the child no stderr and drops</span>
+<span id="L483"><span class="lineNum">     483</span>              :                 // everything it writes. We therefore hand it an inheritable duplicate of our own</span>
+<span id="L484"><span class="lineNum">     484</span>              :                 // stderr, because the handle we hold is not necessarily inheritable. If we have no</span>
+<span id="L485"><span class="lineNum">     485</span>              :                 // stderr (for example, a process started without a console), the child has none</span>
+<span id="L486"><span class="lineNum">     486</span>              :                 // either.</span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaUNC">           0 :                 const HANDLE parentStdErr = GetStdHandle(STD_ERROR_HANDLE);</span></span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaUNC">           0 :                 if (parentStdErr &amp;&amp; parentStdErr != INVALID_HANDLE_VALUE)</span></span>
+<span id="L489"><span class="lineNum">     489</span>              :                 {</span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaUNC">           0 :                     const HANDLE process = GetCurrentProcess();</span></span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaUNC">           0 :                     DuplicateHandle(</span></span>
+<span id="L492"><span class="lineNum">     492</span>              :                         process,</span>
+<span id="L493"><span class="lineNum">     493</span>              :                         parentStdErr,</span>
+<span id="L494"><span class="lineNum">     494</span>              :                         process,</span>
+<span id="L495"><span class="lineNum">     495</span>              :                         childStdErrWrite.writeRef(),</span>
+<span id="L496"><span class="lineNum">     496</span>              :                         0,</span>
+<span id="L497"><span class="lineNum">     497</span>              :                         TRUE,</span>
+<span id="L498"><span class="lineNum">     498</span>              :                         DUPLICATE_SAME_ACCESS);</span>
+<span id="L499"><span class="lineNum">     499</span>              :                 }</span>
+<span id="L500"><span class="lineNum">     500</span>              :             }</span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">           1 :             if (flags &amp; Process::Flag::UnreadableStdin)</span></span>
+<span id="L502"><span class="lineNum">     502</span>              :             {</span>
+<span id="L503"><span class="lineNum">     503</span>              :                 // Hand the child a write-only NUL handle as its stdin, so reads from it error out</span>
+<span id="L504"><span class="lineNum">     504</span>              :                 // rather than reaching EOF. It is deliberately GENERIC_WRITE even though it becomes</span>
+<span id="L505"><span class="lineNum">     505</span>              :                 // the child&#x27;s read end (hStdInput).</span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaUNC">           0 :                 const HANDLE nulWrite = CreateFileW(</span></span>
+<span id="L507"><span class="lineNum">     507</span>              :                     L&quot;NUL&quot;,</span>
+<span id="L508"><span class="lineNum">     508</span>              :                     GENERIC_WRITE,</span>
+<span id="L509"><span class="lineNum">     509</span>              :                     FILE_SHARE_READ | FILE_SHARE_WRITE,</span>
+<span id="L510"><span class="lineNum">     510</span>              :                     &amp;securityAttributes,</span>
+<span id="L511"><span class="lineNum">     511</span>              :                     OPEN_EXISTING,</span>
+<span id="L512"><span class="lineNum">     512</span>              :                     0,</span>
+<span id="L513"><span class="lineNum">     513</span>              :                     nullptr);</span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaUNC">           0 :                 SLANG_RETURN_FAIL_ON_FALSE(nulWrite != INVALID_HANDLE_VALUE);</span></span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaUNC">           0 :                 childStdInRead = nulWrite;</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaUNC">           0 :             }</span></span>
+<span id="L517"><span class="lineNum">     517</span>              :             else</span>
+<span id="L518"><span class="lineNum">     518</span>              :             {</span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">           1 :                 SLANG_RETURN_FAIL_ON_FALSE(CreatePipe(</span></span>
+<span id="L520"><span class="lineNum">     520</span>              :                     childStdInRead.writeRef(),</span>
+<span id="L521"><span class="lineNum">     521</span>              :                     childStdInWriteTmp.writeRef(),</span>
+<span id="L522"><span class="lineNum">     522</span>              :                     &amp;securityAttributes,</span>
+<span id="L523"><span class="lineNum">     523</span>              :                     bufferSize));</span>
+<span id="L524"><span class="lineNum">     524</span>              :             }</span>
+<span id="L525"><span class="lineNum">     525</span>              : </span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">           1 :             const HANDLE currentProcess = GetCurrentProcess();</span></span>
+<span id="L527"><span class="lineNum">     527</span>              : </span>
+<span id="L528"><span class="lineNum">     528</span>              :             // https://docs.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-duplicatehandle</span>
+<span id="L529"><span class="lineNum">     529</span>              : </span>
+<span id="L530"><span class="lineNum">     530</span>              :             // create a non-inheritable duplicate of the stdout reader</span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">           1 :             SLANG_RETURN_FAIL_ON_FALSE(DuplicateHandle(</span></span>
+<span id="L532"><span class="lineNum">     532</span>              :                 currentProcess,</span>
+<span id="L533"><span class="lineNum">     533</span>              :                 childStdOutReadTmp,</span>
+<span id="L534"><span class="lineNum">     534</span>              :                 currentProcess,</span>
+<span id="L535"><span class="lineNum">     535</span>              :                 childStdOutRead.writeRef(),</span>
+<span id="L536"><span class="lineNum">     536</span>              :                 0,</span>
+<span id="L537"><span class="lineNum">     537</span>              :                 FALSE,</span>
+<span id="L538"><span class="lineNum">     538</span>              :                 DUPLICATE_SAME_ACCESS));</span>
+<span id="L539"><span class="lineNum">     539</span>              :             // create a non-inheritable duplicate of the stderr reader</span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">           1 :             if (childStdErrReadTmp)</span></span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">           1 :                 SLANG_RETURN_FAIL_ON_FALSE(DuplicateHandle(</span></span>
+<span id="L542"><span class="lineNum">     542</span>              :                     currentProcess,</span>
+<span id="L543"><span class="lineNum">     543</span>              :                     childStdErrReadTmp,</span>
+<span id="L544"><span class="lineNum">     544</span>              :                     currentProcess,</span>
+<span id="L545"><span class="lineNum">     545</span>              :                     childStdErrRead.writeRef(),</span>
+<span id="L546"><span class="lineNum">     546</span>              :                     0,</span>
+<span id="L547"><span class="lineNum">     547</span>              :                     FALSE,</span>
+<span id="L548"><span class="lineNum">     548</span>              :                     DUPLICATE_SAME_ACCESS));</span>
+<span id="L549"><span class="lineNum">     549</span>              :             // create a non-inheritable duplicate of the stdin writer</span>
+<span id="L550"><span class="lineNum">     550</span>              :             // Skipped when there is no writer (UnreadableStdin), which leaves childStdInWrite null</span>
+<span id="L551"><span class="lineNum">     551</span>              :             // and so skips the parent-side In stream at the end of this function. This mirrors the</span>
+<span id="L552"><span class="lineNum">     552</span>              :             // childStdErrReadTmp guard above for DisableStdErrRedirection.</span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">           1 :             if (childStdInWriteTmp)</span></span>
+<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">           1 :                 SLANG_RETURN_FAIL_ON_FALSE(DuplicateHandle(</span></span>
+<span id="L555"><span class="lineNum">     555</span>              :                     currentProcess,</span>
+<span id="L556"><span class="lineNum">     556</span>              :                     childStdInWriteTmp,</span>
+<span id="L557"><span class="lineNum">     557</span>              :                     currentProcess,</span>
+<span id="L558"><span class="lineNum">     558</span>              :                     childStdInWrite.writeRef(),</span>
+<span id="L559"><span class="lineNum">     559</span>              :                     0,</span>
+<span id="L560"><span class="lineNum">     560</span>              :                     FALSE,</span>
+<span id="L561"><span class="lineNum">     561</span>              :                     DUPLICATE_SAME_ACCESS));</span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">           1 :         }</span></span>
+<span id="L563"><span class="lineNum">     563</span>              : </span>
+<span id="L564"><span class="lineNum">     564</span>              :         // TODO: switch to proper wide-character versions of these...</span>
+<span id="L565"><span class="lineNum">     565</span>              :         STARTUPINFOW startupInfo;</span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">           1 :         ZeroMemory(&amp;startupInfo, sizeof(startupInfo));</span></span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">           1 :         startupInfo.cb = sizeof(startupInfo);</span></span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">           1 :         startupInfo.hStdError = childStdErrWrite;</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">           1 :         startupInfo.hStdOutput = childStdOutWrite;</span></span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">           1 :         startupInfo.hStdInput = childStdInRead;</span></span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">           1 :         startupInfo.dwFlags = STARTF_USESTDHANDLES;</span></span>
+<span id="L572"><span class="lineNum">     572</span>              : </span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">           1 :         OSString pathBuffer;</span></span>
+<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">           1 :         LPCWSTR path = nullptr;</span></span>
+<span id="L575"><span class="lineNum">     575</span>              : </span>
+<span id="L576"><span class="lineNum">     576</span>              :         const auto&amp; exe = commandLine.m_executableLocation;</span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">           1 :         if (exe.m_type == ExecutableLocation::Type::Path)</span></span>
+<span id="L578"><span class="lineNum">     578</span>              :         {</span>
+<span id="L579"><span class="lineNum">     579</span>              :             // If it &#x27;Path&#x27; specified we pass in as the lpApplicationName to limit</span>
+<span id="L580"><span class="lineNum">     580</span>              :             // searching.</span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">           1 :             pathBuffer = exe.m_pathOrName.toWString();</span></span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">           1 :             path = pathBuffer.begin();</span></span>
+<span id="L583"><span class="lineNum">     583</span>              :         }</span>
+<span id="L584"><span class="lineNum">     584</span>              : </span>
+<span id="L585"><span class="lineNum">     585</span>              :         // Produce the command line string</span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">           1 :         String cmdString = commandLine.toString();</span></span>
+<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">           1 :         OSString cmdStringBuffer = cmdString.toWString();</span></span>
 <span id="L588"><span class="lineNum">     588</span>              : </span>
-<span id="L589"><span class="lineNum">     589</span>              :         // https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessa</span>
-<span id="L590"><span class="lineNum">     590</span>              :         // `CreateProcess` requires write access to this, for some reason...</span>
-<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">           1 :         BOOL success = CreateProcessW(</span></span>
-<span id="L592"><span class="lineNum">     592</span>              :             path,</span>
-<span id="L593"><span class="lineNum">     593</span>              :             (LPWSTR)cmdStringBuffer.begin(),</span>
-<span id="L594"><span class="lineNum">     594</span>              :             nullptr,</span>
-<span id="L595"><span class="lineNum">     595</span>              :             nullptr,</span>
-<span id="L596"><span class="lineNum">     596</span>              :             true,</span>
-<span id="L597"><span class="lineNum">     597</span>              :             createFlags,</span>
-<span id="L598"><span class="lineNum">     598</span>              :             nullptr, // TODO: allow specifying environment variables?</span>
-<span id="L599"><span class="lineNum">     599</span>              :             nullptr,</span>
-<span id="L600"><span class="lineNum">     600</span>              :             &amp;startupInfo,</span>
-<span id="L601"><span class="lineNum">     601</span>              :             &amp;processInfo);</span>
-<span id="L602"><span class="lineNum">     602</span>              : </span>
-<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">           1 :         if (!success)</span></span>
-<span id="L604"><span class="lineNum">     604</span>              :         {</span>
-<span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC">           1 :             DWORD err = GetLastError();</span></span>
-<span id="L606"><span class="lineNum">     606</span>              :             SLANG_UNUSED(err);</span>
-<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">           1 :             return SLANG_FAIL;</span></span>
-<span id="L608"><span class="lineNum">     608</span>              :         }</span>
-<span id="L609"><span class="lineNum">     609</span>              : </span>
-<span id="L610"><span class="lineNum">     610</span> <span class="tlaGNC">           1 :         if (flags &amp; Process::Flag::AttachDebugger)</span></span>
-<span id="L611"><span class="lineNum">     611</span>              :         {</span>
-<span id="L612"><span class="lineNum">     612</span>              :             // Lets see if we can set up to debug</span>
-<span id="L613"><span class="lineNum">     613</span>              :             // https://docs.microsoft.com/en-us/windows/win32/debug/debugging-a-running-process</span>
-<span id="L614"><span class="lineNum">     614</span>              : </span>
-<span id="L615"><span class="lineNum">     615</span>              :             // DebugActiveProcess(processInfo.dwProcessId);</span>
-<span id="L616"><span class="lineNum">     616</span>              : </span>
-<span id="L617"><span class="lineNum">     617</span>              :             // Resume the thread</span>
-<span id="L618"><span class="lineNum">     618</span> <span class="tlaUNC">           0 :             ResumeThread(processInfo.hThread);</span></span>
-<span id="L619"><span class="lineNum">     619</span>              :         }</span>
-<span id="L620"><span class="lineNum">     620</span>              : </span>
-<span id="L621"><span class="lineNum">     621</span>              :         // close handles we are now done with</span>
-<span id="L622"><span class="lineNum">     622</span> <span class="tlaGNC">           1 :         CloseHandle(processInfo.hThread);</span></span>
-<span id="L623"><span class="lineNum">     623</span>              : </span>
-<span id="L624"><span class="lineNum">     624</span>              :         // Save the process handle</span>
-<span id="L625"><span class="lineNum">     625</span> <span class="tlaGNC">           1 :         processHandle = processInfo.hProcess;</span></span>
-<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L627"><span class="lineNum">     627</span>              : </span>
-<span id="L628"><span class="lineNum">     628</span> <span class="tlaGNC">           1 :     RefPtr&lt;Stream&gt; streams[Index(StdStreamType::CountOf)];</span></span>
-<span id="L629"><span class="lineNum">     629</span>              : </span>
-<span id="L630"><span class="lineNum">     630</span> <span class="tlaGNC">           1 :     if (childStdErrRead)</span></span>
-<span id="L631"><span class="lineNum">     631</span> <span class="tlaGNC">           1 :         streams[Index(StdStreamType::ErrorOut)] =</span></span>
-<span id="L632"><span class="lineNum">     632</span>              :             new WinPipeStream(childStdErrRead.detach(), FileAccess::Read);</span>
-<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">           1 :     streams[Index(StdStreamType::Out)] =</span></span>
-<span id="L634"><span class="lineNum">     634</span>              :         new WinPipeStream(childStdOutRead.detach(), FileAccess::Read);</span>
-<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">           1 :     if (childStdInWrite)</span></span>
-<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">           1 :         streams[Index(StdStreamType::In)] =</span></span>
-<span id="L637"><span class="lineNum">     637</span>              :             new WinPipeStream(childStdInWrite.detach(), FileAccess::Write);</span>
-<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">           1 :     outProcess = new WinProcess(processHandle.detach(), streams[0].readRef());</span></span>
+<span id="L589"><span class="lineNum">     589</span>              :         // Now we can actually get around to starting a process</span>
+<span id="L590"><span class="lineNum">     590</span>              :         PROCESS_INFORMATION processInfo;</span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">           1 :         ZeroMemory(&amp;processInfo, sizeof(processInfo));</span></span>
+<span id="L592"><span class="lineNum">     592</span>              : </span>
+<span id="L593"><span class="lineNum">     593</span>              :         // https://docs.microsoft.com/en-us/windows/win32/procthread/process-creation-flags</span>
+<span id="L594"><span class="lineNum">     594</span>              : </span>
+<span id="L595"><span class="lineNum">     595</span>              :         DWORD createFlags = CREATE_NO_WINDOW;</span>
+<span id="L596"><span class="lineNum">     596</span>              : </span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">           1 :         if (flags &amp; Process::Flag::AttachDebugger)</span></span>
+<span id="L598"><span class="lineNum">     598</span>              :         {</span>
+<span id="L599"><span class="lineNum">     599</span>              :             createFlags |= CREATE_SUSPENDED;</span>
+<span id="L600"><span class="lineNum">     600</span>              :         }</span>
+<span id="L601"><span class="lineNum">     601</span>              : </span>
+<span id="L602"><span class="lineNum">     602</span>              :         // From docs:</span>
+<span id="L603"><span class="lineNum">     603</span>              :         // If both lpApplicationName and lpCommandLine are non-NULL, the null-terminated string</span>
+<span id="L604"><span class="lineNum">     604</span>              :         // pointed to by lpApplicationName specifies the module to execute, and the null-terminated</span>
+<span id="L605"><span class="lineNum">     605</span>              :         // string pointed to by lpCommandLine specifies the command line.</span>
+<span id="L606"><span class="lineNum">     606</span>              : </span>
+<span id="L607"><span class="lineNum">     607</span>              :         // JS:</span>
+<span id="L608"><span class="lineNum">     608</span>              :         // Somewhat confusingly this means that even if lpApplicationName is specified, it muse</span>
+<span id="L609"><span class="lineNum">     609</span>              :         // *ALSO* be included as the first whitespace delimited arg must *also* be the (possibly)</span>
+<span id="L610"><span class="lineNum">     610</span>              :         // quoted executable</span>
+<span id="L611"><span class="lineNum">     611</span>              : </span>
+<span id="L612"><span class="lineNum">     612</span>              :         // https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessa</span>
+<span id="L613"><span class="lineNum">     613</span>              :         // `CreateProcess` requires write access to this, for some reason...</span>
+<span id="L614"><span class="lineNum">     614</span> <span class="tlaGNC">           1 :         BOOL success = CreateProcessW(</span></span>
+<span id="L615"><span class="lineNum">     615</span>              :             path,</span>
+<span id="L616"><span class="lineNum">     616</span>              :             (LPWSTR)cmdStringBuffer.begin(),</span>
+<span id="L617"><span class="lineNum">     617</span>              :             nullptr,</span>
+<span id="L618"><span class="lineNum">     618</span>              :             nullptr,</span>
+<span id="L619"><span class="lineNum">     619</span>              :             true,</span>
+<span id="L620"><span class="lineNum">     620</span>              :             createFlags,</span>
+<span id="L621"><span class="lineNum">     621</span>              :             nullptr, // TODO: allow specifying environment variables?</span>
+<span id="L622"><span class="lineNum">     622</span>              :             nullptr,</span>
+<span id="L623"><span class="lineNum">     623</span>              :             &amp;startupInfo,</span>
+<span id="L624"><span class="lineNum">     624</span>              :             &amp;processInfo);</span>
+<span id="L625"><span class="lineNum">     625</span>              : </span>
+<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">           1 :         if (!success)</span></span>
+<span id="L627"><span class="lineNum">     627</span>              :         {</span>
+<span id="L628"><span class="lineNum">     628</span> <span class="tlaGNC">           1 :             DWORD err = GetLastError();</span></span>
+<span id="L629"><span class="lineNum">     629</span>              :             SLANG_UNUSED(err);</span>
+<span id="L630"><span class="lineNum">     630</span> <span class="tlaGNC">           1 :             return SLANG_FAIL;</span></span>
+<span id="L631"><span class="lineNum">     631</span>              :         }</span>
+<span id="L632"><span class="lineNum">     632</span>              : </span>
+<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">           1 :         if (flags &amp; Process::Flag::AttachDebugger)</span></span>
+<span id="L634"><span class="lineNum">     634</span>              :         {</span>
+<span id="L635"><span class="lineNum">     635</span>              :             // Lets see if we can set up to debug</span>
+<span id="L636"><span class="lineNum">     636</span>              :             // https://docs.microsoft.com/en-us/windows/win32/debug/debugging-a-running-process</span>
+<span id="L637"><span class="lineNum">     637</span>              : </span>
+<span id="L638"><span class="lineNum">     638</span>              :             // DebugActiveProcess(processInfo.dwProcessId);</span>
 <span id="L639"><span class="lineNum">     639</span>              : </span>
-<span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L642"><span class="lineNum">     642</span>              : </span>
-<span id="L643"><span class="lineNum">     643</span>              : /* static */ void Process::sleepCurrentThread(Int timeInMs)</span>
-<span id="L644"><span class="lineNum">     644</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L645"><span class="lineNum">     645</span> <span class="tlaGNC">           1 :     ::Sleep(DWORD(timeInMs));</span></span>
-<span id="L646"><span class="lineNum">     646</span>              : }</span>
-<span id="L647"><span class="lineNum">     647</span>              : </span>
-<span id="L648"><span class="lineNum">     648</span>              : static uint64_t _getClockFrequency()</span>
-<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L650"><span class="lineNum">     650</span>              :     LARGE_INTEGER timerFrequency;</span>
-<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">           1 :     QueryPerformanceFrequency(&amp;timerFrequency);</span></span>
-<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">           1 :     return timerFrequency.QuadPart;</span></span>
-<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L654"><span class="lineNum">     654</span>              : </span>
-<span id="L655"><span class="lineNum">     655</span>              : static const uint64_t g_frequency = _getClockFrequency();</span>
-<span id="L656"><span class="lineNum">     656</span>              : </span>
-<span id="L657"><span class="lineNum">     657</span>              : /* static */ uint64_t Process::getClockFrequency()</span>
-<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">           1 :     return g_frequency;</span></span>
-<span id="L660"><span class="lineNum">     660</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L661"><span class="lineNum">     661</span>              : </span>
-<span id="L662"><span class="lineNum">     662</span>              : /* static */ uint64_t Process::getClockTick()</span>
-<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L664"><span class="lineNum">     664</span>              :     LARGE_INTEGER counter;</span>
-<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">           1 :     QueryPerformanceCounter(&amp;counter);</span></span>
-<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">           1 :     return counter.QuadPart;</span></span>
-<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L668"><span class="lineNum">     668</span>              : </span>
-<span id="L669"><span class="lineNum">     669</span>              : uint32_t Process::getId()</span>
-<span id="L670"><span class="lineNum">     670</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L671"><span class="lineNum">     671</span> <span class="tlaUNC">           0 :     return _getpid();</span></span>
-<span id="L672"><span class="lineNum">     672</span>              : }</span>
-<span id="L673"><span class="lineNum">     673</span>              : </span>
-<span id="L674"><span class="lineNum">     674</span>              : </span>
-<span id="L675"><span class="lineNum">     675</span>              : } // namespace Slang</span>
+<span id="L640"><span class="lineNum">     640</span>              :             // Resume the thread</span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaUNC">           0 :             ResumeThread(processInfo.hThread);</span></span>
+<span id="L642"><span class="lineNum">     642</span>              :         }</span>
+<span id="L643"><span class="lineNum">     643</span>              : </span>
+<span id="L644"><span class="lineNum">     644</span>              :         // close handles we are now done with</span>
+<span id="L645"><span class="lineNum">     645</span> <span class="tlaGNC">           1 :         CloseHandle(processInfo.hThread);</span></span>
+<span id="L646"><span class="lineNum">     646</span>              : </span>
+<span id="L647"><span class="lineNum">     647</span>              :         // Save the process handle</span>
+<span id="L648"><span class="lineNum">     648</span> <span class="tlaGNC">           1 :         processHandle = processInfo.hProcess;</span></span>
+<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L650"><span class="lineNum">     650</span>              : </span>
+<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">           1 :     RefPtr&lt;Stream&gt; streams[Index(StdStreamType::CountOf)];</span></span>
+<span id="L652"><span class="lineNum">     652</span>              : </span>
+<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">           1 :     if (childStdErrRead)</span></span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">           1 :         streams[Index(StdStreamType::ErrorOut)] =</span></span>
+<span id="L655"><span class="lineNum">     655</span>              :             new WinPipeStream(childStdErrRead.detach(), FileAccess::Read);</span>
+<span id="L656"><span class="lineNum">     656</span> <span class="tlaGNC">           1 :     streams[Index(StdStreamType::Out)] =</span></span>
+<span id="L657"><span class="lineNum">     657</span>              :         new WinPipeStream(childStdOutRead.detach(), FileAccess::Read);</span>
+<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">           1 :     if (childStdInWrite)</span></span>
+<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">           1 :         streams[Index(StdStreamType::In)] =</span></span>
+<span id="L660"><span class="lineNum">     660</span>              :             new WinPipeStream(childStdInWrite.detach(), FileAccess::Write);</span>
+<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">           1 :     outProcess = new WinProcess(processHandle.detach(), streams[0].readRef());</span></span>
+<span id="L662"><span class="lineNum">     662</span>              : </span>
+<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L665"><span class="lineNum">     665</span>              : </span>
+<span id="L666"><span class="lineNum">     666</span>              : /* static */ void Process::sleepCurrentThread(Int timeInMs)</span>
+<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L668"><span class="lineNum">     668</span> <span class="tlaGNC">           1 :     ::Sleep(DWORD(timeInMs));</span></span>
+<span id="L669"><span class="lineNum">     669</span>              : }</span>
+<span id="L670"><span class="lineNum">     670</span>              : </span>
+<span id="L671"><span class="lineNum">     671</span>              : static uint64_t _getClockFrequency()</span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L673"><span class="lineNum">     673</span>              :     LARGE_INTEGER timerFrequency;</span>
+<span id="L674"><span class="lineNum">     674</span> <span class="tlaGNC">           1 :     QueryPerformanceFrequency(&amp;timerFrequency);</span></span>
+<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">           1 :     return timerFrequency.QuadPart;</span></span>
+<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L677"><span class="lineNum">     677</span>              : </span>
+<span id="L678"><span class="lineNum">     678</span>              : static const uint64_t g_frequency = _getClockFrequency();</span>
+<span id="L679"><span class="lineNum">     679</span>              : </span>
+<span id="L680"><span class="lineNum">     680</span>              : /* static */ uint64_t Process::getClockFrequency()</span>
+<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L682"><span class="lineNum">     682</span> <span class="tlaGNC">           1 :     return g_frequency;</span></span>
+<span id="L683"><span class="lineNum">     683</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L684"><span class="lineNum">     684</span>              : </span>
+<span id="L685"><span class="lineNum">     685</span>              : /* static */ uint64_t Process::getClockTick()</span>
+<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L687"><span class="lineNum">     687</span>              :     LARGE_INTEGER counter;</span>
+<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">           1 :     QueryPerformanceCounter(&amp;counter);</span></span>
+<span id="L689"><span class="lineNum">     689</span> <span class="tlaGNC">           1 :     return counter.QuadPart;</span></span>
+<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L691"><span class="lineNum">     691</span>              : </span>
+<span id="L692"><span class="lineNum">     692</span>              : uint32_t Process::getId()</span>
+<span id="L693"><span class="lineNum">     693</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaUNC">           0 :     return _getpid();</span></span>
+<span id="L695"><span class="lineNum">     695</span>              : }</span>
+<span id="L696"><span class="lineNum">     696</span>              : </span>
+<span id="L697"><span class="lineNum">     697</span>              : </span>
+<span id="L698"><span class="lineNum">     698</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">

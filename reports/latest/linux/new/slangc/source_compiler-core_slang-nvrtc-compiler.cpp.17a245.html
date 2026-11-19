@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-18 04:12:32 UTC</td>
+      <td class="headerValue">2026-11-19 04:47:46 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">2.1&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:2.1%;background-color:hsl(1, 70%, 50%)"></div></div>
-      <span class="metricCounts">20 / 942</span>
+      <span class="metricCounts">20 / 946</span>
     </div>
     <div class="metricCard">
       <span class="metricLabel">Functions</span>
@@ -274,13 +274,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Branches</span>
       <span class="metricValue">0.3&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:0.3%;background-color:hsl(0, 70%, 50%)"></div></div>
-      <span class="metricCounts">1 / 322</span>
+      <span class="metricCounts">1 / 326</span>
     </div>
     <div class="metricCard">
       <span class="metricLabel">Regions</span>
       <span class="metricValue">2.2&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:2.2%;background-color:hsl(1, 70%, 50%)"></div></div>
-      <span class="metricCounts">10 / 461</span>
+      <span class="metricCounts">10 / 465</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -1719,322 +1719,329 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1428"><span class="lineNum">    1428</span> <span class="tlaUNC">           0            :     List&lt;const char*&gt; headers;</span></span>
 <span id="L1429"><span class="lineNum">    1429</span> <span class="tlaUNC">           0            :     List&lt;const char*&gt; headerIncludeNames;</span></span>
 <span id="L1430"><span class="lineNum">    1430</span>                         : </span>
-<span id="L1431"><span class="lineNum">    1431</span>                         :     // If compiling for OptiX, we need to add the appropriate search paths to the</span>
-<span id="L1432"><span class="lineNum">    1432</span>                         :     // command line.</span>
+<span id="L1431"><span class="lineNum">    1431</span>                         :     // OptiX needs `--relocatable-device-code=true` only for ray-tracing pipelines. A compute</span>
+<span id="L1432"><span class="lineNum">    1432</span>                         :     // shader that uses OptiX cooperative vectors needs the headers but not this flag.</span>
 <span id="L1433"><span class="lineNum">    1433</span>                         :     //</span>
 <span id="L1434"><span class="lineNum">    1434</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (options.pipelineType == PipelineType::RayTracing)</span></span>
 <span id="L1435"><span class="lineNum">    1435</span> <span class="tlaUNC">           0            :     {</span></span>
 <span id="L1436"><span class="lineNum">    1436</span>                         :         // OptiX requires this flag (OptiX Programming Guide, section 6.1). It prevents the compiler</span>
 <span id="L1437"><span class="lineNum">    1437</span>                         :         // from removing callables as dead code.</span>
 <span id="L1438"><span class="lineNum">    1438</span> <span class="tlaUNC">           0            :         cmdLine.addArg(&quot;--relocatable-device-code=true&quot;);</span></span>
-<span id="L1439"><span class="lineNum">    1439</span>                         : </span>
-<span id="L1440"><span class="lineNum">    1440</span> <span class="tlaUNC">           0            :         if (SLANG_FAILED(_maybeAddOptixSupport(options, cmdLine, diagnostics)))</span></span>
-<span id="L1441"><span class="lineNum">    1441</span> <span class="tlaUNC">           0            :         {</span></span>
-<span id="L1442"><span class="lineNum">    1442</span> <span class="tlaUNC">           0            :             diagnostics-&gt;setResult(SLANG_FAIL);</span></span>
-<span id="L1443"><span class="lineNum">    1443</span> <span class="tlaUNC">           0            :             *outArtifact = artifact.detach();</span></span>
-<span id="L1444"><span class="lineNum">    1444</span> <span class="tlaUNC">           0            :             return SLANG_FAIL;</span></span>
-<span id="L1445"><span class="lineNum">    1445</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L1446"><span class="lineNum">    1446</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1447"><span class="lineNum">    1447</span>                         : </span>
-<span id="L1448"><span class="lineNum">    1448</span>                         :     // Add any compiler specific options</span>
-<span id="L1449"><span class="lineNum">    1449</span>                         :     // NOTE! If these clash with any previously set options (as set via other</span>
-<span id="L1450"><span class="lineNum">    1450</span>                         :     // flags) compilation might fail.</span>
-<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (options.compilerSpecificArguments.count &gt; 0)</span></span>
-<span id="L1452"><span class="lineNum">    1452</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1453"><span class="lineNum">    1453</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         for (auto compilerSpecificArg : options.compilerSpecificArguments)</span></span>
-<span id="L1454"><span class="lineNum">    1454</span> <span class="tlaUNC">           0            :         {</span></span>
-<span id="L1455"><span class="lineNum">    1455</span> <span class="tlaUNC">           0            :             const char* const arg = compilerSpecificArg;</span></span>
-<span id="L1456"><span class="lineNum">    1456</span> <span class="tlaUNC">           0            :             cmdLine.addArg(arg);</span></span>
-<span id="L1457"><span class="lineNum">    1457</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L1458"><span class="lineNum">    1458</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1459"><span class="lineNum">    1459</span>                         : </span>
-<span id="L1460"><span class="lineNum">    1460</span> <span class="tlaUNC">           0            :     SLANG_ASSERT(headers.getCount() == headerIncludeNames.getCount());</span></span>
-<span id="L1461"><span class="lineNum">    1461</span>                         : </span>
-<span id="L1462"><span class="lineNum">    1462</span> <span class="tlaUNC">           0            :     ComPtr&lt;ISlangBlob&gt; sourceBlob;</span></span>
-<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaUNC">           0            :     SLANG_RETURN_ON_FAIL(sourceArtifact-&gt;loadBlob(ArtifactKeep::Yes, sourceBlob.writeRef()));</span></span>
-<span id="L1464"><span class="lineNum">    1464</span>                         : </span>
-<span id="L1465"><span class="lineNum">    1465</span> <span class="tlaUNC">           0            :     auto sourcePath = ArtifactUtil::findPath(sourceArtifact);</span></span>
+<span id="L1439"><span class="lineNum">    1439</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1440"><span class="lineNum">    1440</span>                         : </span>
+<span id="L1441"><span class="lineNum">    1441</span>                         :     // If the code needs OptiX, we need to add the appropriate search paths to the</span>
+<span id="L1442"><span class="lineNum">    1442</span>                         :     // command line.</span>
+<span id="L1443"><span class="lineNum">    1443</span>                         :     //</span>
+<span id="L1444"><span class="lineNum">    1444</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (options.pipelineType == PipelineType::RayTracing ||</span></span>
+<span id="L1445"><span class="lineNum">    1445</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         (options.flags &amp; DownstreamCompileOptions::Flag::RequiresOptix))</span></span>
+<span id="L1446"><span class="lineNum">    1446</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1447"><span class="lineNum">    1447</span> <span class="tlaUNC">           0            :         if (SLANG_FAILED(_maybeAddOptixSupport(options, cmdLine, diagnostics)))</span></span>
+<span id="L1448"><span class="lineNum">    1448</span> <span class="tlaUNC">           0            :         {</span></span>
+<span id="L1449"><span class="lineNum">    1449</span> <span class="tlaUNC">           0            :             diagnostics-&gt;setResult(SLANG_FAIL);</span></span>
+<span id="L1450"><span class="lineNum">    1450</span> <span class="tlaUNC">           0            :             *outArtifact = artifact.detach();</span></span>
+<span id="L1451"><span class="lineNum">    1451</span> <span class="tlaUNC">           0            :             return SLANG_FAIL;</span></span>
+<span id="L1452"><span class="lineNum">    1452</span> <span class="tlaUNC">           0            :         }</span></span>
+<span id="L1453"><span class="lineNum">    1453</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1454"><span class="lineNum">    1454</span>                         : </span>
+<span id="L1455"><span class="lineNum">    1455</span>                         :     // Add any compiler specific options</span>
+<span id="L1456"><span class="lineNum">    1456</span>                         :     // NOTE! If these clash with any previously set options (as set via other</span>
+<span id="L1457"><span class="lineNum">    1457</span>                         :     // flags) compilation might fail.</span>
+<span id="L1458"><span class="lineNum">    1458</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (options.compilerSpecificArguments.count &gt; 0)</span></span>
+<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1460"><span class="lineNum">    1460</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         for (auto compilerSpecificArg : options.compilerSpecificArguments)</span></span>
+<span id="L1461"><span class="lineNum">    1461</span> <span class="tlaUNC">           0            :         {</span></span>
+<span id="L1462"><span class="lineNum">    1462</span> <span class="tlaUNC">           0            :             const char* const arg = compilerSpecificArg;</span></span>
+<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaUNC">           0            :             cmdLine.addArg(arg);</span></span>
+<span id="L1464"><span class="lineNum">    1464</span> <span class="tlaUNC">           0            :         }</span></span>
+<span id="L1465"><span class="lineNum">    1465</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L1466"><span class="lineNum">    1466</span>                         : </span>
-<span id="L1467"><span class="lineNum">    1467</span> <span class="tlaUNC">           0            :     StringBuilder storage;</span></span>
-<span id="L1468"><span class="lineNum">    1468</span> <span class="tlaUNC">           0            :     auto sourceContents = SliceUtil::toTerminatedCharSlice(storage, sourceBlob);</span></span>
-<span id="L1469"><span class="lineNum">    1469</span>                         : </span>
-<span id="L1470"><span class="lineNum">    1470</span>                         :     // Enable NVRTC automatic precompiled headers (12.8+) only when the prelude reaches NVRTC as a</span>
-<span id="L1471"><span class="lineNum">    1471</span>                         :     // leading `#include`. NVRTC&#x27;s PCH covers the tokens up to the first non-directive token (the</span>
-<span id="L1472"><span class="lineNum">    1472</span>                         :     // &quot;header stop point&quot;); with the include form the whole prelude is behind that point and is</span>
-<span id="L1473"><span class="lineNum">    1473</span>                         :     // precompiled once, then reused by later compiles with compatible options and leading</span>
-<span id="L1474"><span class="lineNum">    1474</span>                         :     // directives in the same process. When the prelude is prepended</span>
-<span id="L1475"><span class="lineNum">    1475</span>                         :     // verbatim instead (the default when no tool installs the include form), the stop point falls</span>
-<span id="L1476"><span class="lineNum">    1476</span>                         :     // near the top of the prelude, so the PCH would capture too little to help and is not</span>
-<span id="L1477"><span class="lineNum">    1477</span>                         :     // requested.</span>
-<span id="L1478"><span class="lineNum">    1478</span> <span class="tlaUNC">           0            :     const bool nvrtcSupportsPch = m_desc.version &gt;= SemanticVersion(12, 8);</span></span>
-<span id="L1479"><span class="lineNum">    1479</span> <span class="tlaUNC">           0            :     const bool pchRequested =</span></span>
-<span id="L1480"><span class="lineNum">    1480</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         nvrtcSupportsPch &amp;&amp; asStringSlice(sourceContents).trimStart().startsWith(&quot;#include&quot;);</span></span>
-<span id="L1481"><span class="lineNum">    1481</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (pchRequested)</span></span>
-<span id="L1482"><span class="lineNum">    1482</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1483"><span class="lineNum">    1483</span> <span class="tlaUNC">           0            :         cmdLine.addArg(&quot;-pch&quot;);</span></span>
-<span id="L1484"><span class="lineNum">    1484</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1485"><span class="lineNum">    1485</span>                         : </span>
-<span id="L1486"><span class="lineNum">    1486</span> <span class="tlaUNC">           0            :     nvrtcProgram program = nullptr;</span></span>
-<span id="L1487"><span class="lineNum">    1487</span> <span class="tlaUNC">           0            :     nvrtcResult res = m_nvrtcCreateProgram(</span></span>
-<span id="L1488"><span class="lineNum">    1488</span> <span class="tlaUNC">           0            :         &amp;program,</span></span>
-<span id="L1489"><span class="lineNum">    1489</span> <span class="tlaUNC">           0            :         sourceContents,</span></span>
-<span id="L1490"><span class="lineNum">    1490</span> <span class="tlaUNC">           0            :         String(sourcePath).getBuffer(),</span></span>
-<span id="L1491"><span class="lineNum">    1491</span> <span class="tlaUNC">           0            :         (int)headers.getCount(),</span></span>
-<span id="L1492"><span class="lineNum">    1492</span> <span class="tlaUNC">           0            :         headers.getBuffer(),</span></span>
-<span id="L1493"><span class="lineNum">    1493</span> <span class="tlaUNC">           0            :         headerIncludeNames.getBuffer());</span></span>
-<span id="L1494"><span class="lineNum">    1494</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (res != NVRTC_SUCCESS)</span></span>
-<span id="L1495"><span class="lineNum">    1495</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1496"><span class="lineNum">    1496</span> <span class="tlaUNC">           0            :         return _asResult(res);</span></span>
-<span id="L1497"><span class="lineNum">    1497</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1498"><span class="lineNum">    1498</span> <span class="tlaUNC">           0            :     ScopeProgram scope(this, program);</span></span>
-<span id="L1499"><span class="lineNum">    1499</span>                         : </span>
-<span id="L1500"><span class="lineNum">    1500</span> <span class="tlaUNC">           0            :     List&lt;const char*&gt; dstOptions;</span></span>
-<span id="L1501"><span class="lineNum">    1501</span> <span class="tlaUNC">           0            :     dstOptions.setCount(cmdLine.m_args.getCount());</span></span>
-<span id="L1502"><span class="lineNum">    1502</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     for (Index i = 0; i &lt; cmdLine.m_args.getCount(); ++i)</span></span>
-<span id="L1503"><span class="lineNum">    1503</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1504"><span class="lineNum">    1504</span> <span class="tlaUNC">           0            :         dstOptions[i] = cmdLine.m_args[i].getBuffer();</span></span>
-<span id="L1505"><span class="lineNum">    1505</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1467"><span class="lineNum">    1467</span> <span class="tlaUNC">           0            :     SLANG_ASSERT(headers.getCount() == headerIncludeNames.getCount());</span></span>
+<span id="L1468"><span class="lineNum">    1468</span>                         : </span>
+<span id="L1469"><span class="lineNum">    1469</span> <span class="tlaUNC">           0            :     ComPtr&lt;ISlangBlob&gt; sourceBlob;</span></span>
+<span id="L1470"><span class="lineNum">    1470</span> <span class="tlaUNC">           0            :     SLANG_RETURN_ON_FAIL(sourceArtifact-&gt;loadBlob(ArtifactKeep::Yes, sourceBlob.writeRef()));</span></span>
+<span id="L1471"><span class="lineNum">    1471</span>                         : </span>
+<span id="L1472"><span class="lineNum">    1472</span> <span class="tlaUNC">           0            :     auto sourcePath = ArtifactUtil::findPath(sourceArtifact);</span></span>
+<span id="L1473"><span class="lineNum">    1473</span>                         : </span>
+<span id="L1474"><span class="lineNum">    1474</span> <span class="tlaUNC">           0            :     StringBuilder storage;</span></span>
+<span id="L1475"><span class="lineNum">    1475</span> <span class="tlaUNC">           0            :     auto sourceContents = SliceUtil::toTerminatedCharSlice(storage, sourceBlob);</span></span>
+<span id="L1476"><span class="lineNum">    1476</span>                         : </span>
+<span id="L1477"><span class="lineNum">    1477</span>                         :     // Enable NVRTC automatic precompiled headers (12.8+) only when the prelude reaches NVRTC as a</span>
+<span id="L1478"><span class="lineNum">    1478</span>                         :     // leading `#include`. NVRTC&#x27;s PCH covers the tokens up to the first non-directive token (the</span>
+<span id="L1479"><span class="lineNum">    1479</span>                         :     // &quot;header stop point&quot;); with the include form the whole prelude is behind that point and is</span>
+<span id="L1480"><span class="lineNum">    1480</span>                         :     // precompiled once, then reused by later compiles with compatible options and leading</span>
+<span id="L1481"><span class="lineNum">    1481</span>                         :     // directives in the same process. When the prelude is prepended</span>
+<span id="L1482"><span class="lineNum">    1482</span>                         :     // verbatim instead (the default when no tool installs the include form), the stop point falls</span>
+<span id="L1483"><span class="lineNum">    1483</span>                         :     // near the top of the prelude, so the PCH would capture too little to help and is not</span>
+<span id="L1484"><span class="lineNum">    1484</span>                         :     // requested.</span>
+<span id="L1485"><span class="lineNum">    1485</span> <span class="tlaUNC">           0            :     const bool nvrtcSupportsPch = m_desc.version &gt;= SemanticVersion(12, 8);</span></span>
+<span id="L1486"><span class="lineNum">    1486</span> <span class="tlaUNC">           0            :     const bool pchRequested =</span></span>
+<span id="L1487"><span class="lineNum">    1487</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         nvrtcSupportsPch &amp;&amp; asStringSlice(sourceContents).trimStart().startsWith(&quot;#include&quot;);</span></span>
+<span id="L1488"><span class="lineNum">    1488</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (pchRequested)</span></span>
+<span id="L1489"><span class="lineNum">    1489</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1490"><span class="lineNum">    1490</span> <span class="tlaUNC">           0            :         cmdLine.addArg(&quot;-pch&quot;);</span></span>
+<span id="L1491"><span class="lineNum">    1491</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1492"><span class="lineNum">    1492</span>                         : </span>
+<span id="L1493"><span class="lineNum">    1493</span> <span class="tlaUNC">           0            :     nvrtcProgram program = nullptr;</span></span>
+<span id="L1494"><span class="lineNum">    1494</span> <span class="tlaUNC">           0            :     nvrtcResult res = m_nvrtcCreateProgram(</span></span>
+<span id="L1495"><span class="lineNum">    1495</span> <span class="tlaUNC">           0            :         &amp;program,</span></span>
+<span id="L1496"><span class="lineNum">    1496</span> <span class="tlaUNC">           0            :         sourceContents,</span></span>
+<span id="L1497"><span class="lineNum">    1497</span> <span class="tlaUNC">           0            :         String(sourcePath).getBuffer(),</span></span>
+<span id="L1498"><span class="lineNum">    1498</span> <span class="tlaUNC">           0            :         (int)headers.getCount(),</span></span>
+<span id="L1499"><span class="lineNum">    1499</span> <span class="tlaUNC">           0            :         headers.getBuffer(),</span></span>
+<span id="L1500"><span class="lineNum">    1500</span> <span class="tlaUNC">           0            :         headerIncludeNames.getBuffer());</span></span>
+<span id="L1501"><span class="lineNum">    1501</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (res != NVRTC_SUCCESS)</span></span>
+<span id="L1502"><span class="lineNum">    1502</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1503"><span class="lineNum">    1503</span> <span class="tlaUNC">           0            :         return _asResult(res);</span></span>
+<span id="L1504"><span class="lineNum">    1504</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1505"><span class="lineNum">    1505</span> <span class="tlaUNC">           0            :     ScopeProgram scope(this, program);</span></span>
 <span id="L1506"><span class="lineNum">    1506</span>                         : </span>
-<span id="L1507"><span class="lineNum">    1507</span> <span class="tlaUNC">           0            :     res = m_nvrtcCompileProgram(program, int(dstOptions.getCount()), dstOptions.getBuffer());</span></span>
-<span id="L1508"><span class="lineNum">    1508</span>                         : </span>
-<span id="L1509"><span class="lineNum">    1509</span> <span class="tlaUNC">           0            :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
-<span id="L1510"><span class="lineNum">    1510</span>                         : </span>
-<span id="L1511"><span class="lineNum">    1511</span> <span class="tlaUNC">           0            :     diagnostics-&gt;setResult(_asResult(res));</span></span>
-<span id="L1512"><span class="lineNum">    1512</span>                         : </span>
-<span id="L1513"><span class="lineNum">    1513</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1514"><span class="lineNum">    1514</span> <span class="tlaUNC">           0            :         String rawDiagnostics;</span></span>
+<span id="L1507"><span class="lineNum">    1507</span> <span class="tlaUNC">           0            :     List&lt;const char*&gt; dstOptions;</span></span>
+<span id="L1508"><span class="lineNum">    1508</span> <span class="tlaUNC">           0            :     dstOptions.setCount(cmdLine.m_args.getCount());</span></span>
+<span id="L1509"><span class="lineNum">    1509</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     for (Index i = 0; i &lt; cmdLine.m_args.getCount(); ++i)</span></span>
+<span id="L1510"><span class="lineNum">    1510</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1511"><span class="lineNum">    1511</span> <span class="tlaUNC">           0            :         dstOptions[i] = cmdLine.m_args[i].getBuffer();</span></span>
+<span id="L1512"><span class="lineNum">    1512</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1513"><span class="lineNum">    1513</span>                         : </span>
+<span id="L1514"><span class="lineNum">    1514</span> <span class="tlaUNC">           0            :     res = m_nvrtcCompileProgram(program, int(dstOptions.getCount()), dstOptions.getBuffer());</span></span>
 <span id="L1515"><span class="lineNum">    1515</span>                         : </span>
-<span id="L1516"><span class="lineNum">    1516</span> <span class="tlaUNC">           0            :         size_t logSize = 0;</span></span>
-<span id="L1517"><span class="lineNum">    1517</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         SLANG_NVRTC_RETURN_ON_FAIL(m_nvrtcGetProgramLogSize(program, &amp;logSize));</span></span>
-<span id="L1518"><span class="lineNum">    1518</span>                         : </span>
-<span id="L1519"><span class="lineNum">    1519</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (logSize)</span></span>
-<span id="L1520"><span class="lineNum">    1520</span> <span class="tlaUNC">           0            :         {</span></span>
-<span id="L1521"><span class="lineNum">    1521</span> <span class="tlaUNC">           0            :             char* dst = rawDiagnostics.prepareForAppend(Index(logSize));</span></span>
-<span id="L1522"><span class="lineNum">    1522</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             SLANG_NVRTC_RETURN_ON_FAIL(m_nvrtcGetProgramLog(program, dst));</span></span>
-<span id="L1523"><span class="lineNum">    1523</span>                         : </span>
-<span id="L1524"><span class="lineNum">    1524</span>                         :             // If there is a terminating zero remove it, as the rawDiagnostics</span>
-<span id="L1525"><span class="lineNum">    1525</span>                         :             // string will already contain one.</span>
-<span id="L1526"><span class="lineNum">    1526</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :             logSize -= size_t(logSize &gt; 0 &amp;&amp; dst[logSize - 1] == 0);</span></span>
-<span id="L1527"><span class="lineNum">    1527</span>                         : </span>
-<span id="L1528"><span class="lineNum">    1528</span> <span class="tlaUNC">           0            :             rawDiagnostics.appendInPlace(dst, Index(logSize));</span></span>
-<span id="L1529"><span class="lineNum">    1529</span>                         : </span>
-<span id="L1530"><span class="lineNum">    1530</span> <span class="tlaUNC">           0            :             diagnostics-&gt;setRaw(SliceUtil::asCharSlice(rawDiagnostics));</span></span>
-<span id="L1531"><span class="lineNum">    1531</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L1532"><span class="lineNum">    1532</span>                         : </span>
-<span id="L1533"><span class="lineNum">    1533</span> <span class="tlaUNC">           0            :         SliceAllocator allocator;</span></span>
+<span id="L1516"><span class="lineNum">    1516</span> <span class="tlaUNC">           0            :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
+<span id="L1517"><span class="lineNum">    1517</span>                         : </span>
+<span id="L1518"><span class="lineNum">    1518</span> <span class="tlaUNC">           0            :     diagnostics-&gt;setResult(_asResult(res));</span></span>
+<span id="L1519"><span class="lineNum">    1519</span>                         : </span>
+<span id="L1520"><span class="lineNum">    1520</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1521"><span class="lineNum">    1521</span> <span class="tlaUNC">           0            :         String rawDiagnostics;</span></span>
+<span id="L1522"><span class="lineNum">    1522</span>                         : </span>
+<span id="L1523"><span class="lineNum">    1523</span> <span class="tlaUNC">           0            :         size_t logSize = 0;</span></span>
+<span id="L1524"><span class="lineNum">    1524</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         SLANG_NVRTC_RETURN_ON_FAIL(m_nvrtcGetProgramLogSize(program, &amp;logSize));</span></span>
+<span id="L1525"><span class="lineNum">    1525</span>                         : </span>
+<span id="L1526"><span class="lineNum">    1526</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (logSize)</span></span>
+<span id="L1527"><span class="lineNum">    1527</span> <span class="tlaUNC">           0            :         {</span></span>
+<span id="L1528"><span class="lineNum">    1528</span> <span class="tlaUNC">           0            :             char* dst = rawDiagnostics.prepareForAppend(Index(logSize));</span></span>
+<span id="L1529"><span class="lineNum">    1529</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             SLANG_NVRTC_RETURN_ON_FAIL(m_nvrtcGetProgramLog(program, dst));</span></span>
+<span id="L1530"><span class="lineNum">    1530</span>                         : </span>
+<span id="L1531"><span class="lineNum">    1531</span>                         :             // If there is a terminating zero remove it, as the rawDiagnostics</span>
+<span id="L1532"><span class="lineNum">    1532</span>                         :             // string will already contain one.</span>
+<span id="L1533"><span class="lineNum">    1533</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :             logSize -= size_t(logSize &gt; 0 &amp;&amp; dst[logSize - 1] == 0);</span></span>
 <span id="L1534"><span class="lineNum">    1534</span>                         : </span>
-<span id="L1535"><span class="lineNum">    1535</span>                         :         // Get all of the lines</span>
-<span id="L1536"><span class="lineNum">    1536</span> <span class="tlaUNC">           0            :         List&lt;UnownedStringSlice&gt; lines;</span></span>
-<span id="L1537"><span class="lineNum">    1537</span> <span class="tlaUNC">           0            :         StringUtil::calcLines(rawDiagnostics.getUnownedSlice(), lines);</span></span>
-<span id="L1538"><span class="lineNum">    1538</span>                         : </span>
-<span id="L1539"><span class="lineNum">    1539</span>                         :         // Remove any trailing empty lines</span>
-<span id="L1540"><span class="lineNum">    1540</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         while (lines.getCount() &amp;&amp; lines.getLast().getLength() == 0)</span></span>
-<span id="L1541"><span class="lineNum">    1541</span> <span class="tlaUNC">           0            :         {</span></span>
-<span id="L1542"><span class="lineNum">    1542</span> <span class="tlaUNC">           0            :             lines.removeLast();</span></span>
-<span id="L1543"><span class="lineNum">    1543</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L1544"><span class="lineNum">    1544</span>                         : </span>
-<span id="L1545"><span class="lineNum">    1545</span>                         :         // Find the index searching from last line, that is blank</span>
-<span id="L1546"><span class="lineNum">    1546</span>                         :         // indicating the end of the output</span>
-<span id="L1547"><span class="lineNum">    1547</span> <span class="tlaUNC">           0            :         Index lastIndex = lines.getCount();</span></span>
-<span id="L1548"><span class="lineNum">    1548</span>                         : </span>
-<span id="L1549"><span class="lineNum">    1549</span>                         :         // Look for the first blank line after this point.</span>
-<span id="L1550"><span class="lineNum">    1550</span>                         :         // We&#x27;ll assume any information after that blank line to the end of the</span>
-<span id="L1551"><span class="lineNum">    1551</span>                         :         // diagnostic is compilation summary information.</span>
-<span id="L1552"><span class="lineNum">    1552</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         for (Index i = lastIndex - 1; i &gt;= 0; --i)</span></span>
-<span id="L1553"><span class="lineNum">    1553</span> <span class="tlaUNC">           0            :         {</span></span>
-<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             if (lines[i].getLength() == 0)</span></span>
-<span id="L1555"><span class="lineNum">    1555</span> <span class="tlaUNC">           0            :             {</span></span>
-<span id="L1556"><span class="lineNum">    1556</span> <span class="tlaUNC">           0            :                 lastIndex = i;</span></span>
-<span id="L1557"><span class="lineNum">    1557</span> <span class="tlaUNC">           0            :                 break;</span></span>
-<span id="L1558"><span class="lineNum">    1558</span> <span class="tlaUNC">           0            :             }</span></span>
-<span id="L1559"><span class="lineNum">    1559</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L1560"><span class="lineNum">    1560</span>                         : </span>
-<span id="L1561"><span class="lineNum">    1561</span>                         :         // Parse the diagnostics here</span>
-<span id="L1562"><span class="lineNum">    1562</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         for (auto line : makeConstArrayView(lines.getBuffer(), lastIndex))</span></span>
-<span id="L1563"><span class="lineNum">    1563</span> <span class="tlaUNC">           0            :         {</span></span>
-<span id="L1564"><span class="lineNum">    1564</span> <span class="tlaUNC">           0            :             ArtifactDiagnostic diagnostic;</span></span>
-<span id="L1565"><span class="lineNum">    1565</span> <span class="tlaUNC">           0            :             SlangResult lineRes = _parseNVRTCLine(allocator, line, diagnostic);</span></span>
-<span id="L1566"><span class="lineNum">    1566</span>                         : </span>
-<span id="L1567"><span class="lineNum">    1567</span> <span class="tlaUNC">           0            :             if (SLANG_SUCCEEDED(lineRes))</span></span>
-<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaUNC">           0            :             {</span></span>
-<span id="L1569"><span class="lineNum">    1569</span>                         :                 // We only allow info diagnostics after a &#x27;regular&#x27; diagnostic.</span>
-<span id="L1570"><span class="lineNum">    1570</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                 if (diagnostic.severity == ArtifactDiagnostic::Severity::Info &amp;&amp;</span></span>
-<span id="L1571"><span class="lineNum">    1571</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                     diagnostics-&gt;getCount() == 0)</span></span>
-<span id="L1572"><span class="lineNum">    1572</span> <span class="tlaUNC">           0            :                 {</span></span>
-<span id="L1573"><span class="lineNum">    1573</span> <span class="tlaUNC">           0            :                     continue;</span></span>
-<span id="L1574"><span class="lineNum">    1574</span> <span class="tlaUNC">           0            :                 }</span></span>
-<span id="L1575"><span class="lineNum">    1575</span>                         : </span>
-<span id="L1576"><span class="lineNum">    1576</span> <span class="tlaUNC">           0            :                 diagnostics-&gt;add(diagnostic);</span></span>
-<span id="L1577"><span class="lineNum">    1577</span> <span class="tlaUNC">           0            :             }</span></span>
-<span id="L1578"><span class="lineNum">    1578</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             else if (lineRes != SLANG_E_NOT_FOUND)</span></span>
-<span id="L1579"><span class="lineNum">    1579</span> <span class="tlaUNC">           0            :             {</span></span>
-<span id="L1580"><span class="lineNum">    1580</span>                         :                 // If there is an error exit</span>
-<span id="L1581"><span class="lineNum">    1581</span>                         :                 // But if SLANG_E_NOT_FOUND that just means this line couldn&#x27;t be</span>
-<span id="L1582"><span class="lineNum">    1582</span>                         :                 // parsed, so ignore.</span>
-<span id="L1583"><span class="lineNum">    1583</span> <span class="tlaUNC">           0            :                 return lineRes;</span></span>
+<span id="L1535"><span class="lineNum">    1535</span> <span class="tlaUNC">           0            :             rawDiagnostics.appendInPlace(dst, Index(logSize));</span></span>
+<span id="L1536"><span class="lineNum">    1536</span>                         : </span>
+<span id="L1537"><span class="lineNum">    1537</span> <span class="tlaUNC">           0            :             diagnostics-&gt;setRaw(SliceUtil::asCharSlice(rawDiagnostics));</span></span>
+<span id="L1538"><span class="lineNum">    1538</span> <span class="tlaUNC">           0            :         }</span></span>
+<span id="L1539"><span class="lineNum">    1539</span>                         : </span>
+<span id="L1540"><span class="lineNum">    1540</span> <span class="tlaUNC">           0            :         SliceAllocator allocator;</span></span>
+<span id="L1541"><span class="lineNum">    1541</span>                         : </span>
+<span id="L1542"><span class="lineNum">    1542</span>                         :         // Get all of the lines</span>
+<span id="L1543"><span class="lineNum">    1543</span> <span class="tlaUNC">           0            :         List&lt;UnownedStringSlice&gt; lines;</span></span>
+<span id="L1544"><span class="lineNum">    1544</span> <span class="tlaUNC">           0            :         StringUtil::calcLines(rawDiagnostics.getUnownedSlice(), lines);</span></span>
+<span id="L1545"><span class="lineNum">    1545</span>                         : </span>
+<span id="L1546"><span class="lineNum">    1546</span>                         :         // Remove any trailing empty lines</span>
+<span id="L1547"><span class="lineNum">    1547</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :         while (lines.getCount() &amp;&amp; lines.getLast().getLength() == 0)</span></span>
+<span id="L1548"><span class="lineNum">    1548</span> <span class="tlaUNC">           0            :         {</span></span>
+<span id="L1549"><span class="lineNum">    1549</span> <span class="tlaUNC">           0            :             lines.removeLast();</span></span>
+<span id="L1550"><span class="lineNum">    1550</span> <span class="tlaUNC">           0            :         }</span></span>
+<span id="L1551"><span class="lineNum">    1551</span>                         : </span>
+<span id="L1552"><span class="lineNum">    1552</span>                         :         // Find the index searching from last line, that is blank</span>
+<span id="L1553"><span class="lineNum">    1553</span>                         :         // indicating the end of the output</span>
+<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaUNC">           0            :         Index lastIndex = lines.getCount();</span></span>
+<span id="L1555"><span class="lineNum">    1555</span>                         : </span>
+<span id="L1556"><span class="lineNum">    1556</span>                         :         // Look for the first blank line after this point.</span>
+<span id="L1557"><span class="lineNum">    1557</span>                         :         // We&#x27;ll assume any information after that blank line to the end of the</span>
+<span id="L1558"><span class="lineNum">    1558</span>                         :         // diagnostic is compilation summary information.</span>
+<span id="L1559"><span class="lineNum">    1559</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         for (Index i = lastIndex - 1; i &gt;= 0; --i)</span></span>
+<span id="L1560"><span class="lineNum">    1560</span> <span class="tlaUNC">           0            :         {</span></span>
+<span id="L1561"><span class="lineNum">    1561</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             if (lines[i].getLength() == 0)</span></span>
+<span id="L1562"><span class="lineNum">    1562</span> <span class="tlaUNC">           0            :             {</span></span>
+<span id="L1563"><span class="lineNum">    1563</span> <span class="tlaUNC">           0            :                 lastIndex = i;</span></span>
+<span id="L1564"><span class="lineNum">    1564</span> <span class="tlaUNC">           0            :                 break;</span></span>
+<span id="L1565"><span class="lineNum">    1565</span> <span class="tlaUNC">           0            :             }</span></span>
+<span id="L1566"><span class="lineNum">    1566</span> <span class="tlaUNC">           0            :         }</span></span>
+<span id="L1567"><span class="lineNum">    1567</span>                         : </span>
+<span id="L1568"><span class="lineNum">    1568</span>                         :         // Parse the diagnostics here</span>
+<span id="L1569"><span class="lineNum">    1569</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         for (auto line : makeConstArrayView(lines.getBuffer(), lastIndex))</span></span>
+<span id="L1570"><span class="lineNum">    1570</span> <span class="tlaUNC">           0            :         {</span></span>
+<span id="L1571"><span class="lineNum">    1571</span> <span class="tlaUNC">           0            :             ArtifactDiagnostic diagnostic;</span></span>
+<span id="L1572"><span class="lineNum">    1572</span> <span class="tlaUNC">           0            :             SlangResult lineRes = _parseNVRTCLine(allocator, line, diagnostic);</span></span>
+<span id="L1573"><span class="lineNum">    1573</span>                         : </span>
+<span id="L1574"><span class="lineNum">    1574</span> <span class="tlaUNC">           0            :             if (SLANG_SUCCEEDED(lineRes))</span></span>
+<span id="L1575"><span class="lineNum">    1575</span> <span class="tlaUNC">           0            :             {</span></span>
+<span id="L1576"><span class="lineNum">    1576</span>                         :                 // We only allow info diagnostics after a &#x27;regular&#x27; diagnostic.</span>
+<span id="L1577"><span class="lineNum">    1577</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                 if (diagnostic.severity == ArtifactDiagnostic::Severity::Info &amp;&amp;</span></span>
+<span id="L1578"><span class="lineNum">    1578</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                     diagnostics-&gt;getCount() == 0)</span></span>
+<span id="L1579"><span class="lineNum">    1579</span> <span class="tlaUNC">           0            :                 {</span></span>
+<span id="L1580"><span class="lineNum">    1580</span> <span class="tlaUNC">           0            :                     continue;</span></span>
+<span id="L1581"><span class="lineNum">    1581</span> <span class="tlaUNC">           0            :                 }</span></span>
+<span id="L1582"><span class="lineNum">    1582</span>                         : </span>
+<span id="L1583"><span class="lineNum">    1583</span> <span class="tlaUNC">           0            :                 diagnostics-&gt;add(diagnostic);</span></span>
 <span id="L1584"><span class="lineNum">    1584</span> <span class="tlaUNC">           0            :             }</span></span>
-<span id="L1585"><span class="lineNum">    1585</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L1586"><span class="lineNum">    1586</span>                         : </span>
-<span id="L1587"><span class="lineNum">    1587</span>                         :         // If it has a compilation error.. and there isn&#x27;t already an error set</span>
-<span id="L1588"><span class="lineNum">    1588</span>                         :         // set as failed.</span>
-<span id="L1589"><span class="lineNum">    1589</span> <span class="tlaUNC">           0            :         if (SLANG_SUCCEEDED(diagnostics-&gt;getResult()) &amp;&amp;</span></span>
-<span id="L1590"><span class="lineNum">    1590</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             diagnostics-&gt;hasOfAtLeastSeverity(ArtifactDiagnostic::Severity::Error))</span></span>
-<span id="L1591"><span class="lineNum">    1591</span> <span class="tlaUNC">           0            :         {</span></span>
-<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaUNC">           0            :             diagnostics-&gt;setResult(SLANG_FAIL);</span></span>
-<span id="L1593"><span class="lineNum">    1593</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L1594"><span class="lineNum">    1594</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1595"><span class="lineNum">    1595</span>                         : </span>
-<span id="L1596"><span class="lineNum">    1596</span>                         :     // When we requested `-pch` and the query is available (NVRTC 12.8+), record whether NVRTC</span>
-<span id="L1597"><span class="lineNum">    1597</span>                         :     // created the automatic precompiled header for this compile. NVRTC does not surface this</span>
-<span id="L1598"><span class="lineNum">    1598</span>                         :     // through the emitted PTX, so append it to the diagnostics log as a stable, Slang-owned marker</span>
-<span id="L1599"><span class="lineNum">    1599</span>                         :     // that tests can read to observe PCH creation and rebuild-on-change: &quot;created&quot; (a header was</span>
-<span id="L1600"><span class="lineNum">    1600</span>                         :     // built this compile), &quot;not-created&quot; (none was built this compile — an existing one was reused,</span>
-<span id="L1601"><span class="lineNum">    1601</span>                         :     // or the compiler declined), or &quot;create-failed&quot; (creation was attempted but failed). NVRTC does</span>
-<span id="L1602"><span class="lineNum">    1602</span>                         :     // not report reuse directly; a caller infers it from a &quot;not-created&quot; that follows a &quot;created&quot;</span>
-<span id="L1603"><span class="lineNum">    1603</span>                         :     // for the same key.</span>
-<span id="L1604"><span class="lineNum">    1604</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :     if (pchRequested &amp;&amp; m_nvrtcGetPCHCreateStatus)</span></span>
-<span id="L1605"><span class="lineNum">    1605</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1606"><span class="lineNum">    1606</span> <span class="tlaUNC">           0            :         const nvrtcResult pchStatus = m_nvrtcGetPCHCreateStatus(program);</span></span>
-<span id="L1607"><span class="lineNum">    1607</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         const char* pchState = pchStatus == NVRTC_SUCCESS                         ? &quot;created&quot;</span></span>
-<span id="L1608"><span class="lineNum">    1608</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                                : pchStatus == NVRTC_ERROR_NO_PCH_CREATE_ATTEMPTED ? &quot;not-created&quot;</span></span>
-<span id="L1609"><span class="lineNum">    1609</span> <span class="tlaUNC">           0            :                                                                                   : &quot;create-failed&quot;;</span></span>
-<span id="L1610"><span class="lineNum">    1610</span> <span class="tlaUNC">           0            :         StringBuilder pchStatusLine;</span></span>
-<span id="L1611"><span class="lineNum">    1611</span> <span class="tlaUNC">           0            :         pchStatusLine &lt;&lt; &quot;slang-nvrtc-pch-status: &quot; &lt;&lt; pchState &lt;&lt; &quot;\n&quot;;</span></span>
-<span id="L1612"><span class="lineNum">    1612</span> <span class="tlaUNC">           0            :         diagnostics-&gt;appendRaw(SliceUtil::asCharSlice(pchStatusLine));</span></span>
-<span id="L1613"><span class="lineNum">    1613</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1614"><span class="lineNum">    1614</span>                         : </span>
-<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (res == nvrtc::NVRTC_SUCCESS)</span></span>
-<span id="L1616"><span class="lineNum">    1616</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1617"><span class="lineNum">    1617</span>                         :         // We should parse the log to set up the diagnostics</span>
-<span id="L1618"><span class="lineNum">    1618</span> <span class="tlaUNC">           0            :         size_t ptxSize;</span></span>
-<span id="L1619"><span class="lineNum">    1619</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         SLANG_NVRTC_RETURN_ON_FAIL(m_nvrtcGetPTXSize(program, &amp;ptxSize));</span></span>
-<span id="L1620"><span class="lineNum">    1620</span>                         : </span>
-<span id="L1621"><span class="lineNum">    1621</span> <span class="tlaUNC">           0            :         List&lt;uint8_t&gt; ptx;</span></span>
-<span id="L1622"><span class="lineNum">    1622</span> <span class="tlaUNC">           0            :         ptx.setCount(Index(ptxSize));</span></span>
-<span id="L1623"><span class="lineNum">    1623</span>                         : </span>
-<span id="L1624"><span class="lineNum">    1624</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         SLANG_NVRTC_RETURN_ON_FAIL(m_nvrtcGetPTX(program, (char*)ptx.getBuffer()));</span></span>
-<span id="L1625"><span class="lineNum">    1625</span>                         : </span>
-<span id="L1626"><span class="lineNum">    1626</span> <span class="tlaUNC">           0            :         artifact-&gt;addRepresentationUnknown(ListBlob::moveCreate(ptx));</span></span>
-<span id="L1627"><span class="lineNum">    1627</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1628"><span class="lineNum">    1628</span>                         : </span>
-<span id="L1629"><span class="lineNum">    1629</span> <span class="tlaUNC">           0            :     *outArtifact = artifact.detach();</span></span>
-<span id="L1630"><span class="lineNum">    1630</span> <span class="tlaUNC">           0            :     return SLANG_OK;</span></span>
-<span id="L1631"><span class="lineNum">    1631</span> <span class="tlaUNC">           0            : }</span></span>
+<span id="L1585"><span class="lineNum">    1585</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             else if (lineRes != SLANG_E_NOT_FOUND)</span></span>
+<span id="L1586"><span class="lineNum">    1586</span> <span class="tlaUNC">           0            :             {</span></span>
+<span id="L1587"><span class="lineNum">    1587</span>                         :                 // If there is an error exit</span>
+<span id="L1588"><span class="lineNum">    1588</span>                         :                 // But if SLANG_E_NOT_FOUND that just means this line couldn&#x27;t be</span>
+<span id="L1589"><span class="lineNum">    1589</span>                         :                 // parsed, so ignore.</span>
+<span id="L1590"><span class="lineNum">    1590</span> <span class="tlaUNC">           0            :                 return lineRes;</span></span>
+<span id="L1591"><span class="lineNum">    1591</span> <span class="tlaUNC">           0            :             }</span></span>
+<span id="L1592"><span class="lineNum">    1592</span> <span class="tlaUNC">           0            :         }</span></span>
+<span id="L1593"><span class="lineNum">    1593</span>                         : </span>
+<span id="L1594"><span class="lineNum">    1594</span>                         :         // If it has a compilation error.. and there isn&#x27;t already an error set</span>
+<span id="L1595"><span class="lineNum">    1595</span>                         :         // set as failed.</span>
+<span id="L1596"><span class="lineNum">    1596</span> <span class="tlaUNC">           0            :         if (SLANG_SUCCEEDED(diagnostics-&gt;getResult()) &amp;&amp;</span></span>
+<span id="L1597"><span class="lineNum">    1597</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :             diagnostics-&gt;hasOfAtLeastSeverity(ArtifactDiagnostic::Severity::Error))</span></span>
+<span id="L1598"><span class="lineNum">    1598</span> <span class="tlaUNC">           0            :         {</span></span>
+<span id="L1599"><span class="lineNum">    1599</span> <span class="tlaUNC">           0            :             diagnostics-&gt;setResult(SLANG_FAIL);</span></span>
+<span id="L1600"><span class="lineNum">    1600</span> <span class="tlaUNC">           0            :         }</span></span>
+<span id="L1601"><span class="lineNum">    1601</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1602"><span class="lineNum">    1602</span>                         : </span>
+<span id="L1603"><span class="lineNum">    1603</span>                         :     // When we requested `-pch` and the query is available (NVRTC 12.8+), record whether NVRTC</span>
+<span id="L1604"><span class="lineNum">    1604</span>                         :     // created the automatic precompiled header for this compile. NVRTC does not surface this</span>
+<span id="L1605"><span class="lineNum">    1605</span>                         :     // through the emitted PTX, so append it to the diagnostics log as a stable, Slang-owned marker</span>
+<span id="L1606"><span class="lineNum">    1606</span>                         :     // that tests can read to observe PCH creation and rebuild-on-change: &quot;created&quot; (a header was</span>
+<span id="L1607"><span class="lineNum">    1607</span>                         :     // built this compile), &quot;not-created&quot; (none was built this compile — an existing one was reused,</span>
+<span id="L1608"><span class="lineNum">    1608</span>                         :     // or the compiler declined), or &quot;create-failed&quot; (creation was attempted but failed). NVRTC does</span>
+<span id="L1609"><span class="lineNum">    1609</span>                         :     // not report reuse directly; a caller infers it from a &quot;not-created&quot; that follows a &quot;created&quot;</span>
+<span id="L1610"><span class="lineNum">    1610</span>                         :     // for the same key.</span>
+<span id="L1611"><span class="lineNum">    1611</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :     if (pchRequested &amp;&amp; m_nvrtcGetPCHCreateStatus)</span></span>
+<span id="L1612"><span class="lineNum">    1612</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1613"><span class="lineNum">    1613</span> <span class="tlaUNC">           0            :         const nvrtcResult pchStatus = m_nvrtcGetPCHCreateStatus(program);</span></span>
+<span id="L1614"><span class="lineNum">    1614</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         const char* pchState = pchStatus == NVRTC_SUCCESS                         ? &quot;created&quot;</span></span>
+<span id="L1615"><span class="lineNum">    1615</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :                                : pchStatus == NVRTC_ERROR_NO_PCH_CREATE_ATTEMPTED ? &quot;not-created&quot;</span></span>
+<span id="L1616"><span class="lineNum">    1616</span> <span class="tlaUNC">           0            :                                                                                   : &quot;create-failed&quot;;</span></span>
+<span id="L1617"><span class="lineNum">    1617</span> <span class="tlaUNC">           0            :         StringBuilder pchStatusLine;</span></span>
+<span id="L1618"><span class="lineNum">    1618</span> <span class="tlaUNC">           0            :         pchStatusLine &lt;&lt; &quot;slang-nvrtc-pch-status: &quot; &lt;&lt; pchState &lt;&lt; &quot;\n&quot;;</span></span>
+<span id="L1619"><span class="lineNum">    1619</span> <span class="tlaUNC">           0            :         diagnostics-&gt;appendRaw(SliceUtil::asCharSlice(pchStatusLine));</span></span>
+<span id="L1620"><span class="lineNum">    1620</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1621"><span class="lineNum">    1621</span>                         : </span>
+<span id="L1622"><span class="lineNum">    1622</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (res == nvrtc::NVRTC_SUCCESS)</span></span>
+<span id="L1623"><span class="lineNum">    1623</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1624"><span class="lineNum">    1624</span>                         :         // We should parse the log to set up the diagnostics</span>
+<span id="L1625"><span class="lineNum">    1625</span> <span class="tlaUNC">           0            :         size_t ptxSize;</span></span>
+<span id="L1626"><span class="lineNum">    1626</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         SLANG_NVRTC_RETURN_ON_FAIL(m_nvrtcGetPTXSize(program, &amp;ptxSize));</span></span>
+<span id="L1627"><span class="lineNum">    1627</span>                         : </span>
+<span id="L1628"><span class="lineNum">    1628</span> <span class="tlaUNC">           0            :         List&lt;uint8_t&gt; ptx;</span></span>
+<span id="L1629"><span class="lineNum">    1629</span> <span class="tlaUNC">           0            :         ptx.setCount(Index(ptxSize));</span></span>
+<span id="L1630"><span class="lineNum">    1630</span>                         : </span>
+<span id="L1631"><span class="lineNum">    1631</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         SLANG_NVRTC_RETURN_ON_FAIL(m_nvrtcGetPTX(program, (char*)ptx.getBuffer()));</span></span>
 <span id="L1632"><span class="lineNum">    1632</span>                         : </span>
-<span id="L1633"><span class="lineNum">    1633</span>                         : bool NVRTCDownstreamCompiler::canConvert(const ArtifactDesc&amp; from, const ArtifactDesc&amp; to)</span>
-<span id="L1634"><span class="lineNum">    1634</span> <span class="tlaUNC">           0            : {</span></span>
-<span id="L1635"><span class="lineNum">    1635</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :     return ArtifactDescUtil::isDisassembly(from, to) || ArtifactDescUtil::isDisassembly(to, from);</span></span>
-<span id="L1636"><span class="lineNum">    1636</span> <span class="tlaUNC">           0            : }</span></span>
-<span id="L1637"><span class="lineNum">    1637</span>                         : </span>
-<span id="L1638"><span class="lineNum">    1638</span>                         : SlangResult NVRTCDownstreamCompiler::convert(</span>
-<span id="L1639"><span class="lineNum">    1639</span>                         :     IArtifact* from,</span>
-<span id="L1640"><span class="lineNum">    1640</span>                         :     const ArtifactDesc&amp; to,</span>
-<span id="L1641"><span class="lineNum">    1641</span>                         :     IArtifact** outArtifact)</span>
-<span id="L1642"><span class="lineNum">    1642</span> <span class="tlaUNC">           0            : {</span></span>
-<span id="L1643"><span class="lineNum">    1643</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (!canConvert(from-&gt;getDesc(), to))</span></span>
-<span id="L1644"><span class="lineNum">    1644</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1645"><span class="lineNum">    1645</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
-<span id="L1646"><span class="lineNum">    1646</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1647"><span class="lineNum">    1647</span>                         : </span>
-<span id="L1648"><span class="lineNum">    1648</span>                         :     // PTX is &#x27;binary like&#x27; and &#x27;assembly like&#x27; so we allow conversion either way</span>
-<span id="L1649"><span class="lineNum">    1649</span>                         :     // We do it by just getting as a blob and sharing that blob.</span>
-<span id="L1650"><span class="lineNum">    1650</span>                         :     // A more sophisticated implementation could proxy to the original artifact,</span>
-<span id="L1651"><span class="lineNum">    1651</span>                         :     // but this is simpler, and probably fine in most scenarios.</span>
-<span id="L1652"><span class="lineNum">    1652</span> <span class="tlaUNC">           0            :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
-<span id="L1653"><span class="lineNum">    1653</span> <span class="tlaUNC">           0            :     SLANG_RETURN_ON_FAIL(from-&gt;loadBlob(ArtifactKeep::Yes, blob.writeRef()));</span></span>
+<span id="L1633"><span class="lineNum">    1633</span> <span class="tlaUNC">           0            :         artifact-&gt;addRepresentationUnknown(ListBlob::moveCreate(ptx));</span></span>
+<span id="L1634"><span class="lineNum">    1634</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1635"><span class="lineNum">    1635</span>                         : </span>
+<span id="L1636"><span class="lineNum">    1636</span> <span class="tlaUNC">           0            :     *outArtifact = artifact.detach();</span></span>
+<span id="L1637"><span class="lineNum">    1637</span> <span class="tlaUNC">           0            :     return SLANG_OK;</span></span>
+<span id="L1638"><span class="lineNum">    1638</span> <span class="tlaUNC">           0            : }</span></span>
+<span id="L1639"><span class="lineNum">    1639</span>                         : </span>
+<span id="L1640"><span class="lineNum">    1640</span>                         : bool NVRTCDownstreamCompiler::canConvert(const ArtifactDesc&amp; from, const ArtifactDesc&amp; to)</span>
+<span id="L1641"><span class="lineNum">    1641</span> <span class="tlaUNC">           0            : {</span></span>
+<span id="L1642"><span class="lineNum">    1642</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -; br2: -; br3: -">(0/4)</span>      :     return ArtifactDescUtil::isDisassembly(from, to) || ArtifactDescUtil::isDisassembly(to, from);</span></span>
+<span id="L1643"><span class="lineNum">    1643</span> <span class="tlaUNC">           0            : }</span></span>
+<span id="L1644"><span class="lineNum">    1644</span>                         : </span>
+<span id="L1645"><span class="lineNum">    1645</span>                         : SlangResult NVRTCDownstreamCompiler::convert(</span>
+<span id="L1646"><span class="lineNum">    1646</span>                         :     IArtifact* from,</span>
+<span id="L1647"><span class="lineNum">    1647</span>                         :     const ArtifactDesc&amp; to,</span>
+<span id="L1648"><span class="lineNum">    1648</span>                         :     IArtifact** outArtifact)</span>
+<span id="L1649"><span class="lineNum">    1649</span> <span class="tlaUNC">           0            : {</span></span>
+<span id="L1650"><span class="lineNum">    1650</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (!canConvert(from-&gt;getDesc(), to))</span></span>
+<span id="L1651"><span class="lineNum">    1651</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1652"><span class="lineNum">    1652</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
+<span id="L1653"><span class="lineNum">    1653</span> <span class="tlaUNC">           0            :     }</span></span>
 <span id="L1654"><span class="lineNum">    1654</span>                         : </span>
-<span id="L1655"><span class="lineNum">    1655</span> <span class="tlaUNC">           0            :     auto artifact = ArtifactUtil::createArtifact(to);</span></span>
-<span id="L1656"><span class="lineNum">    1656</span> <span class="tlaUNC">           0            :     artifact-&gt;addRepresentationUnknown(blob);</span></span>
-<span id="L1657"><span class="lineNum">    1657</span>                         : </span>
-<span id="L1658"><span class="lineNum">    1658</span> <span class="tlaUNC">           0            :     *outArtifact = artifact.detach();</span></span>
-<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaUNC">           0            :     return SLANG_OK;</span></span>
-<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaUNC">           0            : }</span></span>
+<span id="L1655"><span class="lineNum">    1655</span>                         :     // PTX is &#x27;binary like&#x27; and &#x27;assembly like&#x27; so we allow conversion either way</span>
+<span id="L1656"><span class="lineNum">    1656</span>                         :     // We do it by just getting as a blob and sharing that blob.</span>
+<span id="L1657"><span class="lineNum">    1657</span>                         :     // A more sophisticated implementation could proxy to the original artifact,</span>
+<span id="L1658"><span class="lineNum">    1658</span>                         :     // but this is simpler, and probably fine in most scenarios.</span>
+<span id="L1659"><span class="lineNum">    1659</span> <span class="tlaUNC">           0            :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
+<span id="L1660"><span class="lineNum">    1660</span> <span class="tlaUNC">           0            :     SLANG_RETURN_ON_FAIL(from-&gt;loadBlob(ArtifactKeep::Yes, blob.writeRef()));</span></span>
 <span id="L1661"><span class="lineNum">    1661</span>                         : </span>
-<span id="L1662"><span class="lineNum">    1662</span>                         : static SlangResult _findAndLoadNVRTC(</span>
-<span id="L1663"><span class="lineNum">    1663</span>                         :     ISlangSharedLibraryLoader* loader,</span>
-<span id="L1664"><span class="lineNum">    1664</span>                         :     ComPtr&lt;ISlangSharedLibrary&gt;&amp; outLibrary)</span>
-<span id="L1665"><span class="lineNum">    1665</span> <span class="tlaGNC">          62            : {</span></span>
-<span id="L1666"><span class="lineNum">    1666</span>                         : #if SLANG_WINDOWS_FAMILY &amp;&amp; SLANG_PTR_IS_64</span>
-<span id="L1667"><span class="lineNum">    1667</span>                         : </span>
-<span id="L1668"><span class="lineNum">    1668</span>                         :     // We only need to search 64 bit versions on windows</span>
-<span id="L1669"><span class="lineNum">    1669</span>                         :     NVRTCPathVisitor visitor(_getNVRTCBaseName());</span>
-<span id="L1670"><span class="lineNum">    1670</span>                         :     SLANG_RETURN_ON_FAIL(_findNVRTC(visitor));</span>
-<span id="L1671"><span class="lineNum">    1671</span>                         : </span>
-<span id="L1672"><span class="lineNum">    1672</span>                         :     // We want to start with the newest version...</span>
-<span id="L1673"><span class="lineNum">    1673</span>                         :     for (Index i = visitor.m_candidates.getCount() - 1; i &gt;= 0; --i)</span>
-<span id="L1674"><span class="lineNum">    1674</span>                         :     {</span>
-<span id="L1675"><span class="lineNum">    1675</span>                         :         const auto&amp; candidate = visitor.m_candidates[i];</span>
-<span id="L1676"><span class="lineNum">    1676</span>                         :         if (SLANG_SUCCEEDED(</span>
-<span id="L1677"><span class="lineNum">    1677</span>                         :                 loader-&gt;loadSharedLibrary(candidate.path.getBuffer(), outLibrary.writeRef())))</span>
-<span id="L1678"><span class="lineNum">    1678</span>                         :         {</span>
-<span id="L1679"><span class="lineNum">    1679</span>                         :             return SLANG_OK;</span>
-<span id="L1680"><span class="lineNum">    1680</span>                         :         }</span>
-<span id="L1681"><span class="lineNum">    1681</span>                         :     }</span>
-<span id="L1682"><span class="lineNum">    1682</span>                         : </span>
-<span id="L1683"><span class="lineNum">    1683</span>                         : #else</span>
-<span id="L1684"><span class="lineNum">    1684</span> <span class="tlaGNC">          62            :     SLANG_UNUSED(loader);</span></span>
-<span id="L1685"><span class="lineNum">    1685</span> <span class="tlaGNC">          62            :     SLANG_UNUSED(outLibrary);</span></span>
-<span id="L1686"><span class="lineNum">    1686</span>                         : </span>
-<span id="L1687"><span class="lineNum">    1687</span> <span class="tlaGNC">          62            :     SLANG_UNUSED_FUNCTION(_getNVRTCBaseName);</span></span>
-<span id="L1688"><span class="lineNum">    1688</span> <span class="tlaGNC">          62            :     SLANG_UNUSED_FUNCTION(_findNVRTC);</span></span>
-<span id="L1689"><span class="lineNum">    1689</span> <span class="tlaGNC">          62            : #endif</span></span>
-<span id="L1690"><span class="lineNum">    1690</span>                         : </span>
-<span id="L1691"><span class="lineNum">    1691</span>                         :     // This is an official-ish list of versions is here:</span>
-<span id="L1692"><span class="lineNum">    1692</span>                         :     // https://developer.nvidia.com/cuda-toolkit-archive</span>
+<span id="L1662"><span class="lineNum">    1662</span> <span class="tlaUNC">           0            :     auto artifact = ArtifactUtil::createArtifact(to);</span></span>
+<span id="L1663"><span class="lineNum">    1663</span> <span class="tlaUNC">           0            :     artifact-&gt;addRepresentationUnknown(blob);</span></span>
+<span id="L1664"><span class="lineNum">    1664</span>                         : </span>
+<span id="L1665"><span class="lineNum">    1665</span> <span class="tlaUNC">           0            :     *outArtifact = artifact.detach();</span></span>
+<span id="L1666"><span class="lineNum">    1666</span> <span class="tlaUNC">           0            :     return SLANG_OK;</span></span>
+<span id="L1667"><span class="lineNum">    1667</span> <span class="tlaUNC">           0            : }</span></span>
+<span id="L1668"><span class="lineNum">    1668</span>                         : </span>
+<span id="L1669"><span class="lineNum">    1669</span>                         : static SlangResult _findAndLoadNVRTC(</span>
+<span id="L1670"><span class="lineNum">    1670</span>                         :     ISlangSharedLibraryLoader* loader,</span>
+<span id="L1671"><span class="lineNum">    1671</span>                         :     ComPtr&lt;ISlangSharedLibrary&gt;&amp; outLibrary)</span>
+<span id="L1672"><span class="lineNum">    1672</span> <span class="tlaGNC">          62            : {</span></span>
+<span id="L1673"><span class="lineNum">    1673</span>                         : #if SLANG_WINDOWS_FAMILY &amp;&amp; SLANG_PTR_IS_64</span>
+<span id="L1674"><span class="lineNum">    1674</span>                         : </span>
+<span id="L1675"><span class="lineNum">    1675</span>                         :     // We only need to search 64 bit versions on windows</span>
+<span id="L1676"><span class="lineNum">    1676</span>                         :     NVRTCPathVisitor visitor(_getNVRTCBaseName());</span>
+<span id="L1677"><span class="lineNum">    1677</span>                         :     SLANG_RETURN_ON_FAIL(_findNVRTC(visitor));</span>
+<span id="L1678"><span class="lineNum">    1678</span>                         : </span>
+<span id="L1679"><span class="lineNum">    1679</span>                         :     // We want to start with the newest version...</span>
+<span id="L1680"><span class="lineNum">    1680</span>                         :     for (Index i = visitor.m_candidates.getCount() - 1; i &gt;= 0; --i)</span>
+<span id="L1681"><span class="lineNum">    1681</span>                         :     {</span>
+<span id="L1682"><span class="lineNum">    1682</span>                         :         const auto&amp; candidate = visitor.m_candidates[i];</span>
+<span id="L1683"><span class="lineNum">    1683</span>                         :         if (SLANG_SUCCEEDED(</span>
+<span id="L1684"><span class="lineNum">    1684</span>                         :                 loader-&gt;loadSharedLibrary(candidate.path.getBuffer(), outLibrary.writeRef())))</span>
+<span id="L1685"><span class="lineNum">    1685</span>                         :         {</span>
+<span id="L1686"><span class="lineNum">    1686</span>                         :             return SLANG_OK;</span>
+<span id="L1687"><span class="lineNum">    1687</span>                         :         }</span>
+<span id="L1688"><span class="lineNum">    1688</span>                         :     }</span>
+<span id="L1689"><span class="lineNum">    1689</span>                         : </span>
+<span id="L1690"><span class="lineNum">    1690</span>                         : #else</span>
+<span id="L1691"><span class="lineNum">    1691</span> <span class="tlaGNC">          62            :     SLANG_UNUSED(loader);</span></span>
+<span id="L1692"><span class="lineNum">    1692</span> <span class="tlaGNC">          62            :     SLANG_UNUSED(outLibrary);</span></span>
 <span id="L1693"><span class="lineNum">    1693</span>                         : </span>
-<span id="L1694"><span class="lineNum">    1694</span>                         :     // Filenames for NVRTC</span>
-<span id="L1695"><span class="lineNum">    1695</span>                         :     // https://docs.nvidia.com/cuda/nvrtc/index.html</span>
-<span id="L1696"><span class="lineNum">    1696</span>                         :     //</span>
-<span id="L1697"><span class="lineNum">    1697</span>                         :     // From this it appears on platforms other than windows the SharedLibrary name</span>
-<span id="L1698"><span class="lineNum">    1698</span>                         :     // should be nvrtc which is already tried, so we can give up now.</span>
-<span id="L1699"><span class="lineNum">    1699</span> <span class="tlaGNC">          62            :     return SLANG_E_NOT_FOUND;</span></span>
-<span id="L1700"><span class="lineNum">    1700</span> <span class="tlaGNC">          62            : }</span></span>
-<span id="L1701"><span class="lineNum">    1701</span>                         : </span>
-<span id="L1702"><span class="lineNum">    1702</span>                         : /* static */ SlangResult NVRTCDownstreamCompilerUtil::locateCompilers(</span>
-<span id="L1703"><span class="lineNum">    1703</span>                         :     const String&amp; path,</span>
-<span id="L1704"><span class="lineNum">    1704</span>                         :     ISlangSharedLibraryLoader* loader,</span>
-<span id="L1705"><span class="lineNum">    1705</span>                         :     DownstreamCompilerSet* set)</span>
-<span id="L1706"><span class="lineNum">    1706</span> <span class="tlaGNC">          62            : {</span></span>
-<span id="L1707"><span class="lineNum">    1707</span> <span class="tlaGNC">          62            :     ComPtr&lt;ISlangSharedLibrary&gt; library;</span></span>
+<span id="L1694"><span class="lineNum">    1694</span> <span class="tlaGNC">          62            :     SLANG_UNUSED_FUNCTION(_getNVRTCBaseName);</span></span>
+<span id="L1695"><span class="lineNum">    1695</span> <span class="tlaGNC">          62            :     SLANG_UNUSED_FUNCTION(_findNVRTC);</span></span>
+<span id="L1696"><span class="lineNum">    1696</span> <span class="tlaGNC">          62            : #endif</span></span>
+<span id="L1697"><span class="lineNum">    1697</span>                         : </span>
+<span id="L1698"><span class="lineNum">    1698</span>                         :     // This is an official-ish list of versions is here:</span>
+<span id="L1699"><span class="lineNum">    1699</span>                         :     // https://developer.nvidia.com/cuda-toolkit-archive</span>
+<span id="L1700"><span class="lineNum">    1700</span>                         : </span>
+<span id="L1701"><span class="lineNum">    1701</span>                         :     // Filenames for NVRTC</span>
+<span id="L1702"><span class="lineNum">    1702</span>                         :     // https://docs.nvidia.com/cuda/nvrtc/index.html</span>
+<span id="L1703"><span class="lineNum">    1703</span>                         :     //</span>
+<span id="L1704"><span class="lineNum">    1704</span>                         :     // From this it appears on platforms other than windows the SharedLibrary name</span>
+<span id="L1705"><span class="lineNum">    1705</span>                         :     // should be nvrtc which is already tried, so we can give up now.</span>
+<span id="L1706"><span class="lineNum">    1706</span> <span class="tlaGNC">          62            :     return SLANG_E_NOT_FOUND;</span></span>
+<span id="L1707"><span class="lineNum">    1707</span> <span class="tlaGNC">          62            : }</span></span>
 <span id="L1708"><span class="lineNum">    1708</span>                         : </span>
-<span id="L1709"><span class="lineNum">    1709</span>                         :     // If the user supplies a path to their preferred version of NVRTC,</span>
-<span id="L1710"><span class="lineNum">    1710</span>                         :     // we just use this.</span>
-<span id="L1711"><span class="lineNum">    1711</span> <span class="tlaGNC">          62 <span class="branchPart" title="br0: 0; br1: 62">(1/2)</span>      :     if (path.getLength() != 0)</span></span>
-<span id="L1712"><span class="lineNum">    1712</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1713"><span class="lineNum">    1713</span> <span class="tlaUNC">           0            :         SLANG_RETURN_ON_FAIL(loader-&gt;loadSharedLibrary(path.getBuffer(), library.writeRef()));</span></span>
-<span id="L1714"><span class="lineNum">    1714</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1715"><span class="lineNum">    1715</span> <span class="tlaGNC">          62            :     else</span></span>
-<span id="L1716"><span class="lineNum">    1716</span> <span class="tlaGNC">          62            :     {</span></span>
-<span id="L1717"><span class="lineNum">    1717</span>                         :         // As a catch-all for non-Windows platforms, we search for</span>
-<span id="L1718"><span class="lineNum">    1718</span>                         :         // a library simply named `nvrtc` (well, `libnvrtc`) which</span>
-<span id="L1719"><span class="lineNum">    1719</span>                         :         // is expected to match whatever the user has installed.</span>
-<span id="L1720"><span class="lineNum">    1720</span>                         :         //</span>
-<span id="L1721"><span class="lineNum">    1721</span>                         :         // On Windows an installation could place the version of nvrtc it uses in</span>
-<span id="L1722"><span class="lineNum">    1722</span>                         :         // the same directory as the slang binary, such that it&#x27;s loaded. Using this</span>
-<span id="L1723"><span class="lineNum">    1723</span>                         :         // name also allows a ISlangSharedLibraryLoader to easily identify what is</span>
-<span id="L1724"><span class="lineNum">    1724</span>                         :         // required and perhaps load a specific version</span>
-<span id="L1725"><span class="lineNum">    1725</span> <span class="tlaGNC">          62            :         if (SLANG_FAILED(loader-&gt;loadSharedLibrary(&quot;nvrtc&quot;, library.writeRef())))</span></span>
-<span id="L1726"><span class="lineNum">    1726</span> <span class="tlaGNC">          62            :         {</span></span>
-<span id="L1727"><span class="lineNum">    1727</span>                         :             // Try something more sophisticated to locate NVRTC</span>
-<span id="L1728"><span class="lineNum">    1728</span> <span class="tlaGNC">          62            :             SLANG_RETURN_ON_FAIL(_findAndLoadNVRTC(loader, library));</span></span>
-<span id="L1729"><span class="lineNum">    1729</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L1730"><span class="lineNum">    1730</span> <span class="tlaGNC">          62            :     }</span></span>
-<span id="L1731"><span class="lineNum">    1731</span>                         : </span>
-<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaUNC">           0            :     SLANG_ASSERT(library);</span></span>
-<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (!library)</span></span>
-<span id="L1734"><span class="lineNum">    1734</span> <span class="tlaUNC">           0            :     {</span></span>
-<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
-<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaUNC">           0            :     }</span></span>
-<span id="L1737"><span class="lineNum">    1737</span>                         : </span>
-<span id="L1738"><span class="lineNum">    1738</span> <span class="tlaUNC">           0            :     auto compiler = new NVRTCDownstreamCompiler;</span></span>
-<span id="L1739"><span class="lineNum">    1739</span> <span class="tlaUNC">           0            :     ComPtr&lt;IDownstreamCompiler&gt; compilerIntf(compiler);</span></span>
-<span id="L1740"><span class="lineNum">    1740</span> <span class="tlaUNC">           0            :     SLANG_RETURN_ON_FAIL(compiler-&gt;init(library));</span></span>
-<span id="L1741"><span class="lineNum">    1741</span>                         : </span>
-<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaUNC">           0            :     set-&gt;addCompiler(compilerIntf);</span></span>
-<span id="L1743"><span class="lineNum">    1743</span> <span class="tlaUNC">           0            :     return SLANG_OK;</span></span>
-<span id="L1744"><span class="lineNum">    1744</span> <span class="tlaUNC">           0            : }</span></span>
-<span id="L1745"><span class="lineNum">    1745</span>                         : </span>
-<span id="L1746"><span class="lineNum">    1746</span>                         : } // namespace Slang</span>
+<span id="L1709"><span class="lineNum">    1709</span>                         : /* static */ SlangResult NVRTCDownstreamCompilerUtil::locateCompilers(</span>
+<span id="L1710"><span class="lineNum">    1710</span>                         :     const String&amp; path,</span>
+<span id="L1711"><span class="lineNum">    1711</span>                         :     ISlangSharedLibraryLoader* loader,</span>
+<span id="L1712"><span class="lineNum">    1712</span>                         :     DownstreamCompilerSet* set)</span>
+<span id="L1713"><span class="lineNum">    1713</span> <span class="tlaGNC">          62            : {</span></span>
+<span id="L1714"><span class="lineNum">    1714</span> <span class="tlaGNC">          62            :     ComPtr&lt;ISlangSharedLibrary&gt; library;</span></span>
+<span id="L1715"><span class="lineNum">    1715</span>                         : </span>
+<span id="L1716"><span class="lineNum">    1716</span>                         :     // If the user supplies a path to their preferred version of NVRTC,</span>
+<span id="L1717"><span class="lineNum">    1717</span>                         :     // we just use this.</span>
+<span id="L1718"><span class="lineNum">    1718</span> <span class="tlaGNC">          62 <span class="branchPart" title="br0: 0; br1: 62">(1/2)</span>      :     if (path.getLength() != 0)</span></span>
+<span id="L1719"><span class="lineNum">    1719</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1720"><span class="lineNum">    1720</span> <span class="tlaUNC">           0            :         SLANG_RETURN_ON_FAIL(loader-&gt;loadSharedLibrary(path.getBuffer(), library.writeRef()));</span></span>
+<span id="L1721"><span class="lineNum">    1721</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1722"><span class="lineNum">    1722</span> <span class="tlaGNC">          62            :     else</span></span>
+<span id="L1723"><span class="lineNum">    1723</span> <span class="tlaGNC">          62            :     {</span></span>
+<span id="L1724"><span class="lineNum">    1724</span>                         :         // As a catch-all for non-Windows platforms, we search for</span>
+<span id="L1725"><span class="lineNum">    1725</span>                         :         // a library simply named `nvrtc` (well, `libnvrtc`) which</span>
+<span id="L1726"><span class="lineNum">    1726</span>                         :         // is expected to match whatever the user has installed.</span>
+<span id="L1727"><span class="lineNum">    1727</span>                         :         //</span>
+<span id="L1728"><span class="lineNum">    1728</span>                         :         // On Windows an installation could place the version of nvrtc it uses in</span>
+<span id="L1729"><span class="lineNum">    1729</span>                         :         // the same directory as the slang binary, such that it&#x27;s loaded. Using this</span>
+<span id="L1730"><span class="lineNum">    1730</span>                         :         // name also allows a ISlangSharedLibraryLoader to easily identify what is</span>
+<span id="L1731"><span class="lineNum">    1731</span>                         :         // required and perhaps load a specific version</span>
+<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">          62            :         if (SLANG_FAILED(loader-&gt;loadSharedLibrary(&quot;nvrtc&quot;, library.writeRef())))</span></span>
+<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaGNC">          62            :         {</span></span>
+<span id="L1734"><span class="lineNum">    1734</span>                         :             // Try something more sophisticated to locate NVRTC</span>
+<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">          62            :             SLANG_RETURN_ON_FAIL(_findAndLoadNVRTC(loader, library));</span></span>
+<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaUNC">           0            :         }</span></span>
+<span id="L1737"><span class="lineNum">    1737</span> <span class="tlaGNC">          62            :     }</span></span>
+<span id="L1738"><span class="lineNum">    1738</span>                         : </span>
+<span id="L1739"><span class="lineNum">    1739</span> <span class="tlaUNC">           0            :     SLANG_ASSERT(library);</span></span>
+<span id="L1740"><span class="lineNum">    1740</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :     if (!library)</span></span>
+<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaUNC">           0            :         return SLANG_FAIL;</span></span>
+<span id="L1743"><span class="lineNum">    1743</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L1744"><span class="lineNum">    1744</span>                         : </span>
+<span id="L1745"><span class="lineNum">    1745</span> <span class="tlaUNC">           0            :     auto compiler = new NVRTCDownstreamCompiler;</span></span>
+<span id="L1746"><span class="lineNum">    1746</span> <span class="tlaUNC">           0            :     ComPtr&lt;IDownstreamCompiler&gt; compilerIntf(compiler);</span></span>
+<span id="L1747"><span class="lineNum">    1747</span> <span class="tlaUNC">           0            :     SLANG_RETURN_ON_FAIL(compiler-&gt;init(library));</span></span>
+<span id="L1748"><span class="lineNum">    1748</span>                         : </span>
+<span id="L1749"><span class="lineNum">    1749</span> <span class="tlaUNC">           0            :     set-&gt;addCompiler(compilerIntf);</span></span>
+<span id="L1750"><span class="lineNum">    1750</span> <span class="tlaUNC">           0            :     return SLANG_OK;</span></span>
+<span id="L1751"><span class="lineNum">    1751</span> <span class="tlaUNC">           0            : }</span></span>
+<span id="L1752"><span class="lineNum">    1752</span>                         : </span>
+<span id="L1753"><span class="lineNum">    1753</span>                         : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
