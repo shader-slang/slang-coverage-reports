@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-19 04:48:05 UTC</td>
+      <td class="headerValue">2026-11-20 05:36:28 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">63.6&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:63.6%;background-color:hsl(27, 70%, 50%)"></div></div>
-      <span class="metricCounts">210 / 330</span>
+      <span class="metricValue">63.4&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:63.4%;background-color:hsl(27, 70%, 50%)"></div></div>
+      <span class="metricCounts">210 / 331</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -946,302 +946,308 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L673"><span class="lineNum">     673</span> <span class="tlaUNC">           0 :             relPath = Path::combine(fromPath, path);</span></span>
 <span id="L674"><span class="lineNum">     674</span>              :             break;</span>
 <span id="L675"><span class="lineNum">     675</span>              :         }</span>
-<span id="L676"><span class="lineNum">     676</span>              :     }</span>
-<span id="L677"><span class="lineNum">     677</span>              : </span>
-<span id="L678"><span class="lineNum">     678</span> <span class="tlaUNC">           0 :     *pathOut = StringUtil::createStringBlob(relPath).detach();</span></span>
-<span id="L679"><span class="lineNum">     679</span> <span class="tlaUNC">           0 :     return SLANG_OK;</span></span>
-<span id="L680"><span class="lineNum">     680</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L681"><span class="lineNum">     681</span>              : </span>
-<span id="L682"><span class="lineNum">     682</span>              : SlangResult ZipFileSystemImpl::_getPathContents(</span>
-<span id="L683"><span class="lineNum">     683</span>              :     ImplicitDirectoryCollector::State terminationState,</span>
-<span id="L684"><span class="lineNum">     684</span>              :     ImplicitDirectoryCollector* outCollector)</span>
-<span id="L685"><span class="lineNum">     685</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">           1 :     if (!_hasArchive())</span></span>
-<span id="L687"><span class="lineNum">     687</span>              :     {</span>
-<span id="L688"><span class="lineNum">     688</span> <span class="tlaUNC">           0 :         return SLANG_E_NOT_FOUND;</span></span>
-<span id="L689"><span class="lineNum">     689</span>              :     }</span>
-<span id="L690"><span class="lineNum">     690</span>              : </span>
-<span id="L691"><span class="lineNum">     691</span>              :     // Okay - I want to iterate through all of the entries and look for the ones with this prefix</span>
-<span id="L692"><span class="lineNum">     692</span> <span class="tlaGNC">           1 :     const Index entryCount = Index(mz_zip_reader_get_num_files(&amp;m_archive));</span></span>
-<span id="L693"><span class="lineNum">     693</span> <span class="tlaGNC">           1 :     for (Index i = 0; i &lt; entryCount; ++i)</span></span>
-<span id="L694"><span class="lineNum">     694</span>              :     {</span>
-<span id="L695"><span class="lineNum">     695</span>              : </span>
-<span id="L696"><span class="lineNum">     696</span>              :         // Skip if it&#x27;s been deleted.</span>
-<span id="L697"><span class="lineNum">     697</span> <span class="tlaGNC">           1 :         if (m_removedSet.contains(i))</span></span>
-<span id="L698"><span class="lineNum">     698</span>              :         {</span>
-<span id="L699"><span class="lineNum">     699</span>              :             continue;</span>
-<span id="L700"><span class="lineNum">     700</span>              :         }</span>
+<span id="L676"><span class="lineNum">     676</span>              :     default:</span>
+<span id="L677"><span class="lineNum">     677</span>              :         return SLANG_E_INVALID_ARG;</span>
+<span id="L678"><span class="lineNum">     678</span>              :     }</span>
+<span id="L679"><span class="lineNum">     679</span>              : </span>
+<span id="L680"><span class="lineNum">     680</span>              :     // The ISlangFileSystemExt contract for calcCombinedPath promises the simplified form, so</span>
+<span id="L681"><span class="lineNum">     681</span>              :     // callers holding the interface see one spelling whichever implementation answers.</span>
+<span id="L682"><span class="lineNum">     682</span> <span class="tlaUNC">           0 :     relPath = Path::simplify(relPath);</span></span>
+<span id="L683"><span class="lineNum">     683</span>              : </span>
+<span id="L684"><span class="lineNum">     684</span> <span class="tlaUNC">           0 :     *pathOut = StringUtil::createStringBlob(relPath).detach();</span></span>
+<span id="L685"><span class="lineNum">     685</span> <span class="tlaUNC">           0 :     return SLANG_OK;</span></span>
+<span id="L686"><span class="lineNum">     686</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L687"><span class="lineNum">     687</span>              : </span>
+<span id="L688"><span class="lineNum">     688</span>              : SlangResult ZipFileSystemImpl::_getPathContents(</span>
+<span id="L689"><span class="lineNum">     689</span>              :     ImplicitDirectoryCollector::State terminationState,</span>
+<span id="L690"><span class="lineNum">     690</span>              :     ImplicitDirectoryCollector* outCollector)</span>
+<span id="L691"><span class="lineNum">     691</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L692"><span class="lineNum">     692</span> <span class="tlaGNC">           1 :     if (!_hasArchive())</span></span>
+<span id="L693"><span class="lineNum">     693</span>              :     {</span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaUNC">           0 :         return SLANG_E_NOT_FOUND;</span></span>
+<span id="L695"><span class="lineNum">     695</span>              :     }</span>
+<span id="L696"><span class="lineNum">     696</span>              : </span>
+<span id="L697"><span class="lineNum">     697</span>              :     // Okay - I want to iterate through all of the entries and look for the ones with this prefix</span>
+<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">           1 :     const Index entryCount = Index(mz_zip_reader_get_num_files(&amp;m_archive));</span></span>
+<span id="L699"><span class="lineNum">     699</span> <span class="tlaGNC">           1 :     for (Index i = 0; i &lt; entryCount; ++i)</span></span>
+<span id="L700"><span class="lineNum">     700</span>              :     {</span>
 <span id="L701"><span class="lineNum">     701</span>              : </span>
-<span id="L702"><span class="lineNum">     702</span>              :         mz_zip_archive_file_stat fileStat;</span>
-<span id="L703"><span class="lineNum">     703</span> <span class="tlaGNC">           1 :         if (!mz_zip_reader_file_stat(&amp;m_archive, mz_uint(i), &amp;fileStat))</span></span>
+<span id="L702"><span class="lineNum">     702</span>              :         // Skip if it&#x27;s been deleted.</span>
+<span id="L703"><span class="lineNum">     703</span> <span class="tlaGNC">           1 :         if (m_removedSet.contains(i))</span></span>
 <span id="L704"><span class="lineNum">     704</span>              :         {</span>
 <span id="L705"><span class="lineNum">     705</span>              :             continue;</span>
 <span id="L706"><span class="lineNum">     706</span>              :         }</span>
 <span id="L707"><span class="lineNum">     707</span>              : </span>
-<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">           1 :         UnownedStringSlice currentPath(fileStat.m_filename);</span></span>
-<span id="L709"><span class="lineNum">     709</span> <span class="tlaGNC">           1 :         SlangPathType pathType =</span></span>
-<span id="L710"><span class="lineNum">     710</span>              :             fileStat.m_is_directory ? SLANG_PATH_TYPE_DIRECTORY : SLANG_PATH_TYPE_FILE;</span>
-<span id="L711"><span class="lineNum">     711</span> <span class="tlaGNC">           1 :         outCollector-&gt;addPath(pathType, currentPath);</span></span>
-<span id="L712"><span class="lineNum">     712</span>              : </span>
-<span id="L713"><span class="lineNum">     713</span>              :         // If a termination state is defined, and we reach it, we are done</span>
-<span id="L714"><span class="lineNum">     714</span> <span class="tlaGNC">           1 :         if (terminationState != ImplicitDirectoryCollector::State::None &amp;&amp;</span></span>
-<span id="L715"><span class="lineNum">     715</span>              :             outCollector-&gt;hasState(terminationState))</span>
-<span id="L716"><span class="lineNum">     716</span>              :         {</span>
-<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">           1 :             return SLANG_OK;</span></span>
-<span id="L718"><span class="lineNum">     718</span>              :         }</span>
-<span id="L719"><span class="lineNum">     719</span>              :     }</span>
-<span id="L720"><span class="lineNum">     720</span>              :     // Check we found the directory at all...</span>
-<span id="L721"><span class="lineNum">     721</span> <span class="tlaGNC">           1 :     return outCollector-&gt;getDirectoryExists() ? SLANG_OK : SLANG_E_NOT_FOUND;</span></span>
-<span id="L722"><span class="lineNum">     722</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L723"><span class="lineNum">     723</span>              : </span>
-<span id="L724"><span class="lineNum">     724</span>              : SlangResult ZipFileSystemImpl::enumeratePathContents(</span>
-<span id="L725"><span class="lineNum">     725</span>              :     const char* path,</span>
-<span id="L726"><span class="lineNum">     726</span>              :     FileSystemContentsCallBack callback,</span>
-<span id="L727"><span class="lineNum">     727</span>              :     void* userData)</span>
-<span id="L728"><span class="lineNum">     728</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L729"><span class="lineNum">     729</span> <span class="tlaGNC">           1 :     if (!_hasArchive())</span></span>
-<span id="L730"><span class="lineNum">     730</span>              :     {</span>
-<span id="L731"><span class="lineNum">     731</span> <span class="tlaUNC">           0 :         return SLANG_E_NOT_FOUND;</span></span>
-<span id="L732"><span class="lineNum">     732</span>              :     }</span>
-<span id="L733"><span class="lineNum">     733</span>              : </span>
-<span id="L734"><span class="lineNum">     734</span> <span class="tlaGNC">           1 :     String fixedPath;</span></span>
-<span id="L735"><span class="lineNum">     735</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_getFixedPath(path, fixedPath));</span></span>
-<span id="L736"><span class="lineNum">     736</span> <span class="tlaGNC">           1 :     ImplicitDirectoryCollector collector(fixedPath);</span></span>
-<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_getPathContents(ImplicitDirectoryCollector::State::None, &amp;collector));</span></span>
-<span id="L738"><span class="lineNum">     738</span> <span class="tlaGNC">           1 :     return collector.enumerate(callback, userData);</span></span>
-<span id="L739"><span class="lineNum">     739</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L740"><span class="lineNum">     740</span>              : </span>
-<span id="L741"><span class="lineNum">     741</span>              : SlangResult ZipFileSystemImpl::saveFileBlob(const char* path, ISlangBlob* dataBlob)</span>
-<span id="L742"><span class="lineNum">     742</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L743"><span class="lineNum">     743</span> <span class="tlaGNC">           1 :     if (!dataBlob)</span></span>
-<span id="L744"><span class="lineNum">     744</span>              :     {</span>
-<span id="L745"><span class="lineNum">     745</span> <span class="tlaUNC">           0 :         return SLANG_E_INVALID_ARG;</span></span>
-<span id="L746"><span class="lineNum">     746</span>              :     }</span>
-<span id="L747"><span class="lineNum">     747</span>              : </span>
-<span id="L748"><span class="lineNum">     748</span> <span class="tlaGNC">           1 :     return saveFile(path, dataBlob-&gt;getBufferPointer(), dataBlob-&gt;getBufferSize());</span></span>
-<span id="L749"><span class="lineNum">     749</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L750"><span class="lineNum">     750</span>              : </span>
-<span id="L751"><span class="lineNum">     751</span>              : SlangResult ZipFileSystemImpl::saveFile(const char* path, const void* data, size_t size)</span>
-<span id="L752"><span class="lineNum">     752</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L753"><span class="lineNum">     753</span> <span class="tlaGNC">           1 :     String fixedPath;</span></span>
-<span id="L754"><span class="lineNum">     754</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_getFixedPath(path, fixedPath));</span></span>
-<span id="L755"><span class="lineNum">     755</span>              : </span>
-<span id="L756"><span class="lineNum">     756</span>              :     mz_uint32 index;</span>
-<span id="L757"><span class="lineNum">     757</span> <span class="tlaGNC">           1 :     if (SLANG_SUCCEEDED(_findEntryIndexFromFixedPath(fixedPath, index)))</span></span>
-<span id="L758"><span class="lineNum">     758</span>              :     {</span>
-<span id="L759"><span class="lineNum">     759</span>              :         // Mark as removed</span>
-<span id="L760"><span class="lineNum">     760</span> <span class="tlaUNC">           0 :         m_removedSet.add(index);</span></span>
-<span id="L761"><span class="lineNum">     761</span>              :     }</span>
-<span id="L762"><span class="lineNum">     762</span>              : </span>
-<span id="L763"><span class="lineNum">     763</span>              :     // We need to be able to write to the archive</span>
-<span id="L764"><span class="lineNum">     764</span> <span class="tlaGNC">           1 :     _requireMode(Mode::ReadWrite);</span></span>
-<span id="L765"><span class="lineNum">     765</span>              : </span>
-<span id="L766"><span class="lineNum">     766</span>              :     // TODO(JS):</span>
-<span id="L767"><span class="lineNum">     767</span>              :     // We may want to check the directory exists that holds the path exists</span>
-<span id="L768"><span class="lineNum">     768</span>              :     // Which is easy to do. Without this check it allows directories to come into existence</span>
-<span id="L769"><span class="lineNum">     769</span>              :     // when the path to the file is used.</span>
-<span id="L770"><span class="lineNum">     770</span>              :     // This behaviour *isn&#x27;t* strictly the same as the file system, which requires the path</span>
-<span id="L771"><span class="lineNum">     771</span>              :     // to a file to exist before it is written.</span>
-<span id="L772"><span class="lineNum">     772</span>              :     //</span>
-<span id="L773"><span class="lineNum">     773</span>              :     // Not enforcing this allows zips that don&#x27;t explicitly specify paths - which saves space</span>
-<span id="L774"><span class="lineNum">     774</span>              :     // and is simpler.</span>
-<span id="L775"><span class="lineNum">     775</span>              :     //</span>
-<span id="L776"><span class="lineNum">     776</span>              :     // NOTE! This also means that if a file that produces an implicit path is *removed* that</span>
-<span id="L777"><span class="lineNum">     777</span>              :     // the implicit directories are also in effect removed.</span>
-<span id="L778"><span class="lineNum">     778</span>              : </span>
-<span id="L779"><span class="lineNum">     779</span>              :     // Need to add to the end of the file</span>
-<span id="L780"><span class="lineNum">     780</span> <span class="tlaGNC">           1 :     const mz_uint32 entryCount = mz_zip_reader_get_num_files(&amp;m_archive);</span></span>
-<span id="L781"><span class="lineNum">     781</span> <span class="tlaGNC">           1 :     if (!mz_zip_writer_add_mem(&amp;m_archive, fixedPath.getBuffer(), data, size, m_compressionLevel))</span></span>
-<span id="L782"><span class="lineNum">     782</span>              :     {</span>
-<span id="L783"><span class="lineNum">     783</span> <span class="tlaUNC">           0 :         return SLANG_FAIL;</span></span>
-<span id="L784"><span class="lineNum">     784</span>              :     }</span>
-<span id="L785"><span class="lineNum">     785</span>              : </span>
-<span id="L786"><span class="lineNum">     786</span>              :     // Make sure it is added at expended index</span>
-<span id="L787"><span class="lineNum">     787</span>              :     SLANG_ASSERT(_getPathAtIndex(entryCount) == fixedPath.getUnownedSlice());</span>
-<span id="L788"><span class="lineNum">     788</span>              : </span>
-<span id="L789"><span class="lineNum">     789</span>              :     // Set in the map</span>
-<span id="L790"><span class="lineNum">     790</span> <span class="tlaGNC">           1 :     m_pathMap.add(fixedPath.getUnownedSlice(), entryCount);</span></span>
-<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L792"><span class="lineNum">     792</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L793"><span class="lineNum">     793</span>              : </span>
-<span id="L794"><span class="lineNum">     794</span>              : SlangResult ZipFileSystemImpl::remove(const char* path)</span>
-<span id="L795"><span class="lineNum">     795</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L796"><span class="lineNum">     796</span> <span class="tlaUNC">           0 :     String fixedPath;</span></span>
-<span id="L797"><span class="lineNum">     797</span> <span class="tlaUNC">           0 :     SLANG_RETURN_ON_FAIL(_getFixedPath(path, fixedPath));</span></span>
-<span id="L798"><span class="lineNum">     798</span>              : </span>
-<span id="L799"><span class="lineNum">     799</span>              :     mz_uint32 index;</span>
-<span id="L800"><span class="lineNum">     800</span> <span class="tlaUNC">           0 :     SLANG_RETURN_ON_FAIL(_findEntryIndexFromFixedPath(fixedPath, index));</span></span>
-<span id="L801"><span class="lineNum">     801</span>              : </span>
-<span id="L802"><span class="lineNum">     802</span>              :     mz_zip_archive_file_stat fileStat;</span>
-<span id="L803"><span class="lineNum">     803</span> <span class="tlaUNC">           0 :     if (!mz_zip_reader_file_stat(&amp;m_archive, index, &amp;fileStat))</span></span>
-<span id="L804"><span class="lineNum">     804</span>              :     {</span>
-<span id="L805"><span class="lineNum">     805</span> <span class="tlaUNC">           0 :         return SLANG_FAIL;</span></span>
-<span id="L806"><span class="lineNum">     806</span>              :     }</span>
+<span id="L708"><span class="lineNum">     708</span>              :         mz_zip_archive_file_stat fileStat;</span>
+<span id="L709"><span class="lineNum">     709</span> <span class="tlaGNC">           1 :         if (!mz_zip_reader_file_stat(&amp;m_archive, mz_uint(i), &amp;fileStat))</span></span>
+<span id="L710"><span class="lineNum">     710</span>              :         {</span>
+<span id="L711"><span class="lineNum">     711</span>              :             continue;</span>
+<span id="L712"><span class="lineNum">     712</span>              :         }</span>
+<span id="L713"><span class="lineNum">     713</span>              : </span>
+<span id="L714"><span class="lineNum">     714</span> <span class="tlaGNC">           1 :         UnownedStringSlice currentPath(fileStat.m_filename);</span></span>
+<span id="L715"><span class="lineNum">     715</span> <span class="tlaGNC">           1 :         SlangPathType pathType =</span></span>
+<span id="L716"><span class="lineNum">     716</span>              :             fileStat.m_is_directory ? SLANG_PATH_TYPE_DIRECTORY : SLANG_PATH_TYPE_FILE;</span>
+<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">           1 :         outCollector-&gt;addPath(pathType, currentPath);</span></span>
+<span id="L718"><span class="lineNum">     718</span>              : </span>
+<span id="L719"><span class="lineNum">     719</span>              :         // If a termination state is defined, and we reach it, we are done</span>
+<span id="L720"><span class="lineNum">     720</span> <span class="tlaGNC">           1 :         if (terminationState != ImplicitDirectoryCollector::State::None &amp;&amp;</span></span>
+<span id="L721"><span class="lineNum">     721</span>              :             outCollector-&gt;hasState(terminationState))</span>
+<span id="L722"><span class="lineNum">     722</span>              :         {</span>
+<span id="L723"><span class="lineNum">     723</span> <span class="tlaGNC">           1 :             return SLANG_OK;</span></span>
+<span id="L724"><span class="lineNum">     724</span>              :         }</span>
+<span id="L725"><span class="lineNum">     725</span>              :     }</span>
+<span id="L726"><span class="lineNum">     726</span>              :     // Check we found the directory at all...</span>
+<span id="L727"><span class="lineNum">     727</span> <span class="tlaGNC">           1 :     return outCollector-&gt;getDirectoryExists() ? SLANG_OK : SLANG_E_NOT_FOUND;</span></span>
+<span id="L728"><span class="lineNum">     728</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L729"><span class="lineNum">     729</span>              : </span>
+<span id="L730"><span class="lineNum">     730</span>              : SlangResult ZipFileSystemImpl::enumeratePathContents(</span>
+<span id="L731"><span class="lineNum">     731</span>              :     const char* path,</span>
+<span id="L732"><span class="lineNum">     732</span>              :     FileSystemContentsCallBack callback,</span>
+<span id="L733"><span class="lineNum">     733</span>              :     void* userData)</span>
+<span id="L734"><span class="lineNum">     734</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L735"><span class="lineNum">     735</span> <span class="tlaGNC">           1 :     if (!_hasArchive())</span></span>
+<span id="L736"><span class="lineNum">     736</span>              :     {</span>
+<span id="L737"><span class="lineNum">     737</span> <span class="tlaUNC">           0 :         return SLANG_E_NOT_FOUND;</span></span>
+<span id="L738"><span class="lineNum">     738</span>              :     }</span>
+<span id="L739"><span class="lineNum">     739</span>              : </span>
+<span id="L740"><span class="lineNum">     740</span> <span class="tlaGNC">           1 :     String fixedPath;</span></span>
+<span id="L741"><span class="lineNum">     741</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_getFixedPath(path, fixedPath));</span></span>
+<span id="L742"><span class="lineNum">     742</span> <span class="tlaGNC">           1 :     ImplicitDirectoryCollector collector(fixedPath);</span></span>
+<span id="L743"><span class="lineNum">     743</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_getPathContents(ImplicitDirectoryCollector::State::None, &amp;collector));</span></span>
+<span id="L744"><span class="lineNum">     744</span> <span class="tlaGNC">           1 :     return collector.enumerate(callback, userData);</span></span>
+<span id="L745"><span class="lineNum">     745</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L746"><span class="lineNum">     746</span>              : </span>
+<span id="L747"><span class="lineNum">     747</span>              : SlangResult ZipFileSystemImpl::saveFileBlob(const char* path, ISlangBlob* dataBlob)</span>
+<span id="L748"><span class="lineNum">     748</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L749"><span class="lineNum">     749</span> <span class="tlaGNC">           1 :     if (!dataBlob)</span></span>
+<span id="L750"><span class="lineNum">     750</span>              :     {</span>
+<span id="L751"><span class="lineNum">     751</span> <span class="tlaUNC">           0 :         return SLANG_E_INVALID_ARG;</span></span>
+<span id="L752"><span class="lineNum">     752</span>              :     }</span>
+<span id="L753"><span class="lineNum">     753</span>              : </span>
+<span id="L754"><span class="lineNum">     754</span> <span class="tlaGNC">           1 :     return saveFile(path, dataBlob-&gt;getBufferPointer(), dataBlob-&gt;getBufferSize());</span></span>
+<span id="L755"><span class="lineNum">     755</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L756"><span class="lineNum">     756</span>              : </span>
+<span id="L757"><span class="lineNum">     757</span>              : SlangResult ZipFileSystemImpl::saveFile(const char* path, const void* data, size_t size)</span>
+<span id="L758"><span class="lineNum">     758</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L759"><span class="lineNum">     759</span> <span class="tlaGNC">           1 :     String fixedPath;</span></span>
+<span id="L760"><span class="lineNum">     760</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_getFixedPath(path, fixedPath));</span></span>
+<span id="L761"><span class="lineNum">     761</span>              : </span>
+<span id="L762"><span class="lineNum">     762</span>              :     mz_uint32 index;</span>
+<span id="L763"><span class="lineNum">     763</span> <span class="tlaGNC">           1 :     if (SLANG_SUCCEEDED(_findEntryIndexFromFixedPath(fixedPath, index)))</span></span>
+<span id="L764"><span class="lineNum">     764</span>              :     {</span>
+<span id="L765"><span class="lineNum">     765</span>              :         // Mark as removed</span>
+<span id="L766"><span class="lineNum">     766</span> <span class="tlaUNC">           0 :         m_removedSet.add(index);</span></span>
+<span id="L767"><span class="lineNum">     767</span>              :     }</span>
+<span id="L768"><span class="lineNum">     768</span>              : </span>
+<span id="L769"><span class="lineNum">     769</span>              :     // We need to be able to write to the archive</span>
+<span id="L770"><span class="lineNum">     770</span> <span class="tlaGNC">           1 :     _requireMode(Mode::ReadWrite);</span></span>
+<span id="L771"><span class="lineNum">     771</span>              : </span>
+<span id="L772"><span class="lineNum">     772</span>              :     // TODO(JS):</span>
+<span id="L773"><span class="lineNum">     773</span>              :     // We may want to check the directory exists that holds the path exists</span>
+<span id="L774"><span class="lineNum">     774</span>              :     // Which is easy to do. Without this check it allows directories to come into existence</span>
+<span id="L775"><span class="lineNum">     775</span>              :     // when the path to the file is used.</span>
+<span id="L776"><span class="lineNum">     776</span>              :     // This behaviour *isn&#x27;t* strictly the same as the file system, which requires the path</span>
+<span id="L777"><span class="lineNum">     777</span>              :     // to a file to exist before it is written.</span>
+<span id="L778"><span class="lineNum">     778</span>              :     //</span>
+<span id="L779"><span class="lineNum">     779</span>              :     // Not enforcing this allows zips that don&#x27;t explicitly specify paths - which saves space</span>
+<span id="L780"><span class="lineNum">     780</span>              :     // and is simpler.</span>
+<span id="L781"><span class="lineNum">     781</span>              :     //</span>
+<span id="L782"><span class="lineNum">     782</span>              :     // NOTE! This also means that if a file that produces an implicit path is *removed* that</span>
+<span id="L783"><span class="lineNum">     783</span>              :     // the implicit directories are also in effect removed.</span>
+<span id="L784"><span class="lineNum">     784</span>              : </span>
+<span id="L785"><span class="lineNum">     785</span>              :     // Need to add to the end of the file</span>
+<span id="L786"><span class="lineNum">     786</span> <span class="tlaGNC">           1 :     const mz_uint32 entryCount = mz_zip_reader_get_num_files(&amp;m_archive);</span></span>
+<span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">           1 :     if (!mz_zip_writer_add_mem(&amp;m_archive, fixedPath.getBuffer(), data, size, m_compressionLevel))</span></span>
+<span id="L788"><span class="lineNum">     788</span>              :     {</span>
+<span id="L789"><span class="lineNum">     789</span> <span class="tlaUNC">           0 :         return SLANG_FAIL;</span></span>
+<span id="L790"><span class="lineNum">     790</span>              :     }</span>
+<span id="L791"><span class="lineNum">     791</span>              : </span>
+<span id="L792"><span class="lineNum">     792</span>              :     // Make sure it is added at expended index</span>
+<span id="L793"><span class="lineNum">     793</span>              :     SLANG_ASSERT(_getPathAtIndex(entryCount) == fixedPath.getUnownedSlice());</span>
+<span id="L794"><span class="lineNum">     794</span>              : </span>
+<span id="L795"><span class="lineNum">     795</span>              :     // Set in the map</span>
+<span id="L796"><span class="lineNum">     796</span> <span class="tlaGNC">           1 :     m_pathMap.add(fixedPath.getUnownedSlice(), entryCount);</span></span>
+<span id="L797"><span class="lineNum">     797</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L798"><span class="lineNum">     798</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L799"><span class="lineNum">     799</span>              : </span>
+<span id="L800"><span class="lineNum">     800</span>              : SlangResult ZipFileSystemImpl::remove(const char* path)</span>
+<span id="L801"><span class="lineNum">     801</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L802"><span class="lineNum">     802</span> <span class="tlaUNC">           0 :     String fixedPath;</span></span>
+<span id="L803"><span class="lineNum">     803</span> <span class="tlaUNC">           0 :     SLANG_RETURN_ON_FAIL(_getFixedPath(path, fixedPath));</span></span>
+<span id="L804"><span class="lineNum">     804</span>              : </span>
+<span id="L805"><span class="lineNum">     805</span>              :     mz_uint32 index;</span>
+<span id="L806"><span class="lineNum">     806</span> <span class="tlaUNC">           0 :     SLANG_RETURN_ON_FAIL(_findEntryIndexFromFixedPath(fixedPath, index));</span></span>
 <span id="L807"><span class="lineNum">     807</span>              : </span>
-<span id="L808"><span class="lineNum">     808</span> <span class="tlaUNC">           0 :     if (fileStat.m_is_directory)</span></span>
-<span id="L809"><span class="lineNum">     809</span>              :     {</span>
-<span id="L810"><span class="lineNum">     810</span>              :         // Find the directory contents</span>
-<span id="L811"><span class="lineNum">     811</span> <span class="tlaUNC">           0 :         ImplicitDirectoryCollector collector(fixedPath);</span></span>
-<span id="L812"><span class="lineNum">     812</span> <span class="tlaUNC">           0 :         SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L813"><span class="lineNum">     813</span>              :             _getPathContents(ImplicitDirectoryCollector::State::HasContent, &amp;collector));</span>
-<span id="L814"><span class="lineNum">     814</span>              : </span>
-<span id="L815"><span class="lineNum">     815</span> <span class="tlaUNC">           0 :         if (collector.hasContent())</span></span>
-<span id="L816"><span class="lineNum">     816</span>              :         {</span>
-<span id="L817"><span class="lineNum">     817</span>              :             // If it contains children we can&#x27;t remove it</span>
-<span id="L818"><span class="lineNum">     818</span> <span class="tlaUNC">           0 :             return SLANG_FAIL;</span></span>
-<span id="L819"><span class="lineNum">     819</span>              :         }</span>
-<span id="L820"><span class="lineNum">     820</span> <span class="tlaUNC">           0 :     }</span></span>
-<span id="L821"><span class="lineNum">     821</span>              : </span>
-<span id="L822"><span class="lineNum">     822</span>              :     // Mark as removed</span>
-<span id="L823"><span class="lineNum">     823</span> <span class="tlaUNC">           0 :     m_removedSet.add(index);</span></span>
-<span id="L824"><span class="lineNum">     824</span> <span class="tlaUNC">           0 :     return SLANG_OK;</span></span>
-<span id="L825"><span class="lineNum">     825</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L826"><span class="lineNum">     826</span>              : </span>
-<span id="L827"><span class="lineNum">     827</span>              : SlangResult ZipFileSystemImpl::createDirectory(const char* path)</span>
-<span id="L828"><span class="lineNum">     828</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L829"><span class="lineNum">     829</span> <span class="tlaGNC">           1 :     String fixedPath;</span></span>
-<span id="L830"><span class="lineNum">     830</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_getFixedPath(path, fixedPath));</span></span>
-<span id="L831"><span class="lineNum">     831</span>              : </span>
-<span id="L832"><span class="lineNum">     832</span>              :     // If we find something with this name, we can&#x27;t create it</span>
-<span id="L833"><span class="lineNum">     833</span>              :     mz_uint32 index;</span>
-<span id="L834"><span class="lineNum">     834</span> <span class="tlaGNC">           1 :     if (SLANG_SUCCEEDED(_findEntryIndexFromFixedPath(fixedPath, index)))</span></span>
-<span id="L835"><span class="lineNum">     835</span>              :     {</span>
-<span id="L836"><span class="lineNum">     836</span>              :         return SLANG_FAIL;</span>
-<span id="L837"><span class="lineNum">     837</span>              :     }</span>
-<span id="L838"><span class="lineNum">     838</span>              : </span>
-<span id="L839"><span class="lineNum">     839</span>              :     // Make writable</span>
-<span id="L840"><span class="lineNum">     840</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_requireMode(Mode::ReadWrite));</span></span>
-<span id="L841"><span class="lineNum">     841</span>              : </span>
-<span id="L842"><span class="lineNum">     842</span> <span class="tlaGNC">           1 :     const mz_uint entryCount = mz_zip_reader_get_num_files(&amp;m_archive);</span></span>
-<span id="L843"><span class="lineNum">     843</span>              : </span>
-<span id="L844"><span class="lineNum">     844</span>              :     // The terminating / in the path indicates it&#x27;s a directory</span>
-<span id="L845"><span class="lineNum">     845</span>              :     {</span>
-<span id="L846"><span class="lineNum">     846</span> <span class="tlaGNC">           1 :         String dirPath(fixedPath);</span></span>
-<span id="L847"><span class="lineNum">     847</span> <span class="tlaGNC">           1 :         dirPath.appendChar(&#x27;/&#x27;);</span></span>
-<span id="L848"><span class="lineNum">     848</span> <span class="tlaGNC">           1 :         if (!mz_zip_writer_add_mem(&amp;m_archive, dirPath.getBuffer(), nullptr, 0, m_compressionLevel))</span></span>
-<span id="L849"><span class="lineNum">     849</span>              :         {</span>
-<span id="L850"><span class="lineNum">     850</span> <span class="tlaUNC">           0 :             return SLANG_FAIL;</span></span>
-<span id="L851"><span class="lineNum">     851</span>              :         }</span>
-<span id="L852"><span class="lineNum">     852</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L853"><span class="lineNum">     853</span>              : </span>
-<span id="L854"><span class="lineNum">     854</span>              :     SLANG_ASSERT(_getPathAtIndex(entryCount) == fixedPath.getUnownedSlice());</span>
-<span id="L855"><span class="lineNum">     855</span>              : </span>
-<span id="L856"><span class="lineNum">     856</span>              :     // Set the index, that we added at end</span>
-<span id="L857"><span class="lineNum">     857</span> <span class="tlaGNC">           1 :     m_pathMap.add(fixedPath.getUnownedSlice(), entryCount);</span></span>
-<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L859"><span class="lineNum">     859</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L860"><span class="lineNum">     860</span>              : </span>
-<span id="L861"><span class="lineNum">     861</span>              : SlangResult ZipFileSystemImpl::storeArchive(bool blobOwnsContent, ISlangBlob** outBlob)</span>
-<span id="L862"><span class="lineNum">     862</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L863"><span class="lineNum">     863</span>              :     // If we have anything deleted in &#x27;Read&#x27;, we need to convert to &#x27;Write&#x27; and then back to read</span>
-<span id="L864"><span class="lineNum">     864</span> <span class="tlaGNC">           1 :     if (m_mode == Mode::Read &amp;&amp; !m_removedSet.isEmpty())</span></span>
-<span id="L865"><span class="lineNum">     865</span>              :     {</span>
-<span id="L866"><span class="lineNum">     866</span> <span class="tlaUNC">           0 :         _requireMode(Mode::ReadWrite);</span></span>
-<span id="L867"><span class="lineNum">     867</span>              :     }</span>
-<span id="L868"><span class="lineNum">     868</span>              : </span>
-<span id="L869"><span class="lineNum">     869</span> <span class="tlaGNC">           1 :     _requireMode(Mode::Read);</span></span>
-<span id="L870"><span class="lineNum">     870</span>              : </span>
-<span id="L871"><span class="lineNum">     871</span> <span class="tlaGNC">           1 :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
-<span id="L872"><span class="lineNum">     872</span>              : </span>
-<span id="L873"><span class="lineNum">     873</span> <span class="tlaGNC">           1 :     if (blobOwnsContent)</span></span>
-<span id="L874"><span class="lineNum">     874</span>              :     {</span>
-<span id="L875"><span class="lineNum">     875</span>              :         // Takes a copy</span>
-<span id="L876"><span class="lineNum">     876</span> <span class="tlaUNC">           0 :         SLANG_RETURN_ON_FAIL(</span></span>
-<span id="L877"><span class="lineNum">     877</span>              :             RawBlob::tryCreate(m_data.getData(), Index(m_data.getSizeInBytes()), blob));</span>
-<span id="L878"><span class="lineNum">     878</span>              :     }</span>
-<span id="L879"><span class="lineNum">     879</span>              :     else</span>
+<span id="L808"><span class="lineNum">     808</span>              :     mz_zip_archive_file_stat fileStat;</span>
+<span id="L809"><span class="lineNum">     809</span> <span class="tlaUNC">           0 :     if (!mz_zip_reader_file_stat(&amp;m_archive, index, &amp;fileStat))</span></span>
+<span id="L810"><span class="lineNum">     810</span>              :     {</span>
+<span id="L811"><span class="lineNum">     811</span> <span class="tlaUNC">           0 :         return SLANG_FAIL;</span></span>
+<span id="L812"><span class="lineNum">     812</span>              :     }</span>
+<span id="L813"><span class="lineNum">     813</span>              : </span>
+<span id="L814"><span class="lineNum">     814</span> <span class="tlaUNC">           0 :     if (fileStat.m_is_directory)</span></span>
+<span id="L815"><span class="lineNum">     815</span>              :     {</span>
+<span id="L816"><span class="lineNum">     816</span>              :         // Find the directory contents</span>
+<span id="L817"><span class="lineNum">     817</span> <span class="tlaUNC">           0 :         ImplicitDirectoryCollector collector(fixedPath);</span></span>
+<span id="L818"><span class="lineNum">     818</span> <span class="tlaUNC">           0 :         SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L819"><span class="lineNum">     819</span>              :             _getPathContents(ImplicitDirectoryCollector::State::HasContent, &amp;collector));</span>
+<span id="L820"><span class="lineNum">     820</span>              : </span>
+<span id="L821"><span class="lineNum">     821</span> <span class="tlaUNC">           0 :         if (collector.hasContent())</span></span>
+<span id="L822"><span class="lineNum">     822</span>              :         {</span>
+<span id="L823"><span class="lineNum">     823</span>              :             // If it contains children we can&#x27;t remove it</span>
+<span id="L824"><span class="lineNum">     824</span> <span class="tlaUNC">           0 :             return SLANG_FAIL;</span></span>
+<span id="L825"><span class="lineNum">     825</span>              :         }</span>
+<span id="L826"><span class="lineNum">     826</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L827"><span class="lineNum">     827</span>              : </span>
+<span id="L828"><span class="lineNum">     828</span>              :     // Mark as removed</span>
+<span id="L829"><span class="lineNum">     829</span> <span class="tlaUNC">           0 :     m_removedSet.add(index);</span></span>
+<span id="L830"><span class="lineNum">     830</span> <span class="tlaUNC">           0 :     return SLANG_OK;</span></span>
+<span id="L831"><span class="lineNum">     831</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L832"><span class="lineNum">     832</span>              : </span>
+<span id="L833"><span class="lineNum">     833</span>              : SlangResult ZipFileSystemImpl::createDirectory(const char* path)</span>
+<span id="L834"><span class="lineNum">     834</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L835"><span class="lineNum">     835</span> <span class="tlaGNC">           1 :     String fixedPath;</span></span>
+<span id="L836"><span class="lineNum">     836</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_getFixedPath(path, fixedPath));</span></span>
+<span id="L837"><span class="lineNum">     837</span>              : </span>
+<span id="L838"><span class="lineNum">     838</span>              :     // If we find something with this name, we can&#x27;t create it</span>
+<span id="L839"><span class="lineNum">     839</span>              :     mz_uint32 index;</span>
+<span id="L840"><span class="lineNum">     840</span> <span class="tlaGNC">           1 :     if (SLANG_SUCCEEDED(_findEntryIndexFromFixedPath(fixedPath, index)))</span></span>
+<span id="L841"><span class="lineNum">     841</span>              :     {</span>
+<span id="L842"><span class="lineNum">     842</span>              :         return SLANG_FAIL;</span>
+<span id="L843"><span class="lineNum">     843</span>              :     }</span>
+<span id="L844"><span class="lineNum">     844</span>              : </span>
+<span id="L845"><span class="lineNum">     845</span>              :     // Make writable</span>
+<span id="L846"><span class="lineNum">     846</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_requireMode(Mode::ReadWrite));</span></span>
+<span id="L847"><span class="lineNum">     847</span>              : </span>
+<span id="L848"><span class="lineNum">     848</span> <span class="tlaGNC">           1 :     const mz_uint entryCount = mz_zip_reader_get_num_files(&amp;m_archive);</span></span>
+<span id="L849"><span class="lineNum">     849</span>              : </span>
+<span id="L850"><span class="lineNum">     850</span>              :     // The terminating / in the path indicates it&#x27;s a directory</span>
+<span id="L851"><span class="lineNum">     851</span>              :     {</span>
+<span id="L852"><span class="lineNum">     852</span> <span class="tlaGNC">           1 :         String dirPath(fixedPath);</span></span>
+<span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">           1 :         dirPath.appendChar(&#x27;/&#x27;);</span></span>
+<span id="L854"><span class="lineNum">     854</span> <span class="tlaGNC">           1 :         if (!mz_zip_writer_add_mem(&amp;m_archive, dirPath.getBuffer(), nullptr, 0, m_compressionLevel))</span></span>
+<span id="L855"><span class="lineNum">     855</span>              :         {</span>
+<span id="L856"><span class="lineNum">     856</span> <span class="tlaUNC">           0 :             return SLANG_FAIL;</span></span>
+<span id="L857"><span class="lineNum">     857</span>              :         }</span>
+<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L859"><span class="lineNum">     859</span>              : </span>
+<span id="L860"><span class="lineNum">     860</span>              :     SLANG_ASSERT(_getPathAtIndex(entryCount) == fixedPath.getUnownedSlice());</span>
+<span id="L861"><span class="lineNum">     861</span>              : </span>
+<span id="L862"><span class="lineNum">     862</span>              :     // Set the index, that we added at end</span>
+<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">           1 :     m_pathMap.add(fixedPath.getUnownedSlice(), entryCount);</span></span>
+<span id="L864"><span class="lineNum">     864</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L865"><span class="lineNum">     865</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L866"><span class="lineNum">     866</span>              : </span>
+<span id="L867"><span class="lineNum">     867</span>              : SlangResult ZipFileSystemImpl::storeArchive(bool blobOwnsContent, ISlangBlob** outBlob)</span>
+<span id="L868"><span class="lineNum">     868</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L869"><span class="lineNum">     869</span>              :     // If we have anything deleted in &#x27;Read&#x27;, we need to convert to &#x27;Write&#x27; and then back to read</span>
+<span id="L870"><span class="lineNum">     870</span> <span class="tlaGNC">           1 :     if (m_mode == Mode::Read &amp;&amp; !m_removedSet.isEmpty())</span></span>
+<span id="L871"><span class="lineNum">     871</span>              :     {</span>
+<span id="L872"><span class="lineNum">     872</span> <span class="tlaUNC">           0 :         _requireMode(Mode::ReadWrite);</span></span>
+<span id="L873"><span class="lineNum">     873</span>              :     }</span>
+<span id="L874"><span class="lineNum">     874</span>              : </span>
+<span id="L875"><span class="lineNum">     875</span> <span class="tlaGNC">           1 :     _requireMode(Mode::Read);</span></span>
+<span id="L876"><span class="lineNum">     876</span>              : </span>
+<span id="L877"><span class="lineNum">     877</span> <span class="tlaGNC">           1 :     ComPtr&lt;ISlangBlob&gt; blob;</span></span>
+<span id="L878"><span class="lineNum">     878</span>              : </span>
+<span id="L879"><span class="lineNum">     879</span> <span class="tlaGNC">           1 :     if (blobOwnsContent)</span></span>
 <span id="L880"><span class="lineNum">     880</span>              :     {</span>
-<span id="L881"><span class="lineNum">     881</span>              :         // Doesn&#x27;t take a copy... Must use with care(!)</span>
-<span id="L882"><span class="lineNum">     882</span> <span class="tlaGNC">           1 :         blob = UnownedRawBlob::create(m_data.getData(), Index(m_data.getSizeInBytes()));</span></span>
-<span id="L883"><span class="lineNum">     883</span>              :     }</span>
-<span id="L884"><span class="lineNum">     884</span> <span class="tlaGNC">           1 :     *outBlob = blob.detach();</span></span>
-<span id="L885"><span class="lineNum">     885</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L886"><span class="lineNum">     886</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L887"><span class="lineNum">     887</span>              : </span>
-<span id="L888"><span class="lineNum">     888</span>              : SlangResult ZipFileSystemImpl::loadArchive(const void* archive, size_t archiveSizeInBytes)</span>
-<span id="L889"><span class="lineNum">     889</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L890"><span class="lineNum">     890</span>              :     // Making the mode None empties the archive</span>
-<span id="L891"><span class="lineNum">     891</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_requireMode(Mode::None));</span></span>
-<span id="L892"><span class="lineNum">     892</span>              : </span>
-<span id="L893"><span class="lineNum">     893</span>              :     // Store a copy of the archive contents</span>
-<span id="L894"><span class="lineNum">     894</span> <span class="tlaGNC">           1 :     if (!m_data.set(archive, archiveSizeInBytes))</span></span>
-<span id="L895"><span class="lineNum">     895</span>              :     {</span>
-<span id="L896"><span class="lineNum">     896</span> <span class="tlaUNC">           0 :         return SLANG_E_OUT_OF_MEMORY;</span></span>
-<span id="L897"><span class="lineNum">     897</span>              :     }</span>
+<span id="L881"><span class="lineNum">     881</span>              :         // Takes a copy</span>
+<span id="L882"><span class="lineNum">     882</span> <span class="tlaUNC">           0 :         SLANG_RETURN_ON_FAIL(</span></span>
+<span id="L883"><span class="lineNum">     883</span>              :             RawBlob::tryCreate(m_data.getData(), Index(m_data.getSizeInBytes()), blob));</span>
+<span id="L884"><span class="lineNum">     884</span>              :     }</span>
+<span id="L885"><span class="lineNum">     885</span>              :     else</span>
+<span id="L886"><span class="lineNum">     886</span>              :     {</span>
+<span id="L887"><span class="lineNum">     887</span>              :         // Doesn&#x27;t take a copy... Must use with care(!)</span>
+<span id="L888"><span class="lineNum">     888</span> <span class="tlaGNC">           1 :         blob = UnownedRawBlob::create(m_data.getData(), Index(m_data.getSizeInBytes()));</span></span>
+<span id="L889"><span class="lineNum">     889</span>              :     }</span>
+<span id="L890"><span class="lineNum">     890</span> <span class="tlaGNC">           1 :     *outBlob = blob.detach();</span></span>
+<span id="L891"><span class="lineNum">     891</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L892"><span class="lineNum">     892</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L893"><span class="lineNum">     893</span>              : </span>
+<span id="L894"><span class="lineNum">     894</span>              : SlangResult ZipFileSystemImpl::loadArchive(const void* archive, size_t archiveSizeInBytes)</span>
+<span id="L895"><span class="lineNum">     895</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L896"><span class="lineNum">     896</span>              :     // Making the mode None empties the archive</span>
+<span id="L897"><span class="lineNum">     897</span> <span class="tlaGNC">           1 :     SLANG_RETURN_ON_FAIL(_requireMode(Mode::None));</span></span>
 <span id="L898"><span class="lineNum">     898</span>              : </span>
-<span id="L899"><span class="lineNum">     899</span>              :     // Initialize archive</span>
-<span id="L900"><span class="lineNum">     900</span> <span class="tlaGNC">           1 :     mz_zip_zero_struct(&amp;m_archive);</span></span>
-<span id="L901"><span class="lineNum">     901</span> <span class="tlaGNC">           1 :     _setZipAllocator(m_archive);</span></span>
-<span id="L902"><span class="lineNum">     902</span>              : </span>
-<span id="L903"><span class="lineNum">     903</span>              :     // Read the contents of the archive, and make m_archive own it</span>
-<span id="L904"><span class="lineNum">     904</span> <span class="tlaGNC">           1 :     if (!mz_zip_reader_init_mem(&amp;m_archive, m_data.getData(), archiveSizeInBytes, 0))</span></span>
-<span id="L905"><span class="lineNum">     905</span>              :     {</span>
-<span id="L906"><span class="lineNum">     906</span> <span class="tlaUNC">           0 :         return SLANG_FAIL;</span></span>
-<span id="L907"><span class="lineNum">     907</span>              :     }</span>
+<span id="L899"><span class="lineNum">     899</span>              :     // Store a copy of the archive contents</span>
+<span id="L900"><span class="lineNum">     900</span> <span class="tlaGNC">           1 :     if (!m_data.set(archive, archiveSizeInBytes))</span></span>
+<span id="L901"><span class="lineNum">     901</span>              :     {</span>
+<span id="L902"><span class="lineNum">     902</span> <span class="tlaUNC">           0 :         return SLANG_E_OUT_OF_MEMORY;</span></span>
+<span id="L903"><span class="lineNum">     903</span>              :     }</span>
+<span id="L904"><span class="lineNum">     904</span>              : </span>
+<span id="L905"><span class="lineNum">     905</span>              :     // Initialize archive</span>
+<span id="L906"><span class="lineNum">     906</span> <span class="tlaGNC">           1 :     mz_zip_zero_struct(&amp;m_archive);</span></span>
+<span id="L907"><span class="lineNum">     907</span> <span class="tlaGNC">           1 :     _setZipAllocator(m_archive);</span></span>
 <span id="L908"><span class="lineNum">     908</span>              : </span>
-<span id="L909"><span class="lineNum">     909</span>              :     m_mode = Mode::Read;</span>
-<span id="L910"><span class="lineNum">     910</span>              : </span>
-<span id="L911"><span class="lineNum">     911</span>              :     // Set up the mapping from paths to indices</span>
-<span id="L912"><span class="lineNum">     912</span> <span class="tlaGNC">           1 :     _rebuildMap();</span></span>
-<span id="L913"><span class="lineNum">     913</span>              : </span>
-<span id="L914"><span class="lineNum">     914</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L915"><span class="lineNum">     915</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L909"><span class="lineNum">     909</span>              :     // Read the contents of the archive, and make m_archive own it</span>
+<span id="L910"><span class="lineNum">     910</span> <span class="tlaGNC">           1 :     if (!mz_zip_reader_init_mem(&amp;m_archive, m_data.getData(), archiveSizeInBytes, 0))</span></span>
+<span id="L911"><span class="lineNum">     911</span>              :     {</span>
+<span id="L912"><span class="lineNum">     912</span> <span class="tlaUNC">           0 :         return SLANG_FAIL;</span></span>
+<span id="L913"><span class="lineNum">     913</span>              :     }</span>
+<span id="L914"><span class="lineNum">     914</span>              : </span>
+<span id="L915"><span class="lineNum">     915</span>              :     m_mode = Mode::Read;</span>
 <span id="L916"><span class="lineNum">     916</span>              : </span>
-<span id="L917"><span class="lineNum">     917</span>              : void ZipFileSystemImpl::setCompressionStyle(const CompressionStyle&amp; style)</span>
-<span id="L918"><span class="lineNum">     918</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L919"><span class="lineNum">     919</span> <span class="tlaUNC">           0 :     switch (style.m_type)</span></span>
-<span id="L920"><span class="lineNum">     920</span>              :     {</span>
-<span id="L921"><span class="lineNum">     921</span>              :     case CompressionStyle::Type::BestSpeed:</span>
-<span id="L922"><span class="lineNum">     922</span> <span class="tlaUNC">           0 :         m_compressionLevel = MZ_BEST_SPEED;</span></span>
-<span id="L923"><span class="lineNum">     923</span>              :         break;</span>
-<span id="L924"><span class="lineNum">     924</span>              :     case CompressionStyle::Type::BestCompression:</span>
-<span id="L925"><span class="lineNum">     925</span> <span class="tlaUNC">           0 :         m_compressionLevel = MZ_BEST_COMPRESSION;</span></span>
-<span id="L926"><span class="lineNum">     926</span>              :         break;</span>
-<span id="L927"><span class="lineNum">     927</span>              :     case CompressionStyle::Type::Default:</span>
-<span id="L928"><span class="lineNum">     928</span> <span class="tlaUNC">           0 :         m_compressionLevel = MZ_DEFAULT_LEVEL;</span></span>
+<span id="L917"><span class="lineNum">     917</span>              :     // Set up the mapping from paths to indices</span>
+<span id="L918"><span class="lineNum">     918</span> <span class="tlaGNC">           1 :     _rebuildMap();</span></span>
+<span id="L919"><span class="lineNum">     919</span>              : </span>
+<span id="L920"><span class="lineNum">     920</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L921"><span class="lineNum">     921</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L922"><span class="lineNum">     922</span>              : </span>
+<span id="L923"><span class="lineNum">     923</span>              : void ZipFileSystemImpl::setCompressionStyle(const CompressionStyle&amp; style)</span>
+<span id="L924"><span class="lineNum">     924</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L925"><span class="lineNum">     925</span> <span class="tlaUNC">           0 :     switch (style.m_type)</span></span>
+<span id="L926"><span class="lineNum">     926</span>              :     {</span>
+<span id="L927"><span class="lineNum">     927</span>              :     case CompressionStyle::Type::BestSpeed:</span>
+<span id="L928"><span class="lineNum">     928</span> <span class="tlaUNC">           0 :         m_compressionLevel = MZ_BEST_SPEED;</span></span>
 <span id="L929"><span class="lineNum">     929</span>              :         break;</span>
-<span id="L930"><span class="lineNum">     930</span>              :     case CompressionStyle::Type::Level:</span>
-<span id="L931"><span class="lineNum">     931</span>              :         {</span>
-<span id="L932"><span class="lineNum">     932</span> <span class="tlaUNC">           0 :             int level = int(style.m_level * 10.0f + 0.5);</span></span>
-<span id="L933"><span class="lineNum">     933</span> <span class="tlaUNC">           0 :             level = (level &lt; 0) ? 0 : level;</span></span>
-<span id="L934"><span class="lineNum">     934</span> <span class="tlaUNC">           0 :             level = (level &gt; MZ_UBER_COMPRESSION) ? MZ_UBER_COMPRESSION : level;</span></span>
-<span id="L935"><span class="lineNum">     935</span> <span class="tlaUNC">           0 :             m_compressionLevel = level;</span></span>
-<span id="L936"><span class="lineNum">     936</span>              :             break;</span>
-<span id="L937"><span class="lineNum">     937</span>              :         }</span>
-<span id="L938"><span class="lineNum">     938</span>              :     }</span>
-<span id="L939"><span class="lineNum">     939</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L940"><span class="lineNum">     940</span>              : </span>
-<span id="L941"><span class="lineNum">     941</span>              : /* static */ SlangResult ZipFileSystem::create(ComPtr&lt;ISlangMutableFileSystem&gt;&amp; out)</span>
-<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L943"><span class="lineNum">     943</span> <span class="tlaGNC">           1 :     out = new ZipFileSystemImpl;</span></span>
-<span id="L944"><span class="lineNum">     944</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L945"><span class="lineNum">     945</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L930"><span class="lineNum">     930</span>              :     case CompressionStyle::Type::BestCompression:</span>
+<span id="L931"><span class="lineNum">     931</span> <span class="tlaUNC">           0 :         m_compressionLevel = MZ_BEST_COMPRESSION;</span></span>
+<span id="L932"><span class="lineNum">     932</span>              :         break;</span>
+<span id="L933"><span class="lineNum">     933</span>              :     case CompressionStyle::Type::Default:</span>
+<span id="L934"><span class="lineNum">     934</span> <span class="tlaUNC">           0 :         m_compressionLevel = MZ_DEFAULT_LEVEL;</span></span>
+<span id="L935"><span class="lineNum">     935</span>              :         break;</span>
+<span id="L936"><span class="lineNum">     936</span>              :     case CompressionStyle::Type::Level:</span>
+<span id="L937"><span class="lineNum">     937</span>              :         {</span>
+<span id="L938"><span class="lineNum">     938</span> <span class="tlaUNC">           0 :             int level = int(style.m_level * 10.0f + 0.5);</span></span>
+<span id="L939"><span class="lineNum">     939</span> <span class="tlaUNC">           0 :             level = (level &lt; 0) ? 0 : level;</span></span>
+<span id="L940"><span class="lineNum">     940</span> <span class="tlaUNC">           0 :             level = (level &gt; MZ_UBER_COMPRESSION) ? MZ_UBER_COMPRESSION : level;</span></span>
+<span id="L941"><span class="lineNum">     941</span> <span class="tlaUNC">           0 :             m_compressionLevel = level;</span></span>
+<span id="L942"><span class="lineNum">     942</span>              :             break;</span>
+<span id="L943"><span class="lineNum">     943</span>              :         }</span>
+<span id="L944"><span class="lineNum">     944</span>              :     }</span>
+<span id="L945"><span class="lineNum">     945</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L946"><span class="lineNum">     946</span>              : </span>
-<span id="L947"><span class="lineNum">     947</span>              : /* static */ bool ZipFileSystem::isArchive(const void* data, size_t dataSizeInBytes)</span>
+<span id="L947"><span class="lineNum">     947</span>              : /* static */ SlangResult ZipFileSystem::create(ComPtr&lt;ISlangMutableFileSystem&gt;&amp; out)</span>
 <span id="L948"><span class="lineNum">     948</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L949"><span class="lineNum">     949</span> <span class="tlaGNC">           1 :     if (dataSizeInBytes &lt; sizeof(FourCC))</span></span>
-<span id="L950"><span class="lineNum">     950</span>              :     {</span>
-<span id="L951"><span class="lineNum">     951</span> <span class="tlaUNC">           0 :         return false;</span></span>
-<span id="L952"><span class="lineNum">     952</span>              :     }</span>
-<span id="L953"><span class="lineNum">     953</span>              : </span>
-<span id="L954"><span class="lineNum">     954</span>              :     FourCC fourCC = 0;</span>
-<span id="L955"><span class="lineNum">     955</span> <span class="tlaGNC">           1 :     ::memcpy(&amp;fourCC, data, sizeof(FourCC));</span></span>
-<span id="L956"><span class="lineNum">     956</span>              : </span>
-<span id="L957"><span class="lineNum">     957</span>              :     // https://en.wikipedia.org/wiki/List_of_file_signatures</span>
-<span id="L958"><span class="lineNum">     958</span> <span class="tlaGNC">           1 :     switch (fourCC)</span></span>
-<span id="L959"><span class="lineNum">     959</span>              :     {</span>
-<span id="L960"><span class="lineNum">     960</span>              :     case SLANG_FOUR_CC(0x50, 0x4B, 0x03, 0x04):</span>
-<span id="L961"><span class="lineNum">     961</span>              :     case SLANG_FOUR_CC(0x50, 0x4B, 0x05, 0x06):</span>
-<span id="L962"><span class="lineNum">     962</span>              :     case SLANG_FOUR_CC(0x50, 0x4B, 0x07, 0x08):</span>
-<span id="L963"><span class="lineNum">     963</span>              :         {</span>
-<span id="L964"><span class="lineNum">     964</span>              :             // It&#x27;s a zip</span>
-<span id="L965"><span class="lineNum">     965</span> <span class="tlaUNC">           0 :             return true;</span></span>
-<span id="L966"><span class="lineNum">     966</span>              :         }</span>
-<span id="L967"><span class="lineNum">     967</span>              :     }</span>
-<span id="L968"><span class="lineNum">     968</span>              :     return false;</span>
-<span id="L969"><span class="lineNum">     969</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L970"><span class="lineNum">     970</span>              : </span>
-<span id="L971"><span class="lineNum">     971</span>              : } // namespace Slang</span>
+<span id="L949"><span class="lineNum">     949</span> <span class="tlaGNC">           1 :     out = new ZipFileSystemImpl;</span></span>
+<span id="L950"><span class="lineNum">     950</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
+<span id="L951"><span class="lineNum">     951</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L952"><span class="lineNum">     952</span>              : </span>
+<span id="L953"><span class="lineNum">     953</span>              : /* static */ bool ZipFileSystem::isArchive(const void* data, size_t dataSizeInBytes)</span>
+<span id="L954"><span class="lineNum">     954</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L955"><span class="lineNum">     955</span> <span class="tlaGNC">           1 :     if (dataSizeInBytes &lt; sizeof(FourCC))</span></span>
+<span id="L956"><span class="lineNum">     956</span>              :     {</span>
+<span id="L957"><span class="lineNum">     957</span> <span class="tlaUNC">           0 :         return false;</span></span>
+<span id="L958"><span class="lineNum">     958</span>              :     }</span>
+<span id="L959"><span class="lineNum">     959</span>              : </span>
+<span id="L960"><span class="lineNum">     960</span>              :     FourCC fourCC = 0;</span>
+<span id="L961"><span class="lineNum">     961</span> <span class="tlaGNC">           1 :     ::memcpy(&amp;fourCC, data, sizeof(FourCC));</span></span>
+<span id="L962"><span class="lineNum">     962</span>              : </span>
+<span id="L963"><span class="lineNum">     963</span>              :     // https://en.wikipedia.org/wiki/List_of_file_signatures</span>
+<span id="L964"><span class="lineNum">     964</span> <span class="tlaGNC">           1 :     switch (fourCC)</span></span>
+<span id="L965"><span class="lineNum">     965</span>              :     {</span>
+<span id="L966"><span class="lineNum">     966</span>              :     case SLANG_FOUR_CC(0x50, 0x4B, 0x03, 0x04):</span>
+<span id="L967"><span class="lineNum">     967</span>              :     case SLANG_FOUR_CC(0x50, 0x4B, 0x05, 0x06):</span>
+<span id="L968"><span class="lineNum">     968</span>              :     case SLANG_FOUR_CC(0x50, 0x4B, 0x07, 0x08):</span>
+<span id="L969"><span class="lineNum">     969</span>              :         {</span>
+<span id="L970"><span class="lineNum">     970</span>              :             // It&#x27;s a zip</span>
+<span id="L971"><span class="lineNum">     971</span> <span class="tlaUNC">           0 :             return true;</span></span>
+<span id="L972"><span class="lineNum">     972</span>              :         }</span>
+<span id="L973"><span class="lineNum">     973</span>              :     }</span>
+<span id="L974"><span class="lineNum">     974</span>              :     return false;</span>
+<span id="L975"><span class="lineNum">     975</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L976"><span class="lineNum">     976</span>              : </span>
+<span id="L977"><span class="lineNum">     977</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
