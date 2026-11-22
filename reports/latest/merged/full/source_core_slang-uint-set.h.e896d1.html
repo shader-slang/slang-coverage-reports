@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:35:31 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -313,7 +313,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L28"><span class="lineNum">      28</span> <span class="tlaUNC">           0 : #if defined(_MSC_VER)</span></span>
 <span id="L29"><span class="lineNum">      29</span> <span class="tlaUNC">           0 : </span></span>
 <span id="L30"><span class="lineNum">      30</span> <span class="tlaUNC">           0 : #ifdef _WIN64</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaUNC">           0 :     uint64_t out = 0;</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           1 :     uint64_t out = 0;</span></span>
 <span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           1 :     _BitScanForward64((unsigned long*)&amp;out, in);</span></span>
 <span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">           1 :     return Index(out);</span></span>
 <span id="L34"><span class="lineNum">      34</span> <span class="tlaUNC">           0 : #else</span></span>
@@ -436,8 +436,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L151"><span class="lineNum">     151</span>              :     private:</span>
 <span id="L152"><span class="lineNum">     152</span>              :         const List&lt;Element&gt;* m_context;</span>
 <span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">           1 :         Index m_block = 0;</span></span>
-<span id="L154"><span class="lineNum">     154</span>              :         Element m_processedElement = 0;</span>
-<span id="L155"><span class="lineNum">     155</span>              :         uint64_t m_LSB = 0;</span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">           1 :         Element m_processedElement = 0;</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">           1 :         uint64_t m_LSB = 0;</span></span>
 <span id="L156"><span class="lineNum">     156</span>              : </span>
 <span id="L157"><span class="lineNum">     157</span>              :         void clearLSB()</span>
 <span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">           1 :         {</span></span>
@@ -492,8 +492,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">           1 :         Iterator tmp(&amp;m_buffer);</span></span>
 <span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">           1 :         tmp.m_block = m_buffer.getCount();</span></span>
-<span id="L210"><span class="lineNum">     210</span> <span class="tlaUNC">           0 :         tmp.m_processedElement = 0;</span></span>
-<span id="L211"><span class="lineNum">     211</span> <span class="tlaUNC">           0 :         return tmp;</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">           1 :         tmp.m_processedElement = 0;</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">           1 :         return tmp;</span></span>
 <span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L213"><span class="lineNum">     213</span>              : </span>
 <span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">           1 :     bool areAllZero() { return _areAllZero(m_buffer.getBuffer(), m_buffer.getCount()); }</span></span>
@@ -519,7 +519,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L234"><span class="lineNum">     234</span>              : // --------------------------------------------------------------------------</span>
 <span id="L235"><span class="lineNum">     235</span>              : inline void UIntSet::remove(UInt val)</span>
 <span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">           1 :     const Index idx = Index(val &gt;&gt; kElementShift);</span></span>
+<span id="L237"><span class="lineNum">     237</span>              :     const Index idx = Index(val &gt;&gt; kElementShift);</span>
 <span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">           1 :     if (idx &lt; m_buffer.getCount())</span></span>
 <span id="L239"><span class="lineNum">     239</span>              :     {</span>
 <span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">           1 :         m_buffer[idx] &amp;= ~(Element(1) &lt;&lt; (val &amp; kElementMask));</span></span>
@@ -529,7 +529,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L244"><span class="lineNum">     244</span>              : // --------------------------------------------------------------------------</span>
 <span id="L245"><span class="lineNum">     245</span>              : inline bool UIntSet::contains(UInt val) const</span>
 <span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">           1 :     const Index idx = Index(val &gt;&gt; kElementShift);</span></span>
+<span id="L247"><span class="lineNum">     247</span>              :     const Index idx = Index(val &gt;&gt; kElementShift);</span>
 <span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">           1 :     return idx &lt; m_buffer.getCount() &amp;&amp;</span></span>
 <span id="L249"><span class="lineNum">     249</span>              :            ((m_buffer[idx] &amp; (Element(1) &lt;&lt; (val &amp; kElementMask))) != 0);</span>
 <span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">           1 : }</span></span>
@@ -568,7 +568,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L283"><span class="lineNum">     283</span>              : </span>
 <span id="L284"><span class="lineNum">     284</span>              : inline void UIntSet::add(UInt val)</span>
 <span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">           1 :     const Index idx = Index(val &gt;&gt; kElementShift);</span></span>
+<span id="L286"><span class="lineNum">     286</span>              :     const Index idx = Index(val &gt;&gt; kElementShift);</span>
 <span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">           1 :     if (idx &gt;= m_buffer.getCount())</span></span>
 <span id="L288"><span class="lineNum">     288</span>              :     {</span>
 <span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">           1 :         resize(val + 1);</span></span>

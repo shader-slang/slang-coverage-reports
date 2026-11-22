@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">84.0&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:84.0%;background-color:hsl(96, 70%, 50%)"></div></div>
-      <span class="metricCounts">84 / 100</span>
+      <span class="metricValue">82.7&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:82.7%;background-color:hsl(94, 70%, 50%)"></div></div>
+      <span class="metricCounts">86 / 104</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -325,17 +325,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L52"><span class="lineNum">      52</span>              :         // (4 bytes in UTF-8). We&#x27;ll allow the full 32-bit code point range.</span>
 <span id="L53"><span class="lineNum">      53</span>              : </span>
 <span id="L54"><span class="lineNum">      54</span>              :         uint64_t value{};</span>
-<span id="L55"><span class="lineNum">      55</span>              :         uint64_t minValue{0x80U}; // overlong encoding detection</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">           1 :         uint64_t minValue{0x80U}; // overlong encoding detection</span></span>
 <span id="L56"><span class="lineNum">      56</span>              : </span>
 <span id="L57"><span class="lineNum">      57</span>              :         // count leading ones, start by 2 since we know that the initial byte is at least 0xC0</span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">           1 :         uint8_t mask = 0x20U;</span></span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">           1 :         uint8_t byteCount = 2U;</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :         uint8_t mask = 0x20U;</span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaUNC">           0 :         uint8_t byteCount = 2U;</span></span>
 <span id="L60"><span class="lineNum">      60</span>              : </span>
 <span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">           1 :         while (mask &amp; leading)</span></span>
 <span id="L62"><span class="lineNum">      62</span>              :         {</span>
 <span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">           1 :             ++byteCount;</span></span>
-<span id="L64"><span class="lineNum">      64</span>              :             minValue = uint64_t{1} &lt;&lt; (11U + (byteCount - 3U) * 5U);</span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">           1 :             mask &gt;&gt;= 1U;</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">           1 :             minValue = uint64_t{1} &lt;&lt; (11U + (byteCount - 3U) * 5U);</span></span>
+<span id="L65"><span class="lineNum">      65</span>              :             mask &gt;&gt;= 1U;</span>
 <span id="L66"><span class="lineNum">      66</span>              :         }</span>
 <span id="L67"><span class="lineNum">      67</span>              : </span>
 <span id="L68"><span class="lineNum">      68</span>              :         // consume leading byte payload bits</span>
@@ -373,7 +373,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L100"><span class="lineNum">     100</span>              :         valid = false;</span>
 <span id="L101"><span class="lineNum">     101</span>              : </span>
 <span id="L102"><span class="lineNum">     102</span>              :     // return</span>
-<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">           1 :     if (outInvalid)</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaUNC">           0 :     if (outInvalid)</span></span>
 <span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">           1 :         *outInvalid = !valid;</span></span>
 <span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">           1 :     return valid ? codePoint : 0U;</span></span>
 <span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">           1 : }</span></span>
@@ -388,11 +388,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L115"><span class="lineNum">     115</span>              :     {</span>
 <span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">           1 :         uint32_t byte2 = Byte(readByte());</span></span>
 <span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">           1 :         uint32_t byte3 = Byte(readByte());</span></span>
-<span id="L118"><span class="lineNum">     118</span>              :         uint32_t word1 = byte2 + (byte3 &lt;&lt; 8);</span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">           1 :         uint32_t word1 = byte2 + (byte3 &lt;&lt; 8);</span></span>
 <span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">           1 :         return Char32(((word0 &amp; 0x3FF) &lt;&lt; 10) + (word1 &amp; 0x3FF) + 0x10000);</span></span>
 <span id="L120"><span class="lineNum">     120</span>              :     }</span>
 <span id="L121"><span class="lineNum">     121</span>              :     else</span>
-<span id="L122"><span class="lineNum">     122</span>              :         return Char32(word0);</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">           1 :         return Char32(word0);</span></span>
 <span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L124"><span class="lineNum">     124</span>              : </span>
 <span id="L125"><span class="lineNum">     125</span>              : template&lt;typename ReadByteFunc&gt;</span>
@@ -405,11 +405,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L132"><span class="lineNum">     132</span>              :     {</span>
 <span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">           1 :         uint32_t byte2 = Byte(readByte());</span></span>
 <span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">           1 :         uint32_t byte3 = Byte(readByte());</span></span>
-<span id="L135"><span class="lineNum">     135</span>              :         uint32_t word1 = (byte2 &lt;&lt; 8) + byte3;</span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">           1 :         uint32_t word1 = (byte2 &lt;&lt; 8) + byte3;</span></span>
 <span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">           1 :         return Char32(((word0 &amp; 0x3FF) &lt;&lt; 10) + (word1 &amp; 0x3FF));</span></span>
 <span id="L137"><span class="lineNum">     137</span>              :     }</span>
 <span id="L138"><span class="lineNum">     138</span>              :     else</span>
-<span id="L139"><span class="lineNum">     139</span>              :         return Char32(word0);</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">           1 :         return Char32(word0);</span></span>
 <span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L141"><span class="lineNum">     141</span>              : </span>
 <span id="L142"><span class="lineNum">     142</span>              : template&lt;typename ReadByteFunc&gt;</span>
@@ -457,7 +457,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">           1 :         return 4;</span></span>
 <span id="L185"><span class="lineNum">     185</span>              :     }</span>
 <span id="L186"><span class="lineNum">     186</span>              :     else</span>
-<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">           1 :         return 0;</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaUNC">           0 :         return 0;</span></span>
 <span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L189"><span class="lineNum">     189</span>              : </span>
 <span id="L190"><span class="lineNum">     190</span>              : inline int encodeUnicodePointToUTF16(Char32 codePoint, Char16* outBuffer)</span>
@@ -473,7 +473,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L200"><span class="lineNum">     200</span> <span class="tlaUNC">           0 :         const uint32_t sub = codePoint - 0x10000;</span></span>
 <span id="L201"><span class="lineNum">     201</span> <span class="tlaUNC">           0 :         dst[0] = Char16((sub &gt;&gt; 10) + 0xD800);</span></span>
 <span id="L202"><span class="lineNum">     202</span> <span class="tlaUNC">           0 :         dst[1] = Char16((sub &amp; 0x3FF) + 0xDC00);</span></span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaUNC">           0 :         return 2;</span></span>
+<span id="L203"><span class="lineNum">     203</span>              :         return 2;</span>
 <span id="L204"><span class="lineNum">     204</span>              :     }</span>
 <span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L206"><span class="lineNum">     206</span>              : </span>
@@ -494,8 +494,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L221"><span class="lineNum">     221</span>              :     {</span>
 <span id="L222"><span class="lineNum">     222</span>              :         const uint32_t sub = codePoint - 0x10000;</span>
 <span id="L223"><span class="lineNum">     223</span> <span class="tlaUNC">           0 :         const uint32_t high = (sub &gt;&gt; 10) + 0xD800;</span></span>
-<span id="L224"><span class="lineNum">     224</span>              :         const uint32_t low = (sub &amp; 0x3FF) + 0xDC00;</span>
-<span id="L225"><span class="lineNum">     225</span> <span class="tlaUNC">           0 :         dst[0] = reverseByteOrder(Char16(high));</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaUNC">           0 :         const uint32_t low = (sub &amp; 0x3FF) + 0xDC00;</span></span>
+<span id="L225"><span class="lineNum">     225</span>              :         dst[0] = reverseByteOrder(Char16(high));</span>
 <span id="L226"><span class="lineNum">     226</span> <span class="tlaUNC">           0 :         dst[1] = reverseByteOrder(Char16(low));</span></span>
 <span id="L227"><span class="lineNum">     227</span> <span class="tlaUNC">           0 :         return 2;</span></span>
 <span id="L228"><span class="lineNum">     228</span>              :     }</span>
@@ -531,7 +531,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">           1 :     static CharEncoding* getEncoding(CharEncodeType type) { return g_encoding[Index(type)]; }</span></span>
 <span id="L259"><span class="lineNum">     259</span>              : </span>
 <span id="L260"><span class="lineNum">     260</span>              :     CharEncoding(CharEncodeType encodingType)</span>
-<span id="L261"><span class="lineNum">     261</span>              :         : m_encodingType(encodingType)</span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">           1 :         : m_encodingType(encodingType)</span></span>
 <span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L264"><span class="lineNum">     264</span>              : </span>

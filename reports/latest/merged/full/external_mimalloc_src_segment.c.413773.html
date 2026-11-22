@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:35:31 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">82.2&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:82.2%;background-color:hsl(93, 70%, 50%)"></div></div>
-      <span class="metricCounts">530 / 645</span>
+      <span class="metricCounts">535 / 651</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -384,7 +384,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">           1 :     if (mask != 0) {</span></span>
 <span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">           1 :       while ((mask&amp;1) == 0) {</span></span>
 <span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">           1 :         mask &gt;&gt;= 1;</span></span>
-<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">           1 :         ofs++;</span></span>
+<span id="L114"><span class="lineNum">     114</span>              :         ofs++;</span>
 <span id="L115"><span class="lineNum">     115</span>              :       }</span>
 <span id="L116"><span class="lineNum">     116</span>              :       break;</span>
 <span id="L117"><span class="lineNum">     117</span>              :     }</span>
@@ -398,7 +398,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L125"><span class="lineNum">     125</span>              :   }</span>
 <span id="L126"><span class="lineNum">     126</span>              :   else {</span>
 <span id="L127"><span class="lineNum">     127</span>              :     // found, count ones</span>
-<span id="L128"><span class="lineNum">     128</span>              :     size_t count = 0;</span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">           1 :     size_t count = 0;</span></span>
 <span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">           1 :     *idx = (i*MI_COMMIT_MASK_FIELD_BITS) + ofs;</span></span>
 <span id="L130"><span class="lineNum">     130</span>              :     do {</span>
 <span id="L131"><span class="lineNum">     131</span>              :       mi_assert_internal(ofs &lt; MI_COMMIT_MASK_FIELD_BITS &amp;&amp; (mask&amp;1) == 1);</span>
@@ -518,7 +518,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">           1 :   if (slice-&gt;next != NULL) slice-&gt;next-&gt;prev = slice-&gt;prev;</span></span>
 <span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">           1 :   if (slice == sq-&gt;last) sq-&gt;last = slice-&gt;prev;</span></span>
 <span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">           1 :   slice-&gt;prev = NULL;</span></span>
-<span id="L248"><span class="lineNum">     248</span>              :   slice-&gt;next = NULL;</span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">           1 :   slice-&gt;next = NULL;</span></span>
 <span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">           1 :   slice-&gt;block_size = 1; // no more free</span></span>
 <span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L251"><span class="lineNum">     251</span>              : </span>
@@ -614,18 +614,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L341"><span class="lineNum">     341</span>              : </span>
 <span id="L342"><span class="lineNum">     342</span>              : static uint8_t* _mi_segment_page_start_from_slice(const mi_segment_t* segment, const mi_slice_t* slice, size_t block_size, size_t* page_size)</span>
 <span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L344"><span class="lineNum">     344</span>              :   const ptrdiff_t idx = slice - segment-&gt;slices;</span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">           1 :   const ptrdiff_t idx = slice - segment-&gt;slices;</span></span>
 <span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">           1 :   const size_t psize = (size_t)slice-&gt;slice_count * MI_SEGMENT_SLICE_SIZE;</span></span>
 <span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">           1 :   uint8_t* const pstart = (uint8_t*)segment + (idx*MI_SEGMENT_SLICE_SIZE);</span></span>
 <span id="L347"><span class="lineNum">     347</span>              :   // make the start not OS page aligned for smaller blocks to avoid page/cache effects</span>
 <span id="L348"><span class="lineNum">     348</span>              :   // note: the offset must always be a block_size multiple since we assume small allocations</span>
 <span id="L349"><span class="lineNum">     349</span>              :   // are aligned (see `mi_heap_malloc_aligned`).</span>
-<span id="L350"><span class="lineNum">     350</span>              :   size_t start_offset = 0;</span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">           1 :   size_t start_offset = 0;</span></span>
 <span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">           1 :   if (block_size &gt; 0 &amp;&amp; block_size &lt;= MI_MAX_ALIGN_GUARANTEE) {</span></span>
 <span id="L352"><span class="lineNum">     352</span>              :     // for small objects, ensure the page start is aligned with the block size (PR#66 by kickunderscore)</span>
 <span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">           1 :     const size_t adjust = block_size - ((uintptr_t)pstart % block_size);</span></span>
 <span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">           1 :     if (adjust &lt; block_size &amp;&amp; psize &gt;= block_size + adjust) {</span></span>
-<span id="L355"><span class="lineNum">     355</span>              :       start_offset += adjust;</span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">           1 :       start_offset += adjust;</span></span>
 <span id="L356"><span class="lineNum">     356</span>              :     }</span>
 <span id="L357"><span class="lineNum">     357</span>              :   }</span>
 <span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">           1 :   if (block_size &gt;= MI_INTPTR_SIZE) {</span></span>
@@ -779,7 +779,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L506"><span class="lineNum">     506</span>              : </span>
 <span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">           1 :   if (!mi_commit_mask_all_set(&amp;segment-&gt;commit_mask, &amp;mask)) {</span></span>
 <span id="L508"><span class="lineNum">     508</span>              :     // committing</span>
-<span id="L509"><span class="lineNum">     509</span>              :     bool is_zero = false;</span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">           1 :     bool is_zero = false;</span></span>
 <span id="L510"><span class="lineNum">     510</span>              :     mi_commit_mask_t cmask;</span>
 <span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">           1 :     mi_commit_mask_create_intersect(&amp;segment-&gt;commit_mask, &amp;mask, &amp;cmask);</span></span>
 <span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">           1 :     _mi_stat_decrease(&amp;_mi_stats_main.committed, _mi_commit_mask_committed_size(&amp;cmask, MI_SEGMENT_SIZE)); // adjust for overlap</span></span>
@@ -843,7 +843,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L570"><span class="lineNum">     570</span>              :   else {</span>
 <span id="L571"><span class="lineNum">     571</span>              :     // register for future purge in the purge mask</span>
 <span id="L572"><span class="lineNum">     572</span>              :     uint8_t* start = NULL;</span>
-<span id="L573"><span class="lineNum">     573</span>              :     size_t   full_size = 0;</span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">           1 :     size_t   full_size = 0;</span></span>
 <span id="L574"><span class="lineNum">     574</span>              :     mi_commit_mask_t mask;</span>
 <span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">           1 :     mi_segment_commit_mask(segment, true /*conservative*/, p, size, &amp;start, &amp;full_size, &amp;mask);</span></span>
 <span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">           1 :     if (mi_commit_mask_is_empty(&amp;mask) || full_size==0) return;</span></span>
@@ -889,7 +889,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L616"><span class="lineNum">     616</span>              :     // if found, decommit that sequence</span>
 <span id="L617"><span class="lineNum">     617</span>              :     if (count &gt; 0) {</span>
 <span id="L618"><span class="lineNum">     618</span> <span class="tlaGNC">           1 :       uint8_t* p = (uint8_t*)segment + (idx*MI_COMMIT_SIZE);</span></span>
-<span id="L619"><span class="lineNum">     619</span> <span class="tlaGNC">           1 :       size_t size = count * MI_COMMIT_SIZE;</span></span>
+<span id="L619"><span class="lineNum">     619</span>              :       size_t size = count * MI_COMMIT_SIZE;</span>
 <span id="L620"><span class="lineNum">     620</span> <span class="tlaGNC">           1 :       mi_segment_purge(segment, p, size);</span></span>
 <span id="L621"><span class="lineNum">     621</span>              :     }</span>
 <span id="L622"><span class="lineNum">     622</span>              :   }</span>
@@ -921,9 +921,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L648"><span class="lineNum">     648</span>              : </span>
 <span id="L649"><span class="lineNum">     649</span>              :   // set first and last slice (the intermediates can be undetermined)</span>
 <span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">           1 :   mi_slice_t* slice = &amp;segment-&gt;slices[slice_index];</span></span>
-<span id="L651"><span class="lineNum">     651</span>              :   slice-&gt;slice_count = (uint32_t)slice_count;</span>
+<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">           1 :   slice-&gt;slice_count = (uint32_t)slice_count;</span></span>
 <span id="L652"><span class="lineNum">     652</span>              :   mi_assert_internal(slice-&gt;slice_count == slice_count); // no overflow?</span>
-<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">           1 :   slice-&gt;slice_offset = 0;</span></span>
+<span id="L653"><span class="lineNum">     653</span>              :   slice-&gt;slice_offset = 0;</span>
 <span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">           1 :   if (slice_count &gt; 1) {</span></span>
 <span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">           1 :     mi_slice_t* last = slice + slice_count - 1;</span></span>
 <span id="L656"><span class="lineNum">     656</span> <span class="tlaGNC">           1 :     mi_slice_t* end  = (mi_slice_t*)mi_segment_slices_end(segment);</span></span>
@@ -1028,18 +1028,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L755"><span class="lineNum">     755</span>              :   mi_assert_internal(slice-&gt;slice_count == slice_count);</span>
 <span id="L756"><span class="lineNum">     756</span>              :   const size_t bsize = slice_count * MI_SEGMENT_SLICE_SIZE;</span>
 <span id="L757"><span class="lineNum">     757</span>              :   slice-&gt;block_size = bsize;</span>
-<span id="L758"><span class="lineNum">     758</span>              :   mi_page_t*  page = mi_slice_to_page(slice);</span>
+<span id="L758"><span class="lineNum">     758</span> <span class="tlaGNC">           1 :   mi_page_t*  page = mi_slice_to_page(slice);</span></span>
 <span id="L759"><span class="lineNum">     759</span>              :   mi_assert_internal(mi_page_block_size(page) == bsize);</span>
 <span id="L760"><span class="lineNum">     760</span>              : </span>
 <span id="L761"><span class="lineNum">     761</span>              :   // set slice back pointers for the first MI_MAX_SLICE_OFFSET_COUNT entries</span>
 <span id="L762"><span class="lineNum">     762</span>              :   size_t extra = slice_count-1;</span>
-<span id="L763"><span class="lineNum">     763</span> <span class="tlaGNC">           1 :   if (extra &gt; MI_MAX_SLICE_OFFSET_COUNT) extra = MI_MAX_SLICE_OFFSET_COUNT;</span></span>
+<span id="L763"><span class="lineNum">     763</span>              :   if (extra &gt; MI_MAX_SLICE_OFFSET_COUNT) extra = MI_MAX_SLICE_OFFSET_COUNT;</span>
 <span id="L764"><span class="lineNum">     764</span> <span class="tlaGNC">           1 :   if (slice_index + extra &gt;= segment-&gt;slice_entries) extra = segment-&gt;slice_entries - slice_index - 1;  // huge objects may have more slices than avaiable entries in the segment-&gt;slices</span></span>
 <span id="L765"><span class="lineNum">     765</span>              : </span>
 <span id="L766"><span class="lineNum">     766</span> <span class="tlaGNC">           1 :   mi_slice_t* slice_next = slice + 1;</span></span>
 <span id="L767"><span class="lineNum">     767</span> <span class="tlaGNC">           1 :   for (size_t i = 1; i &lt;= extra; i++, slice_next++) {</span></span>
 <span id="L768"><span class="lineNum">     768</span> <span class="tlaGNC">           1 :     slice_next-&gt;slice_offset = (uint32_t)(sizeof(mi_slice_t)*i);</span></span>
-<span id="L769"><span class="lineNum">     769</span> <span class="tlaGNC">           1 :     slice_next-&gt;slice_count = 0;</span></span>
+<span id="L769"><span class="lineNum">     769</span>              :     slice_next-&gt;slice_count = 0;</span>
 <span id="L770"><span class="lineNum">     770</span> <span class="tlaGNC">           1 :     slice_next-&gt;block_size = 1;</span></span>
 <span id="L771"><span class="lineNum">     771</span>              :   }</span>
 <span id="L772"><span class="lineNum">     772</span>              : </span>
@@ -1050,16 +1050,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L777"><span class="lineNum">     777</span> <span class="tlaGNC">           1 :   if (last &gt; end) last = end;</span></span>
 <span id="L778"><span class="lineNum">     778</span> <span class="tlaGNC">           1 :   if (last &gt; slice) {</span></span>
 <span id="L779"><span class="lineNum">     779</span> <span class="tlaGNC">           1 :     last-&gt;slice_offset = (uint32_t)(sizeof(mi_slice_t) * (last - slice));</span></span>
-<span id="L780"><span class="lineNum">     780</span> <span class="tlaGNC">           1 :     last-&gt;slice_count = 0;</span></span>
-<span id="L781"><span class="lineNum">     781</span> <span class="tlaGNC">           1 :     last-&gt;block_size = 1;</span></span>
+<span id="L780"><span class="lineNum">     780</span>              :     last-&gt;slice_count = 0;</span>
+<span id="L781"><span class="lineNum">     781</span>              :     last-&gt;block_size = 1;</span>
 <span id="L782"><span class="lineNum">     782</span>              :   }</span>
 <span id="L783"><span class="lineNum">     783</span>              : </span>
 <span id="L784"><span class="lineNum">     784</span>              :   // and initialize the page</span>
 <span id="L785"><span class="lineNum">     785</span> <span class="tlaGNC">           1 :   page-&gt;is_committed = true;</span></span>
-<span id="L786"><span class="lineNum">     786</span>              :   page-&gt;is_zero_init = segment-&gt;free_is_zero;</span>
+<span id="L786"><span class="lineNum">     786</span> <span class="tlaGNC">           1 :   page-&gt;is_zero_init = segment-&gt;free_is_zero;</span></span>
 <span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">           1 :   page-&gt;is_huge = (segment-&gt;kind == MI_SEGMENT_HUGE);</span></span>
-<span id="L788"><span class="lineNum">     788</span>              :   segment-&gt;used++;</span>
-<span id="L789"><span class="lineNum">     789</span> <span class="tlaGNC">           1 :   return page;</span></span>
+<span id="L788"><span class="lineNum">     788</span> <span class="tlaGNC">           1 :   segment-&gt;used++;</span></span>
+<span id="L789"><span class="lineNum">     789</span>              :   return page;</span>
 <span id="L790"><span class="lineNum">     790</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L791"><span class="lineNum">     791</span>              : </span>
 <span id="L792"><span class="lineNum">     792</span> <span class="tlaGNC">           1 : static void mi_segment_slice_split(mi_segment_t* segment, mi_slice_t* slice, size_t slice_count, mi_segments_tld_t* tld) {</span></span>
@@ -1102,7 +1102,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L829"><span class="lineNum">     829</span>              :         }</span>
 <span id="L830"><span class="lineNum">     830</span>              :       }</span>
 <span id="L831"><span class="lineNum">     831</span>              :     }</span>
-<span id="L832"><span class="lineNum">     832</span> <span class="tlaGNC">           1 :     sq++;</span></span>
+<span id="L832"><span class="lineNum">     832</span>              :     sq++;</span>
 <span id="L833"><span class="lineNum">     833</span>              :   }</span>
 <span id="L834"><span class="lineNum">     834</span>              :   // could not find a page..</span>
 <span id="L835"><span class="lineNum">     835</span>              :   return NULL;</span>
@@ -1120,13 +1120,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L847"><span class="lineNum">     847</span> <span class="tlaGNC">           1 : {</span></span>
 <span id="L848"><span class="lineNum">     848</span>              :   mi_memid_t memid;</span>
 <span id="L849"><span class="lineNum">     849</span>              :   bool   allow_large = (!eager_delayed &amp;&amp; (MI_SECURE == 0)); // only allow large OS pages once we are no longer lazy</span>
-<span id="L850"><span class="lineNum">     850</span> <span class="tlaGNC">           1 :   size_t align_offset = 0;</span></span>
+<span id="L850"><span class="lineNum">     850</span>              :   size_t align_offset = 0;</span>
 <span id="L851"><span class="lineNum">     851</span> <span class="tlaGNC">           1 :   size_t alignment = MI_SEGMENT_ALIGN;</span></span>
 <span id="L852"><span class="lineNum">     852</span>              : </span>
 <span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">           1 :   if (page_alignment &gt; 0) {</span></span>
 <span id="L854"><span class="lineNum">     854</span>              :     // mi_assert_internal(huge_page != NULL);</span>
 <span id="L855"><span class="lineNum">     855</span>              :     mi_assert_internal(page_alignment &gt;= MI_SEGMENT_ALIGN);</span>
-<span id="L856"><span class="lineNum">     856</span>              :     alignment = page_alignment;</span>
+<span id="L856"><span class="lineNum">     856</span> <span class="tlaUNC">           0 :     alignment = page_alignment;</span></span>
 <span id="L857"><span class="lineNum">     857</span> <span class="tlaUNC">           0 :     const size_t info_size = (*pinfo_slices) * MI_SEGMENT_SLICE_SIZE;</span></span>
 <span id="L858"><span class="lineNum">     858</span> <span class="tlaUNC">           0 :     align_offset = _mi_align_up( info_size, MI_SEGMENT_ALIGN );</span></span>
 <span id="L859"><span class="lineNum">     859</span>              :     const size_t extra = align_offset - info_size;</span>
@@ -1170,7 +1170,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L897"><span class="lineNum">     897</span>              :   segment-&gt;segment_size = segment_size;</span>
 <span id="L898"><span class="lineNum">     898</span>              :   segment-&gt;subproc = tld-&gt;subproc;</span>
 <span id="L899"><span class="lineNum">     899</span> <span class="tlaGNC">           1 :   segment-&gt;commit_mask = commit_mask;</span></span>
-<span id="L900"><span class="lineNum">     900</span> <span class="tlaGNC">           1 :   segment-&gt;purge_expire = 0;</span></span>
+<span id="L900"><span class="lineNum">     900</span>              :   segment-&gt;purge_expire = 0;</span>
 <span id="L901"><span class="lineNum">     901</span>              :   segment-&gt;free_is_zero = memid.initially_zero;</span>
 <span id="L902"><span class="lineNum">     902</span> <span class="tlaGNC">           1 :   mi_commit_mask_create_empty(&amp;segment-&gt;purge_mask);</span></span>
 <span id="L903"><span class="lineNum">     903</span>              : </span>
@@ -1333,7 +1333,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1060"><span class="lineNum">    1060</span>              :   // and free it</span>
 <span id="L1061"><span class="lineNum">    1061</span> <span class="tlaGNC">           1 :   mi_slice_t* slice = mi_segment_span_free_coalesce(mi_page_to_slice(page), tld);</span></span>
 <span id="L1062"><span class="lineNum">    1062</span> <span class="tlaGNC">           1 :   segment-&gt;used--;</span></span>
-<span id="L1063"><span class="lineNum">    1063</span>              :   segment-&gt;free_is_zero = false;</span>
+<span id="L1063"><span class="lineNum">    1063</span> <span class="tlaGNC">           1 :   segment-&gt;free_is_zero = false;</span></span>
 <span id="L1064"><span class="lineNum">    1064</span>              : </span>
 <span id="L1065"><span class="lineNum">    1065</span>              :   // cannot assert segment valid as it is called during reclaim</span>
 <span id="L1066"><span class="lineNum">    1066</span>              :   // mi_assert_expensive(mi_segment_is_valid(segment, tld));</span>
@@ -1394,7 +1394,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1121"><span class="lineNum">    1121</span>              :   mi_assert_expensive(mi_segment_is_valid(segment,tld));</span>
 <span id="L1122"><span class="lineNum">    1122</span>              : </span>
 <span id="L1123"><span class="lineNum">    1123</span>              :   // remove the free pages from the free page queues</span>
-<span id="L1124"><span class="lineNum">    1124</span> <span class="tlaGNC">           1 :   mi_slice_t* slice = &amp;segment-&gt;slices[0];</span></span>
+<span id="L1124"><span class="lineNum">    1124</span>              :   mi_slice_t* slice = &amp;segment-&gt;slices[0];</span>
 <span id="L1125"><span class="lineNum">    1125</span> <span class="tlaGNC">           1 :   const mi_slice_t* end = mi_segment_slices_end(segment);</span></span>
 <span id="L1126"><span class="lineNum">    1126</span> <span class="tlaGNC">           1 :   while (slice &lt; end) {</span></span>
 <span id="L1127"><span class="lineNum">    1127</span>              :     mi_assert_internal(slice-&gt;slice_count &gt; 0);</span>
@@ -1457,7 +1457,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1184"><span class="lineNum">    1184</span>              : static bool mi_segment_check_free(mi_segment_t* segment, size_t slices_needed, size_t block_size, mi_segments_tld_t* tld)</span>
 <span id="L1185"><span class="lineNum">    1185</span> <span class="tlaGNC">           1 : {</span></span>
 <span id="L1186"><span class="lineNum">    1186</span>              :   mi_assert_internal(mi_segment_is_abandoned(segment));</span>
-<span id="L1187"><span class="lineNum">    1187</span>              :   bool has_page = false;</span>
+<span id="L1187"><span class="lineNum">    1187</span> <span class="tlaGNC">           1 :   bool has_page = false;</span></span>
 <span id="L1188"><span class="lineNum">    1188</span>              : </span>
 <span id="L1189"><span class="lineNum">    1189</span>              :   // for all slices</span>
 <span id="L1190"><span class="lineNum">    1190</span>              :   const mi_slice_t* end;</span>
@@ -1504,8 +1504,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1231"><span class="lineNum">    1231</span>              :   mi_assert_internal(mi_atomic_load_relaxed(&amp;segment-&gt;thread_id) == 0 || mi_atomic_load_relaxed(&amp;segment-&gt;thread_id) == _mi_thread_id());</span>
 <span id="L1232"><span class="lineNum">    1232</span>              :   mi_assert_internal(segment-&gt;subproc == heap-&gt;tld-&gt;segments.subproc); // only reclaim within the same subprocess</span>
 <span id="L1233"><span class="lineNum">    1233</span> <span class="tlaGNC">           1 :   mi_atomic_store_release(&amp;segment-&gt;thread_id, _mi_thread_id());</span></span>
-<span id="L1234"><span class="lineNum">    1234</span>              :   segment-&gt;abandoned_visits = 0;</span>
-<span id="L1235"><span class="lineNum">    1235</span>              :   segment-&gt;was_reclaimed = true;</span>
+<span id="L1234"><span class="lineNum">    1234</span> <span class="tlaGNC">           1 :   segment-&gt;abandoned_visits = 0;</span></span>
+<span id="L1235"><span class="lineNum">    1235</span> <span class="tlaGNC">           1 :   segment-&gt;was_reclaimed = true;</span></span>
 <span id="L1236"><span class="lineNum">    1236</span> <span class="tlaGNC">           1 :   tld-&gt;reclaim_count++;</span></span>
 <span id="L1237"><span class="lineNum">    1237</span> <span class="tlaGNC">           1 :   mi_segments_track_size((long)mi_segment_size(segment), tld);</span></span>
 <span id="L1238"><span class="lineNum">    1238</span>              :   mi_assert_internal(segment-&gt;next == NULL);</span>
@@ -1588,7 +1588,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1315"><span class="lineNum">    1315</span>              :     mi_assert_internal(res == segment);</span>
 <span id="L1316"><span class="lineNum">    1316</span> <span class="tlaUNC">           0 :     return (res != NULL);</span></span>
 <span id="L1317"><span class="lineNum">    1317</span>              :   }</span>
-<span id="L1318"><span class="lineNum">    1318</span>              :   return false;</span>
+<span id="L1318"><span class="lineNum">    1318</span> <span class="tlaUNC">           0 :   return false;</span></span>
 <span id="L1319"><span class="lineNum">    1319</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L1320"><span class="lineNum">    1320</span>              : </span>
 <span id="L1321"><span class="lineNum">    1321</span> <span class="tlaGNC">           1 : void _mi_abandoned_reclaim_all(mi_heap_t* heap, mi_segments_tld_t* tld) {</span></span>
@@ -1606,7 +1606,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1333"><span class="lineNum">    1333</span> <span class="tlaGNC">           1 :   const size_t target = (size_t)mi_option_get_clamp(mi_option_target_segments_per_thread, 0, 1024);</span></span>
 <span id="L1334"><span class="lineNum">    1334</span> <span class="tlaGNC">           1 :   if (ptarget != NULL) { *ptarget = target; }</span></span>
 <span id="L1335"><span class="lineNum">    1335</span> <span class="tlaGNC">           1 :   return (target == 0 || tld-&gt;count &lt; target);</span></span>
-<span id="L1336"><span class="lineNum">    1336</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L1336"><span class="lineNum">    1336</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1337"><span class="lineNum">    1337</span>              : </span>
 <span id="L1338"><span class="lineNum">    1338</span> <span class="tlaGNC">           1 : static long mi_segment_get_reclaim_tries(mi_segments_tld_t* tld) {</span></span>
 <span id="L1339"><span class="lineNum">    1339</span>              :   // limit the tries to 10% (default) of the abandoned segments with at least 8 and at most 1024 tries.</span>
@@ -1617,12 +1617,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1344"><span class="lineNum">    1344</span> <span class="tlaGNC">           1 :   const size_t relative_count = (total_count &gt; 10000 ? (total_count / 100) * perc : (total_count * perc) / 100); // avoid overflow</span></span>
 <span id="L1345"><span class="lineNum">    1345</span> <span class="tlaGNC">           1 :   long max_tries = (long)(relative_count &lt;= 1 ? 1 : (relative_count &gt; 1024 ? 1024 : relative_count));</span></span>
 <span id="L1346"><span class="lineNum">    1346</span> <span class="tlaGNC">           1 :   if (max_tries &lt; 8 &amp;&amp; total_count &gt; 8) { max_tries = 8;  }</span></span>
-<span id="L1347"><span class="lineNum">    1347</span> <span class="tlaGNC">           1 :   return max_tries;</span></span>
+<span id="L1347"><span class="lineNum">    1347</span>              :   return max_tries;</span>
 <span id="L1348"><span class="lineNum">    1348</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L1349"><span class="lineNum">    1349</span>              : </span>
 <span id="L1350"><span class="lineNum">    1350</span>              : static mi_segment_t* mi_segment_try_reclaim(mi_heap_t* heap, size_t needed_slices, size_t block_size, bool* reclaimed, mi_segments_tld_t* tld)</span>
 <span id="L1351"><span class="lineNum">    1351</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1352"><span class="lineNum">    1352</span>              :   *reclaimed = false;</span>
+<span id="L1352"><span class="lineNum">    1352</span> <span class="tlaGNC">           1 :   *reclaimed = false;</span></span>
 <span id="L1353"><span class="lineNum">    1353</span> <span class="tlaGNC">           1 :   long max_tries = mi_segment_get_reclaim_tries(tld);</span></span>
 <span id="L1354"><span class="lineNum">    1354</span> <span class="tlaGNC">           1 :   if (max_tries &lt;= 0) return NULL;</span></span>
 <span id="L1355"><span class="lineNum">    1355</span>              : </span>
@@ -1736,7 +1736,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1463"><span class="lineNum">    1463</span>              :     }</span>
 <span id="L1464"><span class="lineNum">    1464</span> <span class="tlaUNC">           0 :     slice = slice + slice-&gt;slice_count;</span></span>
 <span id="L1465"><span class="lineNum">    1465</span>              :   }</span>
-<span id="L1466"><span class="lineNum">    1466</span>              :   segment-&gt;dont_free = false;</span>
+<span id="L1466"><span class="lineNum">    1466</span> <span class="tlaUNC">           0 :   segment-&gt;dont_free = false;</span></span>
 <span id="L1467"><span class="lineNum">    1467</span>              :   mi_assert(segment-&gt;used == segment-&gt;abandoned);</span>
 <span id="L1468"><span class="lineNum">    1468</span>              :   mi_assert(segment-&gt;used == 0);</span>
 <span id="L1469"><span class="lineNum">    1469</span> <span class="tlaUNC">           0 :   if (segment-&gt;used == 0) {  // paranoia</span></span>
@@ -1759,7 +1759,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1486"><span class="lineNum">    1486</span> <span class="tlaUNC">           0 :   for (int i = 0; i &lt; 64 &amp;&amp; tld-&gt;count &gt;= min_target; i++) {</span></span>
 <span id="L1487"><span class="lineNum">    1487</span> <span class="tlaUNC">           0 :     mi_page_t* page = heap-&gt;pages[MI_BIN_FULL].first;</span></span>
 <span id="L1488"><span class="lineNum">    1488</span> <span class="tlaUNC">           0 :     while (page != NULL &amp;&amp; mi_page_block_size(page) &gt; MI_LARGE_OBJ_SIZE_MAX) {</span></span>
-<span id="L1489"><span class="lineNum">    1489</span> <span class="tlaUNC">           0 :       page = page-&gt;next;</span></span>
+<span id="L1489"><span class="lineNum">    1489</span>              :       page = page-&gt;next;</span>
 <span id="L1490"><span class="lineNum">    1490</span>              :     }</span>
 <span id="L1491"><span class="lineNum">    1491</span>              :     if (page==NULL) {</span>
 <span id="L1492"><span class="lineNum">    1492</span>              :       break;</span>
@@ -1774,7 +1774,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1501"><span class="lineNum">    1501</span>              : // this should be called from `reclaim_or_alloc` so we know all segments are (about) fully in use.</span>
 <span id="L1502"><span class="lineNum">    1502</span> <span class="tlaGNC">           1 : static void mi_segments_try_abandon(mi_heap_t* heap, mi_segments_tld_t* tld) {</span></span>
 <span id="L1503"><span class="lineNum">    1503</span>              :   // we call this when we are about to add a fresh segment so we should be under our target segment count.</span>
-<span id="L1504"><span class="lineNum">    1504</span> <span class="tlaGNC">           1 :   size_t target = 0;</span></span>
+<span id="L1504"><span class="lineNum">    1504</span>              :   size_t target = 0;</span>
 <span id="L1505"><span class="lineNum">    1505</span> <span class="tlaGNC">           1 :   if (segment_count_is_within_target(tld, &amp;target)) return;</span></span>
 <span id="L1506"><span class="lineNum">    1506</span> <span class="tlaUNC">           0 :   mi_segments_try_abandon_to_target(heap, target, tld);</span></span>
 <span id="L1507"><span class="lineNum">    1507</span> <span class="tlaGNC">           1 : }</span></span>
@@ -1856,7 +1856,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1583"><span class="lineNum">    1583</span>              : </span>
 <span id="L1584"><span class="lineNum">    1584</span>              : static mi_page_t* mi_segment_huge_page_alloc(size_t size, size_t page_alignment, mi_arena_id_t req_arena_id, mi_segments_tld_t* tld)</span>
 <span id="L1585"><span class="lineNum">    1585</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L1586"><span class="lineNum">    1586</span>              :   mi_page_t* page = NULL;</span>
+<span id="L1586"><span class="lineNum">    1586</span> <span class="tlaGNC">           1 :   mi_page_t* page = NULL;</span></span>
 <span id="L1587"><span class="lineNum">    1587</span> <span class="tlaGNC">           1 :   mi_segment_t* segment = mi_segment_alloc(size,page_alignment,req_arena_id,tld,&amp;page);</span></span>
 <span id="L1588"><span class="lineNum">    1588</span> <span class="tlaGNC">           1 :   if (segment == NULL || page==NULL) return NULL;</span></span>
 <span id="L1589"><span class="lineNum">    1589</span>              :   mi_assert_internal(segment-&gt;used==1);</span>
@@ -1956,7 +1956,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1683"><span class="lineNum">    1683</span> <span class="tlaGNC">           1 :     page = mi_segments_page_alloc(heap,MI_PAGE_LARGE,block_size,block_size,tld);</span></span>
 <span id="L1684"><span class="lineNum">    1684</span>              :   }</span>
 <span id="L1685"><span class="lineNum">    1685</span>              :   else {</span>
-<span id="L1686"><span class="lineNum">    1686</span>              :     page = mi_segment_huge_page_alloc(block_size,page_alignment,heap-&gt;arena_id,tld);</span>
+<span id="L1686"><span class="lineNum">    1686</span> <span class="tlaGNC">           1 :     page = mi_segment_huge_page_alloc(block_size,page_alignment,heap-&gt;arena_id,tld);</span></span>
 <span id="L1687"><span class="lineNum">    1687</span>              :   }</span>
 <span id="L1688"><span class="lineNum">    1688</span>              :   mi_assert_internal(page == NULL || _mi_heap_memid_is_suitable(heap, _mi_page_segment(page)-&gt;memid));</span>
 <span id="L1689"><span class="lineNum">    1689</span>              :   mi_assert_expensive(page == NULL || mi_segment_is_valid(_mi_page_segment(page),tld));</span>

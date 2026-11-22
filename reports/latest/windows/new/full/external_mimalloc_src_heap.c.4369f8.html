@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">25.9&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:25.9%;background-color:hsl(11, 70%, 50%)"></div></div>
-      <span class="metricCounts">76 / 294</span>
+      <span class="metricValue">26.0&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:26.0%;background-color:hsl(11, 70%, 50%)"></div></div>
+      <span class="metricCounts">79 / 304</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -307,11 +307,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L34"><span class="lineNum">      34</span>              :   size_t count = 0;</span>
 <span id="L35"><span class="lineNum">      35</span>              :   #endif</span>
 <span id="L36"><span class="lineNum">      36</span>              : </span>
-<span id="L37"><span class="lineNum">      37</span>              :   const size_t max_bin = (include_full ? MI_BIN_FULL : MI_BIN_FULL - 1);</span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           1 :   const size_t max_bin = (include_full ? MI_BIN_FULL : MI_BIN_FULL - 1);</span></span>
 <span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           1 :   for (size_t i = 0; i &lt;= max_bin; i++) {</span></span>
 <span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">           1 :     mi_page_queue_t* pq = &amp;heap-&gt;pages[i];</span></span>
-<span id="L40"><span class="lineNum">      40</span>              :     mi_page_t* page = pq-&gt;first;</span>
-<span id="L41"><span class="lineNum">      41</span>              :     while(page != NULL) {</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">           1 :     mi_page_t* page = pq-&gt;first;</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">           1 :     while(page != NULL) {</span></span>
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">           1 :       mi_page_t* next = page-&gt;next; // save next in case the page gets removed from the queue</span></span>
 <span id="L43"><span class="lineNum">      43</span>              :       mi_assert_internal(mi_page_heap(page) == heap);</span>
 <span id="L44"><span class="lineNum">      44</span>              :       #if MI_DEBUG&gt;1</span>
@@ -367,7 +367,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L94"><span class="lineNum">      94</span>              :   MI_UNUSED(arg2);</span>
 <span id="L95"><span class="lineNum">      95</span>              :   MI_UNUSED(heap);</span>
 <span id="L96"><span class="lineNum">      96</span>              :   mi_assert_internal(mi_heap_page_is_valid(heap, pq, page, NULL, NULL));</span>
-<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">           1 :   mi_collect_t collect = *((mi_collect_t*)arg_collect);</span></span>
+<span id="L97"><span class="lineNum">      97</span>              :   mi_collect_t collect = *((mi_collect_t*)arg_collect);</span>
 <span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">           1 :   _mi_page_free_collect(page, collect &gt;= MI_FORCE);</span></span>
 <span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">           1 :   if (collect == MI_FORCE) {</span></span>
 <span id="L100"><span class="lineNum">     100</span>              :     // note: call before a potential `_mi_page_free` as the segment may be freed if this was the last used page in that segment.</span>
@@ -499,7 +499,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">           1 :   heap-&gt;thread_id  = _mi_thread_id();</span></span>
 <span id="L227"><span class="lineNum">     227</span>              :   heap-&gt;arena_id   = arena_id;</span>
 <span id="L228"><span class="lineNum">     228</span>              :   heap-&gt;no_reclaim = noreclaim;</span>
-<span id="L229"><span class="lineNum">     229</span>              :   heap-&gt;tag        = tag;</span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">           1 :   heap-&gt;tag        = tag;</span></span>
 <span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">           1 :   if (heap == tld-&gt;heap_backing) {</span></span>
 <span id="L231"><span class="lineNum">     231</span>              :     #if defined(_WIN32) &amp;&amp; !defined(MI_SHARED_LIB)</span>
 <span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">           1 :       _mi_random_init_weak(&amp;heap-&gt;random);    // prevent allocation failure during bcrypt dll initialization with static linking (issue #1185)</span></span>
@@ -642,11 +642,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L369"><span class="lineNum">     369</span>              : </span>
 <span id="L370"><span class="lineNum">     370</span>              :   // and free the page</span>
 <span id="L371"><span class="lineNum">     371</span>              :   // mi_page_free(page,false);</span>
-<span id="L372"><span class="lineNum">     372</span>              :   page-&gt;next = NULL;</span>
-<span id="L373"><span class="lineNum">     373</span>              :   page-&gt;prev = NULL;</span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaUNC">           0 :   page-&gt;next = NULL;</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaUNC">           0 :   page-&gt;prev = NULL;</span></span>
 <span id="L374"><span class="lineNum">     374</span> <span class="tlaUNC">           0 :   _mi_segment_page_free(page,false /* no force? */, &amp;heap-&gt;tld-&gt;segments);</span></span>
 <span id="L375"><span class="lineNum">     375</span>              : </span>
-<span id="L376"><span class="lineNum">     376</span>              :   return true; // keep going</span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaUNC">           0 :   return true; // keep going</span></span>
 <span id="L377"><span class="lineNum">     377</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L378"><span class="lineNum">     378</span>              : </span>
 <span id="L379"><span class="lineNum">     379</span> <span class="tlaUNC">           0 : void _mi_heap_destroy_pages(mi_heap_t* heap) {</span></span>
@@ -703,7 +703,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L430"><span class="lineNum">     430</span>              :     else {</span>
 <span id="L431"><span class="lineNum">     431</span> <span class="tlaUNC">           0 :       _mi_heap_destroy_pages(curr);</span></span>
 <span id="L432"><span class="lineNum">     432</span>              :     }</span>
-<span id="L433"><span class="lineNum">     433</span> <span class="tlaUNC">           0 :     curr = next;</span></span>
+<span id="L433"><span class="lineNum">     433</span>              :     curr = next;</span>
 <span id="L434"><span class="lineNum">     434</span>              :   }</span>
 <span id="L435"><span class="lineNum">     435</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L436"><span class="lineNum">     436</span>              : </span>
@@ -723,7 +723,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L450"><span class="lineNum">     450</span>              :   // so threads may do delayed frees in either heap for a while.</span>
 <span id="L451"><span class="lineNum">     451</span>              :   // note: appending waits for each page to not be in the `MI_DELAYED_FREEING` state</span>
 <span id="L452"><span class="lineNum">     452</span>              :   // so after this only the new heap will get delayed frees</span>
-<span id="L453"><span class="lineNum">     453</span>              :   for (size_t i = 0; i &lt;= MI_BIN_FULL; i++) {</span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaUNC">           0 :   for (size_t i = 0; i &lt;= MI_BIN_FULL; i++) {</span></span>
 <span id="L454"><span class="lineNum">     454</span>              :     mi_page_queue_t* pq = &amp;heap-&gt;pages[i];</span>
 <span id="L455"><span class="lineNum">     455</span> <span class="tlaUNC">           0 :     mi_page_queue_t* append = &amp;from-&gt;pages[i];</span></span>
 <span id="L456"><span class="lineNum">     456</span> <span class="tlaUNC">           0 :     size_t pcount = _mi_page_queue_append(heap, pq, append);</span></span>
@@ -813,14 +813,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L540"><span class="lineNum">     540</span> <span class="tlaUNC">           0 :   void* start = mi_page_start(page);</span></span>
 <span id="L541"><span class="lineNum">     541</span> <span class="tlaUNC">           0 :   void* end   = (uint8_t*)start + (page-&gt;capacity * mi_page_block_size(page));</span></span>
 <span id="L542"><span class="lineNum">     542</span> <span class="tlaUNC">           0 :   *found = (p &gt;= start &amp;&amp; p &lt; end);</span></span>
-<span id="L543"><span class="lineNum">     543</span> <span class="tlaUNC">           0 :   return (!*found); // continue if not found</span></span>
+<span id="L543"><span class="lineNum">     543</span>              :   return (!*found); // continue if not found</span>
 <span id="L544"><span class="lineNum">     544</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L545"><span class="lineNum">     545</span>              : </span>
 <span id="L546"><span class="lineNum">     546</span> <span class="tlaUNC">           0 : bool mi_heap_check_owned(mi_heap_t* heap, const void* p) {</span></span>
 <span id="L547"><span class="lineNum">     547</span>              :   mi_assert(heap != NULL);</span>
 <span id="L548"><span class="lineNum">     548</span> <span class="tlaUNC">           0 :   if (heap==NULL || !mi_heap_is_initialized(heap)) return false;</span></span>
 <span id="L549"><span class="lineNum">     549</span> <span class="tlaUNC">           0 :   if (((uintptr_t)p &amp; (MI_INTPTR_SIZE - 1)) != 0) return false;  // only aligned pointers</span></span>
-<span id="L550"><span class="lineNum">     550</span>              :   bool found = false;</span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaUNC">           0 :   bool found = false;</span></span>
 <span id="L551"><span class="lineNum">     551</span> <span class="tlaUNC">           0 :   mi_heap_visit_pages(heap, &amp;mi_heap_page_check_owned, true, (void*)p, &amp;found);</span></span>
 <span id="L552"><span class="lineNum">     552</span> <span class="tlaUNC">           0 :   return found;</span></span>
 <span id="L553"><span class="lineNum">     553</span> <span class="tlaUNC">           0 : }</span></span>
@@ -925,7 +925,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L652"><span class="lineNum">     652</span> <span class="tlaUNC">           0 :     size_t blockidx = mi_fast_divide(offset, magic, shift);</span></span>
 <span id="L653"><span class="lineNum">     653</span>              :     mi_assert_internal(blockidx == offset / bsize);</span>
 <span id="L654"><span class="lineNum">     654</span>              :     mi_assert_internal(blockidx &lt; MI_MAX_BLOCKS);</span>
-<span id="L655"><span class="lineNum">     655</span>              :     size_t bitidx = (blockidx / MI_INTPTR_BITS);</span>
+<span id="L655"><span class="lineNum">     655</span> <span class="tlaUNC">           0 :     size_t bitidx = (blockidx / MI_INTPTR_BITS);</span></span>
 <span id="L656"><span class="lineNum">     656</span> <span class="tlaUNC">           0 :     size_t bit = blockidx - (bitidx * MI_INTPTR_BITS);</span></span>
 <span id="L657"><span class="lineNum">     657</span> <span class="tlaUNC">           0 :     free_map[bitidx] |= ((uintptr_t)1 &lt;&lt; bit);</span></span>
 <span id="L658"><span class="lineNum">     658</span>              :   }</span>
@@ -939,7 +939,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L666"><span class="lineNum">     666</span> <span class="tlaUNC">           0 :   for (size_t i = 0; i &lt; bmapsize; i++) {</span></span>
 <span id="L667"><span class="lineNum">     667</span> <span class="tlaUNC">           0 :     if (free_map[i] == 0) {</span></span>
 <span id="L668"><span class="lineNum">     668</span>              :       // every block is in use</span>
-<span id="L669"><span class="lineNum">     669</span>              :       for (size_t j = 0; j &lt; MI_INTPTR_BITS; j++) {</span>
+<span id="L669"><span class="lineNum">     669</span> <span class="tlaUNC">           0 :       for (size_t j = 0; j &lt; MI_INTPTR_BITS; j++) {</span></span>
 <span id="L670"><span class="lineNum">     670</span>              :         #if MI_DEBUG&gt;1</span>
 <span id="L671"><span class="lineNum">     671</span>              :         used_count++;</span>
 <span id="L672"><span class="lineNum">     672</span>              :         #endif</span>
@@ -981,7 +981,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L708"><span class="lineNum">     708</span> <span class="tlaUNC">           0 :   if (page==NULL) return true;</span></span>
 <span id="L709"><span class="lineNum">     709</span>              :   mi_heap_area_visit_fun* fun = (mi_heap_area_visit_fun*)vfun;</span>
 <span id="L710"><span class="lineNum">     710</span>              :   mi_heap_area_ex_t xarea;</span>
-<span id="L711"><span class="lineNum">     711</span>              :   xarea.page = page;  </span>
+<span id="L711"><span class="lineNum">     711</span> <span class="tlaUNC">           0 :   xarea.page = page;  </span></span>
 <span id="L712"><span class="lineNum">     712</span> <span class="tlaUNC">           0 :   _mi_page_free_collect(page,true); // collect early so the page-&gt;used is accurate  </span></span>
 <span id="L713"><span class="lineNum">     713</span> <span class="tlaUNC">           0 :   _mi_heap_area_init(&amp;xarea.area, page);</span></span>
 <span id="L714"><span class="lineNum">     714</span> <span class="tlaUNC">           0 :   return fun(heap, &amp;xarea, arg);</span></span>
@@ -1007,7 +1007,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L734"><span class="lineNum">     734</span> <span class="tlaUNC">           0 :     return _mi_heap_area_visit_blocks(&amp;xarea-&gt;area, xarea-&gt;page, args-&gt;visitor, args-&gt;arg);</span></span>
 <span id="L735"><span class="lineNum">     735</span>              :   }</span>
 <span id="L736"><span class="lineNum">     736</span>              :   else {</span>
-<span id="L737"><span class="lineNum">     737</span>              :     return true;</span>
+<span id="L737"><span class="lineNum">     737</span> <span class="tlaUNC">           0 :     return true;</span></span>
 <span id="L738"><span class="lineNum">     738</span>              :   }</span>
 <span id="L739"><span class="lineNum">     739</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L740"><span class="lineNum">     740</span>              : </span>

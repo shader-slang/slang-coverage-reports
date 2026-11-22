@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:35:31 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -262,7 +262,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <span class="metricLabel">Lines</span>
       <span class="metricValue">51.1&nbsp;%</span>
       <div class="metricBarMini"><div class="metricBarFill" style="width:51.1%;background-color:hsl(22, 70%, 50%)"></div></div>
-      <span class="metricCounts">70 / 137</span>
+      <span class="metricCounts">72 / 141</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -324,7 +324,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L51"><span class="lineNum">      51</span> <span class="tlaUNC">           0 : static bool mi_arena_segment_os_clear_abandoned(mi_segment_t* segment, bool take_lock) {</span></span>
 <span id="L52"><span class="lineNum">      52</span>              :   mi_assert(segment-&gt;memid.memkind != MI_MEM_ARENA);</span>
 <span id="L53"><span class="lineNum">      53</span>              :   // not in an arena, remove from list of abandoned os segments</span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaUNC">           0 :   mi_subproc_t* const subproc = segment-&gt;subproc;</span></span>
+<span id="L54"><span class="lineNum">      54</span>              :   mi_subproc_t* const subproc = segment-&gt;subproc;</span>
 <span id="L55"><span class="lineNum">      55</span> <span class="tlaUNC">           0 :   if (take_lock &amp;&amp; !mi_lock_try_acquire(&amp;subproc-&gt;abandoned_os_lock)) {</span></span>
 <span id="L56"><span class="lineNum">      56</span>              :     return false;  // failed to acquire the lock, we just give up</span>
 <span id="L57"><span class="lineNum">      57</span>              :   }</span>
@@ -350,7 +350,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L77"><span class="lineNum">      77</span> <span class="tlaUNC">           0 :     if (next != NULL) { next-&gt;abandoned_os_prev = prev; }</span></span>
 <span id="L78"><span class="lineNum">      78</span> <span class="tlaUNC">           0 :     else { subproc-&gt;abandoned_os_list_tail = prev; }</span></span>
 <span id="L79"><span class="lineNum">      79</span> <span class="tlaUNC">           0 :     segment-&gt;abandoned_os_next = NULL;</span></span>
-<span id="L80"><span class="lineNum">      80</span>              :     segment-&gt;abandoned_os_prev = NULL;</span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaUNC">           0 :     segment-&gt;abandoned_os_prev = NULL;</span></span>
 <span id="L81"><span class="lineNum">      81</span> <span class="tlaUNC">           0 :     mi_atomic_decrement_relaxed(&amp;subproc-&gt;abandoned_count);</span></span>
 <span id="L82"><span class="lineNum">      82</span> <span class="tlaUNC">           0 :     mi_atomic_decrement_relaxed(&amp;subproc-&gt;abandoned_os_list_count);</span></span>
 <span id="L83"><span class="lineNum">      83</span> <span class="tlaUNC">           0 :     if (take_lock) { // don&#x27;t reset the thread_id when iterating</span></span>
@@ -359,7 +359,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L86"><span class="lineNum">      86</span> <span class="tlaUNC">           0 :     reclaimed = true;</span></span>
 <span id="L87"><span class="lineNum">      87</span>              :   }</span>
 <span id="L88"><span class="lineNum">      88</span> <span class="tlaUNC">           0 :   if (take_lock) { mi_lock_release(&amp;segment-&gt;subproc-&gt;abandoned_os_lock); }</span></span>
-<span id="L89"><span class="lineNum">      89</span>              :   return reclaimed;</span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaUNC">           0 :   return reclaimed;</span></span>
 <span id="L90"><span class="lineNum">      90</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L91"><span class="lineNum">      91</span>              : </span>
 <span id="L92"><span class="lineNum">      92</span>              : // reclaim a specific abandoned segment; `true` on success.</span>
@@ -392,7 +392,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L119"><span class="lineNum">     119</span> <span class="tlaUNC">           0 : static void mi_arena_segment_os_mark_abandoned(mi_segment_t* segment) {</span></span>
 <span id="L120"><span class="lineNum">     120</span>              :   mi_assert(segment-&gt;memid.memkind != MI_MEM_ARENA);</span>
 <span id="L121"><span class="lineNum">     121</span>              :   // not in an arena; we use a list of abandoned segments</span>
-<span id="L122"><span class="lineNum">     122</span> <span class="tlaUNC">           0 :   mi_subproc_t* const subproc = segment-&gt;subproc;</span></span>
+<span id="L122"><span class="lineNum">     122</span>              :   mi_subproc_t* const subproc = segment-&gt;subproc;</span>
 <span id="L123"><span class="lineNum">     123</span> <span class="tlaUNC">           0 :   mi_lock(&amp;subproc-&gt;abandoned_os_lock) {</span></span>
 <span id="L124"><span class="lineNum">     124</span>              :     // push on the tail of the list (important for the visitor)</span>
 <span id="L125"><span class="lineNum">     125</span> <span class="tlaUNC">           0 :     mi_segment_t* prev = subproc-&gt;abandoned_os_list_tail;</span></span>
@@ -444,18 +444,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L171"><span class="lineNum">     171</span>              : // start a cursor at a randomized arena</span>
 <span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">           1 : void _mi_arena_field_cursor_init(mi_heap_t* heap, mi_subproc_t* subproc, bool visit_all, mi_arena_field_cursor_t* current) {</span></span>
 <span id="L173"><span class="lineNum">     173</span>              :   mi_assert_internal(heap == NULL || heap-&gt;tld-&gt;segments.subproc == subproc);</span>
-<span id="L174"><span class="lineNum">     174</span>              :   current-&gt;bitmap_idx = 0;</span>
-<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">           1 :   current-&gt;subproc = subproc;</span></span>
-<span id="L176"><span class="lineNum">     176</span>              :   current-&gt;visit_all = visit_all;</span>
-<span id="L177"><span class="lineNum">     177</span>              :   current-&gt;hold_visit_lock = false;</span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">           1 :   current-&gt;bitmap_idx = 0;</span></span>
+<span id="L175"><span class="lineNum">     175</span>              :   current-&gt;subproc = subproc;</span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">           1 :   current-&gt;visit_all = visit_all;</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">           1 :   current-&gt;hold_visit_lock = false;</span></span>
 <span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">           1 :   const size_t abandoned_count = mi_atomic_load_relaxed(&amp;subproc-&gt;abandoned_count);</span></span>
 <span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">           1 :   const size_t abandoned_list_count = mi_atomic_load_relaxed(&amp;subproc-&gt;abandoned_os_list_count);</span></span>
 <span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">           1 :   const size_t max_arena = mi_arena_get_count();</span></span>
 <span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">           1 :   if (heap != NULL &amp;&amp; heap-&gt;arena_id != _mi_arena_id_none()) {</span></span>
 <span id="L182"><span class="lineNum">     182</span>              :     // for a heap that is bound to one arena, only visit that arena</span>
 <span id="L183"><span class="lineNum">     183</span> <span class="tlaUNC">           0 :     current-&gt;start = mi_arena_id_index(heap-&gt;arena_id);</span></span>
-<span id="L184"><span class="lineNum">     184</span>              :     current-&gt;end = current-&gt;start + 1;</span>
-<span id="L185"><span class="lineNum">     185</span> <span class="tlaUNC">           0 :     current-&gt;os_list_count = 0;</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaUNC">           0 :     current-&gt;end = current-&gt;start + 1;</span></span>
+<span id="L185"><span class="lineNum">     185</span>              :     current-&gt;os_list_count = 0;</span>
 <span id="L186"><span class="lineNum">     186</span> <span class="tlaUNC">           0 :   }</span></span>
 <span id="L187"><span class="lineNum">     187</span>              :   else {</span>
 <span id="L188"><span class="lineNum">     188</span>              :     // otherwise visit all starting at a random location</span>
@@ -568,13 +568,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L295"><span class="lineNum">     295</span>              :   }</span>
 <span id="L296"><span class="lineNum">     296</span>              :   // One list entry at a time</span>
 <span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">           1 :   while (previous-&gt;os_list_count &gt; 0) {</span></span>
-<span id="L298"><span class="lineNum">     298</span>              :     previous-&gt;os_list_count--;</span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaUNC">           0 :     previous-&gt;os_list_count--;</span></span>
 <span id="L299"><span class="lineNum">     299</span> <span class="tlaUNC">           0 :     mi_lock_acquire(&amp;previous-&gt;subproc-&gt;abandoned_os_lock); // this could contend with concurrent OS block abandonment and reclaim from `free`</span></span>
 <span id="L300"><span class="lineNum">     300</span> <span class="tlaUNC">           0 :     mi_segment_t* segment = previous-&gt;subproc-&gt;abandoned_os_list;</span></span>
 <span id="L301"><span class="lineNum">     301</span>              :     // pop from head of the list, a subsequent mark will push at the end (and thus we iterate through os_list_count entries)</span>
 <span id="L302"><span class="lineNum">     302</span> <span class="tlaUNC">           0 :     if (segment == NULL || mi_arena_segment_os_clear_abandoned(segment, false /* we already have the lock */)) {</span></span>
 <span id="L303"><span class="lineNum">     303</span> <span class="tlaUNC">           0 :       mi_lock_release(&amp;previous-&gt;subproc-&gt;abandoned_os_lock);</span></span>
-<span id="L304"><span class="lineNum">     304</span>              :       return segment;</span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaUNC">           0 :       return segment;</span></span>
 <span id="L305"><span class="lineNum">     305</span>              :     }</span>
 <span id="L306"><span class="lineNum">     306</span>              :     // already abandoned, try again</span>
 <span id="L307"><span class="lineNum">     307</span> <span class="tlaUNC">           0 :     mi_lock_release(&amp;previous-&gt;subproc-&gt;abandoned_os_lock);</span></span>

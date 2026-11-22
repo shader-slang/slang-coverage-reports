@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:35:31 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">45.4&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:45.4%;background-color:hsl(19, 70%, 50%)"></div></div>
-      <span class="metricCounts">89 / 196</span>
+      <span class="metricValue">47.2&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:47.2%;background-color:hsl(20, 70%, 50%)"></div></div>
+      <span class="metricCounts">92 / 195</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -318,7 +318,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L45"><span class="lineNum">      45</span>              :   mi_assert_internal(bitmap_idx != NULL);</span>
 <span id="L46"><span class="lineNum">      46</span>              :   mi_assert_internal(count &lt;= MI_BITMAP_FIELD_BITS);</span>
 <span id="L47"><span class="lineNum">      47</span>              :   mi_assert_internal(count &gt; 0);</span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaUNC">           0 :   mi_bitmap_field_t* field = &amp;bitmap[idx];</span></span>
+<span id="L48"><span class="lineNum">      48</span>              :   mi_bitmap_field_t* field = &amp;bitmap[idx];</span>
 <span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :   size_t map  = mi_atomic_load_relaxed(field);</span></span>
 <span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :   if (map==MI_BITMAP_FIELD_FULL) return false; // short cut</span></span>
 <span id="L51"><span class="lineNum">      51</span>              : </span>
@@ -520,7 +520,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L247"><span class="lineNum">     247</span>              :   // intermediate fields</span>
 <span id="L248"><span class="lineNum">     248</span> <span class="tlaUNC">           0 :   while (++field &lt; final_field) {</span></span>
 <span id="L249"><span class="lineNum">     249</span>              :     newmap = MI_BITMAP_FIELD_FULL;</span>
-<span id="L250"><span class="lineNum">     250</span>              :     map = 0;</span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaUNC">           0 :     map = 0;</span></span>
 <span id="L251"><span class="lineNum">     251</span> <span class="tlaUNC">           0 :     if (!mi_atomic_cas_strong_acq_rel(field, &amp;map, newmap)) { goto rollback; }</span></span>
 <span id="L252"><span class="lineNum">     252</span>              :   }</span>
 <span id="L253"><span class="lineNum">     253</span>              : </span>
@@ -605,8 +605,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L332"><span class="lineNum">     332</span> <span class="tlaUNC">           0 :     const size_t pre_bits = MI_BITMAP_FIELD_BITS - bitidx;</span></span>
 <span id="L333"><span class="lineNum">     333</span>              :     mi_assert_internal(pre_bits &lt; count);</span>
 <span id="L334"><span class="lineNum">     334</span> <span class="tlaUNC">           0 :     *pre_mask = mi_bitmap_mask_(pre_bits, bitidx);</span></span>
-<span id="L335"><span class="lineNum">     335</span> <span class="tlaUNC">           0 :     count -= pre_bits;</span></span>
-<span id="L336"><span class="lineNum">     336</span>              :     const size_t mid_count = (count / MI_BITMAP_FIELD_BITS);</span>
+<span id="L335"><span class="lineNum">     335</span>              :     count -= pre_bits;</span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaUNC">           0 :     const size_t mid_count = (count / MI_BITMAP_FIELD_BITS);</span></span>
 <span id="L337"><span class="lineNum">     337</span> <span class="tlaUNC">           0 :     *mid_mask = MI_BITMAP_FIELD_FULL;</span></span>
 <span id="L338"><span class="lineNum">     338</span> <span class="tlaUNC">           0 :     count %= MI_BITMAP_FIELD_BITS;</span></span>
 <span id="L339"><span class="lineNum">     339</span> <span class="tlaUNC">           0 :     *post_mask = (count==0 ? 0 : mi_bitmap_mask_(count, 0));</span></span>
@@ -635,8 +635,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L362"><span class="lineNum">     362</span> <span class="tlaUNC">           0 :     prev = mi_atomic_and_acq_rel(field, ~post_mask);         // clear end part</span></span>
 <span id="L363"><span class="lineNum">     363</span> <span class="tlaUNC">           0 :     if ((prev &amp; post_mask) != post_mask) all_one = false;</span></span>
 <span id="L364"><span class="lineNum">     364</span>              :   }</span>
-<span id="L365"><span class="lineNum">     365</span> <span class="tlaUNC">           0 :   return all_one;</span></span>
-<span id="L366"><span class="lineNum">     366</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">           1 :   return all_one;</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L367"><span class="lineNum">     367</span>              : </span>
 <span id="L368"><span class="lineNum">     368</span>              : // Set `count` bits at `bitmap_idx` to 1 atomically</span>
 <span id="L369"><span class="lineNum">     369</span>              : // Returns `true` if all `count` bits were 0 previously. `any_zero` is `true` if there was at least one zero bit.</span>
@@ -652,11 +652,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L379"><span class="lineNum">     379</span>              :   _Atomic(size_t)*field = &amp;bitmap[idx];</span>
 <span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">           1 :   size_t prev = mi_atomic_or_acq_rel(field++, pre_mask);</span></span>
 <span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">           1 :   if ((prev &amp; pre_mask) != 0) { all_zero = false; one_count += mi_popcount(prev &amp; pre_mask); }</span></span>
-<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">           1 :   if ((prev &amp; pre_mask) != pre_mask) any_zero = true;</span></span>
+<span id="L382"><span class="lineNum">     382</span>              :   if ((prev &amp; pre_mask) != pre_mask) any_zero = true;</span>
 <span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">           1 :   while (mid_count-- &gt; 0) {</span></span>
 <span id="L384"><span class="lineNum">     384</span> <span class="tlaUNC">           0 :     prev = mi_atomic_or_acq_rel(field++, mid_mask);</span></span>
 <span id="L385"><span class="lineNum">     385</span> <span class="tlaUNC">           0 :     if ((prev &amp; mid_mask) != 0) { all_zero = false; one_count += mi_popcount(prev &amp; mid_mask); }</span></span>
-<span id="L386"><span class="lineNum">     386</span> <span class="tlaUNC">           0 :     if ((prev &amp; mid_mask) != mid_mask) any_zero = true;</span></span>
+<span id="L386"><span class="lineNum">     386</span>              :     if ((prev &amp; mid_mask) != mid_mask) any_zero = true;</span>
 <span id="L387"><span class="lineNum">     387</span>              :   }</span>
 <span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">           1 :   if (post_mask!=0) {</span></span>
 <span id="L389"><span class="lineNum">     389</span> <span class="tlaUNC">           0 :     prev = mi_atomic_or_acq_rel(field, post_mask);</span></span>
@@ -679,15 +679,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L406"><span class="lineNum">     406</span>              :   size_t post_mask;</span>
 <span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">           1 :   size_t mid_count = mi_bitmap_mask_across(bitmap_idx, bitmap_fields, count, &amp;pre_mask, &amp;mid_mask, &amp;post_mask);</span></span>
 <span id="L408"><span class="lineNum">     408</span>              :   bool all_ones = true;</span>
-<span id="L409"><span class="lineNum">     409</span>              :   bool any_ones = false;</span>
-<span id="L410"><span class="lineNum">     410</span>              :   size_t one_count = 0;</span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">           1 :   bool any_ones = false;</span></span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">           1 :   size_t one_count = 0;</span></span>
 <span id="L411"><span class="lineNum">     411</span>              :   mi_bitmap_field_t* field = &amp;bitmap[idx];</span>
 <span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">           1 :   size_t prev = mi_atomic_load_relaxed(field++);</span></span>
 <span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">           1 :   if ((prev &amp; pre_mask) != pre_mask) all_ones = false;</span></span>
 <span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">           1 :   if ((prev &amp; pre_mask) != 0) { any_ones = true; one_count += mi_popcount(prev &amp; pre_mask); }</span></span>
 <span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">           1 :   while (mid_count-- &gt; 0) {</span></span>
 <span id="L416"><span class="lineNum">     416</span> <span class="tlaUNC">           0 :     prev = mi_atomic_load_relaxed(field++);</span></span>
-<span id="L417"><span class="lineNum">     417</span> <span class="tlaUNC">           0 :     if ((prev &amp; mid_mask) != mid_mask) all_ones = false;</span></span>
+<span id="L417"><span class="lineNum">     417</span>              :     if ((prev &amp; mid_mask) != mid_mask) all_ones = false;</span>
 <span id="L418"><span class="lineNum">     418</span> <span class="tlaUNC">           0 :     if ((prev &amp; mid_mask) != 0) { any_ones = true; one_count += mi_popcount(prev &amp; mid_mask); }</span></span>
 <span id="L419"><span class="lineNum">     419</span>              :   }</span>
 <span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">           1 :   if (post_mask!=0) {</span></span>

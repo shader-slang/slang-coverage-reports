@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:14 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:45 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -300,71 +300,71 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L9"><span class="lineNum">       9</span>                         : </span>
 <span id="L10"><span class="lineNum">      10</span>                         : template&lt;typename F&gt;</span>
 <span id="L11"><span class="lineNum">      11</span>                         : IRInst* openOptional(IRModule* module, IRInst* arg, F innerFunc)</span>
-<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">           2            : {</span></span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">           2            :     auto argOptionalType = as&lt;IROptionalType&gt;(arg-&gt;getDataType());</span></span>
-<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">           2            :     SLANG_ASSERT(argOptionalType);</span></span>
+<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">          12            : {</span></span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">          12            :     auto argOptionalType = as&lt;IROptionalType&gt;(arg-&gt;getDataType());</span></span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">          12            :     SLANG_ASSERT(argOptionalType);</span></span>
 <span id="L15"><span class="lineNum">      15</span>                         : </span>
 <span id="L16"><span class="lineNum">      16</span>                         :     // Create a helper function that performs the reinterpretation</span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">           2            :     IRBuilder builder(module);</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">          12            :     IRBuilder builder(module);</span></span>
 <span id="L18"><span class="lineNum">      18</span>                         : </span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">           2            :     auto func = builder.createFunc();</span></span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">           2            :     builder.addNameHintDecoration(func, UnownedStringSlice(&quot;openOptional&quot;));</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">          12            :     auto func = builder.createFunc();</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">          12            :     builder.addNameHintDecoration(func, UnownedStringSlice(&quot;openOptional&quot;));</span></span>
 <span id="L21"><span class="lineNum">      21</span>                         : </span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">           2            :     builder.setInsertInto(func);</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">          12            :     builder.setInsertInto(func);</span></span>
 <span id="L23"><span class="lineNum">      23</span>                         : </span>
 <span id="L24"><span class="lineNum">      24</span>                         :     // Entry block</span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           2            :     auto entryBlock = builder.emitBlock();</span></span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">           2            :     auto param = builder.emitParam(argOptionalType);</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">          12            :     auto entryBlock = builder.emitBlock();</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">          12            :     auto param = builder.emitParam(argOptionalType);</span></span>
 <span id="L27"><span class="lineNum">      27</span>                         : </span>
 <span id="L28"><span class="lineNum">      28</span>                         :     // Check if the source optional has a value</span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           2            :     auto hasValue = builder.emitOptionalHasValue(param);</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">          12            :     auto hasValue = builder.emitOptionalHasValue(param);</span></span>
 <span id="L30"><span class="lineNum">      30</span>                         : </span>
 <span id="L31"><span class="lineNum">      31</span>                         :     // Create the if-else control flow blocks</span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           2            :     auto trueBlock = builder.emitBlock();</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">           2            :     auto falseBlock = builder.emitBlock();</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           2            :     auto unreachableBlock = builder.emitBlock();</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">          12            :     auto trueBlock = builder.emitBlock();</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">          12            :     auto falseBlock = builder.emitBlock();</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">          12            :     auto unreachableBlock = builder.emitBlock();</span></span>
 <span id="L35"><span class="lineNum">      35</span>                         : </span>
 <span id="L36"><span class="lineNum">      36</span>                         :     // Go back to entry block to emit the branch</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           2            :     builder.setInsertInto(entryBlock);</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           2            :     builder.emitIfElse(hasValue, trueBlock, falseBlock, unreachableBlock);</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          12            :     builder.setInsertInto(entryBlock);</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">          12            :     builder.emitIfElse(hasValue, trueBlock, falseBlock, unreachableBlock);</span></span>
 <span id="L39"><span class="lineNum">      39</span>                         : </span>
 <span id="L40"><span class="lineNum">      40</span>                         :     // True branch: extract, apply F, and wrap</span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">           2            :     builder.setInsertInto(trueBlock);</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">           2            :     auto extractedValue = builder.emitGetOptionalValue(param);</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">          12            :     builder.setInsertInto(trueBlock);</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">          12            :     auto extractedValue = builder.emitGetOptionalValue(param);</span></span>
 <span id="L43"><span class="lineNum">      43</span>                         : </span>
 <span id="L44"><span class="lineNum">      44</span>                         :     // Call the template function F.</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">           2            :     IRInst* resultInst = innerFunc(&amp;builder, extractedValue);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          12            :     IRInst* resultInst = innerFunc(&amp;builder, extractedValue);</span></span>
 <span id="L46"><span class="lineNum">      46</span>                         : </span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">           2            :     auto destOptionalType = builder.getOptionalType(resultInst-&gt;getDataType());</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          12            :     auto destOptionalType = builder.getOptionalType(resultInst-&gt;getDataType());</span></span>
 <span id="L48"><span class="lineNum">      48</span>                         : </span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           2            :     IRType* funcParamTypes[] = {argOptionalType};</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">           2            :     auto funcType = builder.getFuncType(1, funcParamTypes, destOptionalType);</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">           2            :     func-&gt;setFullType(funcType);</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          12            :     IRType* funcParamTypes[] = {argOptionalType};</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          12            :     auto funcType = builder.getFuncType(1, funcParamTypes, destOptionalType);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">          12            :     func-&gt;setFullType(funcType);</span></span>
 <span id="L52"><span class="lineNum">      52</span>                         : </span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">           2            :     auto wrappedValue = builder.emitMakeOptionalValue(destOptionalType, resultInst);</span></span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">           2            :     builder.emitReturn(wrappedValue);</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">          12            :     auto wrappedValue = builder.emitMakeOptionalValue(destOptionalType, resultInst);</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">          12            :     builder.emitReturn(wrappedValue);</span></span>
 <span id="L55"><span class="lineNum">      55</span>                         : </span>
 <span id="L56"><span class="lineNum">      56</span>                         :     // False branch: create none and return</span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">           2            :     builder.setInsertInto(falseBlock);</span></span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">           2            :     auto noneValue = builder.emitMakeOptionalNone(destOptionalType);</span></span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">           2            :     builder.emitReturn(noneValue);</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">          12            :     builder.setInsertInto(falseBlock);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">          12            :     auto noneValue = builder.emitMakeOptionalNone(destOptionalType);</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">          12            :     builder.emitReturn(noneValue);</span></span>
 <span id="L60"><span class="lineNum">      60</span>                         : </span>
 <span id="L61"><span class="lineNum">      61</span>                         :     // Unreachable block (both branches return, so this is never reached)</span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">           2            :     builder.setInsertInto(unreachableBlock);</span></span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">           2            :     builder.emitUnreachable();</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">          12            :     builder.setInsertInto(unreachableBlock);</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">          12            :     builder.emitUnreachable();</span></span>
 <span id="L64"><span class="lineNum">      64</span>                         : </span>
 <span id="L65"><span class="lineNum">      65</span>                         :     // Replace the ReinterpretOptional instruction with a call to the helper function</span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">           2            :     builder.setInsertAfter(arg);</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">           2            :     auto callResult = builder.emitCallInst(destOptionalType, func, 1, &amp;arg);</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          12            :     builder.setInsertAfter(arg);</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">          12            :     auto callResult = builder.emitCallInst(destOptionalType, func, 1, &amp;arg);</span></span>
 <span id="L68"><span class="lineNum">      68</span>                         : </span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">           2            :     return callResult;</span></span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           2            : }</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">          12            :     return callResult;</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">          12            : }</span></span>
 <span id="L71"><span class="lineNum">      71</span>                         : </span>
 <span id="L72"><span class="lineNum">      72</span>                         : // Upcast the value in &#x27;arg&#x27; to match the destInfo type. This method inserts</span>
 <span id="L73"><span class="lineNum">      73</span>                         : // any necessary reinterprets or tag translation instructions.</span>
 <span id="L74"><span class="lineNum">      74</span>                         : //</span>
 <span id="L75"><span class="lineNum">      75</span>                         : IRInst* upcastSet(IRBuilder* builder, IRInst* arg, IRType* destInfo)</span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">      426505            : {</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">      555389            : {</span></span>
 <span id="L77"><span class="lineNum">      77</span>                         :     // The upcasting process inserts the appropriate instructions</span>
 <span id="L78"><span class="lineNum">      78</span>                         :     // to make arg&#x27;s type match the type provided by destInfo.</span>
 <span id="L79"><span class="lineNum">      79</span>                         :     //</span>
@@ -376,15 +376,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L85"><span class="lineNum">      85</span>                         :     //</span>
 <span id="L86"><span class="lineNum">      86</span>                         : </span>
 <span id="L87"><span class="lineNum">      87</span>                         :     // If either side has attributes, we drop them for now.</span>
-<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">      426505 <span class="branchAll" title="br0: 4948; br1: 421557">(2/2)</span>      :     if (as&lt;IRAttributedType&gt;(destInfo))</span></span>
-<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">        4948            :     {</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">      555389 <span class="branchAll" title="br0: 8427; br1: 546962">(2/2)</span>      :     if (as&lt;IRAttributedType&gt;(destInfo))</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">        8427            :     {</span></span>
 <span id="L90"><span class="lineNum">      90</span>                         :         // Unwrap and upcast.</span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">        4948            :         auto destBase = (IRType*)unwrapAttributedType(destInfo);</span></span>
-<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">        4948            :         return upcastSet(builder, arg, destBase);</span></span>
-<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">        4948            :     }</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">        8427            :         auto destBase = (IRType*)unwrapAttributedType(destInfo);</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">        8427            :         return upcastSet(builder, arg, destBase);</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">        8427            :     }</span></span>
 <span id="L94"><span class="lineNum">      94</span>                         : </span>
-<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">      421557            :     auto argInfo = arg-&gt;getDataType();</span></span>
-<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">      421557 <span class="branchPart" title="br0: 0; br1: 421557; br2: 0; br3: 421557">(2/4)</span>      :     if (!argInfo || !destInfo)</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">      546962            :     auto argInfo = arg-&gt;getDataType();</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">      546962 <span class="branchPart" title="br0: 0; br1: 546962; br2: 0; br3: 546962">(2/4)</span>      :     if (!argInfo || !destInfo)</span></span>
 <span id="L97"><span class="lineNum">      97</span> <span class="tlaUNC">           0            :         return arg;</span></span>
 <span id="L98"><span class="lineNum">      98</span>                         : </span>
 <span id="L99"><span class="lineNum">      99</span>                         :     // If we are upcasting a default-constructed value and the destination type differs,</span>
@@ -394,50 +394,50 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L103"><span class="lineNum">     103</span>                         :     // This is important when earlier specialization/lowering changes the effective type of</span>
 <span id="L104"><span class="lineNum">     104</span>                         :     // a phi/block-parameter, but a predecessor edge still passes a `defaultConstruct` of the</span>
 <span id="L105"><span class="lineNum">     105</span>                         :     // pre-specialization type.</span>
-<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">      421557 <span class="branchAll" title="br0: 14155; br1: 407402">(2/2)</span>      :     if (argInfo != destInfo)</span></span>
-<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">       14155            :     {</span></span>
-<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">       14155 <span class="branchAll" title="br0: 4; br1: 14151">(2/2)</span>      :         if (as&lt;IRDefaultConstruct&gt;(arg))</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">      546962 <span class="branchAll" title="br0: 23738; br1: 523224">(2/2)</span>      :     if (argInfo != destInfo)</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">       23738            :     {</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">       23738 <span class="branchAll" title="br0: 4; br1: 23734">(2/2)</span>      :         if (as&lt;IRDefaultConstruct&gt;(arg))</span></span>
 <span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">           4            :         {</span></span>
 <span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">           4 <span class="branchPart" title="br0: 4; br1: 0">(1/2)</span>      :             if (auto newDefault =</span></span>
 <span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">           4            :                     builder-&gt;emitDefaultConstruct((IRType*)destInfo, /*fallback*/ true))</span></span>
 <span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">           4            :                 return newDefault;</span></span>
 <span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">           4            :         }</span></span>
-<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">       14155            :     }</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">       23738            :     }</span></span>
 <span id="L115"><span class="lineNum">     115</span>                         : </span>
-<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">      421553 <span class="branchPart" title="br0: 4662; br1: 416891; br2: 4662; br3: 0">(3/4)</span>      :     if (as&lt;IRTaggedUnionType&gt;(argInfo) &amp;&amp; as&lt;IRTaggedUnionType&gt;(destInfo))</span></span>
-<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">        4662            :     {</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">      546958 <span class="branchPart" title="br0: 8407; br1: 538551; br2: 8407; br3: 0">(3/4)</span>      :     if (as&lt;IRTaggedUnionType&gt;(argInfo) &amp;&amp; as&lt;IRTaggedUnionType&gt;(destInfo))</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">        8407            :     {</span></span>
 <span id="L118"><span class="lineNum">     118</span>                         :         // A tagged union is essentially a tuple(TagType(tableSet),</span>
 <span id="L119"><span class="lineNum">     119</span>                         :         // typeSet) We simply extract the two components, upcast each one, and put it</span>
 <span id="L120"><span class="lineNum">     120</span>                         :         // back together.</span>
 <span id="L121"><span class="lineNum">     121</span>                         :         //</span>
 <span id="L122"><span class="lineNum">     122</span>                         : </span>
-<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">        4662            :         auto argTUType = as&lt;IRTaggedUnionType&gt;(argInfo);</span></span>
-<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">        4662            :         auto destTUType = as&lt;IRTaggedUnionType&gt;(destInfo);</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">        8407            :         auto argTUType = as&lt;IRTaggedUnionType&gt;(argInfo);</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">        8407            :         auto destTUType = as&lt;IRTaggedUnionType&gt;(destInfo);</span></span>
 <span id="L125"><span class="lineNum">     125</span>                         : </span>
-<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">        4662 <span class="branchAll" title="br0: 1647; br1: 3015">(2/2)</span>      :         if (argTUType != destTUType)</span></span>
-<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">        1647            :         {</span></span>
-<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">        1647            :             auto argTableTag = builder-&gt;emitGetTagFromTaggedUnion(arg);</span></span>
-<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">        1647            :             auto reinterpretedTableTag = upcastSet(</span></span>
-<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        1647            :                 builder,</span></span>
-<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">        1647            :                 argTableTag,</span></span>
-<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">        1647            :                 builder-&gt;getSetTagType(destTUType-&gt;getWitnessTableSet()));</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">        8407 <span class="branchAll" title="br0: 2699; br1: 5708">(2/2)</span>      :         if (argTUType != destTUType)</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">        2699            :         {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">        2699            :             auto argTableTag = builder-&gt;emitGetTagFromTaggedUnion(arg);</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">        2699            :             auto reinterpretedTableTag = upcastSet(</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        2699            :                 builder,</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">        2699            :                 argTableTag,</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">        2699            :                 builder-&gt;getSetTagType(destTUType-&gt;getWitnessTableSet()));</span></span>
 <span id="L133"><span class="lineNum">     133</span>                         : </span>
-<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">        1647            :             auto argTypeTag = builder-&gt;emitGetTypeTagFromTaggedUnion(arg);</span></span>
-<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">        1647            :             auto reinterpretedTypeTag =</span></span>
-<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">        1647            :                 upcastSet(builder, argTypeTag, builder-&gt;getSetTagType(destTUType-&gt;getTypeSet()));</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">        2699            :             auto argTypeTag = builder-&gt;emitGetTypeTagFromTaggedUnion(arg);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">        2699            :             auto reinterpretedTypeTag =</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">        2699            :                 upcastSet(builder, argTypeTag, builder-&gt;getSetTagType(destTUType-&gt;getTypeSet()));</span></span>
 <span id="L137"><span class="lineNum">     137</span>                         : </span>
-<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">        1647            :             auto argVal = builder-&gt;emitGetValueFromTaggedUnion(arg);</span></span>
-<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">        1647            :             auto reinterpretedVal =</span></span>
-<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">        1647            :                 upcastSet(builder, argVal, builder-&gt;getUntaggedUnionType(destTUType-&gt;getTypeSet()));</span></span>
-<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">        1647            :             return builder-&gt;emitMakeTaggedUnion(</span></span>
-<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">        1647            :                 destTUType,</span></span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">        1647            :                 reinterpretedTypeTag,</span></span>
-<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">        1647            :                 reinterpretedTableTag,</span></span>
-<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">        1647            :                 reinterpretedVal);</span></span>
-<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        1647            :         }</span></span>
-<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        4662            :     }</span></span>
-<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      416891 <span class="branchPart" title="br0: 3370; br1: 413521; br2: 3370; br3: 0">(3/4)</span>      :     else if (as&lt;IRSetTagType&gt;(argInfo) &amp;&amp; as&lt;IRSetTagType&gt;(destInfo))</span></span>
-<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        3370            :     {</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">        2699            :             auto argVal = builder-&gt;emitGetValueFromTaggedUnion(arg);</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">        2699            :             auto reinterpretedVal =</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">        2699            :                 upcastSet(builder, argVal, builder-&gt;getUntaggedUnionType(destTUType-&gt;getTypeSet()));</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">        2699            :             return builder-&gt;emitMakeTaggedUnion(</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">        2699            :                 destTUType,</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">        2699            :                 reinterpretedTypeTag,</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">        2699            :                 reinterpretedTableTag,</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">        2699            :                 reinterpretedVal);</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        2699            :         }</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        8407            :     }</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      538551 <span class="branchPart" title="br0: 5546; br1: 533005; br2: 5546; br3: 0">(3/4)</span>      :     else if (as&lt;IRSetTagType&gt;(argInfo) &amp;&amp; as&lt;IRSetTagType&gt;(destInfo))</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        5546            :     {</span></span>
 <span id="L150"><span class="lineNum">     150</span>                         :         // If the arg represents a tag of a set, but the dest is a _different_</span>
 <span id="L151"><span class="lineNum">     151</span>                         :         // set, then we need to emit a tag operation to reinterpret the</span>
 <span id="L152"><span class="lineNum">     152</span>                         :         // tag.</span>
@@ -445,13 +445,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L154"><span class="lineNum">     154</span>                         :         // Note that, by the invariant provided by the typeflow analysis, the target</span>
 <span id="L155"><span class="lineNum">     155</span>                         :         // set must necessarily be a super-set.</span>
 <span id="L156"><span class="lineNum">     156</span>                         :         //</span>
-<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">        3370 <span class="branchAll" title="br0: 3294; br1: 76">(2/2)</span>      :         if (argInfo != destInfo)</span></span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">        3294            :         {</span></span>
-<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">        3294            :             return builder-&gt;emitIntrinsicInst((IRType*)destInfo, kIROp_GetTagForSuperSet, 1, &amp;arg);</span></span>
-<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">        3294            :         }</span></span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        3370            :     }</span></span>
-<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">      413521 <span class="branchAll" title="br0: 4629; br1: 408892; br2: 4625; br3: 4">(4/4)</span>      :     else if (as&lt;IRUntaggedUnionType&gt;(argInfo) &amp;&amp; as&lt;IRUntaggedUnionType&gt;(destInfo))</span></span>
-<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">        4625            :     {</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">        5546 <span class="branchAll" title="br0: 5398; br1: 148">(2/2)</span>      :         if (argInfo != destInfo)</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">        5398            :         {</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">        5398            :             return builder-&gt;emitIntrinsicInst((IRType*)destInfo, kIROp_GetTagForSuperSet, 1, &amp;arg);</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">        5398            :         }</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        5546            :     }</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">      533005 <span class="branchAll" title="br0: 6031; br1: 526974; br2: 6025; br3: 6">(4/4)</span>      :     else if (as&lt;IRUntaggedUnionType&gt;(argInfo) &amp;&amp; as&lt;IRUntaggedUnionType&gt;(destInfo))</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">        6025            :     {</span></span>
 <span id="L164"><span class="lineNum">     164</span>                         :         // If the arg has a untagged union type, but the dest is a _different_ untagged union,</span>
 <span id="L165"><span class="lineNum">     165</span>                         :         // we need to perform a reinterpret.</span>
 <span id="L166"><span class="lineNum">     166</span>                         :         //</span>
@@ -460,10 +460,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L169"><span class="lineNum">     169</span>                         :         // is necessarily a super-set, the target any-value-type is always larger (M &gt;= N),</span>
 <span id="L170"><span class="lineNum">     170</span>                         :         // so we only need a simple reinterpret.</span>
 <span id="L171"><span class="lineNum">     171</span>                         :         //</span>
-<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">        4625 <span class="branchAll" title="br0: 91; br1: 4534">(2/2)</span>      :         if (argInfo != destInfo)</span></span>
-<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">          91            :         {</span></span>
-<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">          91            :             auto argSet = as&lt;IRUntaggedUnionType&gt;(argInfo)-&gt;getSet();</span></span>
-<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">          91 <span class="branchPart" title="br0: 0; br1: 91; br2: -; br3: -">(1/4)</span>      :             if (argSet-&gt;isSingleton() &amp;&amp; as&lt;IRNoneTypeElement&gt;(argSet-&gt;getElement(0)))</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">        6025 <span class="branchAll" title="br0: 198; br1: 5827">(2/2)</span>      :         if (argInfo != destInfo)</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">         198            :         {</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">         198            :             auto argSet = as&lt;IRUntaggedUnionType&gt;(argInfo)-&gt;getSet();</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">         198 <span class="branchPart" title="br0: 0; br1: 198; br2: -; br3: -">(1/4)</span>      :             if (argSet-&gt;isSingleton() &amp;&amp; as&lt;IRNoneTypeElement&gt;(argSet-&gt;getElement(0)))</span></span>
 <span id="L176"><span class="lineNum">     176</span> <span class="tlaUNC">           0            :             {</span></span>
 <span id="L177"><span class="lineNum">     177</span>                         :                 // There&#x27;s a specific case where we&#x27;re trying to reinterpret a value of &#x27;none&#x27;</span>
 <span id="L178"><span class="lineNum">     178</span>                         :                 // type. We&#x27;ll avoid emitting a reinterpret in this case, and emit a</span>
@@ -477,29 +477,29 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L186"><span class="lineNum">     186</span>                         :             // If the sets of witness tables are not equal, reinterpret to the</span>
 <span id="L187"><span class="lineNum">     187</span>                         :             // parameter type</span>
 <span id="L188"><span class="lineNum">     188</span>                         :             //</span>
-<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">          91            :             return builder-&gt;emitReinterpret((IRType*)destInfo, arg);</span></span>
-<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">          91            :         }</span></span>
-<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        4625            :     }</span></span>
-<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">      408896 <span class="branchAll" title="br0: 408892; br1: 4; br2: 1828; br3: 407064">(4/4)</span>      :     else if (!as&lt;IRUntaggedUnionType&gt;(argInfo) &amp;&amp; as&lt;IRUntaggedUnionType&gt;(destInfo))</span></span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        1828            :     {</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">         198            :             return builder-&gt;emitReinterpret((IRType*)destInfo, arg);</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">         198            :         }</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        6025            :     }</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">      526980 <span class="branchAll" title="br0: 526974; br1: 6; br2: 3077; br3: 523897">(4/4)</span>      :     else if (!as&lt;IRUntaggedUnionType&gt;(argInfo) &amp;&amp; as&lt;IRUntaggedUnionType&gt;(destInfo))</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        3077            :     {</span></span>
 <span id="L194"><span class="lineNum">     194</span>                         :         // If the arg is not a collection-type, but the dest is a collection,</span>
 <span id="L195"><span class="lineNum">     195</span>                         :         // we need to perform a pack operation.</span>
 <span id="L196"><span class="lineNum">     196</span>                         :         //</span>
 <span id="L197"><span class="lineNum">     197</span>                         :         // This case only arises when passing a value of type T to a parameter</span>
 <span id="L198"><span class="lineNum">     198</span>                         :         // of a type-set that contains T.</span>
 <span id="L199"><span class="lineNum">     199</span>                         :         //</span>
-<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">        1828            :         return builder-&gt;emitPackAnyValue((IRType*)destInfo, arg);</span></span>
-<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">        1828            :     }</span></span>
-<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">      407068 <span class="branchPart" title="br0: 9199; br1: 397869; br2: 9199; br3: 0">(3/4)</span>      :     else if (as&lt;IRArrayType&gt;(argInfo) &amp;&amp; as&lt;IRArrayType&gt;(destInfo))</span></span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        9199            :     {</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">        3077            :         return builder-&gt;emitPackAnyValue((IRType*)destInfo, arg);</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">        3077            :     }</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">      523903 <span class="branchPart" title="br0: 12790; br1: 511113; br2: 12790; br3: 0">(3/4)</span>      :     else if (as&lt;IRArrayType&gt;(argInfo) &amp;&amp; as&lt;IRArrayType&gt;(destInfo))</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">       12790            :     {</span></span>
 <span id="L204"><span class="lineNum">     204</span>                         :         // If both arg and dest are arrays, we need to upcast each element.</span>
 <span id="L205"><span class="lineNum">     205</span>                         :         //</span>
-<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">        9199            :         auto argArrayType = as&lt;IRArrayType&gt;(argInfo);</span></span>
-<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">        9199            :         auto destArrayType = as&lt;IRArrayType&gt;(destInfo);</span></span>
-<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">        9199            :         auto argElementType = argArrayType-&gt;getElementType();</span></span>
-<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">        9199            :         auto destElementType = destArrayType-&gt;getElementType();</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">       12790            :         auto argArrayType = as&lt;IRArrayType&gt;(argInfo);</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">       12790            :         auto destArrayType = as&lt;IRArrayType&gt;(destInfo);</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">       12790            :         auto argElementType = argArrayType-&gt;getElementType();</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">       12790            :         auto destElementType = destArrayType-&gt;getElementType();</span></span>
 <span id="L210"><span class="lineNum">     210</span>                         : </span>
-<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">        9199 <span class="branchPart" title="br0: 0; br1: 9199">(1/2)</span>      :         if (argElementType != destElementType)</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">       12790 <span class="branchPart" title="br0: 0; br1: 12790">(1/2)</span>      :         if (argElementType != destElementType)</span></span>
 <span id="L212"><span class="lineNum">     212</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L213"><span class="lineNum">     213</span> <span class="tlaUNC">           0            :             auto arraySize = getIntVal(argArrayType-&gt;getElementCount());</span></span>
 <span id="L214"><span class="lineNum">     214</span>                         : </span>
@@ -517,62 +517,62 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L226"><span class="lineNum">     226</span> <span class="tlaUNC">           0            :                 upcastedElements.getCount(),</span></span>
 <span id="L227"><span class="lineNum">     227</span> <span class="tlaUNC">           0            :                 upcastedElements.getBuffer());</span></span>
 <span id="L228"><span class="lineNum">     228</span> <span class="tlaUNC">           0            :         }</span></span>
-<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">        9199            :     }</span></span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">      397869 <span class="branchPart" title="br0: 8965; br1: 388904; br2: 8965; br3: 0">(3/4)</span>      :     else if (as&lt;IRTupleType&gt;(argInfo) &amp;&amp; as&lt;IRTupleType&gt;(destInfo))</span></span>
-<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">        8965            :     {</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">       12790            :     }</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">      511113 <span class="branchPart" title="br0: 15593; br1: 495520; br2: 15593; br3: 0">(3/4)</span>      :     else if (as&lt;IRTupleType&gt;(argInfo) &amp;&amp; as&lt;IRTupleType&gt;(destInfo))</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">       15593            :     {</span></span>
 <span id="L232"><span class="lineNum">     232</span>                         :         // If both arg and dest are tuples, we need to upcast each element.</span>
 <span id="L233"><span class="lineNum">     233</span>                         :         //</span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">        8965            :         auto argTupleType = as&lt;IRTupleType&gt;(argInfo);</span></span>
-<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">        8965            :         auto destTupleType = as&lt;IRTupleType&gt;(destInfo);</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       15593            :         auto argTupleType = as&lt;IRTupleType&gt;(argInfo);</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       15593            :         auto destTupleType = as&lt;IRTupleType&gt;(destInfo);</span></span>
 <span id="L236"><span class="lineNum">     236</span>                         : </span>
-<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">        8965 <span class="branchAll" title="br0: 240; br1: 8725">(2/2)</span>      :         if (argTupleType != destTupleType)</span></span>
-<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">         240            :         {</span></span>
-<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">         240            :             UInt argElementCount = argTupleType-&gt;getOperandCount();</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">       15593 <span class="branchAll" title="br0: 544; br1: 15049">(2/2)</span>      :         if (argTupleType != destTupleType)</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">         544            :         {</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">         544            :             UInt argElementCount = argTupleType-&gt;getOperandCount();</span></span>
 <span id="L240"><span class="lineNum">     240</span>                         : </span>
-<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">         240            :             List&lt;IRInst*&gt; upcastedElements;</span></span>
-<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">         240            :             upcastedElements.setCount((Index)argElementCount);</span></span>
-<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">         726 <span class="branchAll" title="br0: 486; br1: 240">(2/2)</span>      :             for (UInt i = 0; i &lt; argElementCount; i++)</span></span>
-<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">         486            :             {</span></span>
-<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">         486            :                 auto argElementType = (IRType*)argTupleType-&gt;getOperand(i);</span></span>
-<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">         486            :                 auto destElementType = (IRType*)destTupleType-&gt;getOperand(i);</span></span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">         486            :                 auto argElement = builder-&gt;emitGetTupleElement(argElementType, arg, i);</span></span>
-<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">         486            :                 auto upcastedElement = upcastSet(builder, argElement, destElementType);</span></span>
-<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">         486            :                 upcastedElements[(Index)i] = upcastedElement;</span></span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">         486            :             }</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">         544            :             List&lt;IRInst*&gt; upcastedElements;</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">         544            :             upcastedElements.setCount((Index)argElementCount);</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">        1668 <span class="branchAll" title="br0: 1124; br1: 544">(2/2)</span>      :             for (UInt i = 0; i &lt; argElementCount; i++)</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">        1124            :             {</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">        1124            :                 auto argElementType = (IRType*)argTupleType-&gt;getOperand(i);</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">        1124            :                 auto destElementType = (IRType*)destTupleType-&gt;getOperand(i);</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">        1124            :                 auto argElement = builder-&gt;emitGetTupleElement(argElementType, arg, i);</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">        1124            :                 auto upcastedElement = upcastSet(builder, argElement, destElementType);</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">        1124            :                 upcastedElements[(Index)i] = upcastedElement;</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        1124            :             }</span></span>
 <span id="L251"><span class="lineNum">     251</span>                         : </span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">         240            :             return builder-&gt;emitMakeTuple(destTupleType, upcastedElements);</span></span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         240            :         }</span></span>
-<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">        8965            :     }</span></span>
-<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">      388904 <span class="branchPart" title="br0: 282; br1: 388622; br2: 282; br3: 0">(3/4)</span>      :     else if (as&lt;IROptionalType&gt;(argInfo) &amp;&amp; as&lt;IROptionalType&gt;(destInfo))</span></span>
-<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">         282            :     {</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">         544            :             return builder-&gt;emitMakeTuple(destTupleType, upcastedElements);</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         544            :         }</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">       15593            :     }</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">      495520 <span class="branchPart" title="br0: 463; br1: 495057; br2: 463; br3: 0">(3/4)</span>      :     else if (as&lt;IROptionalType&gt;(argInfo) &amp;&amp; as&lt;IROptionalType&gt;(destInfo))</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">         463            :     {</span></span>
 <span id="L257"><span class="lineNum">     257</span>                         :         // If both arg and dest are optionals, we need to upcast the value type.</span>
 <span id="L258"><span class="lineNum">     258</span>                         :         //</span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">         282            :         auto argOptionalType = as&lt;IROptionalType&gt;(argInfo);</span></span>
-<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">         282            :         auto destOptionalType = as&lt;IROptionalType&gt;(destInfo);</span></span>
-<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">         282            :         auto argValueType = (IRType*)argOptionalType-&gt;getValueType();</span></span>
-<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">         282            :         auto destValueType = (IRType*)destOptionalType-&gt;getValueType();</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">         463            :         auto argOptionalType = as&lt;IROptionalType&gt;(argInfo);</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">         463            :         auto destOptionalType = as&lt;IROptionalType&gt;(destInfo);</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">         463            :         auto argValueType = (IRType*)argOptionalType-&gt;getValueType();</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">         463            :         auto destValueType = (IRType*)destOptionalType-&gt;getValueType();</span></span>
 <span id="L263"><span class="lineNum">     263</span>                         : </span>
-<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">         282 <span class="branchAll" title="br0: 2; br1: 280">(2/2)</span>      :         if (argValueType != destValueType)</span></span>
-<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">           2            :         {</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">         463 <span class="branchAll" title="br0: 12; br1: 451">(2/2)</span>      :         if (argValueType != destValueType)</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">          12            :         {</span></span>
 <span id="L266"><span class="lineNum">     266</span>                         :             // We emit a ReinterpretOptional instruction that will be lowered</span>
 <span id="L267"><span class="lineNum">     267</span>                         :             // later in lowerReinterpret to an if-else block with proper control flow.</span>
 <span id="L268"><span class="lineNum">     268</span>                         :             //</span>
-<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">           2            :             return openOptional(</span></span>
-<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">           2            :                 builder-&gt;getModule(),</span></span>
-<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">           2            :                 arg,</span></span>
-<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">           2            :                 [destValueType](IRBuilder* b, IRInst* extractedValue)</span></span>
-<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">           2            :                 { return (IRInst*)upcastSet(b, extractedValue, destValueType); });</span></span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">           2            :         }</span></span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">         282            :     }</span></span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">      388622 <span class="branchPart" title="br0: 2; br1: 388620; br2: 2; br3: 0">(3/4)</span>      :     else if (as&lt;IROptionalNoneType&gt;(argInfo) &amp;&amp; as&lt;IROptionalType&gt;(destInfo))</span></span>
-<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">           2            :     {</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">          12            :             return openOptional(</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">          12            :                 builder-&gt;getModule(),</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">          12            :                 arg,</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">          12            :                 [destValueType](IRBuilder* b, IRInst* extractedValue)</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">          12            :                 { return (IRInst*)upcastSet(b, extractedValue, destValueType); });</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">          12            :         }</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">         463            :     }</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">      495057 <span class="branchPart" title="br0: 12; br1: 495045; br2: 12; br3: 0">(3/4)</span>      :     else if (as&lt;IROptionalNoneType&gt;(argInfo) &amp;&amp; as&lt;IROptionalType&gt;(destInfo))</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">          12            :     {</span></span>
 <span id="L278"><span class="lineNum">     278</span>                         :         // Special case: upcasting from `none_t` to `optional&lt;T&gt;` means</span>
 <span id="L279"><span class="lineNum">     279</span>                         :         // creating a `none` value.</span>
-<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">           2            :         return builder-&gt;emitMakeOptionalNone((IRType*)destInfo);</span></span>
-<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">           2            :     }</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">          12            :         return builder-&gt;emitMakeOptionalNone((IRType*)destInfo);</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">          12            :     }</span></span>
 <span id="L282"><span class="lineNum">     282</span>                         : </span>
-<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">      414449            :     return arg; // Can use as-is.</span></span>
-<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">      421553            : }</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">      535018            :     return arg; // Can use as-is.</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">      546958            : }</span></span>
 <span id="L285"><span class="lineNum">     285</span>                         : </span>
 <span id="L286"><span class="lineNum">     286</span>                         : } // namespace Slang</span>
 </pre>

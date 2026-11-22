@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:35:31 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">16.4&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:16.4%;background-color:hsl(7, 70%, 50%)"></div></div>
-      <span class="metricCounts">48 / 292</span>
+      <span class="metricValue">14.0&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:14.0%;background-color:hsl(6, 70%, 50%)"></div></div>
+      <span class="metricCounts">41 / 293</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -307,7 +307,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L34"><span class="lineNum">      34</span>              :   mi_assert_internal(page-&gt;block_size == 0 /* empty heap */ || mi_page_block_size(page) &gt;= size);</span>
 <span id="L35"><span class="lineNum">      35</span>              : </span>
 <span id="L36"><span class="lineNum">      36</span>              :   // check the free list</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           1 :   mi_block_t* const block = page-&gt;free;</span></span>
+<span id="L37"><span class="lineNum">      37</span>              :   mi_block_t* const block = page-&gt;free;</span>
 <span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           1 :   if mi_unlikely(block == NULL) {</span></span>
 <span id="L39"><span class="lineNum">      39</span> <span class="tlaUNC">           0 :     return _mi_malloc_generic(heap, size, zero, 0, ppage);</span></span>
 <span id="L40"><span class="lineNum">      40</span>              :   }</span>
@@ -315,7 +315,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">           1 :   if (ppage != NULL) { *ppage = page; };</span></span>
 <span id="L43"><span class="lineNum">      43</span>              :   // pop from the free list</span>
 <span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">           1 :   page-&gt;free = mi_block_next(page, block);</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">           1 :   page-&gt;used++;</span></span>
+<span id="L45"><span class="lineNum">      45</span>              :   page-&gt;used++;</span>
 <span id="L46"><span class="lineNum">      46</span>              :   mi_assert_internal(page-&gt;free == NULL || _mi_ptr_page(page-&gt;free) == page);</span>
 <span id="L47"><span class="lineNum">      47</span>              :   mi_assert_internal(page-&gt;block_size &lt; MI_MAX_ALIGN_SIZE || _mi_is_aligned(block, MI_MAX_ALIGN_SIZE));</span>
 <span id="L48"><span class="lineNum">      48</span>              : </span>
@@ -577,27 +577,27 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L304"><span class="lineNum">     304</span>              :   const mi_page_t* page;</span>
 <span id="L305"><span class="lineNum">     305</span>              :   size_t size;</span>
 <span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">           1 :   if (p==NULL) {</span></span>
-<span id="L307"><span class="lineNum">     307</span>              :     page = NULL;</span>
-<span id="L308"><span class="lineNum">     308</span>              :     size = 0;</span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">           1 :     page = NULL;</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">           1 :     size = 0;</span></span>
 <span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">           1 :     if (pblock_size_pre!=NULL) { *pblock_size_pre = 0; }</span></span>
 <span id="L310"><span class="lineNum">     310</span> <span class="tlaUNC">           0 :   }</span></span>
 <span id="L311"><span class="lineNum">     311</span>              :   else {    </span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">           1 :     page = mi_validate_ptr_page(p,&quot;mi_realloc&quot;); </span></span>
-<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">           1 :     if mi_unlikely(page==NULL) {  // invalid pointer</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaUNC">           0 :     page = mi_validate_ptr_page(p,&quot;mi_realloc&quot;); </span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaUNC">           0 :     if mi_unlikely(page==NULL) {  // invalid pointer</span></span>
 <span id="L314"><span class="lineNum">     314</span> <span class="tlaUNC">           0 :       if (pblock_size_pre!=NULL) { *pblock_size_pre = 0; }</span></span>
 <span id="L315"><span class="lineNum">     315</span> <span class="tlaUNC">           0 :       if (pblock_size_post!=NULL) { *pblock_size_post = 0; }  </span></span>
 <span id="L316"><span class="lineNum">     316</span> <span class="tlaUNC">           0 :       return NULL;</span></span>
 <span id="L317"><span class="lineNum">     317</span>              :     } </span>
-<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">           1 :     size = _mi_page_usable_size(page,p);</span></span>
-<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">           1 :     if (pblock_size_pre!=NULL) { *pblock_size_pre = mi_page_block_size(page); }    </span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaUNC">           0 :     size = _mi_page_usable_size(page,p);</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaUNC">           0 :     if (pblock_size_pre!=NULL) { *pblock_size_pre = mi_page_block_size(page); }    </span></span>
 <span id="L320"><span class="lineNum">     320</span>              :   }</span>
 <span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">           1 :   if mi_unlikely(newsize &lt;= size &amp;&amp; newsize &gt;= (size / 2) &amp;&amp; newsize &gt; 0) {  // note: newsize must be &gt; 0 or otherwise we return NULL for realloc(NULL,0)</span></span>
 <span id="L322"><span class="lineNum">     322</span>              :     mi_assert_internal(p!=NULL);</span>
 <span id="L323"><span class="lineNum">     323</span>              :     // todo: do not track as the usable size is still the same in the free; adjust potential padding?</span>
 <span id="L324"><span class="lineNum">     324</span>              :     // mi_track_resize(p,size,newsize)</span>
 <span id="L325"><span class="lineNum">     325</span>              :     // if (newsize &lt; size) { mi_track_mem_noaccess((uint8_t*)p + newsize, size - newsize); }</span>
-<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">           1 :     if (pblock_size_post!=NULL) { *pblock_size_post = mi_page_block_size(page); }</span></span>
-<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">           1 :     return p;  // reallocation still fits and not more than 50% waste</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaUNC">           0 :     if (pblock_size_post!=NULL) { *pblock_size_post = mi_page_block_size(page); }</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaUNC">           0 :     return p;  // reallocation still fits and not more than 50% waste</span></span>
 <span id="L328"><span class="lineNum">     328</span>              :   }</span>
 <span id="L329"><span class="lineNum">     329</span>              :   // note: we don&#x27;t zero allocate upfront so we only zero initialize the expanded part </span>
 <span id="L330"><span class="lineNum">     330</span>              :   mi_page_t* newpage; // use block_size for zero-ing, issue #763</span>
@@ -616,8 +616,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L343"><span class="lineNum">     343</span>              :     }</span>
 <span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">           1 :     if mi_likely(p != NULL) {</span></span>
 <span id="L345"><span class="lineNum">     345</span>              :       mi_track_mem_defined(p,copy_size);  // _mi_useable_size may be too large for byte precise memory tracking..</span>
-<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">           1 :       _mi_memcpy_aligned(newp, p, copy_size);</span></span>
-<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">           1 :       mi_free(p); // only free the original pointer if successful</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaUNC">           0 :       _mi_memcpy_aligned(newp, p, copy_size);</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaUNC">           0 :       mi_free(p); // only free the original pointer if successful</span></span>
 <span id="L348"><span class="lineNum">     348</span>              :     }</span>
 <span id="L349"><span class="lineNum">     349</span>              :   }</span>
 <span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">           1 :   return newp;</span></span>
@@ -841,7 +841,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L568"><span class="lineNum">     568</span>              :     #else</span>
 <span id="L569"><span class="lineNum">     569</span>              :     MI_UNUSED(nothrow);</span>
 <span id="L570"><span class="lineNum">     570</span>              :     #endif</span>
-<span id="L571"><span class="lineNum">     571</span>              :     return false;</span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaUNC">           0 :     return false;</span></span>
 <span id="L572"><span class="lineNum">     572</span>              :   }</span>
 <span id="L573"><span class="lineNum">     573</span> <span class="tlaUNC">           0 :   else if (!nothrow) {</span></span>
 <span id="L574"><span class="lineNum">     574</span> <span class="tlaUNC">           0 :     h();</span></span>
@@ -906,7 +906,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">           1 : mi_decl_nodiscard mi_decl_restrict void* mi_heap_alloc_new(mi_heap_t* heap, size_t size) {</span></span>
 <span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">           1 :   void* p = mi_heap_malloc(heap,size);</span></span>
 <span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">           1 :   if mi_unlikely(p == NULL) return mi_heap_try_new(heap, size, false);</span></span>
-<span id="L636"><span class="lineNum">     636</span>              :   return p;</span>
+<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">           1 :   return p;</span></span>
 <span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L638"><span class="lineNum">     638</span>              : </span>
 <span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC">           1 : mi_decl_nodiscard mi_decl_restrict void* mi_new(size_t size) {</span></span>
@@ -956,7 +956,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L683"><span class="lineNum">     683</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L684"><span class="lineNum">     684</span>              : </span>
 <span id="L685"><span class="lineNum">     685</span> <span class="tlaUNC">           0 : static mi_decl_noinline void* mi_try_new_realloc(void* p, size_t newsize) {</span></span>
-<span id="L686"><span class="lineNum">     686</span> <span class="tlaUNC">           0 :   void* q = NULL;</span></span>
+<span id="L686"><span class="lineNum">     686</span>              :   void* q = NULL;</span>
 <span id="L687"><span class="lineNum">     687</span> <span class="tlaUNC">           0 :   for(int i = 0; i &lt; MI_TRY_NEW_MAX &amp;&amp; q==NULL &amp;&amp; mi_try_new_handler(false); i++) {</span></span>
 <span id="L688"><span class="lineNum">     688</span> <span class="tlaUNC">           0 :     if (newsize &gt; MI_MAX_ALLOC_SIZE) return NULL;</span></span>
 <span id="L689"><span class="lineNum">     689</span> <span class="tlaUNC">           0 :     q = mi_realloc(p,newsize);</span></span>

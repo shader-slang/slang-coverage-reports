@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">81.5&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:81.5%;background-color:hsl(92, 70%, 50%)"></div></div>
-      <span class="metricCounts">22 / 27</span>
+      <span class="metricValue">34.6&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:34.6%;background-color:hsl(15, 70%, 50%)"></div></div>
+      <span class="metricCounts">9 / 26</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -295,9 +295,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L22"><span class="lineNum">      22</span>              : </span>
 <span id="L23"><span class="lineNum">      23</span>              :     // ICompressionSystem</span>
 <span id="L24"><span class="lineNum">      24</span>              :     virtual SLANG_NO_THROW CompressionSystemType SLANG_MCALL getSystemType() SLANG_OVERRIDE</span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">           1 :         return CompressionSystemType::LZ4;</span></span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaUNC">           0 :     {</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaUNC">           0 :         return CompressionSystemType::LZ4;</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaUNC">           0 :     }</span></span>
 <span id="L28"><span class="lineNum">      28</span>              :     virtual SLANG_NO_THROW SlangResult SLANG_MCALL compress(</span>
 <span id="L29"><span class="lineNum">      29</span>              :         const CompressionStyle* style,</span>
 <span id="L30"><span class="lineNum">      30</span>              :         const void* src,</span>
@@ -325,25 +325,25 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L52"><span class="lineNum">      52</span>              :     const void* src,</span>
 <span id="L53"><span class="lineNum">      53</span>              :     size_t srcSizeInBytes,</span>
 <span id="L54"><span class="lineNum">      54</span>              :     ISlangBlob** outBlob)</span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaUNC">           0 : {</span></span>
 <span id="L56"><span class="lineNum">      56</span>              :     SLANG_UNUSED(style);</span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">           1 :     const size_t compressedBound = LZ4_compressBound(int(srcSizeInBytes));</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaUNC">           0 :     const size_t compressedBound = LZ4_compressBound(int(srcSizeInBytes));</span></span>
 <span id="L58"><span class="lineNum">      58</span>              : </span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">           1 :     ScopedAllocation alloc;</span></span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">           1 :     void* compressedData = alloc.allocate(compressedBound);</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :     ScopedAllocation alloc;</span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaUNC">           0 :     void* compressedData = alloc.allocate(compressedBound);</span></span>
 <span id="L61"><span class="lineNum">      61</span>              : </span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">           1 :     const int compressedSize = LZ4_compress_default(</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :     const int compressedSize = LZ4_compress_default(</span></span>
 <span id="L63"><span class="lineNum">      63</span>              :         (const char*)src,</span>
 <span id="L64"><span class="lineNum">      64</span>              :         (char*)compressedData,</span>
 <span id="L65"><span class="lineNum">      65</span>              :         int(srcSizeInBytes),</span>
 <span id="L66"><span class="lineNum">      66</span>              :         int(compressedBound));</span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">           1 :     alloc.reallocate(compressedSize);</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaUNC">           0 :     alloc.reallocate(compressedSize);</span></span>
 <span id="L68"><span class="lineNum">      68</span>              : </span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">           1 :     auto blob = RawBlob::moveCreate(alloc);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaUNC">           0 :     auto blob = RawBlob::moveCreate(alloc);</span></span>
 <span id="L70"><span class="lineNum">      70</span>              : </span>
-<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">           1 :     *outBlob = blob.detach();</span></span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">           1 :     return SLANG_OK;</span></span>
-<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaUNC">           0 :     *outBlob = blob.detach();</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaUNC">           0 :     return SLANG_OK;</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L74"><span class="lineNum">      74</span>              : </span>
 <span id="L75"><span class="lineNum">      75</span>              : SlangResult LZ4CompressionSystemImpl::decompress(</span>
 <span id="L76"><span class="lineNum">      76</span>              :     const void* compressed,</span>

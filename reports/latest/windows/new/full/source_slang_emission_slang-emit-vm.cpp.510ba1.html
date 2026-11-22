@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">92.6&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:92.6%;background-color:hsl(109, 70%, 50%)"></div></div>
-      <span class="metricCounts">567 / 612</span>
+      <span class="metricValue">90.0&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:90.0%;background-color:hsl(105, 70%, 50%)"></div></div>
+      <span class="metricCounts">559 / 621</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -375,7 +375,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L102"><span class="lineNum">     102</span>              :         operand.offset = funcBuilder.workingSetSizeInBytes;</span>
 <span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">           1 :         operand.size = size;</span></span>
 <span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">           1 :         funcBuilder.workingSetSizeInBytes += (uint32_t)size;</span></span>
-<span id="L105"><span class="lineNum">     105</span>              :         return operand;</span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">           1 :         return operand;</span></span>
 <span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L107"><span class="lineNum">     107</span>              : </span>
 <span id="L108"><span class="lineNum">     108</span>              :     // Allocate (or return the cached) working-set slot for `inst`&#x27;s value, sized through the</span>
@@ -430,18 +430,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L158"><span class="lineNum">     158</span>              :         ConstKey key;</span>
 <span id="L159"><span class="lineNum">     159</span>              :         key.value = value;</span>
-<span id="L160"><span class="lineNum">     160</span>              :         key.size = (uint32_t)sizeof(IntType);</span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">           1 :         key.size = (uint32_t)sizeof(IntType);</span></span>
 <span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">           1 :         if (auto operand = mapConstantIntToOperand.tryGetValue(key))</span></span>
 <span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">           1 :             return *operand;</span></span>
 <span id="L163"><span class="lineNum">     163</span>              :         VMOperand operand;</span>
-<span id="L164"><span class="lineNum">     164</span>              :         operand.sectionId = kSlangByteCodeSectionConstants;</span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">           1 :         operand.sectionId = kSlangByteCodeSectionConstants;</span></span>
 <span id="L165"><span class="lineNum">     165</span>              :         // align constantSection</span>
 <span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">           1 :         alignConstSection((int)sizeof(IntType));</span></span>
 <span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">           1 :         operand.offset = (uint32_t)byteCodeBuilder.constantSection.getCount();</span></span>
 <span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">           1 :         byteCodeBuilder.constantSection.addRange((uint8_t*)&amp;value, sizeof(value));</span></span>
 <span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">           1 :         mapConstantIntToOperand[key] = operand;</span></span>
 <span id="L170"><span class="lineNum">     170</span>              : </span>
-<span id="L171"><span class="lineNum">     171</span>              :         operand.size = sizeof(IntType);</span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">           1 :         operand.size = sizeof(IntType);</span></span>
 <span id="L172"><span class="lineNum">     172</span>              :         if (operand.size == 4)</span>
 <span id="L173"><span class="lineNum">     173</span>              :             operand.setType(OperandDataType::Int32);</span>
 <span id="L174"><span class="lineNum">     174</span>              :         else if (operand.size == 8)</span>
@@ -500,8 +500,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">           1 :                 auto value = static_cast&lt;IRFloatLit*&gt;(inst)-&gt;getValue();</span></span>
 <span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">           1 :                 if (inst-&gt;getDataType()-&gt;getOp() == kIROp_HalfType)</span></span>
 <span id="L229"><span class="lineNum">     229</span>              :                 {</span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">           1 :                     auto halfValue = FloatToHalf((float)value);</span></span>
-<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">           1 :                     byteCodeBuilder.constantSection.addRange(</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaUNC">           0 :                     auto halfValue = FloatToHalf((float)value);</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaUNC">           0 :                     byteCodeBuilder.constantSection.addRange(</span></span>
 <span id="L232"><span class="lineNum">     232</span>              :                         (uint8_t*)&amp;halfValue,</span>
 <span id="L233"><span class="lineNum">     233</span>              :                         sizeof(halfValue));</span>
 <span id="L234"><span class="lineNum">     234</span>              :                 }</span>
@@ -567,14 +567,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L294"><span class="lineNum">     294</span>              :         // without computing a real operand, so it must start from a well-defined</span>
 <span id="L295"><span class="lineNum">     295</span>              :         // value rather than indeterminate stack bytes (which writeInst would copy</span>
 <span id="L296"><span class="lineNum">     296</span>              :         // byte-for-byte into the code buffer).</span>
-<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">           1 :         VMOperand operand = {};</span></span>
+<span id="L297"><span class="lineNum">     297</span>              :         VMOperand operand = {};</span>
 <span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">           1 :         if (mapInstToOperand.tryGetValue(inst, operand))</span></span>
 <span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">           1 :             return operand;</span></span>
 <span id="L300"><span class="lineNum">     300</span>              : </span>
 <span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">           1 :         if (auto constantInst = as&lt;IRConstant&gt;(inst))</span></span>
 <span id="L302"><span class="lineNum">     302</span>              :         {</span>
 <span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">           1 :             operand = addConstantValue(constantInst);</span></span>
-<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">           1 :             mapInstToOperand[inst] = operand;</span></span>
+<span id="L304"><span class="lineNum">     304</span>              :             mapInstToOperand[inst] = operand;</span>
 <span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">           1 :         }</span></span>
 <span id="L306"><span class="lineNum">     306</span> <span class="tlaUNC">           0 :         else if (auto constantVector = as&lt;IRMakeVector&gt;(inst))</span></span>
 <span id="L307"><span class="lineNum">     307</span>              :         {</span>
@@ -744,9 +744,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L471"><span class="lineNum">     471</span>              :         uint32_t extOp,</span>
 <span id="L472"><span class="lineNum">     472</span>              :         ArrayView&lt;VMOperand&gt; operands)</span>
 <span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L474"><span class="lineNum">     474</span>              :         VMInstHeader instHeader = {};</span>
-<span id="L475"><span class="lineNum">     475</span>              :         instHeader.opcode = op;</span>
-<span id="L476"><span class="lineNum">     476</span>              :         instHeader.opcodeExtension = extOp;</span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">           1 :         VMInstHeader instHeader = {};</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">           1 :         instHeader.opcode = op;</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">           1 :         instHeader.opcodeExtension = extOp;</span></span>
 <span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC">           1 :         instHeader.operandCount = (uint16_t)operands.getCount();</span></span>
 <span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">           1 :         funcBuilder.instOffsets.add(funcBuilder.code.getCount());</span></span>
 <span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">           1 :         funcBuilder.code.addRange(reinterpret_cast&lt;uint8_t*&gt;(&amp;instHeader), sizeof(instHeader));</span></span>
@@ -793,7 +793,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L520"><span class="lineNum">     520</span>              : </span>
 <span id="L521"><span class="lineNum">     521</span>              :     uint32_t getExtCode(IRInst* type)</span>
 <span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L523"><span class="lineNum">     523</span>              :         ArithmeticExtCode extCode = {};</span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">           1 :         ArithmeticExtCode extCode = {};</span></span>
 <span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">           1 :         if (auto vecType = as&lt;IRVectorType&gt;(type))</span></span>
 <span id="L525"><span class="lineNum">     525</span>              :         {</span>
 <span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">           1 :             extCode.vectorSize = getIntVal(vecType-&gt;getElementCount());</span></span>
@@ -835,7 +835,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L562"><span class="lineNum">     562</span>              :             break;</span>
 <span id="L563"><span class="lineNum">     563</span>              :         case kIROp_UInt16Type:</span>
 <span id="L564"><span class="lineNum">     564</span>              :             extCode.scalarType = kSlangByteCodeScalarTypeUnsignedInt;</span>
-<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">           1 :             extCode.scalarBitWidth = 1;</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaUNC">           0 :             extCode.scalarBitWidth = 1;</span></span>
 <span id="L566"><span class="lineNum">     566</span>              :             break;</span>
 <span id="L567"><span class="lineNum">     567</span>              :         case kIROp_UInt64Type:</span>
 <span id="L568"><span class="lineNum">     568</span>              :         case kIROp_UIntPtrType:</span>
@@ -935,21 +935,21 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L662"><span class="lineNum">     662</span> <span class="tlaGNC">           1 :             opInfo.opcode = VMOp::Equal;</span></span>
 <span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">           1 :             break;</span></span>
 <span id="L664"><span class="lineNum">     664</span>              :         case kIROp_Neq:</span>
-<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">           1 :             opInfo.opcode = VMOp::Neq;</span></span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaUNC">           0 :             opInfo.opcode = VMOp::Neq;</span></span>
 <span id="L666"><span class="lineNum">     666</span>              :             break;</span>
 <span id="L667"><span class="lineNum">     667</span>              :         default:</span>
 <span id="L668"><span class="lineNum">     668</span> <span class="tlaUNC">           0 :             SLANG_UNEXPECTED(&quot;Unsupported operation&quot;);</span></span>
 <span id="L669"><span class="lineNum">     669</span>              :             break;</span>
 <span id="L670"><span class="lineNum">     670</span>              :         }</span>
 <span id="L671"><span class="lineNum">     671</span> <span class="tlaGNC">           1 :         opInfo.opcodeExtension = getExtCode(inst-&gt;getOperand(0)-&gt;getDataType());</span></span>
-<span id="L672"><span class="lineNum">     672</span>              :         return opInfo;</span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">           1 :         return opInfo;</span></span>
 <span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L674"><span class="lineNum">     674</span>              : </span>
 <span id="L675"><span class="lineNum">     675</span>              :     void emitCast(VMByteCodeFunctionBuilder&amp; funcBuilder, VMOp op, IRInst* inst)</span>
 <span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">           1 :         auto extCode1 = getExtCode(inst-&gt;getDataType());</span></span>
 <span id="L678"><span class="lineNum">     678</span> <span class="tlaGNC">           1 :         auto extCode2 = getExtCode(inst-&gt;getOperand(0)-&gt;getDataType());</span></span>
-<span id="L679"><span class="lineNum">     679</span>              :         auto extCode = extCode1 | (extCode2 &lt;&lt; 16);</span>
+<span id="L679"><span class="lineNum">     679</span> <span class="tlaGNC">           1 :         auto extCode = extCode1 | (extCode2 &lt;&lt; 16);</span></span>
 <span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">           1 :         writeInst(</span></span>
 <span id="L681"><span class="lineNum">     681</span>              :             funcBuilder,</span>
 <span id="L682"><span class="lineNum">     682</span>              :             op,</span>
@@ -1338,7 +1338,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1065"><span class="lineNum">    1065</span> <span class="tlaGNC">           1 :                     mapInstToOperand[inst] = baseOperand;</span></span>
 <span id="L1066"><span class="lineNum">    1066</span> <span class="tlaGNC">           1 :                     break;</span></span>
 <span id="L1067"><span class="lineNum">    1067</span>              :                 }</span>
-<span id="L1068"><span class="lineNum">    1068</span> <span class="tlaGNC">           1 :                 writeInst(</span></span>
+<span id="L1068"><span class="lineNum">    1068</span> <span class="tlaUNC">           0 :                 writeInst(</span></span>
 <span id="L1069"><span class="lineNum">    1069</span>              :                     funcBuilder,</span>
 <span id="L1070"><span class="lineNum">    1070</span>              :                     VMOp::GetElement,</span>
 <span id="L1071"><span class="lineNum">    1071</span>              :                     (uint32_t)stride,</span>
@@ -1346,7 +1346,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1073"><span class="lineNum">    1073</span>              :                     baseOperand,</span>
 <span id="L1074"><span class="lineNum">    1074</span>              :                     ensureInst(index));</span>
 <span id="L1075"><span class="lineNum">    1075</span>              :             }</span>
-<span id="L1076"><span class="lineNum">    1076</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L1076"><span class="lineNum">    1076</span> <span class="tlaUNC">           0 :             break;</span></span>
 <span id="L1077"><span class="lineNum">    1077</span>              :         case kIROp_BitCast:</span>
 <span id="L1078"><span class="lineNum">    1078</span>              :             {</span>
 <span id="L1079"><span class="lineNum">    1079</span> <span class="tlaGNC">           1 :                 auto operand = ensureInst(inst-&gt;getOperand(0));</span></span>
@@ -1411,20 +1411,20 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1138"><span class="lineNum">    1138</span> <span class="tlaGNC">           1 :             break;</span></span>
 <span id="L1139"><span class="lineNum">    1139</span>              :         case kIROp_MakeArrayFromElement:</span>
 <span id="L1140"><span class="lineNum">    1140</span>              :             {</span>
-<span id="L1141"><span class="lineNum">    1141</span> <span class="tlaGNC">           1 :                 auto result = ensureWorkingsetMemory(funcBuilder, inst);</span></span>
-<span id="L1142"><span class="lineNum">    1142</span> <span class="tlaGNC">           1 :                 auto arrayType = as&lt;IRArrayTypeBase&gt;(inst-&gt;getDataType());</span></span>
-<span id="L1143"><span class="lineNum">    1143</span> <span class="tlaGNC">           1 :                 auto elementType = arrayType-&gt;getElementType();</span></span>
-<span id="L1144"><span class="lineNum">    1144</span> <span class="tlaGNC">           1 :                 IRSizeAndAlignment sizeAlignment = {};</span></span>
-<span id="L1145"><span class="lineNum">    1145</span> <span class="tlaGNC">           1 :                 getNaturalSizeAndAlignment(</span></span>
+<span id="L1141"><span class="lineNum">    1141</span> <span class="tlaUNC">           0 :                 auto result = ensureWorkingsetMemory(funcBuilder, inst);</span></span>
+<span id="L1142"><span class="lineNum">    1142</span> <span class="tlaUNC">           0 :                 auto arrayType = as&lt;IRArrayTypeBase&gt;(inst-&gt;getDataType());</span></span>
+<span id="L1143"><span class="lineNum">    1143</span> <span class="tlaUNC">           0 :                 auto elementType = arrayType-&gt;getElementType();</span></span>
+<span id="L1144"><span class="lineNum">    1144</span> <span class="tlaUNC">           0 :                 IRSizeAndAlignment sizeAlignment = {};</span></span>
+<span id="L1145"><span class="lineNum">    1145</span> <span class="tlaUNC">           0 :                 getNaturalSizeAndAlignment(</span></span>
 <span id="L1146"><span class="lineNum">    1146</span>              :                     codeGenContext-&gt;getTargetReq(),</span>
 <span id="L1147"><span class="lineNum">    1147</span>              :                     elementType,</span>
 <span id="L1148"><span class="lineNum">    1148</span>              :                     &amp;sizeAlignment);</span>
-<span id="L1149"><span class="lineNum">    1149</span> <span class="tlaGNC">           1 :                 auto stride = (uint32_t)sizeAlignment.getStride();</span></span>
-<span id="L1150"><span class="lineNum">    1150</span> <span class="tlaGNC">           1 :                 for (Index i = 0; i &lt; getIntVal(arrayType-&gt;getElementCount()); ++i)</span></span>
+<span id="L1149"><span class="lineNum">    1149</span> <span class="tlaUNC">           0 :                 auto stride = (uint32_t)sizeAlignment.getStride();</span></span>
+<span id="L1150"><span class="lineNum">    1150</span> <span class="tlaUNC">           0 :                 for (Index i = 0; i &lt; getIntVal(arrayType-&gt;getElementCount()); ++i)</span></span>
 <span id="L1151"><span class="lineNum">    1151</span>              :                 {</span>
 <span id="L1152"><span class="lineNum">    1152</span>              :                     VMOperand elementOperand = result;</span>
-<span id="L1153"><span class="lineNum">    1153</span> <span class="tlaGNC">           1 :                     elementOperand.offset += (uint32_t)(stride * i);</span></span>
-<span id="L1154"><span class="lineNum">    1154</span> <span class="tlaGNC">           1 :                     writeInst(</span></span>
+<span id="L1153"><span class="lineNum">    1153</span> <span class="tlaUNC">           0 :                     elementOperand.offset += (uint32_t)(stride * i);</span></span>
+<span id="L1154"><span class="lineNum">    1154</span> <span class="tlaUNC">           0 :                     writeInst(</span></span>
 <span id="L1155"><span class="lineNum">    1155</span>              :                         funcBuilder,</span>
 <span id="L1156"><span class="lineNum">    1156</span>              :                         VMOp::Copy,</span>
 <span id="L1157"><span class="lineNum">    1157</span>              :                         stride,</span>
@@ -1432,7 +1432,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1159"><span class="lineNum">    1159</span>              :                         ensureInst(inst-&gt;getOperand(0)));</span>
 <span id="L1160"><span class="lineNum">    1160</span>              :                 }</span>
 <span id="L1161"><span class="lineNum">    1161</span>              :             }</span>
-<span id="L1162"><span class="lineNum">    1162</span> <span class="tlaGNC">           1 :             break;</span></span>
+<span id="L1162"><span class="lineNum">    1162</span> <span class="tlaUNC">           0 :             break;</span></span>
 <span id="L1163"><span class="lineNum">    1163</span>              :         case kIROp_MakeStruct:</span>
 <span id="L1164"><span class="lineNum">    1164</span>              :             {</span>
 <span id="L1165"><span class="lineNum">    1165</span> <span class="tlaGNC">           1 :                 auto result = ensureWorkingsetMemory(funcBuilder, inst);</span></span>
@@ -1664,7 +1664,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1391"><span class="lineNum">    1391</span>              :                     break;</span>
 <span id="L1392"><span class="lineNum">    1392</span>              :                 }</span>
 <span id="L1393"><span class="lineNum">    1393</span>              :             }</span>
-<span id="L1394"><span class="lineNum">    1394</span>              :             if (referencedByHostEntryPoint)</span>
+<span id="L1394"><span class="lineNum">    1394</span> <span class="tlaUNC">           0 :             if (referencedByHostEntryPoint)</span></span>
 <span id="L1395"><span class="lineNum">    1395</span>              :             {</span>
 <span id="L1396"><span class="lineNum">    1396</span> <span class="tlaGNC">           1 :                 functionsToEmit.add(func);</span></span>
 <span id="L1397"><span class="lineNum">    1397</span>              :             }</span>

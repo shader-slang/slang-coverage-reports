@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:35:31 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -441,7 +441,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L150"><span class="lineNum">     150</span>                         : </span>
 <span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">           4 <span class="branchPart" title="br0: 0; br1: 4">(1/2)</span>      :         if (i &gt; 0)</span></span>
 <span id="L152"><span class="lineNum">     152</span> <span class="tlaUNC">           0            :         {</span></span>
-<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">           1            :             buf &lt;&lt; &quot;_&quot; &lt;&lt; i;</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaUNC">           0            :             buf &lt;&lt; &quot;_&quot; &lt;&lt; i;</span></span>
 <span id="L154"><span class="lineNum">     154</span> <span class="tlaUNC">           0            :         }</span></span>
 <span id="L155"><span class="lineNum">     155</span>                         : </span>
 <span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">           4            :         StringSlicePool::Handle handle;</span></span>
@@ -476,15 +476,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L185"><span class="lineNum">     185</span>                         : </span>
 <span id="L186"><span class="lineNum">     186</span>                         :     // Implement IDxcIncludeHandler</span>
 <span id="L187"><span class="lineNum">     187</span>                         :     virtual HRESULT SLANG_MCALL LoadSource(LPCWSTR inFilename, IDxcBlob** outSource) SLANG_OVERRIDE</span>
-<span id="L188"><span class="lineNum">     188</span> <span class="tlaUNC">           0            :     {</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">           1            :     {</span></span>
 <span id="L189"><span class="lineNum">     189</span>                         :         // Hmm DXC does something a bit odd - when it sees a path, it just passes that in with ./ in</span>
 <span id="L190"><span class="lineNum">     190</span>                         :         // front!! NOTE! It doesn&#x27;t make any difference if it is &quot;&quot; or &lt;&gt; quoted.</span>
 <span id="L191"><span class="lineNum">     191</span>                         : </span>
 <span id="L192"><span class="lineNum">     192</span>                         :         // So we just do a work around where we strip if we see a path starting with ./</span>
-<span id="L193"><span class="lineNum">     193</span> <span class="tlaUNC">           0            :         String filePath = String::fromWString(inFilename);</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">           1            :         String filePath = String::fromWString(inFilename);</span></span>
 <span id="L194"><span class="lineNum">     194</span>                         : </span>
 <span id="L195"><span class="lineNum">     195</span>                         :         // If it starts with ./ then attempt to strip it</span>
-<span id="L196"><span class="lineNum">     196</span> <span class="tlaUNC">           0 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (filePath.startsWith(&quot;./&quot;))</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">           1 <span class="branchNone" title="br0: -; br1: -">(0/2)</span>      :         if (filePath.startsWith(&quot;./&quot;))</span></span>
 <span id="L197"><span class="lineNum">     197</span> <span class="tlaUNC">           0            :         {</span></span>
 <span id="L198"><span class="lineNum">     198</span> <span class="tlaUNC">           0            :             const String remaining = filePath.getUnownedSlice().tail(2);</span></span>
 <span id="L199"><span class="lineNum">     199</span>                         : </span>
@@ -496,15 +496,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L205"><span class="lineNum">     205</span> <span class="tlaUNC">           0            :             }</span></span>
 <span id="L206"><span class="lineNum">     206</span> <span class="tlaUNC">           0            :         }</span></span>
 <span id="L207"><span class="lineNum">     207</span>                         : </span>
-<span id="L208"><span class="lineNum">     208</span> <span class="tlaUNC">           0            :         ComPtr&lt;ISlangBlob&gt; blob;</span></span>
-<span id="L209"><span class="lineNum">     209</span> <span class="tlaUNC">           0            :         PathInfo pathInfo;</span></span>
-<span id="L210"><span class="lineNum">     210</span> <span class="tlaUNC">           0            :         SlangResult res = m_system.findAndLoadFile(filePath, String(), pathInfo, blob);</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">           1            :         ComPtr&lt;ISlangBlob&gt; blob;</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">           1            :         PathInfo pathInfo;</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">           1            :         SlangResult res = m_system.findAndLoadFile(filePath, String(), pathInfo, blob);</span></span>
 <span id="L211"><span class="lineNum">     211</span>                         : </span>
 <span id="L212"><span class="lineNum">     212</span>                         :         // NOTE! This only works because ISlangBlob is *binary compatible* with IDxcBlob, if either</span>
 <span id="L213"><span class="lineNum">     213</span>                         :         // change things could go boom</span>
-<span id="L214"><span class="lineNum">     214</span> <span class="tlaUNC">           0            :         *outSource = (IDxcBlob*)blob.detach();</span></span>
-<span id="L215"><span class="lineNum">     215</span> <span class="tlaUNC">           0            :         return res;</span></span>
-<span id="L216"><span class="lineNum">     216</span> <span class="tlaUNC">           0            :     }</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">           1            :         *outSource = (IDxcBlob*)blob.detach();</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">           1            :         return res;</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">           1            :     }</span></span>
 <span id="L217"><span class="lineNum">     217</span>                         : </span>
 <span id="L218"><span class="lineNum">     218</span>                         :     DxcIncludeHandler(</span>
 <span id="L219"><span class="lineNum">     219</span>                         :         SearchDirectoryList* searchDirectories,</span>
@@ -554,13 +554,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">          23            :     DXCDownstreamCompiler() {}</span></span>
 <span id="L264"><span class="lineNum">     264</span>                         : </span>
 <span id="L265"><span class="lineNum">     265</span>                         : protected:</span>
-<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">           1            :     DxcCreateInstanceProc m_createInstance = nullptr;</span></span>
+<span id="L266"><span class="lineNum">     266</span>                         :     DxcCreateInstanceProc m_createInstance = nullptr;</span>
 <span id="L267"><span class="lineNum">     267</span>                         : </span>
 <span id="L268"><span class="lineNum">     268</span>                         :     /// The commit hash associated with the DXC dll used</span>
 <span id="L269"><span class="lineNum">     269</span>                         :     /// If 0 length, no hash was found</span>
 <span id="L270"><span class="lineNum">     270</span>                         :     String m_commitHash;</span>
 <span id="L271"><span class="lineNum">     271</span>                         :     /// The commit count. 0 if not set</span>
-<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">           1            :     uint32_t m_commitCount = 0;</span></span>
+<span id="L272"><span class="lineNum">     272</span>                         :     uint32_t m_commitCount = 0;</span>
 <span id="L273"><span class="lineNum">     273</span>                         : </span>
 <span id="L274"><span class="lineNum">     274</span>                         :     ComPtr&lt;ISlangSharedLibrary&gt; m_sharedLibrary;</span>
 <span id="L275"><span class="lineNum">     275</span>                         : };</span>

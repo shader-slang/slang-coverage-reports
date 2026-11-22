@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">28.1&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:28.1%;background-color:hsl(12, 70%, 50%)"></div></div>
-      <span class="metricCounts">65 / 231</span>
+      <span class="metricValue">27.2&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:27.2%;background-color:hsl(12, 70%, 50%)"></div></div>
+      <span class="metricCounts">65 / 239</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -544,7 +544,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L271"><span class="lineNum">     271</span>              :   size_t size = (x &lt; 0 ? 0 : (size_t)x);</span>
 <span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">           1 :   if (mi_option_has_size_in_kib(option)) {</span></span>
 <span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">           1 :     if (mi_mul_overflow(size, MI_KiB, &amp;size)) {</span></span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaUNC">           0 :       size = MI_MAX_ALLOC_SIZE;</span></span>
+<span id="L274"><span class="lineNum">     274</span>              :       size = MI_MAX_ALLOC_SIZE;</span>
 <span id="L275"><span class="lineNum">     275</span>              :     }</span>
 <span id="L276"><span class="lineNum">     276</span>              :   }</span>
 <span id="L277"><span class="lineNum">     277</span>              :   return size;</span>
@@ -555,8 +555,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L282"><span class="lineNum">     282</span> <span class="tlaUNC">           0 :   if (option &lt; 0 || option &gt;= _mi_option_last) return;</span></span>
 <span id="L283"><span class="lineNum">     283</span> <span class="tlaUNC">           0 :   mi_option_desc_t* desc = &amp;options[option];</span></span>
 <span id="L284"><span class="lineNum">     284</span>              :   mi_assert(desc-&gt;option == option);  // index should match the option</span>
-<span id="L285"><span class="lineNum">     285</span>              :   desc-&gt;value = value;</span>
-<span id="L286"><span class="lineNum">     286</span>              :   desc-&gt;init = INITIALIZED;</span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaUNC">           0 :   desc-&gt;value = value;</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaUNC">           0 :   desc-&gt;init = INITIALIZED;</span></span>
 <span id="L287"><span class="lineNum">     287</span>              :   // ensure min/max range; be careful to not recurse.</span>
 <span id="L288"><span class="lineNum">     288</span> <span class="tlaUNC">           0 :   if (desc-&gt;option == mi_option_guarded_min &amp;&amp; _mi_option_get_fast(mi_option_guarded_max) &lt; value) {</span></span>
 <span id="L289"><span class="lineNum">     289</span> <span class="tlaUNC">           0 :     mi_option_set(mi_option_guarded_max, value);</span></span>
@@ -624,7 +624,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L351"><span class="lineNum">     351</span> <span class="tlaUNC">           0 :     const size_t start = mi_atomic_add_acq_rel(&amp;out_len, n);</span></span>
 <span id="L352"><span class="lineNum">     352</span> <span class="tlaUNC">           0 :     if (start &lt; MI_MAX_DELAY_OUTPUT) {</span></span>
 <span id="L353"><span class="lineNum">     353</span>              :       // check bound</span>
-<span id="L354"><span class="lineNum">     354</span>              :       if (start+n &gt;= MI_MAX_DELAY_OUTPUT) {</span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaUNC">           0 :       if (start+n &gt;= MI_MAX_DELAY_OUTPUT) {</span></span>
 <span id="L355"><span class="lineNum">     355</span>              :         n = MI_MAX_DELAY_OUTPUT-start-1;</span>
 <span id="L356"><span class="lineNum">     356</span>              :       }</span>
 <span id="L357"><span class="lineNum">     357</span> <span class="tlaUNC">           0 :       _mi_memcpy(&amp;out_buf[start], msg, n);</span></span>
@@ -638,8 +638,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">           1 :   mi_lock(&amp;out_buf_lock) {</span></span>
 <span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">           1 :     size_t count = mi_atomic_add_acq_rel(&amp;out_len, (no_more_buf ? MI_MAX_DELAY_OUTPUT : 1));</span></span>
 <span id="L367"><span class="lineNum">     367</span>              :     // and output the current contents</span>
-<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">           1 :     if (count&gt;MI_MAX_DELAY_OUTPUT) count = MI_MAX_DELAY_OUTPUT;</span></span>
-<span id="L369"><span class="lineNum">     369</span>              :     out_buf[count] = 0;</span>
+<span id="L368"><span class="lineNum">     368</span>              :     if (count&gt;MI_MAX_DELAY_OUTPUT) count = MI_MAX_DELAY_OUTPUT;</span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">           1 :     out_buf[count] = 0;</span></span>
 <span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">           1 :     out(out_buf,arg);</span></span>
 <span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">           1 :     if (!no_more_buf) {</span></span>
 <span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">           1 :       out_buf[count] = &#x27;\n&#x27;; // if continue with the buffer, insert a newline</span></span>
@@ -780,7 +780,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L507"><span class="lineNum">     507</span> <span class="tlaUNC">           0 : void _mi_trace_message(const char* fmt, ...) {</span></span>
 <span id="L508"><span class="lineNum">     508</span> <span class="tlaUNC">           0 :   if (mi_option_get(mi_option_verbose) &lt;= 1) return;  // only with verbose level 2 or higher</span></span>
 <span id="L509"><span class="lineNum">     509</span>              :   va_list args;</span>
-<span id="L510"><span class="lineNum">     510</span>              :   va_start(args, fmt);</span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaUNC">           0 :   va_start(args, fmt);</span></span>
 <span id="L511"><span class="lineNum">     511</span> <span class="tlaUNC">           0 :   mi_vfprintf_thread(NULL, NULL, &quot;mimalloc: &quot;, fmt, args);</span></span>
 <span id="L512"><span class="lineNum">     512</span>              :   va_end(args);</span>
 <span id="L513"><span class="lineNum">     513</span> <span class="tlaUNC">           0 : }</span></span>
@@ -788,7 +788,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">           1 : void _mi_verbose_message(const char* fmt, ...) {</span></span>
 <span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">           1 :   if (!mi_option_is_enabled(mi_option_verbose)) return;</span></span>
 <span id="L517"><span class="lineNum">     517</span>              :   va_list args;</span>
-<span id="L518"><span class="lineNum">     518</span>              :   va_start(args,fmt);</span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaUNC">           0 :   va_start(args,fmt);</span></span>
 <span id="L519"><span class="lineNum">     519</span> <span class="tlaUNC">           0 :   mi_vfprintf(NULL, NULL, &quot;mimalloc: &quot;, fmt, args);</span></span>
 <span id="L520"><span class="lineNum">     520</span>              :   va_end(args);</span>
 <span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">           1 : }</span></span>
@@ -807,7 +807,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L534"><span class="lineNum">     534</span> <span class="tlaUNC">           0 :     if (mi_max_warning_count &gt;= 0 &amp;&amp; (long)mi_atomic_increment_acq_rel(&amp;warning_count) &gt; mi_max_warning_count) return;</span></span>
 <span id="L535"><span class="lineNum">     535</span>              :   }</span>
 <span id="L536"><span class="lineNum">     536</span>              :   va_list args;</span>
-<span id="L537"><span class="lineNum">     537</span>              :   va_start(args,fmt);</span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaUNC">           0 :   va_start(args,fmt);</span></span>
 <span id="L538"><span class="lineNum">     538</span> <span class="tlaUNC">           0 :   mi_vfprintf_thread(NULL, NULL, &quot;mimalloc: warning: &quot;, fmt, args);</span></span>
 <span id="L539"><span class="lineNum">     539</span>              :   va_end(args);</span>
 <span id="L540"><span class="lineNum">     540</span> <span class="tlaUNC">           0 : }</span></span>
@@ -860,7 +860,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L587"><span class="lineNum">     587</span> <span class="tlaUNC">           0 : void _mi_error_message(int err, const char* fmt, ...) {</span></span>
 <span id="L588"><span class="lineNum">     588</span>              :   // show detailed error message</span>
 <span id="L589"><span class="lineNum">     589</span>              :   va_list args;</span>
-<span id="L590"><span class="lineNum">     590</span>              :   va_start(args, fmt);</span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaUNC">           0 :   va_start(args, fmt);</span></span>
 <span id="L591"><span class="lineNum">     591</span> <span class="tlaUNC">           0 :   mi_show_error_message(fmt, args);</span></span>
 <span id="L592"><span class="lineNum">     592</span>              :   va_end(args);</span>
 <span id="L593"><span class="lineNum">     593</span>              :   // and call the error handler which may abort (or return normally, potentially setting errno)</span>
@@ -905,12 +905,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L632"><span class="lineNum">     632</span> <span class="tlaUNC">           0 :     buf[len] = 0;</span></span>
 <span id="L633"><span class="lineNum">     633</span> <span class="tlaUNC">           0 :     if (buf[0] == 0 || _mi_streq(buf,&quot;1&quot;) || _mi_streq(buf,&quot;TRUE&quot;) || _mi_streq(buf,&quot;YES&quot;) || _mi_streq(buf,&quot;ON&quot;)) {</span></span>
 <span id="L634"><span class="lineNum">     634</span> <span class="tlaUNC">           0 :       desc-&gt;value = 1;</span></span>
-<span id="L635"><span class="lineNum">     635</span>              :       desc-&gt;init = INITIALIZED;</span>
+<span id="L635"><span class="lineNum">     635</span> <span class="tlaUNC">           0 :       desc-&gt;init = INITIALIZED;</span></span>
 <span id="L636"><span class="lineNum">     636</span>              :     }</span>
 <span id="L637"><span class="lineNum">     637</span> <span class="tlaUNC">           0 :     else if (_mi_streq(buf,&quot;0&quot;) || _mi_streq(buf,&quot;FALSE&quot;) || _mi_streq(buf,&quot;NO&quot;) || _mi_streq(buf,&quot;OFF&quot;)) {</span></span>
 <span id="L638"><span class="lineNum">     638</span> <span class="tlaUNC">           0 :       desc-&gt;value = 0;</span></span>
-<span id="L639"><span class="lineNum">     639</span> <span class="tlaUNC">           0 :       desc-&gt;init = INITIALIZED;</span></span>
-<span id="L640"><span class="lineNum">     640</span>              :     }</span>
+<span id="L639"><span class="lineNum">     639</span>              :       desc-&gt;init = INITIALIZED;</span>
+<span id="L640"><span class="lineNum">     640</span> <span class="tlaUNC">           0 :     }</span></span>
 <span id="L641"><span class="lineNum">     641</span>              :     else {</span>
 <span id="L642"><span class="lineNum">     642</span> <span class="tlaUNC">           0 :       char* end = buf;</span></span>
 <span id="L643"><span class="lineNum">     643</span> <span class="tlaUNC">           0 :       errno = 0;</span></span>
@@ -919,7 +919,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L646"><span class="lineNum">     646</span>              :         // this option is interpreted in KiB to prevent overflow of `long` for large allocations</span>
 <span id="L647"><span class="lineNum">     647</span>              :         // (long is 32-bit on 64-bit windows, which allows for 4TiB max.)</span>
 <span id="L648"><span class="lineNum">     648</span>              :         size_t size = (value &lt; 0 ? 0 : (size_t)value);</span>
-<span id="L649"><span class="lineNum">     649</span>              :         bool overflow = false;</span>
+<span id="L649"><span class="lineNum">     649</span> <span class="tlaUNC">           0 :         bool overflow = false;</span></span>
 <span id="L650"><span class="lineNum">     650</span> <span class="tlaUNC">           0 :         if (*end == &#x27;K&#x27;) { end++; }</span></span>
 <span id="L651"><span class="lineNum">     651</span> <span class="tlaUNC">           0 :         else if (*end == &#x27;M&#x27;) { overflow = mi_mul_overflow(size,MI_KiB,&amp;size); end++; }</span></span>
 <span id="L652"><span class="lineNum">     652</span> <span class="tlaUNC">           0 :         else if (*end == &#x27;G&#x27;) { overflow = mi_mul_overflow(size,MI_MiB,&amp;size); end++; }</span></span>
@@ -935,7 +935,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L662"><span class="lineNum">     662</span> <span class="tlaUNC">           0 :       }</span></span>
 <span id="L663"><span class="lineNum">     663</span>              :       else {</span>
 <span id="L664"><span class="lineNum">     664</span>              :         // set `init` first to avoid recursion through _mi_warning_message on mimalloc_verbose.</span>
-<span id="L665"><span class="lineNum">     665</span>              :         desc-&gt;init = DEFAULTED;</span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaUNC">           0 :         desc-&gt;init = DEFAULTED;</span></span>
 <span id="L666"><span class="lineNum">     666</span> <span class="tlaUNC">           0 :         if (desc-&gt;option == mi_option_verbose &amp;&amp; desc-&gt;value == 0) {</span></span>
 <span id="L667"><span class="lineNum">     667</span>              :           // if the &#x27;mimalloc_verbose&#x27; env var has a bogus value we&#x27;d never know</span>
 <span id="L668"><span class="lineNum">     668</span>              :           // (since the value defaults to &#x27;off&#x27;) so in that case briefly enable verbose</span>
@@ -949,7 +949,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L676"><span class="lineNum">     676</span>              :       }</span>
 <span id="L677"><span class="lineNum">     677</span>              :     }</span>
 <span id="L678"><span class="lineNum">     678</span>              :     mi_assert_internal(desc-&gt;init != UNINIT);</span>
-<span id="L679"><span class="lineNum">     679</span> <span class="tlaUNC">           0 :   }</span></span>
+<span id="L679"><span class="lineNum">     679</span>              :   }</span>
 <span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">           1 :   else if (err==ENOENT) {</span></span>
 <span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">           1 :     desc-&gt;init = DEFAULTED;</span></span>
 <span id="L682"><span class="lineNum">     682</span>              :   }</span>

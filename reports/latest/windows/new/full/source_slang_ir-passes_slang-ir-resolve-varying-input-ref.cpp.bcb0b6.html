@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">97.1&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:97.1%;background-color:hsl(116, 70%, 50%)"></div></div>
-      <span class="metricCounts">33 / 34</span>
+      <span class="metricValue">0.0&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:0.0%;background-color:hsl(0, 70%, 50%)"></div></div>
+      <span class="metricCounts">0 / 34</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -279,23 +279,23 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L6"><span class="lineNum">       6</span>              : namespace Slang</span>
 <span id="L7"><span class="lineNum">       7</span>              : {</span>
 <span id="L8"><span class="lineNum">       8</span>              : void resolveVaryingInputRef(IRFunc* func)</span>
-<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC">           1 :     List&lt;IRInst*&gt; toRemove;</span></span>
-<span id="L11"><span class="lineNum">      11</span> <span class="tlaGNC">           1 :     for (auto bb = func-&gt;getFirstBlock(); bb; bb = bb-&gt;getNextBlock())</span></span>
+<span id="L9"><span class="lineNum">       9</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L10"><span class="lineNum">      10</span> <span class="tlaUNC">           0 :     List&lt;IRInst*&gt; toRemove;</span></span>
+<span id="L11"><span class="lineNum">      11</span> <span class="tlaUNC">           0 :     for (auto bb = func-&gt;getFirstBlock(); bb; bb = bb-&gt;getNextBlock())</span></span>
 <span id="L12"><span class="lineNum">      12</span>              :     {</span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">           1 :         for (auto inst : bb-&gt;getChildren())</span></span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaUNC">           0 :         for (auto inst : bb-&gt;getChildren())</span></span>
 <span id="L14"><span class="lineNum">      14</span>              :         {</span>
-<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">           1 :             switch (inst-&gt;getOp())</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaUNC">           0 :             switch (inst-&gt;getOp())</span></span>
 <span id="L16"><span class="lineNum">      16</span>              :             {</span>
 <span id="L17"><span class="lineNum">      17</span>              :             case kIROp_ResolveVaryingInputRef:</span>
 <span id="L18"><span class="lineNum">      18</span>              :                 {</span>
 <span id="L19"><span class="lineNum">      19</span>              :                     // Resolve a reference to varying input to the actual global param</span>
 <span id="L20"><span class="lineNum">      20</span>              :                     // representing the varying input.</span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">           1 :                     auto operand = inst-&gt;getOperand(0);</span></span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">           1 :                     List&lt;IRInst*&gt; accessChain;</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           1 :                     List&lt;IRInst*&gt; types;</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">           1 :                     auto rootAddr = getRootAddr(operand, accessChain, &amp;types);</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           1 :                     if (rootAddr-&gt;getOp() == kIROp_Param || rootAddr-&gt;getOp() == kIROp_GlobalParam)</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaUNC">           0 :                     auto operand = inst-&gt;getOperand(0);</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaUNC">           0 :                     List&lt;IRInst*&gt; accessChain;</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaUNC">           0 :                     List&lt;IRInst*&gt; types;</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaUNC">           0 :                     auto rootAddr = getRootAddr(operand, accessChain, &amp;types);</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaUNC">           0 :                     if (rootAddr-&gt;getOp() == kIROp_Param || rootAddr-&gt;getOp() == kIROp_GlobalParam)</span></span>
 <span id="L26"><span class="lineNum">      26</span>              :                     {</span>
 <span id="L27"><span class="lineNum">      27</span>              :                         // If the referred operand is already a global param, use it directly.</span>
 <span id="L28"><span class="lineNum">      28</span> <span class="tlaUNC">           0 :                         inst-&gt;replaceUsesWith(operand);</span></span>
@@ -305,22 +305,22 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L32"><span class="lineNum">      32</span>              :                     // If the referred operand is a local var,</span>
 <span id="L33"><span class="lineNum">      33</span>              :                     // and there is a store(var, load(globalParam)),</span>
 <span id="L34"><span class="lineNum">      34</span>              :                     // replace `inst` with `globalParam`.</span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">           1 :                     IRInst* srcPtr = nullptr;</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           1 :                     for (auto use = rootAddr-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaUNC">           0 :                     IRInst* srcPtr = nullptr;</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaUNC">           0 :                     for (auto use = rootAddr-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
 <span id="L37"><span class="lineNum">      37</span>              :                     {</span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           1 :                         auto user = use-&gt;getUser();</span></span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">           1 :                         if (auto store = as&lt;IRStore&gt;(user))</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaUNC">           0 :                         auto user = use-&gt;getUser();</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaUNC">           0 :                         if (auto store = as&lt;IRStore&gt;(user))</span></span>
 <span id="L40"><span class="lineNum">      40</span>              :                         {</span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">           1 :                             if (store-&gt;getPtrUse() == use)</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaUNC">           0 :                             if (store-&gt;getPtrUse() == use)</span></span>
 <span id="L42"><span class="lineNum">      42</span>              :                             {</span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">           1 :                                 if (auto load = as&lt;IRLoad&gt;(store-&gt;getVal()))</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaUNC">           0 :                                 if (auto load = as&lt;IRLoad&gt;(store-&gt;getVal()))</span></span>
 <span id="L44"><span class="lineNum">      44</span>              :                                 {</span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">           1 :                                     auto ptr = load-&gt;getPtr();</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">           1 :                                     if (ptr-&gt;getOp() == kIROp_Param ||</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaUNC">           0 :                                     auto ptr = load-&gt;getPtr();</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaUNC">           0 :                                     if (ptr-&gt;getOp() == kIROp_Param ||</span></span>
 <span id="L47"><span class="lineNum">      47</span>              :                                         ptr-&gt;getOp() == kIROp_GlobalParam)</span>
 <span id="L48"><span class="lineNum">      48</span>              :                                     {</span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           1 :                                         if (!srcPtr)</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">           1 :                                             srcPtr = ptr;</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :                                         if (!srcPtr)</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :                                             srcPtr = ptr;</span></span>
 <span id="L51"><span class="lineNum">      51</span>              :                                         else</span>
 <span id="L52"><span class="lineNum">      52</span>              :                                         {</span>
 <span id="L53"><span class="lineNum">      53</span>              :                                             srcPtr = nullptr;</span>
@@ -331,39 +331,39 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L58"><span class="lineNum">      58</span>              :                             }</span>
 <span id="L59"><span class="lineNum">      59</span>              :                         }</span>
 <span id="L60"><span class="lineNum">      60</span>              :                     }</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">           1 :                     if (srcPtr)</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaUNC">           0 :                     if (srcPtr)</span></span>
 <span id="L62"><span class="lineNum">      62</span>              :                     {</span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">           1 :                         IRBuilder builder(inst);</span></span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">           1 :                         builder.setInsertBefore(inst);</span></span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">           1 :                         auto resolvedPtr = builder.emitElementAddress(</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaUNC">           0 :                         IRBuilder builder(inst);</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC">           0 :                         builder.setInsertBefore(inst);</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaUNC">           0 :                         auto resolvedPtr = builder.emitElementAddress(</span></span>
 <span id="L66"><span class="lineNum">      66</span>              :                             srcPtr,</span>
 <span id="L67"><span class="lineNum">      67</span>              :                             accessChain.getArrayView(),</span>
 <span id="L68"><span class="lineNum">      68</span>              :                             types.getArrayView());</span>
 <span id="L69"><span class="lineNum">      69</span>              :                         inst-&gt;replaceUsesWith(resolvedPtr);</span>
 <span id="L70"><span class="lineNum">      70</span>              :                         toRemove.add(inst);</span>
 <span id="L71"><span class="lineNum">      71</span>              :                     }</span>
-<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">           1 :                 }</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaUNC">           0 :                 }</span></span>
 <span id="L73"><span class="lineNum">      73</span>              :                 break;</span>
 <span id="L74"><span class="lineNum">      74</span>              :             }</span>
 <span id="L75"><span class="lineNum">      75</span>              :         }</span>
 <span id="L76"><span class="lineNum">      76</span>              :     }</span>
-<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">           1 :     for (auto inst : toRemove)</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaUNC">           0 :     for (auto inst : toRemove)</span></span>
 <span id="L78"><span class="lineNum">      78</span>              :     {</span>
-<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">           1 :         inst-&gt;removeAndDeallocate();</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaUNC">           0 :         inst-&gt;removeAndDeallocate();</span></span>
 <span id="L80"><span class="lineNum">      80</span>              :     }</span>
-<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L82"><span class="lineNum">      82</span>              : </span>
 <span id="L83"><span class="lineNum">      83</span>              : void resolveVaryingInputRef(IRModule* module)</span>
-<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaUNC">           0 : {</span></span>
 <span id="L85"><span class="lineNum">      85</span>              :     // An ordinary clone of an entry point has no entry-point decoration but can still contain</span>
 <span id="L86"><span class="lineNum">      86</span>              :     // interpolation operations. We resolve references in every module-scope function, including</span>
 <span id="L87"><span class="lineNum">      87</span>              :     // operations exposed when resource specialization inlines a helper into its caller.</span>
-<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">           1 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaUNC">           0 :     for (auto globalInst : module-&gt;getGlobalInsts())</span></span>
 <span id="L89"><span class="lineNum">      89</span>              :     {</span>
-<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">           1 :         if (auto function = as&lt;IRFunc&gt;(globalInst))</span></span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">           1 :             resolveVaryingInputRef(function);</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaUNC">           0 :         if (auto function = as&lt;IRFunc&gt;(globalInst))</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaUNC">           0 :             resolveVaryingInputRef(function);</span></span>
 <span id="L92"><span class="lineNum">      92</span>              :     }</span>
-<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L94"><span class="lineNum">      94</span>              : </span>
 <span id="L95"><span class="lineNum">      95</span>              : } // namespace Slang</span>
 </pre>

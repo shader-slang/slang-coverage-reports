@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">54.7&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:54.7%;background-color:hsl(23, 70%, 50%)"></div></div>
-      <span class="metricCounts">175 / 320</span>
+      <span class="metricValue">54.9&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:54.9%;background-color:hsl(24, 70%, 50%)"></div></div>
+      <span class="metricCounts">179 / 326</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -407,7 +407,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">           1 :     hint = mi_atomic_add_acq_rel(&amp;aligned_base, size); // this may still give 0 or &gt; MI_HINT_MAX but that is ok, it is a hint after all</span></span>
 <span id="L135"><span class="lineNum">     135</span>              :   }</span>
 <span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">           1 :   if (hint%try_alignment != 0) return NULL;</span></span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">           1 :   return (void*)hint;</span></span>
+<span id="L137"><span class="lineNum">     137</span>              :   return (void*)hint;</span>
 <span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L139"><span class="lineNum">     139</span>              : #else</span>
 <span id="L140"><span class="lineNum">     140</span>              : void* _mi_os_get_aligned_hint(size_t try_alignment, size_t size) {</span>
@@ -440,7 +440,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">           1 :     size_t csize = memid.mem.os.size;</span></span>
 <span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">           1 :     if (csize==0) { csize = _mi_os_good_alloc_size(size); }</span></span>
 <span id="L169"><span class="lineNum">     169</span>              :     mi_assert_internal(csize &gt;= size);</span>
-<span id="L170"><span class="lineNum">     170</span>              :     size_t commit_size = (still_committed ? csize : 0);</span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">           1 :     size_t commit_size = (still_committed ? csize : 0);</span></span>
 <span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">           1 :     void* base = addr;</span></span>
 <span id="L172"><span class="lineNum">     172</span>              :     // different base? (due to alignment)</span>
 <span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">           1 :     if (memid.mem.os.base != base) {</span></span>
@@ -535,7 +535,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">           1 :   size = _mi_align_up(size, _mi_os_page_size());</span></span>
 <span id="L263"><span class="lineNum">     263</span>              : </span>
 <span id="L264"><span class="lineNum">     264</span>              :   // try first with a requested alignment hint (this will usually be aligned directly on Win 10+ or BSD)</span>
-<span id="L265"><span class="lineNum">     265</span>              :   bool os_is_large = false;</span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">           1 :   bool os_is_large = false;</span></span>
 <span id="L266"><span class="lineNum">     266</span>              :   bool os_is_zero = false;</span>
 <span id="L267"><span class="lineNum">     267</span>              :   void* os_base = NULL;</span>
 <span id="L268"><span class="lineNum">     268</span>              :   size_t os_size = size;</span>
@@ -553,7 +553,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L280"><span class="lineNum">     280</span>              :     #endif</span>
 <span id="L281"><span class="lineNum">     281</span> <span class="tlaUNC">           0 :     if (p != NULL) { mi_os_prim_free(p, size, (commit ? size : 0)); }</span></span>
 <span id="L282"><span class="lineNum">     282</span> <span class="tlaUNC">           0 :     if (size &gt;= (SIZE_MAX - alignment)) return NULL; // overflow</span></span>
-<span id="L283"><span class="lineNum">     283</span>              :     const size_t over_size = size + alignment;</span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaUNC">           0 :     const size_t over_size = size + alignment;</span></span>
 <span id="L284"><span class="lineNum">     284</span>              : </span>
 <span id="L285"><span class="lineNum">     285</span> <span class="tlaUNC">           0 :     if (!mi_os_mem_config.has_partial_free) {  // win32 virtualAlloc cannot free parts of an allocated block</span></span>
 <span id="L286"><span class="lineNum">     286</span>              :       // over-allocate uncommitted (virtual) memory</span>
@@ -611,14 +611,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">           1 :   if (size == 0) return NULL;</span></span>
 <span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">           1 :   size = _mi_os_good_alloc_size(size);</span></span>
 <span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">           1 :   bool os_is_large = false;</span></span>
-<span id="L341"><span class="lineNum">     341</span>              :   bool os_is_zero  = false;</span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">           1 :   bool os_is_zero  = false;</span></span>
 <span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">           1 :   void* p = mi_os_prim_alloc(size, 0, true, false, &amp;os_is_large, &amp;os_is_zero);</span></span>
 <span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">           1 :   if (p == NULL) return NULL;</span></span>
 <span id="L344"><span class="lineNum">     344</span>              : </span>
 <span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">           1 :   *memid = _mi_memid_create_os(p, size, true, os_is_zero, os_is_large);</span></span>
 <span id="L346"><span class="lineNum">     346</span>              :   mi_assert_internal(memid-&gt;mem.os.size &gt;= size);</span>
 <span id="L347"><span class="lineNum">     347</span>              :   mi_assert_internal(memid-&gt;initially_committed);</span>
-<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">           1 :   return p;</span></span>
+<span id="L348"><span class="lineNum">     348</span>              :   return p;</span>
 <span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L350"><span class="lineNum">     350</span>              : </span>
 <span id="L351"><span class="lineNum">     351</span>              : void* _mi_os_alloc_aligned(size_t size, size_t alignment, bool commit, bool allow_large, mi_memid_t* memid)</span>
@@ -684,7 +684,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L411"><span class="lineNum">     411</span>              :     // overallocate to align at an offset</span>
 <span id="L412"><span class="lineNum">     412</span> <span class="tlaUNC">           0 :     const size_t extra = _mi_align_up(offset, alignment) - offset;</span></span>
 <span id="L413"><span class="lineNum">     413</span> <span class="tlaUNC">           0 :     if (size &gt;= SIZE_MAX - extra) return NULL;  // too large</span></span>
-<span id="L414"><span class="lineNum">     414</span>              :     const size_t oversize = size + extra;</span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaUNC">           0 :     const size_t oversize = size + extra;</span></span>
 <span id="L415"><span class="lineNum">     415</span> <span class="tlaUNC">           0 :     void* const start = _mi_os_alloc_aligned(oversize, alignment, commit, allow_large, memid);</span></span>
 <span id="L416"><span class="lineNum">     416</span> <span class="tlaUNC">           0 :     if (start == NULL) return NULL;</span></span>
 <span id="L417"><span class="lineNum">     417</span>              : </span>
@@ -737,7 +737,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">           1 :   if (csize == 0) return true;</span></span>
 <span id="L465"><span class="lineNum">     465</span>              : </span>
 <span id="L466"><span class="lineNum">     466</span>              :   // commit</span>
-<span id="L467"><span class="lineNum">     467</span>              :   bool os_is_zero = false;</span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">           1 :   bool os_is_zero = false;</span></span>
 <span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">           1 :   int err = _mi_prim_commit(start, csize, &amp;os_is_zero);</span></span>
 <span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">           1 :   if (err != 0) {</span></span>
 <span id="L470"><span class="lineNum">     470</span> <span class="tlaUNC">           0 :     _mi_warning_message(&quot;cannot commit OS memory (error: %d (0x%x), address: %p, size: 0x%zx bytes)\n&quot;, err, err, start, csize);</span></span>
@@ -807,13 +807,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L534"><span class="lineNum">     534</span> <span class="tlaUNC">           0 :   if (err != 0) {</span></span>
 <span id="L535"><span class="lineNum">     535</span> <span class="tlaUNC">           0 :     _mi_warning_message(&quot;cannot reset OS memory (error: %d (0x%x), address: %p, size: 0x%zx bytes)\n&quot;, err, err, start, csize);</span></span>
 <span id="L536"><span class="lineNum">     536</span>              :   }</span>
-<span id="L537"><span class="lineNum">     537</span>              :   return (err == 0);</span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaUNC">           0 :   return (err == 0);</span></span>
 <span id="L538"><span class="lineNum">     538</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L539"><span class="lineNum">     539</span>              : </span>
 <span id="L540"><span class="lineNum">     540</span>              : </span>
 <span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">           1 : void _mi_os_reuse( void* addr, size_t size ) {</span></span>
 <span id="L542"><span class="lineNum">     542</span>              :   // page align conservatively within the range</span>
-<span id="L543"><span class="lineNum">     543</span>              :   size_t csize = 0;</span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">           1 :   size_t csize = 0;</span></span>
 <span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">           1 :   void* const start = mi_os_page_align_area_conservative(addr, size, &amp;csize);</span></span>
 <span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">           1 :   if (csize == 0) return;</span></span>
 <span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">           1 :   const int err = _mi_prim_reuse(start, csize);</span></span>
@@ -833,7 +833,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">           1 :   if (mi_option_is_enabled(mi_option_purge_decommits) &amp;&amp;   // should decommit?</span></span>
 <span id="L561"><span class="lineNum">     561</span>              :       !_mi_preloading())                                   // don&#x27;t decommit during preloading (unsafe)</span>
 <span id="L562"><span class="lineNum">     562</span>              :   {</span>
-<span id="L563"><span class="lineNum">     563</span>              :     bool needs_recommit = true;</span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">           1 :     bool needs_recommit = true;</span></span>
 <span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">           1 :     mi_os_decommit_ex(p, size, &amp;needs_recommit, stat_size);</span></span>
 <span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">           1 :     return needs_recommit;</span></span>
 <span id="L566"><span class="lineNum">     566</span>              :   }</span>
@@ -866,7 +866,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L593"><span class="lineNum">     593</span> <span class="tlaUNC">           0 :   if (err != 0) {</span></span>
 <span id="L594"><span class="lineNum">     594</span> <span class="tlaUNC">           0 :     _mi_warning_message(&quot;cannot %s OS memory (error: %d (0x%x), address: %p, size: 0x%zx bytes)\n&quot;, (protect ? &quot;protect&quot; : &quot;unprotect&quot;), err, err, start, csize);</span></span>
 <span id="L595"><span class="lineNum">     595</span>              :   }</span>
-<span id="L596"><span class="lineNum">     596</span>              :   return (err == 0);</span>
+<span id="L596"><span class="lineNum">     596</span> <span class="tlaUNC">           0 :   return (err == 0);</span></span>
 <span id="L597"><span class="lineNum">     597</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L598"><span class="lineNum">     598</span>              : </span>
 <span id="L599"><span class="lineNum">     599</span> <span class="tlaUNC">           0 : bool _mi_os_protect(void* addr, size_t size) {</span></span>
@@ -940,7 +940,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L667"><span class="lineNum">     667</span>              :   // We allocate one page at the time to be able to abort if it takes too long</span>
 <span id="L668"><span class="lineNum">     668</span>              :   // or to at least allocate as many as available on the system.</span>
 <span id="L669"><span class="lineNum">     669</span> <span class="tlaUNC">           0 :   mi_msecs_t start_t = _mi_clock_start();</span></span>
-<span id="L670"><span class="lineNum">     670</span> <span class="tlaUNC">           0 :   size_t page = 0;</span></span>
+<span id="L670"><span class="lineNum">     670</span>              :   size_t page = 0;</span>
 <span id="L671"><span class="lineNum">     671</span> <span class="tlaUNC">           0 :   bool all_zero = true;</span></span>
 <span id="L672"><span class="lineNum">     672</span> <span class="tlaUNC">           0 :   while (page &lt; pages) {</span></span>
 <span id="L673"><span class="lineNum">     673</span>              :     // allocate a page</span>
@@ -948,7 +948,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L675"><span class="lineNum">     675</span>              :     void* addr = start + (page * MI_HUGE_OS_PAGE_SIZE);</span>
 <span id="L676"><span class="lineNum">     676</span>              :     void* p = NULL;</span>
 <span id="L677"><span class="lineNum">     677</span> <span class="tlaUNC">           0 :     int err = _mi_prim_alloc_huge_os_pages(addr, MI_HUGE_OS_PAGE_SIZE, numa_node, &amp;is_zero, &amp;p);</span></span>
-<span id="L678"><span class="lineNum">     678</span> <span class="tlaUNC">           0 :     if (!is_zero) { all_zero = false;  }</span></span>
+<span id="L678"><span class="lineNum">     678</span>              :     if (!is_zero) { all_zero = false;  }</span>
 <span id="L679"><span class="lineNum">     679</span> <span class="tlaUNC">           0 :     if (err != 0) {</span></span>
 <span id="L680"><span class="lineNum">     680</span> <span class="tlaUNC">           0 :       _mi_warning_message(&quot;unable to allocate huge OS page (error: %d (0x%x), address: %p, size: %zx bytes)\n&quot;, err, err, addr, MI_HUGE_OS_PAGE_SIZE);</span></span>
 <span id="L681"><span class="lineNum">     681</span>              :       break;</span>
@@ -974,8 +974,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L701"><span class="lineNum">     701</span> <span class="tlaUNC">           0 :       mi_msecs_t elapsed = _mi_clock_end(start_t);</span></span>
 <span id="L702"><span class="lineNum">     702</span> <span class="tlaUNC">           0 :       if (page &gt;= 1) {</span></span>
 <span id="L703"><span class="lineNum">     703</span> <span class="tlaUNC">           0 :         mi_msecs_t estimate = ((elapsed / (page==0 ? 1 : page)) * pages);</span></span>
-<span id="L704"><span class="lineNum">     704</span> <span class="tlaUNC">           0 :         if (estimate &gt; 2*max_msecs) { // seems like we are going to timeout, break</span></span>
-<span id="L705"><span class="lineNum">     705</span>              :           elapsed = max_msecs + 1;</span>
+<span id="L704"><span class="lineNum">     704</span>              :         if (estimate &gt; 2*max_msecs) { // seems like we are going to timeout, break</span>
+<span id="L705"><span class="lineNum">     705</span> <span class="tlaUNC">           0 :           elapsed = max_msecs + 1;</span></span>
 <span id="L706"><span class="lineNum">     706</span>              :         }</span>
 <span id="L707"><span class="lineNum">     707</span>              :       }</span>
 <span id="L708"><span class="lineNum">     708</span> <span class="tlaUNC">           0 :       if (elapsed &gt; max_msecs) {</span></span>

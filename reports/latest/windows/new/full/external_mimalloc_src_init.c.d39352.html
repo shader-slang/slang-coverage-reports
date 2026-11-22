@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">68.3&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:68.3%;background-color:hsl(29, 70%, 50%)"></div></div>
-      <span class="metricCounts">155 / 227</span>
+      <span class="metricValue">69.0&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:69.0%;background-color:hsl(30, 70%, 50%)"></div></div>
+      <span class="metricCounts">160 / 232</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -502,7 +502,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">           1 : static void mi_heap_main_init(void) {</span></span>
 <span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">           1 :   if (_mi_heap_main.cookie == 0) {</span></span>
 <span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">           1 :     _mi_heap_main.thread_id = _mi_thread_id();</span></span>
-<span id="L232"><span class="lineNum">     232</span>              :     _mi_heap_main.cookie = 1;</span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">           1 :     _mi_heap_main.cookie = 1;</span></span>
 <span id="L233"><span class="lineNum">     233</span>              :     #if defined(_WIN32) &amp;&amp; !defined(MI_SHARED_LIB)</span>
 <span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">           1 :       _mi_random_init_weak(&amp;_mi_heap_main.random);    // prevent allocation failure during bcrypt dll initialization with static linking</span></span>
 <span id="L235"><span class="lineNum">     235</span>              :     #else</span>
@@ -553,10 +553,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L280"><span class="lineNum">     280</span>              :   bool safe_to_delete = false;</span>
 <span id="L281"><span class="lineNum">     281</span> <span class="tlaUNC">           0 :   mi_lock(&amp;subproc-&gt;abandoned_os_lock) {</span></span>
 <span id="L282"><span class="lineNum">     282</span> <span class="tlaUNC">           0 :     if (subproc-&gt;abandoned_os_list == NULL) {</span></span>
-<span id="L283"><span class="lineNum">     283</span> <span class="tlaUNC">           0 :       safe_to_delete = true;</span></span>
+<span id="L283"><span class="lineNum">     283</span>              :       safe_to_delete = true;</span>
 <span id="L284"><span class="lineNum">     284</span>              :     }</span>
 <span id="L285"><span class="lineNum">     285</span>              :   }</span>
-<span id="L286"><span class="lineNum">     286</span>              :   if (!safe_to_delete) return;</span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaUNC">           0 :   if (!safe_to_delete) return;</span></span>
 <span id="L287"><span class="lineNum">     287</span>              :   // safe to release</span>
 <span id="L288"><span class="lineNum">     288</span>              :   // todo: should we refcount subprocesses?</span>
 <span id="L289"><span class="lineNum">     289</span>              :   mi_lock_done(&amp;subproc-&gt;abandoned_os_lock);</span>
@@ -630,7 +630,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">           1 :   for (int i = 0; i &lt; TD_CACHE_SIZE; i++) {</span></span>
 <span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">           1 :     mi_thread_data_t* td = mi_atomic_load_ptr_relaxed(mi_thread_data_t, &amp;td_cache[i]);</span></span>
 <span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">           1 :     if (td == NULL) {</span></span>
-<span id="L360"><span class="lineNum">     360</span>              :       mi_thread_data_t* expected = NULL;</span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">           1 :       mi_thread_data_t* expected = NULL;</span></span>
 <span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">           1 :       if (mi_atomic_cas_ptr_weak_acq_rel(mi_thread_data_t, &amp;td_cache[i], &amp;expected, tdfree)) {</span></span>
 <span id="L362"><span class="lineNum">     362</span>              :         return;</span>
 <span id="L363"><span class="lineNum">     363</span>              :       }</span>
@@ -681,9 +681,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">           1 : void _mi_tld_init(mi_tld_t* tld, mi_heap_t* bheap) {</span></span>
 <span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">           1 :   _mi_memcpy_aligned(tld, &amp;tld_empty, sizeof(mi_tld_t));</span></span>
 <span id="L410"><span class="lineNum">     410</span>              :   tld-&gt;heap_backing = bheap;</span>
-<span id="L411"><span class="lineNum">     411</span>              :   tld-&gt;heaps = NULL;</span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">           1 :   tld-&gt;heaps = NULL;</span></span>
 <span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">           1 :   tld-&gt;segments.subproc = &amp;mi_subproc_default;</span></span>
-<span id="L413"><span class="lineNum">     413</span>              :   tld-&gt;segments.stats = &amp;tld-&gt;stats;</span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">           1 :   tld-&gt;segments.stats = &amp;tld-&gt;stats;</span></span>
 <span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L415"><span class="lineNum">     415</span>              : </span>
 <span id="L416"><span class="lineNum">     416</span>              : // Free the thread local default heap (called from `mi_thread_done`)</span>
@@ -869,7 +869,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">           1 :   if (_mi_is_redirected()) _mi_verbose_message(&quot;malloc is redirected.\n&quot;);</span></span>
 <span id="L597"><span class="lineNum">     597</span>              : </span>
 <span id="L598"><span class="lineNum">     598</span>              :   // show message from the redirector (if present)</span>
-<span id="L599"><span class="lineNum">     599</span>              :   const char* msg = NULL;</span>
+<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">           1 :   const char* msg = NULL;</span></span>
 <span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">           1 :   _mi_allocator_init(&amp;msg);</span></span>
 <span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">           1 :   if (msg != NULL &amp;&amp; (mi_option_is_enabled(mi_option_verbose) || mi_option_is_enabled(mi_option_show_errors))) {</span></span>
 <span id="L602"><span class="lineNum">     602</span> <span class="tlaUNC">           0 :     _mi_fputs(NULL,NULL,NULL,msg);</span></span>

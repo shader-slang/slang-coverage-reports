@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">75.4&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:75.4%;background-color:hsl(62, 70%, 50%)"></div></div>
-      <span class="metricCounts">227 / 301</span>
+      <span class="metricValue">75.6&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:75.6%;background-color:hsl(63, 70%, 50%)"></div></div>
+      <span class="metricCounts">229 / 303</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -490,12 +490,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L217"><span class="lineNum">     217</span>              : </span>
 <span id="L218"><span class="lineNum">     218</span>              :   // find the tail -- also to get a proper count (without data races)</span>
 <span id="L219"><span class="lineNum">     219</span>              :   size_t max_count = page-&gt;capacity; // cannot collect more than capacity</span>
-<span id="L220"><span class="lineNum">     220</span>              :   size_t count = 1;</span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">           1 :   size_t count = 1;</span></span>
 <span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">           1 :   mi_block_t* tail = head;</span></span>
 <span id="L222"><span class="lineNum">     222</span>              :   mi_block_t* next;</span>
 <span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">           1 :   while ((next = mi_block_next(page,tail)) != NULL &amp;&amp; count &lt;= max_count) {</span></span>
-<span id="L224"><span class="lineNum">     224</span>              :     count++;</span>
-<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">           1 :     tail = next;</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">           1 :     count++;</span></span>
+<span id="L225"><span class="lineNum">     225</span>              :     tail = next;</span>
 <span id="L226"><span class="lineNum">     226</span>              :   }</span>
 <span id="L227"><span class="lineNum">     227</span>              :   // if `count &gt; max_count` there was a memory corruption (possibly infinite list due to double multi-threaded free)</span>
 <span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">           1 :   if mi_unlikely(count &gt; max_count) {</span></span>
@@ -510,12 +510,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L237"><span class="lineNum">     237</span>              : </span>
 <span id="L238"><span class="lineNum">     238</span>              :   // and append the current local free list</span>
 <span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">           1 :   mi_block_set_next(page,tail, page-&gt;local_free);</span></span>
-<span id="L240"><span class="lineNum">     240</span>              :   page-&gt;local_free = head;</span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">           1 :   page-&gt;local_free = head;</span></span>
 <span id="L241"><span class="lineNum">     241</span>              : </span>
 <span id="L242"><span class="lineNum">     242</span>              :   // update counts now</span>
 <span id="L243"><span class="lineNum">     243</span>              :   mi_assert_internal(count &lt;= UINT16_MAX);</span>
 <span id="L244"><span class="lineNum">     244</span>              :   mi_assert_internal(page-&gt;used &gt;= (uint16_t)count);</span>
-<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">           1 :   page-&gt;used = page-&gt;used - (uint16_t)count;</span></span>
+<span id="L245"><span class="lineNum">     245</span>              :   page-&gt;used = page-&gt;used - (uint16_t)count;</span>
 <span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L247"><span class="lineNum">     247</span>              : </span>
 <span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">           1 : void _mi_page_free_collect(mi_page_t* page, bool force) {</span></span>
@@ -539,7 +539,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L266"><span class="lineNum">     266</span>              :       mi_block_t* tail = page-&gt;local_free;</span>
 <span id="L267"><span class="lineNum">     267</span>              :       mi_block_t* next;</span>
 <span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">           1 :       while ((next = mi_block_next(page, tail)) != NULL) {</span></span>
-<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">           1 :         tail = next;</span></span>
+<span id="L269"><span class="lineNum">     269</span>              :         tail = next;</span>
 <span id="L270"><span class="lineNum">     270</span>              :       }</span>
 <span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">           1 :       mi_block_set_next(page, tail, page-&gt;free);</span></span>
 <span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">           1 :       page-&gt;free = page-&gt;local_free;</span></span>
@@ -640,10 +640,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L367"><span class="lineNum">     367</span> <span class="tlaUNC">           0 :       all_freed = false;</span></span>
 <span id="L368"><span class="lineNum">     368</span> <span class="tlaUNC">           0 :       mi_block_t* dfree = mi_atomic_load_ptr_relaxed(mi_block_t, &amp;heap-&gt;thread_delayed_free);</span></span>
 <span id="L369"><span class="lineNum">     369</span>              :       do {</span>
-<span id="L370"><span class="lineNum">     370</span>              :         mi_block_set_nextx(heap, block, dfree, heap-&gt;keys);</span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaUNC">           0 :         mi_block_set_nextx(heap, block, dfree, heap-&gt;keys);</span></span>
 <span id="L371"><span class="lineNum">     371</span> <span class="tlaUNC">           0 :       } while (!mi_atomic_cas_ptr_weak_release(mi_block_t,&amp;heap-&gt;thread_delayed_free, &amp;dfree, block));</span></span>
 <span id="L372"><span class="lineNum">     372</span>              :     }</span>
-<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">           1 :     block = next;</span></span>
+<span id="L373"><span class="lineNum">     373</span>              :     block = next;</span>
 <span id="L374"><span class="lineNum">     374</span>              :   }</span>
 <span id="L375"><span class="lineNum">     375</span>              :   return all_freed;</span>
 <span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">           1 : }</span></span>
@@ -801,7 +801,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L528"><span class="lineNum">     528</span>              : // since we only retire pages that are at the head position in a queue.</span>
 <span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">           1 : void _mi_heap_collect_retired(mi_heap_t* heap, bool force) {</span></span>
 <span id="L530"><span class="lineNum">     530</span>              :   size_t min = MI_BIN_FULL;</span>
-<span id="L531"><span class="lineNum">     531</span>              :   size_t max = 0;</span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">           1 :   size_t max = 0;</span></span>
 <span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">           1 :   for(size_t bin = heap-&gt;page_retired_min; bin &lt;= heap-&gt;page_retired_max; bin++) {</span></span>
 <span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">           1 :     mi_page_queue_t* pq   = &amp;heap-&gt;pages[bin];</span></span>
 <span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">           1 :     mi_page_t*       page = pq-&gt;first;</span></span>
@@ -816,7 +816,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L543"><span class="lineNum">     543</span>              :           if (bin &lt; min) min = bin;</span>
 <span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">           1 :           if (bin &gt; max) max = bin;</span></span>
 <span id="L545"><span class="lineNum">     545</span>              :         }</span>
-<span id="L546"><span class="lineNum">     546</span>              :       }</span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">           1 :       }</span></span>
 <span id="L547"><span class="lineNum">     547</span>              :       else {</span>
 <span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">           1 :         page-&gt;retire_expire = 0;</span></span>
 <span id="L549"><span class="lineNum">     549</span>              :       }</span>
@@ -850,8 +850,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L577"><span class="lineNum">     577</span>              :   // initialize a randomized free list</span>
 <span id="L578"><span class="lineNum">     578</span>              :   // set up `slice_count` slices to alternate between</span>
 <span id="L579"><span class="lineNum">     579</span>              :   size_t shift = MI_MAX_SLICE_SHIFT;</span>
-<span id="L580"><span class="lineNum">     580</span>              :   while ((extend &gt;&gt; shift) == 0) {</span>
-<span id="L581"><span class="lineNum">     581</span> <span class="tlaUNC">           0 :     shift--;</span></span>
+<span id="L580"><span class="lineNum">     580</span> <span class="tlaUNC">           0 :   while ((extend &gt;&gt; shift) == 0) {</span></span>
+<span id="L581"><span class="lineNum">     581</span>              :     shift--;</span>
 <span id="L582"><span class="lineNum">     582</span>              :   }</span>
 <span id="L583"><span class="lineNum">     583</span> <span class="tlaUNC">           0 :   const size_t slice_count = (size_t)1U &lt;&lt; shift;</span></span>
 <span id="L584"><span class="lineNum">     584</span>              :   const size_t slice_extend = extend / slice_count;</span>
@@ -879,12 +879,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L606"><span class="lineNum">     606</span>              :     // select a random next slice index</span>
 <span id="L607"><span class="lineNum">     607</span> <span class="tlaUNC">           0 :     size_t next = ((rnd &gt;&gt; 8*round) &amp; (slice_count-1));</span></span>
 <span id="L608"><span class="lineNum">     608</span> <span class="tlaUNC">           0 :     while (counts[next]==0) {                            // ensure it still has space</span></span>
-<span id="L609"><span class="lineNum">     609</span> <span class="tlaUNC">           0 :       next++;</span></span>
+<span id="L609"><span class="lineNum">     609</span>              :       next++;</span>
 <span id="L610"><span class="lineNum">     610</span>              :       if (next==slice_count) next = 0;</span>
 <span id="L611"><span class="lineNum">     611</span>              :     }</span>
 <span id="L612"><span class="lineNum">     612</span>              :     // and link the current block to it</span>
-<span id="L613"><span class="lineNum">     613</span>              :     counts[next]--;</span>
-<span id="L614"><span class="lineNum">     614</span> <span class="tlaUNC">           0 :     mi_block_t* const block = blocks[current];</span></span>
+<span id="L613"><span class="lineNum">     613</span> <span class="tlaUNC">           0 :     counts[next]--;</span></span>
+<span id="L614"><span class="lineNum">     614</span>              :     mi_block_t* const block = blocks[current];</span>
 <span id="L615"><span class="lineNum">     615</span> <span class="tlaUNC">           0 :     blocks[current] = (mi_block_t*)((uint8_t*)block + bsize);  // bump to the following block</span></span>
 <span id="L616"><span class="lineNum">     616</span> <span class="tlaUNC">           0 :     mi_block_set_next(page, block, blocks[next]);   // and set next; note: we may have `current == next`</span></span>
 <span id="L617"><span class="lineNum">     617</span>              :     current = next;</span>
@@ -948,15 +948,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L675"><span class="lineNum">     675</span>              :   mi_stat_counter_increase(tld-&gt;stats.pages_extended, 1);</span>
 <span id="L676"><span class="lineNum">     676</span>              : </span>
 <span id="L677"><span class="lineNum">     677</span>              :   // calculate the extend count</span>
-<span id="L678"><span class="lineNum">     678</span>              :   const size_t bsize = mi_page_block_size(page);</span>
+<span id="L678"><span class="lineNum">     678</span> <span class="tlaGNC">           1 :   const size_t bsize = mi_page_block_size(page);</span></span>
 <span id="L679"><span class="lineNum">     679</span> <span class="tlaGNC">           1 :   size_t extend = page-&gt;reserved - page-&gt;capacity;</span></span>
 <span id="L680"><span class="lineNum">     680</span>              :   mi_assert_internal(extend &gt; 0);</span>
 <span id="L681"><span class="lineNum">     681</span>              : </span>
 <span id="L682"><span class="lineNum">     682</span> <span class="tlaGNC">           1 :   size_t max_extend = (bsize &gt;= MI_MAX_EXTEND_SIZE ? MI_MIN_EXTEND : MI_MAX_EXTEND_SIZE/bsize);</span></span>
-<span id="L683"><span class="lineNum">     683</span> <span class="tlaGNC">           1 :   if (max_extend &lt; MI_MIN_EXTEND) { max_extend = MI_MIN_EXTEND; }</span></span>
+<span id="L683"><span class="lineNum">     683</span>              :   if (max_extend &lt; MI_MIN_EXTEND) { max_extend = MI_MIN_EXTEND; }</span>
 <span id="L684"><span class="lineNum">     684</span>              :   mi_assert_internal(max_extend &gt; 0);</span>
 <span id="L685"><span class="lineNum">     685</span>              : </span>
-<span id="L686"><span class="lineNum">     686</span>              :   if (extend &gt; max_extend) {</span>
+<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">           1 :   if (extend &gt; max_extend) {</span></span>
 <span id="L687"><span class="lineNum">     687</span>              :     // ensure we don&#x27;t touch memory beyond the page to reduce page commit.</span>
 <span id="L688"><span class="lineNum">     688</span>              :     // the `lean` benchmark tests this. Going from 1 to 8 increases rss by 50%.</span>
 <span id="L689"><span class="lineNum">     689</span>              :     extend = max_extend;</span>
@@ -987,14 +987,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L714"><span class="lineNum">     714</span>              :   mi_assert_internal(block_size &gt; 0);</span>
 <span id="L715"><span class="lineNum">     715</span>              :   // set fields</span>
 <span id="L716"><span class="lineNum">     716</span> <span class="tlaGNC">           1 :   mi_page_set_heap(page, heap);</span></span>
-<span id="L717"><span class="lineNum">     717</span>              :   page-&gt;block_size = block_size;</span>
+<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">           1 :   page-&gt;block_size = block_size;</span></span>
 <span id="L718"><span class="lineNum">     718</span>              :   size_t page_size;</span>
 <span id="L719"><span class="lineNum">     719</span> <span class="tlaGNC">           1 :   page-&gt;page_start = _mi_segment_page_start(segment, page, &amp;page_size);</span></span>
 <span id="L720"><span class="lineNum">     720</span>              :   mi_track_mem_noaccess(page-&gt;page_start,page_size);</span>
 <span id="L721"><span class="lineNum">     721</span>              :   mi_assert_internal(mi_page_block_size(page) &lt;= page_size);</span>
 <span id="L722"><span class="lineNum">     722</span>              :   mi_assert_internal(page_size &lt;= page-&gt;slice_count*MI_SEGMENT_SLICE_SIZE);</span>
 <span id="L723"><span class="lineNum">     723</span>              :   mi_assert_internal(page_size / block_size &lt; (1L&lt;&lt;16));</span>
-<span id="L724"><span class="lineNum">     724</span>              :   page-&gt;reserved = (uint16_t)(page_size / block_size);</span>
+<span id="L724"><span class="lineNum">     724</span> <span class="tlaGNC">           1 :   page-&gt;reserved = (uint16_t)(page_size / block_size);</span></span>
 <span id="L725"><span class="lineNum">     725</span>              :   mi_assert_internal(page-&gt;reserved &gt; 0);</span>
 <span id="L726"><span class="lineNum">     726</span>              :   #if (MI_PADDING || MI_ENCODE_FREELIST)</span>
 <span id="L727"><span class="lineNum">     727</span>              :   page-&gt;keys[0] = _mi_heap_random_next(heap);</span>
@@ -1117,7 +1117,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L844"><span class="lineNum">     844</span>              :     mi_page_to_full(page, pq);</span>
 <span id="L845"><span class="lineNum">     845</span>              :   #endif</span>
 <span id="L846"><span class="lineNum">     846</span>              : </span>
-<span id="L847"><span class="lineNum">     847</span> <span class="tlaGNC">           1 :     page = next;</span></span>
+<span id="L847"><span class="lineNum">     847</span>              :     page = next;</span>
 <span id="L848"><span class="lineNum">     848</span>              :   } // for each page</span>
 <span id="L849"><span class="lineNum">     849</span>              : </span>
 <span id="L850"><span class="lineNum">     850</span>              :   mi_heap_stat_counter_increase(heap, page_searches, count);</span>
@@ -1199,7 +1199,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L926"><span class="lineNum">     926</span>              : static _Atomic(void*) deferred_arg;   </span>
 <span id="L927"><span class="lineNum">     927</span>              : </span>
 <span id="L928"><span class="lineNum">     928</span> <span class="tlaGNC">           1 : void _mi_deferred_free(mi_heap_t* heap, bool force) {</span></span>
-<span id="L929"><span class="lineNum">     929</span> <span class="tlaGNC">           1 :   heap-&gt;tld-&gt;heartbeat++;</span></span>
+<span id="L929"><span class="lineNum">     929</span>              :   heap-&gt;tld-&gt;heartbeat++;</span>
 <span id="L930"><span class="lineNum">     930</span> <span class="tlaGNC">           1 :   mi_deferred_free_fun* const fun = (mi_deferred_free_fun*)mi_atomic_load_ptr_acquire(void,&amp;deferred_free);</span></span>
 <span id="L931"><span class="lineNum">     931</span> <span class="tlaGNC">           1 :   if (fun != NULL &amp;&amp; !heap-&gt;tld-&gt;recurse) {</span></span>
 <span id="L932"><span class="lineNum">     932</span> <span class="tlaUNC">           0 :     heap-&gt;tld-&gt;recurse = true;</span></span>

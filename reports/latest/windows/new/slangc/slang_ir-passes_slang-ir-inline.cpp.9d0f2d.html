@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:28 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:59 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">96.9&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:96.9%;background-color:hsl(115, 70%, 50%)"></div></div>
-      <span class="metricCounts">438 / 452</span>
+      <span class="metricValue">97.0&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:97.0%;background-color:hsl(116, 70%, 50%)"></div></div>
+      <span class="metricCounts">455 / 469</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -304,11 +304,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L31"><span class="lineNum">      31</span>              :     /// The module that we are optimizing/transforming</span>
 <span id="L32"><span class="lineNum">      32</span>              :     IRModule* m_module = nullptr;</span>
 <span id="L33"><span class="lineNum">      33</span>              : </span>
-<span id="L34"><span class="lineNum">      34</span>              :     HashSet&lt;IRInst*&gt;* m_modifiedFuncs = nullptr;</span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           1 :     HashSet&lt;IRInst*&gt;* m_modifiedFuncs = nullptr;</span></span>
 <span id="L35"><span class="lineNum">      35</span>              : </span>
 <span id="L36"><span class="lineNum">      36</span>              :     /// Initialize an inlining pass to operate on the given `module`</span>
 <span id="L37"><span class="lineNum">      37</span>              :     InliningPassBase(IRModule* module)</span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           1 :         : m_module(module)</span></span>
+<span id="L38"><span class="lineNum">      38</span>              :         : m_module(module)</span>
 <span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L41"><span class="lineNum">      41</span>              : </span>
@@ -427,7 +427,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L154"><span class="lineNum">     154</span>              :         // so `shouldInline` is a virtual method.</span>
 <span id="L155"><span class="lineNum">     155</span>              :         //</span>
 <span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">           1 :         if (!shouldInline(callSite))</span></span>
-<span id="L157"><span class="lineNum">     157</span>              :             return false;</span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">           1 :             return false;</span></span>
 <span id="L158"><span class="lineNum">     158</span>              : </span>
 <span id="L159"><span class="lineNum">     159</span>              :         // Finally, if we both *can* and *should* inline the</span>
 <span id="L160"><span class="lineNum">     160</span>              :         // given call site, we hand off the a worker routine</span>
@@ -487,7 +487,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L215"><span class="lineNum">     215</span>              :         // We can start by writing the `call` instruction into our `CallSiteInfo`.</span>
 <span id="L216"><span class="lineNum">     216</span>              :         //</span>
-<span id="L217"><span class="lineNum">     217</span>              :         outCallSite.call = call;</span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">           1 :         outCallSite.call = call;</span></span>
 <span id="L218"><span class="lineNum">     218</span>              : </span>
 <span id="L219"><span class="lineNum">     219</span>              :         // Next we consider the callee.</span>
 <span id="L220"><span class="lineNum">     220</span>              :         //</span>
@@ -540,7 +540,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L267"><span class="lineNum">     267</span>              :         // If the callee *is* a function, then we can update</span>
 <span id="L268"><span class="lineNum">     268</span>              :         // the `CalleSiteInfo` with what we&#x27;ve found.</span>
 <span id="L269"><span class="lineNum">     269</span>              :         //</span>
-<span id="L270"><span class="lineNum">     270</span>              :         outCallSite.callee = calleeFunc;</span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">           1 :         outCallSite.callee = calleeFunc;</span></span>
 <span id="L271"><span class="lineNum">     271</span>              : </span>
 <span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">           1 :         for (auto decor : callee-&gt;getDecorations())</span></span>
 <span id="L273"><span class="lineNum">     273</span>              :         {</span>
@@ -594,7 +594,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">           1 :         auto firstBlock = callee-&gt;getFirstBlock();</span></span>
 <span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">           1 :         if (!firstBlock || firstBlock-&gt;getNextBlock() || !as&lt;IRReturn&gt;(firstBlock-&gt;getTerminator()))</span></span>
-<span id="L324"><span class="lineNum">     324</span>              :             return false;</span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">           1 :             return false;</span></span>
 <span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">           1 :         for (auto inst : firstBlock-&gt;getOrdinaryInsts())</span></span>
 <span id="L326"><span class="lineNum">     326</span>              :         {</span>
 <span id="L327"><span class="lineNum">     327</span>              :             // Debug markers do not introduce runtime side effects or local storage, and</span>
@@ -679,7 +679,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L406"><span class="lineNum">     406</span>              : </span>
 <span id="L407"><span class="lineNum">     407</span>              :         // Functions without a source location may have no IRDebugFuncDecoration.</span>
 <span id="L408"><span class="lineNum">     408</span>              :         // Leave the scope unchanged when we cannot describe both sides of the inline call.</span>
-<span id="L409"><span class="lineNum">     409</span>              :         auto calleeDebugFunc = findExistingDebugFunc(callee);</span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">           1 :         auto calleeDebugFunc = findExistingDebugFunc(callee);</span></span>
 <span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">           1 :         if (!lastDebugLine || !callerScope || !calleeDebugFunc)</span></span>
 <span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">           1 :             return DebugInlineInfo();</span></span>
 <span id="L412"><span class="lineNum">     412</span>              : </span>
@@ -856,7 +856,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L583"><span class="lineNum">     583</span>              :     // For now this punts on this, and just assumes [__unsafeForceInlineEarly] is not in user code.</span>
 <span id="L584"><span class="lineNum">     584</span>              :     static void _setSourceLoc(IRInst* clonedInst, IRInst* srcInst, CallSiteInfo const&amp; callSite)</span>
 <span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L586"><span class="lineNum">     586</span>              :         SourceLoc sourceLoc;</span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">           1 :         SourceLoc sourceLoc;</span></span>
 <span id="L587"><span class="lineNum">     587</span>              : </span>
 <span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">           1 :         if (callSite.call-&gt;sourceLoc.isValid())</span></span>
 <span id="L589"><span class="lineNum">     589</span>              :         {</span>
@@ -879,7 +879,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">           1 :         IRInst* clonedInst = cloneInst(env, builder, inst);</span></span>
 <span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">           1 :         _setSourceLoc(clonedInst, inst, callSite);</span></span>
-<span id="L609"><span class="lineNum">     609</span>              :         return clonedInst;</span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">           1 :         return clonedInst;</span></span>
 <span id="L610"><span class="lineNum">     610</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L611"><span class="lineNum">     611</span>              : </span>
 <span id="L612"><span class="lineNum">     612</span>              :     /// Return whether `inst` is outside the body of any function, that is, at module scope or</span>
@@ -1283,7 +1283,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1010"><span class="lineNum">    1010</span>              :     typedef InliningPassBase Super;</span>
 <span id="L1011"><span class="lineNum">    1011</span>              : </span>
 <span id="L1012"><span class="lineNum">    1012</span>              :     MandatoryEarlyInliningPass(IRModule* module)</span>
-<span id="L1013"><span class="lineNum">    1013</span>              :         : Super(module)</span>
+<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">           1 :         : Super(module)</span></span>
 <span id="L1014"><span class="lineNum">    1014</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L1015"><span class="lineNum">    1015</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L1016"><span class="lineNum">    1016</span>              : </span>
@@ -1364,7 +1364,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1091"><span class="lineNum">    1091</span> <span class="tlaGNC">           1 :             for (auto field : structType-&gt;getFields())</span></span>
 <span id="L1092"><span class="lineNum">    1092</span>              :             {</span>
 <span id="L1093"><span class="lineNum">    1093</span> <span class="tlaGNC">           1 :                 if (containsMatrixWithNonDefaultLayout(field-&gt;getFieldType()))</span></span>
-<span id="L1094"><span class="lineNum">    1094</span>              :                     return true;</span>
+<span id="L1094"><span class="lineNum">    1094</span> <span class="tlaGNC">           1 :                     return true;</span></span>
 <span id="L1095"><span class="lineNum">    1095</span>              :             }</span>
 <span id="L1096"><span class="lineNum">    1096</span>              :         }</span>
 <span id="L1097"><span class="lineNum">    1097</span> <span class="tlaGNC">           1 :         return false;</span></span>
@@ -1377,7 +1377,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1104"><span class="lineNum">    1104</span>              :             return false;</span>
 <span id="L1105"><span class="lineNum">    1105</span> <span class="tlaGNC">           1 :         auto valueType = cast&lt;IRPtrTypeBase&gt;(type)-&gt;getValueType();</span></span>
 <span id="L1106"><span class="lineNum">    1106</span> <span class="tlaGNC">           1 :         if (!as&lt;IRStructType&gt;(valueType) &amp;&amp; !as&lt;IRArrayTypeBase&gt;(valueType))</span></span>
-<span id="L1107"><span class="lineNum">    1107</span>              :             return false;</span>
+<span id="L1107"><span class="lineNum">    1107</span> <span class="tlaGNC">           1 :             return false;</span></span>
 <span id="L1108"><span class="lineNum">    1108</span>              : </span>
 <span id="L1109"><span class="lineNum">    1109</span>              :         // DXC can reorder component accesses inside aggregate output parameters when a matrix</span>
 <span id="L1110"><span class="lineNum">    1110</span>              :         // field&#x27;s layout differs from its command-line default. Consider this example:</span>
@@ -1463,7 +1463,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1190"><span class="lineNum">    1190</span>              : </span>
 <span id="L1191"><span class="lineNum">    1191</span>              :     bool shouldInline(CallSiteInfo const&amp; info)</span>
 <span id="L1192"><span class="lineNum">    1192</span> <span class="tlaGNC">           1 :     {</span></span>
-<span id="L1193"><span class="lineNum">    1193</span> <span class="tlaGNC">           1 :         auto callee = info.callee;</span></span>
+<span id="L1193"><span class="lineNum">    1193</span>              :         auto callee = info.callee;</span>
 <span id="L1194"><span class="lineNum">    1194</span>              : </span>
 <span id="L1195"><span class="lineNum">    1195</span> <span class="tlaGNC">           1 :         if (doesTypeRequireInline(callee-&gt;getResultType(), nullptr, callee))</span></span>
 <span id="L1196"><span class="lineNum">    1196</span>              :         {</span>
@@ -1479,9 +1479,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1206"><span class="lineNum">    1206</span> <span class="tlaGNC">           1 :             if (!isKeptGroupSharedParam &amp;&amp;</span></span>
 <span id="L1207"><span class="lineNum">    1207</span>              :                 doesTypeRequireInline(callee-&gt;getParamType(UInt(i)), info.call-&gt;getArg(i), callee))</span>
 <span id="L1208"><span class="lineNum">    1208</span>              :             {</span>
-<span id="L1209"><span class="lineNum">    1209</span>              :                 return true;</span>
+<span id="L1209"><span class="lineNum">    1209</span> <span class="tlaGNC">           1 :                 return true;</span></span>
 <span id="L1210"><span class="lineNum">    1210</span>              :             }</span>
-<span id="L1211"><span class="lineNum">    1211</span> <span class="tlaGNC">           1 :             ++i;</span></span>
+<span id="L1211"><span class="lineNum">    1211</span>              :             ++i;</span>
 <span id="L1212"><span class="lineNum">    1212</span>              :         }</span>
 <span id="L1213"><span class="lineNum">    1213</span>              : </span>
 <span id="L1214"><span class="lineNum">    1214</span> <span class="tlaGNC">           1 :         return false;</span></span>
@@ -1504,7 +1504,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1231"><span class="lineNum">    1231</span>              :     typedef InliningPassBase Super;</span>
 <span id="L1232"><span class="lineNum">    1232</span>              : </span>
 <span id="L1233"><span class="lineNum">    1233</span>              :     ForceInliningPass(IRModule* module)</span>
-<span id="L1234"><span class="lineNum">    1234</span>              :         : Super(module)</span>
+<span id="L1234"><span class="lineNum">    1234</span> <span class="tlaGNC">           1 :         : Super(module)</span></span>
 <span id="L1235"><span class="lineNum">    1235</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L1236"><span class="lineNum">    1236</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L1237"><span class="lineNum">    1237</span>              : </span>
@@ -1537,7 +1537,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1264"><span class="lineNum">    1264</span>              :     typedef InliningPassBase Super;</span>
 <span id="L1265"><span class="lineNum">    1265</span>              : </span>
 <span id="L1266"><span class="lineNum">    1266</span>              :     PreAutoDiffForceInliningPass(IRModule* module)</span>
-<span id="L1267"><span class="lineNum">    1267</span>              :         : Super(module)</span>
+<span id="L1267"><span class="lineNum">    1267</span> <span class="tlaGNC">           1 :         : Super(module)</span></span>
 <span id="L1268"><span class="lineNum">    1268</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L1269"><span class="lineNum">    1269</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L1270"><span class="lineNum">    1270</span>              : </span>
@@ -1554,7 +1554,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1281"><span class="lineNum">    1281</span>              :         // pre-translation. Preferably this would be lowered as an associated attribute of the</span>
 <span id="L1282"><span class="lineNum">    1282</span>              :         // function (just like the differentiability of functions).</span>
 <span id="L1283"><span class="lineNum">    1283</span>              :         //</span>
-<span id="L1284"><span class="lineNum">    1284</span>              :         bool allowPreTranslationInlining = true;</span>
+<span id="L1284"><span class="lineNum">    1284</span> <span class="tlaGNC">           1 :         bool allowPreTranslationInlining = true;</span></span>
 <span id="L1285"><span class="lineNum">    1285</span> <span class="tlaGNC">           1 :         traverseUsers&lt;IRAnnotation&gt;(</span></span>
 <span id="L1286"><span class="lineNum">    1286</span>              :             info.callee,</span>
 <span id="L1287"><span class="lineNum">    1287</span> <span class="tlaGNC">           1 :             [&amp;](IRAnnotation* annotation)</span></span>
@@ -1649,7 +1649,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1376"><span class="lineNum">    1376</span>              :     typedef InliningPassBase Super;</span>
 <span id="L1377"><span class="lineNum">    1377</span>              : </span>
 <span id="L1378"><span class="lineNum">    1378</span>              :     GLSLResourceReturnFunctionInliningPass(IRModule* module)</span>
-<span id="L1379"><span class="lineNum">    1379</span>              :         : Super(module)</span>
+<span id="L1379"><span class="lineNum">    1379</span> <span class="tlaGNC">           1 :         : Super(module)</span></span>
 <span id="L1380"><span class="lineNum">    1380</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L1381"><span class="lineNum">    1381</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L1382"><span class="lineNum">    1382</span>              : </span>
@@ -1691,7 +1691,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1418"><span class="lineNum">    1418</span>              :     typedef InliningPassBase Super;</span>
 <span id="L1419"><span class="lineNum">    1419</span>              : </span>
 <span id="L1420"><span class="lineNum">    1420</span>              :     IntrinsicFunctionInliningPass(IRModule* module)</span>
-<span id="L1421"><span class="lineNum">    1421</span>              :         : Super(module)</span>
+<span id="L1421"><span class="lineNum">    1421</span> <span class="tlaGNC">           1 :         : Super(module)</span></span>
 <span id="L1422"><span class="lineNum">    1422</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L1423"><span class="lineNum">    1423</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L1424"><span class="lineNum">    1424</span>              : </span>
@@ -1706,7 +1706,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1433"><span class="lineNum">    1433</span>              : </span>
 <span id="L1434"><span class="lineNum">    1434</span>              :         // If a function body has only asm blocks + trivial insts (load/store),</span>
 <span id="L1435"><span class="lineNum">    1435</span>              :         // this is considered as a pure asm function, and we can inline it.</span>
-<span id="L1436"><span class="lineNum">    1436</span>              :         bool hasSpvAsm = false;</span>
+<span id="L1436"><span class="lineNum">    1436</span> <span class="tlaGNC">           1 :         bool hasSpvAsm = false;</span></span>
 <span id="L1437"><span class="lineNum">    1437</span> <span class="tlaGNC">           1 :         for (auto inst = func-&gt;getFirstBlock()-&gt;getFirstOrdinaryInst(); inst != returnInst;</span></span>
 <span id="L1438"><span class="lineNum">    1438</span> <span class="tlaGNC">           1 :              inst = inst-&gt;getNextInst())</span></span>
 <span id="L1439"><span class="lineNum">    1439</span>              :         {</span>
@@ -1725,7 +1725,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1452"><span class="lineNum">    1452</span> <span class="tlaGNC">           1 :                 return false;</span></span>
 <span id="L1453"><span class="lineNum">    1453</span>              :             }</span>
 <span id="L1454"><span class="lineNum">    1454</span>              :         }</span>
-<span id="L1455"><span class="lineNum">    1455</span>              :         return hasSpvAsm;</span>
+<span id="L1455"><span class="lineNum">    1455</span> <span class="tlaGNC">           1 :         return hasSpvAsm;</span></span>
 <span id="L1456"><span class="lineNum">    1456</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L1457"><span class="lineNum">    1457</span>              : };</span>
 <span id="L1458"><span class="lineNum">    1458</span>              : </span>
@@ -1745,7 +1745,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1472"><span class="lineNum">    1472</span>              :     typedef InliningPassBase Super;</span>
 <span id="L1473"><span class="lineNum">    1473</span>              : </span>
 <span id="L1474"><span class="lineNum">    1474</span>              :     CustomInliningPass(IRModule* module)</span>
-<span id="L1475"><span class="lineNum">    1475</span>              :         : Super(module)</span>
+<span id="L1475"><span class="lineNum">    1475</span> <span class="tlaGNC">           1 :         : Super(module)</span></span>
 <span id="L1476"><span class="lineNum">    1476</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L1477"><span class="lineNum">    1477</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L1478"><span class="lineNum">    1478</span>              : </span>

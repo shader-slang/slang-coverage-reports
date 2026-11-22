@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">84.0&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:84.0%;background-color:hsl(96, 70%, 50%)"></div></div>
-      <span class="metricCounts">21 / 25</span>
+      <span class="metricValue">53.8&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:53.8%;background-color:hsl(23, 70%, 50%)"></div></div>
+      <span class="metricCounts">14 / 26</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -284,7 +284,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L11"><span class="lineNum">      11</span>              : struct RemoveDefaultConstructInsts : InstPassBase</span>
 <span id="L12"><span class="lineNum">      12</span>              : {</span>
 <span id="L13"><span class="lineNum">      13</span>              :     RemoveDefaultConstructInsts(IRModule* module)</span>
-<span id="L14"><span class="lineNum">      14</span>              :         : InstPassBase(module)</span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">           1 :         : InstPassBase(module)</span></span>
 <span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">           1 :     {</span></span>
 <span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">           1 :     }</span></span>
 <span id="L17"><span class="lineNum">      17</span>              :     void processModule()</span>
@@ -293,16 +293,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">           1 :         processInstsOfType&lt;IRDefaultConstruct&gt;(</span></span>
 <span id="L21"><span class="lineNum">      21</span>              :             kIROp_DefaultConstruct,</span>
 <span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">           1 :             [&amp;](IRDefaultConstruct* defaultConstruct)</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           1 :             {</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">           1 :                 List&lt;IRInst*&gt; instsToRemove;</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           1 :                 for (auto use = defaultConstruct-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaUNC">           0 :             {</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaUNC">           0 :                 List&lt;IRInst*&gt; instsToRemove;</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaUNC">           0 :                 for (auto use = defaultConstruct-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
 <span id="L26"><span class="lineNum">      26</span>              :                 {</span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">           1 :                     if (as&lt;IRStore&gt;(use-&gt;getUser()))</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaUNC">           0 :                     if (as&lt;IRStore&gt;(use-&gt;getUser()))</span></span>
 <span id="L28"><span class="lineNum">      28</span> <span class="tlaUNC">           0 :                         instsToRemove.add(use-&gt;getUser());</span></span>
 <span id="L29"><span class="lineNum">      29</span>              :                     else</span>
 <span id="L30"><span class="lineNum">      30</span>              :                     {</span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           1 :                         if (as&lt;IRStructType&gt;(defaultConstruct-&gt;getDataType()))</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           1 :                             structDefaultConstructs.add(defaultConstruct);</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaUNC">           0 :                         if (as&lt;IRStructType&gt;(defaultConstruct-&gt;getDataType()))</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaUNC">           0 :                             structDefaultConstructs.add(defaultConstruct);</span></span>
 <span id="L33"><span class="lineNum">      33</span>              :                         return; // Ignore this inst if there are non-store</span>
 <span id="L34"><span class="lineNum">      34</span>              :                                 // uses.</span>
 <span id="L35"><span class="lineNum">      35</span>              :                     }</span>
@@ -321,10 +321,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">           1 :         IRBuilder builder(module);</span></span>
 <span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           1 :         for (auto structDefaultConstruct : structDefaultConstructs)</span></span>
 <span id="L50"><span class="lineNum">      50</span>              :         {</span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(structDefaultConstruct);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaUNC">           0 :             builder.setInsertBefore(structDefaultConstruct);</span></span>
 <span id="L52"><span class="lineNum">      52</span>              : </span>
 <span id="L53"><span class="lineNum">      53</span>              :             // Re-emit the default construct, which will create a MakeStruct instead.</span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">           1 :             structDefaultConstruct-&gt;replaceUsesWith(</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaUNC">           0 :             structDefaultConstruct-&gt;replaceUsesWith(</span></span>
 <span id="L55"><span class="lineNum">      55</span>              :                 builder.emitDefaultConstruct(structDefaultConstruct-&gt;getDataType()));</span>
 <span id="L56"><span class="lineNum">      56</span>              :         }</span>
 <span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">           1 :     }</span></span>

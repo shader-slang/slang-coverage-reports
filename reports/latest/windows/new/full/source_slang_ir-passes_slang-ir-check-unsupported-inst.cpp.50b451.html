@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:27 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:58 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">92.7&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:92.7%;background-color:hsl(109, 70%, 50%)"></div></div>
-      <span class="metricCounts">203 / 219</span>
+      <span class="metricValue">80.6&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:80.6%;background-color:hsl(91, 70%, 50%)"></div></div>
+      <span class="metricCounts">179 / 222</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -302,7 +302,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L29"><span class="lineNum">      29</span>              :         return nullptr;</span>
 <span id="L30"><span class="lineNum">      30</span>              : </span>
 <span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           1 :     if (isImageSamplerOrAccelerationStructureType(type))</span></span>
-<span id="L32"><span class="lineNum">      32</span>              :         return type;</span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">           1 :         return type;</span></span>
 <span id="L33"><span class="lineNum">      33</span>              : </span>
 <span id="L34"><span class="lineNum">      34</span>              :     // Only recurse once per aggregate type to avoid cycling on self-referential</span>
 <span id="L35"><span class="lineNum">      35</span>              :     // types.</span>
@@ -380,7 +380,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L107"><span class="lineNum">     107</span>              : // Metal rejects a texture, image, or sampler stored directly in `thread` storage. Structured and</span>
 <span id="L108"><span class="lineNum">     108</span>              : // byte-address buffers are represented by pointers and are not subject to this restriction. Metal</span>
 <span id="L109"><span class="lineNum">     109</span>              : // permits a fixed-size array with a texture, image, or sampler as its immediate element. The</span>
-<span id="L110"><span class="lineNum">     110</span>              : // `transformParamsToConstRef` pass</span>
+<span id="L110"><span class="lineNum">     110</span>              : // `transformByValueParamsToBorrows` pass</span>
 <span id="L111"><span class="lineNum">     111</span>              : // uses this allowed form when a caller cannot supply an immutable address for a by-value array</span>
 <span id="L112"><span class="lineNum">     112</span>              : // argument. It copies the argument into a local array and passes that array to the callee. An</span>
 <span id="L113"><span class="lineNum">     113</span>              : // unsized array has no fixed amount of local storage. The current Metal storage contract permits</span>
@@ -399,7 +399,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">           1 :         auto elementType = as&lt;IRType&gt;(unwrapAttributedType(arrayType-&gt;getElementType()));</span></span>
 <span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">           1 :         SLANG_RELEASE_ASSERT(elementType);</span></span>
 <span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">           1 :         if (as&lt;IRResourceTypeBase&gt;(elementType) || as&lt;IRSamplerStateTypeBase&gt;(elementType))</span></span>
-<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">           1 :             return nullptr;</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaUNC">           0 :             return nullptr;</span></span>
 <span id="L130"><span class="lineNum">     130</span>              :     }</span>
 <span id="L131"><span class="lineNum">     131</span>              : </span>
 <span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">           1 :     type = getInnermostHomogeneousArrayElementType(storageType);</span></span>
@@ -474,7 +474,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L201"><span class="lineNum">     201</span>              :     {</span>
 <span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">           1 :         auto func = as&lt;IRFunc&gt;(globalInst);</span></span>
 <span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">           1 :         if (auto generic = as&lt;IRGeneric&gt;(globalInst))</span></span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaUNC">           0 :             func = as&lt;IRFunc&gt;(findGenericReturnVal(generic));</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">           1 :             func = as&lt;IRFunc&gt;(findGenericReturnVal(generic));</span></span>
 <span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">           1 :         if (func)</span></span>
 <span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">           1 :             checkUnsupportedResourceLocals(func, target, shouldUseD3DStorageRules, sink);</span></span>
 <span id="L207"><span class="lineNum">     207</span>              :     }</span>
@@ -540,7 +540,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">           1 :     for (UInt i = 0; i &lt; funcType-&gt;getParamCount(); i++)</span></span>
 <span id="L268"><span class="lineNum">     268</span>              :     {</span>
 <span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">           1 :         if (as&lt;IRStringType&gt;(funcType-&gt;getParamType(i)))</span></span>
-<span id="L270"><span class="lineNum">     270</span>              :             return true;</span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaUNC">           0 :             return true;</span></span>
 <span id="L271"><span class="lineNum">     271</span>              :     }</span>
 <span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">           1 :     return false;</span></span>
 <span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">           1 : }</span></span>
@@ -602,9 +602,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L329"><span class="lineNum">     329</span>              :         // One mistake is reachable as several insts (the local, a parameter it flows to,</span>
 <span id="L330"><span class="lineNum">     330</span>              :         // synthesized temporaries), some without a location. Reporting only those that can name a</span>
 <span id="L331"><span class="lineNum">     331</span>              :         // position keeps it to one error per mistake instead of several pointing nowhere.</span>
-<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">           1 :         auto loc = inst-&gt;sourceLoc.isValid() ? inst-&gt;sourceLoc : findFirstUseLoc(inst);</span></span>
-<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">           1 :         if (loc.isValid())</span></span>
-<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">           1 :             sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaUNC">           0 :         auto loc = inst-&gt;sourceLoc.isValid() ? inst-&gt;sourceLoc : findFirstUseLoc(inst);</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaUNC">           0 :         if (loc.isValid())</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaUNC">           0 :             sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
 <span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">           1 :     };</span></span>
 <span id="L336"><span class="lineNum">     336</span>              : </span>
 <span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">           1 :     if (!supportsFuncTypedValue)</span></span>
@@ -662,11 +662,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L389"><span class="lineNum">     389</span>              :                     // front-end `Optional&lt;T&gt;` check does not fire because `T` is</span>
 <span id="L390"><span class="lineNum">     390</span>              :                     // only known after specialization. Diagnose instead of letting</span>
 <span id="L391"><span class="lineNum">     391</span>              :                     // the unhandled inst reach spirv-emit and abort.</span>
-<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">           1 :                     if (auto handleType = findUnstorableOpaqueHandleType(inst-&gt;getDataType()))</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaUNC">           0 :                     if (auto handleType = findUnstorableOpaqueHandleType(inst-&gt;getDataType()))</span></span>
 <span id="L393"><span class="lineNum">     393</span>              :                     {</span>
-<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">           1 :                         auto loc =</span></span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaUNC">           0 :                         auto loc =</span></span>
 <span id="L395"><span class="lineNum">     395</span>              :                             inst-&gt;sourceLoc.isValid() ? inst-&gt;sourceLoc : findFirstUseLoc(inst);</span>
-<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">           1 :                         sink-&gt;diagnose(Diagnostics::OpaqueTypeInLocalVariableNotAllowedOnKhronos{</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaUNC">           0 :                         sink-&gt;diagnose(Diagnostics::OpaqueTypeInLocalVariableNotAllowedOnKhronos{</span></span>
 <span id="L397"><span class="lineNum">     397</span>              :                             .type = handleType,</span>
 <span id="L398"><span class="lineNum">     398</span>              :                             .location = loc});</span>
 <span id="L399"><span class="lineNum">     399</span>              :                     }</span>
@@ -680,8 +680,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L407"><span class="lineNum">     407</span>              :             // emitting uncompilable code referencing an undefined `String`.</span>
 <span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">           1 :             if (rejectString &amp;&amp; instReferencesStringType(inst))</span></span>
 <span id="L409"><span class="lineNum">     409</span>              :             {</span>
-<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">           1 :                 auto loc = inst-&gt;sourceLoc.isValid() ? inst-&gt;sourceLoc : findFirstUseLoc(inst);</span></span>
-<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">           1 :                 sink-&gt;diagnose(Diagnostics::StringTypeNotSupportedOnKernelTarget{.location = loc});</span></span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaUNC">           0 :                 auto loc = inst-&gt;sourceLoc.isValid() ? inst-&gt;sourceLoc : findFirstUseLoc(inst);</span></span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaUNC">           0 :                 sink-&gt;diagnose(Diagnostics::StringTypeNotSupportedOnKernelTarget{.location = loc});</span></span>
 <span id="L412"><span class="lineNum">     412</span>              :             }</span>
 <span id="L413"><span class="lineNum">     413</span>              :         }</span>
 <span id="L414"><span class="lineNum">     414</span>              :     }</span>
@@ -707,21 +707,21 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L434"><span class="lineNum">     434</span>              :     default:</span>
 <span id="L435"><span class="lineNum">     435</span>              :         return nullptr;</span>
 <span id="L436"><span class="lineNum">     436</span>              :     }</span>
-<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">           1 :     auto valueType = atomic-&gt;getDataType();</span></span>
-<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">           1 :     if (!isFloatingType(valueType))</span></span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaUNC">           0 :     auto valueType = atomic-&gt;getDataType();</span></span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaUNC">           0 :     if (!isFloatingType(valueType))</span></span>
 <span id="L439"><span class="lineNum">     439</span>              :         return nullptr;</span>
-<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">           1 :     if (atomic-&gt;getOp() == kIROp_AtomicMin || atomic-&gt;getOp() == kIROp_AtomicMax)</span></span>
-<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">           1 :         return &quot;floating point atomic min or max&quot;;</span></span>
-<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">           1 :     if (valueType-&gt;getOp() != kIROp_FloatType)</span></span>
-<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">           1 :         return &quot;floating point atomic operation on a type other than 32-bit float&quot;;</span></span>
-<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">           1 :     if (getAtomicImageSubscript(atomic))</span></span>
-<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">           1 :         return &quot;floating point atomic operation on a texture&quot;;</span></span>
-<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">           1 :     auto destPtrType = cast&lt;IRPtrTypeBase&gt;(atomic-&gt;getPtr()-&gt;getDataType());</span></span>
-<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">           1 :     switch (destPtrType-&gt;getAddressSpace())</span></span>
+<span id="L440"><span class="lineNum">     440</span> <span class="tlaUNC">           0 :     if (atomic-&gt;getOp() == kIROp_AtomicMin || atomic-&gt;getOp() == kIROp_AtomicMax)</span></span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaUNC">           0 :         return &quot;floating point atomic min or max&quot;;</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaUNC">           0 :     if (valueType-&gt;getOp() != kIROp_FloatType)</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaUNC">           0 :         return &quot;floating point atomic operation on a type other than 32-bit float&quot;;</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaUNC">           0 :     if (getAtomicImageSubscript(atomic))</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaUNC">           0 :         return &quot;floating point atomic operation on a texture&quot;;</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaUNC">           0 :     auto destPtrType = cast&lt;IRPtrTypeBase&gt;(atomic-&gt;getPtr()-&gt;getDataType());</span></span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaUNC">           0 :     switch (destPtrType-&gt;getAddressSpace())</span></span>
 <span id="L448"><span class="lineNum">     448</span>              :     {</span>
 <span id="L449"><span class="lineNum">     449</span>              :     case AddressSpace::Global:</span>
 <span id="L450"><span class="lineNum">     450</span>              :     case AddressSpace::UserPointer:</span>
-<span id="L451"><span class="lineNum">     451</span>              :         return nullptr;</span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">           1 :         return nullptr;</span></span>
 <span id="L452"><span class="lineNum">     452</span>              :     default:</span>
 <span id="L453"><span class="lineNum">     453</span>              :         return &quot;floating point atomic operation outside device memory&quot;;</span>
 <span id="L454"><span class="lineNum">     454</span>              :     }</span>
@@ -827,7 +827,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L554"><span class="lineNum">     554</span>              :                     continue;</span>
 <span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">           1 :                 if (auto reason = getUnsupportedMetalFloatAtomicReason(atomic))</span></span>
 <span id="L556"><span class="lineNum">     556</span>              :                 {</span>
-<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::UnsupportedTargetIntrinsic{</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaUNC">           0 :                     sink-&gt;diagnose(Diagnostics::UnsupportedTargetIntrinsic{</span></span>
 <span id="L558"><span class="lineNum">     558</span>              :                         .operation = reason,</span>
 <span id="L559"><span class="lineNum">     559</span>              :                         .location = atomic-&gt;sourceLoc});</span>
 <span id="L560"><span class="lineNum">     560</span>              :                 }</span>
@@ -860,9 +860,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L587"><span class="lineNum">     587</span>              :                 {</span>
 <span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">           1 :                     if (as&lt;IRFuncType&gt;(unwrapArrayAndPointers(field-&gt;getFieldType())))</span></span>
 <span id="L589"><span class="lineNum">     589</span>              :                     {</span>
-<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">           1 :                         auto key = field-&gt;getKey();</span></span>
-<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">           1 :                         auto loc = key-&gt;sourceLoc.isValid() ? key-&gt;sourceLoc : findFirstUseLoc(key);</span></span>
-<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">           1 :                         sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaUNC">           0 :                         auto key = field-&gt;getKey();</span></span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaUNC">           0 :                         auto loc = key-&gt;sourceLoc.isValid() ? key-&gt;sourceLoc : findFirstUseLoc(key);</span></span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaUNC">           0 :                         sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
 <span id="L593"><span class="lineNum">     593</span>              :                     }</span>
 <span id="L594"><span class="lineNum">     594</span>              :                 }</span>
 <span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">           1 :             }</span></span>
@@ -871,9 +871,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L598"><span class="lineNum">     598</span>              :             {</span>
 <span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">           1 :                 if (as&lt;IRFuncType&gt;(unwrapArrayAndPointers(globalInst-&gt;getDataType())))</span></span>
 <span id="L600"><span class="lineNum">     600</span>              :                 {</span>
-<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">           1 :                     auto loc = globalInst-&gt;sourceLoc.isValid() ? globalInst-&gt;sourceLoc</span></span>
+<span id="L601"><span class="lineNum">     601</span> <span class="tlaUNC">           0 :                     auto loc = globalInst-&gt;sourceLoc.isValid() ? globalInst-&gt;sourceLoc</span></span>
 <span id="L602"><span class="lineNum">     602</span>              :                                                                : findFirstUseLoc(globalInst);</span>
-<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
+<span id="L603"><span class="lineNum">     603</span> <span class="tlaUNC">           0 :                     sink-&gt;diagnose(Diagnostics::FuncTypeNotSupportedOnTarget{.location = loc});</span></span>
 <span id="L604"><span class="lineNum">     604</span>              :                 }</span>
 <span id="L605"><span class="lineNum">     605</span>              :             }</span>
 <span id="L606"><span class="lineNum">     606</span>              :         }</span>
@@ -900,11 +900,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L627"><span class="lineNum">     627</span> <span class="tlaGNC">           1 :                 if (!supportsMultisampledTexture &amp;&amp;</span></span>
 <span id="L628"><span class="lineNum">     628</span>              :                     as&lt;IRTextureTypeBase&gt;(globalInst)-&gt;isMultisample())</span>
 <span id="L629"><span class="lineNum">     629</span>              :                 {</span>
-<span id="L630"><span class="lineNum">     630</span> <span class="tlaGNC">           1 :                     sink-&gt;diagnose(Diagnostics::MultisampledTextureNotSupportedOnTarget{</span></span>
+<span id="L630"><span class="lineNum">     630</span> <span class="tlaUNC">           0 :                     sink-&gt;diagnose(Diagnostics::MultisampledTextureNotSupportedOnTarget{</span></span>
 <span id="L631"><span class="lineNum">     631</span>              :                         .type = globalInst,</span>
 <span id="L632"><span class="lineNum">     632</span>              :                         .location = findFirstUseLoc(globalInst)});</span>
 <span id="L633"><span class="lineNum">     633</span>              :                 }</span>
-<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">           1 :                 break;</span></span>
+<span id="L634"><span class="lineNum">     634</span> <span class="tlaUNC">           0 :                 break;</span></span>
 <span id="L635"><span class="lineNum">     635</span>              :             }</span>
 <span id="L636"><span class="lineNum">     636</span>              :         case kIROp_Func:</span>
 <span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC">           1 :             checkUnsupportedInst(target, as&lt;IRFunc&gt;(globalInst), sink);</span></span>

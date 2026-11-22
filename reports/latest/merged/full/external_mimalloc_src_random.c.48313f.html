@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:35:31 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">65.1&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:65.1%;background-color:hsl(28, 70%, 50%)"></div></div>
-      <span class="metricCounts">56 / 86</span>
+      <span class="metricValue">65.9&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:65.9%;background-color:hsl(28, 70%, 50%)"></div></div>
+      <span class="metricCounts">56 / 85</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -322,7 +322,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L49"><span class="lineNum">      49</span>              :   // scramble into `x`</span>
 <span id="L50"><span class="lineNum">      50</span>              :   uint32_t x[16];</span>
 <span id="L51"><span class="lineNum">      51</span>              :   for (size_t i = 0; i &lt; 16; i++) {</span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaUNC">           0 :     x[i] = ctx-&gt;input[i];</span></span>
+<span id="L52"><span class="lineNum">      52</span>              :     x[i] = ctx-&gt;input[i];</span>
 <span id="L53"><span class="lineNum">      53</span>              :   }</span>
 <span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">           1 :   for (size_t i = 0; i &lt; MI_CHACHA_ROUNDS; i += 2) {</span></span>
 <span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">           1 :     qround(x, 0, 4,  8, 12);</span></span>
@@ -339,7 +339,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L66"><span class="lineNum">      66</span>              :   for (size_t i = 0; i &lt; 16; i++) {</span>
 <span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">           1 :     ctx-&gt;output[i] = x[i] + ctx-&gt;input[i];</span></span>
 <span id="L68"><span class="lineNum">      68</span>              :   }</span>
-<span id="L69"><span class="lineNum">      69</span>              :   ctx-&gt;output_available = 16;</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">           1 :   ctx-&gt;output_available = 16;</span></span>
 <span id="L70"><span class="lineNum">      70</span>              : </span>
 <span id="L71"><span class="lineNum">      71</span>              :   // increment the counter for the next round</span>
 <span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">           1 :   ctx-&gt;input[12] += 1;</span></span>
@@ -372,7 +372,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L99"><span class="lineNum">      99</span>              :   // since we only use chacha for randomness (and not encryption) we</span>
 <span id="L100"><span class="lineNum">     100</span>              :   // do not _need_ to read 32-bit values as little endian but we do anyways</span>
 <span id="L101"><span class="lineNum">     101</span>              :   // just for being compatible :-)</span>
-<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">           1 :   ctx-&gt;output_available = 0;</span></span>
+<span id="L102"><span class="lineNum">     102</span>              :   ctx-&gt;output_available = 0;</span>
 <span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">           1 :   _mi_memzero(ctx-&gt;output,sizeof(ctx-&gt;output));</span></span>
 <span id="L104"><span class="lineNum">     104</span>              :   for (size_t i = 0; i &lt; 4; i++) {</span>
 <span id="L105"><span class="lineNum">     105</span>              :     const uint8_t* sigma = (uint8_t*)&quot;expand 32-byte k&quot;;</span>
@@ -442,7 +442,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L169"><span class="lineNum">     169</span>              :   uintptr_t x = (uintptr_t)&amp;_mi_os_random_weak ^ extra_seed; // ASLR makes the address random</span>
 <span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">           1 :   x ^= _mi_prim_clock_now();  </span></span>
 <span id="L171"><span class="lineNum">     171</span>              :   // and do a few randomization steps</span>
-<span id="L172"><span class="lineNum">     172</span>              :   uintptr_t max = ((x ^ (x &gt;&gt; 17)) &amp; 0x0F) + 1;</span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">           1 :   uintptr_t max = ((x ^ (x &gt;&gt; 17)) &amp; 0x0F) + 1;</span></span>
 <span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">           1 :   for (uintptr_t i = 0; i &lt; max || x==0; i++, x++) {</span></span>
 <span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">           1 :     x = _mi_random_shuffle(x);</span></span>
 <span id="L175"><span class="lineNum">     175</span>              :   }</span>
@@ -466,7 +466,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">           1 :       key[i+2] = (uint8_t)(x&gt;&gt;16);</span></span>
 <span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">           1 :       key[i+3] = (uint8_t)(x&gt;&gt;24);      </span></span>
 <span id="L195"><span class="lineNum">     195</span>              :     }</span>
-<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">           1 :     ctx-&gt;weak = true;</span></span>
+<span id="L196"><span class="lineNum">     196</span>              :     ctx-&gt;weak = true;</span>
 <span id="L197"><span class="lineNum">     197</span>              :   }</span>
 <span id="L198"><span class="lineNum">     198</span>              :   else {</span>
 <span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">           1 :     ctx-&gt;weak = false;</span></span>

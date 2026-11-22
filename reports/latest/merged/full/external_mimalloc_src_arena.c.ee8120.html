@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:35:31 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:02 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">63.1&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:63.1%;background-color:hsl(27, 70%, 50%)"></div></div>
-      <span class="metricCounts">305 / 483</span>
+      <span class="metricValue">63.7&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:63.7%;background-color:hsl(27, 70%, 50%)"></div></div>
+      <span class="metricCounts">307 / 482</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -361,7 +361,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">           1 : static bool mi_arena_id_is_suitable(mi_arena_id_t arena_id, bool arena_is_exclusive, mi_arena_id_t req_arena_id) {</span></span>
 <span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">           1 :   return ((!arena_is_exclusive &amp;&amp; req_arena_id == _mi_arena_id_none()) ||</span></span>
 <span id="L90"><span class="lineNum">      90</span>              :           (arena_id == req_arena_id));</span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L92"><span class="lineNum">      92</span>              : </span>
 <span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">           1 : bool _mi_arena_memid_is_suitable(mi_memid_t memid, mi_arena_id_t request_arena_id) {</span></span>
 <span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">           1 :   if (memid.memkind == MI_MEM_ARENA) {</span></span>
@@ -415,7 +415,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L142"><span class="lineNum">     142</span>              :   mi_assert_internal(memid.memkind == MI_MEM_ARENA);</span>
 <span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">           1 :   *arena_index = mi_arena_id_index(memid.mem.arena.id);</span></span>
 <span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">           1 :   *bitmap_index = memid.mem.arena.block_index;</span></span>
-<span id="L145"><span class="lineNum">     145</span>              :   return memid.mem.arena.is_exclusive;</span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">           1 :   return memid.mem.arena.is_exclusive;</span></span>
 <span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L147"><span class="lineNum">     147</span>              : </span>
 <span id="L148"><span class="lineNum">     148</span>              : </span>
@@ -497,7 +497,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">           1 :     mi_atomic_store_relaxed(&amp;arena-&gt;search_idx, mi_bitmap_index_field(*bitmap_idx));  // start search from found location next time around</span></span>
 <span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">           1 :     return true;</span></span>
 <span id="L226"><span class="lineNum">     226</span>              :   };</span>
-<span id="L227"><span class="lineNum">     227</span>              :   return false;</span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">           1 :   return false;</span></span>
 <span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L229"><span class="lineNum">     229</span>              : </span>
 <span id="L230"><span class="lineNum">     230</span>              : </span>
@@ -537,7 +537,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L264"><span class="lineNum">     264</span> <span class="tlaUNC">           0 :   }</span></span>
 <span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">           1 :   else if (commit) {</span></span>
 <span id="L266"><span class="lineNum">     266</span>              :     // commit requested, but the range may not be committed as a whole: ensure it is committed now</span>
-<span id="L267"><span class="lineNum">     267</span>              :     memid-&gt;initially_committed = true;</span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">           1 :     memid-&gt;initially_committed = true;</span></span>
 <span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">           1 :     const size_t commit_size = mi_arena_block_size(needed_bcount);      </span></span>
 <span id="L269"><span class="lineNum">     269</span>              :     bool any_uncommitted;</span>
 <span id="L270"><span class="lineNum">     270</span>              :     size_t already_committed = 0;</span>
@@ -545,7 +545,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">           1 :     if (any_uncommitted) {</span></span>
 <span id="L273"><span class="lineNum">     273</span>              :       mi_assert_internal(already_committed &lt; needed_bcount);</span>
 <span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">           1 :       const size_t stat_commit_size = commit_size - mi_arena_block_size(already_committed);</span></span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">           1 :       bool commit_zero = false;</span></span>
+<span id="L275"><span class="lineNum">     275</span>              :       bool commit_zero = false;</span>
 <span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">           1 :       if (!_mi_os_commit_ex(p, commit_size, &amp;commit_zero, stat_commit_size)) {</span></span>
 <span id="L277"><span class="lineNum">     277</span>              :         // set all as uncommitted on commit failure</span>
 <span id="L278"><span class="lineNum">     278</span> <span class="tlaUNC">           0 :         _mi_bitmap_unclaim_across(arena-&gt;blocks_committed, arena-&gt;field_count, needed_bcount, bitmap_index);</span></span>
@@ -654,13 +654,13 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L381"><span class="lineNum">     381</span>              :     arena_reserve = arena_reserve/4;  // be conservative if virtual reserve is not supported (for WASM for example)</span>
 <span id="L382"><span class="lineNum">     382</span>              :   }</span>
 <span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">           1 :   arena_reserve = _mi_align_up(arena_reserve, MI_ARENA_BLOCK_SIZE);</span></span>
-<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">           1 :   arena_reserve = _mi_align_up(arena_reserve, MI_SEGMENT_SIZE);</span></span>
+<span id="L384"><span class="lineNum">     384</span>              :   arena_reserve = _mi_align_up(arena_reserve, MI_SEGMENT_SIZE);</span>
 <span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">           1 :   if (arena_count &gt;= 8 &amp;&amp; arena_count &lt;= 128) {</span></span>
 <span id="L386"><span class="lineNum">     386</span>              :     // scale up the arena sizes exponentially every 8 entries (128 entries get to 589TiB)</span>
 <span id="L387"><span class="lineNum">     387</span> <span class="tlaUNC">           0 :     const size_t multiplier = (size_t)1 &lt;&lt; _mi_clamp(arena_count/8, 0, 16 );</span></span>
 <span id="L388"><span class="lineNum">     388</span>              :     size_t reserve = 0;</span>
 <span id="L389"><span class="lineNum">     389</span> <span class="tlaUNC">           0 :     if (!mi_mul_overflow(multiplier, arena_reserve, &amp;reserve)) {</span></span>
-<span id="L390"><span class="lineNum">     390</span> <span class="tlaUNC">           0 :       arena_reserve = reserve;</span></span>
+<span id="L390"><span class="lineNum">     390</span>              :       arena_reserve = reserve;</span>
 <span id="L391"><span class="lineNum">     391</span>              :     }</span>
 <span id="L392"><span class="lineNum">     392</span>              :   }</span>
 <span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">           1 :   if (arena_reserve &lt; req_size) return false;  // should be able to at least handle the current allocation size</span></span>
@@ -692,7 +692,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L419"><span class="lineNum">     419</span>              : </span>
 <span id="L420"><span class="lineNum">     420</span>              :       // otherwise, try to first eagerly reserve a new arena</span>
 <span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">           1 :       if (req_arena_id == _mi_arena_id_none()) {</span></span>
-<span id="L422"><span class="lineNum">     422</span>              :         mi_arena_id_t arena_id = 0;</span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">           1 :         mi_arena_id_t arena_id = 0;</span></span>
 <span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">           1 :         if (mi_arena_reserve(size, allow_large, &amp;arena_id)) {</span></span>
 <span id="L424"><span class="lineNum">     424</span>              :           // and try allocate in there</span>
 <span id="L425"><span class="lineNum">     425</span>              :           mi_assert_internal(req_arena_id == _mi_arena_id_none());</span>
@@ -814,14 +814,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L541"><span class="lineNum">     541</span>              :     // count consecutive ones in the purge mask</span>
 <span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">           1 :     size_t count = 0;</span></span>
 <span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">           1 :     while (bitidx + count &lt; endidx &amp;&amp; (purge &amp; ((size_t)1 &lt;&lt; (bitidx + count))) != 0) {</span></span>
-<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">           1 :       count++;</span></span>
+<span id="L544"><span class="lineNum">     544</span>              :       count++;</span>
 <span id="L545"><span class="lineNum">     545</span>              :     }</span>
 <span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">           1 :     if (count &gt; 0) {</span></span>
 <span id="L547"><span class="lineNum">     547</span>              :       // found range to be purged</span>
 <span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">           1 :       const mi_bitmap_index_t range_idx = mi_bitmap_index_create(idx, bitidx);</span></span>
 <span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">           1 :       mi_arena_purge(arena, range_idx, count);</span></span>
-<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">           1 :       if (count == bitlen) {</span></span>
-<span id="L551"><span class="lineNum">     551</span>              :         all_purged = true;</span>
+<span id="L550"><span class="lineNum">     550</span>              :       if (count == bitlen) {</span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">           1 :         all_purged = true;</span></span>
 <span id="L552"><span class="lineNum">     552</span>              :       }</span>
 <span id="L553"><span class="lineNum">     553</span>              :     }</span>
 <span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">           1 :     bitidx += (count+1); // +1 to skip the zero bit (or end)</span></span>
@@ -860,7 +860,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L587"><span class="lineNum">     587</span>              :         // find consecutive range of ones in the purge mask</span>
 <span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">           1 :         size_t bitlen = 0;</span></span>
 <span id="L589"><span class="lineNum">     589</span> <span class="tlaGNC">           1 :         while (bitidx + bitlen &lt; MI_BITMAP_FIELD_BITS &amp;&amp; (purge &amp; ((size_t)1 &lt;&lt; (bitidx + bitlen))) != 0) {</span></span>
-<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">           1 :           bitlen++;</span></span>
+<span id="L590"><span class="lineNum">     590</span>              :           bitlen++;</span>
 <span id="L591"><span class="lineNum">     591</span>              :         }</span>
 <span id="L592"><span class="lineNum">     592</span>              :         // temporarily claim the purge range as &quot;in-use&quot; to be thread-safe with allocation</span>
 <span id="L593"><span class="lineNum">     593</span>              :         // try to claim the longest range of corresponding in_use bits</span>
@@ -1046,7 +1046,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L773"><span class="lineNum">     773</span>              :   }</span>
 <span id="L774"><span class="lineNum">     774</span>              : </span>
 <span id="L775"><span class="lineNum">     775</span>              :   // try to lower the max arena.</span>
-<span id="L776"><span class="lineNum">     776</span>              :   size_t expected = max_arena;</span>
+<span id="L776"><span class="lineNum">     776</span> <span class="tlaUNC">           0 :   size_t expected = max_arena;</span></span>
 <span id="L777"><span class="lineNum">     777</span> <span class="tlaUNC">           0 :   mi_atomic_cas_strong_acq_rel(&amp;mi_arena_count, &amp;expected, new_max_arena);</span></span>
 <span id="L778"><span class="lineNum">     778</span> <span class="tlaUNC">           0 : }</span></span>
 <span id="L779"><span class="lineNum">     779</span>              : </span>
@@ -1091,7 +1091,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L818"><span class="lineNum">     818</span> <span class="tlaGNC">           1 :       arena-&gt;id = mi_arena_id_create(i);</span></span>
 <span id="L819"><span class="lineNum">     819</span> <span class="tlaGNC">           1 :       mi_atomic_store_ptr_release(mi_arena_t, &amp;mi_arenas[i], arena);</span></span>
 <span id="L820"><span class="lineNum">     820</span> <span class="tlaGNC">           1 :       if (arena_id != NULL) { *arena_id = arena-&gt;id; }</span></span>
-<span id="L821"><span class="lineNum">     821</span>              :       return true;</span>
+<span id="L821"><span class="lineNum">     821</span> <span class="tlaGNC">           1 :       return true;</span></span>
 <span id="L822"><span class="lineNum">     822</span>              :     }</span>
 <span id="L823"><span class="lineNum">     823</span>              :   }</span>
 <span id="L824"><span class="lineNum">     824</span>              : </span>
@@ -1169,7 +1169,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L896"><span class="lineNum">     896</span> <span class="tlaGNC">           1 : }</span></span>
 <span id="L897"><span class="lineNum">     897</span>              : </span>
 <span id="L898"><span class="lineNum">     898</span> <span class="tlaUNC">           0 : bool mi_manage_os_memory_ex(void* start, size_t size, bool is_committed, bool is_large, bool is_zero, int numa_node, bool exclusive, mi_arena_id_t* arena_id) mi_attr_noexcept {</span></span>
-<span id="L899"><span class="lineNum">     899</span> <span class="tlaUNC">           0 :   mi_memid_t memid = _mi_memid_create(MI_MEM_EXTERNAL);</span></span>
+<span id="L899"><span class="lineNum">     899</span>              :   mi_memid_t memid = _mi_memid_create(MI_MEM_EXTERNAL);</span>
 <span id="L900"><span class="lineNum">     900</span>              :   memid.initially_committed = is_committed;</span>
 <span id="L901"><span class="lineNum">     901</span>              :   memid.initially_zero = is_zero;</span>
 <span id="L902"><span class="lineNum">     902</span>              :   memid.is_pinned = is_large;</span>
@@ -1216,9 +1216,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L943"><span class="lineNum">     943</span>              : ----------------------------------------------------------- */</span>
 <span id="L944"><span class="lineNum">     944</span>              : </span>
 <span id="L945"><span class="lineNum">     945</span> <span class="tlaUNC">           0 : static size_t mi_debug_show_bitmap(const char* prefix, const char* header, size_t block_count, mi_bitmap_field_t* fields, size_t field_count ) {</span></span>
-<span id="L946"><span class="lineNum">     946</span> <span class="tlaUNC">           0 :   _mi_message(&quot;%s%s:\n&quot;, prefix, header);</span></span>
-<span id="L947"><span class="lineNum">     947</span>              :   size_t bcount = 0;</span>
-<span id="L948"><span class="lineNum">     948</span>              :   size_t inuse_count = 0;</span>
+<span id="L946"><span class="lineNum">     946</span>              :   _mi_message(&quot;%s%s:\n&quot;, prefix, header);</span>
+<span id="L947"><span class="lineNum">     947</span> <span class="tlaUNC">           0 :   size_t bcount = 0;</span></span>
+<span id="L948"><span class="lineNum">     948</span> <span class="tlaUNC">           0 :   size_t inuse_count = 0;</span></span>
 <span id="L949"><span class="lineNum">     949</span> <span class="tlaUNC">           0 :   for (size_t i = 0; i &lt; field_count; i++) {</span></span>
 <span id="L950"><span class="lineNum">     950</span>              :     char buf[MI_BITMAP_FIELD_BITS + 1];</span>
 <span id="L951"><span class="lineNum">     951</span> <span class="tlaUNC">           0 :     uintptr_t field = mi_atomic_load_relaxed(&amp;fields[i]);</span></span>
@@ -1309,14 +1309,14 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1036"><span class="lineNum">    1036</span>              : </span>
 <span id="L1037"><span class="lineNum">    1037</span>              :   // pages per numa node</span>
 <span id="L1038"><span class="lineNum">    1038</span> <span class="tlaUNC">           0 :   int numa_count = (numa_nodes &gt; 0 &amp;&amp; numa_nodes &lt;= INT_MAX ? (int)numa_nodes : _mi_os_numa_node_count());</span></span>
-<span id="L1039"><span class="lineNum">    1039</span> <span class="tlaUNC">           0 :   if (numa_count == 0) numa_count = 1;</span></span>
+<span id="L1039"><span class="lineNum">    1039</span>              :   if (numa_count == 0) numa_count = 1;</span>
 <span id="L1040"><span class="lineNum">    1040</span> <span class="tlaUNC">           0 :   const size_t pages_per = pages / numa_count;</span></span>
 <span id="L1041"><span class="lineNum">    1041</span>              :   const size_t pages_mod = pages % numa_count;</span>
 <span id="L1042"><span class="lineNum">    1042</span> <span class="tlaUNC">           0 :   const size_t timeout_per = (timeout_msecs==0 ? 0 : (timeout_msecs / numa_count) + 50);</span></span>
 <span id="L1043"><span class="lineNum">    1043</span>              : </span>
 <span id="L1044"><span class="lineNum">    1044</span>              :   // reserve evenly among numa nodes</span>
 <span id="L1045"><span class="lineNum">    1045</span> <span class="tlaUNC">           0 :   for (int numa_node = 0; numa_node &lt; numa_count &amp;&amp; pages &gt; 0; numa_node++) {</span></span>
-<span id="L1046"><span class="lineNum">    1046</span> <span class="tlaUNC">           0 :     size_t node_pages = pages_per;  // can be 0</span></span>
+<span id="L1046"><span class="lineNum">    1046</span>              :     size_t node_pages = pages_per;  // can be 0</span>
 <span id="L1047"><span class="lineNum">    1047</span> <span class="tlaUNC">           0 :     if ((size_t)numa_node &lt; pages_mod) node_pages++;</span></span>
 <span id="L1048"><span class="lineNum">    1048</span> <span class="tlaUNC">           0 :     int err = mi_reserve_huge_os_pages_at(node_pages, numa_node, timeout_per);</span></span>
 <span id="L1049"><span class="lineNum">    1049</span> <span class="tlaUNC">           0 :     if (err) return err;</span></span>

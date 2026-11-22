@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:36:28 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:59 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">93.6&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:93.6%;background-color:hsl(110, 70%, 50%)"></div></div>
-      <span class="metricCounts">44 / 47</span>
+      <span class="metricValue">83.3&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:83.3%;background-color:hsl(95, 70%, 50%)"></div></div>
+      <span class="metricCounts">40 / 48</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -285,7 +285,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L12"><span class="lineNum">      12</span>              : // adapt ordinary call sites to its launch ABI.</span>
 <span id="L13"><span class="lineNum">      13</span>              : void fixEntryPointCallsites(IRFunc* entryPoint)</span>
 <span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L15"><span class="lineNum">      15</span>              :     IRFunc* clonedEntryPointForCall = nullptr;</span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">           1 :     IRFunc* clonedEntryPointForCall = nullptr;</span></span>
 <span id="L16"><span class="lineNum">      16</span>              : </span>
 <span id="L17"><span class="lineNum">      17</span>              :     // We defer cloning until we find the first direct call. An entry point that is only launched</span>
 <span id="L18"><span class="lineNum">      18</span>              :     // does not need an ordinary-function copy.</span>
@@ -365,16 +365,16 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">           1 :             builder.setInsertBefore(call);</span></span>
 <span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">           1 :             List&lt;IRParam*&gt; params;</span></span>
 <span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">           1 :             for (auto param : callee-&gt;getParams())</span></span>
-<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">           1 :                 params.add(param);</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaUNC">           0 :                 params.add(param);</span></span>
 <span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">           1 :             if ((UInt)params.getCount() != call-&gt;getArgCount())</span></span>
 <span id="L97"><span class="lineNum">      97</span>              :                 return;</span>
 <span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">           1 :             for (UInt i = 0; i &lt; call-&gt;getArgCount(); i++)</span></span>
 <span id="L99"><span class="lineNum">      99</span>              :             {</span>
-<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">           1 :                 auto paramType = params[i]-&gt;getDataType();</span></span>
-<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">           1 :                 auto arg = call-&gt;getArg(i);</span></span>
-<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">           1 :                 if (auto refType = as&lt;IRBorrowInParamType&gt;(paramType))</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :                 auto paramType = params[i]-&gt;getDataType();</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :                 auto arg = call-&gt;getArg(i);</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaUNC">           0 :                 if (auto refType = as&lt;IRBorrowInParamType&gt;(paramType))</span></span>
 <span id="L103"><span class="lineNum">     103</span>              :                 {</span>
-<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">           1 :                     if (!as&lt;IRPtrTypeBase&gt;(arg-&gt;getDataType()))</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaUNC">           0 :                     if (!as&lt;IRPtrTypeBase&gt;(arg-&gt;getDataType()))</span></span>
 <span id="L105"><span class="lineNum">     105</span>              :                     {</span>
 <span id="L106"><span class="lineNum">     106</span> <span class="tlaUNC">           0 :                         auto tempVar = builder.emitVar(refType-&gt;getValueType());</span></span>
 <span id="L107"><span class="lineNum">     107</span> <span class="tlaUNC">           0 :                         builder.emitStore(tempVar, arg);</span></span>

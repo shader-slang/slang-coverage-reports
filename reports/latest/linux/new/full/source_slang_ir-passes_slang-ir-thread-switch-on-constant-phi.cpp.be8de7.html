@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-20 05:35:56 UTC</td>
+      <td class="headerValue">2026-11-22 05:02:27 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -361,12 +361,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L70"><span class="lineNum">      70</span>                         : // check would also accept a loop header; matching the op exactly excludes loops</span>
 <span id="L71"><span class="lineNum">      71</span>                         : // (and any other terminator whose break/continue structure we must not discard).</span>
 <span id="L72"><span class="lineNum">      72</span>                         : static IRUnconditionalBranch* getPlainBranch(IRBlock* block)</span>
-<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">         160            : {</span></span>
-<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">         160            :     auto term = block-&gt;getTerminator();</span></span>
-<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">         160 <span class="branchPart" title="br0: 160; br1: 0; br2: 160; br3: 0">(2/4)</span>      :     if (term &amp;&amp; term-&gt;getOp() == kIROp_UnconditionalBranch)</span></span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">         160            :         return as&lt;IRUnconditionalBranch&gt;(term);</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">         250            : {</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">         250            :     auto term = block-&gt;getTerminator();</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">         250 <span class="branchPart" title="br0: 250; br1: 0; br2: 250; br3: 0">(2/4)</span>      :     if (term &amp;&amp; term-&gt;getOp() == kIROp_UnconditionalBranch)</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">         250            :         return as&lt;IRUnconditionalBranch&gt;(term);</span></span>
 <span id="L77"><span class="lineNum">      77</span> <span class="tlaUNC">           0            :     return nullptr;</span></span>
-<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">         160            : }</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">         250            : }</span></span>
 <span id="L79"><span class="lineNum">      79</span>                         : </span>
 <span id="L80"><span class="lineNum">      80</span>                         : // True if `block` is referenced by a control-flow inst other than `ownSwitch`</span>
 <span id="L81"><span class="lineNum">      81</span>                         : // whose op is in `rejectOps`. Such structural-label uses do not appear in</span>
@@ -378,20 +378,20 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L87"><span class="lineNum">      87</span>                         :     IRBlock* block,</span>
 <span id="L88"><span class="lineNum">      88</span>                         :     IRSwitch* ownSwitch,</span>
 <span id="L89"><span class="lineNum">      89</span>                         :     std::initializer_list&lt;IROp&gt; rejectOps)</span>
-<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">          78            : {</span></span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">         268 <span class="branchAll" title="br0: 193; br1: 75">(2/2)</span>      :     for (auto use = block-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">         193            :     {</span></span>
-<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">         193 <span class="branchAll" title="br0: 22; br1: 171">(2/2)</span>      :         if (use-&gt;getUser() == ownSwitch)</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">         121            : {</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">         440 <span class="branchAll" title="br0: 326; br1: 114">(2/2)</span>      :     for (auto use = block-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">         326            :     {</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">         326 <span class="branchAll" title="br0: 22; br1: 304">(2/2)</span>      :         if (use-&gt;getUser() == ownSwitch)</span></span>
 <span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">          22            :             continue;</span></span>
-<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">         171            :         auto op = use-&gt;getUser()-&gt;getOp();</span></span>
-<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">         171 <span class="branchAll" title="br0: 339; br1: 168">(2/2)</span>      :         for (auto rejectOp : rejectOps)</span></span>
-<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">         339            :         {</span></span>
-<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">         339 <span class="branchAll" title="br0: 3; br1: 336">(2/2)</span>      :             if (op == rejectOp)</span></span>
-<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">           3            :                 return true;</span></span>
-<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">         339            :         }</span></span>
-<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">         171            :     }</span></span>
-<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">          75            :     return false;</span></span>
-<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">          78            : }</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">         304            :         auto op = use-&gt;getUser()-&gt;getOp();</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">         304 <span class="branchAll" title="br0: 601; br1: 297">(2/2)</span>      :         for (auto rejectOp : rejectOps)</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">         601            :         {</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">         601 <span class="branchAll" title="br0: 7; br1: 594">(2/2)</span>      :             if (op == rejectOp)</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">           7            :                 return true;</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">         601            :         }</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">         304            :     }</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">         114            :     return false;</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">         121            : }</span></span>
 <span id="L104"><span class="lineNum">     104</span>                         : </span>
 <span id="L105"><span class="lineNum">     105</span>                         : // The single parameter of a &quot;forwarding&quot; phi merge, together with the branch</span>
 <span id="L106"><span class="lineNum">     106</span>                         : // that forwards it. A forwarding merge has one parameter whose only role is to</span>
@@ -435,21 +435,21 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L144"><span class="lineNum">     144</span>                         : // parameter is a genuine phi (its block is not the function entry and every</span>
 <span id="L145"><span class="lineNum">     145</span>                         : // predecessor supplies it via an unconditional branch). Otherwise null.</span>
 <span id="L146"><span class="lineNum">     146</span>                         : static IRParam* getSelectorPhi(IRSwitch* switchInst, IRBlock* headerBlock)</span>
-<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        4627            : {</span></span>
-<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">        4627            :     auto param = as&lt;IRParam&gt;(switchInst-&gt;getCondition());</span></span>
-<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        4627 <span class="branchAll" title="br0: 3291; br1: 1336">(2/2)</span>      :     if (!param)</span></span>
-<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">        3291            :         return nullptr;</span></span>
-<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        1336 <span class="branchAll" title="br0: 41; br1: 1295">(2/2)</span>      :     if (param-&gt;getParent() != headerBlock)</span></span>
-<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">          41            :         return nullptr;</span></span>
-<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">        1295 <span class="branchAll" title="br0: 1261; br1: 34">(2/2)</span>      :     if (headerBlock == headerBlock-&gt;getParent()-&gt;getFirstBlock())</span></span>
-<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">        1261            :         return nullptr;</span></span>
-<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">          34 <span class="branchAll" title="br0: 71; br1: 34">(2/2)</span>      :     for (auto pred : headerBlock-&gt;getPredecessors())</span></span>
-<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">          71            :     {</span></span>
-<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">          71 <span class="branchPart" title="br0: 0; br1: 71">(1/2)</span>      :         if (!getPlainBranch(pred))</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        5758            : {</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">        5758            :     auto param = as&lt;IRParam&gt;(switchInst-&gt;getCondition());</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        5758 <span class="branchAll" title="br0: 3861; br1: 1897">(2/2)</span>      :     if (!param)</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">        3861            :         return nullptr;</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        1897 <span class="branchAll" title="br0: 116; br1: 1781">(2/2)</span>      :     if (param-&gt;getParent() != headerBlock)</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">         116            :         return nullptr;</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">        1781 <span class="branchAll" title="br0: 1716; br1: 65">(2/2)</span>      :     if (headerBlock == headerBlock-&gt;getParent()-&gt;getFirstBlock())</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">        1716            :         return nullptr;</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">          65 <span class="branchAll" title="br0: 137; br1: 65">(2/2)</span>      :     for (auto pred : headerBlock-&gt;getPredecessors())</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">         137            :     {</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">         137 <span class="branchPart" title="br0: 0; br1: 137">(1/2)</span>      :         if (!getPlainBranch(pred))</span></span>
 <span id="L158"><span class="lineNum">     158</span> <span class="tlaUNC">           0            :             return nullptr;</span></span>
-<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">          71            :     }</span></span>
-<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">          34            :     return param;</span></span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">          34            : }</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">         137            :     }</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">          65            :     return param;</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">          65            : }</span></span>
 <span id="L162"><span class="lineNum">     162</span>                         : </span>
 <span id="L163"><span class="lineNum">     163</span>                         : // Find the case block a `switch` routes a given integer constant to, or the</span>
 <span id="L164"><span class="lineNum">     164</span>                         : // default block (with `outIsDefault = true`) when no case matches. Returns null</span>
@@ -514,27 +514,27 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L223"><span class="lineNum">     223</span>                         : // return true. `param`&#x27;s only permitted uses are its own forwarding branch arg</span>
 <span id="L224"><span class="lineNum">     224</span>                         : // (and, for the switch header, the switch condition, handled by the caller).</span>
 <span id="L225"><span class="lineNum">     225</span>                         : static bool asForwardingMerge(IRBlock* block, ForwardingMerge&amp; out)</span>
-<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">          22            : {</span></span>
-<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">          22            :     auto firstParam = block-&gt;getFirstParam();</span></span>
-<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">          22 <span class="branchPart" title="br0: 0; br1: 22">(1/2)</span>      :     if (!firstParam)</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">          34            : {</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">          34            :     auto firstParam = block-&gt;getFirstParam();</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">          34 <span class="branchPart" title="br0: 0; br1: 34">(1/2)</span>      :     if (!firstParam)</span></span>
 <span id="L229"><span class="lineNum">     229</span> <span class="tlaUNC">           0            :         return false;</span></span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">          22 <span class="branchPart" title="br0: 0; br1: 22">(1/2)</span>      :     if (firstParam-&gt;getNextParam())</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">          34 <span class="branchPart" title="br0: 0; br1: 34">(1/2)</span>      :     if (firstParam-&gt;getNextParam())</span></span>
 <span id="L231"><span class="lineNum">     231</span> <span class="tlaUNC">           0            :         return false;</span></span>
 <span id="L232"><span class="lineNum">     232</span>                         : </span>
-<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">          22            :     auto term = getPlainBranch(block);</span></span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">          22 <span class="branchPart" title="br0: 0; br1: 22">(1/2)</span>      :     if (!term)</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">          34            :     auto term = getPlainBranch(block);</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">          34 <span class="branchPart" title="br0: 0; br1: 34">(1/2)</span>      :     if (!term)</span></span>
 <span id="L235"><span class="lineNum">     235</span> <span class="tlaUNC">           0            :         return false;</span></span>
 <span id="L236"><span class="lineNum">     236</span>                         : </span>
 <span id="L237"><span class="lineNum">     237</span>                         :     // The block must be a pure forwarder: nothing between the param and the</span>
 <span id="L238"><span class="lineNum">     238</span>                         :     // terminator (no side-effecting or value-producing insts to preserve).</span>
-<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">          22 <span class="branchPart" title="br0: 22; br1: 0">(1/2)</span>      :     for (auto inst = block-&gt;getFirstOrdinaryInst(); inst; inst = inst-&gt;getNextInst())</span></span>
-<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">          22            :     {</span></span>
-<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">          22 <span class="branchAll" title="br0: 14; br1: 8">(2/2)</span>      :         if (inst == term)</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">          34 <span class="branchPart" title="br0: 34; br1: 0">(1/2)</span>      :     for (auto inst = block-&gt;getFirstOrdinaryInst(); inst; inst = inst-&gt;getNextInst())</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">          34            :     {</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">          34 <span class="branchAll" title="br0: 14; br1: 20">(2/2)</span>      :         if (inst == term)</span></span>
 <span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">          14            :             break;</span></span>
-<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">           8 <span class="branchPart" title="br0: 0; br1: 8">(1/2)</span>      :         if (inst-&gt;getOp() == kIROp_DebugLine)</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">          20 <span class="branchPart" title="br0: 0; br1: 20">(1/2)</span>      :         if (inst-&gt;getOp() == kIROp_DebugLine)</span></span>
 <span id="L244"><span class="lineNum">     244</span> <span class="tlaUNC">           0            :             continue;</span></span>
-<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">           8            :         return false;</span></span>
-<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">           8            :     }</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">          20            :         return false;</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">          20            :     }</span></span>
 <span id="L247"><span class="lineNum">     247</span>                         : </span>
 <span id="L248"><span class="lineNum">     248</span>                         :     // The terminator must forward exactly the single parameter.</span>
 <span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">          14            :     bool found = false;</span></span>
@@ -559,92 +559,92 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L268"><span class="lineNum">     268</span>                         : // `allowedUser` may hold more than one use. Any *other* user means the tag</span>
 <span id="L269"><span class="lineNum">     269</span>                         : // escapes the chain and threading would drop a live value.</span>
 <span id="L270"><span class="lineNum">     270</span>                         : static bool paramIsUsedOnlyBy(IRParam* param, IRInst* allowedUser)</span>
-<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">          42            : {</span></span>
-<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">          69 <span class="branchAll" title="br0: 42; br1: 27">(2/2)</span>      :     for (auto use = param-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">          42            :     {</span></span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">          42 <span class="branchAll" title="br0: 15; br1: 27">(2/2)</span>      :         if (use-&gt;getUser() != allowedUser)</span></span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">          15            :             return false;</span></span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">          42            :     }</span></span>
-<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">          27            :     return true;</span></span>
-<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">          42            : }</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">          65            : {</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">         104 <span class="branchAll" title="br0: 65; br1: 39">(2/2)</span>      :     for (auto use = param-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">          65            :     {</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">          65 <span class="branchAll" title="br0: 26; br1: 39">(2/2)</span>      :         if (use-&gt;getUser() != allowedUser)</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">          26            :             return false;</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">          65            :     }</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">          39            :     return true;</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">          65            : }</span></span>
 <span id="L279"><span class="lineNum">     279</span>                         : </span>
 <span id="L280"><span class="lineNum">     280</span>                         : // Try to prove that `switchInst` is threadable and, if so, assemble its rewrite</span>
 <span id="L281"><span class="lineNum">     281</span>                         : // plan. Returns false (leaving `plan` unspecified) on any gate failure -- a</span>
 <span id="L282"><span class="lineNum">     282</span>                         : // conservative bail is always a missed optimization, never a miscompile.</span>
 <span id="L283"><span class="lineNum">     283</span>                         : static bool tryPlanSwitchThreading(IRSwitch* switchInst, SwitchThreadingPlan&amp; plan)</span>
-<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">        4628            : {</span></span>
-<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        4628            :     auto headerBlock = as&lt;IRBlock&gt;(switchInst-&gt;getParent());</span></span>
-<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">        4628 <span class="branchPart" title="br0: 0; br1: 4628">(1/2)</span>      :     if (!headerBlock)</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">        5759            : {</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        5759            :     auto headerBlock = as&lt;IRBlock&gt;(switchInst-&gt;getParent());</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">        5759 <span class="branchPart" title="br0: 0; br1: 5759">(1/2)</span>      :     if (!headerBlock)</span></span>
 <span id="L287"><span class="lineNum">     287</span> <span class="tlaUNC">           0            :         return false;</span></span>
 <span id="L288"><span class="lineNum">     288</span>                         : </span>
-<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">        4628            :     UInt caseCount = switchInst-&gt;getCaseCount();</span></span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">        4628 <span class="branchPart" title="br0: 1; br1: 4627; br2: 0; br3: 4627">(3/4)</span>      :     if (caseCount == 0 || caseCount &gt; kMaxThreadableCases)</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">        5759            :     UInt caseCount = switchInst-&gt;getCaseCount();</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">        5759 <span class="branchPart" title="br0: 1; br1: 5758; br2: 0; br3: 5758">(3/4)</span>      :     if (caseCount == 0 || caseCount &gt; kMaxThreadableCases)</span></span>
 <span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">           1            :         return false;</span></span>
 <span id="L292"><span class="lineNum">     292</span>                         : </span>
-<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">        4627            :     auto selectorParam = getSelectorPhi(switchInst, headerBlock);</span></span>
-<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">        4627 <span class="branchAll" title="br0: 4593; br1: 34">(2/2)</span>      :     if (!selectorParam)</span></span>
-<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">        4593            :         return false;</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">        5758            :     auto selectorParam = getSelectorPhi(switchInst, headerBlock);</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">        5758 <span class="branchAll" title="br0: 5693; br1: 65">(2/2)</span>      :     if (!selectorParam)</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">        5693            :         return false;</span></span>
 <span id="L296"><span class="lineNum">     296</span>                         : </span>
 <span id="L297"><span class="lineNum">     297</span>                         :     // If the switch header itself labels a loop or another switch, the switch</span>
 <span id="L298"><span class="lineNum">     298</span>                         :     // sits at a region boundary (e.g. a loop break block); threading an arm into</span>
 <span id="L299"><span class="lineNum">     299</span>                         :     // a case would move case work across that boundary. Chain blocks are checked</span>
 <span id="L300"><span class="lineNum">     300</span>                         :     // the same way as they are discovered below.</span>
-<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">          34 <span class="branchAll" title="br0: 3; br1: 31">(2/2)</span>      :     if (isUsedAsStructuralLabel(headerBlock, switchInst, {kIROp_Loop, kIROp_Switch}))</span></span>
-<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">           3            :         return false;</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">          65 <span class="branchAll" title="br0: 7; br1: 58">(2/2)</span>      :     if (isUsedAsStructuralLabel(headerBlock, switchInst, {kIROp_Loop, kIROp_Switch}))</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">           7            :         return false;</span></span>
 <span id="L303"><span class="lineNum">     303</span>                         : </span>
-<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">          31            :     auto mergeBlock = switchInst-&gt;getBreakLabel();</span></span>
-<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">          31 <span class="branchPart" title="br0: 0; br1: 31">(1/2)</span>      :     if (!mergeBlock)</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">          58            :     auto mergeBlock = switchInst-&gt;getBreakLabel();</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">          58 <span class="branchPart" title="br0: 0; br1: 58">(1/2)</span>      :     if (!mergeBlock)</span></span>
 <span id="L306"><span class="lineNum">     306</span> <span class="tlaUNC">           0            :         return false;</span></span>
 <span id="L307"><span class="lineNum">     307</span>                         : </span>
 <span id="L308"><span class="lineNum">     308</span>                         :     // The merge block carries the per-case result as a single phi param; that is</span>
 <span id="L309"><span class="lineNum">     309</span>                         :     // the type the retargeted chain will forward. (A parameterless merge is the</span>
 <span id="L310"><span class="lineNum">     310</span>                         :     // `eliminatePhis` form, which this pass runs before -- bail.)</span>
-<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">          31            :     auto mergeParam = mergeBlock-&gt;getFirstParam();</span></span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">          31 <span class="branchPart" title="br0: 0; br1: 31; br2: 3; br3: 28">(3/4)</span>      :     if (!mergeParam || mergeParam-&gt;getNextParam())</span></span>
-<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">           3            :         return false;</span></span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">          28            :     plan.resultType = mergeParam-&gt;getFullType();</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">          58            :     auto mergeParam = mergeBlock-&gt;getFirstParam();</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">          58 <span class="branchPart" title="br0: 0; br1: 58; br2: 7; br3: 51">(3/4)</span>      :     if (!mergeParam || mergeParam-&gt;getNextParam())</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">           7            :         return false;</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">          51            :     plan.resultType = mergeParam-&gt;getFullType();</span></span>
 <span id="L315"><span class="lineNum">     315</span>                         : </span>
 <span id="L316"><span class="lineNum">     316</span>                         :     // Walk the phi cascade backward from the switch header. Each block in the</span>
 <span id="L317"><span class="lineNum">     317</span>                         :     // chain has one param; each incoming edge either supplies an integer literal</span>
 <span id="L318"><span class="lineNum">     318</span>                         :     // (a selecting arm -&gt; a proven case) or forwards another chain block&#x27;s param</span>
 <span id="L319"><span class="lineNum">     319</span>                         :     // (one hop deeper). We enqueue forwarded blocks and require every leaf to be</span>
 <span id="L320"><span class="lineNum">     320</span>                         :     // a distinct constant that the switch matches to a real case.</span>
-<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">          28            :     HashSet&lt;IRBlock*&gt; visited;</span></span>
-<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">          28            :     List&lt;IRBlock*&gt; workList;</span></span>
-<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">          28            :     HashSet&lt;IRIntegerValue&gt; seenConstants;</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">          51            :     HashSet&lt;IRBlock*&gt; visited;</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">          51            :     List&lt;IRBlock*&gt; workList;</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">          51            :     HashSet&lt;IRIntegerValue&gt; seenConstants;</span></span>
 <span id="L324"><span class="lineNum">     324</span>                         : </span>
-<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">          28            :     workList.add(headerBlock);</span></span>
-<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">          28            :     visited.add(headerBlock);</span></span>
-<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">          28            :     plan.chainBlocks.add(headerBlock);</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">          51            :     workList.add(headerBlock);</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">          51            :     visited.add(headerBlock);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">          51            :     plan.chainBlocks.add(headerBlock);</span></span>
 <span id="L328"><span class="lineNum">     328</span>                         : </span>
 <span id="L329"><span class="lineNum">     329</span>                         :     // The header&#x27;s selector param may only be consumed by the switch condition.</span>
-<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">          28 <span class="branchAll" title="br0: 15; br1: 13">(2/2)</span>      :     if (!paramIsUsedOnlyBy(selectorParam, switchInst))</span></span>
-<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">          15            :         return false;</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">          51 <span class="branchAll" title="br0: 26; br1: 25">(2/2)</span>      :     if (!paramIsUsedOnlyBy(selectorParam, switchInst))</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">          26            :         return false;</span></span>
 <span id="L332"><span class="lineNum">     332</span>                         : </span>
-<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">          31 <span class="branchAll" title="br0: 27; br1: 4">(2/2)</span>      :     for (Index wi = 0; wi &lt; workList.getCount(); ++wi)</span></span>
-<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">          27            :     {</span></span>
-<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">          27            :         auto block = workList[wi];</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">          43 <span class="branchAll" title="br0: 39; br1: 4">(2/2)</span>      :     for (Index wi = 0; wi &lt; workList.getCount(); ++wi)</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">          39            :     {</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">          39            :         auto block = workList[wi];</span></span>
 <span id="L336"><span class="lineNum">     336</span>                         : </span>
-<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">          27            :         auto param = block-&gt;getFirstParam();</span></span>
-<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">          27 <span class="branchPart" title="br0: 0; br1: 27; br2: 0; br3: 27">(2/4)</span>      :         if (!param || param-&gt;getNextParam())</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">          39            :         auto param = block-&gt;getFirstParam();</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">          39 <span class="branchPart" title="br0: 0; br1: 39; br2: 0; br3: 39">(2/4)</span>      :         if (!param || param-&gt;getNextParam())</span></span>
 <span id="L339"><span class="lineNum">     339</span> <span class="tlaUNC">           0            :             return false;</span></span>
 <span id="L340"><span class="lineNum">     340</span>                         :         // `param` is `block`&#x27;s own first parameter, so it is always present in</span>
 <span id="L341"><span class="lineNum">     341</span>                         :         // the block: the index is 0 here and never negative. Assert the invariant</span>
 <span id="L342"><span class="lineNum">     342</span>                         :         // rather than silently bailing, so a future change that breaks it is</span>
 <span id="L343"><span class="lineNum">     343</span>                         :         // caught instead of quietly declining to optimize.</span>
-<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">          27            :         int paramIndex = getParamIndexInBlock(param);</span></span>
-<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">          27            :         SLANG_ASSERT(paramIndex &gt;= 0);</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">          39            :         int paramIndex = getParamIndexInBlock(param);</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">          39            :         SLANG_ASSERT(paramIndex &gt;= 0);</span></span>
 <span id="L346"><span class="lineNum">     346</span>                         : </span>
-<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">          27 <span class="branchAll" title="br0: 45; br1: 18">(2/2)</span>      :         for (auto pred : block-&gt;getPredecessors())</span></span>
-<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">          45            :         {</span></span>
-<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">          45            :             auto predBranch = getPlainBranch(pred);</span></span>
-<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">          45 <span class="branchPart" title="br0: 0; br1: 45">(1/2)</span>      :             if (!predBranch)</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">          39 <span class="branchAll" title="br0: 57; br1: 18">(2/2)</span>      :         for (auto pred : block-&gt;getPredecessors())</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">          57            :         {</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">          57            :             auto predBranch = getPlainBranch(pred);</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">          57 <span class="branchPart" title="br0: 0; br1: 57">(1/2)</span>      :             if (!predBranch)</span></span>
 <span id="L351"><span class="lineNum">     351</span> <span class="tlaUNC">           0            :                 return false;</span></span>
-<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">          45 <span class="branchPart" title="br0: 0; br1: 45">(1/2)</span>      :             if ((UInt)paramIndex &gt;= predBranch-&gt;getArgCount())</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">          57 <span class="branchPart" title="br0: 0; br1: 57">(1/2)</span>      :             if ((UInt)paramIndex &gt;= predBranch-&gt;getArgCount())</span></span>
 <span id="L353"><span class="lineNum">     353</span> <span class="tlaUNC">           0            :                 return false;</span></span>
-<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">          45            :             auto arg = predBranch-&gt;getArg((UInt)paramIndex);</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">          57            :             auto arg = predBranch-&gt;getArg((UInt)paramIndex);</span></span>
 <span id="L355"><span class="lineNum">     355</span>                         : </span>
-<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">          45 <span class="branchAll" title="br0: 23; br1: 22">(2/2)</span>      :             if (auto constArg = as&lt;IRIntLit&gt;(arg))</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">          57 <span class="branchAll" title="br0: 23; br1: 34">(2/2)</span>      :             if (auto constArg = as&lt;IRIntLit&gt;(arg))</span></span>
 <span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">          23            :             {</span></span>
 <span id="L358"><span class="lineNum">     358</span>                         :                 // A selecting arm: this edge proves one case.</span>
 <span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">          23            :                 bool isDefault = false;</span></span>
@@ -670,11 +670,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">          22            :                 arm.caseBlock = caseBlock;</span></span>
 <span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">          22            :                 plan.arms.add(arm);</span></span>
 <span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">          22            :             }</span></span>
-<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">          22 <span class="branchPart" title="br0: 22; br1: 0">(1/2)</span>      :             else if (auto forwardedParam = as&lt;IRParam&gt;(arg))</span></span>
-<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">          22            :             {</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">          34 <span class="branchPart" title="br0: 34; br1: 0">(1/2)</span>      :             else if (auto forwardedParam = as&lt;IRParam&gt;(arg))</span></span>
+<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">          34            :             {</span></span>
 <span id="L384"><span class="lineNum">     384</span>                         :                 // A forwarding hop: the arg is another chain block&#x27;s param.</span>
-<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">          22            :                 auto forwardedBlock = as&lt;IRBlock&gt;(forwardedParam-&gt;getParent());</span></span>
-<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">          22 <span class="branchPart" title="br0: 0; br1: 22">(1/2)</span>      :                 if (!forwardedBlock)</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">          34            :                 auto forwardedBlock = as&lt;IRBlock&gt;(forwardedParam-&gt;getParent());</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">          34 <span class="branchPart" title="br0: 0; br1: 34">(1/2)</span>      :                 if (!forwardedBlock)</span></span>
 <span id="L387"><span class="lineNum">     387</span> <span class="tlaUNC">           0            :                     return false;</span></span>
 <span id="L388"><span class="lineNum">     388</span>                         :                 // Chain blocks are legitimately the after-blocks of the `if/else`</span>
 <span id="L389"><span class="lineNum">     389</span>                         :                 // cascade (an `IRIfElse` merge is their normal role, so we must</span>
@@ -682,11 +682,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L391"><span class="lineNum">     391</span>                         :                 // another switch would mean the selector crosses a loop/other</span>
 <span id="L392"><span class="lineNum">     392</span>                         :                 // region boundary -- redirecting an arm there could change</span>
 <span id="L393"><span class="lineNum">     393</span>                         :                 // convergence or derivative behavior, so bail.</span>
-<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">          22 <span class="branchPart" title="br0: 0; br1: 22">(1/2)</span>      :                 if (isUsedAsStructuralLabel(forwardedBlock, switchInst, {kIROp_Loop, kIROp_Switch}))</span></span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">          34 <span class="branchPart" title="br0: 0; br1: 34">(1/2)</span>      :                 if (isUsedAsStructuralLabel(forwardedBlock, switchInst, {kIROp_Loop, kIROp_Switch}))</span></span>
 <span id="L395"><span class="lineNum">     395</span> <span class="tlaUNC">           0            :                     return false;</span></span>
-<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">          22            :                 ForwardingMerge fm;</span></span>
-<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">          22 <span class="branchAll" title="br0: 8; br1: 14">(2/2)</span>      :                 if (!asForwardingMerge(forwardedBlock, fm))</span></span>
-<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">           8            :                     return false;</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">          34            :                 ForwardingMerge fm;</span></span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">          34 <span class="branchAll" title="br0: 20; br1: 14">(2/2)</span>      :                 if (!asForwardingMerge(forwardedBlock, fm))</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">          20            :                     return false;</span></span>
 <span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">          14 <span class="branchPart" title="br0: 0; br1: 14">(1/2)</span>      :                 if (fm.param != forwardedParam)</span></span>
 <span id="L400"><span class="lineNum">     400</span> <span class="tlaUNC">           0            :                     return false;</span></span>
 <span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">          14 <span class="branchPart" title="br0: 0; br1: 14">(1/2)</span>      :                 if (!paramIsUsedOnlyBy(forwardedParam, fm.forwardBranch))</span></span>
@@ -706,8 +706,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L415"><span class="lineNum">     415</span>                         :                 // shape we can thread safely.</span>
 <span id="L416"><span class="lineNum">     416</span> <span class="tlaUNC">           0            :                 return false;</span></span>
 <span id="L417"><span class="lineNum">     417</span> <span class="tlaUNC">           0            :             }</span></span>
-<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">          45            :         }</span></span>
-<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">          27            :     }</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">          57            :         }</span></span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">          39            :     }</span></span>
 <span id="L420"><span class="lineNum">     420</span>                         : </span>
 <span id="L421"><span class="lineNum">     421</span>                         :     // Require that every case is covered exactly once, so the switch is fully</span>
 <span id="L422"><span class="lineNum">     422</span>                         :     // dead after threading (no residual live edge into a case block, which would</span>
@@ -807,35 +807,35 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">           3            : }</span></span>
 <span id="L517"><span class="lineNum">     517</span>                         : </span>
 <span id="L518"><span class="lineNum">     518</span>                         : bool threadSwitchOnConstantPhi(IRModule* module)</span>
-<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">       12568            : {</span></span>
-<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">       12568            :     bool changedAny = false;</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">       16488            : {</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">       16488            :     bool changedAny = false;</span></span>
 <span id="L521"><span class="lineNum">     521</span>                         : </span>
-<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       12568 <span class="branchAll" title="br0: 2221180; br1: 12568">(2/2)</span>      :     for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">     2221180            :     {</span></span>
-<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">     2221180            :         auto func = as&lt;IRGlobalValueWithCode&gt;(inst);</span></span>
-<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">     2221180 <span class="branchAll" title="br0: 2132244; br1: 88936; br2: 1724; br3: 87212">(4/4)</span>      :         if (!func || !func-&gt;getFirstBlock())</span></span>
-<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">     2133962            :             continue;</span></span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       16488 <span class="branchAll" title="br0: 3112840; br1: 16488">(2/2)</span>      :     for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">     3112840            :     {</span></span>
+<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">     3112840            :         auto func = as&lt;IRGlobalValueWithCode&gt;(inst);</span></span>
+<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">     3112840 <span class="branchAll" title="br0: 3001042; br1: 111798; br2: 1629; br3: 110169">(4/4)</span>      :         if (!func || !func-&gt;getFirstBlock())</span></span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">     3002664            :             continue;</span></span>
 <span id="L527"><span class="lineNum">     527</span>                         : </span>
 <span id="L528"><span class="lineNum">     528</span>                         :         // Collect candidate switches first; the rewrite mutates the CFG.</span>
-<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">       87218            :         List&lt;IRSwitch*&gt; switches;</span></span>
-<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">       87218 <span class="branchAll" title="br0: 539861; br1: 87218">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">      539861            :         {</span></span>
-<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">      539861 <span class="branchAll" title="br0: 4628; br1: 535233">(2/2)</span>      :             if (auto switchInst = as&lt;IRSwitch&gt;(block-&gt;getTerminator()))</span></span>
-<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">        4628            :                 switches.add(switchInst);</span></span>
-<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">      539861            :         }</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">      110176            :         List&lt;IRSwitch*&gt; switches;</span></span>
+<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">      110176 <span class="branchAll" title="br0: 600643; br1: 110176">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">      600643            :         {</span></span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">      600643 <span class="branchAll" title="br0: 5759; br1: 594884">(2/2)</span>      :             if (auto switchInst = as&lt;IRSwitch&gt;(block-&gt;getTerminator()))</span></span>
+<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">        5759            :                 switches.add(switchInst);</span></span>
+<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">      600643            :         }</span></span>
 <span id="L535"><span class="lineNum">     535</span>                         : </span>
-<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">       87218            :         bool changedThisFunc = false;</span></span>
-<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">       87218 <span class="branchAll" title="br0: 4628; br1: 87218">(2/2)</span>      :         for (auto switchInst : switches)</span></span>
-<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">        4628            :         {</span></span>
-<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">        4628            :             SwitchThreadingPlan plan;</span></span>
-<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">        4628 <span class="branchAll" title="br0: 3; br1: 4625">(2/2)</span>      :             if (tryPlanSwitchThreading(switchInst, plan))</span></span>
+<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">      110176            :         bool changedThisFunc = false;</span></span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">      110176 <span class="branchAll" title="br0: 5759; br1: 110176">(2/2)</span>      :         for (auto switchInst : switches)</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">        5759            :         {</span></span>
+<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">        5759            :             SwitchThreadingPlan plan;</span></span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">        5759 <span class="branchAll" title="br0: 3; br1: 5756">(2/2)</span>      :             if (tryPlanSwitchThreading(switchInst, plan))</span></span>
 <span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">           3            :             {</span></span>
 <span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">           3            :                 applySwitchThreading(plan);</span></span>
 <span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">           3            :                 changedThisFunc = true;</span></span>
 <span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">           3            :             }</span></span>
-<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">        4628            :         }</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">        5759            :         }</span></span>
 <span id="L546"><span class="lineNum">     546</span>                         : </span>
-<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">       87218 <span class="branchAll" title="br0: 3; br1: 87215">(2/2)</span>      :         if (changedThisFunc)</span></span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">      110176 <span class="branchAll" title="br0: 3; br1: 110173">(2/2)</span>      :         if (changedThisFunc)</span></span>
 <span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">           3            :         {</span></span>
 <span id="L549"><span class="lineNum">     549</span>                         :             // After threading, each selecting arm reaches its case body directly</span>
 <span id="L550"><span class="lineNum">     550</span>                         :             // and the switch is a branch to the common merge. A distinct,</span>
@@ -848,10 +848,10 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">           3            :             eliminateDeadCode(func);</span></span>
 <span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">           3            :             changedAny = true;</span></span>
 <span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">           3            :         }</span></span>
-<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">       87218            :     }</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">      110176            :     }</span></span>
 <span id="L561"><span class="lineNum">     561</span>                         : </span>
-<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       12568            :     return changedAny;</span></span>
-<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">       12568            : }</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       16488            :     return changedAny;</span></span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">       16488            : }</span></span>
 <span id="L564"><span class="lineNum">     564</span>                         : </span>
 <span id="L565"><span class="lineNum">     565</span>                         : } // namespace Slang</span>
 </pre>
