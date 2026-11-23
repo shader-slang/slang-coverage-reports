@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-22 05:02:27 UTC</td>
+      <td class="headerValue">2026-11-23 05:02:56 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -303,22 +303,22 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L12"><span class="lineNum">      12</span>                         : struct SimplifyForEmitContext : public InstPassBase</span>
 <span id="L13"><span class="lineNum">      13</span>                         : {</span>
 <span id="L14"><span class="lineNum">      14</span>                         :     SimplifyForEmitContext(IRModule* inModule, TargetRequest* inTargetReq)</span>
-<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">       10181            :         : InstPassBase(inModule)</span></span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">       10181            :         , targetReq(inTargetReq)</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">       10181            :         , followUpWorkList(inModule)</span></span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">       10181            :         , followUpWorkListSet(inModule)</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">       10181            :     {</span></span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">       10181            :     }</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC">       10189            :         : InstPassBase(inModule)</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">       10189            :         , targetReq(inTargetReq)</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">       10189            :         , followUpWorkList(inModule)</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC">       10189            :         , followUpWorkListSet(inModule)</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC">       10189            :     {</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC">       10189            :     }</span></span>
 <span id="L21"><span class="lineNum">      21</span>                         : </span>
 <span id="L22"><span class="lineNum">      22</span>                         :     TargetRequest* targetReq;</span>
 <span id="L23"><span class="lineNum">      23</span>                         :     InstWorkList followUpWorkList;</span>
 <span id="L24"><span class="lineNum">      24</span>                         :     InstHashSet followUpWorkListSet;</span>
 <span id="L25"><span class="lineNum">      25</span>                         : </span>
 <span id="L26"><span class="lineNum">      26</span>                         :     void addToFollowUpWorkList(IRInst* inst)</span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">      451945            :     {</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">      451945 <span class="branchAll" title="br0: 433540; br1: 18405">(2/2)</span>      :         if (followUpWorkListSet.add(inst))</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">      433540            :             followUpWorkList.add(inst);</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">      451945            :     }</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">      452356            :     {</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">      452356 <span class="branchAll" title="br0: 433951; br1: 18405">(2/2)</span>      :         if (followUpWorkListSet.add(inst))</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">      433951            :             followUpWorkList.add(inst);</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">      452356            :     }</span></span>
 <span id="L31"><span class="lineNum">      31</span>                         : </span>
 <span id="L32"><span class="lineNum">      32</span>                         :     void processMakeStruct(IRInst* makeStruct)</span>
 <span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">       19211            :     {</span></span>
@@ -416,41 +416,41 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">         258            :     }</span></span>
 <span id="L126"><span class="lineNum">     126</span>                         : </span>
 <span id="L127"><span class="lineNum">     127</span>                         :     void processLoadUse(IRGlobalValueWithCode* func, IRLoad* load, IRUse* use)</span>
-<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">      288123            :     {</span></span>
-<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">      288123            :         auto user = use-&gt;getUser();</span></span>
-<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">      288123 <span class="branchAll" title="br0: 17564; br1: 270559">(2/2)</span>      :         if (user-&gt;getParent() != load-&gt;getParent())</span></span>
-<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       17564            :             return;</span></span>
-<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">      995598 <span class="branchPart" title="br0: 995598; br1: 0">(1/2)</span>      :         for (auto inst = load-&gt;getNextInst(); inst; inst = inst-&gt;getNextInst())</span></span>
-<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">      995598            :         {</span></span>
-<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">      995598 <span class="branchAll" title="br0: 244419; br1: 751179">(2/2)</span>      :             if (inst == user)</span></span>
-<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">      244419            :                 break;</span></span>
-<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">      751179 <span class="branchAll" title="br0: 26140; br1: 725039">(2/2)</span>      :             if (canInstHaveSideEffectAtAddress(func, inst, load-&gt;getPtr()))</span></span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">       26140            :                 return;</span></span>
-<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">      751179            :         }</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">      288399            :     {</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">      288399            :         auto user = use-&gt;getUser();</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">      288399 <span class="branchAll" title="br0: 17556; br1: 270843">(2/2)</span>      :         if (user-&gt;getParent() != load-&gt;getParent())</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       17556            :             return;</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">      995932 <span class="branchPart" title="br0: 995932; br1: 0">(1/2)</span>      :         for (auto inst = load-&gt;getNextInst(); inst; inst = inst-&gt;getNextInst())</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">      995932            :         {</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">      995932 <span class="branchAll" title="br0: 244699; br1: 751233">(2/2)</span>      :             if (inst == user)</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">      244699            :                 break;</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">      751233 <span class="branchAll" title="br0: 26144; br1: 725089">(2/2)</span>      :             if (canInstHaveSideEffectAtAddress(func, inst, load-&gt;getPtr()))</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">       26144            :                 return;</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">      751233            :         }</span></span>
 <span id="L139"><span class="lineNum">     139</span>                         : </span>
 <span id="L140"><span class="lineNum">     140</span>                         :         // If we reach here, it is OK to defer the load at use site.</span>
-<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">      244419            :         IRBuilder builder(module);</span></span>
-<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">      244419            :         builder.setInsertBefore(user);</span></span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">      244419            :         auto newLoad = builder.emitLoad(load-&gt;getFullType(), load-&gt;getPtr());</span></span>
-<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      244419            :         builder.replaceOperand(use, newLoad);</span></span>
-<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      244419            :     }</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">      244699            :         IRBuilder builder(module);</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">      244699            :         builder.setInsertBefore(user);</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">      244699            :         auto newLoad = builder.emitLoad(load-&gt;getFullType(), load-&gt;getPtr());</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      244699            :         builder.replaceOperand(use, newLoad);</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      244699            :     }</span></span>
 <span id="L146"><span class="lineNum">     146</span>                         : </span>
 <span id="L147"><span class="lineNum">     147</span>                         :     void processLoad(IRLoad* inst)</span>
-<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      251848            :     {</span></span>
-<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">      251848            :         auto func = getParentFunc(inst);</span></span>
-<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">      251848 <span class="branchPart" title="br0: 0; br1: 251848">(1/2)</span>      :         if (!func)</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      252125            :     {</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">      252125            :         auto func = getParentFunc(inst);</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">      252125 <span class="branchPart" title="br0: 0; br1: 252125">(1/2)</span>      :         if (!func)</span></span>
 <span id="L151"><span class="lineNum">     151</span> <span class="tlaUNC">           0            :             return;</span></span>
 <span id="L152"><span class="lineNum">     152</span>                         : </span>
-<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">      539971 <span class="branchAll" title="br0: 288123; br1: 251848">(2/2)</span>      :         for (auto use = inst-&gt;firstUse; use;)</span></span>
-<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">      288123            :         {</span></span>
-<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">      288123            :             auto nextUse = use-&gt;nextUse;</span></span>
-<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">      288123            :             processLoadUse(func, inst, use);</span></span>
-<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">      288123            :             use = nextUse;</span></span>
-<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">      288123            :         }</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">      540524 <span class="branchAll" title="br0: 288399; br1: 252125">(2/2)</span>      :         for (auto use = inst-&gt;firstUse; use;)</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">      288399            :         {</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">      288399            :             auto nextUse = use-&gt;nextUse;</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">      288399            :             processLoadUse(func, inst, use);</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">      288399            :             use = nextUse;</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">      288399            :         }</span></span>
 <span id="L159"><span class="lineNum">     159</span>                         : </span>
-<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">      251848 <span class="branchAll" title="br0: 228522; br1: 23326">(2/2)</span>      :         if (!inst-&gt;hasUses())</span></span>
-<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">      228522            :             inst-&gt;removeAndDeallocate();</span></span>
-<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">      251848            :     }</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">      252125 <span class="branchAll" title="br0: 228804; br1: 23321">(2/2)</span>      :         if (!inst-&gt;hasUses())</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">      228804            :             inst-&gt;removeAndDeallocate();</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">      252125            :     }</span></span>
 <span id="L163"><span class="lineNum">     163</span>                         : </span>
 <span id="L164"><span class="lineNum">     164</span>                         :     void processElementExtract(IRInst* inst)</span>
 <span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       68692            :     {</span></span>
@@ -489,30 +489,30 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">       68692            :     }</span></span>
 <span id="L199"><span class="lineNum">     199</span>                         : </span>
 <span id="L200"><span class="lineNum">     200</span>                         :     void processVar(IRInst* var)</span>
-<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       80065            :     {</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       80199            :     {</span></span>
 <span id="L202"><span class="lineNum">     202</span>                         :         // Defer var to its first use, if the use is in the same basic block as the var.</span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">       80065            :         HashSet&lt;IRInst*&gt; userInSameBlock;</span></span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">      476752 <span class="branchAll" title="br0: 396687; br1: 80065">(2/2)</span>      :         for (auto use = var-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
-<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">      396687 <span class="branchAll" title="br0: 184194; br1: 212493">(2/2)</span>      :             if (use-&gt;getUser()-&gt;getParent() == var-&gt;getParent())</span></span>
-<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      184194            :             {</span></span>
-<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      184194            :                 userInSameBlock.add(use-&gt;getUser());</span></span>
-<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">      184194            :             }</span></span>
-<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">       80065            :         IRInst* firstUser = nullptr;</span></span>
-<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">      303856 <span class="branchAll" title="br0: 293354; br1: 10502">(2/2)</span>      :         for (auto inst = var-&gt;getNextInst(); inst; inst = inst-&gt;getNextInst())</span></span>
-<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">      293354            :         {</span></span>
-<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      293354 <span class="branchAll" title="br0: 69563; br1: 223791">(2/2)</span>      :             if (userInSameBlock.contains(inst))</span></span>
-<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">       69563            :             {</span></span>
-<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">       69563            :                 firstUser = inst;</span></span>
-<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">       69563            :                 break;</span></span>
-<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       69563            :             }</span></span>
-<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      293354            :         }</span></span>
-<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       80065 <span class="branchAll" title="br0: 10502; br1: 69563">(2/2)</span>      :         if (!firstUser)</span></span>
-<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">       10502            :             return;</span></span>
-<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       69563            :         var-&gt;insertBefore(firstUser);</span></span>
-<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">       69563            :     }</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">       80199            :         HashSet&lt;IRInst*&gt; userInSameBlock;</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">      477408 <span class="branchAll" title="br0: 397209; br1: 80199">(2/2)</span>      :         for (auto use = var-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">      397209 <span class="branchAll" title="br0: 184400; br1: 212809">(2/2)</span>      :             if (use-&gt;getUser()-&gt;getParent() == var-&gt;getParent())</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      184400            :             {</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      184400            :                 userInSameBlock.add(use-&gt;getUser());</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">      184400            :             }</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">       80199            :         IRInst* firstUser = nullptr;</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">      304122 <span class="branchAll" title="br0: 293576; br1: 10546">(2/2)</span>      :         for (auto inst = var-&gt;getNextInst(); inst; inst = inst-&gt;getNextInst())</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">      293576            :         {</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      293576 <span class="branchAll" title="br0: 69653; br1: 223923">(2/2)</span>      :             if (userInSameBlock.contains(inst))</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">       69653            :             {</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">       69653            :                 firstUser = inst;</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">       69653            :                 break;</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       69653            :             }</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      293576            :         }</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       80199 <span class="branchAll" title="br0: 10546; br1: 69653">(2/2)</span>      :         if (!firstUser)</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">       10546            :             return;</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       69653            :         var-&gt;insertBefore(firstUser);</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">       69653            :     }</span></span>
 <span id="L222"><span class="lineNum">     222</span>                         : </span>
 <span id="L223"><span class="lineNum">     223</span>                         :     void processInst(IRInst* inst)</span>
-<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">      433540            :     {</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">      433951            :     {</span></span>
 <span id="L225"><span class="lineNum">     225</span>                         :         // We inspect each inst and see if the following simplifications</span>
 <span id="L226"><span class="lineNum">     226</span>                         :         // can be applied:</span>
 <span id="L227"><span class="lineNum">     227</span>                         :         // 1. If we see `store(addr, MakeArray/Struct)`, we should turn them</span>
@@ -521,116 +521,116 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L230"><span class="lineNum">     230</span>                         :         // 2. If we see `load(addr)`, we duplicate the load right at each</span>
 <span id="L231"><span class="lineNum">     231</span>                         :         //    use site if it can be determined safe to do so. This allows</span>
 <span id="L232"><span class="lineNum">     232</span>                         :         //    emit logic to skip producing a temp var for the loaded result.</span>
-<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">      433540 <span class="branchAll" title="br0: 11622; br1: 421918">(2/2)</span>      :         switch (inst-&gt;getOp())</span></span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">      433540            :         {</span></span>
-<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       19211 <span class="branchAll" title="br0: 19211; br1: 414329">(2/2)</span>      :         case kIROp_MakeStruct:</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">      433951 <span class="branchAll" title="br0: 11622; br1: 422329">(2/2)</span>      :         switch (inst-&gt;getOp())</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">      433951            :         {</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       19211 <span class="branchAll" title="br0: 19211; br1: 414740">(2/2)</span>      :         case kIROp_MakeStruct:</span></span>
 <span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       19211            :             processMakeStruct(inst);</span></span>
 <span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">       19211            :             break;</span></span>
-<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">        1844 <span class="branchAll" title="br0: 1844; br1: 431696">(2/2)</span>      :         case kIROp_MakeArray:</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">        1844 <span class="branchAll" title="br0: 1844; br1: 432107">(2/2)</span>      :         case kIROp_MakeArray:</span></span>
 <span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">        1844            :             processMakeArray(inst);</span></span>
 <span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">        1844            :             break;</span></span>
-<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">         258 <span class="branchAll" title="br0: 258; br1: 433282">(2/2)</span>      :         case kIROp_MakeArrayFromElement:</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">         258 <span class="branchAll" title="br0: 258; br1: 433693">(2/2)</span>      :         case kIROp_MakeArrayFromElement:</span></span>
 <span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">         258            :             processMakeArrayFromElement(inst);</span></span>
 <span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">         258            :             break;</span></span>
-<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">      251848 <span class="branchAll" title="br0: 251848; br1: 181692">(2/2)</span>      :         case kIROp_Load:</span></span>
-<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">      251848            :             processLoad(as&lt;IRLoad&gt;(inst));</span></span>
-<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">      251848            :             break;</span></span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">       41993 <span class="branchAll" title="br0: 41993; br1: 391547">(2/2)</span>      :         case kIROp_GetElement:</span></span>
-<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">       68692 <span class="branchAll" title="br0: 26699; br1: 406841">(2/2)</span>      :         case kIROp_FieldExtract:</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">      252125 <span class="branchAll" title="br0: 252125; br1: 181826">(2/2)</span>      :         case kIROp_Load:</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">      252125            :             processLoad(as&lt;IRLoad&gt;(inst));</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">      252125            :             break;</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">       41993 <span class="branchAll" title="br0: 41993; br1: 391958">(2/2)</span>      :         case kIROp_GetElement:</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">       68692 <span class="branchAll" title="br0: 26699; br1: 407252">(2/2)</span>      :         case kIROp_FieldExtract:</span></span>
 <span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">       68692            :             processElementExtract(inst);</span></span>
 <span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">       68692            :             break;</span></span>
-<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">       80065 <span class="branchAll" title="br0: 80065; br1: 353475">(2/2)</span>      :         case kIROp_Var:</span></span>
-<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       80065            :             processVar(inst);</span></span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       80065            :             break;</span></span>
-<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">      433540            :         }</span></span>
-<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">      433540            :     }</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">       80199 <span class="branchAll" title="br0: 80199; br1: 353752">(2/2)</span>      :         case kIROp_Var:</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       80199            :             processVar(inst);</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       80199            :             break;</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">      433951            :         }</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">      433951            :     }</span></span>
 <span id="L256"><span class="lineNum">     256</span>                         : </span>
 <span id="L257"><span class="lineNum">     257</span>                         :     void eliminateCompositeConstruct(IRGlobalValueWithCode* func)</span>
-<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">       68934            :     {</span></span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       68934            :         followUpWorkList.clear();</span></span>
-<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       68934            :         followUpWorkListSet.clear();</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">       68974            :     {</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       68974            :         followUpWorkList.clear();</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       68974            :         followUpWorkListSet.clear();</span></span>
 <span id="L261"><span class="lineNum">     261</span>                         : </span>
-<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       68934 <span class="branchAll" title="br0: 271451; br1: 68934">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">      271451            :         {</span></span>
-<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">     2363650 <span class="branchAll" title="br0: 2092199; br1: 271451">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
-<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">     2092199            :             {</span></span>
-<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">     2092199 <span class="branchAll" title="br0: 2070886; br1: 21313">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
-<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">     2092199            :                 {</span></span>
-<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">       19211 <span class="branchAll" title="br0: 19211; br1: 2072988">(2/2)</span>      :                 case kIROp_MakeStruct:</span></span>
-<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">       21055 <span class="branchAll" title="br0: 1844; br1: 2090355">(2/2)</span>      :                 case kIROp_MakeArray:</span></span>
-<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">       21313 <span class="branchAll" title="br0: 258; br1: 2091941">(2/2)</span>      :                 case kIROp_MakeArrayFromElement:</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       68974 <span class="branchAll" title="br0: 271731; br1: 68974">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">      271731            :         {</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">     2366443 <span class="branchAll" title="br0: 2094712; br1: 271731">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">     2094712            :             {</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">     2094712 <span class="branchAll" title="br0: 2073399; br1: 21313">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">     2094712            :                 {</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">       19211 <span class="branchAll" title="br0: 19211; br1: 2075501">(2/2)</span>      :                 case kIROp_MakeStruct:</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">       21055 <span class="branchAll" title="br0: 1844; br1: 2092868">(2/2)</span>      :                 case kIROp_MakeArray:</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">       21313 <span class="branchAll" title="br0: 258; br1: 2094454">(2/2)</span>      :                 case kIROp_MakeArrayFromElement:</span></span>
 <span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">       21313            :                     addToFollowUpWorkList(inst);</span></span>
 <span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">       21313            :                     break;</span></span>
-<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">     2092199            :                 }</span></span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">     2092199            :             }</span></span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">      271451            :         }</span></span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">      109226 <span class="branchAll" title="br0: 40292; br1: 68934">(2/2)</span>      :         for (Index i = 0; i &lt; followUpWorkList.getCount(); i++)</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">     2094712            :                 }</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">     2094712            :             }</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">      271731            :         }</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">      109266 <span class="branchAll" title="br0: 40292; br1: 68974">(2/2)</span>      :         for (Index i = 0; i &lt; followUpWorkList.getCount(); i++)</span></span>
 <span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       40292            :             processInst(followUpWorkList[i]);</span></span>
-<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">       68934            :     }</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">       68974            :     }</span></span>
 <span id="L279"><span class="lineNum">     279</span>                         : </span>
 <span id="L280"><span class="lineNum">     280</span>                         :     void deferAndDuplicateLoad(IRGlobalValueWithCode* func)</span>
-<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       68934            :     {</span></span>
-<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">       68934            :         followUpWorkList.clear();</span></span>
-<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">       68934            :         followUpWorkListSet.clear();</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       68974            :     {</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">       68974            :         followUpWorkList.clear();</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">       68974            :         followUpWorkListSet.clear();</span></span>
 <span id="L284"><span class="lineNum">     284</span>                         : </span>
-<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">       68934 <span class="branchAll" title="br0: 271451; br1: 68934">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">      271451            :         {</span></span>
-<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">     2438945 <span class="branchAll" title="br0: 2167494; br1: 271451">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
-<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">     2167494            :             {</span></span>
-<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">     2167494 <span class="branchAll" title="br0: 1920600; br1: 246894">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">     2167494            :                 {</span></span>
-<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">      246894 <span class="branchAll" title="br0: 246894; br1: 1920600">(2/2)</span>      :                 case kIROp_Load:</span></span>
-<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">      246894            :                     addToFollowUpWorkList(inst);</span></span>
-<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">      246894            :                     break;</span></span>
-<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">     2167494            :                 }</span></span>
-<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">     2167494            :             }</span></span>
-<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">      271451            :         }</span></span>
-<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">      315828 <span class="branchAll" title="br0: 246894; br1: 68934">(2/2)</span>      :         for (Index i = 0; i &lt; followUpWorkList.getCount(); i++)</span></span>
-<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">      246894            :             processInst(followUpWorkList[i]);</span></span>
-<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">       68934            :     }</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">       68974 <span class="branchAll" title="br0: 271731; br1: 68974">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">      271731            :         {</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">     2441738 <span class="branchAll" title="br0: 2170007; br1: 271731">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">     2170007            :             {</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">     2170007 <span class="branchAll" title="br0: 1922836; br1: 247171">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">     2170007            :                 {</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">      247171 <span class="branchAll" title="br0: 247171; br1: 1922836">(2/2)</span>      :                 case kIROp_Load:</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">      247171            :                     addToFollowUpWorkList(inst);</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">      247171            :                     break;</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">     2170007            :                 }</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">     2170007            :             }</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">      271731            :         }</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">      316145 <span class="branchAll" title="br0: 247171; br1: 68974">(2/2)</span>      :         for (Index i = 0; i &lt; followUpWorkList.getCount(); i++)</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">      247171            :             processInst(followUpWorkList[i]);</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">       68974            :     }</span></span>
 <span id="L300"><span class="lineNum">     300</span>                         : </span>
 <span id="L301"><span class="lineNum">     301</span>                         :     void deferVarDecl(IRGlobalValueWithCode* func)</span>
-<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">       68933            :     {</span></span>
-<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">       68933            :         followUpWorkList.clear();</span></span>
-<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">       68933            :         followUpWorkListSet.clear();</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">       68974            :     {</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">       68974            :         followUpWorkList.clear();</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">       68974            :         followUpWorkListSet.clear();</span></span>
 <span id="L305"><span class="lineNum">     305</span>                         : </span>
-<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">       68933 <span class="branchAll" title="br0: 271451; br1: 68932">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">      271451            :         {</span></span>
-<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">     2454287 <span class="branchAll" title="br0: 2182837; br1: 271450">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
-<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">     2182837            :             {</span></span>
-<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">     2182837 <span class="branchAll" title="br0: 2102772; br1: 80065">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
-<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">     2182837            :                 {</span></span>
-<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       80065 <span class="branchAll" title="br0: 80065; br1: 2102772">(2/2)</span>      :                 case kIROp_Var:</span></span>
-<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">       80065            :                     addToFollowUpWorkList(inst);</span></span>
-<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       80065            :                     break;</span></span>
-<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">     2182837            :                 }</span></span>
-<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">     2182837            :             }</span></span>
-<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">      271451            :         }</span></span>
-<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">      148997 <span class="branchAll" title="br0: 80065; br1: 68932">(2/2)</span>      :         for (Index i = 0; i &lt; followUpWorkList.getCount(); i++)</span></span>
-<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">       80065            :             processInst(followUpWorkList[i]);</span></span>
-<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">       68932            :     }</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">       68974 <span class="branchAll" title="br0: 271731; br1: 68976">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">      271731            :         {</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">     2457076 <span class="branchAll" title="br0: 2185343; br1: 271733">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">     2185343            :             {</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">     2185343 <span class="branchAll" title="br0: 2105144; br1: 80199">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">     2185343            :                 {</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       80199 <span class="branchAll" title="br0: 80199; br1: 2105144">(2/2)</span>      :                 case kIROp_Var:</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">       80199            :                     addToFollowUpWorkList(inst);</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       80199            :                     break;</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">     2185343            :                 }</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">     2185343            :             }</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">      271731            :         }</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">      149175 <span class="branchAll" title="br0: 80199; br1: 68976">(2/2)</span>      :         for (Index i = 0; i &lt; followUpWorkList.getCount(); i++)</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">       80199            :             processInst(followUpWorkList[i]);</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">       68976            :     }</span></span>
 <span id="L321"><span class="lineNum">     321</span>                         : </span>
 <span id="L322"><span class="lineNum">     322</span>                         :     void deferAndDuplicateElementExtract(IRGlobalValueWithCode* func)</span>
-<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">       68934            :     {</span></span>
-<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">       68934            :         followUpWorkList.clear();</span></span>
-<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">       68934            :         followUpWorkListSet.clear();</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">       68974            :     {</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">       68974            :         followUpWorkList.clear();</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">       68974            :         followUpWorkListSet.clear();</span></span>
 <span id="L326"><span class="lineNum">     326</span>                         : </span>
-<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">      340385 <span class="branchAll" title="br0: 271451; br1: 68934">(2/2)</span>      :         for (auto block = func-&gt;getLastBlock(); block; block = block-&gt;getPrevBlock())</span></span>
-<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">      271451            :         {</span></span>
-<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">     2411450 <span class="branchAll" title="br0: 2139999; br1: 271451">(2/2)</span>      :             for (auto inst = block-&gt;getLastChild(); inst; inst = inst-&gt;getPrevInst())</span></span>
-<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">     2139999            :             {</span></span>
-<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">     2139999 <span class="branchAll" title="br0: 2073710; br1: 66289">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
-<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">     2139999            :                 {</span></span>
-<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">       41465 <span class="branchAll" title="br0: 41465; br1: 2098534">(2/2)</span>      :                 case kIROp_GetElement:</span></span>
-<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">       66289 <span class="branchAll" title="br0: 24824; br1: 2115175">(2/2)</span>      :                 case kIROp_FieldExtract:</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">      340710 <span class="branchAll" title="br0: 271730; br1: 68980">(2/2)</span>      :         for (auto block = func-&gt;getLastBlock(); block; block = block-&gt;getPrevBlock())</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">      271730            :         {</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">     2414241 <span class="branchAll" title="br0: 2142505; br1: 271736">(2/2)</span>      :             for (auto inst = block-&gt;getLastChild(); inst; inst = inst-&gt;getPrevInst())</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">     2142505            :             {</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">     2142505 <span class="branchAll" title="br0: 2076216; br1: 66289">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">     2142505            :                 {</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">       41465 <span class="branchAll" title="br0: 41465; br1: 2101040">(2/2)</span>      :                 case kIROp_GetElement:</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">       66289 <span class="branchAll" title="br0: 24824; br1: 2117681">(2/2)</span>      :                 case kIROp_FieldExtract:</span></span>
 <span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">       66289            :                     addToFollowUpWorkList(inst);</span></span>
 <span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">       66289            :                     break;</span></span>
-<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">     2139999            :                 }</span></span>
-<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">     2139999            :             }</span></span>
-<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">      271451            :         }</span></span>
-<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">      135223 <span class="branchAll" title="br0: 66289; br1: 68934">(2/2)</span>      :         for (Index i = 0; i &lt; followUpWorkList.getCount(); i++)</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">     2142505            :                 }</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">     2142505            :             }</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">      271730            :         }</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">      135269 <span class="branchAll" title="br0: 66289; br1: 68980">(2/2)</span>      :         for (Index i = 0; i &lt; followUpWorkList.getCount(); i++)</span></span>
 <span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">       66289            :             processInst(followUpWorkList[i]);</span></span>
-<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">       68934            :     }</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">       68980            :     }</span></span>
 <span id="L343"><span class="lineNum">     343</span>                         : </span>
 <span id="L344"><span class="lineNum">     344</span>                         :     // Make the two operands of a binary operator the same shape, because the CUDA and C++ preludes</span>
 <span id="L345"><span class="lineNum">     345</span>                         :     // do not define the operators that mix a scalar with a vector or a matrix.</span>
@@ -646,42 +646,42 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L355"><span class="lineNum">     355</span>                         :     // We process any instruction, so that the same rewrite applies to instructions in a function</span>
 <span id="L356"><span class="lineNum">     356</span>                         :     // body and to instructions at module scope.</span>
 <span id="L357"><span class="lineNum">     357</span>                         :     void unifyBinaryExprOperands(IRBuilder&amp; builder, IRInst* inst)</span>
-<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">     3483737            :     {</span></span>
-<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">     3483737 <span class="branchAll" title="br0: 3352071; br1: 131666">(2/2)</span>      :         switch (inst-&gt;getOp())</span></span>
-<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">     3483737            :         {</span></span>
-<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">       42003 <span class="branchAll" title="br0: 42003; br1: 3441734">(2/2)</span>      :         case kIROp_Add:</span></span>
-<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">       45088 <span class="branchAll" title="br0: 3085; br1: 3480652">(2/2)</span>      :         case kIROp_Sub:</span></span>
-<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">       71845 <span class="branchAll" title="br0: 26757; br1: 3456980">(2/2)</span>      :         case kIROp_Mul:</span></span>
-<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">       83369 <span class="branchAll" title="br0: 11524; br1: 3472213">(2/2)</span>      :         case kIROp_Div:</span></span>
-<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">       86081 <span class="branchAll" title="br0: 2712; br1: 3481025">(2/2)</span>      :         case kIROp_IRem:</span></span>
-<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">       86131 <span class="branchAll" title="br0: 50; br1: 3483687">(2/2)</span>      :         case kIROp_FRem:</span></span>
-<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">       86163 <span class="branchAll" title="br0: 32; br1: 3483705">(2/2)</span>      :         case kIROp_And:</span></span>
-<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">       86175 <span class="branchAll" title="br0: 12; br1: 3483725">(2/2)</span>      :         case kIROp_Or:</span></span>
-<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">       92546 <span class="branchAll" title="br0: 6371; br1: 3477366">(2/2)</span>      :         case kIROp_BitAnd:</span></span>
-<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">       97739 <span class="branchAll" title="br0: 5193; br1: 3478544">(2/2)</span>      :         case kIROp_BitOr:</span></span>
-<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">       98317 <span class="branchAll" title="br0: 578; br1: 3483159">(2/2)</span>      :         case kIROp_BitXor:</span></span>
-<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">       98600 <span class="branchAll" title="br0: 283; br1: 3483454">(2/2)</span>      :         case kIROp_Leq:</span></span>
-<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">      105329 <span class="branchAll" title="br0: 6729; br1: 3477008">(2/2)</span>      :         case kIROp_Less:</span></span>
-<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">      107078 <span class="branchAll" title="br0: 1749; br1: 3481988">(2/2)</span>      :         case kIROp_Geq:</span></span>
-<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">      108068 <span class="branchAll" title="br0: 990; br1: 3482747">(2/2)</span>      :         case kIROp_Greater:</span></span>
-<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">      121998 <span class="branchAll" title="br0: 13930; br1: 3469807">(2/2)</span>      :         case kIROp_Eql:</span></span>
-<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">      124899 <span class="branchAll" title="br0: 2901; br1: 3480836">(2/2)</span>      :         case kIROp_Neq:</span></span>
-<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">      124899            :             builder.setInsertBefore(inst);</span></span>
-<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">      124899            :             SLANG_ASSERT(inst-&gt;getOperandCount() == 2);</span></span>
-<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">      124899 <span class="branchAll" title="br0: 13044; br1: 111855">(2/2)</span>      :             if (as&lt;IRVectorType&gt;(inst-&gt;getDataType()))</span></span>
-<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">       13044            :             {</span></span>
-<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">       39132 <span class="branchAll" title="br0: 26088; br1: 13044">(2/2)</span>      :                 for (UInt a = 0; a &lt; 2; a++)</span></span>
-<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">       26088            :                 {</span></span>
-<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">       26088 <span class="branchAll" title="br0: 1349; br1: 24739">(2/2)</span>      :                     if (as&lt;IRBasicType&gt;(inst-&gt;getOperand(a)-&gt;getDataType()))</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">     3487905            :     {</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">     3487905 <span class="branchAll" title="br0: 3356205; br1: 131700">(2/2)</span>      :         switch (inst-&gt;getOp())</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">     3487905            :         {</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">       42019 <span class="branchAll" title="br0: 42019; br1: 3445886">(2/2)</span>      :         case kIROp_Add:</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">       45104 <span class="branchAll" title="br0: 3085; br1: 3484820">(2/2)</span>      :         case kIROp_Sub:</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">       71863 <span class="branchAll" title="br0: 26759; br1: 3461146">(2/2)</span>      :         case kIROp_Mul:</span></span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">       83387 <span class="branchAll" title="br0: 11524; br1: 3476381">(2/2)</span>      :         case kIROp_Div:</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">       86099 <span class="branchAll" title="br0: 2712; br1: 3485193">(2/2)</span>      :         case kIROp_IRem:</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">       86149 <span class="branchAll" title="br0: 50; br1: 3487855">(2/2)</span>      :         case kIROp_FRem:</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">       86181 <span class="branchAll" title="br0: 32; br1: 3487873">(2/2)</span>      :         case kIROp_And:</span></span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">       86193 <span class="branchAll" title="br0: 12; br1: 3487893">(2/2)</span>      :         case kIROp_Or:</span></span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">       92564 <span class="branchAll" title="br0: 6371; br1: 3481534">(2/2)</span>      :         case kIROp_BitAnd:</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">       97757 <span class="branchAll" title="br0: 5193; br1: 3482712">(2/2)</span>      :         case kIROp_BitOr:</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">       98335 <span class="branchAll" title="br0: 578; br1: 3487327">(2/2)</span>      :         case kIROp_BitXor:</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">       98618 <span class="branchAll" title="br0: 283; br1: 3487622">(2/2)</span>      :         case kIROp_Leq:</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">      105347 <span class="branchAll" title="br0: 6729; br1: 3481176">(2/2)</span>      :         case kIROp_Less:</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">      107096 <span class="branchAll" title="br0: 1749; br1: 3486156">(2/2)</span>      :         case kIROp_Geq:</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">      108086 <span class="branchAll" title="br0: 990; br1: 3486915">(2/2)</span>      :         case kIROp_Greater:</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">      122024 <span class="branchAll" title="br0: 13938; br1: 3473967">(2/2)</span>      :         case kIROp_Eql:</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">      124933 <span class="branchAll" title="br0: 2909; br1: 3484996">(2/2)</span>      :         case kIROp_Neq:</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">      124933            :             builder.setInsertBefore(inst);</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">      124933            :             SLANG_ASSERT(inst-&gt;getOperandCount() == 2);</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">      124933 <span class="branchAll" title="br0: 13054; br1: 111879">(2/2)</span>      :             if (as&lt;IRVectorType&gt;(inst-&gt;getDataType()))</span></span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">       13054            :             {</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">       39161 <span class="branchAll" title="br0: 26107; br1: 13054">(2/2)</span>      :                 for (UInt a = 0; a &lt; 2; a++)</span></span>
+<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">       26107            :                 {</span></span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">       26107 <span class="branchAll" title="br0: 1349; br1: 24758">(2/2)</span>      :                     if (as&lt;IRBasicType&gt;(inst-&gt;getOperand(a)-&gt;getDataType()))</span></span>
 <span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">        1349            :                     {</span></span>
 <span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">        1349            :                         auto v = builder.emitMakeVectorFromScalar(</span></span>
 <span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">        1349            :                             inst-&gt;getOperand(1 - a)-&gt;getDataType(),</span></span>
 <span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">        1349            :                             inst-&gt;getOperand(a));</span></span>
 <span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">        1349            :                         inst-&gt;setOperand(a, v);</span></span>
 <span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">        1349            :                     }</span></span>
-<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">       26088            :                 }</span></span>
-<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">       13044            :             }</span></span>
-<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">      111855 <span class="branchAll" title="br0: 784; br1: 111071">(2/2)</span>      :             else if (as&lt;IRMatrixType&gt;(inst-&gt;getDataType()))</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">       26107            :                 }</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">       13054            :             }</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">      111879 <span class="branchAll" title="br0: 784; br1: 111095">(2/2)</span>      :             else if (as&lt;IRMatrixType&gt;(inst-&gt;getDataType()))</span></span>
 <span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">         784            :             {</span></span>
 <span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">        2352 <span class="branchAll" title="br0: 1568; br1: 784">(2/2)</span>      :                 for (UInt a = 0; a &lt; 2; a++)</span></span>
 <span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">        1568            :                 {</span></span>
@@ -695,9 +695,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">        1568            :                 }</span></span>
 <span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">         784            :             }</span></span>
 <span id="L406"><span class="lineNum">     406</span>                         : </span>
-<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">      124899            :             break;</span></span>
-<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">        4836 <span class="branchAll" title="br0: 4836; br1: 3478901">(2/2)</span>      :         case kIROp_Lsh:</span></span>
-<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">        6767 <span class="branchAll" title="br0: 1931; br1: 3481806">(2/2)</span>      :         case kIROp_Rsh:</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">      124933            :             break;</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">        4836 <span class="branchAll" title="br0: 4836; br1: 3483069">(2/2)</span>      :         case kIROp_Lsh:</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">        6767 <span class="branchAll" title="br0: 1931; br1: 3485974">(2/2)</span>      :         case kIROp_Rsh:</span></span>
 <span id="L410"><span class="lineNum">     410</span>                         :             // A shift&#x27;s operands may have different integer types, and its result has the</span>
 <span id="L411"><span class="lineNum">     411</span>                         :             // type of the left operand. Consider this example:</span>
 <span id="L412"><span class="lineNum">     412</span>                         :             //</span>
@@ -726,19 +726,19 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">         308            :                 }</span></span>
 <span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">         154            :             }</span></span>
 <span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">        6767            :             break;</span></span>
-<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">     3483737            :         }</span></span>
-<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">     3483737            :     }</span></span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">     3487905            :         }</span></span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">     3487905            :     }</span></span>
 <span id="L440"><span class="lineNum">     440</span>                         : </span>
 <span id="L441"><span class="lineNum">     441</span>                         :     void unifyBinaryExprOperands(IRGlobalValueWithCode* func)</span>
-<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">       48366            :     {</span></span>
-<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">       48366            :         IRBuilder builder(func-&gt;getModule());</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">       48406            :     {</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">       48406            :         IRBuilder builder(func-&gt;getModule());</span></span>
 <span id="L444"><span class="lineNum">     444</span>                         : </span>
-<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">       48366 <span class="branchAll" title="br0: 204258; br1: 48366">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">      204258            :         {</span></span>
-<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">     1991101 <span class="branchAll" title="br0: 1786843; br1: 204258">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
-<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">     1786843            :                 unifyBinaryExprOperands(builder, inst);</span></span>
-<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">      204258            :         }</span></span>
-<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       48366            :     }</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">       48406 <span class="branchAll" title="br0: 204538; br1: 48406">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">      204538            :         {</span></span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">     1993890 <span class="branchAll" title="br0: 1789352; br1: 204538">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">     1789352            :                 unifyBinaryExprOperands(builder, inst);</span></span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">      204538            :         }</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       48406            :     }</span></span>
 <span id="L451"><span class="lineNum">     451</span>                         : </span>
 <span id="L452"><span class="lineNum">     452</span>                         :     // Apply `unifyBinaryExprOperands` to the instructions at module scope.</span>
 <span id="L453"><span class="lineNum">     453</span>                         :     //</span>
@@ -752,31 +752,31 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L461"><span class="lineNum">     461</span>                         :     // expression at each use. The function-based overload never sees it, and the output would have</span>
 <span id="L462"><span class="lineNum">     462</span>                         :     // `Vector&lt;float, 3&gt;(1, 2, 3) * 2.0f`, which the C++ and CUDA preludes do not define.</span>
 <span id="L463"><span class="lineNum">     463</span>                         :     void unifyBinaryExprOperandsAtModuleScope()</span>
-<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">        7163            :     {</span></span>
-<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">        7163            :         IRBuilder builder(module);</span></span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">        7171            :     {</span></span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">        7171            :         IRBuilder builder(module);</span></span>
 <span id="L466"><span class="lineNum">     466</span>                         : </span>
-<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">        7163 <span class="branchAll" title="br0: 1696894; br1: 7163">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
-<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">     1696894            :             unifyBinaryExprOperands(builder, inst);</span></span>
-<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">        7163            :     }</span></span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">        7171 <span class="branchAll" title="br0: 1698561; br1: 7171">(2/2)</span>      :         for (auto inst : module-&gt;getGlobalInsts())</span></span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">     1698561            :             unifyBinaryExprOperands(builder, inst);</span></span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">        7171            :     }</span></span>
 <span id="L470"><span class="lineNum">     470</span>                         : </span>
 <span id="L471"><span class="lineNum">     471</span>                         :     // Turn single element vector values into scalars before using it to call an intrinsic func.</span>
 <span id="L472"><span class="lineNum">     472</span>                         :     void lowerTrivialVector(IRGlobalValueWithCode* func)</span>
-<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">       48366            :     {</span></span>
-<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">       48366            :         IRBuilder builder(func-&gt;getModule());</span></span>
-<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">       48366            :         List&lt;IRInst*&gt; instsToProcess;</span></span>
-<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">       48366 <span class="branchAll" title="br0: 204258; br1: 48366">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC">      204258            :         {</span></span>
-<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">     1992577 <span class="branchAll" title="br0: 1788319; br1: 204258">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
-<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">     1788319            :             {</span></span>
-<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">     1788319 <span class="branchAll" title="br0: 1692002; br1: 96317">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
-<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">     1788319            :                 {</span></span>
-<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">       96317 <span class="branchAll" title="br0: 96317; br1: 1692002">(2/2)</span>      :                 case kIROp_Call:</span></span>
-<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">       96317            :                     {</span></span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">       48405            :     {</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">       48405            :         IRBuilder builder(func-&gt;getModule());</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">       48405            :         List&lt;IRInst*&gt; instsToProcess;</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">       48405 <span class="branchAll" title="br0: 204538; br1: 48404">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC">      204538            :         {</span></span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">     1995365 <span class="branchAll" title="br0: 1790828; br1: 204537">(2/2)</span>      :             for (auto inst = block-&gt;getFirstInst(); inst; inst = inst-&gt;getNextInst())</span></span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">     1790828            :             {</span></span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">     1790828 <span class="branchAll" title="br0: 1694375; br1: 96453">(2/2)</span>      :                 switch (inst-&gt;getOp())</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">     1790828            :                 {</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">       96453 <span class="branchAll" title="br0: 96453; br1: 1694375">(2/2)</span>      :                 case kIROp_Call:</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">       96453            :                     {</span></span>
 <span id="L484"><span class="lineNum">     484</span>                         :                         // If we are calling an intrinsic with any vector&lt;T,1&gt; argument, replace it</span>
 <span id="L485"><span class="lineNum">     485</span>                         :                         // with T.</span>
-<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">       96317            :                         auto callInst = as&lt;IRCall&gt;(inst);</span></span>
-<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">       96317 <span class="branchAll" title="br0: 33; br1: 96284">(2/2)</span>      :                         if (getResolvedInstForDecorations(callInst-&gt;getCallee())</span></span>
-<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">       96317            :                                 -&gt;findDecoration&lt;IRTargetIntrinsicDecoration&gt;())</span></span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">       96453            :                         auto callInst = as&lt;IRCall&gt;(inst);</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">       96453 <span class="branchAll" title="br0: 33; br1: 96420">(2/2)</span>      :                         if (getResolvedInstForDecorations(callInst-&gt;getCallee())</span></span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">       96453            :                                 -&gt;findDecoration&lt;IRTargetIntrinsicDecoration&gt;())</span></span>
 <span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">          33            :                         {</span></span>
 <span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">          69 <span class="branchAll" title="br0: 36; br1: 33">(2/2)</span>      :                             for (UInt a = 0; a &lt; callInst-&gt;getArgCount(); a++)</span></span>
 <span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">          36            :                             {</span></span>
@@ -798,40 +798,40 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L507"><span class="lineNum">     507</span> <span class="tlaUNC">           0            :                                 }</span></span>
 <span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">          36            :                             }</span></span>
 <span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">          33            :                         }</span></span>
-<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">       96317            :                     }</span></span>
-<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">       96317            :                     break;</span></span>
-<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">     1788319            :                 }</span></span>
-<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">     1788319            :             }</span></span>
-<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">      204258            :         }</span></span>
-<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">       48366            :     }</span></span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">       96453            :                     }</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">       96453            :                     break;</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">     1790828            :                 }</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">     1790828            :             }</span></span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">      204538            :         }</span></span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">       48405            :     }</span></span>
 <span id="L516"><span class="lineNum">     516</span>                         : </span>
 <span id="L517"><span class="lineNum">     517</span>                         : </span>
 <span id="L518"><span class="lineNum">     518</span>                         :     void processFunc(IRGlobalValueWithCode* func)</span>
-<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">       68934            :     {</span></span>
-<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">       68934 <span class="branchAll" title="br0: 30978; br1: 37956; br2: 17388; br3: 20568">(4/4)</span>      :         if (isCPUTarget(targetReq) || isCUDATarget(targetReq))</span></span>
-<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">       48366            :         {</span></span>
-<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       48366            :             unifyBinaryExprOperands(func);</span></span>
-<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       48366            :             lowerTrivialVector(func);</span></span>
-<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">       48366            :         }</span></span>
-<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">       68934            :         eliminateCompositeConstruct(func);</span></span>
-<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">       68934            :         deferAndDuplicateElementExtract(func);</span></span>
-<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">       68934            :         deferAndDuplicateLoad(func);</span></span>
-<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">       68934            :         deferVarDecl(func);</span></span>
-<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">       68934            :     }</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">       68974            :     {</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">       68974 <span class="branchAll" title="br0: 31008; br1: 37966; br2: 17398; br3: 20568">(4/4)</span>      :         if (isCPUTarget(targetReq) || isCUDATarget(targetReq))</span></span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">       48406            :         {</span></span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       48406            :             unifyBinaryExprOperands(func);</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       48406            :             lowerTrivialVector(func);</span></span>
+<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">       48406            :         }</span></span>
+<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">       68974            :         eliminateCompositeConstruct(func);</span></span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">       68974            :         deferAndDuplicateElementExtract(func);</span></span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">       68974            :         deferAndDuplicateLoad(func);</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">       68974            :         deferVarDecl(func);</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">       68974            :     }</span></span>
 <span id="L530"><span class="lineNum">     530</span>                         : </span>
 <span id="L531"><span class="lineNum">     531</span>                         :     void processModule()</span>
-<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">       10181            :     {</span></span>
-<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">       10181 <span class="branchAll" title="br0: 4668; br1: 5513; br2: 2495; br3: 3018">(4/4)</span>      :         if (isCPUTarget(targetReq) || isCUDATarget(targetReq))</span></span>
-<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">        7163            :             unifyBinaryExprOperandsAtModuleScope();</span></span>
-<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">       68934            :         processInstsOfType&lt;IRFunc&gt;(kIROp_Func, [this](IRFunc* f) { processFunc(f); });</span></span>
-<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">       10181            :     }</span></span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">       10189            :     {</span></span>
+<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">       10189 <span class="branchAll" title="br0: 4676; br1: 5513; br2: 2497; br3: 3016">(4/4)</span>      :         if (isCPUTarget(targetReq) || isCUDATarget(targetReq))</span></span>
+<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">        7171            :             unifyBinaryExprOperandsAtModuleScope();</span></span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">       68974            :         processInstsOfType&lt;IRFunc&gt;(kIROp_Func, [this](IRFunc* f) { processFunc(f); });</span></span>
+<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">       10189            :     }</span></span>
 <span id="L537"><span class="lineNum">     537</span>                         : };</span>
 <span id="L538"><span class="lineNum">     538</span>                         : </span>
 <span id="L539"><span class="lineNum">     539</span>                         : void simplifyForEmit(IRModule* module, TargetRequest* targetRequest)</span>
-<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">       10181            : {</span></span>
-<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">       10181            :     SimplifyForEmitContext context(module, targetRequest);</span></span>
-<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">       10181            :     context.processModule();</span></span>
-<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">       10181            : }</span></span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">       10189            : {</span></span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">       10189            :     SimplifyForEmitContext context(module, targetRequest);</span></span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">       10189            :     context.processModule();</span></span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">       10189            : }</span></span>
 <span id="L544"><span class="lineNum">     544</span>                         : </span>
 <span id="L545"><span class="lineNum">     545</span>                         : } // namespace Slang</span>
 </pre>
