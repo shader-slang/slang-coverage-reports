@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-24 04:44:13 UTC</td>
+      <td class="headerValue">2026-11-25 03:49:20 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -547,9 +547,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L256"><span class="lineNum">     256</span>                         :     List&lt;ResourceRecipeOperand&gt; operands;</span>
 <span id="L257"><span class="lineNum">     257</span>                         : </span>
 <span id="L258"><span class="lineNum">     258</span>                         :     bool operator==(const ResourceRecipeKey&amp; other) const</span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">        3912            :     {</span></span>
-<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">        3912 <span class="branchAll" title="br0: 10; br1: 3902">(2/2)</span>      :         if (op != other.op)</span></span>
-<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">          10            :             return false;</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">        3933            :     {</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">        3933 <span class="branchAll" title="br0: 31; br1: 3902">(2/2)</span>      :         if (op != other.op)</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">          31            :             return false;</span></span>
 <span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">        3902 <span class="branchPart" title="br0: 0; br1: 3902">(1/2)</span>      :         if (type != other.type)</span></span>
 <span id="L263"><span class="lineNum">     263</span> <span class="tlaUNC">           0            :             return false;</span></span>
 <span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">        3902 <span class="branchPart" title="br0: 0; br1: 3902">(1/2)</span>      :         if (operands.getCount() != other.operands.getCount())</span></span>
@@ -662,9 +662,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L371"><span class="lineNum">     371</span>                         : </span>
 <span id="L372"><span class="lineNum">     372</span>                         :     /// Return whether an instruction conditionally computes a resource through a select or phi.</span>
 <span id="L373"><span class="lineNum">     373</span>                         :     static bool isSelection(IRInst* inst)</span>
-<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">     1131739            :     {</span></span>
-<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">     1131739 <span class="branchAll" title="br0: 1115064; br1: 16675">(2/2)</span>      :         if (!isResourceType(inst-&gt;getDataType()))</span></span>
-<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">     1115064            :             return false;</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">     1132063            :     {</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">     1132063 <span class="branchAll" title="br0: 1115388; br1: 16675">(2/2)</span>      :         if (!isResourceType(inst-&gt;getDataType()))</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">     1115388            :             return false;</span></span>
 <span id="L377"><span class="lineNum">     377</span>                         :         // Pointer arithmetic can create unbounded paths around a loop. Native pointer choices</span>
 <span id="L378"><span class="lineNum">     378</span>                         :         // already have their own legalization and are outside this resource-construction model.</span>
 <span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">       16675 <span class="branchPart" title="br0: 0; br1: 16675">(1/2)</span>      :         if (as&lt;IRPtrTypeBase&gt;(unwrapArray(inst-&gt;getDataType())))</span></span>
@@ -2019,18 +2019,18 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1728"><span class="lineNum">    1728</span>                         : /// them. A combined texture-sampler built from undefined parts benefits the same way: constructors</span>
 <span id="L1729"><span class="lineNum">    1729</span>                         : /// with the same operands share a recipe.</span>
 <span id="L1730"><span class="lineNum">    1730</span>                         : bool mergeUndefinedResources(IRFunc* func)</span>
-<span id="L1731"><span class="lineNum">    1731</span> <span class="tlaGNC">       31632            : {</span></span>
-<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">       31632            :     List&lt;IRInst*&gt; undefinedResources;</span></span>
-<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaGNC">       31632 <span class="branchAll" title="br0: 238592; br1: 31632">(2/2)</span>      :     for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L1734"><span class="lineNum">    1734</span> <span class="tlaGNC">      238592 <span class="branchAll" title="br0: 1127331; br1: 238592">(2/2)</span>      :         for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">     1127331 <span class="branchAll" title="br0: 635; br1: 1126696">(2/2)</span>      :             if (as&lt;IRLoadFromUninitializedMemory&gt;(inst))</span></span>
-<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaGNC">         635 <span class="branchAll" title="br0: 306; br1: 329">(2/2)</span>      :                 if (isResourceType(inst-&gt;getDataType()))</span></span>
+<span id="L1731"><span class="lineNum">    1731</span> <span class="tlaGNC">       31645            : {</span></span>
+<span id="L1732"><span class="lineNum">    1732</span> <span class="tlaGNC">       31645            :     List&lt;IRInst*&gt; undefinedResources;</span></span>
+<span id="L1733"><span class="lineNum">    1733</span> <span class="tlaGNC">       31645 <span class="branchAll" title="br0: 238652; br1: 31645">(2/2)</span>      :     for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L1734"><span class="lineNum">    1734</span> <span class="tlaGNC">      238652 <span class="branchAll" title="br0: 1127655; br1: 238652">(2/2)</span>      :         for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L1735"><span class="lineNum">    1735</span> <span class="tlaGNC">     1127655 <span class="branchAll" title="br0: 636; br1: 1127019">(2/2)</span>      :             if (as&lt;IRLoadFromUninitializedMemory&gt;(inst))</span></span>
+<span id="L1736"><span class="lineNum">    1736</span> <span class="tlaGNC">         636 <span class="branchAll" title="br0: 306; br1: 330">(2/2)</span>      :                 if (isResourceType(inst-&gt;getDataType()))</span></span>
 <span id="L1737"><span class="lineNum">    1737</span> <span class="tlaGNC">         306            :                     undefinedResources.add(inst);</span></span>
 <span id="L1738"><span class="lineNum">    1738</span>                         : </span>
-<span id="L1739"><span class="lineNum">    1739</span> <span class="tlaGNC">       31632            :     bool changed = false;</span></span>
-<span id="L1740"><span class="lineNum">    1740</span> <span class="tlaGNC">       31632            :     auto entryBlock = func-&gt;getFirstBlock();</span></span>
-<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaGNC">       31632            :     Dictionary&lt;IRType*, IRInst*&gt; representatives;</span></span>
-<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaGNC">       31632 <span class="branchAll" title="br0: 306; br1: 31632">(2/2)</span>      :     for (auto inst : undefinedResources)</span></span>
+<span id="L1739"><span class="lineNum">    1739</span> <span class="tlaGNC">       31645            :     bool changed = false;</span></span>
+<span id="L1740"><span class="lineNum">    1740</span> <span class="tlaGNC">       31645            :     auto entryBlock = func-&gt;getFirstBlock();</span></span>
+<span id="L1741"><span class="lineNum">    1741</span> <span class="tlaGNC">       31645            :     Dictionary&lt;IRType*, IRInst*&gt; representatives;</span></span>
+<span id="L1742"><span class="lineNum">    1742</span> <span class="tlaGNC">       31645 <span class="branchAll" title="br0: 306; br1: 31645">(2/2)</span>      :     for (auto inst : undefinedResources)</span></span>
 <span id="L1743"><span class="lineNum">    1743</span> <span class="tlaGNC">         306            :     {</span></span>
 <span id="L1744"><span class="lineNum">    1744</span> <span class="tlaGNC">         306            :         auto type = inst-&gt;getDataType();</span></span>
 <span id="L1745"><span class="lineNum">    1745</span> <span class="tlaGNC">         306 <span class="branchAll" title="br0: 65; br1: 241">(2/2)</span>      :         if (auto representative = representatives.tryGetValue(type))</span></span>
@@ -2046,35 +2046,35 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1755"><span class="lineNum">    1755</span> <span class="tlaGNC">          23            :         inst-&gt;insertBefore(entryBlock-&gt;getFirstOrdinaryInst());</span></span>
 <span id="L1756"><span class="lineNum">    1756</span> <span class="tlaGNC">          23            :         changed = true;</span></span>
 <span id="L1757"><span class="lineNum">    1757</span> <span class="tlaGNC">          23            :     }</span></span>
-<span id="L1758"><span class="lineNum">    1758</span> <span class="tlaGNC">       31632            :     return changed;</span></span>
-<span id="L1759"><span class="lineNum">    1759</span> <span class="tlaGNC">       31632            : }</span></span>
+<span id="L1758"><span class="lineNum">    1758</span> <span class="tlaGNC">       31645            :     return changed;</span></span>
+<span id="L1759"><span class="lineNum">    1759</span> <span class="tlaGNC">       31645            : }</span></span>
 <span id="L1760"><span class="lineNum">    1760</span>                         : } // namespace</span>
 <span id="L1761"><span class="lineNum">    1761</span>                         : </span>
 <span id="L1762"><span class="lineNum">    1762</span>                         : bool specializeResourceSelections(CodeGenContext* codeGenContext, IRModule* module)</span>
-<span id="L1763"><span class="lineNum">    1763</span> <span class="tlaGNC">       17158            : {</span></span>
+<span id="L1763"><span class="lineNum">    1763</span> <span class="tlaGNC">       17164            : {</span></span>
 <span id="L1764"><span class="lineNum">    1764</span>                         :     // Resource-array indexing and the emitted reconstruction operations obey Khronos rules.</span>
 <span id="L1765"><span class="lineNum">    1765</span>                         :     // WGSL requires separate validation of its resource-array and uniformity restrictions.</span>
-<span id="L1766"><span class="lineNum">    1766</span> <span class="tlaGNC">       17158 <span class="branchAll" title="br0: 11162; br1: 5996">(2/2)</span>      :     if (!isKhronosTarget(codeGenContext-&gt;getTargetReq()))</span></span>
-<span id="L1767"><span class="lineNum">    1767</span> <span class="tlaGNC">       11162            :         return false;</span></span>
-<span id="L1768"><span class="lineNum">    1768</span> <span class="tlaGNC">        5996            :     bool changed = false;</span></span>
-<span id="L1769"><span class="lineNum">    1769</span> <span class="tlaGNC">        5996 <span class="branchAll" title="br0: 1005571; br1: 5996">(2/2)</span>      :     for (auto global : module-&gt;getGlobalInsts())</span></span>
-<span id="L1770"><span class="lineNum">    1770</span> <span class="tlaGNC">     1005571            :     {</span></span>
-<span id="L1771"><span class="lineNum">    1771</span> <span class="tlaGNC">     1005571            :         auto func = as&lt;IRFunc&gt;(global);</span></span>
-<span id="L1772"><span class="lineNum">    1772</span> <span class="tlaGNC">     1005571 <span class="branchAll" title="br0: 964892; br1: 40679">(2/2)</span>      :         if (!func)</span></span>
-<span id="L1773"><span class="lineNum">    1773</span> <span class="tlaGNC">      964892            :             continue;</span></span>
+<span id="L1766"><span class="lineNum">    1766</span> <span class="tlaGNC">       17164 <span class="branchAll" title="br0: 11167; br1: 5997">(2/2)</span>      :     if (!isKhronosTarget(codeGenContext-&gt;getTargetReq()))</span></span>
+<span id="L1767"><span class="lineNum">    1767</span> <span class="tlaGNC">       11167            :         return false;</span></span>
+<span id="L1768"><span class="lineNum">    1768</span> <span class="tlaGNC">        5997            :     bool changed = false;</span></span>
+<span id="L1769"><span class="lineNum">    1769</span> <span class="tlaGNC">        5997 <span class="branchAll" title="br0: 1006018; br1: 5997">(2/2)</span>      :     for (auto global : module-&gt;getGlobalInsts())</span></span>
+<span id="L1770"><span class="lineNum">    1770</span> <span class="tlaGNC">     1006018            :     {</span></span>
+<span id="L1771"><span class="lineNum">    1771</span> <span class="tlaGNC">     1006018            :         auto func = as&lt;IRFunc&gt;(global);</span></span>
+<span id="L1772"><span class="lineNum">    1772</span> <span class="tlaGNC">     1006018 <span class="branchAll" title="br0: 965321; br1: 40697">(2/2)</span>      :         if (!func)</span></span>
+<span id="L1773"><span class="lineNum">    1773</span> <span class="tlaGNC">      965321            :             continue;</span></span>
 <span id="L1774"><span class="lineNum">    1774</span>                         :         // Generic assembly replaces the emitted function implementation. Ordinary dispatch</span>
 <span id="L1775"><span class="lineNum">    1775</span>                         :         // blocks inserted into such a function would not define the behavior of that assembly.</span>
 <span id="L1776"><span class="lineNum">    1776</span>                         :         // Its conditional resource computations remain intact for the other steps in</span>
 <span id="L1777"><span class="lineNum">    1777</span>                         :         // `specializeResourceUsage` and the target&#x27;s later unsupported-instruction checks.</span>
-<span id="L1778"><span class="lineNum">    1778</span> <span class="tlaGNC">       40679 <span class="branchAll" title="br0: 9047; br1: 31632">(2/2)</span>      :         if (hasGenericAssemblyImplementation(func))</span></span>
+<span id="L1778"><span class="lineNum">    1778</span> <span class="tlaGNC">       40697 <span class="branchAll" title="br0: 9047; br1: 31650">(2/2)</span>      :         if (hasGenericAssemblyImplementation(func))</span></span>
 <span id="L1779"><span class="lineNum">    1779</span> <span class="tlaGNC">        9047            :             continue;</span></span>
-<span id="L1780"><span class="lineNum">    1780</span> <span class="tlaGNC">       31632            :         changed |= mergeUndefinedResources(func);</span></span>
-<span id="L1781"><span class="lineNum">    1781</span> <span class="tlaGNC">       31632            :         OrderedHashSet&lt;IRInst*&gt; candidates;</span></span>
-<span id="L1782"><span class="lineNum">    1782</span> <span class="tlaGNC">       31632 <span class="branchAll" title="br0: 238592; br1: 31632">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
-<span id="L1783"><span class="lineNum">    1783</span> <span class="tlaGNC">      238592 <span class="branchAll" title="br0: 1127266; br1: 238592">(2/2)</span>      :             for (auto inst : block-&gt;getChildren())</span></span>
-<span id="L1784"><span class="lineNum">    1784</span> <span class="tlaGNC">     1127266 <span class="branchAll" title="br0: 512; br1: 1126754">(2/2)</span>      :                 if (ResourceSelectionContext::isSelection(inst))</span></span>
+<span id="L1780"><span class="lineNum">    1780</span> <span class="tlaGNC">       31650            :         changed |= mergeUndefinedResources(func);</span></span>
+<span id="L1781"><span class="lineNum">    1781</span> <span class="tlaGNC">       31650            :         OrderedHashSet&lt;IRInst*&gt; candidates;</span></span>
+<span id="L1782"><span class="lineNum">    1782</span> <span class="tlaGNC">       31650 <span class="branchAll" title="br0: 238652; br1: 31650">(2/2)</span>      :         for (auto block : func-&gt;getBlocks())</span></span>
+<span id="L1783"><span class="lineNum">    1783</span> <span class="tlaGNC">      238652 <span class="branchAll" title="br0: 1127590; br1: 238652">(2/2)</span>      :             for (auto inst : block-&gt;getChildren())</span></span>
+<span id="L1784"><span class="lineNum">    1784</span> <span class="tlaGNC">     1127590 <span class="branchAll" title="br0: 512; br1: 1127078">(2/2)</span>      :                 if (ResourceSelectionContext::isSelection(inst))</span></span>
 <span id="L1785"><span class="lineNum">    1785</span> <span class="tlaGNC">         512            :                     candidates.add(inst);</span></span>
-<span id="L1786"><span class="lineNum">    1786</span> <span class="tlaGNC">       32030 <span class="branchAll" title="br0: 398; br1: 31632">(2/2)</span>      :         while (candidates.getCount())</span></span>
+<span id="L1786"><span class="lineNum">    1786</span> <span class="tlaGNC">       32048 <span class="branchAll" title="br0: 398; br1: 31650">(2/2)</span>      :         while (candidates.getCount())</span></span>
 <span id="L1787"><span class="lineNum">    1787</span> <span class="tlaGNC">         398            :         {</span></span>
 <span id="L1788"><span class="lineNum">    1788</span> <span class="tlaGNC">         398            :             auto candidate = *candidates.begin();</span></span>
 <span id="L1789"><span class="lineNum">    1789</span> <span class="tlaGNC">         398            :             candidates.remove(candidate);</span></span>
@@ -2089,9 +2089,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1798"><span class="lineNum">    1798</span> <span class="tlaGNC">        1393            :                 candidates.remove(value-&gt;inst);</span></span>
 <span id="L1799"><span class="lineNum">    1799</span> <span class="tlaGNC">         239            :             changed = true;</span></span>
 <span id="L1800"><span class="lineNum">    1800</span> <span class="tlaGNC">         239            :         }</span></span>
-<span id="L1801"><span class="lineNum">    1801</span> <span class="tlaGNC">       31632            :     }</span></span>
-<span id="L1802"><span class="lineNum">    1802</span> <span class="tlaGNC">        5996            :     return changed;</span></span>
-<span id="L1803"><span class="lineNum">    1803</span> <span class="tlaGNC">       17158            : }</span></span>
+<span id="L1801"><span class="lineNum">    1801</span> <span class="tlaGNC">       31650            :     }</span></span>
+<span id="L1802"><span class="lineNum">    1802</span> <span class="tlaGNC">        5997            :     return changed;</span></span>
+<span id="L1803"><span class="lineNum">    1803</span> <span class="tlaGNC">       17164            : }</span></span>
 <span id="L1804"><span class="lineNum">    1804</span>                         : } // namespace Slang</span>
 </pre>
   <br>
