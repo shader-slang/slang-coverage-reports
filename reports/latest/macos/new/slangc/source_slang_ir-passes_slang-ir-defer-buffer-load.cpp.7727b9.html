@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-25 03:49:30 UTC</td>
+      <td class="headerValue">2026-11-26 05:02:57 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -348,17 +348,17 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       51405            : }</span></span>
 <span id="L58"><span class="lineNum">      58</span>                         : </span>
 <span id="L59"><span class="lineNum">      59</span>                         : bool isTypePreferrableToDeferLoad(CodeGenContext* codeGenContext, IRType* type)</span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">      419109            : {</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">      419108            : {</span></span>
 <span id="L61"><span class="lineNum">      61</span>                         :     // If parameter is a pointer/reference, we should consider specialize it.</span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">      419109 <span class="branchAll" title="br0: 24321; br1: 394788; br2: 2142; br3: 392646; br4: 10493; br5: 382153">(6/6)</span>      :     if (as&lt;IROutParamTypeBase&gt;(type) || as&lt;IRRefParamType&gt;(type) || as&lt;IRBorrowInParamType&gt;(type))</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">      419108 <span class="branchAll" title="br0: 24320; br1: 394788; br2: 2143; br3: 392645; br4: 10493; br5: 382152">(6/6)</span>      :     if (as&lt;IROutParamTypeBase&gt;(type) || as&lt;IRRefParamType&gt;(type) || as&lt;IRBorrowInParamType&gt;(type))</span></span>
 <span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       36956            :         return true;</span></span>
 <span id="L64"><span class="lineNum">      64</span>                         : </span>
 <span id="L65"><span class="lineNum">      65</span>                         :     // We only want to defer loading values that are &quot;large enough&quot; that</span>
 <span id="L66"><span class="lineNum">      66</span>                         :     // we expect them to be expensive to pass by value.</span>
 <span id="L67"><span class="lineNum">      67</span>                         :     //</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">      382153            :     IRSizeAndAlignment sizeAlignment = {};</span></span>
-<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">      382153 <span class="branchAll" title="br0: 16867; br1: 365286">(2/2)</span>      :     if (SLANG_FAILED(</span></span>
-<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">      382153            :             getNaturalSizeAndAlignment(codeGenContext-&gt;getTargetReq(), type, &amp;sizeAlignment)))</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">      382152            :     IRSizeAndAlignment sizeAlignment = {};</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">      382152 <span class="branchAll" title="br0: 16867; br1: 365285">(2/2)</span>      :     if (SLANG_FAILED(</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">      382152            :             getNaturalSizeAndAlignment(codeGenContext-&gt;getTargetReq(), type, &amp;sizeAlignment)))</span></span>
 <span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       16867            :     {</span></span>
 <span id="L72"><span class="lineNum">      72</span>                         :         // If type contains fields that we don&#x27;t know how to compute natural size</span>
 <span id="L73"><span class="lineNum">      73</span>                         :         // for, default to specialize if it contains arrays.</span>
@@ -366,12 +366,12 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       16867            :     }</span></span>
 <span id="L76"><span class="lineNum">      76</span>                         : </span>
 <span id="L77"><span class="lineNum">      77</span>                         :     // If the argument is very small, don&#x27;t bother specializing.</span>
-<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">      365286 <span class="branchAll" title="br0: 332789; br1: 32497">(2/2)</span>      :     if (sizeAlignment.size &lt;= kBufferLoadElementSizeSpecializationMinThreshold)</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">      365285 <span class="branchAll" title="br0: 332789; br1: 32496">(2/2)</span>      :     if (sizeAlignment.size &lt;= kBufferLoadElementSizeSpecializationMinThreshold)</span></span>
 <span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">      332789            :         return false;</span></span>
 <span id="L80"><span class="lineNum">      80</span>                         : </span>
 <span id="L81"><span class="lineNum">      81</span>                         :     // If the argument is somewhat small, don&#x27;t specialize, unless it contains</span>
 <span id="L82"><span class="lineNum">      82</span>                         :     // arrays.</span>
-<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       32497 <span class="branchAll" title="br0: 27818; br1: 4679">(2/2)</span>      :     if (sizeAlignment.size &lt;= kBufferLoadElementSizeSpecializationThreshold)</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       32496 <span class="branchAll" title="br0: 27818; br1: 4678">(2/2)</span>      :     if (sizeAlignment.size &lt;= kBufferLoadElementSizeSpecializationThreshold)</span></span>
 <span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       27818            :     {</span></span>
 <span id="L85"><span class="lineNum">      85</span>                         :         // We generally do not specialize for small values, except it contains</span>
 <span id="L86"><span class="lineNum">      86</span>                         :         // arrays that usually present a challenge for the SROA pass to eliminate</span>
@@ -379,8 +379,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">       27818 <span class="branchAll" title="br0: 19865; br1: 7953">(2/2)</span>      :         if (!isCompositeTypeContainingArrays(type))</span></span>
 <span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       19865            :             return false;</span></span>
 <span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">       27818            :     }</span></span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       12632            :     return true;</span></span>
-<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">       32497            : }</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       12631            :     return true;</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">       32496            : }</span></span>
 <span id="L93"><span class="lineNum">      93</span>                         : </span>
 <span id="L94"><span class="lineNum">      94</span>                         : // Returns true if memory loaded by `loadInst` is not modified before `userInst` after it is</span>
 <span id="L95"><span class="lineNum">      95</span>                         : // loaded.</span>
@@ -517,9 +517,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L226"><span class="lineNum">     226</span>                         :     Dictionary&lt;IRInst*, bool&gt; calleeSideEffectCache;</span>
 <span id="L227"><span class="lineNum">     227</span>                         : </span>
 <span id="L228"><span class="lineNum">     228</span>                         :     void deferBufferLoadInst(IRBuilder&amp; builder, List&lt;IRInst*&gt;&amp; workList, IRInst* loadInst)</span>
-<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">      169601            :     {</span></span>
-<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">      169601            :         bool failDueToAttributeFound = false;</span></span>
-<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">      169601 <span class="branchAll" title="br0: 15; br1: 169586">(2/2)</span>      :         for (auto attr : loadInst-&gt;getAllAttrs())</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">      169600            :     {</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">      169600            :         bool failDueToAttributeFound = false;</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">      169600 <span class="branchAll" title="br0: 15; br1: 169585">(2/2)</span>      :         for (auto attr : loadInst-&gt;getAllAttrs())</span></span>
 <span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">          15            :         {</span></span>
 <span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">          15 <span class="branchPart" title="br0: 15; br1: 0; br2: -; br3: -">(1/4)</span>      :             if (as&lt;IRAlignedAttr&gt;(attr) || as&lt;IRMemoryScopeAttr&gt;(attr))</span></span>
 <span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">          15            :             {</span></span>
@@ -529,19 +529,19 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">          15            :         }</span></span>
 <span id="L239"><span class="lineNum">     239</span>                         : </span>
 <span id="L240"><span class="lineNum">     240</span>                         :         // Don&#x27;t defer the load anymore if the type is simple.</span>
-<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">      169601 <span class="branchAll" title="br0: 15; br1: 169586">(2/2)</span>      :         if (failDueToAttributeFound ||</span></span>
-<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">      169601 <span class="branchAll" title="br0: 162893; br1: 6693">(2/2)</span>      :             !isTypePreferrableToDeferLoad(codeGenContext, loadInst-&gt;getDataType()))</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">      169600 <span class="branchAll" title="br0: 15; br1: 169585">(2/2)</span>      :         if (failDueToAttributeFound ||</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">      169600 <span class="branchAll" title="br0: 162892; br1: 6693">(2/2)</span>      :             !isTypePreferrableToDeferLoad(codeGenContext, loadInst-&gt;getDataType()))</span></span>
 <span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">      162908            :         {</span></span>
 <span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">      162908            :             return;</span></span>
 <span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">      162908            :         }</span></span>
 <span id="L246"><span class="lineNum">     246</span>                         : </span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">        6693            :         auto rootAddr = getRootAddr(loadInst-&gt;getOperand(0));</span></span>
-<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">        6693            :         bool isImmutableBufferLoad = isPointerToImmutableLocation(rootAddr);</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">        6692            :         auto rootAddr = getRootAddr(loadInst-&gt;getOperand(0));</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">        6692            :         bool isImmutableBufferLoad = isPointerToImmutableLocation(rootAddr);</span></span>
 <span id="L249"><span class="lineNum">     249</span>                         : </span>
 <span id="L250"><span class="lineNum">     250</span>                         :         // Don&#x27;t defer the load if there are uses that are not getElement or fieldExtract.</span>
 <span id="L251"><span class="lineNum">     251</span>                         :         // Because in this case we need to use the entire loaded value, and further deferring</span>
 <span id="L252"><span class="lineNum">     252</span>                         :         // the load down any access chain will introduce redundant loads.</span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">        9509 <span class="branchAll" title="br0: 7593; br1: 1916">(2/2)</span>      :         for (auto use = loadInst-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">        9508 <span class="branchAll" title="br0: 7593; br1: 1915">(2/2)</span>      :         for (auto use = loadInst-&gt;firstUse; use; use = use-&gt;nextUse)</span></span>
 <span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">        7593            :         {</span></span>
 <span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">        7593            :             auto user = use-&gt;getUser();</span></span>
 <span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">        7593            :             switch (user-&gt;getOp())</span></span>
@@ -572,7 +572,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L281"><span class="lineNum">     281</span>                         :         // If we reach here, it means all uses are getElement or fieldExtract, and</span>
 <span id="L282"><span class="lineNum">     282</span>                         :         // it is safe to defer the load down the access chain.</span>
 <span id="L283"><span class="lineNum">     283</span>                         : </span>
-<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">        1916 <span class="branchAll" title="br0: 88; br1: 1828">(2/2)</span>      :         if (loadInst-&gt;getOp() == kIROp_StructuredBufferLoad)</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">        1915 <span class="branchAll" title="br0: 88; br1: 1827">(2/2)</span>      :         if (loadInst-&gt;getOp() == kIROp_StructuredBufferLoad)</span></span>
 <span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">          88            :         {</span></span>
 <span id="L286"><span class="lineNum">     286</span>                         :             // Convert the structuredBufferLoad to a regular load to reuse</span>
 <span id="L287"><span class="lineNum">     287</span>                         :             // the same logic for deferring regular loads.</span>
@@ -588,11 +588,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">          88            :         }</span></span>
 <span id="L298"><span class="lineNum">     298</span>                         : </span>
 <span id="L299"><span class="lineNum">     299</span>                         :         // Otherwise, look for all uses and try to defer the load before actual use of the value.</span>
-<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">        1916            :         ShortList&lt;IRInst*&gt; pendingWorkList;</span></span>
-<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">        1916            :         bool needMaterialize = false;</span></span>
-<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">        1916            :         traverseUses(</span></span>
-<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">        1916            :             loadInst,</span></span>
-<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">        1916            :             [&amp;](IRUse* use)</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">        1915            :         ShortList&lt;IRInst*&gt; pendingWorkList;</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">        1915            :         bool needMaterialize = false;</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">        1915            :         traverseUses(</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">        1915            :             loadInst,</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">        1915            :             [&amp;](IRUse* use)</span></span>
 <span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">        2800            :             {</span></span>
 <span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">        2800            :                 auto user = use-&gt;getUser();</span></span>
 <span id="L307"><span class="lineNum">     307</span>                         : </span>
@@ -627,9 +627,9 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L336"><span class="lineNum">     336</span>                         : </span>
 <span id="L337"><span class="lineNum">     337</span>                         :         // Append to worklist in reverse order so we process the uses in natural appearance</span>
 <span id="L338"><span class="lineNum">     338</span>                         :         // order.</span>
-<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">        4716 <span class="branchAll" title="br0: 2800; br1: 1916">(2/2)</span>      :         for (Index i = pendingWorkList.getCount() - 1; i &gt;= 0; i--)</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">        4715 <span class="branchAll" title="br0: 2800; br1: 1915">(2/2)</span>      :         for (Index i = pendingWorkList.getCount() - 1; i &gt;= 0; i--)</span></span>
 <span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">        2800            :             workList.add(pendingWorkList[i]);</span></span>
-<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">        1916            :     }</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">        1915            :     }</span></span>
 <span id="L342"><span class="lineNum">     342</span>                         : </span>
 <span id="L343"><span class="lineNum">     343</span>                         :     void deferBufferLoadInFunc(IRFunc* func)</span>
 <span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">      107617            :     {</span></span>
@@ -657,11 +657,11 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L366"><span class="lineNum">     366</span>                         : </span>
 <span id="L367"><span class="lineNum">     367</span>                         :         // Iteratively process the work list until it is empty.</span>
 <span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">      107617            :         IRBuilder builder(func);</span></span>
-<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">      277218 <span class="branchAll" title="br0: 169601; br1: 107617">(2/2)</span>      :         for (Index i = 0; i &lt; workList.getCount(); i++)</span></span>
-<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">      169601            :         {</span></span>
-<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">      169601            :             auto inst = workList[i];</span></span>
-<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">      169601            :             deferBufferLoadInst(builder, workList, inst);</span></span>
-<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">      169601            :         }</span></span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">      277217 <span class="branchAll" title="br0: 169600; br1: 107617">(2/2)</span>      :         for (Index i = 0; i &lt; workList.getCount(); i++)</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">      169600            :         {</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">      169600            :             auto inst = workList[i];</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">      169600            :             deferBufferLoadInst(builder, workList, inst);</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">      169600            :         }</span></span>
 <span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">      107617            :     }</span></span>
 <span id="L375"><span class="lineNum">     375</span>                         : </span>
 <span id="L376"><span class="lineNum">     376</span>                         :     void deferBufferLoad(IRGlobalValueWithCode* inst)</span>
