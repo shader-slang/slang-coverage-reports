@@ -254,15 +254,15 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-26 05:03:02 UTC</td>
+      <td class="headerValue">2026-11-27 05:06:11 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
     <div class="metricCard">
       <span class="metricLabel">Lines</span>
-      <span class="metricValue">83.1&nbsp;%</span>
-      <div class="metricBarMini"><div class="metricBarFill" style="width:83.1%;background-color:hsl(95, 70%, 50%)"></div></div>
-      <span class="metricCounts">1,207 / 1,453</span>
+      <span class="metricValue">84.0&nbsp;%</span>
+      <div class="metricBarMini"><div class="metricBarFill" style="width:84.0%;background-color:hsl(96, 70%, 50%)"></div></div>
+      <span class="metricCounts">1,221 / 1,454</span>
     </div>
   </div>
   <table class="chrome" cellpadding="0" cellspacing="0">
@@ -4489,383 +4489,388 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L4216"><span class="lineNum">    4216</span>              :     DiagnosticSink* sink)</span>
 <span id="L4217"><span class="lineNum">    4217</span> <span class="tlaGNC">           1 : {</span></span>
 <span id="L4218"><span class="lineNum">    4218</span>              :     SLANG_ASSERT(unspecializedType);</span>
-<span id="L4219"><span class="lineNum">    4219</span>              : </span>
-<span id="L4220"><span class="lineNum">    4220</span>              :     // TODO: We should cache and re-use specialized types</span>
-<span id="L4221"><span class="lineNum">    4221</span>              :     // when the exact same arguments are provided again later.</span>
-<span id="L4222"><span class="lineNum">    4222</span>              : </span>
-<span id="L4223"><span class="lineNum">    4223</span> <span class="tlaGNC">           1 :     SharedSemanticsContext sharedSemanticsContext(this, m_optionSet.getLanguageVersion(), sink);</span></span>
-<span id="L4224"><span class="lineNum">    4224</span> <span class="tlaGNC">           1 :     SemanticsVisitor visitor(&amp;sharedSemanticsContext);</span></span>
-<span id="L4225"><span class="lineNum">    4225</span>              : </span>
-<span id="L4226"><span class="lineNum">    4226</span> <span class="tlaGNC">           1 :     SpecializationParams specializationParams;</span></span>
-<span id="L4227"><span class="lineNum">    4227</span> <span class="tlaGNC">           1 :     if (!_collectExistentialSpecializationParamsRec(</span></span>
-<span id="L4228"><span class="lineNum">    4228</span>              :             getASTBuilder(),</span>
-<span id="L4229"><span class="lineNum">    4229</span>              :             specializationParams,</span>
-<span id="L4230"><span class="lineNum">    4230</span>              :             unspecializedType,</span>
-<span id="L4231"><span class="lineNum">    4231</span>              :             SourceLoc(),</span>
-<span id="L4232"><span class="lineNum">    4232</span>              :             sink,</span>
-<span id="L4233"><span class="lineNum">    4233</span>              :             0))</span>
-<span id="L4234"><span class="lineNum">    4234</span>              :     {</span>
-<span id="L4235"><span class="lineNum">    4235</span>              :         return nullptr;</span>
-<span id="L4236"><span class="lineNum">    4236</span>              :     }</span>
-<span id="L4237"><span class="lineNum">    4237</span>              : </span>
-<span id="L4238"><span class="lineNum">    4238</span>              :     SLANG_ASSERT(specializationParams.getCount() == argCount);</span>
-<span id="L4239"><span class="lineNum">    4239</span> <span class="tlaUNC">           0 :     if (specializationParams.getCount() != argCount)</span></span>
+<span id="L4219"><span class="lineNum">    4219</span>              :     // Reflection callers (e.g. `spReflection_specializeType`) reach this overload with no</span>
+<span id="L4220"><span class="lineNum">    4220</span>              :     // AST-builder scope active, while `isSubtype` and the specialized-type creation below</span>
+<span id="L4221"><span class="lineNum">    4221</span>              :     // allocate through the thread-local &quot;current&quot; builder. Without this scope, a builder</span>
+<span id="L4222"><span class="lineNum">    4222</span>              :     // left current by an earlier compilation on the same thread would silently take over.</span>
+<span id="L4223"><span class="lineNum">    4223</span> <span class="tlaGNC">           1 :     SLANG_AST_BUILDER_RAII(getASTBuilder());</span></span>
+<span id="L4224"><span class="lineNum">    4224</span>              : </span>
+<span id="L4225"><span class="lineNum">    4225</span>              :     // TODO: We should cache and re-use specialized types</span>
+<span id="L4226"><span class="lineNum">    4226</span>              :     // when the exact same arguments are provided again later.</span>
+<span id="L4227"><span class="lineNum">    4227</span>              : </span>
+<span id="L4228"><span class="lineNum">    4228</span> <span class="tlaGNC">           1 :     SharedSemanticsContext sharedSemanticsContext(this, m_optionSet.getLanguageVersion(), sink);</span></span>
+<span id="L4229"><span class="lineNum">    4229</span> <span class="tlaGNC">           1 :     SemanticsVisitor visitor(&amp;sharedSemanticsContext);</span></span>
+<span id="L4230"><span class="lineNum">    4230</span>              : </span>
+<span id="L4231"><span class="lineNum">    4231</span> <span class="tlaGNC">           1 :     SpecializationParams specializationParams;</span></span>
+<span id="L4232"><span class="lineNum">    4232</span> <span class="tlaGNC">           1 :     if (!_collectExistentialSpecializationParamsRec(</span></span>
+<span id="L4233"><span class="lineNum">    4233</span>              :             getASTBuilder(),</span>
+<span id="L4234"><span class="lineNum">    4234</span>              :             specializationParams,</span>
+<span id="L4235"><span class="lineNum">    4235</span>              :             unspecializedType,</span>
+<span id="L4236"><span class="lineNum">    4236</span>              :             SourceLoc(),</span>
+<span id="L4237"><span class="lineNum">    4237</span>              :             sink,</span>
+<span id="L4238"><span class="lineNum">    4238</span>              :             0))</span>
+<span id="L4239"><span class="lineNum">    4239</span>              :     {</span>
 <span id="L4240"><span class="lineNum">    4240</span>              :         return nullptr;</span>
-<span id="L4241"><span class="lineNum">    4241</span>              : </span>
-<span id="L4242"><span class="lineNum">    4242</span> <span class="tlaUNC">           0 :     ExpandedSpecializationArgs specializationArgs;</span></span>
-<span id="L4243"><span class="lineNum">    4243</span> <span class="tlaUNC">           0 :     for (Int aa = 0; aa &lt; argCount; ++aa)</span></span>
-<span id="L4244"><span class="lineNum">    4244</span>              :     {</span>
-<span id="L4245"><span class="lineNum">    4245</span> <span class="tlaUNC">           0 :         auto paramType = as&lt;Type&gt;(specializationParams[aa].object);</span></span>
-<span id="L4246"><span class="lineNum">    4246</span> <span class="tlaUNC">           0 :         auto argType = args[aa];</span></span>
-<span id="L4247"><span class="lineNum">    4247</span>              : </span>
-<span id="L4248"><span class="lineNum">    4248</span> <span class="tlaUNC">           0 :         ExpandedSpecializationArg arg;</span></span>
-<span id="L4249"><span class="lineNum">    4249</span> <span class="tlaUNC">           0 :         arg.val = argType;</span></span>
-<span id="L4250"><span class="lineNum">    4250</span> <span class="tlaUNC">           0 :         arg.witness = visitor.isSubtype(argType, paramType, IsSubTypeOptions::None);</span></span>
-<span id="L4251"><span class="lineNum">    4251</span> <span class="tlaUNC">           0 :         specializationArgs.add(arg);</span></span>
-<span id="L4252"><span class="lineNum">    4252</span>              :     }</span>
-<span id="L4253"><span class="lineNum">    4253</span>              : </span>
-<span id="L4254"><span class="lineNum">    4254</span> <span class="tlaUNC">           0 :     ExistentialSpecializedType* specializedType =</span></span>
-<span id="L4255"><span class="lineNum">    4255</span>              :         m_astBuilder-&gt;getOrCreate&lt;ExistentialSpecializedType&gt;(</span>
-<span id="L4256"><span class="lineNum">    4256</span>              :             unspecializedType,</span>
-<span id="L4257"><span class="lineNum">    4257</span>              :             specializationArgs);</span>
+<span id="L4241"><span class="lineNum">    4241</span>              :     }</span>
+<span id="L4242"><span class="lineNum">    4242</span>              : </span>
+<span id="L4243"><span class="lineNum">    4243</span>              :     SLANG_ASSERT(specializationParams.getCount() == argCount);</span>
+<span id="L4244"><span class="lineNum">    4244</span> <span class="tlaGNC">           1 :     if (specializationParams.getCount() != argCount)</span></span>
+<span id="L4245"><span class="lineNum">    4245</span>              :         return nullptr;</span>
+<span id="L4246"><span class="lineNum">    4246</span>              : </span>
+<span id="L4247"><span class="lineNum">    4247</span> <span class="tlaGNC">           1 :     ExpandedSpecializationArgs specializationArgs;</span></span>
+<span id="L4248"><span class="lineNum">    4248</span> <span class="tlaGNC">           1 :     for (Int aa = 0; aa &lt; argCount; ++aa)</span></span>
+<span id="L4249"><span class="lineNum">    4249</span>              :     {</span>
+<span id="L4250"><span class="lineNum">    4250</span> <span class="tlaGNC">           1 :         auto paramType = as&lt;Type&gt;(specializationParams[aa].object);</span></span>
+<span id="L4251"><span class="lineNum">    4251</span> <span class="tlaGNC">           1 :         auto argType = args[aa];</span></span>
+<span id="L4252"><span class="lineNum">    4252</span>              : </span>
+<span id="L4253"><span class="lineNum">    4253</span> <span class="tlaGNC">           1 :         ExpandedSpecializationArg arg;</span></span>
+<span id="L4254"><span class="lineNum">    4254</span> <span class="tlaGNC">           1 :         arg.val = argType;</span></span>
+<span id="L4255"><span class="lineNum">    4255</span> <span class="tlaGNC">           1 :         arg.witness = visitor.isSubtype(argType, paramType, IsSubTypeOptions::None);</span></span>
+<span id="L4256"><span class="lineNum">    4256</span> <span class="tlaGNC">           1 :         specializationArgs.add(arg);</span></span>
+<span id="L4257"><span class="lineNum">    4257</span>              :     }</span>
 <span id="L4258"><span class="lineNum">    4258</span>              : </span>
-<span id="L4259"><span class="lineNum">    4259</span> <span class="tlaUNC">           0 :     m_specializedTypes.add(specializedType);</span></span>
-<span id="L4260"><span class="lineNum">    4260</span>              : </span>
-<span id="L4261"><span class="lineNum">    4261</span> <span class="tlaUNC">           0 :     return specializedType;</span></span>
-<span id="L4262"><span class="lineNum">    4262</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L4259"><span class="lineNum">    4259</span> <span class="tlaGNC">           1 :     ExistentialSpecializedType* specializedType =</span></span>
+<span id="L4260"><span class="lineNum">    4260</span>              :         m_astBuilder-&gt;getOrCreate&lt;ExistentialSpecializedType&gt;(</span>
+<span id="L4261"><span class="lineNum">    4261</span>              :             unspecializedType,</span>
+<span id="L4262"><span class="lineNum">    4262</span>              :             specializationArgs);</span>
 <span id="L4263"><span class="lineNum">    4263</span>              : </span>
-<span id="L4264"><span class="lineNum">    4264</span>              : /// Shared implementation logic for the `_createSpecializedProgram*` entry points.</span>
-<span id="L4265"><span class="lineNum">    4265</span>              : static RefPtr&lt;ComponentType&gt; _createSpecializedProgramImpl(</span>
-<span id="L4266"><span class="lineNum">    4266</span>              :     ComponentType* unspecializedProgram,</span>
-<span id="L4267"><span class="lineNum">    4267</span>              :     List&lt;Expr*&gt; const&amp; specializationArgExprs,</span>
-<span id="L4268"><span class="lineNum">    4268</span>              :     DiagnosticSink* sink)</span>
-<span id="L4269"><span class="lineNum">    4269</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L4270"><span class="lineNum">    4270</span>              :     // If there are no specialization arguments,</span>
-<span id="L4271"><span class="lineNum">    4271</span>              :     // then the the result of specialization should</span>
-<span id="L4272"><span class="lineNum">    4272</span>              :     // be the same as the input.</span>
-<span id="L4273"><span class="lineNum">    4273</span>              :     //</span>
-<span id="L4274"><span class="lineNum">    4274</span> <span class="tlaGNC">           1 :     auto specializationArgCount = specializationArgExprs.getCount();</span></span>
-<span id="L4275"><span class="lineNum">    4275</span> <span class="tlaGNC">           1 :     if (specializationArgCount == 0)</span></span>
-<span id="L4276"><span class="lineNum">    4276</span>              :     {</span>
-<span id="L4277"><span class="lineNum">    4277</span> <span class="tlaGNC">           1 :         return unspecializedProgram;</span></span>
-<span id="L4278"><span class="lineNum">    4278</span>              :     }</span>
-<span id="L4279"><span class="lineNum">    4279</span>              : </span>
-<span id="L4280"><span class="lineNum">    4280</span> <span class="tlaUNC">           0 :     auto specializationParamCount = unspecializedProgram-&gt;getSpecializationParamCount();</span></span>
-<span id="L4281"><span class="lineNum">    4281</span> <span class="tlaUNC">           0 :     if (specializationArgCount != specializationParamCount)</span></span>
-<span id="L4282"><span class="lineNum">    4282</span>              :     {</span>
-<span id="L4283"><span class="lineNum">    4283</span> <span class="tlaUNC">           0 :         sink-&gt;diagnose(Diagnostics::MismatchSpecializationArguments{</span></span>
-<span id="L4284"><span class="lineNum">    4284</span>              :             .expected = (int64_t)specializationParamCount,</span>
-<span id="L4285"><span class="lineNum">    4285</span>              :             .provided = (int64_t)specializationArgCount});</span>
-<span id="L4286"><span class="lineNum">    4286</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
-<span id="L4287"><span class="lineNum">    4287</span>              :     }</span>
-<span id="L4288"><span class="lineNum">    4288</span>              : </span>
-<span id="L4289"><span class="lineNum">    4289</span>              :     // We have an appropriate number of arguments for the global specialization parameters,</span>
-<span id="L4290"><span class="lineNum">    4290</span>              :     // and now we need to check that the arguments conform to the declared constraints.</span>
-<span id="L4291"><span class="lineNum">    4291</span>              :     //</span>
-<span id="L4292"><span class="lineNum">    4292</span> <span class="tlaUNC">           0 :     List&lt;SpecializationArg&gt; specializationArgs;</span></span>
-<span id="L4293"><span class="lineNum">    4293</span> <span class="tlaUNC">           0 :     _extractSpecializationArgs(</span></span>
-<span id="L4294"><span class="lineNum">    4294</span>              :         unspecializedProgram,</span>
-<span id="L4295"><span class="lineNum">    4295</span>              :         specializationArgExprs,</span>
-<span id="L4296"><span class="lineNum">    4296</span>              :         specializationArgs,</span>
-<span id="L4297"><span class="lineNum">    4297</span>              :         sink);</span>
-<span id="L4298"><span class="lineNum">    4298</span> <span class="tlaUNC">           0 :     if (sink-&gt;getErrorCount())</span></span>
-<span id="L4299"><span class="lineNum">    4299</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
-<span id="L4300"><span class="lineNum">    4300</span>              : </span>
-<span id="L4301"><span class="lineNum">    4301</span> <span class="tlaUNC">           0 :     auto specializedProgram = unspecializedProgram-&gt;specialize(</span></span>
-<span id="L4302"><span class="lineNum">    4302</span>              :         specializationArgs.getBuffer(),</span>
-<span id="L4303"><span class="lineNum">    4303</span>              :         specializationArgs.getCount(),</span>
-<span id="L4304"><span class="lineNum">    4304</span>              :         sink);</span>
+<span id="L4264"><span class="lineNum">    4264</span> <span class="tlaGNC">           1 :     m_specializedTypes.add(specializedType);</span></span>
+<span id="L4265"><span class="lineNum">    4265</span>              : </span>
+<span id="L4266"><span class="lineNum">    4266</span> <span class="tlaGNC">           1 :     return specializedType;</span></span>
+<span id="L4267"><span class="lineNum">    4267</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4268"><span class="lineNum">    4268</span>              : </span>
+<span id="L4269"><span class="lineNum">    4269</span>              : /// Shared implementation logic for the `_createSpecializedProgram*` entry points.</span>
+<span id="L4270"><span class="lineNum">    4270</span>              : static RefPtr&lt;ComponentType&gt; _createSpecializedProgramImpl(</span>
+<span id="L4271"><span class="lineNum">    4271</span>              :     ComponentType* unspecializedProgram,</span>
+<span id="L4272"><span class="lineNum">    4272</span>              :     List&lt;Expr*&gt; const&amp; specializationArgExprs,</span>
+<span id="L4273"><span class="lineNum">    4273</span>              :     DiagnosticSink* sink)</span>
+<span id="L4274"><span class="lineNum">    4274</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4275"><span class="lineNum">    4275</span>              :     // If there are no specialization arguments,</span>
+<span id="L4276"><span class="lineNum">    4276</span>              :     // then the the result of specialization should</span>
+<span id="L4277"><span class="lineNum">    4277</span>              :     // be the same as the input.</span>
+<span id="L4278"><span class="lineNum">    4278</span>              :     //</span>
+<span id="L4279"><span class="lineNum">    4279</span> <span class="tlaGNC">           1 :     auto specializationArgCount = specializationArgExprs.getCount();</span></span>
+<span id="L4280"><span class="lineNum">    4280</span> <span class="tlaGNC">           1 :     if (specializationArgCount == 0)</span></span>
+<span id="L4281"><span class="lineNum">    4281</span>              :     {</span>
+<span id="L4282"><span class="lineNum">    4282</span> <span class="tlaGNC">           1 :         return unspecializedProgram;</span></span>
+<span id="L4283"><span class="lineNum">    4283</span>              :     }</span>
+<span id="L4284"><span class="lineNum">    4284</span>              : </span>
+<span id="L4285"><span class="lineNum">    4285</span> <span class="tlaUNC">           0 :     auto specializationParamCount = unspecializedProgram-&gt;getSpecializationParamCount();</span></span>
+<span id="L4286"><span class="lineNum">    4286</span> <span class="tlaUNC">           0 :     if (specializationArgCount != specializationParamCount)</span></span>
+<span id="L4287"><span class="lineNum">    4287</span>              :     {</span>
+<span id="L4288"><span class="lineNum">    4288</span> <span class="tlaUNC">           0 :         sink-&gt;diagnose(Diagnostics::MismatchSpecializationArguments{</span></span>
+<span id="L4289"><span class="lineNum">    4289</span>              :             .expected = (int64_t)specializationParamCount,</span>
+<span id="L4290"><span class="lineNum">    4290</span>              :             .provided = (int64_t)specializationArgCount});</span>
+<span id="L4291"><span class="lineNum">    4291</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
+<span id="L4292"><span class="lineNum">    4292</span>              :     }</span>
+<span id="L4293"><span class="lineNum">    4293</span>              : </span>
+<span id="L4294"><span class="lineNum">    4294</span>              :     // We have an appropriate number of arguments for the global specialization parameters,</span>
+<span id="L4295"><span class="lineNum">    4295</span>              :     // and now we need to check that the arguments conform to the declared constraints.</span>
+<span id="L4296"><span class="lineNum">    4296</span>              :     //</span>
+<span id="L4297"><span class="lineNum">    4297</span> <span class="tlaUNC">           0 :     List&lt;SpecializationArg&gt; specializationArgs;</span></span>
+<span id="L4298"><span class="lineNum">    4298</span> <span class="tlaUNC">           0 :     _extractSpecializationArgs(</span></span>
+<span id="L4299"><span class="lineNum">    4299</span>              :         unspecializedProgram,</span>
+<span id="L4300"><span class="lineNum">    4300</span>              :         specializationArgExprs,</span>
+<span id="L4301"><span class="lineNum">    4301</span>              :         specializationArgs,</span>
+<span id="L4302"><span class="lineNum">    4302</span>              :         sink);</span>
+<span id="L4303"><span class="lineNum">    4303</span> <span class="tlaUNC">           0 :     if (sink-&gt;getErrorCount())</span></span>
+<span id="L4304"><span class="lineNum">    4304</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
 <span id="L4305"><span class="lineNum">    4305</span>              : </span>
-<span id="L4306"><span class="lineNum">    4306</span> <span class="tlaUNC">           0 :     return specializedProgram;</span></span>
-<span id="L4307"><span class="lineNum">    4307</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4308"><span class="lineNum">    4308</span>              : </span>
-<span id="L4309"><span class="lineNum">    4309</span>              : /// Specialize an entry point that was checked by the front-end, based on specialization arguments.</span>
-<span id="L4310"><span class="lineNum">    4310</span>              : ///</span>
-<span id="L4311"><span class="lineNum">    4311</span>              : /// If the end-to-end compile request included specialization argument strings</span>
-<span id="L4312"><span class="lineNum">    4312</span>              : /// for this entry point, then they will be parsed, checked, and used</span>
-<span id="L4313"><span class="lineNum">    4313</span>              : /// as arguments to the generic entry point.</span>
-<span id="L4314"><span class="lineNum">    4314</span>              : ///</span>
-<span id="L4315"><span class="lineNum">    4315</span>              : /// Returns a specialized entry point if everything worked as expected.</span>
-<span id="L4316"><span class="lineNum">    4316</span>              : /// Returns null and diagnoses errors if anything goes wrong.</span>
-<span id="L4317"><span class="lineNum">    4317</span>              : ///</span>
-<span id="L4318"><span class="lineNum">    4318</span>              : RefPtr&lt;ComponentType&gt; createSpecializedEntryPoint(</span>
-<span id="L4319"><span class="lineNum">    4319</span>              :     EndToEndCompileRequest* endToEndReq,</span>
-<span id="L4320"><span class="lineNum">    4320</span>              :     EntryPoint* unspecializedEntryPoint,</span>
-<span id="L4321"><span class="lineNum">    4321</span>              :     EndToEndCompileRequest::EntryPointInfo const&amp; entryPointInfo)</span>
-<span id="L4322"><span class="lineNum">    4322</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L4323"><span class="lineNum">    4323</span> <span class="tlaGNC">           1 :     auto sink = endToEndReq-&gt;getSink();</span></span>
-<span id="L4324"><span class="lineNum">    4324</span>              : </span>
-<span id="L4325"><span class="lineNum">    4325</span>              :     // If the user specified generic arguments for the entry point,</span>
-<span id="L4326"><span class="lineNum">    4326</span>              :     // then we will need to parse the arguments first.</span>
-<span id="L4327"><span class="lineNum">    4327</span>              :     //</span>
-<span id="L4328"><span class="lineNum">    4328</span> <span class="tlaGNC">           1 :     List&lt;Expr*&gt; specializationArgExprs;</span></span>
-<span id="L4329"><span class="lineNum">    4329</span> <span class="tlaGNC">           1 :     parseSpecializationArgStrings(</span></span>
-<span id="L4330"><span class="lineNum">    4330</span>              :         endToEndReq,</span>
-<span id="L4331"><span class="lineNum">    4331</span>              :         entryPointInfo.specializationArgStrings,</span>
-<span id="L4332"><span class="lineNum">    4332</span>              :         specializationArgExprs);</span>
-<span id="L4333"><span class="lineNum">    4333</span>              : </span>
-<span id="L4334"><span class="lineNum">    4334</span>              :     // Next we specialize the entry point function given the parsed</span>
-<span id="L4335"><span class="lineNum">    4335</span>              :     // generic argument expressions.</span>
-<span id="L4336"><span class="lineNum">    4336</span>              :     //</span>
-<span id="L4337"><span class="lineNum">    4337</span> <span class="tlaGNC">           1 :     auto entryPoint =</span></span>
-<span id="L4338"><span class="lineNum">    4338</span>              :         createSpecializedEntryPoint(unspecializedEntryPoint, specializationArgExprs, sink);</span>
-<span id="L4339"><span class="lineNum">    4339</span>              : </span>
-<span id="L4340"><span class="lineNum">    4340</span> <span class="tlaGNC">           1 :     return entryPoint;</span></span>
-<span id="L4341"><span class="lineNum">    4341</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4342"><span class="lineNum">    4342</span>              : </span>
-<span id="L4343"><span class="lineNum">    4343</span>              : /// Create a specialized component type for the global scope of the given compile request.</span>
-<span id="L4344"><span class="lineNum">    4344</span>              : ///</span>
-<span id="L4345"><span class="lineNum">    4345</span>              : /// The specialized program will be consistent with that created by</span>
-<span id="L4346"><span class="lineNum">    4346</span>              : /// `createUnspecializedGlobalComponentType`, and will simply fill in</span>
-<span id="L4347"><span class="lineNum">    4347</span>              : /// its specialization parameters with the arguments (if any) supllied</span>
-<span id="L4348"><span class="lineNum">    4348</span>              : /// as part fo the end-to-end compile request.</span>
+<span id="L4306"><span class="lineNum">    4306</span> <span class="tlaUNC">           0 :     auto specializedProgram = unspecializedProgram-&gt;specialize(</span></span>
+<span id="L4307"><span class="lineNum">    4307</span>              :         specializationArgs.getBuffer(),</span>
+<span id="L4308"><span class="lineNum">    4308</span>              :         specializationArgs.getCount(),</span>
+<span id="L4309"><span class="lineNum">    4309</span>              :         sink);</span>
+<span id="L4310"><span class="lineNum">    4310</span>              : </span>
+<span id="L4311"><span class="lineNum">    4311</span> <span class="tlaUNC">           0 :     return specializedProgram;</span></span>
+<span id="L4312"><span class="lineNum">    4312</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4313"><span class="lineNum">    4313</span>              : </span>
+<span id="L4314"><span class="lineNum">    4314</span>              : /// Specialize an entry point that was checked by the front-end, based on specialization arguments.</span>
+<span id="L4315"><span class="lineNum">    4315</span>              : ///</span>
+<span id="L4316"><span class="lineNum">    4316</span>              : /// If the end-to-end compile request included specialization argument strings</span>
+<span id="L4317"><span class="lineNum">    4317</span>              : /// for this entry point, then they will be parsed, checked, and used</span>
+<span id="L4318"><span class="lineNum">    4318</span>              : /// as arguments to the generic entry point.</span>
+<span id="L4319"><span class="lineNum">    4319</span>              : ///</span>
+<span id="L4320"><span class="lineNum">    4320</span>              : /// Returns a specialized entry point if everything worked as expected.</span>
+<span id="L4321"><span class="lineNum">    4321</span>              : /// Returns null and diagnoses errors if anything goes wrong.</span>
+<span id="L4322"><span class="lineNum">    4322</span>              : ///</span>
+<span id="L4323"><span class="lineNum">    4323</span>              : RefPtr&lt;ComponentType&gt; createSpecializedEntryPoint(</span>
+<span id="L4324"><span class="lineNum">    4324</span>              :     EndToEndCompileRequest* endToEndReq,</span>
+<span id="L4325"><span class="lineNum">    4325</span>              :     EntryPoint* unspecializedEntryPoint,</span>
+<span id="L4326"><span class="lineNum">    4326</span>              :     EndToEndCompileRequest::EntryPointInfo const&amp; entryPointInfo)</span>
+<span id="L4327"><span class="lineNum">    4327</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4328"><span class="lineNum">    4328</span> <span class="tlaGNC">           1 :     auto sink = endToEndReq-&gt;getSink();</span></span>
+<span id="L4329"><span class="lineNum">    4329</span>              : </span>
+<span id="L4330"><span class="lineNum">    4330</span>              :     // If the user specified generic arguments for the entry point,</span>
+<span id="L4331"><span class="lineNum">    4331</span>              :     // then we will need to parse the arguments first.</span>
+<span id="L4332"><span class="lineNum">    4332</span>              :     //</span>
+<span id="L4333"><span class="lineNum">    4333</span> <span class="tlaGNC">           1 :     List&lt;Expr*&gt; specializationArgExprs;</span></span>
+<span id="L4334"><span class="lineNum">    4334</span> <span class="tlaGNC">           1 :     parseSpecializationArgStrings(</span></span>
+<span id="L4335"><span class="lineNum">    4335</span>              :         endToEndReq,</span>
+<span id="L4336"><span class="lineNum">    4336</span>              :         entryPointInfo.specializationArgStrings,</span>
+<span id="L4337"><span class="lineNum">    4337</span>              :         specializationArgExprs);</span>
+<span id="L4338"><span class="lineNum">    4338</span>              : </span>
+<span id="L4339"><span class="lineNum">    4339</span>              :     // Next we specialize the entry point function given the parsed</span>
+<span id="L4340"><span class="lineNum">    4340</span>              :     // generic argument expressions.</span>
+<span id="L4341"><span class="lineNum">    4341</span>              :     //</span>
+<span id="L4342"><span class="lineNum">    4342</span> <span class="tlaGNC">           1 :     auto entryPoint =</span></span>
+<span id="L4343"><span class="lineNum">    4343</span>              :         createSpecializedEntryPoint(unspecializedEntryPoint, specializationArgExprs, sink);</span>
+<span id="L4344"><span class="lineNum">    4344</span>              : </span>
+<span id="L4345"><span class="lineNum">    4345</span> <span class="tlaGNC">           1 :     return entryPoint;</span></span>
+<span id="L4346"><span class="lineNum">    4346</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4347"><span class="lineNum">    4347</span>              : </span>
+<span id="L4348"><span class="lineNum">    4348</span>              : /// Create a specialized component type for the global scope of the given compile request.</span>
 <span id="L4349"><span class="lineNum">    4349</span>              : ///</span>
-<span id="L4350"><span class="lineNum">    4350</span>              : /// The layout of the new component type will be consistent with that</span>
-<span id="L4351"><span class="lineNum">    4351</span>              : /// of the original *if* there are no global generic type parameters</span>
-<span id="L4352"><span class="lineNum">    4352</span>              : /// (only interface/existential parameters).</span>
-<span id="L4353"><span class="lineNum">    4353</span>              : ///</span>
-<span id="L4354"><span class="lineNum">    4354</span>              : RefPtr&lt;ComponentType&gt; createSpecializedGlobalComponentType(EndToEndCompileRequest* endToEndReq)</span>
-<span id="L4355"><span class="lineNum">    4355</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L4356"><span class="lineNum">    4356</span>              :     // The compile request must have already completed front-end processing,</span>
-<span id="L4357"><span class="lineNum">    4357</span>              :     // so that we have an unspecialized program available, and now only need</span>
-<span id="L4358"><span class="lineNum">    4358</span>              :     // to parse and check any generic arguments that are being supplied for</span>
-<span id="L4359"><span class="lineNum">    4359</span>              :     // global or entry-point generic parameters.</span>
-<span id="L4360"><span class="lineNum">    4360</span>              :     //</span>
-<span id="L4361"><span class="lineNum">    4361</span> <span class="tlaGNC">           1 :     auto unspecializedProgram = endToEndReq-&gt;getUnspecializedGlobalComponentType();</span></span>
-<span id="L4362"><span class="lineNum">    4362</span> <span class="tlaGNC">           1 :     auto sink = endToEndReq-&gt;getSink();</span></span>
-<span id="L4363"><span class="lineNum">    4363</span>              : </span>
-<span id="L4364"><span class="lineNum">    4364</span>              :     // First, let&#x27;s parse the specialization argument strings that were</span>
-<span id="L4365"><span class="lineNum">    4365</span>              :     // provided via the API, so that we can match them</span>
-<span id="L4366"><span class="lineNum">    4366</span>              :     // against what was declared in the program.</span>
-<span id="L4367"><span class="lineNum">    4367</span>              :     //</span>
-<span id="L4368"><span class="lineNum">    4368</span> <span class="tlaGNC">           1 :     List&lt;Expr*&gt; globalSpecializationArgs;</span></span>
-<span id="L4369"><span class="lineNum">    4369</span> <span class="tlaGNC">           1 :     parseSpecializationArgStrings(</span></span>
-<span id="L4370"><span class="lineNum">    4370</span>              :         endToEndReq,</span>
-<span id="L4371"><span class="lineNum">    4371</span>              :         endToEndReq-&gt;m_globalSpecializationArgStrings,</span>
-<span id="L4372"><span class="lineNum">    4372</span>              :         globalSpecializationArgs);</span>
-<span id="L4373"><span class="lineNum">    4373</span>              : </span>
-<span id="L4374"><span class="lineNum">    4374</span>              :     // Don&#x27;t proceed further if anything failed to parse.</span>
-<span id="L4375"><span class="lineNum">    4375</span> <span class="tlaGNC">           1 :     if (sink-&gt;getErrorCount())</span></span>
-<span id="L4376"><span class="lineNum">    4376</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
-<span id="L4377"><span class="lineNum">    4377</span>              : </span>
-<span id="L4378"><span class="lineNum">    4378</span>              :     // Now we create the initial specialized program by</span>
-<span id="L4379"><span class="lineNum">    4379</span>              :     // applying the global generic arguments (if any) to the</span>
-<span id="L4380"><span class="lineNum">    4380</span>              :     // unspecialized program.</span>
-<span id="L4381"><span class="lineNum">    4381</span>              :     //</span>
-<span id="L4382"><span class="lineNum">    4382</span> <span class="tlaGNC">           1 :     auto specializedProgram =</span></span>
-<span id="L4383"><span class="lineNum">    4383</span>              :         _createSpecializedProgramImpl(unspecializedProgram, globalSpecializationArgs, sink);</span>
-<span id="L4384"><span class="lineNum">    4384</span>              : </span>
-<span id="L4385"><span class="lineNum">    4385</span>              :     // If anything went wrong with the global generic</span>
-<span id="L4386"><span class="lineNum">    4386</span>              :     // arguments, then bail out now.</span>
-<span id="L4387"><span class="lineNum">    4387</span>              :     //</span>
-<span id="L4388"><span class="lineNum">    4388</span> <span class="tlaGNC">           1 :     if (!specializedProgram)</span></span>
-<span id="L4389"><span class="lineNum">    4389</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
-<span id="L4390"><span class="lineNum">    4390</span>              : </span>
-<span id="L4391"><span class="lineNum">    4391</span>              :     // Next we will deal with the entry points for the</span>
-<span id="L4392"><span class="lineNum">    4392</span>              :     // new specialized program.</span>
-<span id="L4393"><span class="lineNum">    4393</span>              :     //</span>
-<span id="L4394"><span class="lineNum">    4394</span>              :     // If the user specified explicit entry points as part of the</span>
-<span id="L4395"><span class="lineNum">    4395</span>              :     // end-to-end request, then we only want to process those (and</span>
-<span id="L4396"><span class="lineNum">    4396</span>              :     // ignore any other `[shader(...)]`-attributed entry points).</span>
-<span id="L4397"><span class="lineNum">    4397</span>              :     //</span>
-<span id="L4398"><span class="lineNum">    4398</span>              :     // However, if the user specified *no* entry points as part</span>
-<span id="L4399"><span class="lineNum">    4399</span>              :     // of the end-to-end request, then we would like to go</span>
-<span id="L4400"><span class="lineNum">    4400</span>              :     // ahead and consider all the entry points that were found</span>
-<span id="L4401"><span class="lineNum">    4401</span>              :     // by the front-end.</span>
+<span id="L4350"><span class="lineNum">    4350</span>              : /// The specialized program will be consistent with that created by</span>
+<span id="L4351"><span class="lineNum">    4351</span>              : /// `createUnspecializedGlobalComponentType`, and will simply fill in</span>
+<span id="L4352"><span class="lineNum">    4352</span>              : /// its specialization parameters with the arguments (if any) supllied</span>
+<span id="L4353"><span class="lineNum">    4353</span>              : /// as part fo the end-to-end compile request.</span>
+<span id="L4354"><span class="lineNum">    4354</span>              : ///</span>
+<span id="L4355"><span class="lineNum">    4355</span>              : /// The layout of the new component type will be consistent with that</span>
+<span id="L4356"><span class="lineNum">    4356</span>              : /// of the original *if* there are no global generic type parameters</span>
+<span id="L4357"><span class="lineNum">    4357</span>              : /// (only interface/existential parameters).</span>
+<span id="L4358"><span class="lineNum">    4358</span>              : ///</span>
+<span id="L4359"><span class="lineNum">    4359</span>              : RefPtr&lt;ComponentType&gt; createSpecializedGlobalComponentType(EndToEndCompileRequest* endToEndReq)</span>
+<span id="L4360"><span class="lineNum">    4360</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4361"><span class="lineNum">    4361</span>              :     // The compile request must have already completed front-end processing,</span>
+<span id="L4362"><span class="lineNum">    4362</span>              :     // so that we have an unspecialized program available, and now only need</span>
+<span id="L4363"><span class="lineNum">    4363</span>              :     // to parse and check any generic arguments that are being supplied for</span>
+<span id="L4364"><span class="lineNum">    4364</span>              :     // global or entry-point generic parameters.</span>
+<span id="L4365"><span class="lineNum">    4365</span>              :     //</span>
+<span id="L4366"><span class="lineNum">    4366</span> <span class="tlaGNC">           1 :     auto unspecializedProgram = endToEndReq-&gt;getUnspecializedGlobalComponentType();</span></span>
+<span id="L4367"><span class="lineNum">    4367</span> <span class="tlaGNC">           1 :     auto sink = endToEndReq-&gt;getSink();</span></span>
+<span id="L4368"><span class="lineNum">    4368</span>              : </span>
+<span id="L4369"><span class="lineNum">    4369</span>              :     // First, let&#x27;s parse the specialization argument strings that were</span>
+<span id="L4370"><span class="lineNum">    4370</span>              :     // provided via the API, so that we can match them</span>
+<span id="L4371"><span class="lineNum">    4371</span>              :     // against what was declared in the program.</span>
+<span id="L4372"><span class="lineNum">    4372</span>              :     //</span>
+<span id="L4373"><span class="lineNum">    4373</span> <span class="tlaGNC">           1 :     List&lt;Expr*&gt; globalSpecializationArgs;</span></span>
+<span id="L4374"><span class="lineNum">    4374</span> <span class="tlaGNC">           1 :     parseSpecializationArgStrings(</span></span>
+<span id="L4375"><span class="lineNum">    4375</span>              :         endToEndReq,</span>
+<span id="L4376"><span class="lineNum">    4376</span>              :         endToEndReq-&gt;m_globalSpecializationArgStrings,</span>
+<span id="L4377"><span class="lineNum">    4377</span>              :         globalSpecializationArgs);</span>
+<span id="L4378"><span class="lineNum">    4378</span>              : </span>
+<span id="L4379"><span class="lineNum">    4379</span>              :     // Don&#x27;t proceed further if anything failed to parse.</span>
+<span id="L4380"><span class="lineNum">    4380</span> <span class="tlaGNC">           1 :     if (sink-&gt;getErrorCount())</span></span>
+<span id="L4381"><span class="lineNum">    4381</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
+<span id="L4382"><span class="lineNum">    4382</span>              : </span>
+<span id="L4383"><span class="lineNum">    4383</span>              :     // Now we create the initial specialized program by</span>
+<span id="L4384"><span class="lineNum">    4384</span>              :     // applying the global generic arguments (if any) to the</span>
+<span id="L4385"><span class="lineNum">    4385</span>              :     // unspecialized program.</span>
+<span id="L4386"><span class="lineNum">    4386</span>              :     //</span>
+<span id="L4387"><span class="lineNum">    4387</span> <span class="tlaGNC">           1 :     auto specializedProgram =</span></span>
+<span id="L4388"><span class="lineNum">    4388</span>              :         _createSpecializedProgramImpl(unspecializedProgram, globalSpecializationArgs, sink);</span>
+<span id="L4389"><span class="lineNum">    4389</span>              : </span>
+<span id="L4390"><span class="lineNum">    4390</span>              :     // If anything went wrong with the global generic</span>
+<span id="L4391"><span class="lineNum">    4391</span>              :     // arguments, then bail out now.</span>
+<span id="L4392"><span class="lineNum">    4392</span>              :     //</span>
+<span id="L4393"><span class="lineNum">    4393</span> <span class="tlaGNC">           1 :     if (!specializedProgram)</span></span>
+<span id="L4394"><span class="lineNum">    4394</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
+<span id="L4395"><span class="lineNum">    4395</span>              : </span>
+<span id="L4396"><span class="lineNum">    4396</span>              :     // Next we will deal with the entry points for the</span>
+<span id="L4397"><span class="lineNum">    4397</span>              :     // new specialized program.</span>
+<span id="L4398"><span class="lineNum">    4398</span>              :     //</span>
+<span id="L4399"><span class="lineNum">    4399</span>              :     // If the user specified explicit entry points as part of the</span>
+<span id="L4400"><span class="lineNum">    4400</span>              :     // end-to-end request, then we only want to process those (and</span>
+<span id="L4401"><span class="lineNum">    4401</span>              :     // ignore any other `[shader(...)]`-attributed entry points).</span>
 <span id="L4402"><span class="lineNum">    4402</span>              :     //</span>
-<span id="L4403"><span class="lineNum">    4403</span> <span class="tlaGNC">           1 :     Index entryPointCount = endToEndReq-&gt;m_entryPoints.getCount();</span></span>
-<span id="L4404"><span class="lineNum">    4404</span> <span class="tlaGNC">           1 :     if (entryPointCount == 0)</span></span>
-<span id="L4405"><span class="lineNum">    4405</span>              :     {</span>
-<span id="L4406"><span class="lineNum">    4406</span> <span class="tlaGNC">           1 :         entryPointCount = unspecializedProgram-&gt;getEntryPointCount();</span></span>
-<span id="L4407"><span class="lineNum">    4407</span> <span class="tlaGNC">           1 :         endToEndReq-&gt;m_entryPoints.setCount(entryPointCount);</span></span>
-<span id="L4408"><span class="lineNum">    4408</span>              :     }</span>
-<span id="L4409"><span class="lineNum">    4409</span>              : </span>
-<span id="L4410"><span class="lineNum">    4410</span> <span class="tlaGNC">           1 :     return specializedProgram;</span></span>
-<span id="L4411"><span class="lineNum">    4411</span> <span class="tlaGNC">           1 : }</span></span>
-<span id="L4412"><span class="lineNum">    4412</span>              : </span>
-<span id="L4413"><span class="lineNum">    4413</span>              : /// Diagnose an unspecialized generic entry point, reporting it against the</span>
-<span id="L4414"><span class="lineNum">    4414</span>              : /// entry-point function&#x27;s source location.</span>
-<span id="L4415"><span class="lineNum">    4415</span>              : ///</span>
-<span id="L4416"><span class="lineNum">    4416</span>              : /// A generic entry point is only legal if it is specialized with concrete</span>
-<span id="L4417"><span class="lineNum">    4417</span>              : /// generic arguments (via `-specialize` / `addEntryPointEx`). An</span>
-<span id="L4418"><span class="lineNum">    4418</span>              : /// *unspecialized* generic entry point cannot be lowered: it would produce an</span>
-<span id="L4419"><span class="lineNum">    4419</span>              : /// `IRGeneric` rather than an `IRFunc` and crash IR linking (issue #10209).</span>
-<span id="L4420"><span class="lineNum">    4420</span>              : static void diagnoseGenericEntryPoint(EntryPoint* entryPoint, DiagnosticSink* sink)</span>
-<span id="L4421"><span class="lineNum">    4421</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L4422"><span class="lineNum">    4422</span> <span class="tlaUNC">           0 :     auto funcDecl = entryPoint-&gt;getFuncDecl();</span></span>
-<span id="L4423"><span class="lineNum">    4423</span> <span class="tlaUNC">           0 :     sink-&gt;diagnose(Diagnostics::EntryPointCannotBeGeneric{</span></span>
-<span id="L4424"><span class="lineNum">    4424</span>              :         .entryPoint = funcDecl-&gt;getName(),</span>
-<span id="L4425"><span class="lineNum">    4425</span>              :         .location = funcDecl-&gt;loc});</span>
-<span id="L4426"><span class="lineNum">    4426</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L4427"><span class="lineNum">    4427</span>              : </span>
-<span id="L4428"><span class="lineNum">    4428</span>              : /// Create a specialized program based on the given compile request.</span>
-<span id="L4429"><span class="lineNum">    4429</span>              : ///</span>
-<span id="L4430"><span class="lineNum">    4430</span>              : /// The specialized program created here includes both the global</span>
-<span id="L4431"><span class="lineNum">    4431</span>              : /// scope for all the translation units involved and all the entry</span>
-<span id="L4432"><span class="lineNum">    4432</span>              : /// points, and it also includes any specialization arguments</span>
-<span id="L4433"><span class="lineNum">    4433</span>              : /// that were supplied.</span>
+<span id="L4403"><span class="lineNum">    4403</span>              :     // However, if the user specified *no* entry points as part</span>
+<span id="L4404"><span class="lineNum">    4404</span>              :     // of the end-to-end request, then we would like to go</span>
+<span id="L4405"><span class="lineNum">    4405</span>              :     // ahead and consider all the entry points that were found</span>
+<span id="L4406"><span class="lineNum">    4406</span>              :     // by the front-end.</span>
+<span id="L4407"><span class="lineNum">    4407</span>              :     //</span>
+<span id="L4408"><span class="lineNum">    4408</span> <span class="tlaGNC">           1 :     Index entryPointCount = endToEndReq-&gt;m_entryPoints.getCount();</span></span>
+<span id="L4409"><span class="lineNum">    4409</span> <span class="tlaGNC">           1 :     if (entryPointCount == 0)</span></span>
+<span id="L4410"><span class="lineNum">    4410</span>              :     {</span>
+<span id="L4411"><span class="lineNum">    4411</span> <span class="tlaGNC">           1 :         entryPointCount = unspecializedProgram-&gt;getEntryPointCount();</span></span>
+<span id="L4412"><span class="lineNum">    4412</span> <span class="tlaGNC">           1 :         endToEndReq-&gt;m_entryPoints.setCount(entryPointCount);</span></span>
+<span id="L4413"><span class="lineNum">    4413</span>              :     }</span>
+<span id="L4414"><span class="lineNum">    4414</span>              : </span>
+<span id="L4415"><span class="lineNum">    4415</span> <span class="tlaGNC">           1 :     return specializedProgram;</span></span>
+<span id="L4416"><span class="lineNum">    4416</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4417"><span class="lineNum">    4417</span>              : </span>
+<span id="L4418"><span class="lineNum">    4418</span>              : /// Diagnose an unspecialized generic entry point, reporting it against the</span>
+<span id="L4419"><span class="lineNum">    4419</span>              : /// entry-point function&#x27;s source location.</span>
+<span id="L4420"><span class="lineNum">    4420</span>              : ///</span>
+<span id="L4421"><span class="lineNum">    4421</span>              : /// A generic entry point is only legal if it is specialized with concrete</span>
+<span id="L4422"><span class="lineNum">    4422</span>              : /// generic arguments (via `-specialize` / `addEntryPointEx`). An</span>
+<span id="L4423"><span class="lineNum">    4423</span>              : /// *unspecialized* generic entry point cannot be lowered: it would produce an</span>
+<span id="L4424"><span class="lineNum">    4424</span>              : /// `IRGeneric` rather than an `IRFunc` and crash IR linking (issue #10209).</span>
+<span id="L4425"><span class="lineNum">    4425</span>              : static void diagnoseGenericEntryPoint(EntryPoint* entryPoint, DiagnosticSink* sink)</span>
+<span id="L4426"><span class="lineNum">    4426</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L4427"><span class="lineNum">    4427</span> <span class="tlaUNC">           0 :     auto funcDecl = entryPoint-&gt;getFuncDecl();</span></span>
+<span id="L4428"><span class="lineNum">    4428</span> <span class="tlaUNC">           0 :     sink-&gt;diagnose(Diagnostics::EntryPointCannotBeGeneric{</span></span>
+<span id="L4429"><span class="lineNum">    4429</span>              :         .entryPoint = funcDecl-&gt;getName(),</span>
+<span id="L4430"><span class="lineNum">    4430</span>              :         .location = funcDecl-&gt;loc});</span>
+<span id="L4431"><span class="lineNum">    4431</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L4432"><span class="lineNum">    4432</span>              : </span>
+<span id="L4433"><span class="lineNum">    4433</span>              : /// Create a specialized program based on the given compile request.</span>
 <span id="L4434"><span class="lineNum">    4434</span>              : ///</span>
-<span id="L4435"><span class="lineNum">    4435</span>              : /// It is important to note that this function specializes</span>
-<span id="L4436"><span class="lineNum">    4436</span>              : /// the global scope and the entry points in isolation and then</span>
-<span id="L4437"><span class="lineNum">    4437</span>              : /// composes them, and that this can lead to different layout</span>
-<span id="L4438"><span class="lineNum">    4438</span>              : /// from the result of `createUnspecializedGlobalAndEntryPointsComponentType`.</span>
+<span id="L4435"><span class="lineNum">    4435</span>              : /// The specialized program created here includes both the global</span>
+<span id="L4436"><span class="lineNum">    4436</span>              : /// scope for all the translation units involved and all the entry</span>
+<span id="L4437"><span class="lineNum">    4437</span>              : /// points, and it also includes any specialization arguments</span>
+<span id="L4438"><span class="lineNum">    4438</span>              : /// that were supplied.</span>
 <span id="L4439"><span class="lineNum">    4439</span>              : ///</span>
-<span id="L4440"><span class="lineNum">    4440</span>              : /// If we have a module `M` with entry point `E`, and each has one</span>
-<span id="L4441"><span class="lineNum">    4441</span>              : /// specialization parameter, then `createUnspecialized...` will yield:</span>
-<span id="L4442"><span class="lineNum">    4442</span>              : ///</span>
-<span id="L4443"><span class="lineNum">    4443</span>              : ///     compose(M,E)</span>
+<span id="L4440"><span class="lineNum">    4440</span>              : /// It is important to note that this function specializes</span>
+<span id="L4441"><span class="lineNum">    4441</span>              : /// the global scope and the entry points in isolation and then</span>
+<span id="L4442"><span class="lineNum">    4442</span>              : /// composes them, and that this can lead to different layout</span>
+<span id="L4443"><span class="lineNum">    4443</span>              : /// from the result of `createUnspecializedGlobalAndEntryPointsComponentType`.</span>
 <span id="L4444"><span class="lineNum">    4444</span>              : ///</span>
-<span id="L4445"><span class="lineNum">    4445</span>              : /// That composed type will have two specialization parameters (the one</span>
-<span id="L4446"><span class="lineNum">    4446</span>              : /// from `M` plus the one from `E`) and so we might specialize it to get:</span>
+<span id="L4445"><span class="lineNum">    4445</span>              : /// If we have a module `M` with entry point `E`, and each has one</span>
+<span id="L4446"><span class="lineNum">    4446</span>              : /// specialization parameter, then `createUnspecialized...` will yield:</span>
 <span id="L4447"><span class="lineNum">    4447</span>              : ///</span>
-<span id="L4448"><span class="lineNum">    4448</span>              : ///     specialize(compose(M,E), X, Y)</span>
+<span id="L4448"><span class="lineNum">    4448</span>              : ///     compose(M,E)</span>
 <span id="L4449"><span class="lineNum">    4449</span>              : ///</span>
-<span id="L4450"><span class="lineNum">    4450</span>              : /// while if we use `createSpecialized...` we will get:</span>
-<span id="L4451"><span class="lineNum">    4451</span>              : ///</span>
-<span id="L4452"><span class="lineNum">    4452</span>              : ///     compose(specialize(M,X), specialize(E,Y))</span>
-<span id="L4453"><span class="lineNum">    4453</span>              : ///</span>
-<span id="L4454"><span class="lineNum">    4454</span>              : /// While these options are semantically equivalent, they would not lay</span>
-<span id="L4455"><span class="lineNum">    4455</span>              : /// out the same way in memory.</span>
+<span id="L4450"><span class="lineNum">    4450</span>              : /// That composed type will have two specialization parameters (the one</span>
+<span id="L4451"><span class="lineNum">    4451</span>              : /// from `M` plus the one from `E`) and so we might specialize it to get:</span>
+<span id="L4452"><span class="lineNum">    4452</span>              : ///</span>
+<span id="L4453"><span class="lineNum">    4453</span>              : ///     specialize(compose(M,E), X, Y)</span>
+<span id="L4454"><span class="lineNum">    4454</span>              : ///</span>
+<span id="L4455"><span class="lineNum">    4455</span>              : /// while if we use `createSpecialized...` we will get:</span>
 <span id="L4456"><span class="lineNum">    4456</span>              : ///</span>
-<span id="L4457"><span class="lineNum">    4457</span>              : /// There are many reasons why an application might prefer one over the</span>
-<span id="L4458"><span class="lineNum">    4458</span>              : /// other, and an application that cares should use the more explicit</span>
-<span id="L4459"><span class="lineNum">    4459</span>              : /// APIs to construct what they want. The behavior of this function</span>
-<span id="L4460"><span class="lineNum">    4460</span>              : /// is just to provide a reasonable default for use by end-to-end</span>
-<span id="L4461"><span class="lineNum">    4461</span>              : /// compilation (e.g., from the command line).</span>
-<span id="L4462"><span class="lineNum">    4462</span>              : ///</span>
-<span id="L4463"><span class="lineNum">    4463</span>              : RefPtr&lt;ComponentType&gt; createSpecializedGlobalAndEntryPointsComponentType(</span>
-<span id="L4464"><span class="lineNum">    4464</span>              :     EndToEndCompileRequest* endToEndReq,</span>
-<span id="L4465"><span class="lineNum">    4465</span>              :     List&lt;RefPtr&lt;ComponentType&gt;&gt;&amp; outSpecializedEntryPoints)</span>
-<span id="L4466"><span class="lineNum">    4466</span> <span class="tlaGNC">           1 : {</span></span>
-<span id="L4467"><span class="lineNum">    4467</span> <span class="tlaGNC">           1 :     auto specializedGlobalComponentType = endToEndReq-&gt;getSpecializedGlobalComponentType();</span></span>
-<span id="L4468"><span class="lineNum">    4468</span>              : </span>
-<span id="L4469"><span class="lineNum">    4469</span> <span class="tlaGNC">           1 :     List&lt;RefPtr&lt;ComponentType&gt;&gt; allComponentTypes;</span></span>
-<span id="L4470"><span class="lineNum">    4470</span> <span class="tlaGNC">           1 :     allComponentTypes.add(specializedGlobalComponentType);</span></span>
-<span id="L4471"><span class="lineNum">    4471</span>              : </span>
-<span id="L4472"><span class="lineNum">    4472</span> <span class="tlaGNC">           1 :     auto unspecializedGlobalAndEntryPointsComponentType =</span></span>
-<span id="L4473"><span class="lineNum">    4473</span>              :         endToEndReq-&gt;getUnspecializedGlobalAndEntryPointsComponentType();</span>
-<span id="L4474"><span class="lineNum">    4474</span>              : </span>
-<span id="L4475"><span class="lineNum">    4475</span>              :     // It is possible that there were entry points other than those specified</span>
-<span id="L4476"><span class="lineNum">    4476</span>              :     // vai the original end-to-end compile request. In particular:</span>
-<span id="L4477"><span class="lineNum">    4477</span>              :     //</span>
-<span id="L4478"><span class="lineNum">    4478</span>              :     // * It is possible to compile with *no* entry points specified, in which</span>
-<span id="L4479"><span class="lineNum">    4479</span>              :     //   case the current compiler behavior is to use any entry points marked</span>
-<span id="L4480"><span class="lineNum">    4480</span>              :     //   via `[shader(...)]` attributes in the AST.</span>
-<span id="L4481"><span class="lineNum">    4481</span>              :     //</span>
-<span id="L4482"><span class="lineNum">    4482</span>              :     // * It is possible for entry points to come into play via serialized libraries</span>
-<span id="L4483"><span class="lineNum">    4483</span>              :     //   loaded with `-r` on the command line (or the equivalent API).</span>
-<span id="L4484"><span class="lineNum">    4484</span>              :     //</span>
-<span id="L4485"><span class="lineNum">    4485</span>              :     // We will thus draw a distinction between the &quot;specified&quot; entry points,</span>
-<span id="L4486"><span class="lineNum">    4486</span>              :     // and the &quot;found&quot; entry points.</span>
-<span id="L4487"><span class="lineNum">    4487</span>              :     //</span>
-<span id="L4488"><span class="lineNum">    4488</span> <span class="tlaGNC">           1 :     auto specifiedEntryPointCount = endToEndReq-&gt;m_entryPoints.getCount();</span></span>
-<span id="L4489"><span class="lineNum">    4489</span> <span class="tlaGNC">           1 :     auto foundEntryPointCount =</span></span>
-<span id="L4490"><span class="lineNum">    4490</span>              :         unspecializedGlobalAndEntryPointsComponentType-&gt;getEntryPointCount();</span>
-<span id="L4491"><span class="lineNum">    4491</span>              : </span>
-<span id="L4492"><span class="lineNum">    4492</span>              :     SLANG_ASSERT(foundEntryPointCount &gt;= specifiedEntryPointCount);</span>
-<span id="L4493"><span class="lineNum">    4493</span>              : </span>
-<span id="L4494"><span class="lineNum">    4494</span>              :     // Checking an unspecialized generic is valid when no code will be emitted. Only the</span>
-<span id="L4495"><span class="lineNum">    4495</span>              :     // code-generation path needs concrete entry points that IR linking can turn into functions.</span>
-<span id="L4496"><span class="lineNum">    4496</span> <span class="tlaGNC">           1 :     const bool requireSpecializedEntryPoints =</span></span>
-<span id="L4497"><span class="lineNum">    4497</span>              :         !endToEndReq-&gt;getOptionSet().getBoolOption(CompilerOptionName::SkipCodeGen);</span>
+<span id="L4457"><span class="lineNum">    4457</span>              : ///     compose(specialize(M,X), specialize(E,Y))</span>
+<span id="L4458"><span class="lineNum">    4458</span>              : ///</span>
+<span id="L4459"><span class="lineNum">    4459</span>              : /// While these options are semantically equivalent, they would not lay</span>
+<span id="L4460"><span class="lineNum">    4460</span>              : /// out the same way in memory.</span>
+<span id="L4461"><span class="lineNum">    4461</span>              : ///</span>
+<span id="L4462"><span class="lineNum">    4462</span>              : /// There are many reasons why an application might prefer one over the</span>
+<span id="L4463"><span class="lineNum">    4463</span>              : /// other, and an application that cares should use the more explicit</span>
+<span id="L4464"><span class="lineNum">    4464</span>              : /// APIs to construct what they want. The behavior of this function</span>
+<span id="L4465"><span class="lineNum">    4465</span>              : /// is just to provide a reasonable default for use by end-to-end</span>
+<span id="L4466"><span class="lineNum">    4466</span>              : /// compilation (e.g., from the command line).</span>
+<span id="L4467"><span class="lineNum">    4467</span>              : ///</span>
+<span id="L4468"><span class="lineNum">    4468</span>              : RefPtr&lt;ComponentType&gt; createSpecializedGlobalAndEntryPointsComponentType(</span>
+<span id="L4469"><span class="lineNum">    4469</span>              :     EndToEndCompileRequest* endToEndReq,</span>
+<span id="L4470"><span class="lineNum">    4470</span>              :     List&lt;RefPtr&lt;ComponentType&gt;&gt;&amp; outSpecializedEntryPoints)</span>
+<span id="L4471"><span class="lineNum">    4471</span> <span class="tlaGNC">           1 : {</span></span>
+<span id="L4472"><span class="lineNum">    4472</span> <span class="tlaGNC">           1 :     auto specializedGlobalComponentType = endToEndReq-&gt;getSpecializedGlobalComponentType();</span></span>
+<span id="L4473"><span class="lineNum">    4473</span>              : </span>
+<span id="L4474"><span class="lineNum">    4474</span> <span class="tlaGNC">           1 :     List&lt;RefPtr&lt;ComponentType&gt;&gt; allComponentTypes;</span></span>
+<span id="L4475"><span class="lineNum">    4475</span> <span class="tlaGNC">           1 :     allComponentTypes.add(specializedGlobalComponentType);</span></span>
+<span id="L4476"><span class="lineNum">    4476</span>              : </span>
+<span id="L4477"><span class="lineNum">    4477</span> <span class="tlaGNC">           1 :     auto unspecializedGlobalAndEntryPointsComponentType =</span></span>
+<span id="L4478"><span class="lineNum">    4478</span>              :         endToEndReq-&gt;getUnspecializedGlobalAndEntryPointsComponentType();</span>
+<span id="L4479"><span class="lineNum">    4479</span>              : </span>
+<span id="L4480"><span class="lineNum">    4480</span>              :     // It is possible that there were entry points other than those specified</span>
+<span id="L4481"><span class="lineNum">    4481</span>              :     // vai the original end-to-end compile request. In particular:</span>
+<span id="L4482"><span class="lineNum">    4482</span>              :     //</span>
+<span id="L4483"><span class="lineNum">    4483</span>              :     // * It is possible to compile with *no* entry points specified, in which</span>
+<span id="L4484"><span class="lineNum">    4484</span>              :     //   case the current compiler behavior is to use any entry points marked</span>
+<span id="L4485"><span class="lineNum">    4485</span>              :     //   via `[shader(...)]` attributes in the AST.</span>
+<span id="L4486"><span class="lineNum">    4486</span>              :     //</span>
+<span id="L4487"><span class="lineNum">    4487</span>              :     // * It is possible for entry points to come into play via serialized libraries</span>
+<span id="L4488"><span class="lineNum">    4488</span>              :     //   loaded with `-r` on the command line (or the equivalent API).</span>
+<span id="L4489"><span class="lineNum">    4489</span>              :     //</span>
+<span id="L4490"><span class="lineNum">    4490</span>              :     // We will thus draw a distinction between the &quot;specified&quot; entry points,</span>
+<span id="L4491"><span class="lineNum">    4491</span>              :     // and the &quot;found&quot; entry points.</span>
+<span id="L4492"><span class="lineNum">    4492</span>              :     //</span>
+<span id="L4493"><span class="lineNum">    4493</span> <span class="tlaGNC">           1 :     auto specifiedEntryPointCount = endToEndReq-&gt;m_entryPoints.getCount();</span></span>
+<span id="L4494"><span class="lineNum">    4494</span> <span class="tlaGNC">           1 :     auto foundEntryPointCount =</span></span>
+<span id="L4495"><span class="lineNum">    4495</span>              :         unspecializedGlobalAndEntryPointsComponentType-&gt;getEntryPointCount();</span>
+<span id="L4496"><span class="lineNum">    4496</span>              : </span>
+<span id="L4497"><span class="lineNum">    4497</span>              :     SLANG_ASSERT(foundEntryPointCount &gt;= specifiedEntryPointCount);</span>
 <span id="L4498"><span class="lineNum">    4498</span>              : </span>
-<span id="L4499"><span class="lineNum">    4499</span>              :     // For any entry points that were specified, we can use the specialization</span>
-<span id="L4500"><span class="lineNum">    4500</span>              :     // argument information provided via API or command line.</span>
-<span id="L4501"><span class="lineNum">    4501</span>              :     //</span>
-<span id="L4502"><span class="lineNum">    4502</span> <span class="tlaGNC">           1 :     for (Index ii = 0; ii &lt; specifiedEntryPointCount; ++ii)</span></span>
-<span id="L4503"><span class="lineNum">    4503</span>              :     {</span>
-<span id="L4504"><span class="lineNum">    4504</span> <span class="tlaGNC">           1 :         auto&amp; entryPointInfo = endToEndReq-&gt;m_entryPoints[ii];</span></span>
-<span id="L4505"><span class="lineNum">    4505</span> <span class="tlaGNC">           1 :         auto unspecializedEntryPoint =</span></span>
-<span id="L4506"><span class="lineNum">    4506</span>              :             unspecializedGlobalAndEntryPointsComponentType-&gt;getEntryPoint(ii);</span>
-<span id="L4507"><span class="lineNum">    4507</span>              : </span>
-<span id="L4508"><span class="lineNum">    4508</span>              :         // A generic entry point must have concrete generic arguments. They can</span>
-<span id="L4509"><span class="lineNum">    4509</span>              :         // arrive either bound into the entry-point name (`-entry foo&lt;int&gt;`,</span>
-<span id="L4510"><span class="lineNum">    4510</span>              :         // reflected in the func declRef) or as separate specialization-arg</span>
-<span id="L4511"><span class="lineNum">    4511</span>              :         // strings (`-specialize`/`addEntryPointEx`, applied below by</span>
-<span id="L4512"><span class="lineNum">    4512</span>              :         // `createSpecializedEntryPoint`). If neither is present, the generic is</span>
-<span id="L4513"><span class="lineNum">    4513</span>              :         // unspecialized and would lower to an `IRGeneric` rather than an</span>
-<span id="L4514"><span class="lineNum">    4514</span>              :         // `IRFunc`, crashing IR linking (issue #10209); reject it here.</span>
-<span id="L4515"><span class="lineNum">    4515</span>              :         //</span>
-<span id="L4516"><span class="lineNum">    4516</span>              :         // `isSpecialized` walks the whole enclosing decl chain and compares the</span>
-<span id="L4517"><span class="lineNum">    4517</span>              :         // declRef&#x27;s generic args against the defaults, so it correctly accepts</span>
-<span id="L4518"><span class="lineNum">    4518</span>              :         // name-bound args (and nested-generic entry points) while still flagging</span>
-<span id="L4519"><span class="lineNum">    4519</span>              :         // a genuinely unbound generic.</span>
-<span id="L4520"><span class="lineNum">    4520</span>              :         if (requireSpecializedEntryPoints &amp;&amp;</span>
-<span id="L4521"><span class="lineNum">    4521</span> <span class="tlaGNC">           1 :             !endToEndReq-&gt;getLinkage()-&gt;isSpecialized(unspecializedEntryPoint-&gt;getFuncDeclRef()) &amp;&amp;</span></span>
-<span id="L4522"><span class="lineNum">    4522</span>              :             entryPointInfo.specializationArgStrings.getCount() == 0)</span>
-<span id="L4523"><span class="lineNum">    4523</span>              :         {</span>
-<span id="L4524"><span class="lineNum">    4524</span> <span class="tlaUNC">           0 :             diagnoseGenericEntryPoint(unspecializedEntryPoint, endToEndReq-&gt;getSink());</span></span>
-<span id="L4525"><span class="lineNum">    4525</span> <span class="tlaUNC">           0 :             continue;</span></span>
-<span id="L4526"><span class="lineNum">    4526</span>              :         }</span>
-<span id="L4527"><span class="lineNum">    4527</span>              : </span>
-<span id="L4528"><span class="lineNum">    4528</span> <span class="tlaGNC">           1 :         auto specializedEntryPoint =</span></span>
-<span id="L4529"><span class="lineNum">    4529</span>              :             createSpecializedEntryPoint(endToEndReq, unspecializedEntryPoint, entryPointInfo);</span>
-<span id="L4530"><span class="lineNum">    4530</span> <span class="tlaGNC">           1 :         allComponentTypes.add(specializedEntryPoint);</span></span>
-<span id="L4531"><span class="lineNum">    4531</span>              : </span>
-<span id="L4532"><span class="lineNum">    4532</span> <span class="tlaGNC">           1 :         outSpecializedEntryPoints.add(specializedEntryPoint);</span></span>
-<span id="L4533"><span class="lineNum">    4533</span> <span class="tlaGNC">           1 :     }</span></span>
-<span id="L4534"><span class="lineNum">    4534</span>              : </span>
-<span id="L4535"><span class="lineNum">    4535</span>              :     // There might have been errors during the specialization above,</span>
-<span id="L4536"><span class="lineNum">    4536</span>              :     // so we will bail out early if anything went wrong, rather</span>
-<span id="L4537"><span class="lineNum">    4537</span>              :     // then try to create a composite where some of the constituent</span>
-<span id="L4538"><span class="lineNum">    4538</span>              :     // component types might be null.</span>
-<span id="L4539"><span class="lineNum">    4539</span>              :     //</span>
-<span id="L4540"><span class="lineNum">    4540</span> <span class="tlaGNC">           1 :     if (endToEndReq-&gt;getSink()-&gt;getErrorCount() != 0)</span></span>
-<span id="L4541"><span class="lineNum">    4541</span>              :         return nullptr;</span>
-<span id="L4542"><span class="lineNum">    4542</span>              : </span>
-<span id="L4543"><span class="lineNum">    4543</span>              :     // Any entry points beyond those that were specified up front will be</span>
-<span id="L4544"><span class="lineNum">    4544</span>              :     // assumed to not need/want specialization.</span>
-<span id="L4545"><span class="lineNum">    4545</span>              :     //</span>
-<span id="L4546"><span class="lineNum">    4546</span> <span class="tlaGNC">           1 :     for (Index ii = specifiedEntryPointCount; ii &lt; foundEntryPointCount; ++ii)</span></span>
-<span id="L4547"><span class="lineNum">    4547</span>              :     {</span>
-<span id="L4548"><span class="lineNum">    4548</span> <span class="tlaGNC">           1 :         auto unspecializedEntryPoint =</span></span>
-<span id="L4549"><span class="lineNum">    4549</span>              :             unspecializedGlobalAndEntryPointsComponentType-&gt;getEntryPoint(ii);</span>
-<span id="L4550"><span class="lineNum">    4550</span>              : </span>
-<span id="L4551"><span class="lineNum">    4551</span>              :         // These entry points (e.g. discovered via `[shader(...)]`) carry no</span>
-<span id="L4552"><span class="lineNum">    4552</span>              :         // specialization arguments, so an unspecialized generic one can never be</span>
-<span id="L4553"><span class="lineNum">    4553</span>              :         // specialized and must be rejected (#10209). `isSpecialized` is false</span>
-<span id="L4554"><span class="lineNum">    4554</span>              :         // only when the generic args are still the defaults (a discovered</span>
-<span id="L4555"><span class="lineNum">    4555</span>              :         // `[shader]` entry point can&#x27;t bind args via its name either).</span>
-<span id="L4556"><span class="lineNum">    4556</span> <span class="tlaGNC">           1 :         if (requireSpecializedEntryPoints &amp;&amp;</span></span>
-<span id="L4557"><span class="lineNum">    4557</span>              :             !endToEndReq-&gt;getLinkage()-&gt;isSpecialized(unspecializedEntryPoint-&gt;getFuncDeclRef()))</span>
-<span id="L4558"><span class="lineNum">    4558</span>              :         {</span>
-<span id="L4559"><span class="lineNum">    4559</span> <span class="tlaUNC">           0 :             diagnoseGenericEntryPoint(unspecializedEntryPoint, endToEndReq-&gt;getSink());</span></span>
-<span id="L4560"><span class="lineNum">    4560</span> <span class="tlaUNC">           0 :             continue;</span></span>
-<span id="L4561"><span class="lineNum">    4561</span>              :         }</span>
-<span id="L4562"><span class="lineNum">    4562</span>              : </span>
-<span id="L4563"><span class="lineNum">    4563</span> <span class="tlaGNC">           1 :         allComponentTypes.add(unspecializedEntryPoint);</span></span>
-<span id="L4564"><span class="lineNum">    4564</span> <span class="tlaGNC">           1 :         outSpecializedEntryPoints.add(unspecializedEntryPoint);</span></span>
-<span id="L4565"><span class="lineNum">    4565</span>              :     }</span>
-<span id="L4566"><span class="lineNum">    4566</span>              : </span>
-<span id="L4567"><span class="lineNum">    4567</span>              :     // Bail out if rejecting a generic entry point above raised an error,</span>
-<span id="L4568"><span class="lineNum">    4568</span>              :     // rather than composing a program with a missing entry point.</span>
-<span id="L4569"><span class="lineNum">    4569</span> <span class="tlaGNC">           1 :     if (endToEndReq-&gt;getSink()-&gt;getErrorCount() != 0)</span></span>
-<span id="L4570"><span class="lineNum">    4570</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
+<span id="L4499"><span class="lineNum">    4499</span>              :     // Checking an unspecialized generic is valid when no code will be emitted. Only the</span>
+<span id="L4500"><span class="lineNum">    4500</span>              :     // code-generation path needs concrete entry points that IR linking can turn into functions.</span>
+<span id="L4501"><span class="lineNum">    4501</span> <span class="tlaGNC">           1 :     const bool requireSpecializedEntryPoints =</span></span>
+<span id="L4502"><span class="lineNum">    4502</span>              :         !endToEndReq-&gt;getOptionSet().getBoolOption(CompilerOptionName::SkipCodeGen);</span>
+<span id="L4503"><span class="lineNum">    4503</span>              : </span>
+<span id="L4504"><span class="lineNum">    4504</span>              :     // For any entry points that were specified, we can use the specialization</span>
+<span id="L4505"><span class="lineNum">    4505</span>              :     // argument information provided via API or command line.</span>
+<span id="L4506"><span class="lineNum">    4506</span>              :     //</span>
+<span id="L4507"><span class="lineNum">    4507</span> <span class="tlaGNC">           1 :     for (Index ii = 0; ii &lt; specifiedEntryPointCount; ++ii)</span></span>
+<span id="L4508"><span class="lineNum">    4508</span>              :     {</span>
+<span id="L4509"><span class="lineNum">    4509</span> <span class="tlaGNC">           1 :         auto&amp; entryPointInfo = endToEndReq-&gt;m_entryPoints[ii];</span></span>
+<span id="L4510"><span class="lineNum">    4510</span> <span class="tlaGNC">           1 :         auto unspecializedEntryPoint =</span></span>
+<span id="L4511"><span class="lineNum">    4511</span>              :             unspecializedGlobalAndEntryPointsComponentType-&gt;getEntryPoint(ii);</span>
+<span id="L4512"><span class="lineNum">    4512</span>              : </span>
+<span id="L4513"><span class="lineNum">    4513</span>              :         // A generic entry point must have concrete generic arguments. They can</span>
+<span id="L4514"><span class="lineNum">    4514</span>              :         // arrive either bound into the entry-point name (`-entry foo&lt;int&gt;`,</span>
+<span id="L4515"><span class="lineNum">    4515</span>              :         // reflected in the func declRef) or as separate specialization-arg</span>
+<span id="L4516"><span class="lineNum">    4516</span>              :         // strings (`-specialize`/`addEntryPointEx`, applied below by</span>
+<span id="L4517"><span class="lineNum">    4517</span>              :         // `createSpecializedEntryPoint`). If neither is present, the generic is</span>
+<span id="L4518"><span class="lineNum">    4518</span>              :         // unspecialized and would lower to an `IRGeneric` rather than an</span>
+<span id="L4519"><span class="lineNum">    4519</span>              :         // `IRFunc`, crashing IR linking (issue #10209); reject it here.</span>
+<span id="L4520"><span class="lineNum">    4520</span>              :         //</span>
+<span id="L4521"><span class="lineNum">    4521</span>              :         // `isSpecialized` walks the whole enclosing decl chain and compares the</span>
+<span id="L4522"><span class="lineNum">    4522</span>              :         // declRef&#x27;s generic args against the defaults, so it correctly accepts</span>
+<span id="L4523"><span class="lineNum">    4523</span>              :         // name-bound args (and nested-generic entry points) while still flagging</span>
+<span id="L4524"><span class="lineNum">    4524</span>              :         // a genuinely unbound generic.</span>
+<span id="L4525"><span class="lineNum">    4525</span>              :         if (requireSpecializedEntryPoints &amp;&amp;</span>
+<span id="L4526"><span class="lineNum">    4526</span> <span class="tlaGNC">           1 :             !endToEndReq-&gt;getLinkage()-&gt;isSpecialized(unspecializedEntryPoint-&gt;getFuncDeclRef()) &amp;&amp;</span></span>
+<span id="L4527"><span class="lineNum">    4527</span>              :             entryPointInfo.specializationArgStrings.getCount() == 0)</span>
+<span id="L4528"><span class="lineNum">    4528</span>              :         {</span>
+<span id="L4529"><span class="lineNum">    4529</span> <span class="tlaUNC">           0 :             diagnoseGenericEntryPoint(unspecializedEntryPoint, endToEndReq-&gt;getSink());</span></span>
+<span id="L4530"><span class="lineNum">    4530</span> <span class="tlaUNC">           0 :             continue;</span></span>
+<span id="L4531"><span class="lineNum">    4531</span>              :         }</span>
+<span id="L4532"><span class="lineNum">    4532</span>              : </span>
+<span id="L4533"><span class="lineNum">    4533</span> <span class="tlaGNC">           1 :         auto specializedEntryPoint =</span></span>
+<span id="L4534"><span class="lineNum">    4534</span>              :             createSpecializedEntryPoint(endToEndReq, unspecializedEntryPoint, entryPointInfo);</span>
+<span id="L4535"><span class="lineNum">    4535</span> <span class="tlaGNC">           1 :         allComponentTypes.add(specializedEntryPoint);</span></span>
+<span id="L4536"><span class="lineNum">    4536</span>              : </span>
+<span id="L4537"><span class="lineNum">    4537</span> <span class="tlaGNC">           1 :         outSpecializedEntryPoints.add(specializedEntryPoint);</span></span>
+<span id="L4538"><span class="lineNum">    4538</span> <span class="tlaGNC">           1 :     }</span></span>
+<span id="L4539"><span class="lineNum">    4539</span>              : </span>
+<span id="L4540"><span class="lineNum">    4540</span>              :     // There might have been errors during the specialization above,</span>
+<span id="L4541"><span class="lineNum">    4541</span>              :     // so we will bail out early if anything went wrong, rather</span>
+<span id="L4542"><span class="lineNum">    4542</span>              :     // then try to create a composite where some of the constituent</span>
+<span id="L4543"><span class="lineNum">    4543</span>              :     // component types might be null.</span>
+<span id="L4544"><span class="lineNum">    4544</span>              :     //</span>
+<span id="L4545"><span class="lineNum">    4545</span> <span class="tlaGNC">           1 :     if (endToEndReq-&gt;getSink()-&gt;getErrorCount() != 0)</span></span>
+<span id="L4546"><span class="lineNum">    4546</span>              :         return nullptr;</span>
+<span id="L4547"><span class="lineNum">    4547</span>              : </span>
+<span id="L4548"><span class="lineNum">    4548</span>              :     // Any entry points beyond those that were specified up front will be</span>
+<span id="L4549"><span class="lineNum">    4549</span>              :     // assumed to not need/want specialization.</span>
+<span id="L4550"><span class="lineNum">    4550</span>              :     //</span>
+<span id="L4551"><span class="lineNum">    4551</span> <span class="tlaGNC">           1 :     for (Index ii = specifiedEntryPointCount; ii &lt; foundEntryPointCount; ++ii)</span></span>
+<span id="L4552"><span class="lineNum">    4552</span>              :     {</span>
+<span id="L4553"><span class="lineNum">    4553</span> <span class="tlaGNC">           1 :         auto unspecializedEntryPoint =</span></span>
+<span id="L4554"><span class="lineNum">    4554</span>              :             unspecializedGlobalAndEntryPointsComponentType-&gt;getEntryPoint(ii);</span>
+<span id="L4555"><span class="lineNum">    4555</span>              : </span>
+<span id="L4556"><span class="lineNum">    4556</span>              :         // These entry points (e.g. discovered via `[shader(...)]`) carry no</span>
+<span id="L4557"><span class="lineNum">    4557</span>              :         // specialization arguments, so an unspecialized generic one can never be</span>
+<span id="L4558"><span class="lineNum">    4558</span>              :         // specialized and must be rejected (#10209). `isSpecialized` is false</span>
+<span id="L4559"><span class="lineNum">    4559</span>              :         // only when the generic args are still the defaults (a discovered</span>
+<span id="L4560"><span class="lineNum">    4560</span>              :         // `[shader]` entry point can&#x27;t bind args via its name either).</span>
+<span id="L4561"><span class="lineNum">    4561</span> <span class="tlaGNC">           1 :         if (requireSpecializedEntryPoints &amp;&amp;</span></span>
+<span id="L4562"><span class="lineNum">    4562</span>              :             !endToEndReq-&gt;getLinkage()-&gt;isSpecialized(unspecializedEntryPoint-&gt;getFuncDeclRef()))</span>
+<span id="L4563"><span class="lineNum">    4563</span>              :         {</span>
+<span id="L4564"><span class="lineNum">    4564</span> <span class="tlaUNC">           0 :             diagnoseGenericEntryPoint(unspecializedEntryPoint, endToEndReq-&gt;getSink());</span></span>
+<span id="L4565"><span class="lineNum">    4565</span> <span class="tlaUNC">           0 :             continue;</span></span>
+<span id="L4566"><span class="lineNum">    4566</span>              :         }</span>
+<span id="L4567"><span class="lineNum">    4567</span>              : </span>
+<span id="L4568"><span class="lineNum">    4568</span> <span class="tlaGNC">           1 :         allComponentTypes.add(unspecializedEntryPoint);</span></span>
+<span id="L4569"><span class="lineNum">    4569</span> <span class="tlaGNC">           1 :         outSpecializedEntryPoints.add(unspecializedEntryPoint);</span></span>
+<span id="L4570"><span class="lineNum">    4570</span>              :     }</span>
 <span id="L4571"><span class="lineNum">    4571</span>              : </span>
-<span id="L4572"><span class="lineNum">    4572</span> <span class="tlaGNC">           1 :     RefPtr&lt;ComponentType&gt; composed =</span></span>
-<span id="L4573"><span class="lineNum">    4573</span>              :         CompositeComponentType::create(endToEndReq-&gt;getLinkage(), allComponentTypes);</span>
-<span id="L4574"><span class="lineNum">    4574</span> <span class="tlaGNC">           1 :     return composed;</span></span>
-<span id="L4575"><span class="lineNum">    4575</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4572"><span class="lineNum">    4572</span>              :     // Bail out if rejecting a generic entry point above raised an error,</span>
+<span id="L4573"><span class="lineNum">    4573</span>              :     // rather than composing a program with a missing entry point.</span>
+<span id="L4574"><span class="lineNum">    4574</span> <span class="tlaGNC">           1 :     if (endToEndReq-&gt;getSink()-&gt;getErrorCount() != 0)</span></span>
+<span id="L4575"><span class="lineNum">    4575</span> <span class="tlaUNC">           0 :         return nullptr;</span></span>
 <span id="L4576"><span class="lineNum">    4576</span>              : </span>
-<span id="L4577"><span class="lineNum">    4577</span>              : SourceLoc _getTypeNestingDiagnosticPosForDecl(Decl* decl)</span>
-<span id="L4578"><span class="lineNum">    4578</span> <span class="tlaUNC">           0 : {</span></span>
-<span id="L4579"><span class="lineNum">    4579</span> <span class="tlaUNC">           0 :     if (auto varDecl = as&lt;VarDeclBase&gt;(decl))</span></span>
-<span id="L4580"><span class="lineNum">    4580</span>              :     {</span>
-<span id="L4581"><span class="lineNum">    4581</span> <span class="tlaUNC">           0 :         auto loc = getDiagnosticPos(varDecl-&gt;type);</span></span>
-<span id="L4582"><span class="lineNum">    4582</span> <span class="tlaUNC">           0 :         if (loc.isValid())</span></span>
-<span id="L4583"><span class="lineNum">    4583</span> <span class="tlaUNC">           0 :             return loc;</span></span>
-<span id="L4584"><span class="lineNum">    4584</span>              :     }</span>
-<span id="L4585"><span class="lineNum">    4585</span> <span class="tlaUNC">           0 :     else if (auto callableDecl = as&lt;CallableDecl&gt;(decl))</span></span>
-<span id="L4586"><span class="lineNum">    4586</span>              :     {</span>
-<span id="L4587"><span class="lineNum">    4587</span> <span class="tlaUNC">           0 :         auto loc = getDiagnosticPos(callableDecl-&gt;returnType);</span></span>
-<span id="L4588"><span class="lineNum">    4588</span> <span class="tlaUNC">           0 :         if (loc.isValid())</span></span>
-<span id="L4589"><span class="lineNum">    4589</span> <span class="tlaUNC">           0 :             return loc;</span></span>
-<span id="L4590"><span class="lineNum">    4590</span>              :     }</span>
-<span id="L4591"><span class="lineNum">    4591</span>              : </span>
-<span id="L4592"><span class="lineNum">    4592</span> <span class="tlaUNC">           0 :     return getDiagnosticPos(decl);</span></span>
-<span id="L4593"><span class="lineNum">    4593</span> <span class="tlaUNC">           0 : }</span></span>
-<span id="L4594"><span class="lineNum">    4594</span>              : </span>
-<span id="L4595"><span class="lineNum">    4595</span>              : } // namespace Slang</span>
+<span id="L4577"><span class="lineNum">    4577</span> <span class="tlaGNC">           1 :     RefPtr&lt;ComponentType&gt; composed =</span></span>
+<span id="L4578"><span class="lineNum">    4578</span>              :         CompositeComponentType::create(endToEndReq-&gt;getLinkage(), allComponentTypes);</span>
+<span id="L4579"><span class="lineNum">    4579</span> <span class="tlaGNC">           1 :     return composed;</span></span>
+<span id="L4580"><span class="lineNum">    4580</span> <span class="tlaGNC">           1 : }</span></span>
+<span id="L4581"><span class="lineNum">    4581</span>              : </span>
+<span id="L4582"><span class="lineNum">    4582</span>              : SourceLoc _getTypeNestingDiagnosticPosForDecl(Decl* decl)</span>
+<span id="L4583"><span class="lineNum">    4583</span> <span class="tlaUNC">           0 : {</span></span>
+<span id="L4584"><span class="lineNum">    4584</span> <span class="tlaUNC">           0 :     if (auto varDecl = as&lt;VarDeclBase&gt;(decl))</span></span>
+<span id="L4585"><span class="lineNum">    4585</span>              :     {</span>
+<span id="L4586"><span class="lineNum">    4586</span> <span class="tlaUNC">           0 :         auto loc = getDiagnosticPos(varDecl-&gt;type);</span></span>
+<span id="L4587"><span class="lineNum">    4587</span> <span class="tlaUNC">           0 :         if (loc.isValid())</span></span>
+<span id="L4588"><span class="lineNum">    4588</span> <span class="tlaUNC">           0 :             return loc;</span></span>
+<span id="L4589"><span class="lineNum">    4589</span>              :     }</span>
+<span id="L4590"><span class="lineNum">    4590</span> <span class="tlaUNC">           0 :     else if (auto callableDecl = as&lt;CallableDecl&gt;(decl))</span></span>
+<span id="L4591"><span class="lineNum">    4591</span>              :     {</span>
+<span id="L4592"><span class="lineNum">    4592</span> <span class="tlaUNC">           0 :         auto loc = getDiagnosticPos(callableDecl-&gt;returnType);</span></span>
+<span id="L4593"><span class="lineNum">    4593</span> <span class="tlaUNC">           0 :         if (loc.isValid())</span></span>
+<span id="L4594"><span class="lineNum">    4594</span> <span class="tlaUNC">           0 :             return loc;</span></span>
+<span id="L4595"><span class="lineNum">    4595</span>              :     }</span>
+<span id="L4596"><span class="lineNum">    4596</span>              : </span>
+<span id="L4597"><span class="lineNum">    4597</span> <span class="tlaUNC">           0 :     return getDiagnosticPos(decl);</span></span>
+<span id="L4598"><span class="lineNum">    4598</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L4599"><span class="lineNum">    4599</span>              : </span>
+<span id="L4600"><span class="lineNum">    4600</span>              : } // namespace Slang</span>
 </pre>
   <br>
   <table class="chrome" cellpadding="0" cellspacing="0">
