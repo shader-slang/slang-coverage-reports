@@ -254,7 +254,7 @@ table.fnInner col.fnLineCol  { width: 4%; }
       <td class="headerItem">Test:</td>
       <td class="headerValue">coverage.lcov</td>
       <td class="headerItem">Date:</td>
-      <td class="headerValue">2026-11-27 05:05:59 UTC</td>
+      <td class="headerValue">2026-11-28 04:21:57 UTC</td>
     </tr>
   </table>
   <div class="metricCards">
@@ -1266,58 +1266,58 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L975"><span class="lineNum">     975</span>                         :     DiagnosticSink::SourceLocationLexer sll,</span>
 <span id="L976"><span class="lineNum">     976</span>                         :     SourceManager* sm,</span>
 <span id="L977"><span class="lineNum">     977</span>                         :     const GenericDiagnostic&amp; diag)</span>
-<span id="L978"><span class="lineNum">     978</span> <span class="tlaGNC">       18709            : {</span></span>
-<span id="L979"><span class="lineNum">     979</span> <span class="tlaGNC">       18709            :     StringBuilder sb;</span></span>
+<span id="L978"><span class="lineNum">     978</span> <span class="tlaGNC">       18756            : {</span></span>
+<span id="L979"><span class="lineNum">     979</span> <span class="tlaGNC">       18756            :     StringBuilder sb;</span></span>
 <span id="L980"><span class="lineNum">     980</span>                         : </span>
 <span id="L981"><span class="lineNum">     981</span>                         :     // Format:</span>
 <span id="L982"><span class="lineNum">     982</span>                         :     // E&lt;code&gt;\t&lt;severity&gt;\t&lt;filename&gt;\t&lt;beginline&gt;\t&lt;begincol&gt;\t&lt;endline&gt;\t&lt;endcol&gt;\t&lt;message&gt;</span>
 <span id="L983"><span class="lineNum">     983</span>                         : </span>
 <span id="L984"><span class="lineNum">     984</span>                         :     // Format the error code as E##### (e.g., E00001, E12345)</span>
 <span id="L985"><span class="lineNum">     985</span>                         :     // Use empty string for negative codes (-1 is used as placeholder for no code)</span>
-<span id="L986"><span class="lineNum">     986</span> <span class="tlaGNC">       18709            :     String codeStr;</span></span>
-<span id="L987"><span class="lineNum">     987</span> <span class="tlaGNC">       18709 <span class="branchAll" title="br0: 18079; br1: 630">(2/2)</span>      :     if (diag.code &gt;= 0)</span></span>
-<span id="L988"><span class="lineNum">     988</span> <span class="tlaGNC">       18079            :     {</span></span>
-<span id="L989"><span class="lineNum">     989</span> <span class="tlaGNC">       18079            :         String numStr = String(diag.code);</span></span>
-<span id="L990"><span class="lineNum">     990</span> <span class="tlaGNC">       18079            :         String padding;</span></span>
-<span id="L991"><span class="lineNum">     991</span> <span class="tlaGNC">       18079            :         padding.appendRepeatedChar(&#x27;0&#x27;, std::max&lt;Int64&gt;(0, 5 - numStr.getLength()));</span></span>
-<span id="L992"><span class="lineNum">     992</span> <span class="tlaGNC">       18079            :         codeStr = padding + numStr;</span></span>
-<span id="L993"><span class="lineNum">     993</span> <span class="tlaGNC">       18079            :     }</span></span>
+<span id="L986"><span class="lineNum">     986</span> <span class="tlaGNC">       18756            :     String codeStr;</span></span>
+<span id="L987"><span class="lineNum">     987</span> <span class="tlaGNC">       18756 <span class="branchAll" title="br0: 18126; br1: 630">(2/2)</span>      :     if (diag.code &gt;= 0)</span></span>
+<span id="L988"><span class="lineNum">     988</span> <span class="tlaGNC">       18126            :     {</span></span>
+<span id="L989"><span class="lineNum">     989</span> <span class="tlaGNC">       18126            :         String numStr = String(diag.code);</span></span>
+<span id="L990"><span class="lineNum">     990</span> <span class="tlaGNC">       18126            :         String padding;</span></span>
+<span id="L991"><span class="lineNum">     991</span> <span class="tlaGNC">       18126            :         padding.appendRepeatedChar(&#x27;0&#x27;, std::max&lt;Int64&gt;(0, 5 - numStr.getLength()));</span></span>
+<span id="L992"><span class="lineNum">     992</span> <span class="tlaGNC">       18126            :         codeStr = padding + numStr;</span></span>
+<span id="L993"><span class="lineNum">     993</span> <span class="tlaGNC">       18126            :     }</span></span>
 <span id="L994"><span class="lineNum">     994</span>                         : </span>
 <span id="L995"><span class="lineNum">     995</span>                         :     // Helper lambda to output a span in the machine-readable format</span>
 <span id="L996"><span class="lineNum">     996</span>                         :     // Returns false if the span was skipped (0,0 location with no message)</span>
-<span id="L997"><span class="lineNum">     997</span> <span class="tlaGNC">       18709            :     auto outputSpan = [&amp;](const DiagnosticSpan&amp; span, const char* severity, const String&amp; message)</span></span>
-<span id="L998"><span class="lineNum">     998</span> <span class="tlaGNC">       37608            :     {</span></span>
-<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">       37608            :         HumaneSourceLoc beginLoc = sm-&gt;getHumaneLoc(span.range.begin);</span></span>
-<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">       37608            :         HumaneSourceLoc endLoc = sm-&gt;getHumaneLoc(span.range.end);</span></span>
+<span id="L997"><span class="lineNum">     997</span> <span class="tlaGNC">       18756            :     auto outputSpan = [&amp;](const DiagnosticSpan&amp; span, const char* severity, const String&amp; message)</span></span>
+<span id="L998"><span class="lineNum">     998</span> <span class="tlaGNC">       37702            :     {</span></span>
+<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">       37702            :         HumaneSourceLoc beginLoc = sm-&gt;getHumaneLoc(span.range.begin);</span></span>
+<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">       37702            :         HumaneSourceLoc endLoc = sm-&gt;getHumaneLoc(span.range.end);</span></span>
 <span id="L1001"><span class="lineNum">    1001</span>                         : </span>
 <span id="L1002"><span class="lineNum">    1002</span>                         :         // When span has zero length (begin == end), use the lexer to find token boundaries,</span>
 <span id="L1003"><span class="lineNum">    1003</span>                         :         // mirroring the logic in buildSectionLayout for rich diagnostics</span>
-<span id="L1004"><span class="lineNum">    1004</span> <span class="tlaGNC">       37608 <span class="branchPart" title="br0: 10160; br1: 27448; br2: 10160; br3: 0; br4: 9774; br5: 386">(5/6)</span>      :         if (sll &amp;&amp; span.range.begin == span.range.end &amp;&amp; beginLoc.line &gt; 0)</span></span>
-<span id="L1005"><span class="lineNum">    1005</span> <span class="tlaGNC">        9774            :         {</span></span>
-<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaGNC">        9774            :             SourceView* view = sm-&gt;findSourceView(span.range.begin);</span></span>
-<span id="L1007"><span class="lineNum">    1007</span> <span class="tlaGNC">        9774 <span class="branchAll" title="br0: 9260; br1: 514">(2/2)</span>      :             if (view)</span></span>
-<span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">        9260            :             {</span></span>
-<span id="L1009"><span class="lineNum">    1009</span> <span class="tlaGNC">        9260            :                 auto actualLine = view-&gt;getHumaneLoc(span.range.begin, SourceLocType::Actual).line;</span></span>
-<span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">        9260            :                 UnownedStringSlice rawLine = StringUtil::trimEndOfLine(</span></span>
-<span id="L1011"><span class="lineNum">    1011</span> <span class="tlaGNC">        9260            :                     view-&gt;getSourceFile()-&gt;getLineAtIndex(actualLine - 1));</span></span>
-<span id="L1012"><span class="lineNum">    1012</span> <span class="tlaGNC">        9260            :                 UnownedStringSlice lineContent =</span></span>
-<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">        9260            :                     UnownedStringSlice(rawLine.begin(), rawLine.trim().end());</span></span>
-<span id="L1014"><span class="lineNum">    1014</span> <span class="tlaGNC">        9260 <span class="branchPart" title="br0: 9240; br1: 20; br2: 9240; br3: 0">(3/4)</span>      :                 if (lineContent.getLength() &gt; 0 &amp;&amp; beginLoc.column &gt; 0 &amp;&amp;</span></span>
-<span id="L1015"><span class="lineNum">    1015</span> <span class="tlaGNC">        9260 <span class="branchAll" title="br0: 9158; br1: 82">(2/2)</span>      :                     beginLoc.column - 1 &lt; lineContent.getLength())</span></span>
-<span id="L1016"><span class="lineNum">    1016</span> <span class="tlaGNC">        9158            :                 {</span></span>
-<span id="L1017"><span class="lineNum">    1017</span> <span class="tlaGNC">        9158            :                     Int64 tokenLen = sll(lineContent.tail(beginLoc.column - 1)).getLength();</span></span>
-<span id="L1018"><span class="lineNum">    1018</span> <span class="tlaGNC">        9158 <span class="branchPart" title="br0: 9158; br1: 0">(1/2)</span>      :                     if (tokenLen &gt; 0)</span></span>
-<span id="L1019"><span class="lineNum">    1019</span> <span class="tlaGNC">        9158            :                     {</span></span>
-<span id="L1020"><span class="lineNum">    1020</span> <span class="tlaGNC">        9158            :                         endLoc.line = beginLoc.line;</span></span>
-<span id="L1021"><span class="lineNum">    1021</span> <span class="tlaGNC">        9158            :                         endLoc.column = beginLoc.column + tokenLen;</span></span>
-<span id="L1022"><span class="lineNum">    1022</span> <span class="tlaGNC">        9158            :                     }</span></span>
-<span id="L1023"><span class="lineNum">    1023</span> <span class="tlaGNC">        9158            :                 }</span></span>
-<span id="L1024"><span class="lineNum">    1024</span> <span class="tlaGNC">        9260            :             }</span></span>
-<span id="L1025"><span class="lineNum">    1025</span> <span class="tlaGNC">        9774            :         }</span></span>
+<span id="L1004"><span class="lineNum">    1004</span> <span class="tlaGNC">       37702 <span class="branchPart" title="br0: 10254; br1: 27448; br2: 10254; br3: 0; br4: 9868; br5: 386">(5/6)</span>      :         if (sll &amp;&amp; span.range.begin == span.range.end &amp;&amp; beginLoc.line &gt; 0)</span></span>
+<span id="L1005"><span class="lineNum">    1005</span> <span class="tlaGNC">        9868            :         {</span></span>
+<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaGNC">        9868            :             SourceView* view = sm-&gt;findSourceView(span.range.begin);</span></span>
+<span id="L1007"><span class="lineNum">    1007</span> <span class="tlaGNC">        9868 <span class="branchAll" title="br0: 9354; br1: 514">(2/2)</span>      :             if (view)</span></span>
+<span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">        9354            :             {</span></span>
+<span id="L1009"><span class="lineNum">    1009</span> <span class="tlaGNC">        9354            :                 auto actualLine = view-&gt;getHumaneLoc(span.range.begin, SourceLocType::Actual).line;</span></span>
+<span id="L1010"><span class="lineNum">    1010</span> <span class="tlaGNC">        9354            :                 UnownedStringSlice rawLine = StringUtil::trimEndOfLine(</span></span>
+<span id="L1011"><span class="lineNum">    1011</span> <span class="tlaGNC">        9354            :                     view-&gt;getSourceFile()-&gt;getLineAtIndex(actualLine - 1));</span></span>
+<span id="L1012"><span class="lineNum">    1012</span> <span class="tlaGNC">        9354            :                 UnownedStringSlice lineContent =</span></span>
+<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">        9354            :                     UnownedStringSlice(rawLine.begin(), rawLine.trim().end());</span></span>
+<span id="L1014"><span class="lineNum">    1014</span> <span class="tlaGNC">        9354 <span class="branchPart" title="br0: 9334; br1: 20; br2: 9334; br3: 0">(3/4)</span>      :                 if (lineContent.getLength() &gt; 0 &amp;&amp; beginLoc.column &gt; 0 &amp;&amp;</span></span>
+<span id="L1015"><span class="lineNum">    1015</span> <span class="tlaGNC">        9354 <span class="branchAll" title="br0: 9252; br1: 82">(2/2)</span>      :                     beginLoc.column - 1 &lt; lineContent.getLength())</span></span>
+<span id="L1016"><span class="lineNum">    1016</span> <span class="tlaGNC">        9252            :                 {</span></span>
+<span id="L1017"><span class="lineNum">    1017</span> <span class="tlaGNC">        9252            :                     Int64 tokenLen = sll(lineContent.tail(beginLoc.column - 1)).getLength();</span></span>
+<span id="L1018"><span class="lineNum">    1018</span> <span class="tlaGNC">        9252 <span class="branchPart" title="br0: 9252; br1: 0">(1/2)</span>      :                     if (tokenLen &gt; 0)</span></span>
+<span id="L1019"><span class="lineNum">    1019</span> <span class="tlaGNC">        9252            :                     {</span></span>
+<span id="L1020"><span class="lineNum">    1020</span> <span class="tlaGNC">        9252            :                         endLoc.line = beginLoc.line;</span></span>
+<span id="L1021"><span class="lineNum">    1021</span> <span class="tlaGNC">        9252            :                         endLoc.column = beginLoc.column + tokenLen;</span></span>
+<span id="L1022"><span class="lineNum">    1022</span> <span class="tlaGNC">        9252            :                     }</span></span>
+<span id="L1023"><span class="lineNum">    1023</span> <span class="tlaGNC">        9252            :                 }</span></span>
+<span id="L1024"><span class="lineNum">    1024</span> <span class="tlaGNC">        9354            :             }</span></span>
+<span id="L1025"><span class="lineNum">    1025</span> <span class="tlaGNC">        9868            :         }</span></span>
 <span id="L1026"><span class="lineNum">    1026</span>                         : </span>
 <span id="L1027"><span class="lineNum">    1027</span>                         :         // Check for locationless span (0,0)</span>
-<span id="L1028"><span class="lineNum">    1028</span> <span class="tlaGNC">       37608 <span class="branchPart" title="br0: 520; br1: 37088; br2: 520; br3: 0">(3/4)</span>      :         bool isLocationless = (beginLoc.line == 0 &amp;&amp; beginLoc.column == 0);</span></span>
-<span id="L1029"><span class="lineNum">    1029</span> <span class="tlaGNC">       37608 <span class="branchAll" title="br0: 520; br1: 37088">(2/2)</span>      :         if (isLocationless)</span></span>
+<span id="L1028"><span class="lineNum">    1028</span> <span class="tlaGNC">       37702 <span class="branchPart" title="br0: 520; br1: 37182; br2: 520; br3: 0">(3/4)</span>      :         bool isLocationless = (beginLoc.line == 0 &amp;&amp; beginLoc.column == 0);</span></span>
+<span id="L1029"><span class="lineNum">    1029</span> <span class="tlaGNC">       37702 <span class="branchAll" title="br0: 520; br1: 37182">(2/2)</span>      :         if (isLocationless)</span></span>
 <span id="L1030"><span class="lineNum">    1030</span> <span class="tlaGNC">         520            :         {</span></span>
 <span id="L1031"><span class="lineNum">    1031</span>                         :             // Skip outputting 0,0 spans with no message - they provide no value</span>
 <span id="L1032"><span class="lineNum">    1032</span> <span class="tlaGNC">         520 <span class="branchPart" title="br0: 260; br1: 260; br2: 0; br3: 260">(3/4)</span>      :             if ((strcmp(severity, &quot;span&quot;) == 0 || strcmp(severity, &quot;note-span&quot;) == 0) &amp;&amp;</span></span>
@@ -1327,31 +1327,31 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1036"><span class="lineNum">    1036</span> <span class="tlaGNC">         186            :             }</span></span>
 <span id="L1037"><span class="lineNum">    1037</span> <span class="tlaGNC">         520            :         }</span></span>
 <span id="L1038"><span class="lineNum">    1038</span>                         : </span>
-<span id="L1039"><span class="lineNum">    1039</span> <span class="tlaGNC">       37422            :         sb &lt;&lt; &quot;E&quot; &lt;&lt; codeStr &lt;&lt; &quot;\t&quot;;</span></span>
-<span id="L1040"><span class="lineNum">    1040</span> <span class="tlaGNC">       37422            :         sb &lt;&lt; severity &lt;&lt; &quot;\t&quot;;</span></span>
-<span id="L1041"><span class="lineNum">    1041</span> <span class="tlaGNC">       37422            :         sb &lt;&lt; beginLoc.pathInfo.foundPath &lt;&lt; &quot;\t&quot;;</span></span>
-<span id="L1042"><span class="lineNum">    1042</span> <span class="tlaGNC">       37422            :         sb &lt;&lt; beginLoc.line &lt;&lt; &quot;\t&quot;;</span></span>
-<span id="L1043"><span class="lineNum">    1043</span> <span class="tlaGNC">       37422            :         sb &lt;&lt; beginLoc.column &lt;&lt; &quot;\t&quot;;</span></span>
-<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">       37422            :         sb &lt;&lt; endLoc.line &lt;&lt; &quot;\t&quot;;</span></span>
-<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">       37422            :         sb &lt;&lt; endLoc.column &lt;&lt; &quot;\t&quot;;</span></span>
-<span id="L1046"><span class="lineNum">    1046</span> <span class="tlaGNC">       37422            :         sb &lt;&lt; message &lt;&lt; &quot;\n&quot;;</span></span>
-<span id="L1047"><span class="lineNum">    1047</span> <span class="tlaGNC">       37422            :         return true;</span></span>
-<span id="L1048"><span class="lineNum">    1048</span> <span class="tlaGNC">       37608            :     };</span></span>
+<span id="L1039"><span class="lineNum">    1039</span> <span class="tlaGNC">       37516            :         sb &lt;&lt; &quot;E&quot; &lt;&lt; codeStr &lt;&lt; &quot;\t&quot;;</span></span>
+<span id="L1040"><span class="lineNum">    1040</span> <span class="tlaGNC">       37516            :         sb &lt;&lt; severity &lt;&lt; &quot;\t&quot;;</span></span>
+<span id="L1041"><span class="lineNum">    1041</span> <span class="tlaGNC">       37516            :         sb &lt;&lt; beginLoc.pathInfo.foundPath &lt;&lt; &quot;\t&quot;;</span></span>
+<span id="L1042"><span class="lineNum">    1042</span> <span class="tlaGNC">       37516            :         sb &lt;&lt; beginLoc.line &lt;&lt; &quot;\t&quot;;</span></span>
+<span id="L1043"><span class="lineNum">    1043</span> <span class="tlaGNC">       37516            :         sb &lt;&lt; beginLoc.column &lt;&lt; &quot;\t&quot;;</span></span>
+<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">       37516            :         sb &lt;&lt; endLoc.line &lt;&lt; &quot;\t&quot;;</span></span>
+<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">       37516            :         sb &lt;&lt; endLoc.column &lt;&lt; &quot;\t&quot;;</span></span>
+<span id="L1046"><span class="lineNum">    1046</span> <span class="tlaGNC">       37516            :         sb &lt;&lt; message &lt;&lt; &quot;\n&quot;;</span></span>
+<span id="L1047"><span class="lineNum">    1047</span> <span class="tlaGNC">       37516            :         return true;</span></span>
+<span id="L1048"><span class="lineNum">    1048</span> <span class="tlaGNC">       37702            :     };</span></span>
 <span id="L1049"><span class="lineNum">    1049</span>                         : </span>
 <span id="L1050"><span class="lineNum">    1050</span>                         :     // Output primary diagnostic</span>
-<span id="L1051"><span class="lineNum">    1051</span> <span class="tlaGNC">       18709            :     outputSpan(diag.primarySpan, getSeverityName(diag.severity), diag.message);</span></span>
+<span id="L1051"><span class="lineNum">    1051</span> <span class="tlaGNC">       18756            :     outputSpan(diag.primarySpan, getSeverityName(diag.severity), diag.message);</span></span>
 <span id="L1052"><span class="lineNum">    1052</span>                         : </span>
 <span id="L1053"><span class="lineNum">    1053</span>                         :     // Output primary span message (if it has a valid location or message)</span>
-<span id="L1054"><span class="lineNum">    1054</span> <span class="tlaGNC">       18709            :     outputSpan(diag.primarySpan, &quot;span&quot;, diag.primarySpan.message);</span></span>
+<span id="L1054"><span class="lineNum">    1054</span> <span class="tlaGNC">       18756            :     outputSpan(diag.primarySpan, &quot;span&quot;, diag.primarySpan.message);</span></span>
 <span id="L1055"><span class="lineNum">    1055</span>                         : </span>
 <span id="L1056"><span class="lineNum">    1056</span>                         :     // Output secondary spans</span>
-<span id="L1057"><span class="lineNum">    1057</span> <span class="tlaGNC">       18709 <span class="branchAll" title="br0: 23; br1: 18709">(2/2)</span>      :     for (const auto&amp; secondarySpan : diag.secondarySpans)</span></span>
+<span id="L1057"><span class="lineNum">    1057</span> <span class="tlaGNC">       18756 <span class="branchAll" title="br0: 23; br1: 18756">(2/2)</span>      :     for (const auto&amp; secondarySpan : diag.secondarySpans)</span></span>
 <span id="L1058"><span class="lineNum">    1058</span> <span class="tlaGNC">          23            :     {</span></span>
 <span id="L1059"><span class="lineNum">    1059</span> <span class="tlaGNC">          23            :         outputSpan(secondarySpan, &quot;span&quot;, secondarySpan.message);</span></span>
 <span id="L1060"><span class="lineNum">    1060</span> <span class="tlaGNC">          23            :     }</span></span>
 <span id="L1061"><span class="lineNum">    1061</span>                         : </span>
 <span id="L1062"><span class="lineNum">    1062</span>                         :     // Output notes</span>
-<span id="L1063"><span class="lineNum">    1063</span> <span class="tlaGNC">       18709 <span class="branchAll" title="br0: 167; br1: 18709">(2/2)</span>      :     for (const auto&amp; note : diag.notes)</span></span>
+<span id="L1063"><span class="lineNum">    1063</span> <span class="tlaGNC">       18756 <span class="branchAll" title="br0: 167; br1: 18756">(2/2)</span>      :     for (const auto&amp; note : diag.notes)</span></span>
 <span id="L1064"><span class="lineNum">    1064</span> <span class="tlaGNC">         167            :     {</span></span>
 <span id="L1065"><span class="lineNum">    1065</span>                         :         // Output the note&#x27;s primary span</span>
 <span id="L1066"><span class="lineNum">    1066</span> <span class="tlaGNC">         167            :         outputSpan(note.span, &quot;note&quot;, note.message);</span></span>
@@ -1363,8 +1363,8 @@ table.fnInner col.fnLineCol  { width: 4%; }
 <span id="L1072"><span class="lineNum">    1072</span> <span class="tlaUNC">           0            :         }</span></span>
 <span id="L1073"><span class="lineNum">    1073</span> <span class="tlaGNC">         167            :     }</span></span>
 <span id="L1074"><span class="lineNum">    1074</span>                         : </span>
-<span id="L1075"><span class="lineNum">    1075</span> <span class="tlaGNC">       18709            :     return sb.produceString();</span></span>
-<span id="L1076"><span class="lineNum">    1076</span> <span class="tlaGNC">       18709            : }</span></span>
+<span id="L1075"><span class="lineNum">    1075</span> <span class="tlaGNC">       18756            :     return sb.produceString();</span></span>
+<span id="L1076"><span class="lineNum">    1076</span> <span class="tlaGNC">       18756            : }</span></span>
 <span id="L1077"><span class="lineNum">    1077</span>                         : </span>
 <span id="L1078"><span class="lineNum">    1078</span>                         : } // namespace Slang</span>
 </pre>
